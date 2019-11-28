@@ -43,12 +43,20 @@ begin_isr <- function () { return ( if (!is_r_ed) { comment_start } ) }
 end_isr <- function () { return ( if (!is_r_ed) { comment_end } ) }
 begin_isnb <- function (nb_fname) { return ( if (!is_nb) { comment_start } ) }
 end_isnb <- function () { return ( if (!is_nb) { comment_end } ) }
+py_or_r <- function(is_py, is_r, backticks=TRUE) {
+    result <- if (is_py_ed) is_py else is_r
+    if (backticks) stringr::str_interp("`${result}`") else result
+}
+
 nb_ext <- if (is_py_ed) 'ipynb' else 'Rmd'
 
 begin_nb <- function(nb_fname) {
     nb_path <- stringr::str_interp('${nb_fname}.${nb_ext}')
+    assign("nb_fname__", nb_fname, envir = .GlobalEnv)
     if (!is_nb) {
-        return (stringr::str_interp('[Download ${nb_fname} notebook](${nb_path})'))
+        return (stringr::str_interp('[Download ${nb_fname} notebook](${nb_path})
+
+**Start of `${nb_fname}` notebook.**'))
     }
     return (stringr::str_interp('${comment_start} nb:${nb_path} ${comment_end}'))
 }
@@ -56,7 +64,10 @@ begin_nb <- function(nb_fname) {
 end_nb <- function() {
     if (is_nb) {
         return (stringr::str_interp('${comment_start} nb:end ${comment_end}'))
+    } else {
+        return (stringr::str_interp('**End of `${nb_fname__}` notebook.**'))
     }
+    assign("nb_fname__", NULL, envir = .GlobalEnv)
 }
 
 # Language for use inside Markdown text.
