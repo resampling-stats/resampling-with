@@ -1,13 +1,13 @@
 # Resampling with code
 
 Chapter \@ref(resampling-method) used simulation and resampling from
-tables of random numbers, spinners, dice and coins.  Making random choices
-in this way can make it easier to understand the process, but of course,
-physical methods of making random outcomes can be slow and boring.
+tables of random numbers, dice and coins.  Making random choices in this way
+can make it easier to understand the process, but of course, physical methods
+of making random outcomes can be slow and boring.
 
 On the other hand, short computer programs can do a huge number of resampling
-trials in a few seconds.  The flexibility of a programming language makes
-it possible to simulate many different outcomes and tests.
+trials in a few seconds.  The flexibility of a programming language makes it
+possible to simulate many different outcomes and tests.
 
 In this chapter, we begin using the `r BL` language to build up tables of
 random numbers, and do simple tasks like counting the number of values in
@@ -24,9 +24,9 @@ The key to reading code is to think about what the computer will do, when it see
 
 `r begin_nb('resampling_with_code')`
 
-To get started, let's think about a *comment* in code.  A comment is a
-statement that the computer will *ignore*.   It is text that we put in the
-program for our benefit, to explain what is going on to a human reader.
+A simple place to start is the *comment*.  A comment is a statement that the
+computer will *ignore*.   It is text that we put in the program for our
+benefit, to explain what is going on to a human reader.
 
 This is an example of a comment:
 
@@ -38,32 +38,72 @@ This is an example of a comment:
 # This is a comment. It doesn't have any effect.
 ```
 
-Notice that the comment starts with a hash character `#`.  This character tells
-the computer that the rest of the line is a comment, and therefore, that it can
+The comment starts with a hash character `#`.  This character tells the
+computer that the rest of the line is a comment, and therefore, that it can
 ignore everything on that line that follows the `#`.
 
+`r begin_ispy()`
+
+In the next bit of code, we get the *function* we use to get random numbers.
+The code has four lines.  The first and third are comments; the computer
+ignores them. The second line gets a library we will use in nearly all our
+examples, and the last line gets the function to generate random numbers.
+Don't worry about this code for now, we will come back to it later.  For now,
+assume that, after we run this code, we have a function called `randint`, and
+a library called `np`.
 
 ```{python, opts.label="py_ed"}
 # Import the numpy library
 import numpy as np
+# Get the function to generate random numbers.
+from numpy.random import randint
 ```
 
-The core of the program to solve the trucks problem above
-begins with this command to the computer:
+`r end_ispy()`
+
+The core of the program to solve the ambulances problem above begins with this
+command to the computer:
+
+`r begin_ispy()`
 
 ```{python, opts.label="py_ed"}
-a = np.random.randint(1, 11, size=20)
+a = randint(1, 11, 12)
 ```
 
-This command orders the computer to randomly generate twenty numbers between
-"1" and "10." Inasmuch as each truck has a 1 in 10 chance of being defective,
-we decide arbitrarily that a "1" stands for a defective truck, and the other
-nine numbers (from "2" to "10") stand for a non-defective truck. The command
-orders the computer to store the results of the random drawing in a location in
-the computer's memory to which we give a name such as `a` or `trucks`.  When we
-run a statement like the one above, `a` is a *variable* - the *name* `a` refers
-to *value*, which is the sequence of random numbers the computer created using
-`np.random.randint`.
+This uses the `randint` *function* to generate random integers (counting numbers) from 1 up to, *but not including* 11.  Therefore, this command will generate random numbers from 1 through 10.  The 12 in the command tells the function to generate 12 of these numbers.
+
+`r end_ispy()`
+
+`r begin_isr()`
+
+```{r, opts.label="r_ed"}
+a = sample(1:10, 12, replace=TRUE)
+```
+
+This uses the `sample` function to generate random integers (counting numbers)
+from 1 through 10.  The 12 in the command tells R to generate 12 of these
+numbers.  `replace=TRUE` tells R to sample *with replacement*.
+
+For example, the chances of getting a particular result - such as a 3 - for the
+first random number - are 1 in 10, or p= 1/10 = 0.1.  If we resample *with
+replacement* then the chances of getting 3 in the second number are unchanged,
+at p=0.1.  It is as if we put 10 balls into a bucket, numbered one through ten,
+and then selected 12 balls from the bucket; but after we have selected a ball,
+we record the number and *replace* it in the bucket, and shake up the bucket
+again.
+
+`r end_isr()`
+
+So --- the command above orders the computer to randomly generate 12 numbers
+between "1" and "10." Inasmuch as each ambulance has a 1 in 10 chance of being
+defective, we decide arbitrarily that a "1" stands for a defective ambulance,
+and the other nine numbers (from "2" to "10") stand for a not-defective
+ambulance. The command orders the computer to store the results of the random
+drawing in a location in the computer's memory to which we give a name such as
+`a` or `ambulances`.  When we run a statement like the one above, `a` is
+a *variable* - the *name* `a` refers to the *value*, which is the sequence of
+random numbers the computer created using `r py_or_r("randint", "sample",
+backticks=TRUE)`.
 
 We can show the value of of the variable `a` in the notebook or interactive terminal by using the `print` function:
 
@@ -71,7 +111,13 @@ We can show the value of of the variable `a` in the notebook or interactive term
 print(a)
 ```
 
-This shows the 20 random values that we got from `np.random.randint`.
+```{r, opts.label="r_ed"}
+print(a)
+```
+
+This shows the 12 random values that we got from
+`r py_or_r("randint", "sample")`.
+
 
 The next key element in the core of the program is:
 
@@ -79,95 +125,155 @@ The next key element in the core of the program is:
 b = np.count_nonzero(a == 1)
 ```
 
+```{r, opts.label="r_ed"}
+b = sum(a == 1)
+```
+
 This command orders the computer to count the number of "1's" among the
-twenty numbers that are in location `a` following the random drawing
-carried out by the GENERATE operation. The result of the COUNT will be
-somewhere between 0 and 20, the number of trucks that might be
-out-of-order on a given day. The result is then placed in another
-location in the computer's memory that we label `b`.
+12 numbers that are in location `a` following the random drawing
+carried out by the
+`r py_or_r("randint", "sample")`
+operation. The result of the count will be somewhere between 0 and 12, the
+number of ambulances that might be out-of-order on a given day. The result is
+then placed in another location in the computer's memory that we label `b`.
 
 ```{python, opts.label="py_ed"}
 # Show the value of b
 print(b)
 ```
 
-Now let us place the GENERATE and COUNT commands within the entire
-program that we use to solve this problem, which is:
+```{r, opts.label="r_ed"}
+# Show the value of b
+print(b)
+```
+
+Now let us place the commands to generate the random numbers, and count how
+many 1s we get, within the entire program that we use to solve this problem,
+which is:
 
 ```{python, opts.label="py_ed"}
 # Make an array that has 400 elements.
-# This will store the counts for our 400 repetitions
-z = np.zeros(400)
+# We will use this to store the counts for our 400 repetitions
+results = np.zeros(400)
 
 # Repeat the simulation 400 times
-for i in range(400):
+for i in np.arange(400):
 
     # The indented commands are the procedure for one trial.
     # The computer runs these commands from first to last, for each trial.
 
-    # Generate 20 numbers, each between "1" and "10," and put them in vector a.
-    # Each number will represent a truck, and we let 1 represent a defective
-    # truck.
-    a = np.random.randint(1, 11, size=20)
+    # Generate 12 numbers, each between "1" and "10," and put them in vector a.
+    # Each number will represent an ambulance, and we let 1 represent
+    # a defective ambulance.
+    a = randint(1, 11, 12)
 
-    # Count the number of defective trucks, and put the result in b.
+    # Count the number of defective ambulances, and put the result in b.
     b = np.count_nonzero(a == 1)
 
-    # Keep track of each trial's result in z.
-    z[i] = b
+    # Keep track of each trial's result in "results".
+    results[i] = b
 
     # End this trial, then go back and repeat the process until all 400 trials
     # are complete.
 
 # Now we have finished the 400 trials.
 
-# Determine how many trials resulted in more than 3 trucks out of order.
-k = np.count_nonzero(z > 3)
+# Determine how many trials resulted in more than 3 ambulances out of order.
+bad_day_count = np.count_nonzero(results > 3)
 
 # Convert to a proportion.
-kk = k / 400
+bad_day_prop = bad_day_count / 400
 
 # Print the result.
-print(kk)
+print(bad_day_prop)
+```
+
+```{r, opts.label="r_ed"}
+# Make an array that has 400 elements.
+# We will use this to store the counts for our 400 repetitions
+results <- numeric(400)
+
+# Repeat the simulation 400 times
+for (i in 1:400) {
+
+    # The commands between the { above and the } below are the procedure for
+    # one trial.
+    # The computer runs these commands from first to last, for each trial.
+
+    # Generate 12 numbers, each between "1" and "10," and put them in vector a.
+    # Each number will represent an ambulance, and we let 1 represent
+    # a defective ambulance.
+    a <- sample(1:10, 12, replace=TRUE)
+
+    # Count the number of defective ambulances, and put the result in b.
+    b <- sum(a == 1)
+
+    # Keep track of each trial's result in "results".
+    results[i] <- b
+
+    # End this trial, then go back and repeat the process until all 400 trials
+    # are complete.
+}
+
+# Now we have finished the 400 trials.
+
+# Determine how many trials resulted in more than 3 ambulances out of order.
+bad_day_count <- sum(results > 3)
+
+# Convert to a proportion.
+bad_day_prop <- bad_day_count / 400
+
+# Print the result.
+print(bad_day_prop)
 ```
 
 `r end_nb()`
 
-The SCORE statement that follows the COUNT operation simply keeps track
-of the results of each trial, placing the number of defective trucks
-that occur in each trial in a location that we usually call "z." This is
-done in each of the 400 trials that we make, and the result eventually
-is a "vector" with 400 numbers in it.
+The
+`r py_or_r("results[i] = b", "results[i] <- b")`
+statement that follows the
+`r py_or_r("b = np.count_nonzero(a == 1)", "b = sum(a == 1)")`
+operation simply keeps track of the results of each trial, placing the number
+of defective ambulances that occur in each trial in a location that we usually
+call "results". This is done in each of the 400 trials that we make, and the
+result eventually is a "vector" with 400 numbers in it.  A vector is just
+a sequence of numbers.
 
 In order to make 400 repetitions of our experiment---we could have
 decided to make a thousand or some other number of repetitions---we put
-REPEAT 400 before the GENERATE, COUNT, and SCORE statements that
-constitute a single trial. Then we complete each repetition "loop" with
-END.
+`r py_or_r("for i in np.arange(400):", "for (i in 1:400) {")`
+before the statements that generate the random numbers, count how many of these numbers are 1, representing a defective ambulance, and store this result
+of a single trial. Then we complete each repetition "loop" by `r begin_ispy()`
+bringing the indentation of the statements back to the left margin
+`r end_ispy()` `r begin_isr()`
+adding a closing `}` bracket.
+`r end_isr()`
 
-Since our aim is to count the number of days in which more than 3 (4 or
-more) defective trucks occur, we use the COUNT command to count how many
-times in the 400 days recorded in our SCORE vector at the end of the 400
-trials more than 3 defects occurred, and we place the result in still
-another location "k." This gives us the total number of days where 4 or
-more defective trucks are seen to occur. Then we DIVIDE the number in
-"k" by 400, the number of trials. Thus we obtain an estimate of the
-chance, expressed as a probability between 0 and 1, that 4 or more
-trucks will be defective on a given day. And we store that result in a
-location that we decide to call "kk," so that it will be there when the
-computer receives the next command to PRINT that result on the screen.
+Since our aim is to count the number of days in which more than 3 (4 or more)
+defective ambulances occur, we use the
+`r py_or_r("bad_day_count = np.count_nonzero(results > 3)", "bad_day_count = sum(results > 3)")`
+command to count how many times in the 400 days recorded in our results vector
+at the end of the 400 trials more than 3 defects occurred, and we place the
+result in still another location "bad_day_count".
+
+This gives us the total number of days where 4 or more defective ambulances are
+seen to occur. Then we divide the number in "bad_day_count" by 400, the number
+of trials. Thus we obtain an estimate of the chance, expressed as a probability
+between 0 and 1, that 4 or more ambulances will be defective on a given day.
+And we store that result in a location that we decide to call "bad_day_prop" so
+that it will be there when the computer receives the next command to `print`
+that result on the screen.
 
 Can you see how each of the operations that the computer carries out are
-analogous to the operations that you yourself executed when you solved
-this problem using a ten-sided spinner or a random-number table? This is
-exactly the procedure that we will use to solve every problem in
-probability and statistics that we must deal with. Either we will use a
-device such as coins or a random number table as an analogy for the
-physical process we are interested in (trucks becoming defective, in
-this case), or we will simulate the analogy on the computer using the
-`r book_lang` program above.
+analogous to the operations that you yourself executed when you solved this
+problem using a labeled coins or a random-number table? This is exactly the
+procedure that we will use to solve every problem in probability and statistics
+that we must deal with. Either we will use a device such as coins or a random
+number table as an analogy for the physical process we are interested in
+(ambulances becoming defective, in this case), or we will simulate the analogy
+on the computer using the `r book_lang` program above.
 
-Simple as it is, the program above may not
-seem simple to you at first glance. But it is vastly simpler than the
-older conventional approach to such problems that has routinely been
-taught to students for decades.
+Simple as it is, the program above may not seem simple to you at first glance.
+But we think you will find, over the course of this book, that these programs
+become much simpler to understand than the older conventional approach to such
+problems that has routinely been taught to students for decades.
