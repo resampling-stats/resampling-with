@@ -1,0 +1,33 @@
+language: R
+dist: bionic
+cache:
+  packages: true
+  directories:
+  - _book
+
+addons:
+  apt:
+    packages:
+      - libxml2-dev
+      - libcurl4-openssl-dev
+      - libssl-dev
+      - python3-dev
+      - pandoc
+      - pandoc-citeproc
+
+before_install:
+  - echo 'options(repos = c(CRAN = "http://cran.rstudio.com"))' > $HOME/.Rprofile
+  - make r-build-requirements
+  - curl -LO https://bootstrap.pypa.io/get-pip.py
+  - python3 get-pip.py --user
+  - python3 -m pip install --user --upgrade virtualenv
+  - python3 -m virtualenv --python=python3 venv
+  - source venv/bin/activate
+  - python --version
+  - pip install -r build-requirements.txt
+
+script:
+  # Show R version, for debugging.
+  - R --version
+  # Make website, but do not upload.
+  - make website

@@ -1,0 +1,173 @@
+# Resampling with code
+
+Chapter \@ref(resampling-method) used simulation and resampling from
+tables of random numbers, spinners, dice and coins.  Making random choices
+in this way can make it easier to understand the process, but of course,
+physical methods of making random outcomes can be slow and boring.
+
+On the other hand, short computer programs can do a huge number of resampling
+trials in a few seconds.  The flexibility of a programming language makes
+it possible to simulate many different outcomes and tests.
+
+In this chapter, we begin using the `r BL` language to build up tables of
+random numbers, and do simple tasks like counting the number of values in
+a row, and taking proportions.
+
+With these simple tools, we can simulate many problems in probability and
+statistics.
+
+Here is our first `r BL` example program.  Do not expect to follow all
+of it straightaway.  For now, read the code below to get an idea of how it
+implements the procedure above.  We will be coming back to the specifics later.
+
+The key to reading code is to think about what the computer will do, when it sees the code.
+
+`r begin_nb('resampling_with_code')`
+
+To get started, let's think about a *comment* in code.  A comment is a
+statement that the computer will *ignore*.   It is text that we put in the
+program for our benefit, to explain what is going on to a human reader.
+
+This is an example of a comment:
+
+```{python, opts.label="py_ed"}
+# This is a comment. It doesn't have any effect.
+```
+
+```{r, opts.label="r_ed"}
+# This is a comment. It doesn't have any effect.
+```
+
+Notice that the comment starts with a hash character `#`.  This character tells
+the computer that the rest of the line is a comment, and therefore, that it can
+ignore everything on that line that follows the `#`.
+
+
+```{python, opts.label="py_ed"}
+# Import the numpy library
+import numpy as np
+```
+
+The core of the program to solve the trucks problem above
+begins with this command to the computer:
+
+```{python, opts.label="py_ed"}
+a = np.random.randint(1, 11, size=20)
+```
+
+This command orders the computer to randomly generate twenty numbers between
+"1" and "10." Inasmuch as each truck has a 1 in 10 chance of being defective,
+we decide arbitrarily that a "1" stands for a defective truck, and the other
+nine numbers (from "2" to "10") stand for a non-defective truck. The command
+orders the computer to store the results of the random drawing in a location in
+the computer's memory to which we give a name such as `a` or `trucks`.  When we
+run a statement like the one above, `a` is a *variable* - the *name* `a` refers
+to *value*, which is the sequence of random numbers the computer created using
+`np.random.randint`.
+
+We can show the value of of the variable `a` in the notebook or interactive terminal by using the `print` function:
+
+```{python, opts.label="py_ed"}
+print(a)
+```
+
+This shows the 20 random values that we got from `np.random.randint`.
+
+The next key element in the core of the program is:
+
+```{python, opts.label="py_ed"}
+b = np.count_nonzero(a == 1)
+```
+
+This command orders the computer to count the number of "1's" among the
+twenty numbers that are in location `a` following the random drawing
+carried out by the GENERATE operation. The result of the COUNT will be
+somewhere between 0 and 20, the number of trucks that might be
+out-of-order on a given day. The result is then placed in another
+location in the computer's memory that we label `b`.
+
+```{python, opts.label="py_ed"}
+# Show the value of b
+print(b)
+```
+
+Now let us place the GENERATE and COUNT commands within the entire
+program that we use to solve this problem, which is:
+
+```{python, opts.label="py_ed"}
+# Make an array that has 400 elements.
+# This will store the counts for our 400 repetitions
+z = np.zeros(400)
+
+# Repeat the simulation 400 times
+for i in range(400):
+
+    # The indented commands are the procedure for one trial.
+    # The computer runs these commands from first to last, for each trial.
+
+    # Generate 20 numbers, each between "1" and "10," and put them in vector a.
+    # Each number will represent a truck, and we let 1 represent a defective
+    # truck.
+    a = np.random.randint(1, 11, size=20)
+
+    # Count the number of defective trucks, and put the result in b.
+    b = np.count_nonzero(a == 1)
+
+    # Keep track of each trial's result in z.
+    z[i] = b
+
+    # End this trial, then go back and repeat the process until all 400 trials
+    # are complete.
+
+# Now we have finished the 400 trials.
+
+# Determine how many trials resulted in more than 3 trucks out of order.
+k = np.count_nonzero(z > 3)
+
+# Convert to a proportion.
+kk = k / 400
+
+# Print the result.
+print(kk)
+```
+
+`r end_nb()`
+
+The SCORE statement that follows the COUNT operation simply keeps track
+of the results of each trial, placing the number of defective trucks
+that occur in each trial in a location that we usually call "z." This is
+done in each of the 400 trials that we make, and the result eventually
+is a "vector" with 400 numbers in it.
+
+In order to make 400 repetitions of our experiment---we could have
+decided to make a thousand or some other number of repetitions---we put
+REPEAT 400 before the GENERATE, COUNT, and SCORE statements that
+constitute a single trial. Then we complete each repetition "loop" with
+END.
+
+Since our aim is to count the number of days in which more than 3 (4 or
+more) defective trucks occur, we use the COUNT command to count how many
+times in the 400 days recorded in our SCORE vector at the end of the 400
+trials more than 3 defects occurred, and we place the result in still
+another location "k." This gives us the total number of days where 4 or
+more defective trucks are seen to occur. Then we DIVIDE the number in
+"k" by 400, the number of trials. Thus we obtain an estimate of the
+chance, expressed as a probability between 0 and 1, that 4 or more
+trucks will be defective on a given day. And we store that result in a
+location that we decide to call "kk," so that it will be there when the
+computer receives the next command to PRINT that result on the screen.
+
+Can you see how each of the operations that the computer carries out are
+analogous to the operations that you yourself executed when you solved
+this problem using a ten-sided spinner or a random-number table? This is
+exactly the procedure that we will use to solve every problem in
+probability and statistics that we must deal with. Either we will use a
+device such as coins or a random number table as an analogy for the
+physical process we are interested in (trucks becoming defective, in
+this case), or we will simulate the analogy on the computer using the
+`r book_lang` program above.
+
+Simple as it is, the program above may not
+seem simple to you at first glance. But it is vastly simpler than the
+older conventional approach to such problems that has routinely been
+taught to students for decades.
