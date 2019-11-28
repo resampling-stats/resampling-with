@@ -1,20 +1,29 @@
 .PHONY: python-book r-book
 
+R_CONFIG=_r_bookdown.yml
+PY_CONFIG=_python_bookdown.yml
+
 python-book:
 	BOOK_ED=python Rscript -e \
-			'bookdown::render_book("index.rmd", config_file="_python_bookdown.yml")'
+			'bookdown::render_book("index.rmd", config_file="$(PY_CONFIG)")'
 
 python-nb:
 	BOOK_ED=python-nb Rscript -e \
-			'bookdown::render_book("index.rmd", output_format="bookdown::gitbook", config_file="_python_bookdown.yml", output_dir="_notebooks")'
+			'bookdown::render_book("index.rmd", output_format="bookdown::gitbook", config_file="$(PY_CONFIG)", output_dir="_notebooks")'
 	python ../scripts/build_notebooks.py _notebooks/*.md --out-path=python-book
 
 r-book:
 	BOOK_ED=r Rscript -e \
-		'bookdown::render_book("index.rmd", config_file="_r_bookdown.yml")'
+		'bookdown::render_book("index.rmd", config_file="$(R_CONFIG)")'
 
-serve:
+serve-py:
 	# Requires 'servr' R package
+	cp $(PY_CONFIG) _bookdown.yml
+	Rscript -e 'bookdown::serve_book(dir = ".")'
+
+serve-r:
+	# Requires 'servr' R package
+	cp $(R_CONFIG) _bookdown.yml
 	Rscript -e 'bookdown::serve_book(dir = ".")'
 
 clean:
