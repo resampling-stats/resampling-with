@@ -454,7 +454,7 @@ choice of door, and "No" otherwise.  The last column is "Switch wins". This has
 
 ```{python, echo=FALSE}
 # Need Python for random numbers that are predictable across platforms.
-np.random.seed(1932)   # 1932 chosen such that it generates [3, 3] then [3, 1]
+np.random.seed(2028)   # 2028 chosen such that it generates [3, 3] then [3, 1]
 random_matrix = np.random.randint(1, 4, size=(25, 2))
 df = pd.DataFrame(random_matrix)
 df.columns = ('Car door', 'Our door')
@@ -525,12 +525,12 @@ initial guess was right, we win by staying with our original choice, but when
 it was wrong, we always win by switching.   The chance of our *initial guess*
 being correct is 1/3 (one door out of three).  So the chances of winning by
 staying are 1/3, and the chances of winning by switching are 2/3.  But
-remember, we don't need to follow this logic to get the right answer.  As you
+remember, you don't need to follow this logic to get the right answer.  As you
 will see below, the resampling simulation shows us that the Switch strategy
 wins.
 
 Table \@ref(tab:montyfull) is a version of table \@ref(tab:montyblank) for
-which we have filled in the blank columns using some code.
+which we have filled in the blank columns using the logic above.
 
 ```{r, montyfull, echo=FALSE}
 knitr::kable(fdf,
