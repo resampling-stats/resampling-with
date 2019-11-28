@@ -18,7 +18,7 @@ serve:
 	Rscript -e 'bookdown::serve_book(dir = ".")'
 
 clean:
-	rm -rf _main.md r-book python-book _bookdown_files _notebooks *.rds
+	rm -rf _main.md _bookdown_files _notebooks *.rds
 
 check-simon-refs :
 	biber --tool -V simon_refs.bib
