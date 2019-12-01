@@ -7,10 +7,15 @@ python-book:
 	BOOK_ED=python Rscript -e \
 			'bookdown::render_book("index.rmd", config_file="$(PY_CONFIG)")'
 
-python-nb:
-	BOOK_ED=python-nb Rscript -e \
-			'bookdown::render_book("index.rmd", output_format="bookdown::gitbook", config_file="$(PY_CONFIG)", output_dir="_notebooks")'
-	python ../scripts/build_notebooks.py _notebooks/*.md --out-path=python-book
+python-nb: nb-python
+
+r-nb: nb-r
+
+nb-%:
+	# Build notebooks for given version
+	Rscript ../scripts/build_nb_book.R -e $* -o ${OUT_DIR}
+	python ../scripts/build_notebooks.py ${OUT_DIR}
+		_notebooks/*.md --out-path=../$*-book
 
 r-book:
 	BOOK_ED=r Rscript -e \
