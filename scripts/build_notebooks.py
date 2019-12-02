@@ -11,7 +11,7 @@ from argparse import ArgumentParser
 
 import jupytext as jpt
 
-NB_RE = re.compile(r'<!---\s+nb:(.*?)$(.*?)^nb\s+-->$',
+NB_RE = re.compile(r'<!---\s+nb:(.*?)\s+-->$(.*?)^<!---\s+nb:end\s+-->$',
                    re.MULTILINE | re.DOTALL)
 
 
@@ -43,10 +43,14 @@ def main():
     parser.add_argument('md_fname', nargs='+')
     parser.add_argument('--out-path')
     args = parser.parse_args()
-    out_path = args.out_path if args.out_path else op.dirname(args.md_fname)
+    if args.out_path is None:
+        if len(args.md_fname) > 1:
+            raise RuntimeError('Specify --out-path for more '
+                               'than one input filename')
+        args.out_path = op.dirname(args.md_fname[0])
     for md_fname in args.md_fname:
         contents = read_fname(md_fname)
-        rewrite_notebooks(contents, out_path)
+        rewrite_notebooks(contents, args.out_path)
 
 
 if __name__ == '__main__':

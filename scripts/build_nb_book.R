@@ -37,7 +37,8 @@ Sys.setenv(BOOK_ED=stringr::str_interp('${opt__$edition}-nb'))
 opt__$config <- stringr::str_interp('_${opt__$edition}_bookdown.yml')
 # Markdown output config.
 # See: https://github.com/rstudio/bookdown/issues/782
-opt__$fmt <- bookdown::markdown_document2(base_format=rmarkdown::md_document)
+opt__$fmt <- bookdown::markdown_document2(base_format=rmarkdown::md_document,
+                                          variant='gfm')
 # Turn off citation links.
 opt__$fmt$pandoc$args <- c(opt__$fmt$pandoc$args,
                      '--metadata',
