@@ -19,15 +19,14 @@ Now test the reference with (ref:bar)
 
 Soon we will see a Python plot:
 
-<!--- nb:first_notebook.ipynb
+<!--- nb:first_notebook -->
 
 This is some explanation about the notebook.
 
 It can use macros: Python.
 
 
-
-```python
+``` python
 import matplotlib.pyplot as plt
 plt.plot([0, 2, 1, 4])
 plt.show()
@@ -35,16 +34,16 @@ plt.show()
 
 A normal paragraph.
 
-nb -->
+<!--- nb:end -->
 
 Some more text.
 
-<!--- nb:second_notebook.ipynb
+<!--- nb:second_notebook -->
 
 This is some explanation about the second notebook.
 
 
-```python
+``` python
 import matplotlib.pyplot as plt
 plt.plot(range(10))
 plt.show()
@@ -52,9 +51,21 @@ plt.show()
 
 Some unrelated text.
 
-```python
+<!---
+
+Stuff in a comment. -->
+
+Again, text.
+
+``` python
 a = 1
 a
 ```
 
-nb -->
+<!--- nb:end -->
+
+Some more text after that.
+
+## A section
+
+Text in a section.

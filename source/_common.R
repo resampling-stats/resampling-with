@@ -54,6 +54,8 @@ begin_nb <- function(nb_fname) {
     nb_path <- stringr::str_interp('${nb_fname}.${nb_ext}')
     assign("nb_fname__", nb_fname, envir = .GlobalEnv)
     if (!is_nb) {
+    <a class="notebook-link" href="{{ site.url }}{{ site.baseurl}}/{{ page.interact_link }}">Download notebook</a>
+    <a class="interact-button" href="{{ site.hub_url }}/{{ interact_url }}">Interact</a>
         return (stringr::str_interp('[Download ${nb_fname} notebook](${nb_path})
 
 **Start of `${nb_fname}` notebook.**'))

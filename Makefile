@@ -5,19 +5,16 @@ R_BOOK_DIR=r-book
 
 .PHONY: python-book r-book
 
-python-book:
-	cd $(SOURCE_DIR) && make python-book
+python-all:
+	cd $(SOURCE_DIR) && make python-all
 
-r-book:
-	cd $(SOURCE_DIR) && make r-book
-
-python-nb:
-	cd $(SOURCE_DIR) && make python-nb
+r-all:
+	cd $(SOURCE_DIR) && make r-all
 
 landing-page:
 	cd website && make landing-page
 
-website: webclean python-book r-book landing-page python-nb
+website: webclean python-all r-all landing-page
 	mkdir $(WEB_DIR)
 	cp website/*.html $(WEB_DIR)
 	cp -r $(PYTHON_BOOK_DIR) $(WEB_DIR)

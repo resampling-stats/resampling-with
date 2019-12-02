@@ -1,5 +1,9 @@
 .PHONY: python-book r-book python-nb r-nb serve-python serve-r
 
+python-all: python-book python-nb
+
+r-all: r-book r-nb
+
 book-%:
 	BOOK_ED=$* Rscript -e \
 			'bookdown::render_book("index.rmd", config_file="_$*_bookdown.yml")'
@@ -12,7 +16,8 @@ nb-%:
 	# Build notebooks for given version
 	Rscript ../scripts/build_nb_book.R -e $* -o _nb_$*
 	python ../scripts/build_notebooks.py _nb_$*/_main.md \
-		--out-path=../$*-book
+		--out-path=../$*-book \
+		--out-fmt=$*
 
 python-nb: nb-python
 
