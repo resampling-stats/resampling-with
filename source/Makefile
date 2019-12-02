@@ -11,7 +11,7 @@ r-book: book-r
 nb-%:
 	# Build notebooks for given version
 	Rscript ../scripts/build_nb_book.R -e $* -o _nb_$*
-	python ../scripts/build_notebooks.py _nb_$* \
+	python ../scripts/build_notebooks.py _nb_$*/_main.md \
 		--out-path=../$*-book
 
 python-nb: nb-python

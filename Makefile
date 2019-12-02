@@ -13,8 +13,6 @@ r-book:
 
 python-nb:
 	cd $(SOURCE_DIR) && make python-nb
-	# Extract notebooks.
-	# Write into web directory.
 
 landing-page:
 	cd website && make landing-page
