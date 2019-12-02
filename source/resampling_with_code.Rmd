@@ -105,7 +105,7 @@ a *variable* - the *name* `a` refers to the *value*, which is the sequence of
 random numbers the computer created using `r py_or_r("randint", "sample",
 backticks=TRUE)`.
 
-We can show the value of of the variable `a` in the notebook or interactive terminal by using the `print` function:
+We can show the value of the variable `a` in the notebook or interactive terminal by using the `print` function:
 
 ```{python, opts.label="py_ed"}
 print(a)
