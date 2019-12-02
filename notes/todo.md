@@ -29,4 +29,9 @@ files, convert back to notebook.  Could do this crudely by
 looking for python code blocks, restoring the `{python}` header
 and removing output.
 
+Conditional chunks depending on output format:
+<https://github.com/rstudio/bookdown/issues/168>.
+
 Chase up Hollander and Wolfe reference from end of chapter 18, p295.
+
+
