@@ -1,34 +1,26 @@
-.PHONY: python-book r-book
+.PHONY: python-book r-book python-nb r-nb serve-python serve-r
 
-R_CONFIG=_r_bookdown.yml
-PY_CONFIG=_python_bookdown.yml
+book-%:
+	BOOK_ED=$* Rscript -e \
+			'bookdown::render_book("index.rmd", config_file="_$*_bookdown.yml")'
 
-python-book:
-	BOOK_ED=python Rscript -e \
-			'bookdown::render_book("index.rmd", config_file="$(PY_CONFIG)")'
+python-book: book-python
+
+r-book: book-r
+
+nb-%:
+	# Build notebooks for given version
+	Rscript ../scripts/build_nb_book.R -e $* -o _nb_$*
+	python ../scripts/build_notebooks.py _nb_$* \
+		--out-path=../$*-book
 
 python-nb: nb-python
 
 r-nb: nb-r
 
-nb-%:
-	# Build notebooks for given version
-	Rscript ../scripts/build_nb_book.R -e $* -o ${OUT_DIR}
-	python ../scripts/build_notebooks.py ${OUT_DIR}
-		_notebooks/*.md --out-path=../$*-book
-
-r-book:
-	BOOK_ED=r Rscript -e \
-		'bookdown::render_book("index.rmd", config_file="$(R_CONFIG)")'
-
-serve-py:
+serve-%:
 	# Requires 'servr' R package
-	cp $(PY_CONFIG) _bookdown.yml
-	Rscript -e 'bookdown::serve_book(dir = ".")'
-
-serve-r:
-	# Requires 'servr' R package
-	cp $(R_CONFIG) _bookdown.yml
+	cp _$*_bookdown.yml _bookdown.yml
 	Rscript -e 'bookdown::serve_book(dir = ".")'
 
 clean:
