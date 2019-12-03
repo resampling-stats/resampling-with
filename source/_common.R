@@ -53,37 +53,26 @@ nb_ext <- if (is_py_ed) 'ipynb' else 'Rmd'
 binder_url__ ='https://mybinder.org/v2/gh/resampling-stats/resampling-with/gh-pages?filepath=python-book/'
 
 # Parsing somehow fails for multiline strings, so split and join.
-py_template__ <- paste('<div class="rmdcomment">\n',
+nb_template__ <- paste('<div class="rmdcomment">\n',
                        '<p>Start of <code>${nb_fname}</code> notebook.</p>\n',
                        '<p>',
-                       '<a class="notebook-link" href=${nb_path}>Download notebook</a></p>',
-                       '<a class="interact-button" href="${binder_url__}${nb_path}">Interact</a>',
+                       '<div class="nb-links">',
+                       '<a class="notebook-link" href=${nb_path}>Download notebook</a>',
+                       if (is_py_ed) '<a class="interact-button" href="${binder_url__}${nb_path}">Interact</a>' else NULL,
                        '</p>',
+                       '</div>',
                        '</div>\n',
                        sep='\n')
 
-pynb_begin__ <- function(nb_fname, nb_path) {
-    return (stringr::str_interp(py_template__))
-}
-
-rnb_begin__ <- function(nb_fname, nb_path) {
-    r_template__ <- paste('<div class="rmdcomment">\n',
-                        '<p>Start of <code>${nb_fname}</code> notebook.</p>\n',
-                        '<p><a href=${nb_path}>Download ${nb_fname} notebook</a></p>',
-                        '</div>\n',
-                        sep='\n')
-    return (stringr::str_interp(r_template__))
+nb_begin__ <- function(nb_fname, nb_path) {
+    return (stringr::str_interp(nb_template__))
 }
 
 begin_nb <- function(nb_fname) {
     assign("nb_fname__", nb_fname, envir = .GlobalEnv)
     nb_path <- stringr::str_interp('${nb_fname}.${nb_ext}')
     if (!is_nb) {
-        if (is_py_ed) {
-            return (pynb_begin__(nb_fname, nb_path))
-        } else {
-            return (rnb_begin__(nb_fname, nb_path))
-        }
+        return (nb_begin__(nb_fname, nb_path))
     }
     return (stringr::str_interp('${comment_start} nb:${nb_path} ${comment_end}'))
 }

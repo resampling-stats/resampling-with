@@ -13,3 +13,31 @@
     top:0px;
     font-size: 45px;
  }
+
+/* Unfortunately we need !important because of the
+ * extreme specificity of the Bookdown CSS rule for a elements
+ * at this level of the class heirarchy */
+.nb-links a {
+  background-color:#477DCA !important;
+  color:#FFF !important;
+  border-radius:3px;
+  display:inline-block;
+  font-size:1.2em;
+  font-weight:700;
+  padding:.4em 1em;
+  margin-bottom: .5em;
+  }
+
+.interact-button:hover {
+  text-decoration:none;
+}
+
+div.interact-context {
+  display: inline;
+  padding-left: 1em;
+  font-weight: 600;
+}
+
+.notebook-link:hover {
+  text-decoration:none;
+}
