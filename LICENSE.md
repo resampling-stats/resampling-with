@@ -13,3 +13,7 @@ permission from the authors.
 
 The text and figures here started life as the second (1997)
 edition of "Resampling: The New Statistics" by Julian L. Simon, available at <https://www.resample.com/intro-text-online>.
+
+## Fontawesome CSS
+
+See `source/fontawesome.min.css` file for license terms.

@@ -50,15 +50,40 @@ py_or_r <- function(is_py, is_r, backticks=TRUE) {
 
 nb_ext <- if (is_py_ed) 'ipynb' else 'Rmd'
 
-begin_nb <- function(nb_fname) {
-    nb_path <- stringr::str_interp('${nb_fname}.${nb_ext}')
-    assign("nb_fname__", nb_fname, envir = .GlobalEnv)
-    if (!is_nb) {
-    <a class="notebook-link" href="{{ site.url }}{{ site.baseurl}}/{{ page.interact_link }}">Download notebook</a>
-    <a class="interact-button" href="{{ site.hub_url }}/{{ interact_url }}">Interact</a>
-        return (stringr::str_interp('[Download ${nb_fname} notebook](${nb_path})
+binder_url__ ='https://mybinder.org/v2/gh/resampling-stats/resampling-with/master?filepath='
 
-**Start of `${nb_fname}` notebook.**'))
+# Parsing somehow fails for multiline strings, so split and join.
+py_template__ <- paste('<div class="rmdcomment">\n',
+                       '<p>Start of <code>${nb_fname}</code> notebook.</p>\n',
+                       '<p>',
+                       '<a class="notebook-link" href=${nb_path}>Download notebook</a></p>',
+                       '<a class="interact-button" href="${binder_url__}${nb_path}">Interact</a>',
+                       '</p>',
+                       '</div>\n',
+                       sep='\n')
+
+pynb_begin__ <- function(nb_fname, nb_path) {
+    return (stringr::str_interp(py_template__))
+}
+
+rnb_begin__ <- function(nb_fname, nb_path) {
+    r_template__ <- paste('<div class="rmdcomment">\n',
+                        '<p>Start of <code>${nb_fname}</code> notebook.</p>\n',
+                        '<p><a href=${nb_path}>Download ${nb_fname} notebook</a></p>',
+                        '</div>\n',
+                        sep='\n')
+    return (stringr::str_interp(r_template__))
+}
+
+begin_nb <- function(nb_fname) {
+    assign("nb_fname__", nb_fname, envir = .GlobalEnv)
+    nb_path <- stringr::str_interp('${nb_fname}.${nb_ext}')
+    if (!is_nb) {
+        if (is_py_ed) {
+            return (pynb_begin__(nb_fname, nb_path))
+        } else {
+            return (rnb_begin__(nb_fname, nb_path))
+        }
     }
     return (stringr::str_interp('${comment_start} nb:${nb_path} ${comment_end}'))
 }
@@ -67,7 +92,12 @@ end_nb <- function() {
     if (is_nb) {
         return (stringr::str_interp('${comment_start} nb:end ${comment_end}'))
     } else {
-        return (stringr::str_interp('**End of `${nb_fname__}` notebook.**'))
+        # Parsing fails for multiline strings, use paste instead.
+        return (stringr::str_interp(paste(
+'<div class="rmdcomment">\n',
+'<p>End of <code>${nb_fname__}</code> notebook.</p>\n',
+'</div>\n',
+sep='\n')))
     }
     assign("nb_fname__", NULL, envir = .GlobalEnv)
 }
