@@ -17,6 +17,7 @@ landing-page:
 website: webclean python-all r-all landing-page
 	mkdir $(WEB_DIR)
 	cp website/*.html $(WEB_DIR)
+	cp requirements.txt $(WEB_DIR)
 	cp -r $(PYTHON_BOOK_DIR) $(WEB_DIR)
 	cp -r $(R_BOOK_DIR) $(WEB_DIR)
 

@@ -50,7 +50,7 @@ py_or_r <- function(is_py, is_r, backticks=TRUE) {
 
 nb_ext <- if (is_py_ed) 'ipynb' else 'Rmd'
 
-binder_url__ ='https://mybinder.org/v2/gh/resampling-stats/resampling-with/master?filepath='
+binder_url__ ='https://mybinder.org/v2/gh/resampling-stats/resampling-with/gh-pages?filepath=python-book/'
 
 # Parsing somehow fails for multiline strings, so split and join.
 py_template__ <- paste('<div class="rmdcomment">\n',
