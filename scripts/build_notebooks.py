@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-""" Build notebooks from build Markdown
+""" Build notebooks from built Markdown.
 
 * Extract notebooks from page Markdown.
-* Convert to Jupyter Notebook.
+* Convert to Jupyter or RMarkdown notebook.
 """
 
 import os.path as op
@@ -11,9 +11,12 @@ from argparse import ArgumentParser
 
 import jupytext as jpt
 
+# Stuff inside notebook delimiting markers
 NB_RE = re.compile(r'<!---\s+nb:(.*?)\s+-->$(.*?)^<!---\s+nb:end\s+-->$',
                    re.MULTILINE | re.DOTALL)
+# Stuff inside HTML (and Markdown) comment markers.
 COMMENT_RE = re.compile(r'<!--.*?-->', re.MULTILINE | re.DOTALL)
+# Start of fenced code block.
 FENCE_START_RE = re.compile(r'^```\s*(\w+)$', re.MULTILINE)
 
 FMT_RECODES = {'r': 'Rmd',
@@ -28,12 +31,18 @@ def extract_nb_md(page_contents):
 
 
 def proc_text(nb_text):
+    """ Process notebook GFM markdown
+    """
+    # Strip comments
     txt = COMMENT_RE.sub('', nb_text)
-    # Modify code fencing
+    # Modify code fencing to add curlies around fence arguments.
+    # This converts from GFM Markdown fence blocks to RMarkdown fence blocks.
     return FENCE_START_RE.sub(r'```{\1}', txt)
 
 
 def text2nb_text(nb_text, out_fmt):
+    """ Process notebook GFM Markdown, write to notebook format `out_fmt`
+    """
     txt = proc_text(nb_text)
     return jpt.writes(jpt.reads(txt, 'Rmd'), out_fmt)
 

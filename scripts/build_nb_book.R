@@ -1,5 +1,11 @@
 #!/usr/bin/env Rscript
+# Build single Markdown document from which to extract notebooks.
+#
+# Usage:
+#   build_nb_book.R --edition python
 
+# Define, parse, check command line options.
+# Define
 opt_list <- list(
   optparse::make_option(c("-e", "--edition"),
                         type="character",
@@ -14,9 +20,11 @@ opt_list <- list(
               metavar="character")
 )
 
+# Parse
 opt_parser <- optparse::OptionParser(option_list=opt_list)
 opt__ <- optparse::parse_args(opt_parser)
 
+# Check
 if (is.null(opt__$edition)){
   print_help(opt_parser)
   stop("Specify edition", call.=FALSE)
@@ -31,15 +39,17 @@ if (is.null(opt__$out_dir)){
   stop("Specify output directory", call.=FALSE)
 }
 
-# Signal notebook version to _common.R
+# BOOK_ED environment variable defines book edition.
+# _common.R uses BOOK_ED to define various bits of code used inside the book
+# Rmd chapters.
 Sys.setenv(BOOK_ED=stringr::str_interp('${opt__$edition}-nb'))
 # Configuration file for build.
 opt__$config <- stringr::str_interp('_${opt__$edition}_bookdown.yml')
-# Markdown output config.
+# Set Github-Flavored-Markdown as Markdown output config.
 # See: https://github.com/rstudio/bookdown/issues/782
 opt__$fmt <- bookdown::markdown_document2(base_format=rmarkdown::md_document,
                                           variant='gfm')
-# Turn off citation links.
+# Turn off citation links - they will invariably point outside the notebook.
 opt__$fmt$pandoc$args <- c(opt__$fmt$pandoc$args,
                      '--metadata',
                      'link-citations=no')
