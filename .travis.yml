@@ -22,7 +22,6 @@ addons:
       - pandoc-citeproc
 
 before_install:
-  - echo 'options(repos = c(CRAN = "http://cran.rstudio.com"))' > $HOME/.Rprofile
   - make r-build-requirements
   - curl -LO https://bootstrap.pypa.io/get-pip.py
   - python3 get-pip.py --user

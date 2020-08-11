@@ -22,8 +22,8 @@ into the `source` directory, and edit them there.
 
 Install the R packages for this book with:
 
-```{r}
-devtools::install_github("resampling-stats/resampling-with")
+```{bash}
+make r-build-requirements
 ```
 
 from the R prompt.
