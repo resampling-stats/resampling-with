@@ -20,6 +20,12 @@ into the `source` directory, and edit them there.
 
 ## Setup for editing and proofing
 
+Get the submodule containing some of the bibliography.
+
+```{bash}
+git submodule update --init
+```
+
 Install the R packages for this book with:
 
 ```{bash}
