@@ -1,0 +1,57 @@
+---
+jupyter:
+  jupytext:
+    metadata_filter:
+      notebook:
+        additional: all
+        excluded:
+        - language_info
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.6
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+resampling_with:
+    ed2_fname: acknow
+---
+
+# Acknowledgements
+
+Many people have helped in the long evolution of this work. First was
+the late Max Beberman, who in 1967 immediately recognized the potential
+of resampling statistics for high school students as well as for all
+others. Louis Guttman and Joseph Doob provided important encouragement
+about the theoretical and practical value of resampling statistics.
+Allen Holmes cooperated with me in teaching the first class at
+University High School in Urbana, Illinois, in 1967. Kenneth Travers
+found and supervised several PhD students---David Atkinson and Carolyn
+Shevokas outstanding among them---who experimented with resampling
+statistics in high school and college classrooms and proved its
+effectiveness; Travers also carried the message to many secondary school
+teachers in person and in his texts. In 1973 Dan Weidenfield efficiently
+wrote the first program for the mainframe (then called "Simple Stats").
+Derek Kumar wrote the first interactive program for the Apple II. Chad
+McDaniel developed the IBM version, with touchup by Henry van Kuijk and
+Yoram Kochavi. Carlos Puig developed the powerful 1990 version of the
+program. William E. Kirwan, Robert Dorfman, and Rudolf Lamone have
+provided their good offices for us to harness the resources of the
+University of Maryland and, in particular, the College of Business and
+Management. Terry Oswald worked day and night with great dedication on
+the program and on commercial details to start the marketing of
+RESAMPLING STATS. In mid-1989, Peter Bruce assumed the overall
+stewardship of RESAMPLING STATS, and has been proceeding with energy,
+good judgment, and courage. He has contributed to this volume in many
+ways, always excellently (including the writing and re-writing of
+programs, as well as explanations of the bootstrap and of the
+interpretation of p-values). Vladimir Koliadin wrote the code for
+several of the problems in this edition, and Cheinan Marks programmed
+the Windows and Macintosh versions of Resampling Stats. Toni York
+handled the typesetting and desktop publishing through various
+iterations, Barbara Shaw provided expert proofreading and desktop
+publishing services for the second printing of the second edition, and
+Chris Brest produced many of the figures. Thanks to all of you, and to
+others who should be added to the list.
