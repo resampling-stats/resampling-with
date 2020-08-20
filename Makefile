@@ -36,3 +36,6 @@ r-build-requirements:
 clean:
 	rm -rf $(PYTHON_BOOK_DIR) $(R_BOOK_DIR)
 	cd $(SOURCE_DIR) && make clean
+
+check-bib: source/simon_refs.bib
+	biber --tool source/simon_refs.bib
