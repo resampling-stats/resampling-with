@@ -35,8 +35,6 @@ before_install:
 script:
   # Show R version, for debugging.
   - R --version
-  # Check bibliography
-  - make check-bib
   # Make website, but do not upload here.
   - make website
 

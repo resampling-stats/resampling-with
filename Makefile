@@ -38,4 +38,5 @@ clean:
 	cd $(SOURCE_DIR) && make clean
 
 check-bib: source/simon_refs.bib
+	# Obviously needs biber installed, which is not so on Travis-CI by default.
 	biber --tool source/simon_refs.bib
