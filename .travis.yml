@@ -25,6 +25,8 @@ before_install:
   - curl -LO https://bootstrap.pypa.io/get-pip.py
   - python3 get-pip.py --user
   - python3 -m pip install --user --upgrade virtualenv
+  # https://github.com/pypa/setuptools/issues/2352
+  - export SETUPTOOLS_USE_DISTUTILS=stdlib
   - python3 -m virtualenv --python=python3 venv
   - source venv/bin/activate
   - python --version
