@@ -38,3 +38,5 @@ check-ds-refs :
 	biber --tool -V data-science-bib/data_science.bib
 
 check-refs: check-simon-refs check-ds-refs
+
+# See ../scripts/rebuild_chapter.sh for single chapter rebuild.
