@@ -1,0 +1,168 @@
+---
+jupyter:
+  jupytext:
+    metadata_filter:
+      notebook:
+        additional: all
+        excluded:
+        - language_info
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.6
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+resampling_with:
+    ed2_fname: 03-Afternote-1
+---
+
+# Dramatizing the Power of Simulation
+
+A problem in probability is at the heart of every problem in statistics.
+Problems in probability often can be very confusing to the intuition.
+And formulas often either do not aid the intuition, or lead to the wrong
+answer, or both. But simulation can often get you the right answer and
+also help you understand why it is correct. Let's dramatize the point
+with puzzles:
+
+### The other child
+
+Problem: **If a family has two children and one of them is a boy, what is the
+probability that the other will also be a boy? **
+
+Most people---even professional statisticians---often quickly answer
+"one half." That is not correct.
+
+The solution is not obvious even after the person has decided to tackle
+the problem by simulation. It is not unusual for a person to say: I flip
+one coin, and if it is a head (boy), I then flip another coin and see
+how often that will be a boy, also, and then actually flip the coin once
+and record the outcomes. But that experiment does not resemble the
+situation of interest. A proper modeling throws *two* coins, examines to
+see if there is a head on *either* , and then examines the *other*.
+
+Or consider table \@ref(tab:otherboy), where we asked the computer to do this
+work for us.  The computer has done 50 trials, where one trial is one family of
+two children.  It decided the gender of the two children, by choosing at random
+from "Boy" or "Girl", and then classified the pair of children as to whether
+the other child was a boy. Where both children were girls, it leaves the
+classification blank.
+
+The first 50 lines are enough to suggest the correct probability, and
+also to make clear the mechanism: Two-girl pairs, a fourth of the cases, are
+excluded from the sample. And mixed pairs---which give a "No" answer---are
+two-thirds of the remaining pairs, whereas the only pairs that give "Yes"
+answers---two boys---are only a third of the remaining pairs. The point of
+presenting the puzzle is this: Simulation gets it right very quickly and
+easily, whereas the deductive method of mathematical logic can result in much
+confusion.
+
+
+```{python, echo=FALSE}
+import numpy as np
+import pandas as pd
+
+# To make sure we always get the same random table.
+np.random.seed(66)
+
+# Choose the first and second children at random.
+trials = np.random.choice(['Boy', 'Girl'], size=(50, 2))
+# Put into Pandas dataframe to make results easier to manipulate and display.
+boys_df = pd.DataFrame(trials, columns=['First', 'Second'])
+
+def classify(row):
+    # Classify the row
+    n_males = np.count_nonzero(row == 'Boy')
+    if n_males == 0:
+        return ''
+    if n_males == 1:
+        return 'No'
+    return 'Yes'
+
+# Apply classify function to all rows to give result.
+boys_df['Other is boy?'] = boys_df.apply(classify , axis=1)
+boys_df.insert(0, 'Trial', range(1, 51))
+```
+
+```{r, otherboy, echo=FALSE}
+t = tibble::as_tibble(py$boys_df)
+knitr::kable(list(t[1:25,],
+                  t[26:50,]),
+  booktabs = TRUE,
+  caption = '50 simulations of a family with two children'
+)
+```
+
+This puzzle illustrates the power of simulation. And it supports by
+analogy the general use of the resampling method in probability and
+statistics because it reveals the limitations of human deductive
+capacity, even among those who are mathematically adept.
+
+Someone might wonder whether formal mathematics can help us with this
+problem. Formal (even though not formulaic) analysis can certainly
+provide an answer. We can use what is known as the "sample space"
+approach which reasons from first principles; here it consists of making
+a *list of the possibilities* , and examining the proportion of
+"successes" to "failures" in that list.
+
+First we write down the equally-likely ways that two coins can fall:
+
+|   | First coin | Second coin |
+| - | ----- | ------ |
+| 1 | Heads |  Heads |
+| 2 | Heads |  Tails |
+| 3 | Tails |  Heads |
+| 4 | Tails |  Tails |
+
+Note that it is very easy to make a mistake in writing this list;
+great mathematicians have made such mistakes in the past even with
+problems as easy as this one (as we will see with the example of
+D'Alembert in just a minute).
+
+Now we notice that if we have observed at least one head, the list of
+possibilities for the ways the two coins fell shrinks to:
+
+|   | First coin | Second coin |
+| - | ----- | ------ |
+| 1 | Heads |  Heads |
+| 2 | Heads |  Tails |
+| 3 | Tails |  Heads |
+
+And now we can see that in only one of three of these possibilities would the
+"other" coin be a head. So the probability we ask about is 1/3.
+
+The crucial question is: Does this formal approach make the problem
+harder or easier than the simulation approach? That depends on your
+mental makeup. In practice, it turns out that the formal method seems to
+lead to a higher rate of error if *everyone* employs it than does the
+simulation approach. Hence we emphasize the simulation approach here, to
+lead to the highest rate of success (and enjoyment). But it is best if
+everyone finds the mode that is best for him or her.
+
+Here's a puzzle I call D'Alembert's Misery. Great mathematicians have
+blundered on even simple problems in probability because they attacked
+them with only logical tools. One famous example was D'Alembert, living
+in the 18th Century (1717-1783; story in @schuh1968master, p 165).
+
+D'Alembert asked: What is the chance of throwing at least one head in
+two tosses of a coin? He reasoned that there are three cases: tail on
+both tosses, tail then head, head on the first toss (no second toss
+necessary). Of these three cases, two are successes, and therefore the
+probability sought is 2/3, he concluded.
+
+What's the answer?
+
+1.  Toss two coins, and record number of heads.
+
+2.  Repeat (1) a hundred times.
+
+3.  Count number of outcomes with one or two heads (or more easily, the
+    number with two tails), and divide by 100 to find the probability
+    sought.
+
+Compare D'Alembert's conclusion to the result of your Monte Carlo
+experiment performed as above. Some other fascinating puzzles in
+probability are found in Chapter XXX.
