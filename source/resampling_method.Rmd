@@ -165,6 +165,131 @@ Finally we divide this number of rows by the number of trials (`r n_trials`)
 to get an estimate of the *proportion* of days with three or more breakdowns.
 The result is `r sum(df_counts['#0'] >= 3) / n_trials`.
 
+## Building the problem using `r book_lang`
+
+Here we rush ahead to show you how to do this simulation in `r book_lang`.
+
+In the text that follows we go through the `r book_lang` code for the
+simulation.  Please don't expect to understand this code right away.  The rest
+of this book goes into more detail about how `r book_lang` code works, and how
+you can use `r book_lang` to build your own simulations.  Here we want to show
+you what this code looks like, to give you an idea of where we are headed.
+
+For each line of the code below, we give a detailed explanation, but you can
+also *run* the code yourself, to see it in action.  The link below allows you
+to open this code as a *notebook*, and run it.  But, you may want to read the
+next chapter "about the technology", to learn more about how to run this
+notebook.  For now, concentrate on the text here, explaining what the code
+means.
+
+The core of the program to solve the trucks problem above begins with
+this command to the computer:
+
+`           GENERATE 20 1,10 a         `
+
+This command orders the computer to randomly GENERATE twenty numbers
+between "1" and "10." Inasmuch as each truck has a 1 in 10 chance of
+being defective, we decide arbitrarily that a "1" stands for a defective
+truck, and the other nine numbers (from "2" to "10") stand for a
+non-defective truck. The command orders the computer to store the
+results of the ran-
+
+dom drawing in a location in the computer's memory to which we give a
+name such as "A" or "BINGO."
+
+The next key element in the core of the program is:
+
+`           COUNT a =1 b         `
+
+This command orders the computer to COUNT the number of "1's" among the
+twenty numbers that are in location A following the random drawing
+carried out by the GENERATE operation. The result of the COUNT will be
+somewhere between 0 and 20, the number of trucks that might be
+out-of-order on a given day. The result is then placed in another
+location in the computer's memory that we label B.
+
+Now let us place the GENERATE and COUNT commands within the entire
+program that we use to solve this problem, which is:
+
+`           REPEAT 400         `
+
+Repeat the simulation 400 times
+
+`           GENERATE 20 1,10 a         `
+
+Generate 20 numbers, each between "1" and "10," and put them in vector
+a. Each number will represent a truck, and we let 1 represent a
+defective truck.
+
+`           COUNT a =1 b         `
+
+Count the number of defective trucks, and put the result in vector b.
+
+`           SCORE b z         `
+
+Keep track of each trial's results in z.
+
+`           END         `
+
+End this trial, then go back and repeat the process until all 400 trials
+are complete, then proceed.
+
+`           COUNT z > 3 k         `
+
+Determine how many trials resulted in more than 3 trucks out of order.
+(This can also be written COUNT z =\> 4 k, for 4 or more out of order.)
+
+`           DIVIDE k 400 kk         `
+
+Convert to a proportion.
+
+`           PRINT kk         `
+
+Print the result.
+
+Note: The file "trucks" on the Resampling Stats software disk contains
+this set of commands.
+
+The SCORE statement that follows the COUNT operation simply keeps track
+of the results of each trial, placing the number of defective trucks
+that occur in each trial in a location that we usually call "z." This is
+done in each of the 400 trials that we make, and the result eventually
+is a "vector" with 400 numbers in it.
+
+In order to make 400 repetitions of our experiment---we could have
+decided to make a thousand or some other number of repetitions---we put
+REPEAT 400 before the GENERATE, COUNT, and SCORE statements that
+constitute a single trial. Then we complete each repetition "loop" with
+END.
+
+Since our aim is to count the number of days in which more than 3 (4 or
+more) defective trucks occur, we use the COUNT command to count how many
+times in the 400 days recorded in our SCORE vector at the end of the 400
+trials more than 3 defects occurred, and we place the result in still
+another location "k." This gives us the total number of days where 4 or
+more defective trucks are seen to occur. Then we DIVIDE the number in
+"k" by 400, the number of trials. Thus we obtain an estimate of the
+chance, expressed as a probability between 0 and 1, that 4 or more
+trucks will be defective on a given day. And we store that result in a
+location that we decide to call "kk," so that it will be there when the
+computer receives the next command to PRINT that result on the screen.
+
+Can you see how each of the operations that the computer carries out are
+analogous to the operations that you yourself executed when you solved
+this problem using a ten-sided spinner or a random-number table? This is
+exactly the procedure that we will use to solve every problem in
+probability and statistics that we must deal with. Either we will use a
+device such as coins or a random number table as an analogy for the
+physical process we are interested in (trucks becoming defective, in
+this case), or we will simulate the analogy on the computer using the
+RESAMPLING STATS program.
+
+Simple as it is, the RESAMPLING STATS program called "TRUCKS" may not
+seem simple to you at first glance. But it is vastly simpler than the
+older conventional approach to such problems that has routinely been
+taught to students for decades.
+
+
 ## How resampling differs from the conventional approach
 
 In the standard approach the student learns to choose and solve a
