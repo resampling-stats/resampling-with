@@ -1,0 +1,198 @@
+# Sampling with Python
+
+## Introduction
+
+Now that we've seen how resampling works, roughly, let us translate
+some of these ideas into code.  We will be using the Python
+programming language, along with NumPy: a library for manipulating
+collections of numbers or "arrays".
+
+Please, go ahead and type along, and see if you get similar results to what is shown!  To do so, fire up Jupyter Notebook or IPython.
+
+In Python, libraries like NumPy need to be imported before they can be used:
+
+```
+import numpy as np
+```
+
+NumPy is now available under the name `np`.
+
+In Python, we can assign values to names.  E.g., we can store the number 3 under the name "x":
+
+```
+x = 3
+print(x)
+print(x + 4)
+print(x / 2)
+```
+
+We use `print` to display output on the screen, and can include `x` in sentences:
+
+```
+print(f'The number is {x}')
+```
+
+Many of our experiments rely on throwing dice.  In computation, "dice" are known as a "random number generator".  We build one as follows:
+
+```
+rng = np.random.RandomState()
+```
+
+Then, we use our random number generator to throw dice:
+
+```
+roll = rng.randint(1, 7)
+roll
+```
+
+Here, we ask for numbers between 1 and 7, with 7 excluded (in Python, it is common to specify ranges like this, where the last number is excluded).  We can also generate more than one number at once:
+
+
+```
+rolls = rng.randint(1, 7, size=10)
+rolls
+```
+
+## Operating on arrays of numbers
+
+We can do several operations on these numbers, such as summing them or taking their mean:
+
+```
+roll_total = np.sum(rolls)
+roll_mean = np.mean(rolls)
+
+print(f'Roll total is {roll_total}, roll mean is {roll_mean}')
+```
+
+Often, we want to see how many times rolls satisfy a certain condition.  E.g., let's see how many rolls had values greater than three:
+
+```
+rolls > 3
+```
+
+This tells us, for each element in the array, whether it is greater than three or not.  In Python, False is equivalent to 0 and True is equivalent to 1.  So, we can count the number of True values as follows:
+
+```
+np.count_nonzero(rolls > 3) 
+```
+
+Finally, we would like to look at the roll values that were greater than 3.  We extract them as follows:
+
+```
+mask = (rolls > 3)
+
+print(rolls)
+print(mask)
+print(rolls[mask])
+```
+
+The mask is a list of True or False values, depending on whether or not the dice roll is greater than 3.  We then ask NumPy to only return rolls corresponding to True values in the mask.  Indeed, all the returned values are greater than three.
+
+We can also sort or shuffle numbers.  Let's start with the NumPy array containing the values 1 through 5:
+
+```
+x = np.array([1, 2, 3, 4, 5])
+x
+```
+
+Now shuffle it:
+
+```
+y = np.random.permutation(x)
+y
+```
+
+Then sort it again:
+
+```
+np.sort(y)
+```
+
+## Looping
+
+In resampling, we are going to be repeating experiments many times over. We can do that by repeating statements:
+
+```
+print('Hello')
+print('Hello')
+print('Hello')
+```
+
+But, there is an easier way.  We can provide NumPy with a list of numbers, and ask it to visit each number in the list in turn:
+
+```
+for number in [0, 1, 2]:
+    print('Hello')
+```
+
+(If you are typing this note that, in Python, the number of spaces in the beginning of a line are important!  We use four before `print`).
+
+We can also print out the number being visited:
+
+```
+for i in [0, 1, 2]:
+    print(i)
+```
+
+Instead of writing out these lists by hand, Python has a shorthand:
+
+```
+for i in range(3):
+    print(i)
+```
+
+These statements are called "loops"---specifically, "for loops".  You can also use them inside of one another:
+
+```
+for i in range(3):
+    for j in ('hello', 'there', 'word'):
+        print(f'{i} and {j}')
+```
+
+## Example: sum of dice
+
+You play a game of dice against a seasoned old gambler.  The game is simple: you each pick a number, then throw two dice repeatedly.  If the sum of the dice is your number, you win.
+
+By the end of the evening you tally your wins and realize that the old gambler came out way ahead.  Their number was 7---a coincidence?
+
+Let us investigate to see which sums of dice occur most frequently.
+
+First step is to throw the dice twice and sum the results:
+
+```
+first_roll = rng.randint(1, 7)
+second_roll = rng.randint(1, 7)
+roll_sum = first_roll + second_roll
+roll_sum
+```
+
+However, we would like to repeat this experiment many times, so we ask for ninety rolls:
+
+```
+first_roll = rng.randint(1, 7, size=90)
+second_roll = rng.randint(1, 7, size=90)
+roll_sums = first_roll + second_roll
+roll_sums
+```
+
+Now, let's count how many times the sum is seven:
+
+```
+np.count_nonzero(roll_sums == 7)
+```
+
+We can also express that as a percentage of all rolls:
+
+```
+np.count_nonzero(roll_sums == 7) / 90 * 100
+```
+
+The percentage is around 16.7%, but since we only did 90 throws we may be a little bit off.  Now, let us compute how often other sums occur:
+
+```
+for s in range(2, 13):
+    percentage_of_rolls = np.count_nonzero(roll_sums == s) / 90 * 100
+    print(f'A total of {s} occurs {percentage_of_rolls}% of the time')
+```
+
+Clearly, the old gambler knew what they were doing!  What would the best number have been to choose, given that seven was already taken?
