@@ -119,10 +119,12 @@ three or more ambulances will be out-of-order on any given day.
 
 Soon we will do all these steps with some `r book_lang` code, but for now,
 let's say we have used one of the methods above to get 12 random numbers from
-0 through 9, and we have done that 25 times, to simulate 25 days of 12 ambulances.
-We could arrange those numbers in a table like table \@ref(tab:veh-numbers):
+0 through 9, and we have done that 25 times, to simulate 25 days of 12
+ambulances. We could arrange those numbers in a table like table
+\@ref(tab:veh-numbers):
 
 ```{r, veh-numbers, echo=FALSE}
+# Builds a table of numbers as a figure.
 n_vehicles <- 12
 n_trials <- 25
 # Make 25 * 12 random numbers
