@@ -1,22 +1,3 @@
----
-jupyter:
-  jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
-    text_representation:
-      extension: .Rmd
-      format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
 The Resampling Method of Solving Problems
 =========================================
 
@@ -26,13 +7,14 @@ Introduction
 This chapter is a brief introduction to the resampling method of solving
 problems in probability and statistics. A simple illustrative problem is
 stated, and then the step-by-step solution with resampling is shown,
-using both by-hand methods and a computer program. The older conventional
-formulaic approach to such a problem is then discussed. The conventional
-analytic method requires that you understand complex formulas, and too often
-one selects the wrong formula. In contrast, resampling requires that you first
-understand the physical problem fully. Then you simulate a statistical model of
-the physical problem with techniques that are intuitively obvious, and you
-estimate the probability with repeated random sampling.
+using both hand methods and the computer program RESAMPLING STATS. The
+older conventional formulaic approach to such a problem is then
+discussed. The conventional analytic method requires that you understand
+complex formulas, and too often one selects the wrong formula. In
+contrast, resampling requires that you first understand the physical
+problem fully. Then you simulate a statistical model of the physical
+problem with techniques that are intuitively obvious, and you estimate
+the probability with repeated random sampling.
 
 How resampling differs from the conventional approach
 -----------------------------------------------------
@@ -49,13 +31,13 @@ as being the coin that represents "out-oforder;" the other nine coins
 stand for "in operation." This set of 10 coins is a "model" of a
 situation where there is a one-in-ten chance---a probability of .10 (10
 percent)---of *one* particular truck being out-of-order on a given day.
-Next, we put the coins into a little jar or bucket, draw out one coin, and
+Next, we put the coins into a little jar or urn, draw out one coin, and
 mark down whether or not that coin is the coin marked "out-of-order."
-That drawing of the single coin from the bucket represents the chance that
+That drawing of the single coin from the urn represents the chance that
 any one given truck among our twenty trucks (perhaps the one with the
 lowest license-plate number) will be out-of-order tomorrow.
 
-Then we put the drawn coin back in the bucket, shake all the coins, and
+Then we put the drawn coin back in the urn, shake all the coins, and
 again draw out a coin. We mark down whether that second-drawing coin is
 or is not the "out-of-order" coin, and that outcome stands for a second
 truck in the fleet. We do this *twenty* times to represent our twenty
@@ -112,95 +94,80 @@ trucks will be out-of-order on any given day.
 About the Resampling Stats software
 -----------------------------------
 
-Computers and programming gives us a much faster way of solving problems with resampling.
+Thanks to the personal computer and the programming language RESAMPLING
+STATS, we now have a much faster way of solving problems with
+resampling. RESAMPLING STATS is a small set of simple, intuitive
+commands that get the job done quickly and efficiently, and with
+complete understanding on the part of the user. One may also use
+standard computer languages like BASIC or PASCAL to write programs that
+duplicate the simulation steps described above; such programs are quite
+cumbersome, however, and sometimes result in reliance on pre-written
+canned routines that are as mysterious as formulas.
 
-```{python}
-# Import the numpy library
-import numpy as np
-```
+The core of the program to solve the trucks problem above begins with
+this command to the computer:
 
-The core of the program to solve the trucks problem above
-begins with this command to the computer:
+`           GENERATE 20 1,10 a         `
 
-```{python}
-a = np.random.randint(1, 11, size=20)
-```
+This command orders the computer to randomly GENERATE twenty numbers
+between "1" and "10." Inasmuch as each truck has a 1 in 10 chance of
+being defective, we decide arbitrarily that a "1" stands for a defective
+truck, and the other nine numbers (from "2" to "10") stand for a
+non-defective truck. The command orders the computer to store the
+results of the ran-
 
-This command orders the computer to randomly GENERATE twenty numbers between
-"1" and "10." Inasmuch as each truck has a 1 in 10 chance of being defective,
-we decide arbitrarily that a "1" stands for a defective truck, and the other
-nine numbers (from "2" to "10") stand for a non-defective truck. The command
-orders the computer to store the results of the random drawing in a location in
-the computer's memory to which we give a name such as `a` or `trucks`.  When we
-run a statement like the one above, `a` is a *variable* - the *name* `a` refers
-to *value*, which is the sequence of random numbers the computer created using
-`np.random.randint`.
-
-We can show the value of of the variable `a` in the notebook or terminal by using the `print` function:
-
-```{python}
-print(a)
-```
-
-This shows the 20 random values that we got from `np.random.randint`.
+dom drawing in a location in the computer's memory to which we give a
+name such as "A" or "BINGO."
 
 The next key element in the core of the program is:
 
-```{python}
-b = np.count_nonzero(a == 1)
-```
+`           COUNT a =1 b         `
 
 This command orders the computer to COUNT the number of "1's" among the
-twenty numbers that are in location `a` following the random drawing
+twenty numbers that are in location A following the random drawing
 carried out by the GENERATE operation. The result of the COUNT will be
 somewhere between 0 and 20, the number of trucks that might be
 out-of-order on a given day. The result is then placed in another
-location in the computer's memory that we label `b`.
-
-```{python}
-# Show the value of b
-print(b)
-```
+location in the computer's memory that we label B.
 
 Now let us place the GENERATE and COUNT commands within the entire
 program that we use to solve this problem, which is:
 
-```{python}
-# Make an array that has 400 elements.
-# This will store the counts for our 400 repetitions
-z = np.zeros(400)
+`           REPEAT 400         `
 
-# Repeat the simulation 400 times
-for i in range(400):
+Repeat the simulation 400 times
 
-    # The indented commands are the procedure for one trial.
-    # The computer runs these commands from first to last, for each trial.
+`           GENERATE 20 1,10 a         `
 
-    # Generate 20 numbers, each between "1" and "10," and put them in vector a.
-    # Each number will represent a truck, and we let 1 represent a defective
-    # truck.
-    a = np.random.randint(1, 11, size=20)
+Generate 20 numbers, each between "1" and "10," and put them in vector
+a. Each number will represent a truck, and we let 1 represent a
+defective truck.
 
-    # Count the number of defective trucks, and put the result in b.
-    b = np.count_nonzero(a == 1)
+`           COUNT a =1 b         `
 
-    # Keep track of each trial's result in z.
-    z[i] = b
+Count the number of defective trucks, and put the result in vector b.
 
-    # End this trial, then go back and repeat the process until all 400 trials
-    # are complete.
+`           SCORE b z         `
 
-# Now we have finished the 400 trials.
+Keep track of each trial's results in z.
 
-# Determine how many trials resulted in more than 3 trucks out of order.
-k = np.count_nonzero(z > 3)
+`           END         `
 
-# Convert to a proportion.
-kk = k / 400
+End this trial, then go back and repeat the process until all 400 trials
+are complete, then proceed.
 
-# Print the result.
-print(kk)
-```
+`           COUNT z > 3 k         `
+
+Determine how many trials resulted in more than 3 trucks out of order.
+(This can also be written COUNT z =\> 4 k, for 4 or more out of order.)
+
+`           DIVIDE k 400 kk         `
+
+Convert to a proportion.
+
+`           PRINT kk         `
+
+Print the result.
 
 Note: The file "trucks" on the Resampling Stats software disk contains
 this set of commands.
