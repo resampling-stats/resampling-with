@@ -17,7 +17,11 @@ jupyter:
     name: python3
 ---
 
-# The Resampling method {#resampling-method}
+The Resampling Method of Solving Problems
+=========================================
+
+Introduction
+------------
 
 This chapter is a brief introduction to the resampling method of solving
 problems in probability and statistics. A simple illustrative problem is
@@ -30,138 +34,215 @@ understand the physical problem fully. Then you simulate a statistical model of
 the physical problem with techniques that are intuitively obvious, and you
 estimate the probability with repeated random sampling.
 
-## The resampling approach in action
+How resampling differs from the conventional approach
+-----------------------------------------------------
 
-Recall the problem from section \@ref(what-problems) in which the contractor
-owns 12 ambulances. The chance that any one ambulance will be unfit for
-service on any given day is about 1 in 10, based on past experience. You want
-to know the probability that on a particular day---tomorrow--- *three or more*
-ambulances will be out of action. The resampling approach produces the
-estimate as follows.
-
-### Randomness from physical methods
+Recall the problem of the construction firm that owns 20 earthmoving
+trucks. The chance that any one truck will break down on any given day
+is about 1 in 10, based on past experience. You want to know the
+probability that on a particular day---tomorrow--- *four or more* trucks
+will be out of action. The resampling approach produces the estimate as
+follows:
 
 We collect 10 coins, and mark one of them with a pen or pencil or tape
-as being the coin that represents "out-of-order;" the other nine coins
+as being the coin that represents "out-oforder;" the other nine coins
 stand for "in operation." This set of 10 coins is a "model" of a
 situation where there is a one-in-ten chance---a probability of .10 (10
-percent)---of *one* particular ambulance being out-of-order on a given day.
+percent)---of *one* particular truck being out-of-order on a given day.
 Next, we put the coins into a little jar or bucket, draw out one coin, and
 mark down whether or not that coin is the coin marked "out-of-order."
 That drawing of the single coin from the bucket represents the chance that
-any one given ambulance among our 12 ambulances (perhaps the one with the
+any one given truck among our twenty trucks (perhaps the one with the
 lowest license-plate number) will be out-of-order tomorrow.
 
 Then we put the drawn coin back in the bucket, shake all the coins, and
 again draw out a coin. We mark down whether that second-drawing coin is
 or is not the "out-of-order" coin, and that outcome stands for a second
-ambulance in the fleet. We do this *12* times to represent our 12
-ambulances, replacing the coin after each drawing, of course. Those 12
+truck in the fleet. We do this *twenty* times to represent our twenty
+trucks, replacing the coin after each drawing, of course. Those twenty
 drawings represent one day.
 
-At the end of the 12 draws we count how many out-of-orders we have
-got for that "day," checking whether there are *three or more*
-out-of-orders. If there are three or more, we write down in another
+At the end of the twenty draws we count how many out-of-orders we have
+gotten for that "day," checking whether there are *four or more*
+out-of-orders. If there are four or more, we write down in another
 column "yes"; if not, we write "no." The work we have done up to now
 represents one experimental trial of the model for a single day.
 
 Then we repeat perhaps 50 or 100 times the entire experiment described
 above. Each of those 50 or 100 experimental trials represents a single
 day. When we have collected evidence for 50 or 100 experimental days, we
-determine the proportion of the experimental days on which three or more
-ambulances are out of order. That proportion is an estimate of the
-probability that three or more ambulances will be out of order on a given
+determine the proportion of the experimental days on which four or more
+trucks are out of order. That proportion estimates for us the
+probability that four or more trucks will be out of order on a given
 day---the answer we seek. This procedure is an example of Monte Carlo
 simulation, which is the heart of the resampling method of statistical
 estimation.
 
 A more direct way to answer this question would be to examine the firm's
 actual records for the past 100 days or 500 days to determine how many
-days had three or more ambulances out of order. But the resampling procedure
+days had four or more trucks out of order. But the resampling procedure
 described above gives us an estimate even if we do not have such
 long-term information. This is realistic; it is frequently the case in
 the workaday world that we must make estimates on the basis of
 insufficient history about an event.
 
-A quicker resampling method than the coins could be obtained with 12
+A quicker resampling method than the coins could be obtained with twenty
 ten-sided dice or spinners. Each one of the dice, marked with one of its
-ten sides as "out-of-order," would indicate the chance of a single ambulance
-being out of order on a given day. A single pass with the 12 dice or
-spinners allows us to count whether three or more ambulances turn up out of
-order. So in a single throw of the 12 dice we can get an
+ten sides as "out-of-order," would indicate the chance of a single truck
+being out of order on a given day. A single pass with the twenty dice or
+spinners allows us to count whether four or more trucks turn up out of
+order. So in a single throw of the twenty dice we can get an
 experimental trial that represents a single day. And in a hundred quick
-throws of the 12 dice---which probably takes less than 5
+throws of the twenty dice---which probably takes less than 5
 minutes---we can get a fast and reasonably-accurate answer to our
-question. But getting hold of ten-sided dice might be a nuisance.
+question. But obtaining ten-sided dice might be a nuisance.
 
-## Randomness from your computer
+Another fast method that needs no special equipment is using a table of
+"random digits," such as is found in the Appendix. If we say that the
+digit "zero" represents "out-of-order" and the digits "1-9" represent
+"in operation," then any one random digit gives us a trial observation
+for a single truck. To get an experimental trial for a single day we
+look at twenty digits and count the number of zeros. If the number of
+zeros is four or more, then we write "yes." We then look at one hundred
+or two hundred sets of twenty digits and count the proportion of sets
+whose twenty digits show four or more trucks being "out-of-order." Once
+again, that proportion estimates the probability that four or more
+trucks will be out-of-order on any given day.
 
-Your computer gives you many convenient ways of getting random numbers for
-resampling.  You can get random numbers from spreadsheet programs like Excel,
-Numbers or LibreOffice [^excel-rand], or from websites like
-<https://www.random.org>. We can use these numbers to simulate our problem.
-For example, we can ask the computer to make us a random number between 0 and
-9 (inclusive) to represent one ambulance. If we say that the digit
-0 represents "out-of-order" and the digits 1 -- 9 represent "in operation,"
-then any one random digit gives us a trial observation for a single ambulance.
-To get an experimental trial for a single day we look at 12 digits and count
-the number of zeros. If the number of zeros is three or more, then we write
-"yes." We then look at one hundred or two hundred sets of 12 digits and count
-the proportion of sets whose 12 digits show three or more ambulances being
-"out-of-order." Once again, that proportion estimates the probability that
-three or more ambulances will be out-of-order on any given day.
+About the Resampling Stats software
+-----------------------------------
 
-[^excel-rand]: For random numbers in spreadsheets, see the `RAND` and
-  `RANDBETWEEN` functions in any of Excel, Numbers or LibreOffice.  But read on,
-  and you will soon find that you have outgrown spreadsheets.
+Computers and programming gives us a much faster way of solving problems with resampling.
 
-Soon we will do all these steps with some `r book_lang` code, but for now,
-let's say we have used one of the methods above to get 12 random numbers from
-0 through 9, and we have done that 25 times, to simulate 25 days of 12 ambulances.
-We could arrange those numbers in a table like table \@ref(tab:veh-numbers):
-
-```{r, veh-numbers, echo=FALSE}
-n_vehicles <- 12
-n_trials <- 25
-# Make 25 * 12 random numbers
-random_nos <- sample(0:9, n_trials * n_vehicles, replace=TRUE)
-# Put them into a 25 x 12 matrix
-random_matrix <- matrix(random_nos, nrow=25, byrow=TRUE)
-# Add column names.
-colnames(random_matrix) <- sapply(1:12, {function (n) paste('T', n, sep='')})
-# Put these numbers into a table for display
-df <- tibble::as_tibble(random_matrix)
-knitr::kable(df,
-  booktabs = TRUE,
-  row.names = TRUE,
-  caption = '25 simulations of 12 ambulances'
-)
+```{python}
+# Import the numpy library
+import numpy as np
 ```
 
-To get the answer for each day, we count the number of zeros in each row.  The
-counts go in the final column called "#0" (for "number of zeros").
+The core of the program to solve the trucks problem above
+begins with this command to the computer:
 
-```{r, veh-numbers-counts, echo=FALSE}
-# Count the number of zeros in each row, put in new column.
-df_counts <- tibble::add_column(df, '#0'=rowSums(df == 0))
-knitr::kable(df_counts,
-  booktabs = TRUE,
-  row.names = TRUE,
-  caption = '25 simulations of 12 ambulances, with counts'
-)
+```{python}
+a = np.random.randint(1, 11, size=20)
 ```
 
-Each value in the last column of \@ref(tab:veh-numbers-counts) is the count of
-zeros in that row, and therefore, the result from our simulation of one day.
+This command orders the computer to randomly GENERATE twenty numbers between
+"1" and "10." Inasmuch as each truck has a 1 in 10 chance of being defective,
+we decide arbitrarily that a "1" stands for a defective truck, and the other
+nine numbers (from "2" to "10") stand for a non-defective truck. The command
+orders the computer to store the results of the random drawing in a location in
+the computer's memory to which we give a name such as `a` or `trucks`.  When we
+run a statement like the one above, `a` is a *variable* - the *name* `a` refers
+to *value*, which is the sequence of random numbers the computer created using
+`np.random.randint`.
 
-We can estimate how often three or more ambulances would break down by looking for
-values of three or greater in the last column.  We find there are
-`r sum(df_counts['#0'] >= 3)` rows with three or more in the last column.
-Finally we divide this number of rows by the number of trials (`r n_trials`)
-to get an estimate of the *proportion* of days with three or more breakdowns.
-The result is `r sum(df_counts['#0'] >= 3) / n_trials`.
+We can show the value of of the variable `a` in the notebook or terminal by using the `print` function:
 
-## How resampling differs from the conventional approach
+```{python}
+print(a)
+```
+
+This shows the 20 random values that we got from `np.random.randint`.
+
+The next key element in the core of the program is:
+
+```{python}
+b = np.count_nonzero(a == 1)
+```
+
+This command orders the computer to COUNT the number of "1's" among the
+twenty numbers that are in location `a` following the random drawing
+carried out by the GENERATE operation. The result of the COUNT will be
+somewhere between 0 and 20, the number of trucks that might be
+out-of-order on a given day. The result is then placed in another
+location in the computer's memory that we label `b`.
+
+```{python}
+# Show the value of b
+print(b)
+```
+
+Now let us place the GENERATE and COUNT commands within the entire
+program that we use to solve this problem, which is:
+
+```{python}
+# Make an array that has 400 elements.
+# This will store the counts for our 400 repetitions
+z = np.zeros(400)
+
+# Repeat the simulation 400 times
+for i in range(400):
+
+    # The indented commands are the procedure for one trial.
+    # The computer runs these commands from first to last, for each trial.
+
+    # Generate 20 numbers, each between "1" and "10," and put them in vector a.
+    # Each number will represent a truck, and we let 1 represent a defective
+    # truck.
+    a = np.random.randint(1, 11, size=20)
+
+    # Count the number of defective trucks, and put the result in b.
+    b = np.count_nonzero(a == 1)
+
+    # Keep track of each trial's result in z.
+    z[i] = b
+
+    # End this trial, then go back and repeat the process until all 400 trials
+    # are complete.
+
+# Now we have finished the 400 trials.
+
+# Determine how many trials resulted in more than 3 trucks out of order.
+k = np.count_nonzero(z > 3)
+
+# Convert to a proportion.
+kk = k / 400
+
+# Print the result.
+print(kk)
+```
+
+Note: The file "trucks" on the Resampling Stats software disk contains
+this set of commands.
+
+The SCORE statement that follows the COUNT operation simply keeps track
+of the results of each trial, placing the number of defective trucks
+that occur in each trial in a location that we usually call "z." This is
+done in each of the 400 trials that we make, and the result eventually
+is a "vector" with 400 numbers in it.
+
+In order to make 400 repetitions of our experiment---we could have
+decided to make a thousand or some other number of repetitions---we put
+REPEAT 400 before the GENERATE, COUNT, and SCORE statements that
+constitute a single trial. Then we complete each repetition "loop" with
+END.
+
+Since our aim is to count the number of days in which more than 3 (4 or
+more) defective trucks occur, we use the COUNT command to count how many
+times in the 400 days recorded in our SCORE vector at the end of the 400
+trials more than 3 defects occurred, and we place the result in still
+another location "k." This gives us the total number of days where 4 or
+more defective trucks are seen to occur. Then we DIVIDE the number in
+"k" by 400, the number of trials. Thus we obtain an estimate of the
+chance, expressed as a probability between 0 and 1, that 4 or more
+trucks will be defective on a given day. And we store that result in a
+location that we decide to call "kk," so that it will be there when the
+computer receives the next command to PRINT that result on the screen.
+
+Can you see how each of the operations that the computer carries out are
+analogous to the operations that you yourself executed when you solved
+this problem using a ten-sided spinner or a random-number table? This is
+exactly the procedure that we will use to solve every problem in
+probability and statistics that we must deal with. Either we will use a
+device such as coins or a random number table as an analogy for the
+physical process we are interested in (trucks becoming defective, in
+this case), or we will simulate the analogy on the computer using the
+RESAMPLING STATS program.
+
+Simple as it is, the RESAMPLING STATS program called "TRUCKS" may not
+seem simple to you at first glance. But it is vastly simpler than the
+older conventional approach to such problems that has routinely been
+taught to students for decades.
 
 In the standard approach the student learns to choose and solve a
 formula. Doing the algebra and arithmetic is quick and easy. The
@@ -176,7 +257,7 @@ formula, even immediately after finishing a course (or several courses)
 on the subject. After leaving school, it is harder still to choose the
 right formula. Even many people who have taught statistics at the
 university level (including this writer) must look at a book to get the
-correct formula for a problem as simple as the ambulances, and then we are
+correct formula for a problem as simple as the trucks, and then we are
 not always sure of the right answer. This is the grave disadvantage of
 the standard approach.
 
@@ -186,17 +267,13 @@ contrast to the material in this book, simulation has mostly been used
 in situations so complex that mathematical methods have not yet been
 developed to handle them. Here are examples of such situations:
 
-<!---
-Better examples.  These are out of date.
--->
-
-1.  For a spaceship that will travel to Mars, calculating the correct flight
-    route involves a great many variables, too many to solve with formulas.
+1.  For a rocket aimed at the moon, calculating the correct flight route
+    involves a great many variables, too many to solve with formulas.
     Hence, the Monte Carlo simulation method is used.
 
 2.  The Navy might want to know how long the average ship will have to
     wait for dock facilities. The time of completion varies from ship to
-    ship, and the number of ships waiting in line for dock work varies
+    ship, and the number of ships waiting in line for dockwork varies
     over time. This problem can be handled quite easily with the
     experimental simulation method, but formal mathematical analysis
     would be difficult or impossible.
@@ -206,8 +283,8 @@ Better examples.  These are out of date.
     tactics with dice or random numbers, Earnshaw Cook (in his book
     *Percentage Baseball* ), found that it is best never to bunt, and
     the highest-average hitter should be put up first, in contrast to
-    usual practice. Finding this answer would have been much more difficult
-    with the analytic method.
+    usual practice. Finding this answer would not be possible with the
+    analytic method.
 
 4.  Which search pattern will yield the best results for a ship
     searching for a school of fish? Trying out "models" of various
@@ -249,303 +326,6 @@ If you intend to go on to advanced statistical work, the older standard
 method can be learned alongside resampling methods. Your introduction to
 the conventional method may thereby be made much more meaningful.
 
-## Resampling can make logic clearer.
-
-A problem in probability is at the heart of every problem in statistics.
-Problems in probability often can be very confusing to the intuition.
-And formulas often either do not aid the intuition, or lead to the wrong
-answer, or both. But simulation can often get you the right answer and
-also help you understand why it is correct. Let's dramatize the point
-with puzzles:
-
-### The other child
-
-Problem: **If a family has two children and one of them is a boy, what is the
-probability that the other will also be a boy? **
-
-Most people---even professional statisticians---often quickly answer
-"one half." That is not correct.
-
-The solution is not obvious even after the person has decided to tackle
-the problem by simulation. It is not unusual for a person to say: I flip
-one coin, and if it is a head (boy), I then flip another coin and see
-how often that will be a boy, also, and then actually flip the coin once
-and record the outcomes. But that experiment does not resemble the
-situation of interest. A proper modeling throws *two* coins, examines to
-see if there is a head on *either* , and then examines the *other*.
-
-Or consider table \@ref(tab:otherboy), where we asked the computer to do this
-work for us.  The computer has done 50 trials, where one trial is one family of
-two children.  It decided the gender of the two children, by choosing at random
-from "Boy" or "Girl", and then classified the pair of children as to whether
-the other child was a boy. Where both children were girls, it leaves the
-classification blank.
-
-The first 50 lines are enough to suggest the correct probability, and
-also to make clear the mechanism: Two-girl pairs, a fourth of the cases, are
-excluded from the sample. And mixed pairs---which give a "No" answer---are
-two-thirds of the remaining pairs, whereas the only pairs that give "Yes"
-answers---two boys---are only a third of the remaining pairs. The point of
-presenting the puzzle is this: Simulation gets it right very quickly and
-easily, whereas the deductive method of mathematical logic can result in much
-confusion.
-
-
-```{python, echo=FALSE}
-import numpy as np
-import pandas as pd
-
-# To make sure we always get the same random table.
-np.random.seed(66)
-
-# Choose the first and second children at random.
-trials = np.random.choice(['Boy', 'Girl'], size=(50, 2))
-# Put into Pandas dataframe to make results easier to manipulate and display.
-boys_df = pd.DataFrame(trials, columns=['First', 'Second'])
-
-def classify(row):
-    # Classify the row
-    n_males = np.count_nonzero(row == 'Boy')
-    if n_males == 0:
-        return ''
-    if n_males == 1:
-        return 'No'
-    return 'Yes'
-
-# Apply classify function to all rows to give result.
-boys_df['Other is boy?'] = boys_df.apply(classify , axis=1)
-boys_df.insert(0, 'Trial', range(1, 51))
-```
-
-```{r, otherboy, echo=FALSE}
-t = tibble::as_tibble(py$boys_df)
-knitr::kable(list(t[1:25,],
-                  t[26:50,]),
-  booktabs = TRUE,
-  caption = '50 simulations of a family with two children'
-)
-```
-
-This puzzle illustrates the power of simulation. And it supports by
-analogy the general use of the resampling method in probability and
-statistics because it reveals the limitations of human deductive
-capacity, even among those who are mathematically adept.
-
-Someone might wonder whether formal mathematics can help us with this
-problem. Formal (even though not formulaic) analysis can certainly
-provide an answer. We can use what is known as the "sample space"
-approach which reasons from first principles; here it consists of making
-a *list of the possibilities* , and examining the proportion of
-"successes" to "failures" in that list.
-
-First we write down the equally-likely ways that two coins can fall:
-
-|   | First coin | Second coin |
-| - | ----- | ------ |
-| 1 | Heads |  Heads |
-| 2 | Heads |  Tails |
-| 3 | Tails |  Heads |
-| 4 | Tails |  Tails |
-
-Note that it is very easy to make a mistake in writing this list;
-great mathematicians have made such mistakes in the past even with
-problems as easy as this one (as we will see with the example of
-D'Alembert in just a minute).
-
-Now we notice that if we have observed at least one head, the list of
-possibilities for the ways the two coins fell shrinks to:
-
-|   | First coin | Second coin |
-| - | ----- | ------ |
-| 1 | Heads |  Heads |
-| 2 | Heads |  Tails |
-| 3 | Tails |  Heads |
-
-And now we can see that in only one of three of these possibilities would the
-"other" coin be a head. So the probability we ask about is 1/3.
-
-The crucial question is: Does this formal approach make the problem
-harder or easier than the simulation approach? That depends on your
-mental makeup. In practice, it turns out that the formal method seems to
-lead to a higher rate of error if *everyone* employs it than does the
-simulation approach. Hence we emphasize the simulation approach here, to
-lead to the highest rate of success (and enjoyment). But it is best if
-everyone finds the mode that is best for him or her.
-
-Here's a puzzle I call D'Alembert's Misery. Great mathematicians have
-blundered on even simple problems in probability because they attacked
-them with only logical tools. One famous example was D'Alembert, living
-in the 18th Century (1717-1783; story in @schuh1968master, p 165).
-
-D'Alembert asked: What is the chance of throwing at least one head in
-two tosses of a coin? He reasoned that there are three cases: tail on
-both tosses, tail then head, head on the first toss (no second toss
-necessary). Of these three cases, two are successes, and therefore the
-probability sought is 2/3, he concluded.
-
-What's the answer?
-
-1.  Toss two coins, and record number of heads.
-
-2.  Repeat (1) a hundred times.
-
-3.  Count number of outcomes with one or two heads (or more easily, the
-    number with two tails), and divide by 100 to find the probability
-    sought.
-
-Compare D'Alembert's conclusion to the result of your Monte Carlo
-experiment performed as above. Some other fascinating puzzles in
-probability are found in Chapter XXX.
-
-### The Monty Hall problem
-
-The Monty Hall Problem is a probability problem that is famous for its deceptive simplicity.  It has its own long Wikipedia page:
-<https://en.wikipedia.org/wiki/Monty_Hall_problem>.
-
-Here is the problem in its most famous form; a letter to the columnist Marilyn
-vos Savant, published in Parade Magazine [-@savant1990monty]:
-
-> Suppose you’re on a game show, and you’re given the choice of three doors.
-> Behind one door is a car, behind the others, goats. You pick a door, say #1,
-> and the host, who knows what’s behind the doors, opens another door, say #3,
-> which has a goat. He says to you, "Do you want to pick door #2?" Is it to
-> your advantage to switch your choice of doors?
-
-In fact the first person to propose (and solve) this problem was Steve Selvin,
-a professor of public health at the University of California, Berkeley
-[@slevin1975monty].
-
-Most people, including at least one of us, your humble authors, quickly come to
-the wrong conclusion.  The most common but incorrect answer is that it will
-make no difference if you switch doors or stay with your original choice.  The
-obvious intuition is that, after Monty opens his door, there are two doors that
-might have the car behind them, and therefore, a 50% chance it will be behind
-any one of the two. It turns out that answer is wrong; you will double your
-chances of winning by switching doors. Did you get the answer right?
-
-If you got the answer wrong, you are in excellent company.  As you can see
-from the commentary in @savant1990monty, many mathematicians wrote to Parade
-magazine to assert that the (correct) solution was wrong.  Paul Erdős was one
-of the most famous mathematicians of the 20th century; he could not be
-convinced of the correct solution until he had seen a computer simulation
-[@vazsonyi1999door], of the type we will do below.
-
-To simulate a trial of this problem, we need to select a door at random to
-house the car, and another door at random, to be the door the contestant
-chooses.  We number the doors 1, 2 and 3.   Now we need two random choices from
-the options 1, 2 or 3, one for the door with the car, the other for the
-contestant door.  To chose a door for the car, we could throw a die, and chose
-door 1 if the die shows 1 or 4, door 2 if the die shows 2 or 5, and door 3 for
-3 or 6.  Then we throw the die again to chose the contestant door.
-
-But throwing dice is a little boring; we have to find the die, then throw it many times, and record the results.   Instead we can ask the computer to chose the doors at random.
-
-For this simulation, let us do 25 trials.  We ask the computer to create two
-sets of 25 random numbers from 1 through 3. The first set is the door with the
-car behind it ("Car door").  The second set have the door that the contestant
-chose at random ("Our door").   We put these in a table, and make some new,
-empty columns to fill in later.  The first new column is "Monty opens".  In due
-course, we will use this column to record the door that Monty Hall will open on
-this trial.  The last two columns express the outcome.  The first is "Stay
-wins".  This has "Yes" if we win on this trial by sticking to our original
-choice of door, and "No" otherwise.  The last column is "Switch wins". This has
-"Yes" if we win by switching doors, and "No" otherwise. See table
-\@ref(tab:montyblank).
-
-```{python, echo=FALSE}
-# Need Python for random numbers that are predictable across platforms.
-np.random.seed(1932)   # 1932 chosen such that it generates [3, 3] then [3, 1]
-random_matrix = np.random.randint(1, 4, size=(25, 2))
-df = pd.DataFrame(random_matrix)
-df.columns = ('Car door', 'Our door')
-# Set the columns to fill in later.
-# It would be more efficient to use `df.assign` here, but less readable.
-df['Monty opens'] = ''
-df['Stay wins'] = ''
-df['Switch wins'] = ''
-```
-
-```{r, montyblank, echo=FALSE}
-blank_df <- tibble::as_tibble(py$df)
-knitr::kable(blank_df,
-  booktabs = TRUE,
-  row.names = TRUE,
-  caption = '25 simulations of the Monty Hall problem'
-)
-```
-
-```{r, echo=FALSE}
-# Do the calculation
-fdf <- blank_df
-# Convert Monty opens column to integer, for car door number.
-fdf['Monty opens'] <- as.integer(NA)
-# Cycle over each row in the original data frame.
-for (i in 1:dim(fdf)[1]) {
-    car_door <- fdf[i, 'Car door']
-    our_door <- fdf[i, 'Our door']
-    # Remove our door from consideration.  There are two doors remaining.
-    remaining_doors <- setdiff(1:3, our_door)
-    if (our_door == car_door) {   # Our door does match car door.
-        fdf[i, 'Stay wins'] <- 'Yes'
-        fdf[i, 'Switch wins'] <- 'No'
-        # Choose one of the remaining (goat) doors at random.
-        fdf[i, 'Monty opens'] <- sample(remaining_doors, 1)
-    } else {  # our door did not match.
-        fdf[i, 'Stay wins'] <- 'No'
-        # Monty must open the remaining door that isn't the car door.
-        fdf[i, 'Monty opens'] <- setdiff(remaining_doors, car_door)
-        # The only one left is the car door.
-        fdf[i, 'Switch wins'] <- 'Yes'
-    }
-}
-```
-
-```{r, echo=FALSE}
-# Check our assumptions, below.
-stopifnot(all(fdf[1, 1:2] == c(3, 3)))
-stopifnot(all(fdf[2, 1:2] == c(3, 1)))
-stopifnot(fdf[1, 3] == 2)
-```
-
-In the first trial in \@ref(tab:montyblank), the computer selected door 3 for
-car, and door 3 for the contestant.  Now Monty must open a door, and he cannot
-open our door (door 3) so he has the choice of opening door 1 or door 2; he
-chooses randomly, and opens door 2.  On this trial, we win if we stay with our
-original choice, and we lose if we change to the remaining door, door 1.
-
-Now we go the second trial.  The computer chose door 3 for the car, and door 1 for our choice.  Monty cannot choose our door (door 1) or the door with the car behind it (door 3), so he must open door 2.   Now if we stay with our original choice, we lose, but if we switch, we win.
-
-You may want to print out table \@ref(tab:montyblank), and fill out the blank
-columns, to work through the logic.
-
-After doing a few more trials, and some reflection, you may see that there are
-two different situations here: the situation when our *initial guess was
-right*, and the situation where our *initial guess was wrong*.   When our
-initial guess was right, we win by staying with our original choice, but when
-it was wrong, we always win by switching.   The chance of our *initial guess*
-being correct is 1/3 (one door out of three).  So the chances of winning by
-staying are 1/3, and the chances of winning by switching are 2/3.  But
-remember, we don't need to follow this logic to get the right answer.  As you
-will see below, the resampling simulation shows us that the Switch strategy
-wins.
-
-Table \@ref(tab:montyfull) is a version of table \@ref(tab:montyblank) for
-which we have filled in the blank columns using some code.
-
-```{r, montyfull, echo=FALSE}
-knitr::kable(fdf,
-  booktabs = TRUE,
-  row.names = TRUE,
-  caption = '25 simulations of the Monty Hall problem, filled out'
-)
-```
-
-The proportion of times "Stay" wins in these `r n_trials` trials is
-`r sum(fdf['Stay wins'] == 'Yes') / n_trials`.
-The proportion of times "Switch" wins is
-`r sum(fdf['Switch wins'] == 'Yes') / n_trials`; the Switch strategy wins about twice as often as the Stay strategy.
-
-Doing these simulations has two large benefits.   First, it gives us the right answer, saving us from making a mistake.  Second, the process of simulation forces us to think about how the problem works.  This can give us better understanding, and make it easier to reason about the solution.
-
-We will soon see that these same advantages also apply to reasoning about
-statistics.
+A discussion of the advantages and disadvantages of the resampling
+method for beginning students is given in the Appendix to Chapter 2 on
+"A Note to the Teacher."
