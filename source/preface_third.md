@@ -6,6 +6,9 @@
 * The rise of resampling in data science
 * Programming and statistics
 
-Ian Nimmo-Smith
 
 Matthew Brett
+
+Stéfan van der Walt
+
+Ian Nimmo-Smith
