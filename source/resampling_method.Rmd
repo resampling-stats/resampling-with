@@ -164,12 +164,12 @@ knitr::kable(df_counts,
 Each value in the last column of \@ref(tab:veh-numbers-counts) is the count of
 zeros in that row, and therefore, the result from our simulation of one day.
 
-We can estimate how often three or more ambulances would break down by looking for
-values of three or greater in the last column.  We find there are
-`r sum(df_counts['#0'] >= 3)` rows with three or more in the last column.
-Finally we divide this number of rows by the number of trials (`r n_trials`)
-to get an estimate of the *proportion* of days with three or more breakdowns.
-The result is `r sum(df_counts['#0'] >= 3) / n_trials`.
+We can estimate how often three or more ambulances would break down by looking
+for values of three or greater in the last column.  We find there are `r
+sum(df_counts['#0'] >= 3)` rows with three or more in the last column. Finally
+we divide this number of rows by the number of trials (`r n_trials`) to get an
+estimate of the *proportion* of days with three or more breakdowns. The result
+is `r sum(df_counts['#0'] >= 3) / n_trials`.
 
 ## Building the problem using `r book_lang`
 
@@ -184,14 +184,33 @@ you what this code looks like, to give you an idea of where we are headed.
 For each line of the code below, we give a detailed explanation, but you can
 also *run* the code yourself, to see it in action.  The link below allows you
 to open this code as a *notebook*, and run it.  But, you may want to read the
-next chapter "about the technology", to learn more about how to run this
-notebook.  For now, concentrate on the text here, explaining what the code
-means.
+next chapter [About the technology], to learn more about how to run this
+notebook.  For now, we encourage you read the text here carefully, without
+using the technology to run the code.  The text explains what the code means.
+Later, after you have read more about the technology, you might consider coming
+back to the links here to *run* the code.
 
-The core of the program to solve the trucks problem above begins with
-this command to the computer:
+`r begin_nb('ambulances')`
 
-`           GENERATE 20 1,10 a         `
+The first thing to say about the code below is there are many lines in these
+bits of code that don't do anything.  These are the lines beginning with the
+`#` character (read `#` as "hash").  Lines beginning with `#` are called
+*comments*.  When `r book_lang` sees the `#` at the start of the line.
+
+`r begin_ispy()`
+To start, we load some helpful routines from the Numpy library.  Numpy is a
+Python library that has many important functions for creating and working with
+data.  We will use it in almost all our examples.
+
+```{python}
+#
+import numpy as np
+```
+`r begin_ispy()`
+
+The core of the program to solve the ambulances problem above begins with this
+command to the computer:
+
 
 This command orders the computer to randomly GENERATE twenty numbers
 between "1" and "10." Inasmuch as each truck has a 1 in 10 chance of
