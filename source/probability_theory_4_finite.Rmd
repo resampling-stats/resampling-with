@@ -375,12 +375,8 @@ trial_results = np.zeros(N)
 # Repeat the trial N times.
 for i in range(N):
 
-    # Shuffle the deck
-    np.random.shuffle(deck)
-
-    # Deal out one hand of 13 cards. (Take the first 13 elements
-    # from "deck" and call them "hand".)
-    hand = deck[:13]
+    # Shuffle the deck and draw 13 cards
+    hand = np.random.choice(deck, 13, replace=False)
 
     # Count the number of spades in "hand", put the result in "n_spades".
     n_spades = np.count_nonzero(hand == 'spade')
@@ -437,11 +433,8 @@ trial_results = np.zeros(N, dtype=int)
 
 # Do N trials.
 for i in range(N):
-    # Shuffle the deck of cards.
-    np.random.shuffle(whole_deck)
-
-    # Take thirteen cards.
-    hand = whole_deck[:13]
+    # Shuffle the deck of cards and draw 13
+    hand = np.random.choice(deck, 13, replace=False)
 
     # Total the points.
     points = np.sum(hand)
@@ -547,8 +540,8 @@ Berkeley, attend a meeting.  As a social icebreaker, representatives
 are divided, randomly, into pairs consisting of one person from each
 university.
 
-If they held a second round of the icebreaker, what is the chance that
-four or more pairs will be the same?
+If they held a second round of the icebreaker, again with random
+pairing, what is the chance that four or more pairs will be the same?
 
 In approaching this problem, we start at the point where the first
 icebreaker is complete.  We now have to determine what happens after
@@ -583,13 +576,16 @@ birmingham = np.arange(10)
 berkeley = np.arange(10)
 
 for i in range(N):
-    # Randomly shuffle the students from berkeley
-    # (We could also have shuffled both arrays---it does not alter the outcome)
+    # Randomly shuffle the students from Berkeley
     shuffled_berkeley = np.random.permutation(berkeley)
+
+    # Randomly shuffle the students from Birmingham
+    # (This step is not really necessary---shuffling one array is enough to make the matching random.)
+    shuffled_birmingham = np.random.permutation(birmingham)
 
     # Count in how many cases people landed with the same person as in the
     # first round, and store in trial_results.
-    matches = np.count_nonzero(shuffled_berkeley == birmingham)
+    matches = np.count_nonzero(shuffled_berkeley == shuffled_birmingham)
     trial_results[i] = matches
 
 # Count the number of times we got 4 or more people assigned to the same person
@@ -614,15 +610,18 @@ plt.hist(trial_results, bins=range(10), align='left', density=True, rwidth=0.75)
 plt.title('Same pairs in round two');
 ```
 
-## Example 8-6: Matching Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6. What is the probability that at least one will get his own hat?
+## Example 8-6: Matching Santa Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6. What is the probability that at least one will get his own hat?
 
-Instead of matching pairs, as in the earlier problem, however, we are
-now matching people with their hats. First, assign each of the 6
-people a number, and place these numbers in A. Next, shuffle the array
-(this represents the mixed-up hats) and compare to the original. The
-rest of the problem is the same as the one before, except that we are
-now interested in any trial where at least one (\>= 1) person received
-the right hat.
+After a long Christmas day, six Santas meet in the pub to let off
+steam. However, as luck would have it, their hats are mixed up by the
+host. When the hats are returned, what is the chance that at least one
+Santa will get his own hat back?
+
+First, assign each of the 6 Santas a number, and place these numbers
+in an array. Next, shuffle the array (this represents the mixed-up
+hats) and compare to the original. The rest of the problem is the same
+as the pairs one from before, except that we are now interested in any
+trial where at least one (\>= 1) Santa received the right hat.
 
 ```{python, opts.label="py_ed"}
 N = 10000
@@ -699,7 +698,7 @@ managers = np.concatenate([
 ])
 
 for i in range(N):
-    chosen = np.random.permutation(managers)[:10]
+    chosen = np.random.choice(managers, 10, replace=False)
     trial_results[i] = np.sum(chosen)
 
 plt.hist(trial_results, bins=range(10), align='left', density=True, rwidth=0.75)
@@ -928,7 +927,7 @@ deck = np.concatenate([
 
 for i in range(N):
     # Shuffle deck and draw 13 cards
-    hand = np.random.permutation(deck)[:13]
+    hand = np.random.choice(deck, 13, replace=False)
 
     spades = np.sum(hand)
 
@@ -961,7 +960,8 @@ deck = np.concatenate([
 
 for i in range(N):
     # Shuffle deck and draw 13 cards
-    hand = np.random.permutation(deck)[:13]
+    hand = np.random.choice(deck, 13, replace=False)
+
     spades = np.sum(hand)
     trial_spades[i] = spades
 
