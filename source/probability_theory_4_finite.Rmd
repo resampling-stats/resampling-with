@@ -223,7 +223,7 @@ for Case 5**
 
 ## Problems in finite universes
 
-## Example 8-1: What is the Probability of Selecting Four Girls and One Boy When Selecting Five Students From Any Twenty-five Girls and Twenty-five Boys?(Sampling Without Replacement When There are Two Outcomes and the Order Does Not Matter)
+## Example 8-1: What is the Probability of Selecting Four Girls and One Boy When Selecting Five Students From Any Group of Twenty-five Girls and Twenty-five Boys? (Sampling Without Replacement When There are Two Outcomes and the Order Does Not Matter)
 
 The important difference between this example and the infinite-universe
 examples in the prior chapter is that the probability of obtaining a boy
@@ -243,87 +243,66 @@ cards, half red and half black, and deal out five cards *without
 replacing them* after each card is dealt; this simulates the choice of
 five students from among the fifty.
 
-We can also work the example with random numbers. But if so, we cannot
-simply designate "01-25" as boys and "26-50" as girls (ignoring 51-00
-when they occur), because if we did so the probability of a girl would
-be the same on each pick. Instead, to simulate non-replacement, we
-specify that no number can be taken into the sample twice, just as no
-student can be chosen twice. That is, if we come across a number more
-than once, we simply ignore it after the first occurrence. More
-specifically:
+We can no longer use our procedure from before.  If we designated
+"1-25" as being girls and "26-50" as being boys and then proceeded to
+draw random numbers, the probability of a girl would be the same on
+each pick.
 
-**Step 1.** Let "01-25" = girls, "26-50" = boys
+At this point, it is important to note that---for this particular
+problem---we do not need to distinguish between particular girls (or
+boys). That is, it does not matter *which* girl (or boy) is selected
+in a given trial. Nor did we pay attention to the *order* in which we
+selected girls or boys. This is an instance of Case 4 discussed
+above. Subsequent problems will deal with situations where the order
+of selection, and the particular individuals, do matter.
 
-**Step 2.** Select five non-duplicating numbers; if a number comes up
-more than once, ignore it. Count whether there are four numbers "01-25,"
-and one "26-50." If so, write "yes," otherwise "no."
+Our approach then is to mimic having the class in front of us: an
+array of 50 strings, half of the entries 'boy' and the other half
+'girl'.  We then shuffle the class (the array), and choose the first N
+students (strings).
 
-**Step 3.** Repeat step 2 perhaps 400 times, and count the proportion
-"yes," which estimates the probability sought.
+**Step 1.** Create a list with 50 labels, half 'boy' and half 'girl'.
+
+**Step 2.** Shuffle the class and select five students. Count whether
+  there are four labels equal 'girl'. If so, write "yes," otherwise
+  "no".
+
+**Step 3.** Repeat step 2, say, 10,000 times, and count the proportion
+  "yes", which estimates the probability sought.
 
 The results of a few experimental trials are shown in Table 8-1.
 
-+-----------------------+-----------------------+-----------------------+
-|                       | Table 8-1             |                       |
-|                       |                       |                       |
-|                       | **Experimental        |                       |
-|                       | Trials**              |                       |
-+-----------------------+-----------------------+-----------------------+
-| **Experiment**        | **Numbers Chosen**    | **Success ?**         |
-+-----------------------+-----------------------+-----------------------+
-| 1                     | 18, 22, \[18 selected | No                    |
-|                       | but ignored\] 27, 2,  |                       |
-|                       | 49                    |                       |
-+-----------------------+-----------------------+-----------------------+
-| 2                     | 37, 19, 18, 7, 9      | Yes                   |
-+-----------------------+-----------------------+-----------------------+
-| 3                     | 13, 14, 2, 29, 24     | Yes                   |
-+-----------------------+-----------------------+-----------------------+
++----------------+---------------------------------------+---------------+
+|                | Table 8-1                             |               |
+|                |                                       |               |
+|                | **Experimental Trials**               |               |
++----------------+---------------------------------------+---------------+
+| **Experiment** | **Strings Chosen**                    | **Success ?** |
++----------------+---------------------------------------+---------------+
+|              1 | 'girl', 'boy', 'boy', 'girl', 'boy'   | No            |
++----------------+---------------------------------------+---------------+
+|              2 | 'boy', 'girl', 'girl', 'girl', 'girl' | Yes           |
++----------------+---------------------------------------+---------------+
+|              3 | 'girl, 'girl', 'girl', 'boy', 'girl'  | Yes           |
++----------------+---------------------------------------+---------------+
 
-It is important to notice that in this problem we do not distinguish
-among particular girls (or boys). That is, it does not matter *which*
-girl (or boy) is selected in a given trial. Nor did we pay attention to
-the *order* in which we selected girls or boys. This is an instance of
-Case 4 discussed above. Subsequent problems will deal with situations
-where the order of selection, and the particular individuals, do matter.
-
-A solution to this problem with RESAMPLING STATS is presented below.
-Let's take an overview of the steps in that program:
-
-We seek to find the probability of randomly selecting four girls out of
-five children in a classroom of fifty children with equal numbers of
-boys and girls. We simulate the class by creating an array A with
-numbers "1" through "50" in order, designating "1" through "25" as girls
-and "26" through "50" boys. We then REPEAT the following steps a
-thousand times.
-
-We first SHUFFLE the elements of Vector A into Vector B to randomize the
-order of the children. We next TAKE the first five children in this
-randomly-ordered array B and place them in C. This simulates the random
-selection of five children. Then we COUNT the number of girls---numbers
-"1" to "25"---in C. Next, we SCORE the number of girls selected for each
-random sample (D) into z. We need not concern ourselves with whether one
-boy was chosen, because we know that if four (and only four) girls are
-chosen, one boy must have been selected as well.
-
-After the thousand samples are completed, we determine how many of the
-random samples of five children contained four girls by COUNTing the
-number of times four girls were selected. Finally, we PRINT the result.
+A solution to this problem with `r BL` is presented below.
 
 ```{python, opts.label="py_ed"}
 import numpy as np
 ```
 
 ```{python, opts.label="py_ed"}
-trial_results = np.zeros(10000)
+N = 10000
+trial_results = np.zeros(N)
 
 # Constitute the set of 25 girls and 25 boys.
 girls = ['girl'] * 25   # 25 girls
 boys = ['boy'] * 25  # 25 boys
 whole_class = np.array(girls + boys)
 
-# Repeat the following steps 1000 times.
-for i in range(10000):
+# Repeat the following steps N times.
+for i in range(N):
 
     # Shuffle the numbers
     np.random.shuffle(whole_class)
@@ -344,14 +323,11 @@ for i in range(10000):
 k = np.count_nonzero(trial_results == 4)
 
 # Convert to a proportion.
-kk = k / 10000
+kk = k / N
 
 # Print the result.
 print(kk)
 ```
-
-Note: The file "fourgirl" on the Resampling Stats software disk contains
-this set of commands.
 
 We can also find the probabilities of other outcomes from a histogram of
 trial results obtained with the following command:
@@ -359,9 +335,10 @@ trial results obtained with the following command:
 ```{python, opts.label="py_ed"}
 # Import the plotting package.
 import matplotlib.pyplot as plt
-# %matplotlib inline
+# Turn on interactive plotting
+plt.ion()
 # Do histogram, with one bin for each possible number.
-plt.hist(trial_results, bins=range(7))
+plt.hist(trial_results, bins=range(7), align='left', density=True, rwidth=0.75)
 plt.title('# of girls');
 ```
 
@@ -379,8 +356,7 @@ In analytic probability theory this problem is worked with a formula for
 ## Example 8-2: Nine Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)
 
 This problem is similar to Example 8-1 except that now there are four
-equally-likely outcomes instead of only two. The RESAMPLING STATS
-solution is straightforward in the program "9spades."
+equally-likely outcomes instead of only two. `r py_or_r("A Python", "An R"` solution is:
 
 ```{python, opts.label="py_ed"}
 # Constitute the deck of 52 cards.
@@ -393,17 +369,14 @@ deck
 ```
 
 ```{python, opts.label="py_ed"}
-trial_results = np.zeros(10000)
+N = 10000
+trial_results = np.zeros(N)
 
-# Repeat the trial 10000 times.
-for i in range(10000):
+# Repeat the trial N times.
+for i in range(N):
 
-    # Shuffle the deck
-    np.random.shuffle(deck)
-
-    # Deal out one hand of 13 cards. (Take the first 13 elements
-    # from "deck" and call them "hand".)
-    hand = deck[:13]
+    # Shuffle the deck and draw 13 cards
+    hand = np.random.choice(deck, 13, replace=False)
 
     # Count the number of spades in "hand", put the result in "n_spades".
     n_spades = np.count_nonzero(hand == 'spade')
@@ -418,9 +391,7 @@ for i in range(10000):
         # Keep track of the number of clubs in each trial
         trial_results[i] = n_clubs
 
-        # End the IF condition.
-
-    # End one experiment, repeat all 1000 trials (experiments).
+    # End one experiment, go back and repeat until all N trials are done.
 
 # Count the number of trials where we got 4 clubs. This is the answer we want -
 # the number of hands out of 1000 with 9 spades and 4 clubs. (Recall that we
@@ -428,7 +399,7 @@ for i in range(10000):
 n_9_and_4 = np.count_nonzero(trial_results == 4)
 
 # Convert to a proportion.
-prop_9_and_4 = n_9_and_4 / 10000
+prop_9_and_4 = n_9_and_4 / N
 
 # Print the result
 print(prop_9_and_4)
@@ -437,9 +408,6 @@ print(prop_9_and_4)
 ```{python, opts.label="py_ed"}
 hand
 ```
-
-Note: The file "9spades" on the Resampling Stats software disk contains
-this set of commands.
 
 ## Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace = 4, King = 3, Queen = 2, and Jack = 1.
 
@@ -460,60 +428,42 @@ whole_deck
 ```
 
 ```{python, opts.label="py_ed"}
-trial_results = np.zeros(10000, dtype=int)
+N = 10000
+trial_results = np.zeros(N, dtype=int)
 
-# Do 10000 trials.
-for i in range(10000):
-    # `           SHUFFLE deck deck$         `
-    # Shuffle the deck of cards.
-    np.random.shuffle(whole_deck)
+# Do N trials.
+for i in range(N):
+    # Shuffle the deck of cards and draw 13
+    hand = np.random.choice(deck, 13, replace=False)
 
-    # `           TAKE deck$ 1,13 hand         `
-    # Take thirteen cards.
-    hand = whole_deck[:13]
-
-    # `           SUM hand points         `
-    # 
     # Total the points.
     points = np.sum(hand)
 
-    # `           SCORE points z         `
-    # 
     # Keep score of the result.
     trial_results[i] = points
 
-    # End one experiment, go back and repeat until all 1000 are done.
+    # End one experiment, go back and repeat until all N trials are done.
 ```
 
 ```{python, opts.label="py_ed"}
 # Produce a histogram of trial results.
-plt.hist(trial_results, bins=range(25))
+plt.hist(trial_results, bins=range(25), align='left', density=True, rwidth=0.75)
 plt.title('Points in bridge hands');
 ```
 
 From this histogram, we see that in about 5 percent of our trials we obtained a
-total of exactly 15 points. RESAMPLING STATS will calculate this for us
-directly if we add the following commands on to the program:
+total of exactly 15 points. We can also compute this directly:
 
 ```{python, opts.label="py_ed"}
-# `           COUNT z = 15 k         `
-# 
 # How many times did we have a hand with fifteen points?
 k = np.count_nonzero(trial_results == 15)
 
-# `           DIVIDE k 1000 kk         `
-# 
 # Convert to a proportion.
-kk = k / 10000
+kk = k / N
 
-# `           PRINT kk         `
-# 
 # Print the result.
 print(kk)
 ```
-
-Note: The file "bridge" on the Resampling Stats software disk contains
-this set of commands.
 
 ## Example 8-4: Four Girls and Then One Boy From Twenty-five Girls and Twenty-five Boys Order Matters, Sampling Without Replacement, Two Outcomes, Several of Each Item
 
@@ -524,284 +474,184 @@ sampling mechanism as in Example 8-1, but now we record "yes" for a
 smaller number of composite events.
 
 We record "no" if only one boy is chosen but he is chosen 1st, 2nd, 3rd,
-or 4th, whereas in Example 8-1 such outcomes are recorded as "yeses."
+or 4th, whereas in Example 8-1 such outcomes are recorded as "yes"-es.
 
-**Step 1.** Let "01-25" = girls, "26-50" = boys.
+**Step 1.** Generate a class (array) of length 50, consisting of 25
+  strings valued "boy" and 25 strings valued "girl".
 
-**Step 2.** Select five non-duplicating numbers. Check whether the
-series includes four numbers "01-25" followed by a number "26-50." If
-so, write "yes," otherwise "no."
+**Step 2.** Shuffle the class array, and select the first five
+  elements. If those are `['girl', 'girl', 'girl', 'girl', 'boy']`,
+  write "yes," otherwise "no."
 
-**Step 3.** Repeat step 2 perhaps 1000 times, and count the proportion
-"yes" which estimates the probability sought.
+**Step 3.** Repeat step 2, say, 10,000 times, and count the proportion
+  "yes" which estimates the probability sought.
 
-The RESAMPLING STATS program "4girlboy" starts out similarly to the
-earlier problem "Fourgirls." As in that problem, an array simulating a
-class of 50 children is created. But whereas in the previous problem any
-4 of the first 5 children had to be girls, in this problem, the *first*
-4 children must be girls, and then the fifth must be a boy for a trial
-to be considered a success. We thus TAKE the first 4 randomly-chosen
-children and place them in c. We must then determine the number of these
-children which are girls by counting those that have a number between
-"1" and "25," and placing the result in d.
+```{python, opts.label="py_ed"}
+N = 10000
+trial_results = np.zeros(N, dtype=bool)
 
-If we find that all 4 of the children selected are girls, then we
-proceed to pick a fifth child and put it in e. If, however, of the first
-4 children selected all were *not* girls, then we skip the steps through
-the first END statement, because we would already know that this trial
-will not be a "success." To determine whether this fifth child selected
-is a boy---that is, checking whether it has a number between "26" and
-"50"---we use a COUNT statement. If it is a boy, then f will equal "1";
-if it is not a boy, then f will equal "0." (Remember that if the first 4
-children selected were not all girls, then f will not get any value.) We
-then SCORE the value in f to e. This ends the conditional statement and
-the loop.
+# Constitute the set of 25 girls and 25 boys.
+girls = ['girl'] * 25   # 25 girls
+boys = ['boy'] * 25  # 25 boys
+whole_class = np.array(girls + boys)
 
-`           NUMBERS 1,50 a         `
+# Repeat the following steps 1000 times.
+for i in range(N):
 
-Constitute the set of girls (numbers 1-25) and boys (numbers 26-50), put
-them in a.
+    # Shuffle the numbers
+    np.random.shuffle(whole_class)
 
-`           REPEAT 1000         `
+    # Take the first 5 numbers, call them c.
+    c = whole_class[:5]
 
-Do the following experimental trial 1000 times.
+    four_girls_then_one_boy = (
+        np.all(c == ['girl', 'girl', 'girl', 'girl', 'boy'])
+    )
 
-`           SHUFFLE a b         `
+    # Or:
+    #
+    #
+    # four_girls_then_one_boy = (
+    #   np.all(c[:4] == 'girl') and c[4] == 'boy'
+    # )
 
-Shuffle the numbers, put the shuffled numbers in b.
+    trial_results[i] = four_girls_then_one_boy
 
-`           TAKE b 1,4 c         `
+    # End the experiment, go back and repeat until all N trials are
+    # complete.
 
-Take the first 4 numbers, put them in c.
+# Count the number of times we got four girls then a boy
+k = np.count_nonzero(trial_results)
 
-`           COUNT c between 1 25 d         `
+# Convert to a proportion.
+kk = k / N
 
-Count the number of girls, put the result in d.
-
-`           IF d = 4         `
-
-If we have 4 girls\...
-
-`           TAKE b 5 e         `
-
-Take the fifth number (not 5 numbers) from b and put it in e.
-
-`           COUNT e between 26 50 f         `
-
-How many boys in e? (It would have to be either 0 or 1)
-
-`           SCORE f z         `
-
-Keep track of each trial result.
-
-`           END         `
-
-`           END         `
-
-End the IF condition
-
-End the experiment, go back and repeat until all 1000 are complete.
-
-`           COUNT z =1 k         `
-
-Count the number of trials in which we got 1 boy (recall that we only
-counted the boy if we had already gotten the required 4 girls).
-
-`           DIVIDE k 1000 kk         `
-
-Convert to a proportion.
-
-`           PRINT kk         `
-
-Print the result.
-
-Note: The file "4girlboy" on the Resampling Stats software disk contains
-this set of commands.
+# Print the result.
+print(kk)
+```
 
 This type of problem is conventionally done with a *permutation*
 formula.
 
-## Example 8-5: Four or More Couples Getting Their Own Partners When Ten Couples are Paired Randomly (Probability of Matching by Chance) (Program "Couples")
+## Example 8-5: Four or More Couples Getting Their Own Partners When Ten Couples are Paired Randomly (Probability of Matching by Chance)
 
-Ten couples of boys and girls come to a party. In order to get them
-acquainted with each other, the host pairs them at random for the first
-dance by picking a boy's name from one hat and a girl's name from
-another. What is the chance that four or more couples will get the
-partners they came with?
+Ten representatives each from two universities, Birmingham and
+Berkeley, attend a meeting.  As a social icebreaker, representatives
+are divided, randomly, into pairs consisting of one person from each
+university.
 
-By now the solution seems obvious to you: Simulate the drawings from the
-two hats filled with boys' and girls' names, and see how often four or
-more matches occur.
+If they held a second round of the icebreaker, again with random
+pairing, what is the chance that four or more pairs will be the same?
 
-**Step 1.** Let "ace" through "10" of hearts be girls, "ace" through
-"10" of spades be boys.
+In approaching this problem, we start at the point where the first
+icebreaker is complete.  We now have to determine what happens after
+the second round.
+
+**Step 1.** Let "ace" through "10" of hearts represent the ten
+  students from Birmingham University.  Let "ace" through "10" of
+  spades be their allocated partners (in round one) from Berkeley.
 
 **Step 2.** Shuffle the hearts and deal them out in a row; shuffle the
-spades and deal in a row just below the hearts.
+  spades and deal in a row just below the hearts.
 
 **Step 3.** Count the pairs---a pair is one card from the heart row and
-one card from the spade row---that contain the same denomination. If 4
-or more pairs match, record "yes," otherwise "no."
+  one card from the spade row---that contain the same denomination. If 4
+  or more pairs match, record "yes," otherwise "no."
 
-**Step 4.** Repeat steps (2) and (3) perhaps 200 times.
+**Step 4.** Repeat steps (2) and (3), say, 10,000 times.
 
 **Step 5.** Count the proportion "yes." This estimates the probability
 of 4 or more pairs.
 
 Exercise for the student: Write the steps to do this example with random
-numbers.
+numbers.  The solution follows below.
 
-Now let's examine the RESAMPLING STATS solution "Couples." The key step
-is to fill array A with 10 elements numbered "1" to "10" in order, with
-each number standing for a male. We fill array B in similar fashion to
-represent the females.
+```{python, opts.label="py_ed"}
+N = 10000
+trial_results = np.zeros(N, dtype=int)
 
-In each of the 1000 samples we SHUFFLE the elements of B, which stands
-for the females, to create a new vector C. As long as *either* the males
-or the females are randomly ordered, the probability of getting a
-correct match is determined by chance. There are several ways to
-determine whether a match occurs. Our method is using the SUBTRACT
-command to compare each element of A with each element of C. A match
-causes a "0," this would mean that the third couple was matched
-correctly because they have the same numbers---"3"s. We then COUNT the
-number of "0"s in D to determine the number of couples correctly matched
-in the current sample. The result for the current sample is placed in E,
-then transferred to Z in order to keep SCORE for each of the 1000
-samples. This ends the loop.
+# Assign numbers to each student, according to their pair, after the first
+# icebreaker
+birmingham = np.arange(10)
+berkeley = np.arange(10)
 
-`           NUMBERS 1,10 a         `
+for i in range(N):
+    # Randomly shuffle the students from Berkeley
+    shuffled_berkeley = np.random.permutation(berkeley)
 
-An array of 10 males.
+    # Randomly shuffle the students from Birmingham
+    # (This step is not really necessary---shuffling one array is enough to make the matching random.)
+    shuffled_birmingham = np.random.permutation(birmingham)
 
-`           NUMBERS 1,10 b         `
+    # Count in how many cases people landed with the same person as in the
+    # first round, and store in trial_results.
+    matches = np.count_nonzero(shuffled_berkeley == shuffled_birmingham)
+    trial_results[i] = matches
 
-An identical array of 10 females---the pair for each of the males.
+# Count the number of times we got 4 or more people assigned to the same person
+k = np.count_nonzero(trial_results >= 4)
 
-`           REPEAT 1000         `
+# Convert to a proportion.
+kk = k / N
 
-Do the experiment 1000 times.
+# Print the result.
+print(kk)
+```
 
-`           SHUFFLE b c         `
+**NOTE:** This seems to be 1.5 percent, instead of 3 now?
 
-Shuffle the females.
+We see that in about 3 percent of the trials did 4 or more couples end
+up being re-paired with their own partners.  This can also be seen
+from the histogram:
 
-`           END         `
+```{python, opts.label="py_ed"}
+# Produce a histogram of trial results.
+plt.hist(trial_results, bins=range(10), align='left', density=True, rwidth=0.75)
+plt.title('Same pairs in round two');
+```
 
-`           SUBTRACT a c d         `
+## Example 8-6: Matching Santa Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6. What is the probability that at least one will get his own hat?
 
-This operation pairs each shuffled female with a male and subtracts. If
-it is an original pairing (1/1, 2/2, etc.), the result will be a 0. The
-number of 0's indicates how many of the 10 males got paired up again
-with their original partner.
+After a long Christmas day, six Santas meet in the pub to let off
+steam. However, as luck would have it, their hats are mixed up by the
+host. When the hats are returned, what is the chance that at least one
+Santa will get his own hat back?
 
-`           COUNT d =0 e         `
+First, assign each of the 6 Santas a number, and place these numbers
+in an array. Next, shuffle the array (this represents the mixed-up
+hats) and compare to the original. The rest of the problem is the same
+as the pairs one from before, except that we are now interested in any
+trial where at least one (\>= 1) Santa received the right hat.
 
-Count the number of 0's and put the result in e.
+```{python, opts.label="py_ed"}
+N = 10000
+trial_results = np.zeros(N, dtype=bool)
 
-`           SCORE e z         `
+# Assign numbers to each owner
+owners = np.arange(6)
 
-Keep track of each trial result.
+# Each hat gets the number of their owner
+hats = np.arange(6)
 
-End the trial, go back and repeat until all 1000 are complete.
+for i in range(N):
+    # Randomly shuffle the hats and compare to their owners
+    shuffled_hats = np.random.permutation(hats)
 
-`           HISTOGRAM z         `
+    # In how many cases did at least one person get their hat back?
+    trial_results[i] = np.any(shuffled_hats == owners)
 
-Produce a histogram of the results.
+# How many times, over all trials, did at least one person get their hat back?
+k = np.count_nonzero(trial_results)
 
-![](images/12-Chap-8_007.png)
+# Convert to a proportion.
+kk = k / N
 
-From this histogram, we see that in about 3 percent of the trials did 4
-or more couples end up being re-paired with their own partners. We can
-calculate this proportion directly with RESAMPLING STATS:
+# Print the result.
+print(kk)
+```
 
-`           COUNT z >= 4 k         `
-
-Determine how many trials had 4 or more males being matched with their
-partner after the shuffling. (Note that this is the same as the number
-of females being matched with their original partner.)
-
-`           DIVIDE k 1000 kk         `
-
-Convert to a proportion.
-
-`           PRINT kk         `
-
-Print the result.
-
-Note: The file "couples" on the Resampling Stats software disk contains
-this set of commands.
-
-## Example 8-6: Matching Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6 men. What is the probability that at least one will get his own hat?
-
-Instead of matching men with women, as in the earlier problem, however,
-we are now matching men with their hats. See the program "Hats" for the
-solution. First, assign each of the 6 men a number, and place these
-numbers in A. Next, assign each man's hat the same number in B, but
-arrange them in random order by shuffling the numbers from B into C,
-which represents the group of mixed-up hats. The rest of the problem is
-the same as in "Couples" except that in the second COUNT statement, we
-now are interested in any trial where at least one (\>= 1) man received
-the right hat.
-
-`           NUMBERS 1,6 a         `
-
-Constitute the set of six men.
-
-`           NUMBERS 1,6 b         `
-
-Constitute the set of their six hats.
-
-`           REPEAT 1000         `
-
-Do 1000 trials.
-
-`           SHUFFLE b c         `
-
-Mix up the hats.
-
-`           SUBTRACT a c d         `
-
-Subtract the shuffled hats from the set of men. A "0" will indicate that
-a man has received his own hat.
-
-`           COUNT d =0 e         `
-
-Count the number of "0's"---the number of men who received their own
-hats back.
-
-`           SCORE e z         `
-
-Keep track of each trial result.
-
-`           END         `
-
-End one experiment, go back and repeat until all 1000 are complete.
-
-`           HISTOGRAM z         `
-
-Produce a histogram of the trial results.
-
-![](images/12-Chap-8_008.png)
-
-From the histogram, we see that in roughly 62 percent of the trial
-results at least one man received his own hat back. RESAMPLING STATS
-will calculate this for us with the following commands:
-
-`           COUNT z >= 1 k         `
-
-Determine how many trials resulted in at least one man getting his hat
-back.
-
-`           DIVIDE k 1000 kk         `
-
-Convert to a proportion.
-
-`           PRINT kk         `
-
-Print the results
-
-Note: The file "hats" on the Resampling Stats software disk contains
-this set of commands.
+We see that in roughly 62 percent of the trials at least one
+person received their own hat back.
 
 ## Example 8-7: Twenty executives are to be assigned to two divisions of a firm
 
@@ -838,37 +688,55 @@ One may proceed as follows:
 
     ![](images/12-Chap-8_009.png)
 
-    Example 8-8: Executives Moving
-    ------------------------------
+```{python, opts.label="py_ed"}
+N = 10000
+trial_results = np.zeros(N, dtype=int)
 
-    A major retail chain moves its store managers from city to city
-    every three years in order to calculate individuals' knowledge and
-    experience. To make the procedure seem fair, the new locations are
-    drawn at random. Nevertheless, the movement is not popular with
-    managers' families. Therefore, to make the system a bit sporting and
-    to give people some hope of remaining in the same location, the
-    chain allows managers to draw in the lottery the same posts they are
-    now in. What are the probabilities that 1, 2, 3\... will get their
-    present posts again if the number of managers is 30?
+managers = np.concatenate([
+    np.zeros((10,)),  # worst managers
+    np.ones((10,))  # best managers
+])
 
-    The problem can be solved with the following steps:
+for i in range(N):
+    chosen = np.random.choice(managers, 10, replace=False)
+    trial_results[i] = np.sum(chosen)
 
-    1.  Number a set of green balls from "1" to "30" and put them into
-        Bucket A randomly. Number a set of red balls from "1" to "30" and
-        then put into Bucket B. For greater concreteness one could use 30
-        little numbered dolls in Bucket A and 30 little toy houses in
-        Bucket B.
+plt.hist(trial_results, bins=range(10), align='left', density=True, rwidth=0.75)
+plt.title('Number of good managers chosen')
+```
 
-    2.  Shuffle Bucket A, and array all its green balls into a row (vector
-        A). Array all the red balls from Bucket B into a second row B just
-        below row A.
+## Example 8-8: Executives Moving
 
-    3.  Count how many green balls in row A have the same numbers as the
-        red balls just below them, and record that number on a
-        scoreboard.
+**NOTE:** Same as couples example?
 
-    4.  Repeat steps 2 and 3 perhaps 1000 times. Then count in the
-        scoreboard the numbers of "0," "1," "2," "3."
+A major retail chain moves its store managers from city to city
+every three years in order to calculate individuals' knowledge and
+experience. To make the procedure seem fair, the new locations are
+drawn at random. Nevertheless, the movement is not popular with
+managers' families. Therefore, to make the system a bit sporting and
+to give people some hope of remaining in the same location, the
+chain allows managers to draw in the lottery the same posts they are
+now in. What are the probabilities that 1, 2, 3\... will get their
+present posts again if the number of managers is 30?
+
+The problem can be solved with the following steps:
+
+1.  Number a set of green balls from "1" to "30" and put them into
+    Bucket A randomly. Number a set of red balls from "1" to "30" and
+    then put into Bucket B. For greater concreteness one could use 30
+    little numbered dolls in Bucket A and 30 little toy houses in
+    Bucket B.
+
+2.  Shuffle Bucket A, and array all its green balls into a row (vector
+    A). Array all the red balls from Bucket B into a second row B just
+    below row A.
+
+3.  Count how many green balls in row A have the same numbers as the
+    red balls just below them, and record that number on a
+    scoreboard.
+
+4.  Repeat steps 2 and 3 perhaps 1000 times. Then count in the
+    scoreboard the numbers of "0," "1," "2," "3."
 
 ## Example 8-9: State Liquor Systems Again
 
@@ -951,7 +819,7 @@ difference that was actually observed)?
 
 ## Example 8-10: A Compound Problem: Five or More Spades in One Bridge Hand, and Four Girls and a Boy in a Five-Child Family
 
-"Compound" does not necessarily mean "complicated." It means that the
+"Compound" does not necessarily mean "complicated". It means that the
 problem is a compound of two or more simpler problems.
 
 A natural way to handle such a compound problem is in stages, as we saw
@@ -959,7 +827,7 @@ in the archery problem. If a "success" is achieved in the first stage,
 go on to the second stage; if not, don't go on. More specifically in
 this example:
 
-**Step 1.** Use a bridge card deck, and five coins with heads = "girl."
+**Step 1.** Use a bridge card deck, and five coins with heads = "girl".
 
 **Step 2.** Deal a 13-card bridge hand and count the spades. If 5 or
 more spades, record "no" and end the experimental trial. Otherwise,
@@ -1047,10 +915,76 @@ Convert to a proportion.
 
 Print the results.
 
-Result: kk = .01
+```{python, opts.label="py_ed"}
+N = 10000
+trial_results = np.zeros(N, dtype=bool)
 
-Note: The file "compound" on the Resampling Stats software disk contains
-this set of commands.
+# Deck with 13 spades (ones) and 39 other cards (zeros)
+deck = np.concatenate([
+    np.ones(13),
+    np.zeros(39)
+])
+
+for i in range(N):
+    # Shuffle deck and draw 13 cards
+    hand = np.random.choice(deck, 13, replace=False)
+
+    spades = np.sum(hand)
+
+    if spades >= 5:
+        # Generate a family, zeros for boys, ones for girls
+        children = np.random.randint(0, 2, size=5)
+        girls = np.sum(children)
+        if girls == 4:
+            trial_results[i] = True
+
+k = np.count_nonzero(trial_results)
+
+kk = k / N
+
+print(kk)
+```
+
+Alternative:
+
+```{python, opts.label="py_ed"}
+N = 10000
+trial_spades = np.zeros(N, dtype=int)
+trial_girls = np.zeros(N, dtype=int)
+
+# Deck with 13 spades (ones) and 39 other cards (zeros)
+deck = np.concatenate([
+    np.ones(13),
+    np.zeros(39)
+])
+
+for i in range(N):
+    # Shuffle deck and draw 13 cards
+    hand = np.random.choice(deck, 13, replace=False)
+
+    spades = np.sum(hand)
+    trial_spades[i] = spades
+
+    # Generate a family, zeros for boys, ones for girls
+    children = np.random.randint(0, 2, size=5)
+    girls = np.sum(children)
+    trial_girls[i] = girls
+
+k = np.count_nonzero((trial_spades >= 5) & (trial_girls == 4))
+
+kk = k / N
+
+print(kk)
+```
+
+**Note:** Last version is a fraction more expensive, but has the
+    advantage that the condition we are testing for is summarized on
+    one line.  However, this would not be a good approach to take if
+    the experiments were not completely unrelated.
+
+**Note:** Different result from book.
+
+Result: kk = .01 (this is according to book)
 
 ## Summary
 
