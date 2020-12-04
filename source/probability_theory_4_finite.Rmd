@@ -297,9 +297,7 @@ N = 10000
 trial_results = np.zeros(N)
 
 # Constitute the set of 25 girls and 25 boys.
-girls = ['girl'] * 25   # 25 girls
-boys = ['boy'] * 25  # 25 boys
-whole_class = np.array(girls + boys)
+whole_class = np.repeat(['girl', 'boy'], [25, 25])
 
 # Repeat the following steps N times.
 for i in range(N):
@@ -418,12 +416,7 @@ bears to Example 4-4.
 # Constitute a deck with 4 jacks (point value 1), 4 queens (value 2), 4
 # kings (value 3), 4 aces (value 4), and 36 other cards with no point
 # value
-jacks = [1] * 4
-queens = [2] * 4
-kings = [3] * 4
-aces = [4] * 4
-others = [0] * 36
-whole_deck = np.array(jacks + queens + kings + aces + others)
+whole_deck = np.repeat([1, 2, 3, 4, 0], [4, 4, 4, 4, 36])
 whole_deck
 ```
 
@@ -434,7 +427,7 @@ trial_results = np.zeros(N, dtype=int)
 # Do N trials.
 for i in range(N):
     # Shuffle the deck of cards and draw 13
-    hand = np.random.choice(deck, 13, replace=False)
+    hand = np.random.choice(whole_deck, 13, replace=False)
 
     # Total the points.
     points = np.sum(hand)
@@ -491,9 +484,7 @@ N = 10000
 trial_results = np.zeros(N, dtype=bool)
 
 # Constitute the set of 25 girls and 25 boys.
-girls = ['girl'] * 25   # 25 girls
-boys = ['boy'] * 25  # 25 boys
-whole_class = np.array(girls + boys)
+whole_class = np.repeat(['girl', 'boy'], [25, 25])
 
 # Repeat the following steps 1000 times.
 for i in range(N):
@@ -692,10 +683,8 @@ One may proceed as follows:
 N = 10000
 trial_results = np.zeros(N, dtype=int)
 
-managers = np.concatenate([
-    np.zeros((10,)),  # worst managers
-    np.ones((10,))  # best managers
-])
+# 10 zeros for worst managers, 10 ones for best managers.
+managers = np.repeat([0, 1], [10, 10])
 
 for i in range(N):
     chosen = np.random.choice(managers, 10, replace=False)
@@ -920,10 +909,7 @@ N = 10000
 trial_results = np.zeros(N, dtype=bool)
 
 # Deck with 13 spades (ones) and 39 other cards (zeros)
-deck = np.concatenate([
-    np.ones(13),
-    np.zeros(39)
-])
+deck = np.repeat([1, 0], [13, 39])
 
 for i in range(N):
     # Shuffle deck and draw 13 cards
@@ -953,10 +939,7 @@ trial_spades = np.zeros(N, dtype=int)
 trial_girls = np.zeros(N, dtype=int)
 
 # Deck with 13 spades (ones) and 39 other cards (zeros)
-deck = np.concatenate([
-    np.ones(13),
-    np.zeros(39)
-])
+deck = np.repeat([1, 0], [13, 39])
 
 for i in range(N):
     # Shuffle deck and draw 13 cards
