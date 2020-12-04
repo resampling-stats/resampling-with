@@ -6,7 +6,7 @@ r-all: r-book r-nb
 
 book-%:
 	BOOK_ED=$* Rscript -e \
-			'bookdown::render_book("index.rmd", config_file="_$*_bookdown.yml")'
+			'bookdown::render_book("index.Rmd", config_file="_$*_bookdown.yml")'
 
 python-book: book-python
 
