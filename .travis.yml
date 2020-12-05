@@ -1,5 +1,5 @@
 language: R
-pandoc_version: 2.9.2.1
+pandoc_version: 2.11.1.1
 cache:
   packages: true
   directories:
@@ -19,7 +19,6 @@ addons:
       - libssl-dev
       - python3-dev
       - pandoc
-      - pandoc-citeproc
 
 before_install:
   - make r-build-requirements
