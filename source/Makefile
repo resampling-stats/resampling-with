@@ -1,5 +1,8 @@
 .PHONY: python-book r-book python-nb r-nb serve-python serve-r
 
+# Markdown files generated during build.
+BUILD_MDS:=$(patsubst %.Rmd,%.md,$(wildcard *.Rmd))
+
 python-all: python-book python-nb
 
 r-all: r-book r-nb
@@ -29,7 +32,7 @@ serve-%:
 	Rscript -e 'bookdown::serve_book(dir = ".")'
 
 clean:
-	rm -rf _main.md _bookdown_files _notebooks *.rds
+	rm -rf _main.md _bookdown_files _notebooks *.rds $(BUILD_MDS)
 
 check-simon-refs :
 	biber --tool -V simon_refs.bib
