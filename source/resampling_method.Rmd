@@ -235,7 +235,7 @@ begins with this command to the computer:
 # including* 11.  Therefore, this generates 20 numbers from 1 through 10
 # inclusive.
 # Store the 20 numbers as an "array" with the name "a"
-a = np.randint(1, 11, size=20)
+a = np.random.randint(1, 11, size=20)
 ```
 
 ```{r, opts.label="r_ed"}
@@ -293,7 +293,7 @@ for i in np.arange(1000):
     # Generate 20 numbers, each between 1 through 10 and put them in array a.
     # Each number will represent an ambulance, and we let 1 represent a
     # defective ambulance.
-    a = np.randint(1, 11, size=20)
+    a = np.random.randint(1, 11, size=20)
     # Count the number of defective ambulances, and put the result in "b".
     b = np.count_nonzero(a == 1)
     # Keep track of each trial's results in "counts".
