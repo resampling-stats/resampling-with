@@ -21,22 +21,7 @@ into the `source` directory, and edit them there.
 
 ## Setup for editing and proofing
 
-Get the submodule containing some of the bibliography.
-
 ```{bash}
-git submodule update --init
-```
-
-Install the R packages for this book with:
-
-```{bash}
-make r-build-requirements
-```
-
-from the R prompt.
-
-Install the Python packages you need with:
-
-```{bash}
-pip install -r build-requirements.txt
+export PIP_INSTALL_CMD="pip install"
+make build-init
 ```

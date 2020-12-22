@@ -2,6 +2,7 @@ WEB_DIR=_www
 SOURCE_DIR=source
 PYTHON_BOOK_DIR=python-book
 R_BOOK_DIR=r-book
+PIP_INSTALL_CMD ?= "pip install"
 
 .PHONY: python-book r-book
 
@@ -32,6 +33,12 @@ webclean:
 
 r-build-requirements:
 	Rscript -e "source('scripts/install_r_requirements.R')"
+
+python-build-requirements:
+	$(PIP_INSTALL_CMD) -r build-requirements.txt
+
+build-init: r-build-requirements python-build-requirements
+	git submodule update --init --recursive
 
 clean:
 	rm -rf $(PYTHON_BOOK_DIR) $(R_BOOK_DIR)
