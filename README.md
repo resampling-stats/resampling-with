@@ -25,3 +25,11 @@ into the `source` directory, and edit them there.
 export PIP_INSTALL_CMD="pip install"
 make build-init
 ```
+
+Make sure that your `rmarkdown` package is sufficiently up to date to work
+with your `pandoc` version.  Versions of `pandoc` >= 2.11 use `--citeproc` and
+not `--filter pandoc-citeproc`; if your `rmarkdown` version is older than 2.5
+(`library(rmarkdown); sessionInfo()`), it won't know that, and therefore will
+raise an error on book build - see [RMarkdown release
+notes](https://github.com/rstudio/rmarkdown/releases).  Upgrade with
+`install.packages('rmarkdown')`.
