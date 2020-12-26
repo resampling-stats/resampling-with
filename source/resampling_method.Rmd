@@ -339,7 +339,7 @@ for (i in 1:1000) {
 # This part runs after all 1000 trials have finished.
 
 # Determine how many trials resulted in more than 3 ambulances out of order.
-k = sum(counts > 3)
+k = sum(z > 3)
 
 # Convert to a proportion.
 kk = k / 1000
