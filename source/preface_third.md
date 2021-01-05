@@ -46,7 +46,7 @@ that mathematics was not the only thing that made statistics difficult. He
 realized, with great clarity, that statistical inference --- drawing
 conclusions from noisy data --- involves a lot of hard, clear thinking about
 the data, and the process that made the data.  This hard thinking remains, even
-if you can (you can!) strip out the mathematics.   He writes eloquently about
+if you can strip out the mathematics (you can!).   He writes eloquently about
 this in the introduction of this book, in a section "Why is statistics such
 a difficult subject".   Because statistics is inherently difficult, it is all
 the more important to strip away the extra difficultly that comes from teaching
