@@ -177,7 +177,7 @@ understanding of the method of comparing measures from two groups, using
 resampling methods, but they still be likely to come across other teachers and
 researchers using more traditional methods such as t-tests.  To bridge this
 gap, we have added material to many chapters that explain how the resampling
-methods relate to the traditional methods, such as t-tests.  Luckily, we find
+methods relate to the traditional methods.  Luckily, we find
 these explanations add deeper understanding to the traditional methods.
 Teaching resampling is the best way to teach t-tests, and other traditional
 methods.
