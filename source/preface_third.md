@@ -182,7 +182,7 @@ these explanations add deeper understanding to the traditional methods.
 Teaching resampling is the best way to teach t-tests, and other traditional
 methods.
 
-Lastly, we have extended Simon's explanation Bayesian probability and
+Lastly, we have extended Simon's explanation of Bayesian probability and
 inference.   This is partly Bayesian methods have become so important in
 statistical inference, and partly because Simon's approach has such obvious
 application in explaining how and why Bayesian methods work.
