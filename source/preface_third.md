@@ -36,7 +36,7 @@ hard to teach, and hard to understand, and they have come to the same insight
 as Simon; our standard statistics use a lot of mathematics, and this
 mathematics is far beyond the level that we can reasonably teach to most of our
 students [@cobb2007introductory].  As Wallis and Roberts
-[-@wallis1957statistics] point out in early textbook, the large majority of our
+[-@wallis1957statistics] point out in an early textbook, the large majority of our
 students are not fluent in mathematics, and teaching statistics by way of
 mathematics is like teaching rhetoric in a foreign language.
 
