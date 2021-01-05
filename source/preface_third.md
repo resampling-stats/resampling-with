@@ -213,7 +213,7 @@ productive and satisfying than the traditional method of trying to convey some
 above, we have added sections to many parts of the book to explain the
 relationship of these resampling techniques to traditional methods.  Even if
 you do need to teach your students t-tests, and analysis of variance, we hope
-you will agree, that this way of explaining is much more compelling than our
+you will agree that this way of explaining is much more compelling than our
 traditional courses.
 
 Simon wrote this book for students and teachers who were interested to discover
