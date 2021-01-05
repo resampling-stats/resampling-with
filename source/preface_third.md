@@ -236,7 +236,7 @@ here.
 
 ## Welcome to resampling
 
-We hope you will agree that the Simon's insights for understanding and
+We hope you will agree that Simon's insights for understanding and
 explaining are --- really extraordinary.  Our best educators are only slowly
 catching up with his insights.  If you are like us, your humble authors of this
 edition, you will find that Simon has succeeded in explaining what statistics
