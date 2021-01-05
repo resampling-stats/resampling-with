@@ -56,7 +56,7 @@ understanding the mathematics, because the inherent difficulty is just that of
 thinking clearly about the problem, and designing a solution.  It is the
 difficultly of thinking logically about data, and noise.
 
-Simon's second step, was to see what he needed to do to bypass the mathematics,
+Simon's second step was to see what he needed to do to bypass the mathematics,
 and go directly to the inherent, interesting problem.  His deep insight was
 this (from the original preface): "Beneath the logic of a statistical inference
 there necessarily lies a physical process".  He saw, remarkably clearly, that
