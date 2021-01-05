@@ -4,7 +4,7 @@ One of the pleasures of writing a new edition of someone else's book is that we
 get some freedom to say good things about the earlier editions.  We get to
 praise a version of our own book.   We will do that, in the next section.  In
 the rest of the preface, we will say what we have changed, and why, and say
-a little about where this book sits in your learning and teaching about data
+a little about where this book fits into your learning and teaching about data
 analysis and statistics.
 
 ## What Simon saw
@@ -22,14 +22,14 @@ Simon published the first edition in 1992, but the ideas behind the book
 started much earlier, when he noticed a major problem that is familiar to
 almost every teacher of research methods - his students had a very shallow
 understanding of statistics.  The typical response to this typical insight is
-the "cookbook" method.  We try to minimize the damage by teaching recipes for
-common situations. We apply warning labels to the recipes, in the hope
-that our students will later do the right tests, even if they have little
-understanding of what those tests mean.  Of course, this is a miserable way to
-learn, and a miserable way to teach.  Our better students see that we are not
-teaching for understanding, but rehearsal, and they suffer the most.  As you
-will soon see, this book is for the teacher as well as the student.  It may be
-no comfort, but we teachers also suffer when we have to teach this way.
+the "cookbook" method.  This method tries to minimize the damage by teaching
+recipes for common situations. It applies warning labels to the recipes, in the
+hope that students will later do the right tests, even if they have little
+understanding of what those tests mean.  Of course, the cookbook method is
+a miserable way to learn, and a miserable way to teach.  Our better students
+see that we are not teaching for understanding, but rehearsal, and they suffer
+the most.  It may be no comfort, but we teachers also suffer when we have to
+teach this way.
 
 Because this is such a common problem, many people have asked why statistics is
 hard to teach, and hard to understand, and they have come to the same insight
