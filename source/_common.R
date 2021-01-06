@@ -29,6 +29,8 @@ book_edition <-._parts[1]
 ._nb_part <- ._parts[2]
 is_nb <- if (!is.na(._nb_part) & ._nb_part == 'nb') TRUE else FALSE
 
+other_edition <- if (book_edition == 'python') 'r' else 'python'
+
 is_r_ed <- book_edition == 'r'
 is_py_ed <- book_edition == 'python'
 eval_r_ed = is_r_ed & !is_nb
@@ -96,6 +98,8 @@ sep='\n')))
 #  Now some code in the `r book_lang` language.
 book_lang <- paste(toupper(substring(book_edition, 1,1)),
                    substring(book_edition, 2), sep="")
+other_lang <- paste(toupper(substring(other_edition, 1,1)),
+                   substring(other_edition, 2), sep="")
 # Shortcut, it's boring to type.
 BL <- book_lang
 
