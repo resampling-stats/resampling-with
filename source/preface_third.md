@@ -172,15 +172,14 @@ explanation have reached the mainstream.  It now perfectly possible to teach an
 introductory statistics course without referring to the older statistical
 methods.  This means that Simon's book can now serve on its own as an
 introduction to statistics --- but, used this way, at the time we write, this
-will leave our readers with some gaps to fill.  They should have a full, deep
+will leave our readers with some gaps to fill.  They should have a deep
 understanding of the method of comparing measures from two groups, using
-resampling methods, but they still be likely to come across other teachers and
+resampling methods, but they are likely to come across other teachers and
 researchers using more traditional methods such as t-tests.  To bridge this
 gap, we have added material to many chapters that explain how the resampling
-methods relate to the traditional methods.  Luckily, we find
-these explanations add deeper understanding to the traditional methods.
-Teaching resampling is the best way to teach t-tests, and other traditional
-methods.
+methods relate to the traditional methods.  Luckily, we find these explanations
+add deeper understanding to the traditional methods. Teaching resampling is the
+best way to teach t-tests, and other traditional methods.
 
 Lastly, we have extended Simon's explanation of Bayesian probability and
 inference.   This is partly because Bayesian methods have become so important in
