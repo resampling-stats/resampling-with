@@ -28,7 +28,7 @@ is controversial, but this chapter deals only with those uses of
 Bayesian analysis that are uncontroversial.
 
 Better than defining Bayesian analysis in formal terms is to demonstrate
-its use. Therefore, to make clear the nature of "Bayes' rule," we shall
+its use. Therefore, to make clear the nature of "Bayes' theorem", we shall
 start with the simplest sort of problem, and proceed gradually from
 there.
 
@@ -45,112 +45,73 @@ correctly identifies 80 percent as "OK" but says that 20 percent are
 percent as faulty and says (incorrectly) that 10 percent are OK.
 
 We wish to know the probability that if the mechanic *says* a car is
-"OK," it *really* is faulty.
+"OK," it *really* is faulty.  Phrased differently, what is the
+probability of a car being faulty if the mechanic said it was OK.
 
 One can get the desired probabilities directly by simulation without
-knowing Bayes' Law, as we shall see. But one must be able to model the
+knowing Bayes' theorem, as we shall see. But one must be able to model the
 physical problem correctly in order to proceed with the simulation; this
-requirement of a clearly-vi-
+requirement of a clearly visualized model is a strong point in favor of simulation.
 
-sualized model is a strong point in favor of simulation.
+We approach the simulation as follows:
 
-The following steps determine the probability that a car *said*
+![](images/car_graph.gv.pdf)
 
-to be "OK" will turn out to be *really* faulty:
+1. Note that we are only interested in outcomes where the mechanic says the cars are OK.
 
-1.  Model in percentages the universe of all cars as a bucket of 100
-    balls. Working from the data as given above, and referring to first
-    principles, color (.9 \* .3 =) .27 of the 100 balls violet (the 27
-    faulty balls said to be "faulty"), (.1 \* .3 =) .03 of the 100 balls
-    blue (3 balls said "OK" but faulty), (.2 \* .7 =) .14 of the balls
-    orange (14 OK cars said to be "faulty" balls), and (.8 \* .7
+2. Start with N=100000 cars.  For each car, generate a number between 0
+   and 1.  If this number is between 0 and 0.3, the car is faulty.  If
+   between 0.3 and 1, the car is working.
 
-    = ) 56 balls maroon (said to be "OK" that really are OK). A Venn
-    diagram may help with this step, but it is not necessary.
+3. We now repeat the above procedure to determine how many working and faulty cars, respectively, are judged to be OK by a mechanic.
 
-    An even better procedure would be to work directly from the concrete
-    data. One would note, for example, that of 200 cars previously
-    observed, 54 were faulty and were said to be "faulty," 6 were faulty
-    and were said to be "OK," 28 were OK but were said to be "faulty,"
-    and 112 were OK and were said to be "OK." Then make a bucket of 54
-    violets, 6 blue, 28 orange, and 112 maroon.
+   For each car, generate a number between 0 and 1.
 
-2.  Draw a ball. If it is one of those said to be "faulty"---that is,
-    violet or orange---draw (with replacement) another ball. Continue
-    until obtaining a ball said to be "OK"---that is, a blue or maroon
-    ball. Then record its color.
+   - For faulty cars, if the number is between 0 and 0.1, the mechanic says the car is OK.
+   - For working cars, if the number is between 0 and 0.8, the mechanic says the car is OK.
 
-3.  Repeat step 2 perhaps 1000 times and compute the proportions of
-    blues among the recorded results.
+4. Now, we count.  We would like to know how often a car is faulty,
+   out of all the times the car is determined to be OK by a mechanic.  So, we count the number of times that a car is been called OK but is faulty, and divide it by the number of times cars are labeled OK.
 
--OR-
+Here is the code:
 
-1.  Choose a number randomly between "1" and "100."
+```{python}
+import numpy as np
 
-2.  If "28-30" or "31-45:, record; otherwise draw another number, and
-    repeat until a number is recorded.
+N = 1000000
 
-3.  Repeat step 2 and count the proportion "28-30" among the total
-    "28-45."
+dice = np.random.random(N)
+faulty = dice < 0.3
+non_faulty = ~faulty
 
-The key modeling step is excluding a trial from consideration (without
-making any record of it) if it produces an irrelevant observation, and
-continuing to do so until the process produces an observation of the
-sort about which you are presently inquiring.
+dice = np.random.random(N)
+mechanic_says_OK = np.zeros(N, dtype=bool)
+mechanic_says_OK[faulty & (dice < 0.1)] = True
+mechanic_says_OK[~faulty & (dice < 0.8)] = True
 
-Using RESAMPLING STATS, an answer may be produced as follows:
+k = np.count_nonzero(mechanic_says_OK & faulty) / np.count_nonzero(mechanic_says_OK)
 
-"01 - 27" = actually faulty, said to be "faulty" "28 - 30 = faulty, said
-to be "OK"
+print(f'{k * 100:.2}%')
+```
 
-"31 - 86" = OK, "OK"
+The result is around 5.1%.  If we look at the numbers on our diagram, this makes sense: if we started with 100 cars, 59 are declared OK by a mechanic.  Of those, 3 were faulty, and `3/59 = 0.0508`.
 
-"87 - 100" = OK, "faulty"
+The ratio we just calculated is also called a *conditional probability*, and is often phrased as "the probability of a car being faulty *given* that the mechanic said it is OK".
 
-`           REPEAT 1000         `
+You can also think of this in terms of a diagram of the event space:
 
-Do 1000 repetitions
+![](images/car_euler_diagram.png)
 
-`           GENERATE 1 1,100 a         `
+Inside the space of all cars that mechanics determine to be OK, there are some that are faulty.  The fraction of the faulty cars *given that a mechanic said the car is OK* is $\mathrm{P}( \mathrm{car\_faulty} | \mathrm{mechanic\_says\_OK} )$.
 
-Generate a number between "1" and "100"
+A key observation of the program above is that we only examine the outputs that we are interested in.  This defines the "outer ring" of the diagram.  We then look for a specific source of that outcome to see how frequently it occurs.
 
-`           IF a between 28 86         `
-
-If it's between "28" and "86" (those that say "good")
-
-`           SCORE a z         `
-
-Score this number
-
-`           END         `
-
-End the IF condition
-
-`           END         `
-
-End REPEAT loop
-
-`           COUNT z between 28 30 k         `
-
-How many of the SCORED numbers were between "28\--30" (faulty, "OK")
-
-`           SIZE z s         `
-
-How many numbers were scored
-
-`           DIVIDE k s kk         `
-
-What proportion were faulty, "OK"
-
-`           PRINT kk         `
-
-Print result
-
-Result kk = 0.039
+<!--
+I don't get this result; may have overlooked something.
 
 Hence, we estimate that the probability that a car identified as "OK"
 will really be faulty is .039.
+-->
 
 **Estimating Driving Risk for Insurance Purposes**
 
