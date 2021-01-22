@@ -106,12 +106,36 @@ Inside the space of all cars that mechanics determine to be OK, there are some t
 
 A key observation of the program above is that we only examine the outputs that we are interested in.  This defines the "outer ring" of the diagram.  We then look for a specific source of that outcome to see how frequently it occurs.
 
-<!--
-I don't get this result; may have overlooked something.
+Something to keep in mind is that universes of cars differ: when there is a 30% probability of cars being faulty, it does not mean that *exactly* 30 out of every 100 cars will be broken.  We can simulate the distribution of outcomes by repeating the above experiment for many batches of 100 cars:
 
-Hence, we estimate that the probability that a car identified as "OK"
-will really be faulty is .039.
--->
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+cars = 1000
+experiments = 10000
+
+ks = np.zeros(experiments)
+
+for i in range(experiments):
+    dice = np.random.random(cars)
+    faulty = dice < 0.3
+    non_faulty = ~faulty
+
+    dice = np.random.random(cars)
+    mechanic_says_OK = np.zeros(cars, dtype=bool)
+    mechanic_says_OK[faulty & (dice < 0.1)] = True
+    mechanic_says_OK[~faulty & (dice < 0.8)] = True
+
+    k = np.count_nonzero(mechanic_says_OK & faulty) / np.count_nonzero(mechanic_says_OK)
+
+    ks[i] = k * 100
+
+plt.hist(ks, bins=np.arange(15), density=True)
+plt.xlabel('% of times car is broken when mechanic says it\'s OK')
+plt.ylabel(f'Probability of this outcome with {cars} cars')
+plt.show()
+```
 
 **Estimating Driving Risk for Insurance Purposes**
 
