@@ -2,7 +2,8 @@ WEB_DIR=_www
 SOURCE_DIR=source
 PYTHON_BOOK_DIR=python-book
 R_BOOK_DIR=r-book
-PIP_INSTALL_CMD ?= "pip install"
+PYTHON ?= python
+PIP_INSTALL_CMD ?= $(PYTHON) -m pip install
 
 .PHONY: python-book r-book
 
