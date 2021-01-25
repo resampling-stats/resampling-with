@@ -33,3 +33,29 @@ not `--filter pandoc-citeproc`; if your `rmarkdown` version is older than 2.5
 raise an error on book build - see [RMarkdown release
 notes](https://github.com/rstudio/rmarkdown/releases).  Upgrade with
 `install.packages('rmarkdown')`.
+
+## A build
+
+For Python (*mutatis mutandis* for R):
+
+```
+make python-all
+```
+
+Then, to rebuild an individual chapter:
+
+```
+./scripts/rebuild_chapter.sh source/bayes_simulation.Rmd
+```
+
+*You need to do a full build first before the individual chapter build will work*.  The script should warn you about this if you forget.
+
+If you get errors you weren't expecting, try:
+
+```
+make clean
+make python-all
+```
+
+It seems that caching can trip up the build.
+
