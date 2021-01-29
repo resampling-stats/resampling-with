@@ -96,7 +96,81 @@ print(f'{k * 100:.2}%')
 
 The result is around 5.1%.  If we look at the numbers on our diagram, this makes sense: if we started with 100 cars, 59 are declared OK by a mechanic.  Of those, 3 were faulty, and `3/59 = 0.0508`.
 
-The ratio we just calculated is also called a *conditional probability*, and is often phrased as "the probability of a car being faulty *given* that the mechanic said it is OK".
+### Probability interpretation
+
+**Probability from proportion**
+
+In these examples, it is very common for us to calculate proportions.  In a given simulation: How many cars are declared OK by a mechanic?  59/100.  How many of those 59 were faulty?  3/59.  Given evidence of events, we can count how common they were.
+
+A natural extension of this idea is to predict the probability of an event occurring.  We can say "in past 100 experiments, condition X occurred 20 times, therefore I  estimate that the probability of X occurring, $P(X)$, is 20/100".  The more trial outcomes we examine, the better our probability estimates become.
+
+**Ratios of proportions / probabilities**
+
+At our mechanic's yard, we ask "how many red cars here are broken"?  To calculate that, we first count the number of red cars, then the number of those red cars that are broken, then calculate the ratio: `red_cars_broken / red_cars`.
+
+We could just as well have worked in percentages, and we would have gotten the same answer: `percentage_of_red_cars_broken / percentage_of_cars_that_are_red`, since
+that is `(red_cars_broken / 100) / (red_cars / 100)`.  And probabilities would have worked too, given our assumption that the counts are good representations of the yard: `P(red_cars_broken_in_the_yard) / P(red_cars_in_the_yard)`.
+
+**Probability relationships: conditional probability**
+
+We return to the quantity computed above: the **number** of cars being faulty *given* that the mechanic said they were OK.  We use this ratio as an estimate of the probability that that will be true, i.e: the **probability** of cars being faulty *given* that the mechanic said they were OK.
+
+This is called a *conditional probability*, $P(X | Y)$.  Given a certain outcome Y, calculate the probability of X occurring.
+
+Conditional probabilities are calculated as follows:
+
+$P(X | Y) = P(X \cup Y) / P(Y)$
+
+From our car example, what is the probability of a car being broken given that a mechanic said it was OK?  It is, out of all the cars that the mechanic said were OK, the fraction that weren't or:
+
+$P(car_broken & mechanic_said_OK) / P(mechanic_said_OK)$.
+
+**Example: conditional probability**
+
+Let's discuss a very relevant example.  You get a COVID test, and the test is negative.  Now, you would like to know what the chance is of you having COVID.
+
+We have the following information:
+
+- 1.5% of people in your area have COVID
+- The false positive rate of the tests (i.e., that they detect COVID when it is absent) is very low at 0.5%
+- The false negative rate (i.e., that they fail to detect COVID when it is present) is quite high at 40%
+
+You would like to know the probability of having COVID given that your test was negative.  Using the conditional probability relationship from above, we can write:
+
+$P(covid | test_negative) = P(covid \cup test_negative) / P(test_negative)$
+
+We notice that $P(covid \cup test_negative) = P(test_negative | covid) * P(covid) = .4 * .015 = 0.006$.
+We also observe that $P(test_negative) = P(test_negative | covid) + P(test_negative | not_covid) = 0.4 + 0.995 = 1.395$.
+
+We fill in the quantities above and obtain:
+
+$P(covid | test_negative) = 0.006 / 1.395 = 0.004$.
+
+OK, so we have a number... is that number even close to correct?  Doing the simulation is a lot easier than figuring out the calculation above:
+
+```{python}
+N = 1000000
+
+person_has_covid = np.random.random(N) < 0.015  # True if person has covid
+nr_with_covid = np.count_nonzero(person_has_covid)
+nr_without_covid = N - nr_with_covid
+
+test_result = np.zeros_like(person_has_covid, dtype=bool)
+test_result[person_has_covid] = np.random.random(nr_with_covid) > 0.4
+test_result[~person_has_covid] = np.random.random(nr_without_covid) < 0.005
+
+covid_status_negative_test = person_has_covid[~test_result]
+nr_with_negative_test = len(covid_status_negative_test)
+
+k = np.count_nonzero(covid_status_negative_test) / nr_with_negative_test
+
+print(k)
+```
+
+This gives around 0.006, which means our calculated answer is .... probably wrong.  Oy!
+
+
+**Some other messy text I need to clean up...**
 
 You can also think of this in terms of a diagram of the event space:
 
