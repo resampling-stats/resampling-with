@@ -1,4 +1,14 @@
 # Install requirements for book build
+# Force user install.
+# This code adapted from install.packages function.
+userdir <- unlist(strsplit(Sys.getenv("R_LIBS_USER"), .Platform$path.sep))[1L]
+if (!file.exists(userdir)) {
+    if (!dir.create(userdir, recursive = TRUE))
+        stop(gettextf("unable to create %s", sQuote(userdir)),
+             domain = NA)
+    .libPaths(c(userdir, .libPaths()))
+}
+
 # Set default repo, if not set.
 if (getOption('repos')["CRAN"] == "@CRAN@") {
    options(repos = c(CRAN = "http://cloud.r-project.org"))
