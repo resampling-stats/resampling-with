@@ -10,6 +10,7 @@ env:
     # travis encrypt -r resampling-stats/resampling-with GITHUB_TOKEN=<the token>
     secure:
         "JV4np+OMy2EauPtTkjnTEzOkewKvEP5hIvNHrDumctA2AgGt0i9F0Egd76Ysp06IH1rjxpmY3uymefx4FVWdQTBxQ9rl1c3yqxxFZu1D8sztZVBXoWqt1YrY3GVTZb7v3KQPrHbmjL+N4SQPU2o/e0ZPbnUCR47ZgUkPD1HnlIPpSbaDemGkmVBFOz8kfQR06z7zWgDHcz7UOxLLBna9+anA2TXB9dOurw5uhdMYUVXt6er5tXDFzD7klXYYlr5Cc0OfOcI98SnIfH0YCPE7Sl2paqgp71I/Qyl2jInRbAPmIWoXHTnYE1susHlIpBsNQEBDWORgzIol1Vy46g6YiaBw7N6JmExO66Bvzc//ZS2trVGsq4OwWgByeL4FI1pYQHccs3ent59Ck/+ja5Jx9N4mva7PCNPQle+YpippywBJSwgMiyNg5JUQz0d19BFU06Wvuo16yj0bTQ3XPStyowcDb2+wYdOE8wZ+lyS5Of6WU4108vhUeRkfLCInwIdCIiNTRY+3ip5E4O92g5wUOSE974tUE5FQA7Hr4bTHwUk10FTNlL7mvQK8BZadnBsisnpGcJGVOrVNFreGRzOU0jReXxl7GT/t3CdefE+om2qe9Ae1UG85lpFuBY0hoxHUtveQlx7G/qATaVdmiq4NEz6+cAUYapzZUW+nZJe6qYw="
+    PYTHON: python3.8
 
 addons:
   apt:
@@ -18,16 +19,18 @@ addons:
       - libcurl4-openssl-dev
       - libssl-dev
       - libgit2-dev
-      - python3-dev
-      # pip from apt as Xenial's Python 3.5 no longer supported by base pip
-      - python3-pip
-      - python3-virtualenv
+      - software-properties-common
       - pandoc
 
 before_install:
   - make r-build-requirements
-  # Install Python packages into virtualenv
-  - python3 -m virtualenv --python=python3 venv
+  - sudo add-apt-repository -y ppa:deadsnakes/ppa
+  - sudo apt update
+  - sudo apt install -y $PYTHON-dev $PYTHON-distutils
+  - curl -LO https://bootstrap.pypa.io/get-pip.py
+  - $PYTHON get-pip.py --user
+  - $PYTHON -m pip install --user --upgrade virtualenv
+  - $PYTHON -m virtualenv --python=python3 venv
   - source venv/bin/activate
   - python --version
   - pip install -r build-requirements.txt
