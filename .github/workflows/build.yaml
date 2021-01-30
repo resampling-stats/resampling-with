@@ -1,0 +1,48 @@
+name: Build book
+
+on:
+  push:
+    branches:
+      - master
+    pull_request:
+
+jobs:
+  build-book:
+    runs-on: ubuntu-latest
+    env:
+      R_LIBS_USER: ~/R_libs
+
+    steps:
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.local
+            ~/R
+            ~/R-dev
+
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Install R
+        run: sudo apt-get install r-base
+
+      - name: Install R and Python libraries
+        run: make build-init
+
+      - name: Build book
+        run: make website
+
+      - name: Deploy to netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=_www
+          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
