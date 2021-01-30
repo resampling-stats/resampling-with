@@ -32,7 +32,7 @@ jobs:
           submodules: true
 
       - name: Install R
-        run: sudo apt-get install r-base
+        run: sudo apt install -y r-base libcurl4-openssl-dev libssl-dev libxml2-dev
 
       - name: Install R and Python libraries
         run: make build-init
