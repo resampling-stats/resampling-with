@@ -20,6 +20,7 @@ jobs:
             ~/.local
             ~/R
             ~/R-dev
+          key: ${{ runner.os }}-${{ hashFiles('requirements.txt') }}-${{ hashFiles('scripts/install_r_requirements.R') }}
 
       - uses: actions/setup-python@v1
         with:
