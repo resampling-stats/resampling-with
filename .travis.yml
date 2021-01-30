@@ -23,11 +23,11 @@ addons:
 
 before_install:
   - make r-build-requirements
+  - PYTHON=python3.8
   - sudo add-apt-repository -y ppa:deadsnakes/ppa
   - sudo apt update
-  - sudo apt install -y $PYTHON-dev $PYTHON-distutils
+  - sudo apt install -y ${PYTHON}-dev ${PYTHON}-distutils
   - curl -LO https://bootstrap.pypa.io/get-pip.py
-  - PYTHON=python3.8
   - $PYTHON get-pip.py --user
   - $PYTHON -m pip install --user --upgrade virtualenv
   - $PYTHON -m virtualenv --python=python3 venv
