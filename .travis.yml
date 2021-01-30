@@ -19,14 +19,14 @@ addons:
       - libssl-dev
       - libgit2-dev
       - python3-dev
+      # pip from apt as Xenial's Python 3.5 no longer supported by base pip
+      - python3-pip
+      - python3-virtualenv
       - pandoc
 
 before_install:
   - make r-build-requirements
-  - python3 -m ensurepip
-  - python3 -m pip install --user --upgrade pip virtualenv
-  # https://github.com/pypa/setuptools/issues/2352
-  - export SETUPTOOLS_USE_DISTUTILS=stdlib
+  # Install Python packages into virtualenv
   - python3 -m virtualenv --python=python3 venv
   - source venv/bin/activate
   - python --version
