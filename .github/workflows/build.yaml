@@ -18,6 +18,7 @@ jobs:
           path: |
             ~/.cache/pip
             ~/.local
+            ~/.ccache
             ~/R
             ~/R-dev
           key: ${{ runner.os }}-${{ hashFiles('requirements.txt') }}-${{ hashFiles('scripts/install_r_requirements.R') }}
