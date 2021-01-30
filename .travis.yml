@@ -23,9 +23,8 @@ addons:
 
 before_install:
   - make r-build-requirements
-  - curl -LO https://bootstrap.pypa.io/get-pip.py
-  - python3 get-pip.py --user
-  - python3 -m pip install --user --upgrade virtualenv
+  - python3 -m ensurepip
+  - python3 -m pip install --user --upgrade pip virtualenv
   # https://github.com/pypa/setuptools/issues/2352
   - export SETUPTOOLS_USE_DISTUTILS=stdlib
   - python3 -m virtualenv --python=python3 venv
