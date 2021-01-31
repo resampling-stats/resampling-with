@@ -42,9 +42,18 @@ jobs:
         run: make website
 
       - name: Deploy to netlify
+        id: netlify
         uses: netlify/actions/cli@master
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
         with:
           args: deploy --dir=_www
+
+      - name: Set GitHub status
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          state: success
+          context: Preview
+          target_url: ${{ steps.netlify.outputs.NETLIFY_URL }}
