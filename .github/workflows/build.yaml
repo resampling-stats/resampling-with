@@ -6,6 +6,8 @@ on:
       - master
     pull_request:
 
+if: github.repository_owner == 'resampling-stats'
+
 jobs:
   build-book:
     runs-on: ubuntu-20.04
@@ -33,7 +35,9 @@ jobs:
           submodules: true
 
       - name: Install R
-        run: sudo apt install -y r-base libcurl4-openssl-dev libssl-dev libxml2-dev pandoc pandoc-citeproc
+        run: |
+          sudo apt install -y r-base libcurl4-openssl-dev libssl-dev libxml2-dev pandoc pandoc-citeproc
+          R --version | grep 'version '
 
       - name: Install R and Python libraries
         run: make build-init
@@ -41,7 +45,8 @@ jobs:
       - name: Build book
         run: make website
 
-      - name: Deploy to netlify
+      - name: Deploy PR to Netlify
+        if: github.ref != 'refs/heads/master'
         id: netlify
         uses: netlify/actions/cli@master
         env:
@@ -50,10 +55,21 @@ jobs:
         with:
           args: deploy --dir=_www
 
-      - name: Set GitHub status
+      - name: Point GitHub status to PR preview
+        if: github.ref != 'refs/heads/master'
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
           state: success
           context: Preview
           target_url: ${{ steps.netlify.outputs.NETLIFY_URL }}
+
+      - name: Deploy docs
+        if: github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          FOLDER: _www
+          REPOSITORY_NAME: resampling-stats/resampling-with
+          BRANCH: gh-pages
+          SINGLE_COMMIT: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
