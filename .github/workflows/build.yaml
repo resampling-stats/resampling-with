@@ -1,0 +1,75 @@
+name: Build book
+
+on:
+  push:
+    branches:
+      - master
+    pull_request:
+
+if: github.repository_owner == 'resampling-stats'
+
+jobs:
+  build-book:
+    runs-on: ubuntu-20.04
+    env:
+      R_LIBS_USER: ~/R_libs:~/R:~/R-dev
+
+    steps:
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.local
+            ~/.ccache
+            ~/R
+            ~/R_libs
+            ~/R-dev
+          key: ${{ runner.os }}-${{ hashFiles('requirements.txt') }}-${{ hashFiles('scripts/install_r_requirements.R') }}
+
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Install R
+        run: |
+          sudo apt install -y r-base libcurl4-openssl-dev libssl-dev libxml2-dev pandoc pandoc-citeproc
+          R --version | grep 'version '
+
+      - name: Install R and Python libraries
+        run: make build-init
+
+      - name: Build book
+        run: make website
+
+      - name: Deploy PR to Netlify
+        if: github.ref != 'refs/heads/master'
+        id: netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=_www
+
+      - name: Point GitHub status to PR preview
+        if: github.ref != 'refs/heads/master'
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          state: success
+          context: Preview
+          target_url: ${{ steps.netlify.outputs.NETLIFY_URL }}
+
+      - name: Deploy docs
+        if: github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          FOLDER: _www
+          REPOSITORY_NAME: resampling-stats/resampling-with
+          BRANCH: gh-pages
+          SINGLE_COMMIT: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
