@@ -46,55 +46,167 @@ percent as faulty and says (incorrectly) that 10 percent are OK.
 
 We wish to know the probability that if the mechanic *says* a car is
 "OK," it *really* is faulty.  Phrased differently, what is the
-probability of a car being faulty if the mechanic said it was OK.
+probability of a car being faulty if the mechanic said it was OK?
 
 One can get the desired probabilities directly by simulation without
 knowing Bayes' theorem, as we shall see. But one must be able to model the
 physical problem correctly in order to proceed with the simulation; this
 requirement of a clearly visualized model is a strong point in favor of simulation.
 
-We approach the simulation as follows:
+Start by examining the following tree diagram:
 
-![](images/car_graph.gv.pdf)
+![](diagrams/car-tree.png)
 
-1. Note that we are only interested in outcomes where the mechanic says the cars are OK.
+We see that there are two paths, highlighted, that results in a car
+being approved by a mechanic.  Either a car can be working, and
+correctly identified as such by a mechanic; or the car can be broken,
+while the mechanic mistakenly determines it to be working. Our
+question only pertains to these two paths, so we do not need to
+study the rest of the tree.
 
-2. Start with N=100000 cars.  For each car, generate a number between 0
-   and 1.  If this number is between 0 and 0.3, the car is faulty.  If
-   between 0.3 and 1, the car is working.
+There are two approaches we could take: either compute our chances
+based on the numbers in the tree directly, or simulate the situation.
+Especially in complex scenarios, the latter is often easier to
+implement and gives us a better sense of the various outcomes that
+might arise.  But the prior method is a quick way of getting a single
+estimate.
 
-3. We now repeat the above procedure to determine how many working and faulty cars, respectively, are judged to be OK by a mechanic.
+Let's walk through both approaches.
 
-   For each car, generate a number between 0 and 1.
+**Calculation using the odds provided:**
 
-   - For faulty cars, if the number is between 0 and 0.1, the mechanic says the car is OK.
-   - For working cars, if the number is between 0 and 0.8, the mechanic says the car is OK.
+We want to know, of all the cars approved by a mechanic, how many are faulty:
 
-4. Now, we count.  We would like to know how often a car is faulty,
-   out of all the times the car is determined to be OK by a mechanic.  So, we count the number of times that a car is been called OK but is faulty, and divide it by the number of times cars are labeled OK.
+$$ \frac{\mathrm{cars_{\mathrm{faulty}}}}{\mathrm{cars}_{\mathrm{approved}}} $$
+
+We saw that there are two paths in the tree that lead to a mechanic
+approving a car, and we can calculate the fraction of cars that end up so:
+
+1. Of all cars, 30% are faulty.  Of these, 10% are approved by a mechanic.  That is,
+   30% * 10% = 3% of all cars.
+2. Of all cars, 70% work.  Of these, 80% are approved by a mechanic.  That is,
+   70% * 80% = 56% of all cars.
+
+The percentage of faulty cars, out of approved cars, is therefore:
+
+$$ 3% / (56% + 3%) = 5.08%. $$
+
+Notation-wise, it is a bit easier to calculate these sums as fractions instead of as percentages:
+
+1. Faulty cars approved by a mechanic: 0.3 * 0.1 = 0.03
+2. Working cars approved by a mechanic: 0.7 * 0.8 = 0.56
+
+Fraction of faulty cars out of approved cars: 0.03 / (0.03 + 0.56) = 0.0508
+
+**Calculation using simulation:**
+
+1. We note that we are only interested in outcomes where the mechanic says the cars are OK.
+
+2. We start with N cars.  For each car, generate a label of either
+   "faulty" or "working" with 0.3 and 0.7 probabilities respectively.
+
+3. For each faulty car, we generate one of two labels, "mechanic
+   approved" or "mechanic failed", with probabilities of 0.1 or 0.9
+   respectively.
+
+4. For each working car, generate one of two labels, "mechanic
+   approved" or "mechanic failed", with probabilities 0.7 and 0.3
+   respectively.
+
+5. Out of all cars "mechanic approved", count how many are "faulty".
+   The ratio between these numbers is our answer.
 
 Here is the code:
 
 ```{python}
 import numpy as np
 
-N = 1000000
+N = 100000  # number of cars
 
-dice = np.random.random(N)
-faulty = dice < 0.3
-non_faulty = ~faulty
+# Generate an array with as many entries as there are cars, each
+# being either 'working' or 'faulty'
+cars = np.random.choice(['working', 'faulty'], p=[0.7, 0.3], size=N)
 
-dice = np.random.random(N)
-mechanic_says_OK = np.zeros(N, dtype=bool)
-mechanic_says_OK[faulty & (dice < 0.1)] = True
-mechanic_says_OK[~faulty & (dice < 0.8)] = True
+# Count how many cars are working and how many are faulty
+N_working = np.count_nonzero(cars == 'working')
+N_faulty = N - N_working
 
-k = np.count_nonzero(mechanic_says_OK & faulty) / np.count_nonzero(mechanic_says_OK)
+# Create a new array in which to store mechanic approved (True)
+# or mechanic declared faulty (False)
+approved = np.zeros_like(cars, dtype=bool)
+
+# For each working car, generate a mechanic approved/declared faulty
+# label with the given probabilities
+approved[cars == 'working'] = np.random.choice(
+    [True, False], p=[0.8, 0.2], size=N_working
+)
+
+# For each faulty car, generate a mechanic approved/declared faulty
+# label with the given probabilities
+approved[cars == 'faulty'] = np.random.choice(
+    [True, False], p=[0.1, 0.9], size=N_faulty
+)
+
+# Select out only the cars that are faulty and were approved
+faulty_but_approved = np.logical_and(cars == 'faulty', approved)
+
+# Count the number of cars that are faulty but approved, as well as
+# the total number of cars that were approved
+N_faulty_but_approved = np.count_nonzero(faulty_but_approved)
+N_approved = np.count_nonzero(approved)
+
+# Calculate the ratio, which is the answer we seek
+k = N_faulty_but_approved / N_approved
 
 print(f'{k * 100:.2}%')
 ```
 
-The result is around 5.1%.  If we look at the numbers on our diagram, this makes sense: if we started with 100 cars, 59 are declared OK by a mechanic.  Of those, 3 were faulty, and `3/59 = 0.0508`.
+In this experiment, we use 100000 cars, and the results are very
+similar to calculating chances directly.  Say, however, that you were
+in the situation where the yard only had 100 cars.  Are the odds still
+around 5% of getting a faulty car, if you buy one approved by a
+mechanic?
+
+Since we have a simulation of the situation, we can gain further insight:
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def buying_risk(N):
+    cars = np.random.choice(['working', 'faulty'], p=[0.7, 0.3], size=N)
+    N_working = np.count_nonzero(cars == 'working')
+    N_faulty = N - N_working
+
+    approved = np.zeros_like(cars, dtype=bool)
+    approved[cars == 'working'] = np.random.choice(
+        [True, False], p=[0.8, 0.2], size=N_working
+    )
+    approved[cars == 'faulty'] = np.random.choice(
+        [True, False], p=[0.1, 0.9], size=N_faulty
+    )
+
+    faulty_but_approved = np.logical_and(cars == 'faulty', approved)
+    N_faulty_but_approved = np.count_nonzero(faulty_but_approved)
+    N_approved = np.count_nonzero(approved)
+
+
+    return N_faulty_but_approved / N_approved
+
+
+experiments = 1000
+cars = 100
+
+risk = np.array([buying_risk(cars) for i in range(experiments)])
+
+print(f'Risk higher than 10% in {np.count_nonzero(risk >= 0.1) / experiments * 100:.2}% of experiments')
+
+plt.hist(risk)
+plt.show()
+```
+
+Let's call our previous answer, faulty cars out of all approved cars, buying risk.  We see that, from a batch of 100 cars, the buying risk can vary tremendously.  In fact, while the average buying risk is 5%, as expected, in about 6% of cases the risk is higher than 10%!
 
 ### Probability interpretation
 
@@ -106,7 +218,7 @@ A natural extension of this idea is to predict the probability of an event occur
 
 **Ratios of proportions / probabilities**
 
-At our mechanic's yard, we ask "how many red cars here are broken"?  To calculate that, we first count the number of red cars, then the number of those red cars that are broken, then calculate the ratio: `red_cars_broken / red_cars`.
+At our mechanic's yard, we ask "how many red cars here are faulty"?  To calculate that, we first count the number of red cars, then the number of those red cars that are broken, then calculate the ratio: `red_cars_broken / red_cars`.
 
 We could just as well have worked in percentages, and we would have gotten the same answer: `percentage_of_red_cars_broken / percentage_of_cars_that_are_red`, since
 that is `(red_cars_broken / 100) / (red_cars / 100)`.  And probabilities would have worked too, given our assumption that the counts are good representations of the yard: `P(red_cars_broken_in_the_yard) / P(red_cars_in_the_yard)`.
@@ -123,7 +235,7 @@ $P(X | Y) = P(X \cup Y) / P(Y)$
 
 From our car example, what is the probability of a car being broken given that a mechanic said it was OK?  It is, out of all the cars that the mechanic said were OK, the fraction that weren't or:
 
-$P(car_broken & mechanic_said_OK) / P(mechanic_said_OK)$.
+$P(car_broken \& mechanic_said_OK) / P(mechanic_said_OK)$.
 
 **Example: conditional probability**
 
