@@ -6,13 +6,13 @@ on:
       - master
     pull_request:
 
-if: github.repository_owner == 'resampling-stats'
-
 jobs:
   build-book:
     runs-on: ubuntu-20.04
     env:
       R_LIBS_USER: ~/R_libs:~/R:~/R-dev
+
+    if: github.repository_owner == 'resampling-stats'
 
     steps:
       - uses: actions/cache@v2
