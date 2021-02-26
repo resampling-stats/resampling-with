@@ -48,7 +48,7 @@ We wish to know the probability that if the mechanic *says* a car is
 probability of a car being faulty if the mechanic said it was OK?
 
 We can get the desired probabilities directly by simulation without
-knowing Bayes' theorem, as we shall see. But one must be able to model the
+knowing Bayes' rule, as we shall see. But one must be able to model the
 physical problem correctly in order to proceed with the simulation; this
 requirement of a clearly visualized model is a strong point in favor of simulation.
 
@@ -58,10 +58,10 @@ requirement of a clearly visualized model is a strong point in favor of simulati
 2. We start with N cars.  For each car, generate a label of either
    "faulty" or "working" with probabilities of 0.3 and 0.7, respectively.
 
-3. For each faulty car, we generate one of two labels, "approved" or
+3. For each *faulty car*, we generate one of two labels, "approved" or
    "not approved" with probabilities 0.1 and 0.9, respectively.
 
-4. For each working car, we generate one of two labels, "approved" or
+4. For each *working car*, we generate one of two labels, "approved" or
    "not approved" with probabilities 0.7 and 0.3, respectively.
 
 5. Out of all cars "approved", count how many are "faulty".
@@ -78,27 +78,31 @@ N = 1000000  # number of cars
 # being either 'working' or 'faulty'
 cars = np.random.choice(['working', 'faulty'], p=[0.7, 0.3], size=N)
 
-# Count how many cars are working and how many are faulty
+# Count how many cars are working
 N_working = np.count_nonzero(cars == 'working')
+
+# All the rest are faulty
 N_faulty = N - N_working
 
 # Create a new array in which to stores what a mechanic says
 # about the car: 'approved' or 'not approved'
 mechanic_says = np.empty_like(cars, dtype=object)
 
-# For each working car, generate a mechanic mechanic_says/declared faulty
-# label with the given probabilities
+# We start with the working cars; what does the mechanic say about them?
+# Generate 'approved' or 'not approved' labels with the given probabilities.
 mechanic_says[cars == 'working'] = np.random.choice(
     ['approved', 'not approved'], p=[0.8, 0.2], size=N_working
 )
 
-# For each faulty car, generate a mechanic mechanic_says/declared faulty
-# label with the given probabilities
+# Similarly, for each faulty car, generate 'approved'/'not approved'
+# labels with the given probabilities.
 mechanic_says[cars == 'faulty'] = np.random.choice(
     ['approved', 'not approved'], p=[0.1, 0.9], size=N_faulty
 )
 
 # Identify all cars that were approved
+# This produces a binary mask, an array that looks like:
+# [True, False, False, True, ... ]
 approved = (mechanic_says == 'approved')
 
 # Identify cars that are faulty AND were approved
@@ -120,10 +124,12 @@ approved by a mechanic.
 
 ### Calculation without simulation
 
-Often, we use simulations to give us a sense of what the right answer
-to a problem should be. Thereafter, we can look into different—sometimes more elegant or accurate—ways of modeling and solving it.
+Simulation forces us to model our problem clearly and concretely in code.
+Such code is most often easier to reason about than opaque statistical methods.
+Running the simulation gives a good sense of what the correct answer should be.
+Thereafter, we can still look into different—sometimes more elegant or accurate—ways of modeling and solving the problem.
 
-Let's examine the following tree diagram of our car selection:
+Let's examine the following diagram of our car selection:
 
 ![](diagrams/car-tree.png)
 
@@ -134,15 +140,23 @@ while the mechanic mistakenly determines it to be working. Our
 question only pertains to these two paths, so we do not need to
 study the rest of the tree.
 
-We want to know, of all the cars approved by a mechanic, how many are faulty:
+In the long run, in our simulation, about 70% of the cars will end
+with the label "working", and about 30% will end up with the label
+"faulty". We just took 10000 sample cars above but, in fact, the
+larger the number of cars we take, the closer we will get to 70%
+"working" and 30% "faulty". So, with many samples, we can think of 70%
+of these samples flowing down the "working" path, and 30% flowing
+along the "faulty" path.
+
+Now, we want to know, of all the cars approved by a mechanic, how many
+are faulty:
 
 $$ \frac{\mathrm{cars_{\mathrm{faulty}}}}{\mathrm{cars}_{\mathrm{approved}}} $$
 
-We saw that there are two paths in the tree that lead to a mechanic
-approving a car, and we can calculate the fraction of cars that end up so:
+We follow the two highlighted paths in the tree:
 
-1. Of all cars, 30% are faulty.  Of these, 10% are approved by a mechanic.  That is,
-   30% * 10% = 3% of all cars.
+1. Of a large sample of cars, 30% are faulty.  Of these, 10% are
+   approved by a mechanic.  That is, 30% * 10% = 3% of all cars.
 2. Of all cars, 70% work.  Of these, 80% are approved by a mechanic.  That is,
    70% * 80% = 56% of all cars.
 
@@ -179,7 +193,7 @@ We discussed this idea previously in "The Law of Large Numbers".
 **Ratios of proportions**
 
 At our mechanic's yard, we can ask "how many red cars here are faulty"?
-To calculate that, we'd first count the number of red cars, then the number of those red cars that are also broken, then calculate the ratio: `red_cars_broken / red_cars`.
+To calculate that, we'd first count the number of red cars, then the number of those red cars that are also broken, then calculate the ratio: `red_cars_faulty / red_cars`.
 
 We could just as well have worked in percentages: `percentage_of_red_cars_broken / percentage_of_cars_that_are_red`, since
 that is `(red_cars_broken / 100) / (red_cars / 100)`—the same ratio calculated before.
@@ -221,10 +235,10 @@ To make things even more compact, we write "GIVEN THAT" as a vertical bar `|` �
 
 $$ \mathrm{ P(B | R) } $$
 
-This is read as "the probability that the car is broken given that the car is red".
+We read this as "the probability that the car is broken given that the car is red".
 Such a probability is known as a *conditional probability*.  We discuss these in more details in **TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY**.
 
-In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be written as:
+In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
 
 $P(car_broken | mechanic_approved) = P(car_broken \& mechanic_approved) / P(mechanic_approved)$.
 
@@ -427,7 +441,7 @@ One may obtain an answer as follows:
     data) seven black offspring. One can then calculate, as Fisher
     (1959, p.17) did, the probabilities, posterior to the data, of the
     test mouse being homozygous ( *BB* ) and heterozygous ( *Bb* ) using
-    Bayes' theorem. . .
+    Bayes' rule. . .
 
     We see that, given the genetic characteristics of the offspring, the
     mating results of 7 black offspring changes our knowledge
