@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>21 The Statistics of Hypothesis-Testing With Measured Data | Resampling statistics</title>
+  <meta name="description" content="21 The Statistics of Hypothesis-Testing With Measured Data | Resampling statistics" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="21 The Statistics of Hypothesis-Testing With Measured Data | Resampling statistics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://resampling-stats.github.io/resampling-with" />
+  <meta property="og:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+  <meta property="og:description" content="21 The Statistics of Hypothesis-Testing With Measured Data | Resampling statistics" />
+  <meta name="github-repo" content="resampling-stats/resampling-with" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="21 The Statistics of Hypothesis-Testing With Measured Data | Resampling statistics" />
+  
+  <meta name="twitter:description" content="21 The Statistics of Hypothesis-Testing With Measured Data | Resampling statistics" />
+  <meta name="twitter:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+
+<meta name="author" content="Julian Lincoln Simon" />
+<meta name="author" content="Matthew Brett" />
+<meta name="author" content="Stéfan van der Walt" />
+<meta name="author" content="Ian Nimmo-Smith" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"/>
+<link rel="next" href="general-procedures-for-testing-hypotheses.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>R edition</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html"><i class="fa fa-check"></i>Preface to the third edition</a><ul>
+<li class="chapter" data-level="0.1" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-simon-saw"><i class="fa fa-check"></i><b>0.1</b> What Simon saw</a></li>
+<li class="chapter" data-level="0.2" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#resampling-and-data-science"><i class="fa fa-check"></i><b>0.2</b> Resampling and data science</a></li>
+<li class="chapter" data-level="0.3" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-we-changed"><i class="fa fa-check"></i><b>0.3</b> What we changed</a></li>
+<li class="chapter" data-level="0.4" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#who-should-read-this-book-and-when"><i class="fa fa-check"></i><b>0.4</b> Who should read this book, and when</a></li>
+<li class="chapter" data-level="0.5" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#welcome-to-resampling"><i class="fa fa-check"></i><b>0.5</b> Welcome to resampling</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html"><i class="fa fa-check"></i>Preface to the second edition</a><ul>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-the-resampling-method"><i class="fa fa-check"></i>Brief history of the resampling method</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-statistics"><i class="fa fa-check"></i>Brief history of statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#uses-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.1</b> Uses of Probability and Statistics</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#what-problems"><i class="fa fa-check"></i><b>1.2</b> What kinds of problems shall we solve?</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#probabilities-and-decisions"><i class="fa fa-check"></i><b>1.3</b> Probabilities and decisions</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#types-of-statistics"><i class="fa fa-check"></i><b>1.4</b> Types of statistics</a></li>
+<li class="chapter" data-level="1.5" data-path="introduction.html"><a href="introduction.html#limitations-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.5</b> Limitations of probability and statistics</a></li>
+<li class="chapter" data-level="1.6" data-path="introduction.html"><a href="introduction.html#why-is-statistics-such-a-difficult-subject"><i class="fa fa-check"></i><b>1.6</b> Why is Statistics Such a Difficult Subject?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="about-the-technology.html"><a href="about-the-technology.html"><i class="fa fa-check"></i><b>2</b> About the technology</a><ul>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#the-environment"><i class="fa fa-check"></i>The environment</a></li>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#running-the-code-on-your-own-computer"><i class="fa fa-check"></i>Running the code on your own computer</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="resampling-method.html"><a href="resampling-method.html"><i class="fa fa-check"></i><b>3</b> The Resampling method</a><ul>
+<li class="chapter" data-level="3.1" data-path="resampling-method.html"><a href="resampling-method.html#the-resampling-approach-in-action"><i class="fa fa-check"></i><b>3.1</b> The resampling approach in action</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-physical-methods"><i class="fa fa-check"></i><b>3.1.1</b> Randomness from physical methods</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-your-computer"><i class="fa fa-check"></i><b>3.2</b> Randomness from your computer</a></li>
+<li class="chapter" data-level="3.3" data-path="resampling-method.html"><a href="resampling-method.html#building-the-problem-using-r"><i class="fa fa-check"></i><b>3.3</b> Building the problem using R</a></li>
+<li class="chapter" data-level="3.4" data-path="resampling-method.html"><a href="resampling-method.html#how-resampling-differs-from-the-conventional-approach"><i class="fa fa-check"></i><b>3.4</b> How resampling differs from the conventional approach</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="resampling-with-code.html"><a href="resampling-with-code.html"><i class="fa fa-check"></i><b>4</b> Resampling with code</a></li>
+<li class="chapter" data-level="5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html"><i class="fa fa-check"></i><b>5</b> Basic Concepts in Probability and Statistics, Part 1</a><ul>
+<li class="chapter" data-level="5.1" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-nature-and-meaning-of-the-concept-of-probability"><i class="fa fa-check"></i><b>5.2</b> The nature and meaning of the concept of probability</a></li>
+<li class="chapter" data-level="5.3" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-meaning-of-probability"><i class="fa fa-check"></i><b>5.3</b> The “Meaning” of “Probability”</a></li>
+<li class="chapter" data-level="5.4" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#digression-about-operational-definitions"><i class="fa fa-check"></i><b>5.4</b> Digression about Operational Definitions</a></li>
+<li class="chapter" data-level="5.5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#back-to-proxies"><i class="fa fa-check"></i><b>5.5</b> Back to Proxies</a></li>
+<li class="chapter" data-level="5.6" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-various-ways-of-estimating-probabilities"><i class="fa fa-check"></i><b>5.6</b> The various ways of estimating probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html"><i class="fa fa-check"></i><b>6</b> Basic Concepts in Probability and Statistics, Part 2</a><ul>
+<li class="chapter" data-level="6.1" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-other-magnitudes"><i class="fa fa-check"></i><b>6.1</b> The relationship of probability to other magnitudes</a></li>
+<li class="chapter" data-level="6.2" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-concept-of-chance"><i class="fa fa-check"></i><b>6.2</b> The concept of chance</a></li>
+<li class="chapter" data-level="6.3" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#what-do-we-mean-by-chance"><i class="fa fa-check"></i><b>6.3</b> What Do We Mean by “Chance”?</a></li>
+<li class="chapter" data-level="6.4" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-philosophers-dispute-about-the-concept-of-probability"><i class="fa fa-check"></i><b>6.4</b> The philosophers’ dispute about the concept of probability</a></li>
+<li class="chapter" data-level="6.5" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-the-concept-of-resampling"><i class="fa fa-check"></i><b>6.5</b> The relationship of probability to the concept of resampling</a></li>
+<li class="chapter" data-level="6.6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#conclusion"><i class="fa fa-check"></i><b>6.6</b> Conclusion</a></li>
+<li class="chapter" data-level="6.7" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#endnote"><i class="fa fa-check"></i><b>6.7</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html"><i class="fa fa-check"></i><b>7</b> Probability Theory, Part 1</a><ul>
+<li class="chapter" data-level="7.1" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#definitions"><i class="fa fa-check"></i><b>7.2</b> Definitions</a></li>
+<li class="chapter" data-level="7.3" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#theoretical-and-historical-methods-of-estimation"><i class="fa fa-check"></i><b>7.3</b> Theoretical and historical methods of estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#samples-and-universes"><i class="fa fa-check"></i><b>7.4</b> Samples and universes</a></li>
+<li class="chapter" data-level="7.5" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-conventions-of-probability"><i class="fa fa-check"></i><b>7.5</b> The conventions of probability</a></li>
+<li class="chapter" data-level="7.6" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-deductive-formulaic-method"><i class="fa fa-check"></i><b>7.6</b> The deductive formulaic method</a></li>
+<li class="chapter" data-level="7.7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#multiplication-rule"><i class="fa fa-check"></i><b>7.7</b> Multiplication rule</a></li>
+<li class="chapter" data-level="7.8" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#conditional-and-unconditional-probabilities"><i class="fa fa-check"></i><b>7.8</b> Conditional and unconditional probabilities</a></li>
+<li class="chapter" data-level="7.9" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-skins-again-plus-leaving-the-game-early"><i class="fa fa-check"></i><b>7.9</b> The skins again, plus leaving the game early</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html"><i class="fa fa-check"></i><b>8</b> Probability Theory Part I (continued)</a><ul>
+<li class="chapter" data-level="8.1" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-special-case-of-independence"><i class="fa fa-check"></i><b>8.1</b> The special case of independence</a></li>
+<li class="chapter" data-level="8.2" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-of-probabilities"><i class="fa fa-check"></i><b>8.2</b> The addition of probabilities</a></li>
+<li class="chapter" data-level="8.3" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-rule"><i class="fa fa-check"></i><b>8.3</b> The addition rule</a></li>
+<li class="chapter" data-level="8.4" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#theoretical-devices-for-the-study-of-probability"><i class="fa fa-check"></i><b>8.4</b> Theoretical devices for the study of probability</a></li>
+<li class="chapter" data-level="8.5" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-concept-of-sample-space"><i class="fa fa-check"></i><b>8.5</b> The Concept of Sample Space</a></li>
+<li class="chapter" data-level="8.6" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#endnotes"><i class="fa fa-check"></i><b>8.6</b> Endnotes</a></li>
+<li class="chapter" data-level="8.7" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#afternote-useful-hints-about-simple-numbers"><i class="fa fa-check"></i><b>8.7</b> Afternote: Useful hints about simple numbers</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html"><i class="fa fa-check"></i><b>9</b> Probability Theory, Part 2: Compound Probability</a><ul>
+<li class="chapter" data-level="9.1" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#introduction-3"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#puzzle-problems"><i class="fa fa-check"></i><b>9.2</b> Puzzle Problems</a></li>
+<li class="chapter" data-level="9.3" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#examples-of-basic-problems-in-probability"><i class="fa fa-check"></i><b>9.3</b> Examples of basic problems in probability</a></li>
+<li class="chapter" data-level="9.4" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#the-concepts-of-replacement-and-non-replacement"><i class="fa fa-check"></i><b>9.4</b> The concepts of replacement and non-replacement</a></li>
+<li class="chapter" data-level="9.5" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#endnotes-1"><i class="fa fa-check"></i><b>9.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html"><i class="fa fa-check"></i><b>10</b> Probability Theory, Part 3</a><ul>
+<li class="chapter" data-level="10.1" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-1-the-birthday-problem-illustrating-the-probability-of-duplication-in-a-multi-outcome-sample-from-an-infinite-universefile-birthday"><i class="fa fa-check"></i><b>10.1</b> Example 7-1: The Birthday Problem, Illustrating the Probability of Duplication in a Multi-Outcome Sample from an Infinite Universe(File “Birthday”)</a></li>
+<li class="chapter" data-level="10.2" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-2-three-daughters-among-four-children-illustrating-a-problem-with-two-outcomes-binomial-1-and-sampling-with-replacement-among-equally-likely-outcomes."><i class="fa fa-check"></i><b>10.2</b> Example 7-2: Three Daughters Among Four Children, Illustrating A Problem With Two Outcomes (Binomial <span class="math display">\[1\]</span>) And Sampling With Replacement Among Equally Likely Outcomes.</a></li>
+<li class="chapter" data-level="10.3" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#variations-of-the-daughters-problem"><i class="fa fa-check"></i><b>10.3</b> Variations of the daughters problem</a></li>
+<li class="chapter" data-level="10.4" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#a-note-on-clarifying-and-labeling-problems"><i class="fa fa-check"></i><b>10.4</b> A note on clarifying and labeling problems</a></li>
+<li class="chapter" data-level="10.5" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#binomial-trials"><i class="fa fa-check"></i><b>10.5</b> Binomial trials</a></li>
+<li class="chapter" data-level="10.6" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-3-three-or-more-successful-basketball-shots-in-five-attempts-two-outcome-sampling-with-unequally-likely-outcomes-with-replacementa-binomial-experiment"><i class="fa fa-check"></i><b>10.6</b> Example 7-3: Three or More Successful Basketball Shots in Five Attempts (Two-Outcome Sampling with Unequally-Likely Outcomes, with Replacement—A Binomial Experiment)</a></li>
+<li class="chapter" data-level="10.7" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#note-to-the-student-of-analytic-probability-theory"><i class="fa fa-check"></i><b>10.7</b> Note to the student of analytic probability theory</a></li>
+<li class="chapter" data-level="10.8" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-4-one-in-the-black-two-in-the-white-and-no-misses-in-three-archery-shotsmultiple-outcome-multinomial-sampling-with-unequally-likely-outcomes-with-replacement."><i class="fa fa-check"></i><b>10.8</b> Example 7-4: One in the Black, Two in the White, and No Misses in Three Archery Shots(Multiple Outcome <span class="math display">\[Multinomial\]</span> Sampling With Unequally Likely Outcomes; with Replacement.)</a></li>
+<li class="chapter" data-level="10.9" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-5-two-groups-of-heart-patients"><i class="fa fa-check"></i><b>10.9</b> Example 7-5: Two Groups of Heart Patients</a></li>
+<li class="chapter" data-level="10.10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-6-dispersion-of-a-sum-of-random-variableshammer-lengthsheads-and-handles"><i class="fa fa-check"></i><b>10.10</b> Example 7-6: Dispersion of a Sum of Random Variables—Hammer Lengths—Heads and Handles</a></li>
+<li class="chapter" data-level="10.11" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-7-the-product-of-random-variablestheft-by-employees"><i class="fa fa-check"></i><b>10.11</b> Example 7-7: The Product of Random Variables—Theft by Employees</a></li>
+<li class="chapter" data-level="10.12" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-8-flipping-pennies-to-the-end"><i class="fa fa-check"></i><b>10.12</b> Example 7-8: Flipping Pennies to the End</a></li>
+<li class="chapter" data-level="10.13" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-9-a-drunks-random-walk"><i class="fa fa-check"></i><b>10.13</b> Example 7-9: A Drunk’s Random Walk</a></li>
+<li class="chapter" data-level="10.14" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-10"><i class="fa fa-check"></i><b>10.14</b> Example 7-10</a></li>
+<li class="chapter" data-level="10.15" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#the-general-procedure"><i class="fa fa-check"></i><b>10.15</b> The general procedure</a></li>
+<li class="chapter" data-level="10.16" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#endnotes-2"><i class="fa fa-check"></i><b>10.16</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><i class="fa fa-check"></i><b>11</b> Probability Theory, Part 4: Estimating Probabilities from Finite Universes</a><ul>
+<li class="chapter" data-level="11.1" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#introduction-4"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
+<li class="chapter" data-level="11.2" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#some-building-block-programs"><i class="fa fa-check"></i><b>11.2</b> Some building-block programs</a></li>
+<li class="chapter" data-level="11.3" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#problems-in-finite-universes"><i class="fa fa-check"></i><b>11.3</b> Problems in finite universes</a></li>
+<li class="chapter" data-level="11.4" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-1-what-is-the-probability-of-selecting-four-girls-and-one-boy-when-selecting-five-students-from-any-group-of-twenty-five-girls-and-twenty-five-boys-sampling-without-replacement-when-there-are-two-outcomes-and-the-order-does-not-matter"><i class="fa fa-check"></i><b>11.4</b> Example 8-1: What is the Probability of Selecting Four Girls and One Boy When Selecting Five Students From Any Group of Twenty-five Girls and Twenty-five Boys? (Sampling Without Replacement When There are Two Outcomes and the Order Does Not Matter)</a></li>
+<li class="chapter" data-level="11.5" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-2-nine-spades-and-four-clubs-in-a-bridge-hand-multiple-outcome-sampling-without-replacement-order-does-not-matter"><i class="fa fa-check"></i><b>11.5</b> Example 8-2: Nine Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)</a></li>
+<li class="chapter" data-level="11.6" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-3-a-total-of-fifteen-points-in-a-bridge-hand-when-ace-4-king-3-queen-2-and-jack-1."><i class="fa fa-check"></i><b>11.6</b> Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace = 4, King = 3, Queen = 2, and Jack = 1.</a></li>
+<li class="chapter" data-level="11.7" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-4-four-girls-and-then-one-boy-from-twenty-five-girls-and-twenty-five-boys-order-matters-sampling-without-replacement-two-outcomes-several-of-each-item"><i class="fa fa-check"></i><b>11.7</b> Example 8-4: Four Girls and Then One Boy From Twenty-five Girls and Twenty-five Boys Order Matters, Sampling Without Replacement, Two Outcomes, Several of Each Item</a></li>
+<li class="chapter" data-level="11.8" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-5-four-or-more-couples-getting-their-own-partners-when-ten-couples-are-paired-randomly-probability-of-matching-by-chance"><i class="fa fa-check"></i><b>11.8</b> Example 8-5: Four or More Couples Getting Their Own Partners When Ten Couples are Paired Randomly (Probability of Matching by Chance)</a></li>
+<li class="chapter" data-level="11.9" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-6-matching-santa-hats-another-famous-problem-of-this-sort-the-hat-checker-at-a-restaurant-mixes-up-the-hats-of-a-party-of-6.-what-is-the-probability-that-at-least-one-will-get-his-own-hat"><i class="fa fa-check"></i><b>11.9</b> Example 8-6: Matching Santa Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6. What is the probability that at least one will get his own hat?</a></li>
+<li class="chapter" data-level="11.10" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-7-twenty-executives-are-to-be-assigned-to-two-divisions-of-a-firm"><i class="fa fa-check"></i><b>11.10</b> Example 8-7: Twenty executives are to be assigned to two divisions of a firm</a></li>
+<li class="chapter" data-level="11.11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-8-executives-moving"><i class="fa fa-check"></i><b>11.11</b> Example 8-8: Executives Moving</a></li>
+<li class="chapter" data-level="11.12" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-9-state-liquor-systems-again"><i class="fa fa-check"></i><b>11.12</b> Example 8-9: State Liquor Systems Again</a></li>
+<li class="chapter" data-level="11.13" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-10-a-compound-problem-five-or-more-spades-in-one-bridge-hand-and-four-girls-and-a-boy-in-a-five-child-family"><i class="fa fa-check"></i><b>11.13</b> Example 8-10: A Compound Problem: Five or More Spades in One Bridge Hand, and Four Girls and a Boy in a Five-Child Family</a></li>
+<li class="chapter" data-level="11.14" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#summary"><i class="fa fa-check"></i><b>11.14</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html"><i class="fa fa-check"></i><b>12</b> On Variability in Sampling</a><ul>
+<li class="chapter" data-level="12.1" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#variability-and-small-samples"><i class="fa fa-check"></i><b>12.1</b> Variability and small samples</a></li>
+<li class="chapter" data-level="12.2" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#regression-to-the-mean"><i class="fa fa-check"></i><b>12.2</b> Regression to the mean</a></li>
+<li class="chapter" data-level="12.3" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#summary-and-conclusion"><i class="fa fa-check"></i><b>12.3</b> Summary and conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html"><i class="fa fa-check"></i><b>13</b> The Procedures of Monte Carlo Simulation (and Resampling)</a><ul>
+<li class="chapter" data-level="13.1" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#a-definition-and-general-procedure-for-monte-carlo-simulation"><i class="fa fa-check"></i><b>13.1</b> A definition and general procedure for Monte Carlo simulation</a></li>
+<li class="chapter" data-level="13.2" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#summary-1"><i class="fa fa-check"></i><b>13.2</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html"><i class="fa fa-check"></i><b>14</b> The Basic Ideas in Statistical Inference</a><ul>
+<li class="chapter" data-level="14.1" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#knowledge-without-probabilistic-statistical-inference"><i class="fa fa-check"></i><b>14.1</b> Knowledge without probabilistic statistical inference</a></li>
+<li class="chapter" data-level="14.2" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#the-treatment-of-uncertainty"><i class="fa fa-check"></i><b>14.2</b> The treatment of uncertainty</a></li>
+<li class="chapter" data-level="14.3" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#where-statistical-inference-becomes-crucial"><i class="fa fa-check"></i><b>14.3</b> Where statistical inference becomes crucial</a></li>
+<li class="chapter" data-level="14.4" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#conclusions"><i class="fa fa-check"></i><b>14.4</b> Conclusions</a></li>
+<li class="chapter" data-level="14.5" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#endnotes-3"><i class="fa fa-check"></i><b>14.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html"><i class="fa fa-check"></i><b>15</b> Introduction to Statistical Inference</a><ul>
+<li class="chapter" data-level="15.1" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#statistical-inference-and-random-sampling"><i class="fa fa-check"></i><b>15.1</b> Statistical inference and random sampling</a></li>
+<li class="chapter" data-level="15.2" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#summary-and-conclusions"><i class="fa fa-check"></i><b>15.2</b> Summary and conclusions</a></li>
+<li class="chapter" data-level="15.3" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#endnotes-4"><i class="fa fa-check"></i><b>15.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="point-estimation.html"><a href="point-estimation.html"><i class="fa fa-check"></i><b>16</b> Point Estimation</a><ul>
+<li class="chapter" data-level="16.1" data-path="point-estimation.html"><a href="point-estimation.html#ways-to-estimate-the-mean"><i class="fa fa-check"></i><b>16.1</b> Ways to estimate the mean</a></li>
+<li class="chapter" data-level="16.2" data-path="point-estimation.html"><a href="point-estimation.html#criteria-of-estimates"><i class="fa fa-check"></i><b>16.2</b> Criteria of estimates</a></li>
+<li class="chapter" data-level="16.3" data-path="point-estimation.html"><a href="point-estimation.html#estimation-of-accuracy-of-the-point-estimate"><i class="fa fa-check"></i><b>16.3</b> Estimation of accuracy of the point estimate</a></li>
+<li class="chapter" data-level="16.4" data-path="point-estimation.html"><a href="point-estimation.html#uses-of-the-mean"><i class="fa fa-check"></i><b>16.4</b> Uses of the mean</a></li>
+<li class="chapter" data-level="16.5" data-path="point-estimation.html"><a href="point-estimation.html#conclusion-1"><i class="fa fa-check"></i><b>16.5</b> Conclusion</a></li>
+<li class="chapter" data-level="16.6" data-path="point-estimation.html"><a href="point-estimation.html#endnotes-5"><i class="fa fa-check"></i><b>16.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html"><i class="fa fa-check"></i><b>17</b> Framing Statistical Questions</a><ul>
+<li class="chapter" data-level="17.1" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#introduction-5"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
+<li class="chapter" data-level="17.2" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#translating-scientific-questions-into-probabilistic-and-statistical-questions"><i class="fa fa-check"></i><b>17.2</b> Translating scientific questions into probabilistic and statistical questions</a></li>
+<li class="chapter" data-level="17.3" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#the-three-types-of-questions"><i class="fa fa-check"></i><b>17.3</b> The three types of questions</a></li>
+<li class="chapter" data-level="17.4" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#summary-2"><i class="fa fa-check"></i><b>17.4</b> Summary</a></li>
+<li class="chapter" data-level="17.5" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#endnotes-6"><i class="fa fa-check"></i><b>17.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html"><i class="fa fa-check"></i><b>18</b> Hypothesis-Testing with Counted Data, Part 1</a><ul>
+<li class="chapter" data-level="18.1" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#introduction-6"><i class="fa fa-check"></i><b>18.1</b> Introduction</a></li>
+<li class="chapter" data-level="18.2" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#should-a-single-sample-of-counted-data-be-considered-different-from-a-benchmark-universe"><i class="fa fa-check"></i><b>18.2</b> Should a single sample of counted data be considered different from a benchmark universe?</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html"><i class="fa fa-check"></i><b>19</b> The Concept of Statistical Significance in Testing Hypotheses</a><ul>
+<li class="chapter" data-level="19.1" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-logic-of-hypothesis-tests"><i class="fa fa-check"></i><b>19.1</b> The logic of hypothesis tests</a></li>
+<li class="chapter" data-level="19.2" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-concept-of-statistical-significance"><i class="fa fa-check"></i><b>19.2</b> The concept of statistical significance</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><i class="fa fa-check"></i><b>20</b> The Statistics of Hypothesis-Testing with Counted Data, Part 2</a><ul>
+<li class="chapter" data-level="20.1" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#comparisons-among-more-than-two-samples-of-counted-data"><i class="fa fa-check"></i><b>20.1</b> Comparisons among more than two samples of counted data</a></li>
+<li class="chapter" data-level="20.2" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#paired-comparisons-with-counted-data"><i class="fa fa-check"></i><b>20.2</b> Paired Comparisons With Counted Data</a></li>
+<li class="chapter" data-level="20.3" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#endnotes-7"><i class="fa fa-check"></i><b>20.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html"><i class="fa fa-check"></i><b>21</b> The Statistics of Hypothesis-Testing With Measured Data</a><ul>
+<li class="chapter" data-level="21.1" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#differences-among-four-means"><i class="fa fa-check"></i><b>21.1</b> Differences among four means</a></li>
+<li class="chapter" data-level="21.2" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#using-squared-differences"><i class="fa fa-check"></i><b>21.2</b> Using Squared Differences</a></li>
+<li class="chapter" data-level="21.3" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#endnotes-8"><i class="fa fa-check"></i><b>21.3</b> Endnotes</a></li>
+<li class="chapter" data-level="21.4" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#exercises"><i class="fa fa-check"></i><b>21.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html"><i class="fa fa-check"></i><b>22</b> General Procedures for Testing Hypotheses</a><ul>
+<li class="chapter" data-level="22.1" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#introduction-7"><i class="fa fa-check"></i><b>22.1</b> Introduction</a></li>
+<li class="chapter" data-level="22.2" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#canonical-question-and-answer-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.2</b> Canonical question-and-answer procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.3" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#skeleton-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.3</b> Skeleton procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.4" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#an-example-can-the-bio-engineer-increase-the-female-calf-rate"><i class="fa fa-check"></i><b>22.4</b> An example: can the bio-engineer increase the female calf rate?</a></li>
+<li class="chapter" data-level="22.5" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#conventional-methods"><i class="fa fa-check"></i><b>22.5</b> Conventional methods</a></li>
+<li class="chapter" data-level="22.6" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#choice-of-the-benchmark-universe1"><i class="fa fa-check"></i><b>22.6</b> Choice of the benchmark universe1</a></li>
+<li class="chapter" data-level="22.7" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#why-is-statisticsand-hypothesis-testingso-difficult"><i class="fa fa-check"></i><b>22.7</b> Why is statistics—and hypothesis testing—so difficult?</a></li>
+<li class="chapter" data-level="22.8" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#endnote-1"><i class="fa fa-check"></i><b>22.8</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="23" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><i class="fa fa-check"></i><b>23</b> Confidence Intervals, Part 1: Assessing the Accuracy of Samples</a><ul>
+<li class="chapter" data-level="23.1" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#introduction-8"><i class="fa fa-check"></i><b>23.1</b> Introduction</a></li>
+<li class="chapter" data-level="23.2" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#estimating-the-accuracy-of-a-sample-mean"><i class="fa fa-check"></i><b>23.2</b> Estimating the accuracy of a sample mean</a></li>
+<li class="chapter" data-level="23.3" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#the-logic-of-confidence-intervals"><i class="fa fa-check"></i><b>23.3</b> The logic of confidence intervals</a></li>
+<li class="chapter" data-level="23.4" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#computing-confidence-intervals"><i class="fa fa-check"></i><b>23.4</b> Computing confidence intervals</a></li>
+<li class="chapter" data-level="23.5" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#procedure-for-estimating-confidence-intervals"><i class="fa fa-check"></i><b>23.5</b> Procedure for estimating confidence intervals</a></li>
+<li class="chapter" data-level="23.6" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#summary-3"><i class="fa fa-check"></i><b>23.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><i class="fa fa-check"></i><b>24</b> Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals</a><ul>
+<li class="chapter" data-level="24.1" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-1-the-distance-between-sample-and-population-mean"><i class="fa fa-check"></i><b>24.1</b> Approach 1: The distance between sample and population mean</a></li>
+<li class="chapter" data-level="24.2" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#conventional-calculational-methods"><i class="fa fa-check"></i><b>24.2</b> Conventional Calculational Methods</a></li>
+<li class="chapter" data-level="24.3" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#confidence-intervals-empiricallywith-resampling"><i class="fa fa-check"></i><b>24.3</b> Confidence Intervals Empirically—With Resampling</a></li>
+<li class="chapter" data-level="24.4" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-2-probability-of-various-universes-producing-this-sample"><i class="fa fa-check"></i><b>24.4</b> Approach 2: Probability of various universes producing this sample</a></li>
+<li class="chapter" data-level="24.5" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#interpretation-of-approach-2"><i class="fa fa-check"></i><b>24.5</b> Interpretation of Approach 2</a></li>
+<li class="chapter" data-level="24.6" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#exercises-1"><i class="fa fa-check"></i><b>24.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="25" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html"><i class="fa fa-check"></i><b>25</b> And Some Last Words About the Reliability of Sample Averages</a><ul>
+<li class="chapter" data-level="25.1" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#the-problem-of-uncertainty-about-the-dispersion"><i class="fa fa-check"></i><b>25.1</b> The problem of uncertainty about the dispersion</a></li>
+<li class="chapter" data-level="25.2" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#notes-on-the-use-of-confidence-intervals"><i class="fa fa-check"></i><b>25.2</b> Notes on the use of confidence intervals</a></li>
+<li class="chapter" data-level="25.3" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#overall-summary-and-conclusions-about-confidence-intervals"><i class="fa fa-check"></i><b>25.3</b> Overall summary and conclusions about confidence intervals</a></li>
+<li class="chapter" data-level="25.4" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#endnote-2"><i class="fa fa-check"></i><b>25.4</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="26" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html"><i class="fa fa-check"></i><b>26</b> Correlation and Causation</a><ul>
+<li class="chapter" data-level="26.1" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#preview"><i class="fa fa-check"></i><b>26.1</b> Preview</a></li>
+<li class="chapter" data-level="26.2" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#introduction-to-correlation-and-causation"><i class="fa fa-check"></i><b>26.2</b> Introduction to correlation and causation</a></li>
+<li class="chapter" data-level="26.3" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#a-note-on-association-compared-to-testing-a-hypothesis"><i class="fa fa-check"></i><b>26.3</b> A Note on Association Compared to Testing a Hypothesis</a></li>
+<li class="chapter" data-level="26.4" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#correlation-sum-of-products"><i class="fa fa-check"></i><b>26.4</b> Correlation: sum of products</a></li>
+<li class="chapter" data-level="26.5" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#exercises-2"><i class="fa fa-check"></i><b>26.5</b> Exercises</a></li>
+<li class="chapter" data-level="26.6" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#endnotes-9"><i class="fa fa-check"></i><b>26.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="27" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html"><i class="fa fa-check"></i><b>27</b> How Large a Sample?</a><ul>
+<li class="chapter" data-level="27.1" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#issues-in-determining-sample-size"><i class="fa fa-check"></i><b>27.1</b> Issues in determining sample size</a></li>
+<li class="chapter" data-level="27.2" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#some-practical-examples"><i class="fa fa-check"></i><b>27.2</b> Some practical examples</a></li>
+<li class="chapter" data-level="27.3" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#step-wise-sample-size-determination"><i class="fa fa-check"></i><b>27.3</b> Step-wise sample-size determination</a></li>
+<li class="chapter" data-level="27.4" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#summary-4"><i class="fa fa-check"></i><b>27.4</b> Summary</a></li>
+<li class="chapter" data-level="27.5" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#endnotes-10"><i class="fa fa-check"></i><b>27.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="28" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html"><i class="fa fa-check"></i><b>28</b> Bayesian Analysis by Simulation</a><ul>
+<li class="chapter" data-level="28.1" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#simple-decision-problems"><i class="fa fa-check"></i><b>28.1</b> Simple decision problems</a></li>
+<li class="chapter" data-level="28.2" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#problems-based-on-normal-and-other-distributions"><i class="fa fa-check"></i><b>28.2</b> Problems based on normal and other distributions</a></li>
+<li class="chapter" data-level="28.3" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#endnotes-11"><i class="fa fa-check"></i><b>28.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="29" data-path="exercise-solutions.html"><a href="exercise-solutions.html"><i class="fa fa-check"></i><b>29</b> Exercise Solutions</a><ul>
+<li class="chapter" data-level="29.1" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-18-2"><i class="fa fa-check"></i><b>29.1</b> Solution 18-2</a></li>
+<li class="chapter" data-level="29.2" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-1"><i class="fa fa-check"></i><b>29.2</b> Solution 21-1</a></li>
+<li class="chapter" data-level="29.3" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-2"><i class="fa fa-check"></i><b>29.3</b> Solution 21-2</a></li>
+<li class="chapter" data-level="29.4" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-3"><i class="fa fa-check"></i><b>29.4</b> Solution 21-3</a></li>
+<li class="chapter" data-level="29.5" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-1"><i class="fa fa-check"></i><b>29.5</b> Solution 23-1</a></li>
+<li class="chapter" data-level="29.6" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-2"><i class="fa fa-check"></i><b>29.6</b> Solution 23-2</a></li>
+<li class="chapter" data-level="29.7" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-3"><i class="fa fa-check"></i><b>29.7</b> Solution 23-3</a></li>
+<li class="chapter" data-level="29.8" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-4"><i class="fa fa-check"></i><b>29.8</b> Solution 23-4</a></li>
+</ul></li>
+<li class="chapter" data-level="30" data-path="technical-note-to-the-professional-reader.html"><a href="technical-note-to-the-professional-reader.html"><i class="fa fa-check"></i><b>30</b> Technical Note to the Professional Reader</a></li>
+<li class="chapter" data-level="31" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i><b>31</b> Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Resampling statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="the-statistics-of-hypothesis-testing-with-measured-data" class="section level1">
+<h1><span class="header-section-number">21</span> The Statistics of Hypothesis-Testing With Measured Data</h1>
+<p>Chapters 15 and 17 discussed testing a hypothesis with data that either
+arrive in dichotomized (yes-no) form, or come as data in situations
+where it is convenient to dichotomize. We next consider hypothesis
+testing using measured data. Conventional statistical practice employs
+such devices as the “t-test” and “analysis of variance.” In contrast to
+those complex devices, the resampling method does not differ greatly
+from what has been discussed in previous chapters.</p>
+<p><strong>Example 18-1: The Pig Rations Still Once Again, Using Measured Data</strong>
+(Testing for the Difference Between Means of Two Equal-Sized Samples of
+Measured-Data Observations) (Program “Pigs3”)</p>
+<p>Let us now treat the pig-food problem without converting the
+quantitative data into qualitative data, because a conversion always
+loses information.</p>
+<p>The term “lose information” can be understood intuitively. Consider two
+sets of three sacks of corn. Set A includes sacks containing,
+respectively, one pound, two pounds, and three pounds. Set B includes
+sacks of one pound, two pounds, and a hundred pounds. If we <em>rank</em> the
+sacks by weight, the two sets can no longer be distinguished. The
+one-pound and two-pound sacks have ranks one and two in both cases, and
+their relative places in their sets are the same. But if we know <em>not
+only</em> that the one-pound sack is the smallest of its set and the
+three-pound or hundred-pound sack is the largest, but <em>also</em> that the
+largest sack is three pounds (or a hundred pounds), we have more
+information about a set than if we only know the ranks of its sacks.</p>
+<p>Rank data are also known as “ordinal” data, whereas data measured in
+(say) pounds are known as “cardinal” data. Even though converting from
+cardinal (measured) to ordinal (ranked) data loses information, the
+conversion may increase convenience, and may therefore be worth doing in
+some cases.</p>
+<p><img src="images/22-Chap-18_000.gif" /></p>
+<p>We begin a measured-data procedure by noting that if the two pig foods
+are the same, then each of the observed weight gains came from the <em>same
+benchmark universe</em> . This is the basic tactic in our statistical
+strategy. That is, if the two foods came from the same universe, <em>our
+best guess about the composition of that universe is that it includes
+weight gains just like the twenty-four we have observed</em> , and in the
+same proportions, because that is all the information that we have about
+the universe; this is the bootstrap method. Since ours is (by
+definition) a sample from an infinite (or at least, a very large)
+universe of possible weight gains, we assume that there are <em>many</em>
+weight gains in the universe just like the ones we have observed, in the
+same proportion as we have observed them. For example, we assume that
+2/24 of the universe is composed of 34-pound weight gains, as seen in
+Figure 18-1:</p>
+<p><strong>Figure 18-1</strong></p>
+<p>We recognize, of course, that weight gains other than the exact ones we
+observed certainly would occur in repeated experiments. And if we
+thought it reasonable to do so, we could assume that the “distribution”
+of the weight gains would follow a regular “smooth” shape such as Figure
+18-2. But deciding just how to draw Figure 18-2 from the data in Figure
+18-1 requires that we make arbitrary assumptions about unknown
+conditions. And if we were to draw Figure 18-2 in a form that would be
+sufficiently regular for conventional mathematical analysis, we might
+have to make some <em>very strong</em> assumptions going far beyond the
+observed data.</p>
+<p>Drawing a smooth curve such as Figure 18-2 from the raw data in Figure
+18-1 might be satisfactory—if done with wisdom and good judgment. But
+there is no necessity to draw such a smooth curve, in this case or in
+most cases. We can proceed by assuming simply that the benchmark
+universe—the universe to which we shall compare our samples,
+conventionally</p>
+<p>Relative Probability</p>
+<p>called the “null” or “hypothetical” universe—is composed only of
+elements similar to the observations we have in hand. We thereby lose no
+efficiency and avoid making unsound assumptions.</p>
+<p><img src="images/22-Chap-18_001.png" /></p>
+<p>Size of Weight Gain, 30.2 = Mean</p>
+<p><strong>Figure 18-2</strong></p>
+<p>To carry out our procedure in practice: 1) Write down each of the
+twenty-four weight gains on a blank index card. We then have one card
+each for 31, 34, 29, 26, and so on. 2) Shuffle the twenty-four cards
+thoroughly, and pick one card. 3) Record the weight gain, and replace
+the card. (Recall that we are treating the weight gains as if they come
+from an infinite universe— that is, as if the probability of selecting
+any amount is the same no matter which others are selected randomly.
+Another way to say this is to state that each selection is independent
+of each other selection. If we did not replace the card before selecting
+the next weight gain, the selections would no longer be independent. See
+Chapter 6 for further discussion of this issue.) 4) Repeat this process
+until you have made two sets of 12 observations. 5) Call the first hand
+“food A” and the second hand “food B.” Determine the average weight gain
+for the two hands, and record it as in Table 18-1. Repeat this procedure
+many times.</p>
+<p>In operational steps:</p>
+<p><strong>Step 1.</strong> Write down each observed weight gain on a card, e.g. 31, 34,
+29...</p>
+<p><strong>Step 2.</strong> Shuffle and deal a card.</p>
+<p><strong>Step 3.</strong> Record the weight and replace the card.</p>
+<p><strong>Step 4.</strong> Repeat steps 2 and 3 eleven more times; call this group A.</p>
+<p><strong>Step 5.</strong> Repeat steps 2-3 another twelve times; call this group B.</p>
+<p><strong>Step 6.</strong> Calculate the mean weight gain of each group.</p>
+<p><strong>Step 7.</strong> Subtract the mean of group A from the mean of group B and
+record. If larger (more positive) than 3.16 (the difference between the
+observed means) or more negative than -3.16, record “more.” Otherwise
+record “less.”</p>
+<p><strong>Step 8.</strong> Repeat this procedure perhaps fifty times, and calculate the
+proportion “more.” This estimates the probability sought.</p>
+<p>In none of the first ten simulated trials did the difference in the
+means of the random hands exceed the observed difference (3.16 pounds,
+in the top line in the table) between foods A and B. (The difference
+between group <em>totals</em> tells the same story and is faster, requiring no
+division calculations.)</p>
+<p>In the old days before a computer was always easily available, I would
+quit making trials at such a point, confident that a difference in means
+as great as observed is not likely to happen by chance. (Using the
+convenient “multiplication rule” described in Chapter 5, we can estimate
+the probability of such an occurrence happening by chance in 10
+successive trials as 1/2 x 1/2 x 1/2 ... = (1/2) <sup>10</sup> = 1/1024 ~ .001
+= .1 percent, a small chance indeed.) Nevertheless, let us press on to
+do 50 trials.</p>
+<p>Table 18-1</p>
+<table style="width:97%;">
+<colgroup>
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Trial
+#</strong></td>
+<td><strong>Mean of
+First 12
+Observation
+s
+(First
+Hand)</strong></td>
+<td><strong>Mean of
+Second 12
+Observation
+s
+(Second
+Hand)</strong></td>
+<td><p><strong>Differenc
+e
+Greater
+or</strong></p>
+<p><strong>Less Than
+Observed
+Differenc</strong></p></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Observed</td>
+<td>382 /
+12=31.83</td>
+<td>344 /
+12=28.67</td>
+<td>3.16</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>368 /
+12=30.67</td>
+<td>357 /
+12=29.75</td>
+<td>.87</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>364 /
+12=30.33</td>
+<td>361 /
+12=30.08</td>
+<td>.25</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>352 /
+12=29.33</td>
+<td>373 /
+12=31.08</td>
+<td>(1.75)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>378 /
+12=31.50</td>
+<td>347 /
+12=28.92</td>
+<td>2.58</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>365 /
+12=30.42</td>
+<td>360 /
+12=30.00</td>
+<td>.42</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>352 /
+12=29.33</td>
+<td>373 /
+12=31.08</td>
+<td>(1.75)</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>355 /
+12=29.58</td>
+<td>370 /
+12=30.83</td>
+<td>(1.25)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>366 /
+12=30.50</td>
+<td>359 /
+12=29.92</td>
+<td>.58</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>360 /
+12=30.00</td>
+<td>365 /
+12=30.42</td>
+<td>(.42)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>355 /
+12=29.58</td>
+<td>370 /
+12=30.83</td>
+<td>(1.25)</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>359 /
+12=29.92</td>
+<td>366 /
+12=30.50</td>
+<td>(.58)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>369 /
+12=30.75</td>
+<td>356 /
+12=29.67</td>
+<td>1.08</td>
+<td>"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Results of Fifty Random Samples for the Problem “PIGS3”</strong></p>
+<p><strong>e</strong></p>
+<table style="width:97%;">
+<colgroup>
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Trial
+#</strong></td>
+<td><strong>Mean of
+First 12
+Observation
+s
+(First
+Hand)</strong></td>
+<td><strong>Mean of
+Second 12
+Observation
+s
+(Second
+Hand)</strong></td>
+<td><p><strong>Differenc
+e
+Greater
+or</strong></p>
+<p><strong>Less Than
+Observed
+Differenc</strong></p></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Observed</td>
+<td>382 /
+12=31.83</td>
+<td>344 /
+12=28.67</td>
+<td>3.16</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>360 /
+12=30.00</td>
+<td>365 /
+12=30.42</td>
+<td>(.42)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>377 /
+12=31.42</td>
+<td>348 /
+12=29.00</td>
+<td>2.42</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>365 /
+12=30.42</td>
+<td>360 /
+12=30.00</td>
+<td>.42</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>364 /
+12=30.33</td>
+<td>361 /
+12=30.08</td>
+<td>.25</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>363 /
+12=30.25</td>
+<td>362 /
+12=30.17</td>
+<td>.08</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td>365 /
+12=30.42</td>
+<td>360 /
+12=30.00</td>
+<td>.42</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td>369 /
+12=30.75</td>
+<td>356 /
+12=29.67</td>
+<td>1.08</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>369 /
+12=30.75</td>
+<td>356 /
+12=29.67</td>
+<td>1.08</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td>369 /
+12=30.75</td>
+<td>356 /
+12=29.67</td>
+<td>1.08</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>22</td>
+<td>364 /
+12=30.33</td>
+<td>361 /
+12=30.08</td>
+<td>.25</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>23</td>
+<td>363 /
+12=30.25</td>
+<td>362 /
+12=30.17</td>
+<td>.08</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>24</td>
+<td>363 /
+12=30.25</td>
+<td>362 /
+12=30.17</td>
+<td>.08</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>25</td>
+<td>364 /
+12=30.33</td>
+<td>361 /
+12=30.08</td>
+<td>.25</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>26</td>
+<td>359 /
+12=29.92</td>
+<td>366 /
+12=30.50</td>
+<td>(.58)</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>27</td>
+<td>362 /
+12=30.17</td>
+<td>363 /
+12=30.25</td>
+<td>(.08)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>28</td>
+<td>362 /
+12=30.17</td>
+<td>363 /
+12=30.25</td>
+<td>(.08)</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>29</td>
+<td>373 /
+12=31.08</td>
+<td>352 /
+12=29.33</td>
+<td>1.75</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>30</td>
+<td>367 /
+12=30.58</td>
+<td>358 /
+12=29.83</td>
+<td>.75</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>31</td>
+<td>376 /
+12=31.33</td>
+<td>349 /
+12=29.08</td>
+<td>2.25</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>32</td>
+<td>365 /
+12=30.42</td>
+<td>360 /
+12=30.00</td>
+<td>.42</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>33</td>
+<td>357 /
+12=29.75</td>
+<td>368 /
+12=30.67</td>
+<td>(1.42)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>34</td>
+<td>349 /
+12=29.08</td>
+<td>376 /
+12=31.33</td>
+<td>2.25</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>35</td>
+<td>356 /
+12=29.67</td>
+<td>396 /
+12=30.75</td>
+<td>(1.08)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>36</td>
+<td>359 /
+12=29.92</td>
+<td>366 /
+12=30.50</td>
+<td>(.58)</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>37</td>
+<td>372 /
+12=31.00</td>
+<td>353 /
+12=29.42</td>
+<td>1.58</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>38</td>
+<td>368 /
+12=30.67</td>
+<td>357 /
+12=29.75</td>
+<td>.92</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>39</td>
+<td>344 /
+12=28.67</td>
+<td>382 /
+12=31.81</td>
+<td>(3.16)</td>
+<td>Equal</td>
+</tr>
+<tr class="even">
+<td>40</td>
+<td>365 /
+12=30.42</td>
+<td>360 /
+12=30.00</td>
+<td>.42</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>41</td>
+<td>375 /
+12=31.25</td>
+<td>350 /
+12=29.17</td>
+<td>2.08</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>42</td>
+<td>353 /
+12=29.42</td>
+<td>372 /
+12=31.00</td>
+<td>(1.58)</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>43</td>
+<td>357 /
+12=29.75</td>
+<td>368 /
+12=30.67</td>
+<td>(.92)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>44</td>
+<td>363 /
+12=30.25</td>
+<td>362 /
+12=30.17</td>
+<td>.08</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>45</td>
+<td>353 /
+12=29.42</td>
+<td>372 /
+12=31.00</td>
+<td>(1.58)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>46</td>
+<td>354 /
+12=29.50</td>
+<td>371 /
+12=30.92</td>
+<td>(1.42)</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>47</td>
+<td>353 /
+12=29.42</td>
+<td>372 /
+12=31.00</td>
+<td>(1.58)</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>48</td>
+<td>366 /
+12=30.50</td>
+<td>350 /
+12=29.92</td>
+<td>.58</td>
+<td>Less</td>
+</tr>
+<tr class="odd">
+<td>49</td>
+<td>364 /
+12=30.53</td>
+<td>361 /
+12=30.08</td>
+<td>.25</td>
+<td>Less</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>370 /
+12=30.83</td>
+<td>355 /
+12=29.58</td>
+<td>1.25</td>
+<td>Less</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 18-1</strong> <strong><em>(continued)</em></strong></p>
+<p><strong>e</strong></p>
+<p>Table 18-1 shows fifty trials of which only one (the thirty-ninth) is as
+“far out” as the observed samples. These data give us an estimate of the
+probability that, if the two foods come from the same universe, a
+difference this great or greater would occur just by chance. (Compare
+this 2 percent estimate with the probability of roughly 1 percent
+estimated with the conventional <em>t</em> test—a “significance level” of 1
+percent.) On the average, the test described in this section yields a
+significance level as high as such mathematical-probability tests as the
+<em>t</em> test— that is, it is just as efficient—though the tests
+described in Examples 15-6 and 17-1 are likely to be less efficient
+because they convert measured data to ranked or classified data. <span class="math display">\[1\]</span></p>
+<p>It is <em>not</em> appropriate to say that these data give us an estimate of
+the probability that the foods “do not come” from the same universe.
+This is because we can <em>never</em> state a probability that a sample came
+from a given universe unless the alternatives are fully specified in
+advance. <sup>1</sup></p>
+<p>This example also illustrates how the <em>dispersion within samples</em>
+affects the difficulty of finding out whether the samples differ from
+each other. For example, the average weight gain for food A was 32
+pounds, versus 29 pounds for food B. If <em>all</em> the food A-fed pigs had
+gained weight within a range of say 29.9 and</p>
+<p>30.1 pounds, and if all the food B-fed pigs had gained weight within a
+range of 28.9 and 29.1 pounds—that is, if the highest weight gain in
+food B had been lower than the lowest weight gain in food A—then there
+would be no question that food A is better, and even fewer observations
+would have made this statistically conclusive. Variation (dispersion) is
+thus of great importance in statistics and in the social sciences. The
+larger the dispersion among the observations <em>within</em> the samples, the
+larger the <em>sample size</em> necessary to make a conclusive comparison
+between two groups or reliable estimates of summarization statistics.
+(The dispersion might be measured by the mean absolute deviation (the
+average absolute difference between the mean and the individual
+observations, treating both plus and minus differences as positive), the
+variance (the average <em>squared</em> difference between the mean and the
+observations), the standard deviation (the square root of the variance),
+the range (the difference between the smallest and largest
+observations), or some other device.)</p>
+<p>1 This short comment is the tip of the iceberg of an argument that has
+been going on for 200 years among statisticians. It needs much more
+discussion to be understandable or persuasive; for such discussion, see
+Simon (forthcoming).</p>
+<p>If you are performing your tests by hand rather than using a computer (a
+good exercise even nowadays when computers are so accessible), you might
+prefer to work with the median instead of the mean, because the median
+requires less computation. (The median also has the advantage of being
+less influenced by a single far-out observation that might be quite
+atypical; all measures have their special advantages and disadvantages.)
+Simply compare the difference in medians of the twelve-pig resamples to
+the difference in medians of the actual samples, just as was done with
+the means. The only operational difference is to substitute the word
+“median” for the word “mean” in the steps listed above. You may need a
+somewhat larger number of trials when working with medians, however, for
+they tend to be less precise than means.</p>
+<p>The RESAMPLING STATS program compares the difference in the sums of the
+weight gains for the actual pigs against the difference resulting from
+two randomly-chosen groups of pigs, using the same numerical weight
+gains of individual pigs as were obtained in the actual experiment. If
+the differences in average weight gains of the randomly ordered groups
+are rarely as large as the difference in weight gains from the actual
+sets of pigs fed food A-alpha and food B-beta, then we can conclude that
+the foods do make a difference in pigs’ weight gains.</p>
+<p>Note first that pigs in group A gained a total of 382 pounds while group
+B gained a total of 344 pounds—38 fewer. To minimize computations, we
+will deal with totals like these, not averages.</p>
+<p>First we construct vectors A and B of the weight gains of the pigs fed
+with the two foods. Then we combine the two vectors into one long vector
+and select two groups of 12 randomly and with replacement (the two
+SAMPLE commands). We SUM the weight gains for the two resamples, and
+calculate the difference. We keep SCORE of those differences, graph them
+on a HISTOGRAM, and see how many times resample A exceeded resample B by
+at least 38 pounds, or vice versa (we are testing whether the two are
+different, not whether food A produces larger weight gains).</p>
+<p><code>NUMBERS (31 34 29 26 32 35 38 34 31 29 32 31) a</code></p>
+<p>Record group a’s weight gains.</p>
+<p><code>NUMBERS (26 24 28 29 30 29 31 29 32 26 28 32) b</code></p>
+<p>Record group b’s weight gains.</p>
+<p><code>CONCAT a b c</code></p>
+<p>Combine a and b together in one long vector.</p>
+<p><code>REPEAT 1000</code></p>
+<p>Do 1000 experiments.</p>
+<p><code>SAMPLE 12 c d</code></p>
+<p>Take a “resample” of 12 with replacement from c and put it in d.</p>
+<p><code>SAMPLE 12 c e</code></p>
+<p>Take another “resample.”</p>
+<p><code>SUM d dd</code></p>
+<p>Sum the first “resample.”</p>
+<p><code>SUM e ee</code></p>
+<p>Sum the second “resample.”</p>
+<p><code>SUBTRACT dd ee f</code></p>
+<p>Calculate the difference between the two resamples.</p>
+<p><code>SCORE f z</code></p>
+<p>Keep track of each trial result.</p>
+<p><code>END</code></p>
+<p>End one experiment, go back and repeat until all trials are complete,
+then proceed.</p>
+<p><code>HISTOGRAM z</code></p>
+<p>Produce a histogram of trial results.</p>
+<p><strong>PIGS3: Difference Between Two Resamples</strong></p>
+<p>Sum of Weight Gains</p>
+<p><img src="images/22-Chap-18_002.png" /></p>
+<p><strong>1</strong> <strong>st</strong> <strong>resample less 2</strong> <strong>nd</strong></p>
+<p>From this histogram we see that none of the trials produced a difference
+between groups as large as that observed (or larger). RESAMPLING STATS
+will calculate this for us with the following commands:</p>
+<p><code>COUNT z &gt;= 38 k</code></p>
+<p>Determine how many of the trials produced a difference between resamples</p>
+<p>&gt;= 38.</p>
+<p><code>COUNT z &lt;= -38 l</code></p>
+<p>Likewise for a difference of -38.</p>
+<p><code>ADD k l m</code></p>
+<p>Add the two together.</p>
+<p><code>DIVIDE m 1000 mm</code></p>
+<p>Convert to a proportion.</p>
+<p><code>PRINT mm</code></p>
+<p>Print the result.</p>
+<p>Note: The file “pigs3” on the Resampling Stats software disk contains
+this set of commands.</p>
+<p><strong>Example 18-2: Is There a Difference in Liquor Prices Between State-Run
+and Privately-Run Systems?</strong> (Testing for Differences Between Means of
+Unequal-Sized Samples of Measured Data)</p>
+<p>In the 1960s I studied the price of liquor in the sixteen “monopoly”
+states (where the state government owns the retail liquor stores)
+compared to the twenty-six states in which retail liquor stores are
+privately owned. (Some states were omitted for technical reasons. And it
+is interesting to note that the situation and the price pattern has
+changed radically since then.) These data were introduced in the context
+of a problem in probability in Chapter 7.</p>
+<p>These were the representative 1961 prices of a fifth of Seagram 7 Crown
+whiskey in the two sets of states:</p>
+<p>16 monopoly states: $4.65, $4.55, $4.11, $4.15, $4.20, $4.55,
+$3.80,</p>
+<p>$4.00, $4.19, $4.75, $4.74, $4.50, $4.10, $4.00, $5.05, $4.20</p>
+<p>Mean = $4.35</p>
+<p>26 private-ownership states: $4.82, $5.29, $4.89, $4.95, $4.55,
+$4.90,</p>
+<p>$5.25, $5.30, $4.29, $4.85, $4.54, $4.75, $4.85, $4.85, $4.50,
+$4.75,</p>
+<p>$4.79, $4.85, $4.79, $4.95, $4.95, $4.75, $5.20, $5.10, $4.80,
+$4.29.</p>
+<p>Mean = $4.84</p>
+<p>The <em>economic</em> question that underlay the investigation—having both
+theoretical and policy ramifications—is as follows: Does state
+ownership affect prices? The <em>empirical</em> question is whether the prices
+in the two sets of states were systematically different. In
+<em>statistical</em> terms, we wish to test the hypothesis that there was a
+difference between the groups of states related to their mode of liquor
+distribution, or whether the observed $.49 differential in means might
+well have occurred by happenstance. In other words, we want to know
+whether the two sub-groups of states differed systematically in their
+liquor prices, or whether the observed pattern could well have been
+produced by chance variability.</p>
+<p>The first step is to examine the two sets of data graphically to see
+whether there was such a clear-cut difference between them—of the
+order of Snow’s data on cholera, or the Japanese Navy data on
+beri-beri—that no test was necessary. The separate displays, and then
+the two combined together, are shown in Figure 7-2; the answer is not
+clear-cut and hence a formal test is necessary.</p>
+<p><img src="images/22-Chap-18_003.png" /></p>
+<p>GOVERNMENT</p>
+<p>5</p>
+<p>0</p>
+<p>350 400 450 500 550</p>
+<p>Cents</p>
+<p>Mean: $4.35</p>
+<p><img src="images/22-Chap-18_004.png" /></p>
+<p>PRIVATE</p>
+<p>5</p>
+<p>0</p>
+<p>350 400 450 500 550</p>
+<p>Cents</p>
+<p>Mean: $4.84</p>
+<p><img src="images/22-Chap-18_005.png" /></p>
+<p>PRIVATE + GOVERNMENT</p>
+<p>5</p>
+<p>0</p>
+<p>350 400 450 500 550</p>
+<p>Cents</p>
+<p><strong>Figure 7-2 (repeated)</strong></p>
+<p>At first I used a resampling permutation test as follows: Assuming that
+the entire universe of possible prices consists of the set of events
+that were observed, because that is all the information available about
+the universe, I wrote each of the forty-two observed state prices on a
+separate card. The shuffled deck simulated a situation in which each
+state has an equal chance for each price.</p>
+<p>On the “null hypothesis” that the two groups’ prices do <em>not</em> reflect
+different price-setting mechanisms, but rather differ only by chance, I
+then examined how often that simulated universe stochastically produces
+groups with results as different as observed in 1961. I repeatedly dealt
+groups of 16 and 26 cards, without replacing the cards, to simulate
+hypothetical monopoly-state and private-state samples, each time
+calculating the difference in mean prices.</p>
+<p>The probability that the benchmark null-hypothesis universe would
+produce a difference between groups as large or larger than observed in
+1961 is estimated by how frequently the mean of the group of
+randomly-chosen sixteen prices from the simulated state-ownership
+universe is less than (or equal to) the mean of the actual sixteen
+state-ownership prices. If the simulated difference between the
+randomly-chosen groups was frequently equal to or greater than observed
+in 1961, one would not conclude that the observed difference was due to
+the type of retailing system because it could well have been due to
+chance variation.</p>
+<p>The results—not even one “success” in 10,000 trials—imply that there
+is a very small probability that two groups with mean prices as
+different as were observed would happen by chance if drawn from the
+universe of 42 observed prices. So we “reject the null hypothesis” and
+instead find persuasive the proposition that the type of liquor
+distribution system influences the prices that consumers pay.</p>
+<p>As I shall discuss later, the logical framework of this resampling
+version of the permutation test differs greatly from the formulaic
+version, which would have required heavy computation. The standard
+conventional alternative would be a Student’s t-test, in which the user
+simply plugs into an unintuitive formula and reads the result from a
+table. And because of the unequal numbers of cases and unequal
+dispersions in the two samples, an appropriate t-test is far from
+obvious, whereas resampling is not made more difficult by such realistic
+complications.</p>
+<p>A program to handle the liquor problem with an infinite-universe
+bootstrap distribution simply substitutes the random sampling command
+SAMPLE for the SHUFFLE/TAKE commands. The results of the new test are
+indistinguishable from those in the program given above.</p>
+<p>Still another difficult question is whether <em>any</em> hypothesis test is
+appropriate, because the states were not randomly selected for inclusion
+in one group or another, and the results could be caused by factors
+other than the liquor system; this applies to both the above methods.
+The states constitute the entire universe in which we are interested,
+rather than being a sample taken from some larger universe as with a
+biological experiment or a small survey sample. But this objection
+pertains to a conventional test as well as to resampling methods. And a
+similar question arises throughout medical and social science— to the
+two wells between which John Snow detected vast differences in cholera
+rates, to rates of lung cancer in human smokers, to analyses of changes
+in speeding laws, and so on.</p>
+<p>The appropriate question is not whether the units were assigned
+randomly, however, but whether there is strong reason to believe that
+the results are not meaningful because they are the result of a
+<em>particular</em> “hidden” variable.</p>
+<p>These debates about fundamentals illustrate the unsettled state of
+statistical thinking about basic issues. Other disciplines also have
+their controversies about fundamentals. But in statistics these issues
+arise as early as the introductory course, because all but the most
+contrived problems are shot through with these questions. Instructors
+and researchers usually gloss over these matters, as Gigerenzer et al.,
+show ( <em>The Empire of Chance</em> ). Again, because with resampling one does
+not become immersed in the difficult mathematical techniques that
+underlie conventional methods, one is quicker to see these difficult
+questions, which apply equally to conventional methods and resampling.</p>
+<p><strong>Example 18-3: Is There a Difference Between Treatments to Prevent Low
+Birthweights?</strong></p>
+<p>Next we consider the use of resampling with <em>measured</em> data to test the
+hypothesis that drug A prevents low birthweights (Rosner, 1982, p. 257).
+The data for the treatment and control groups are shown in Table 18-2.</p>
+<p>Table 18-2</p>
+<p><strong>Birthweights in a Clinical Trial to Test a Drug for Preventing Low
+Birthweights</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Treatment Group</strong></td>
+<td align="left"><strong>Control Group</strong></td>
+</tr>
+<tr class="even">
+<td align="left">6.9</td>
+<td align="left">6.4</td>
+</tr>
+<tr class="odd">
+<td align="left">7.6</td>
+<td align="left">6.7</td>
+</tr>
+<tr class="even">
+<td align="left">7.3</td>
+<td align="left">5.4</td>
+</tr>
+<tr class="odd">
+<td align="left">7.6</td>
+<td align="left">8.2</td>
+</tr>
+<tr class="even">
+<td align="left">6.8</td>
+<td align="left">5.3</td>
+</tr>
+<tr class="odd">
+<td align="left">7.2</td>
+<td align="left">6.6</td>
+</tr>
+<tr class="even">
+<td align="left">8.0</td>
+<td align="left">5.8</td>
+</tr>
+<tr class="odd">
+<td align="left">5.5</td>
+<td align="left">5.7</td>
+</tr>
+<tr class="even">
+<td align="left">5.8</td>
+<td align="left">6.2</td>
+</tr>
+<tr class="odd">
+<td align="left">7.3</td>
+<td align="left">7.1</td>
+</tr>
+<tr class="even">
+<td align="left">8.2</td>
+<td align="left">7.0</td>
+</tr>
+<tr class="odd">
+<td align="left">6.9</td>
+<td align="left">6.9</td>
+</tr>
+<tr class="even">
+<td align="left">6.8</td>
+<td align="left">5.6</td>
+</tr>
+<tr class="odd">
+<td align="left">5.7</td>
+<td align="left">4.2</td>
+</tr>
+<tr class="even">
+<td align="left">8.6</td>
+<td align="left">6.8</td>
+</tr>
+<tr class="odd">
+<td align="left">Average: 7.08</td>
+<td align="left">6.26</td>
+</tr>
+</tbody>
+</table>
+<p>Source: Rosner, Table 8.7</p>
+<p>The treatment group averaged .82 pounds more than the control group.
+Here is a resampling approach to the problem:</p>
+<ol style="list-style-type: decimal">
+<li><p>If the drug has no effect, our best guess about the “universe” of
+birthweights is that it is composed of (say) a million each of the
+observed weights, all lumped together. In other words, in the
+absence of any other information or compelling theory, we assume
+that the combination of our samples is our best estimate of the
+universe. Hence let us write each of the birthweights on a card, and
+put them into a hat. Drawing them one by one and then replacing them
+is the operational equivalent of a very large (but equal) number of
+each birthweight.</p></li>
+<li><p>Repeatedly draw two samples of 15 birthweights each, and check how
+frequently the observed difference is as large as, or larger than,
+the actual difference of .82 pounds.</p></li>
+</ol>
+<p>We find in the RESAMPLING STATS program below that only 1 percent of the
+pairs of hypothetical resamples produced means that differed by as much
+as .82. We therefore conclude that the observed difference is unlikely
+to have occurred by chance.</p>
+<p><code>NUMBERS (6.9 7.6 7.3 7.6 6.8 7.2 8.0 5.5 5.8 7.3 8.2 6.9 6.8 5.7</code></p>
+<p><code>8.6) treat</code></p>
+<p><code>NUMBERS (6.4 6.7 5.4 8.2 5.3 6.6 5.8 5.7 6.2 7.1 7.0 6.9 5.6 4.2</code></p>
+<p><code>6.8) control</code></p>
+<p><code>CONCAT treat control all</code></p>
+<p>Combine all birthweight observations in same vector</p>
+<p><code>REPEAT 1000</code></p>
+<p>Do 1000 simulations</p>
+<p><code>SAMPLE 15 all treat$</code></p>
+<p>Take a resample of 15 from all birth weights (the $ indicates a
+resampling counterpart to a real sample)</p>
+<p><code>SAMPLE 15 all control$</code></p>
+<p>Take a second, similar resample</p>
+<p><code>MEAN treat$ mt</code></p>
+<p>Find the means of the two resamples</p>
+<p><code>MEAN control$ mc</code></p>
+<p><code>SUBTRACT mt mc dif</code></p>
+<p>Find the difference between the means of the two resamples</p>
+<p><code>SCORE dif z</code></p>
+<p>Keep score of the result</p>
+<p><code>END</code></p>
+<p>End the simulation experiment, go back and repeat</p>
+<p><code>HISTOGRAM z</code></p>
+<p>Produce a histogram of the resample differences</p>
+<p><code>COUNT z &gt;= .82 k</code></p>
+<p>How often did resample differences exceed the observed difference of
+.82?</p>
+<p><img src="images/22-Chap-18_006.png" /></p>
+<p><strong>Resample differences in pounds</strong></p>
+<p>Result: Only 1.3 percent of the pairs of resamples produced means that
+differed by as much as .82. We can conclude that the observed difference
+is unlikely to have occurred by chance.</p>
+<p><strong>Example 18-4: Bootstrap Sampling with Replacement</strong></p>
+<p>Efron and Tibshirani (1993, p. 11) present this as their basic problem
+illustrating the bootstrap method: Seven mice were given a new medical
+treatment intended to improve their survival rates after surgery, and
+nine mice were not treated. The numbers of days the treated mice
+survived were 94, 38, 23, 197, 99, 16 and 14, whereas the numbers of
+days the untreated mice (the control group) survived were 52, 10, 40,
+104, 51, 27, 146, 30, and 46. The question we ask is: Did the treatment
+prolong survival, or might chance variation be responsible for the
+observed difference in mean survival times?</p>
+<p>We start by supposing the treatment did NOT prolong survival and that
+chance was responsible. If that is so, then we consider that the two
+groups came from the same universe. Now we’d like to know how likely it
+is that two groups drawn from this common universe would differ as much
+as the two observed groups differ.</p>
+<p>If we had unlimited time and money, we would seek additional samples in
+the same way that we obtained these. Lacking time and money, we create a
+hypothetical universe that embodies everything we know about such a
+common universe. We imagine replicating each sample element millions of
+times to create an almost infinite universe that looks just like our
+samples. Then we can take resamples from this hypothetical universe and
+see how they behave.</p>
+<p>Even on a computer, creating such a large universe is tedious so we use
+a shortcut. We replace each element after we pick it for a resample.
+That way, our hypothetical (bootstrap) universe is effectively infinite.</p>
+<p>The following procedure will serve:</p>
+<ol style="list-style-type: decimal">
+<li><p>Calculate the difference between the means of the two observed
+samples – it’s 30.63 days in favor of the treated mice.</p></li>
+<li><p>Consider the two samples combined (16 observations) as the relevant
+universe to resample from.</p></li>
+<li><p>Draw 7 hypothetical observations with replacement and designate them
+“Treatment”; draw 9 hypothetical observations with replacement and
+designate them “Control.”</p></li>
+<li><p>Compute and record the difference between the means of the two
+samples.</p>
+<p>Repeat steps 2 and 3 perhaps 1000 times.</p></li>
+<li><p>Determine how often the resampled difference exceeds the observed
+difference of 30.63.</p></li>
+</ol>
+<p>The following program (“mice2smp”) follows the above procedure:</p>
+<p><code>NUMBERS (94 38 23 197 99 16 141) treatmt</code></p>
+<p>treatment group</p>
+<p><code>NUMBERS (52 10 40 104 51 27 146 30 46) control</code></p>
+<p>control group</p>
+<p><code>CONCAT treatmt control u</code></p>
+<p>U is our universe (step 2 above)</p>
+<p><code>REPEAT 1000</code></p>
+<p>step 5 above</p>
+<p><code>SAMPLE 7 u treatmt$</code></p>
+<p>step 3 above</p>
+<p><code>SAMPLE 9 u control$</code></p>
+<p>step 3</p>
+<p><code>MEAN treatmt$ tmean</code></p>
+<p>step 4</p>
+<p><code>MEAN control$ cmean</code></p>
+<p>step 4</p>
+<p><code>SUBTRACT tmean cmean diff</code></p>
+<p>step 4</p>
+<p><code>SCORE diff scrboard</code></p>
+<p>step 4</p>
+<p><code>END</code></p>
+<p>step 5</p>
+<p><code>HISTOGRAM scrboard</code></p>
+<p><code>COUNT scrboard &gt;=30.63 k</code></p>
+<p>step 6</p>
+<p><code>DIVIDE k 1000 prob PRINT prob</code></p>
+<p><img src="images/22-Chap-18_007.png" /></p>
+<p>Result: PROB = 0.112</p>
+<p>Interpretation: 1000 simulated resamples (of sizes 7 and 9) from a
+combined universe produced a difference as big as 30.63 more than 11
+percent of the time. We cannot rule out the possibility that chance
+might be responsible for the observed advantage of the treatment group.</p>
+<p><strong>Example 18-5: Permutation Sampling Without Replacement</strong></p>
+<p>This section discusses at some length the question of when sampling with
+replacement (the bootstrap), and sampling without replacement
+(permutation or “exact” test) are the appropriate resampling methods.
+The case at hand seems like a clearcut case where the bootstrap is
+appropriate. (Note that in this case we draw both samples from a
+combined universe consisting of all observations, whether we do so with
+or without replacement.) Nevertheless, let us see how the technique
+would differ if one were to consider that the permutation test is
+appropriate. The algorithm would then be as follows (with the steps that
+are the same as above labeled “a” and those that are different labeled
+“b”):</p>
+<p><strong>1a.</strong> Calculate the difference between the means of the two observed
+samples – it’s 30.63 days in favor of the treated mice.</p>
+<p><strong>2a.</strong> Consider the two samples combined (16 observations) as the
+relevant universe to resample from.</p>
+<p><strong>3b.</strong> Draw 7 hypothetical observations without replacement and
+designate them “Treatment”; draw 9 hypothetical observations with
+replacement and designate them “Control.”</p>
+<p><strong>4a.</strong> Compute and record the difference between the means of the two
+samples.</p>
+<p><strong>5a.</strong> Repeat steps 2 and 3 perhaps 1000 times</p>
+<p><strong>6a.</strong> Determine how often the resampled difference exceeds the
+observed difference of 30.63.</p>
+<p>Here is the RESAMPLING STATS program:</p>
+<p><code>NUMBERS (94 38 23 197 99 16 141) treatmt</code></p>
+<p>treatment group</p>
+<p><code>NUMBERS (52 10 40 104 51 27 146 30 46) control</code></p>
+<p>control group</p>
+<p><code>CONCAT treatmt control u</code></p>
+<p>U is our universe (step 2 above)</p>
+<p><code>REPEAT 1000</code></p>
+<p>step 5 above</p>
+<p><code>SHUFFLE u ushuf</code></p>
+<p><code>TAKE ushuf 1,7 treatmt$</code></p>
+<p>step 3 above</p>
+<p><code>TAKE ushuf 8,16 control$</code></p>
+<p>step 3</p>
+<p><code>MEAN treatmt$ tmean</code></p>
+<p>step 4</p>
+<p><code>MEAN control$ cmean</code></p>
+<p>step 4</p>
+<p><code>SUBTRACT tmean cmean diff</code></p>
+<p>step 4</p>
+<p><code>SCORE diff scrboard</code></p>
+<p>step 4</p>
+<p><code>END</code></p>
+<p>step 5</p>
+<p><code>HISTOGRAM scrboard</code></p>
+<p><code>COUNT scrboard &gt;=30.63 k</code></p>
+<p>step 6</p>
+<p><code>DIVIDE k 1000 prob PRINT prob</code></p>
+<p><img src="images/22-Chap-18_008.png" /></p>
+<p>Result: prob = 0.145</p>
+<p>Interpretation: 1000 simulated resamples (of sizes 7 and 9) from a
+combined universe produced a difference as big as 30.63 more than 14
+percent of the time. We therefore should not rule out the possibility
+that chance might be responsible for the observed advantage of the
+treatment group.</p>
+<div id="differences-among-four-means" class="section level2">
+<h2><span class="header-section-number">21.1</span> Differences among four means</h2>
+<p><strong>Example 18-6: Differences Among Four Pig Rations</strong> (Test for
+Differences Among Means of More Than Two Samples of Measured Data) (File
+“PIGS4”)</p>
+<p>In Examples 15-1 and 15-4 we investigated whether or not the results
+shown by a <em>single</em> sample are sufficiently different from a null
+(benchmark) hypothesis so that the sample is unlikely to have come from
+the null-hypothesis benchmark universe. In Examples 15-7, 17-1, and 18-1
+we then investigated whether or not the results shown by <em>two</em> samples
+suggest that both had come from the <em>same</em> universe, a universe that was
+assumed to be the composite of the two samples. Now as in Example 17-2
+we investigate whether or not <em>several</em> samples come from the same
+universe, except that now we work with measured data rather than with
+counted data.</p>
+<p>If one experiments with each of 100 different pig foods on twelve pigs,
+some of the foods will show much better results than will others <em>just
+by chance</em> , just as one family in sixteen is likely to have the very
+“high” number of 4 daughters in its first four children. Therefore, it
+is wrong reasoning to try out the 100 pig foods, select the food that
+shows the best results, and then compare it statistically with the
+average (sum) of all the other foods (or worse, with the poorest food).
+With such a procedure and enough samples, you will surely find one (or
+more) that seems very atypical statistically. A bridge hand with 12 or
+13 spades seems very atypical, too, but if you deal enough bridge hands
+you will sooner or later get one with 12 or 13 spades—as a purely
+chance phenomenon, dealt randomly from a standard deck. Therefore we
+need a test that prevents our falling into such traps. Such a test
+usually operates by taking into account the differences among <em>all</em> the
+foods that were tried.</p>
+<p>The method of Example 18-1 can be extended to handle this problem.
+Assume that <em>four</em> foods were each tested on twelve pigs. The weight
+gains in pounds for the pigs fed on foods A and B were as before. For
+foods C and D the weight gains were:</p>
+<p>Ration C: 30, 30, 32, 31, 29, 27, 25, 30, 31, 32, 34, 33</p>
+<p>Ration D: 32, 25, 31, 26, 32, 27, 28, 29, 29, 28, 23, 25</p>
+<p>Now construct a benchmark universe of <em>forty-eight</em> index cards, one for
+each weight gain. Then deal out sets of four hands randomly. More
+specifically:</p>
+<p><strong>Step 1.</strong> Constitute a universe of the forty-eight observed weight
+gains in the four samples, writing the weight gains on cards.</p>
+<p><strong>Step 2.</strong> Draw four groups of twelve weight gains, with replacement,
+since we are drawing from a hypothesized infinite universe in which
+consecutive draws are independent. Determine whether the difference
+between the lowest and highest group means is as large or larger than
+the observed difference. If so write “yes,” otherwise “no.”</p>
+<p><strong>Step 3.</strong> Repeat step 2 fifty times.</p>
+<p><strong>Step 4.</strong> Count the trials in which the differences between the
+simulated groups with the highest and lowest means are as large or
+larger than the differences between the means of the highest and lowest
+observed samples. The proportion of such trials to the total number of
+trials is the probability that all four samples would differ as much as
+do the observed samples if they (in technical terms) come from the same
+universe.</p>
+<p>The problem “Pigs4,” as handled by the steps given above, is quite
+similar to the way we handled Example 7-2, except that the data are
+measured (in pounds of weight gain) rather than simply counted (the
+number of rehabilitations).</p>
+<p>Instead of working through a program for the procedure out-</p>
+<p>lined above, let us consider a different approach to the
+problem—computing the difference between each <em>pair</em> of foods, six
+differences in all, converting all minus (-) signs to (+) differences.
+Then we can <em>total</em> the six differences, and compare the total with the
+sum of the six differences in the <em>observed</em> sample. The proportion of
+the resampling trials in which the observed sample sum is exceeded by
+the sum of the differences in the trials is the probability that the
+observed samples would differ as much as they do if they come from the
+same universe.<span class="math display">\[4\]</span></p>
+<p>One naturally wonders whether this latter test statistic is better than
+the range, as discussed above. It would seem obvious that using the
+information contained in all four samples should increase the precision
+of the estimate. And indeed it is so, as you can confirm for yourself by
+comparing the results of the two approaches. But in the long run, the
+estimate provided by the two approaches would be much the same. That is,
+there is no reason to think that one or another of the estimates is
+<em>biased</em> . However, successive samples from the population would steady
+down faster to the true value using the four-groupbased estimate than
+they would using the range. That is, the four-group-based estimate would
+require a smaller sample of pigs.</p>
+<p>Is there reason to prefer one or the other approach from the point of
+view of some decision that might be made? One might think that the range
+procedure throws light on which <em>one</em> of the foods is best in a way that
+the four-group-based approach does not. But this is not correct. Both
+approaches answer this question, and <em>only</em> this question: Are the
+results from the four foods likely to have resulted from the same
+“universe” of weight gains or not? If one wants to know whether the
+<em>best</em> food is similar to, say, all the other three, the appropriate
+approach would be a <em>two</em> -sample approach similar to various <em>two</em>
+-sample examples discussed earlier. (It would be still <em>another</em>
+question to ask whether the best food is different from the worst. One
+would then use a procedure different from either of those discussed
+above.)</p>
+<p>If the foods cost the same, one would not need even a twosample analysis
+to decide which food to feed. Feed the one whose results are best in the
+experiment, without bothering to ask whether it is “really” the best;
+you can’t go wrong as long as it doesn’t cost more to use it. (One could
+inquire about the probability that the food yielding the best results in
+the experiment would attain those results by chance even if it was worse
+than the others by some stipulated amount, but pursu-</p>
+<p>ing that line of thought may be left to the student as an exercise.)</p>
+<p>In the problem “Pigs4,” we want a measure of how the groups differ. The
+obvious first step is to add up the total weight gains for each group:
+382, 344, 364, 335. The next step is to calculate the differences
+between all the possible combinations of groups: 382-344=38, 382-364=18,
+382-335=47, 344-364= -20,</p>
+<p>344-335=9, 364-335=29.</p>
+</div>
+<div id="using-squared-differences" class="section level2">
+<h2><span class="header-section-number">21.2</span> Using Squared Differences</h2>
+<p>Here we face a choice. We could work with the absolute
+differences—that is, the results of the subtractions—treating each
+result as a positive number even if it is negative. We have seen this
+approach before. Therefore let us now take the opportunity of showing
+another approach. Instead of working with the absolute differences, we
+<em>square</em> each difference, and then SUM the squares. An advantage of
+working with the squares is that they are positive—a negative number
+squared is positive—which is convenient. Additionally, conventional
+statistics works mainly with squared quantities, and therefore it is
+worth getting familiar with that point of view. The squared differences
+in this case add up to 5096.</p>
+<p>Using RESAMPLING STATS, we shuffle all the weight gains together, select
+four random groups, and determine whether the squared differences in the
+resample exceed 5096. If they do so with regularity, then we conclude
+that the observed differences could easily have occurred by chance.</p>
+<p>With the CONCAT command, we string the four vectors into a single
+vector. After SHUFFLEing the 48-pig weight-gain vector G into H, we TAKE
+four randomized samples. And we compute the squared differences between
+the pairs of groups and SUM the squared differences just as we did above
+for the observed groups.</p>
+<p>Last, we examine how often the simulated-trials data produce differences
+among the groups as large as (or larger than) the actually observed
+data—5096.</p>
+<p><code>NUMBERS (34 29 26 32 35 38 31 34 30 29 32 31) a</code></p>
+<p><code>NUMBERS (26 24 28 29 30 29 32 26 31 29 32 28) b</code></p>
+<p><code>NUMBERS (30 30 32 31 29 27 25 30 31 32 34 33) c</code></p>
+<p><code>NUMBERS (32 25 31 26 32 27 28 29 29 28 23 25) d</code></p>
+<p>(Record the data for the 4 foods)</p>
+<p><code>CONCAT a b c d g</code></p>
+<p>Combine the four vectors into g</p>
+<p><code>REPEAT 1000</code></p>
+<p>Do 1000 trials</p>
+<p><code>SHUFFLE g h</code></p>
+<p>Shuffle all the weight gains.</p>
+<p><code>SAMPLE 12 h p</code></p>
+<p>Take 4 random samples, with replacement.</p>
+<p><code>SAMPLE 12 h q</code></p>
+<p><code>SAMPLE 12 h r SAMPLE 12 h s</code></p>
+<p><code>SUM p i</code></p>
+<p>Sum the weight gains for the 4 resamples.</p>
+<p><code>SUM q j</code></p>
+<p><code>SUM r k SUM s l</code></p>
+<p><code>SUBTRACT i j ij</code></p>
+<p>Find the differences between all the possible pairs of resamples.</p>
+<p><code>SUBTRACT i k ik</code></p>
+<p><code>SUBTRACT i l il SUBTRACT j k jk SUBTRACT j l jl SUBTRACT k l kl</code></p>
+<p><code>MULTIPLY ij ij ijsq</code></p>
+<p>Find the squared differences.</p>
+<p><code>MULTIPLY ik ik iksq</code></p>
+<p><code>MULTIPLY il il ilsq MULTIPLY jk jk jksq MULTIPLY jl jl jlsq MULTIPLY kl kl klsq</code></p>
+<p><code>ADD ijsq iksq ilsq jksq jlsq klsq total</code></p>
+<p>Add them together.</p>
+<p><code>SCORE total z</code></p>
+<p>Keep track of the total for each trial.</p>
+<p><code>END</code></p>
+<p>End one trial, go back and repeat until 1000 trials are complete.</p>
+<p><code>HISTOGRAM z</code></p>
+<p>Produce a histogram of the trial results.</p>
+<p><code>COUNT z &gt;= 5096 k</code></p>
+<p>Find out how many trials produced differences among groups as great as
+or greater than those observed.</p>
+<p><code>DIVIDE k 1000 kk</code></p>
+<p>Convert to a proportion.</p>
+<p><code>PRINT kk</code></p>
+<p>Print the result.</p>
+<p>Note: The file “pigs4” on the Resampling Stats software disk contains
+this set of commands.</p>
+<p><strong>PIGS4: Differences Among Four Pig Rations</strong></p>
+<p><img src="images/22-Chap-18_009.png" /></p>
+<p><strong>sums of squares</strong></p>
+<p>We find that our observed sum of squares—5096—was exceeded by
+randomly-drawn sums of squares in only 3 percent of our trials. We
+conclude that the four treatments are likely not all similar.</p>
+</div>
+<div id="endnotes-8" class="section level2">
+<h2><span class="header-section-number">21.3</span> Endnotes</h2>
+<ol style="list-style-type: decimal">
+<li><p>Technical Note: The test described in this section is nonparametric
+and therefore makes no assumptions about the shapes of the
+distributions, which is good because we would be on soft ground if
+we assumed normality in the pig-food case, given the sample sizes.
+This test does not, however, throw away information as do the rank
+and median tests illustrated earlier. And indeed, this test proves
+to be more powerful than the other nonparametric tests. After
+developing this test, I discovered that its general logic follows
+the tradition of the “randomization” tests, based on an idea by R.A.
+Fisher (1935, 1951) and worked out for the two-sample cases by
+E.J.G. Pitman (1937). But the only earlier mentions of sampling from
+the universe of possibilities are in M. Dwass (1957) and J.H. Chung
+and D. Fraser (1958). I am grateful to J. Pratt for bringing the
+latter literature to my attention.</p></li>
+<li><p>The data are from <em>The Liquor Handbook</em> (1962, p. 68). Eight states
+are omitted for various reasons. For more information, see Simon and
+Simon (1987).</p></li>
+<li><p>Various tests indicate that the difference between the groups of
+states is highly significant. See J.L. Simon (1966b).</p></li>
+<li><p>Technical Note: Computing the sum of squared differences renders
+this test superficially more similar to the analysis of variance but
+will not alter the results. This test has not been discussed in the
+statistical literature, to my knowledge, except perhaps for a faint
+suggestion at the end of Chung and Fraser (1958). This and the
+two-sample test can easily be performed with canned computer
+programs as well as RESAMPLING STATS. In addition to their
+advantages of nonparametricity, they are equally efficient and
+vastly easier to teach and to understand than the t-test and the
+analysis of variance. Therefore, I believe that these tests should
+be “treatments of choice,” as the doctors say.</p></li>
+</ol>
+</div>
+<div id="exercises" class="section level2">
+<h2><span class="header-section-number">21.4</span> Exercises</h2>
+<p>Solutions for problems may be found in the section titled, “Exercise
+Solutions” at the back of this book.</p>
+<p><strong>Exercise 18-1</strong></p>
+<p>The data shown in Table 18-3 (Hollander-Wolfe, 1973, p. 29, Table 1)
+might be data for the outcomes of two different mechanics, showing the
+length of time until the next overhaul is needed for nine pairs of
+similar vehicles. Or they could be two readings made by different
+instruments on the same sample of rock. In fact, they represent data for
+two successive tests for depression on the Hamilton scale, before and
+after drug therapy.</p>
+<p>Table 18-3</p>
+<p><strong>Hamilton Depression Scale Values</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Patient #</strong></td>
+<td align="left"><strong>Score Before</strong></td>
+<td align="left"><strong>Score After</strong></td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">1.83</td>
+<td align="left">.878</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">.50</td>
+<td align="left">.647</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">1.62</td>
+<td align="left">.598</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">2.48</td>
+<td align="left">2.05</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">1.68</td>
+<td align="left">1.06</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="left">1.88</td>
+<td align="left">1.29</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="left">1.55</td>
+<td align="left">1.06</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="left">3.06</td>
+<td align="left">3.14</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="left">1.3</td>
+<td align="left">1.29</td>
+</tr>
+</tbody>
+</table>
+<p>The task is to perform a test that will help decide whether there is a
+difference in the depression scores at the two visits (or the
+performances of the two mechanics). Perform both a bootstrap test and a
+permutation test, and give some reason for preferring one to the other
+in principle. How much do they differ in practice?</p>
+<p><strong>Exercise 18-2</strong></p>
+<p>Thirty-six of 72 (.5) taxis surveyed in Pittsburgh had visible
+seatbelts. Seventy-seven of 129 taxis in Chicago (.597) had visible
+seatbelts. Calculate a confidence interval for the difference in
+proportions, estimated at -.097. (Source: Peskun, Peter H., “A New
+Confidence Interval Method Based on the Normal Approximation for the
+Difference of Two Binomial Probabilities,” <em>Journal of the American
+Statistical Association</em> , 6/93 p. 656).</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="general-procedures-for-testing-hypotheses.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/resampling-stats/resampling-with/edit/master/source/testing_measured.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/resampling-stats/resampling-with/blob/master/testing_measured.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

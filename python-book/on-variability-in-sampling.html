@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>12 On Variability in Sampling | Resampling statistics</title>
+  <meta name="description" content="12 On Variability in Sampling | Resampling statistics" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="12 On Variability in Sampling | Resampling statistics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://resampling-stats.github.io/resampling-with" />
+  <meta property="og:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+  <meta property="og:description" content="12 On Variability in Sampling | Resampling statistics" />
+  <meta name="github-repo" content="resampling-stats/resampling-with" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="12 On Variability in Sampling | Resampling statistics" />
+  
+  <meta name="twitter:description" content="12 On Variability in Sampling | Resampling statistics" />
+  <meta name="twitter:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+
+<meta name="author" content="Julian Lincoln Simon" />
+<meta name="author" content="Matthew Brett" />
+<meta name="author" content="Stéfan van der Walt" />
+<meta name="author" content="Ian Nimmo-Smith" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"/>
+<link rel="next" href="the-procedures-of-monte-carlo-simulation-and-resampling.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Python edition</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html"><i class="fa fa-check"></i>Preface to the third edition</a><ul>
+<li class="chapter" data-level="0.1" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-simon-saw"><i class="fa fa-check"></i><b>0.1</b> What Simon saw</a></li>
+<li class="chapter" data-level="0.2" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#resampling-and-data-science"><i class="fa fa-check"></i><b>0.2</b> Resampling and data science</a></li>
+<li class="chapter" data-level="0.3" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-we-changed"><i class="fa fa-check"></i><b>0.3</b> What we changed</a></li>
+<li class="chapter" data-level="0.4" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#who-should-read-this-book-and-when"><i class="fa fa-check"></i><b>0.4</b> Who should read this book, and when</a></li>
+<li class="chapter" data-level="0.5" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#welcome-to-resampling"><i class="fa fa-check"></i><b>0.5</b> Welcome to resampling</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html"><i class="fa fa-check"></i>Preface to the second edition</a><ul>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-the-resampling-method"><i class="fa fa-check"></i>Brief history of the resampling method</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-statistics"><i class="fa fa-check"></i>Brief history of statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#uses-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.1</b> Uses of Probability and Statistics</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#what-problems"><i class="fa fa-check"></i><b>1.2</b> What kinds of problems shall we solve?</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#probabilities-and-decisions"><i class="fa fa-check"></i><b>1.3</b> Probabilities and decisions</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#types-of-statistics"><i class="fa fa-check"></i><b>1.4</b> Types of statistics</a></li>
+<li class="chapter" data-level="1.5" data-path="introduction.html"><a href="introduction.html#limitations-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.5</b> Limitations of probability and statistics</a></li>
+<li class="chapter" data-level="1.6" data-path="introduction.html"><a href="introduction.html#why-is-statistics-such-a-difficult-subject"><i class="fa fa-check"></i><b>1.6</b> Why is Statistics Such a Difficult Subject?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="about-the-technology.html"><a href="about-the-technology.html"><i class="fa fa-check"></i><b>2</b> About the technology</a><ul>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#the-environment"><i class="fa fa-check"></i>The environment</a></li>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#running-the-code-on-your-own-computer"><i class="fa fa-check"></i>Running the code on your own computer</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="resampling-method.html"><a href="resampling-method.html"><i class="fa fa-check"></i><b>3</b> The Resampling method</a><ul>
+<li class="chapter" data-level="3.1" data-path="resampling-method.html"><a href="resampling-method.html#the-resampling-approach-in-action"><i class="fa fa-check"></i><b>3.1</b> The resampling approach in action</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-physical-methods"><i class="fa fa-check"></i><b>3.1.1</b> Randomness from physical methods</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-your-computer"><i class="fa fa-check"></i><b>3.2</b> Randomness from your computer</a></li>
+<li class="chapter" data-level="3.3" data-path="resampling-method.html"><a href="resampling-method.html#building-the-problem-using-python"><i class="fa fa-check"></i><b>3.3</b> Building the problem using Python</a></li>
+<li class="chapter" data-level="3.4" data-path="resampling-method.html"><a href="resampling-method.html#how-resampling-differs-from-the-conventional-approach"><i class="fa fa-check"></i><b>3.4</b> How resampling differs from the conventional approach</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="resampling-with-code.html"><a href="resampling-with-code.html"><i class="fa fa-check"></i><b>4</b> Resampling with code</a></li>
+<li class="chapter" data-level="5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html"><i class="fa fa-check"></i><b>5</b> Basic Concepts in Probability and Statistics, Part 1</a><ul>
+<li class="chapter" data-level="5.1" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-nature-and-meaning-of-the-concept-of-probability"><i class="fa fa-check"></i><b>5.2</b> The nature and meaning of the concept of probability</a></li>
+<li class="chapter" data-level="5.3" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-meaning-of-probability"><i class="fa fa-check"></i><b>5.3</b> The “Meaning” of “Probability”</a></li>
+<li class="chapter" data-level="5.4" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#digression-about-operational-definitions"><i class="fa fa-check"></i><b>5.4</b> Digression about Operational Definitions</a></li>
+<li class="chapter" data-level="5.5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#back-to-proxies"><i class="fa fa-check"></i><b>5.5</b> Back to Proxies</a></li>
+<li class="chapter" data-level="5.6" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-various-ways-of-estimating-probabilities"><i class="fa fa-check"></i><b>5.6</b> The various ways of estimating probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html"><i class="fa fa-check"></i><b>6</b> Basic Concepts in Probability and Statistics, Part 2</a><ul>
+<li class="chapter" data-level="6.1" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-other-magnitudes"><i class="fa fa-check"></i><b>6.1</b> The relationship of probability to other magnitudes</a></li>
+<li class="chapter" data-level="6.2" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-concept-of-chance"><i class="fa fa-check"></i><b>6.2</b> The concept of chance</a></li>
+<li class="chapter" data-level="6.3" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#what-do-we-mean-by-chance"><i class="fa fa-check"></i><b>6.3</b> What Do We Mean by “Chance”?</a></li>
+<li class="chapter" data-level="6.4" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-philosophers-dispute-about-the-concept-of-probability"><i class="fa fa-check"></i><b>6.4</b> The philosophers’ dispute about the concept of probability</a></li>
+<li class="chapter" data-level="6.5" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-the-concept-of-resampling"><i class="fa fa-check"></i><b>6.5</b> The relationship of probability to the concept of resampling</a></li>
+<li class="chapter" data-level="6.6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#conclusion"><i class="fa fa-check"></i><b>6.6</b> Conclusion</a></li>
+<li class="chapter" data-level="6.7" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#endnote"><i class="fa fa-check"></i><b>6.7</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html"><i class="fa fa-check"></i><b>7</b> Probability Theory, Part 1</a><ul>
+<li class="chapter" data-level="7.1" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#definitions"><i class="fa fa-check"></i><b>7.2</b> Definitions</a></li>
+<li class="chapter" data-level="7.3" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#theoretical-and-historical-methods-of-estimation"><i class="fa fa-check"></i><b>7.3</b> Theoretical and historical methods of estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#samples-and-universes"><i class="fa fa-check"></i><b>7.4</b> Samples and universes</a></li>
+<li class="chapter" data-level="7.5" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-conventions-of-probability"><i class="fa fa-check"></i><b>7.5</b> The conventions of probability</a></li>
+<li class="chapter" data-level="7.6" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-deductive-formulaic-method"><i class="fa fa-check"></i><b>7.6</b> The deductive formulaic method</a></li>
+<li class="chapter" data-level="7.7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#multiplication-rule"><i class="fa fa-check"></i><b>7.7</b> Multiplication rule</a></li>
+<li class="chapter" data-level="7.8" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#conditional-and-unconditional-probabilities"><i class="fa fa-check"></i><b>7.8</b> Conditional and unconditional probabilities</a></li>
+<li class="chapter" data-level="7.9" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-skins-again-plus-leaving-the-game-early"><i class="fa fa-check"></i><b>7.9</b> The skins again, plus leaving the game early</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html"><i class="fa fa-check"></i><b>8</b> Probability Theory Part I (continued)</a><ul>
+<li class="chapter" data-level="8.1" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-special-case-of-independence"><i class="fa fa-check"></i><b>8.1</b> The special case of independence</a></li>
+<li class="chapter" data-level="8.2" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-of-probabilities"><i class="fa fa-check"></i><b>8.2</b> The addition of probabilities</a></li>
+<li class="chapter" data-level="8.3" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-rule"><i class="fa fa-check"></i><b>8.3</b> The addition rule</a></li>
+<li class="chapter" data-level="8.4" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#theoretical-devices-for-the-study-of-probability"><i class="fa fa-check"></i><b>8.4</b> Theoretical devices for the study of probability</a></li>
+<li class="chapter" data-level="8.5" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-concept-of-sample-space"><i class="fa fa-check"></i><b>8.5</b> The Concept of Sample Space</a></li>
+<li class="chapter" data-level="8.6" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#endnotes"><i class="fa fa-check"></i><b>8.6</b> Endnotes</a></li>
+<li class="chapter" data-level="8.7" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#afternote-useful-hints-about-simple-numbers"><i class="fa fa-check"></i><b>8.7</b> Afternote: Useful hints about simple numbers</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html"><i class="fa fa-check"></i><b>9</b> Probability Theory, Part 2: Compound Probability</a><ul>
+<li class="chapter" data-level="9.1" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#introduction-3"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#puzzle-problems"><i class="fa fa-check"></i><b>9.2</b> Puzzle Problems</a></li>
+<li class="chapter" data-level="9.3" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#examples-of-basic-problems-in-probability"><i class="fa fa-check"></i><b>9.3</b> Examples of basic problems in probability</a></li>
+<li class="chapter" data-level="9.4" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#the-concepts-of-replacement-and-non-replacement"><i class="fa fa-check"></i><b>9.4</b> The concepts of replacement and non-replacement</a></li>
+<li class="chapter" data-level="9.5" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#endnotes-1"><i class="fa fa-check"></i><b>9.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html"><i class="fa fa-check"></i><b>10</b> Probability Theory, Part 3</a><ul>
+<li class="chapter" data-level="10.1" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-1-the-birthday-problem-illustrating-the-probability-of-duplication-in-a-multi-outcome-sample-from-an-infinite-universefile-birthday"><i class="fa fa-check"></i><b>10.1</b> Example 7-1: The Birthday Problem, Illustrating the Probability of Duplication in a Multi-Outcome Sample from an Infinite Universe(File “Birthday”)</a></li>
+<li class="chapter" data-level="10.2" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-2-three-daughters-among-four-children-illustrating-a-problem-with-two-outcomes-binomial-1-and-sampling-with-replacement-among-equally-likely-outcomes."><i class="fa fa-check"></i><b>10.2</b> Example 7-2: Three Daughters Among Four Children, Illustrating A Problem With Two Outcomes (Binomial <span class="math display">\[1\]</span>) And Sampling With Replacement Among Equally Likely Outcomes.</a></li>
+<li class="chapter" data-level="10.3" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#variations-of-the-daughters-problem"><i class="fa fa-check"></i><b>10.3</b> Variations of the daughters problem</a></li>
+<li class="chapter" data-level="10.4" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#a-note-on-clarifying-and-labeling-problems"><i class="fa fa-check"></i><b>10.4</b> A note on clarifying and labeling problems</a></li>
+<li class="chapter" data-level="10.5" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#binomial-trials"><i class="fa fa-check"></i><b>10.5</b> Binomial trials</a></li>
+<li class="chapter" data-level="10.6" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-3-three-or-more-successful-basketball-shots-in-five-attempts-two-outcome-sampling-with-unequally-likely-outcomes-with-replacementa-binomial-experiment"><i class="fa fa-check"></i><b>10.6</b> Example 7-3: Three or More Successful Basketball Shots in Five Attempts (Two-Outcome Sampling with Unequally-Likely Outcomes, with Replacement—A Binomial Experiment)</a></li>
+<li class="chapter" data-level="10.7" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#note-to-the-student-of-analytic-probability-theory"><i class="fa fa-check"></i><b>10.7</b> Note to the student of analytic probability theory</a></li>
+<li class="chapter" data-level="10.8" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-4-one-in-the-black-two-in-the-white-and-no-misses-in-three-archery-shotsmultiple-outcome-multinomial-sampling-with-unequally-likely-outcomes-with-replacement."><i class="fa fa-check"></i><b>10.8</b> Example 7-4: One in the Black, Two in the White, and No Misses in Three Archery Shots(Multiple Outcome <span class="math display">\[Multinomial\]</span> Sampling With Unequally Likely Outcomes; with Replacement.)</a></li>
+<li class="chapter" data-level="10.9" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-5-two-groups-of-heart-patients"><i class="fa fa-check"></i><b>10.9</b> Example 7-5: Two Groups of Heart Patients</a></li>
+<li class="chapter" data-level="10.10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-6-dispersion-of-a-sum-of-random-variableshammer-lengthsheads-and-handles"><i class="fa fa-check"></i><b>10.10</b> Example 7-6: Dispersion of a Sum of Random Variables—Hammer Lengths—Heads and Handles</a></li>
+<li class="chapter" data-level="10.11" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-7-the-product-of-random-variablestheft-by-employees"><i class="fa fa-check"></i><b>10.11</b> Example 7-7: The Product of Random Variables—Theft by Employees</a></li>
+<li class="chapter" data-level="10.12" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-8-flipping-pennies-to-the-end"><i class="fa fa-check"></i><b>10.12</b> Example 7-8: Flipping Pennies to the End</a></li>
+<li class="chapter" data-level="10.13" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-9-a-drunks-random-walk"><i class="fa fa-check"></i><b>10.13</b> Example 7-9: A Drunk’s Random Walk</a></li>
+<li class="chapter" data-level="10.14" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-10"><i class="fa fa-check"></i><b>10.14</b> Example 7-10</a></li>
+<li class="chapter" data-level="10.15" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#the-general-procedure"><i class="fa fa-check"></i><b>10.15</b> The general procedure</a></li>
+<li class="chapter" data-level="10.16" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#endnotes-2"><i class="fa fa-check"></i><b>10.16</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><i class="fa fa-check"></i><b>11</b> Probability Theory, Part 4: Estimating Probabilities from Finite Universes</a><ul>
+<li class="chapter" data-level="11.1" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#introduction-4"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
+<li class="chapter" data-level="11.2" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#some-building-block-programs"><i class="fa fa-check"></i><b>11.2</b> Some building-block programs</a></li>
+<li class="chapter" data-level="11.3" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#problems-in-finite-universes"><i class="fa fa-check"></i><b>11.3</b> Problems in finite universes</a></li>
+<li class="chapter" data-level="11.4" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-1-what-is-the-probability-of-selecting-four-girls-and-one-boy-when-selecting-five-students-from-any-group-of-twenty-five-girls-and-twenty-five-boys-sampling-without-replacement-when-there-are-two-outcomes-and-the-order-does-not-matter"><i class="fa fa-check"></i><b>11.4</b> Example 8-1: What is the Probability of Selecting Four Girls and One Boy When Selecting Five Students From Any Group of Twenty-five Girls and Twenty-five Boys? (Sampling Without Replacement When There are Two Outcomes and the Order Does Not Matter)</a></li>
+<li class="chapter" data-level="11.5" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-2-nine-spades-and-four-clubs-in-a-bridge-hand-multiple-outcome-sampling-without-replacement-order-does-not-matter"><i class="fa fa-check"></i><b>11.5</b> Example 8-2: Nine Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)</a></li>
+<li class="chapter" data-level="11.6" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-3-a-total-of-fifteen-points-in-a-bridge-hand-when-ace-4-king-3-queen-2-and-jack-1."><i class="fa fa-check"></i><b>11.6</b> Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace = 4, King = 3, Queen = 2, and Jack = 1.</a></li>
+<li class="chapter" data-level="11.7" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-4-four-girls-and-then-one-boy-from-twenty-five-girls-and-twenty-five-boys-order-matters-sampling-without-replacement-two-outcomes-several-of-each-item"><i class="fa fa-check"></i><b>11.7</b> Example 8-4: Four Girls and Then One Boy From Twenty-five Girls and Twenty-five Boys Order Matters, Sampling Without Replacement, Two Outcomes, Several of Each Item</a></li>
+<li class="chapter" data-level="11.8" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-5-four-or-more-couples-getting-their-own-partners-when-ten-couples-are-paired-randomly-probability-of-matching-by-chance"><i class="fa fa-check"></i><b>11.8</b> Example 8-5: Four or More Couples Getting Their Own Partners When Ten Couples are Paired Randomly (Probability of Matching by Chance)</a></li>
+<li class="chapter" data-level="11.9" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-6-matching-santa-hats-another-famous-problem-of-this-sort-the-hat-checker-at-a-restaurant-mixes-up-the-hats-of-a-party-of-6.-what-is-the-probability-that-at-least-one-will-get-his-own-hat"><i class="fa fa-check"></i><b>11.9</b> Example 8-6: Matching Santa Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6. What is the probability that at least one will get his own hat?</a></li>
+<li class="chapter" data-level="11.10" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-7-twenty-executives-are-to-be-assigned-to-two-divisions-of-a-firm"><i class="fa fa-check"></i><b>11.10</b> Example 8-7: Twenty executives are to be assigned to two divisions of a firm</a></li>
+<li class="chapter" data-level="11.11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-8-executives-moving"><i class="fa fa-check"></i><b>11.11</b> Example 8-8: Executives Moving</a></li>
+<li class="chapter" data-level="11.12" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-9-state-liquor-systems-again"><i class="fa fa-check"></i><b>11.12</b> Example 8-9: State Liquor Systems Again</a></li>
+<li class="chapter" data-level="11.13" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-10-a-compound-problem-five-or-more-spades-in-one-bridge-hand-and-four-girls-and-a-boy-in-a-five-child-family"><i class="fa fa-check"></i><b>11.13</b> Example 8-10: A Compound Problem: Five or More Spades in One Bridge Hand, and Four Girls and a Boy in a Five-Child Family</a></li>
+<li class="chapter" data-level="11.14" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#summary"><i class="fa fa-check"></i><b>11.14</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html"><i class="fa fa-check"></i><b>12</b> On Variability in Sampling</a><ul>
+<li class="chapter" data-level="12.1" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#variability-and-small-samples"><i class="fa fa-check"></i><b>12.1</b> Variability and small samples</a></li>
+<li class="chapter" data-level="12.2" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#regression-to-the-mean"><i class="fa fa-check"></i><b>12.2</b> Regression to the mean</a></li>
+<li class="chapter" data-level="12.3" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#summary-and-conclusion"><i class="fa fa-check"></i><b>12.3</b> Summary and conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html"><i class="fa fa-check"></i><b>13</b> The Procedures of Monte Carlo Simulation (and Resampling)</a><ul>
+<li class="chapter" data-level="13.1" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#a-definition-and-general-procedure-for-monte-carlo-simulation"><i class="fa fa-check"></i><b>13.1</b> A definition and general procedure for Monte Carlo simulation</a></li>
+<li class="chapter" data-level="13.2" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#summary-1"><i class="fa fa-check"></i><b>13.2</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html"><i class="fa fa-check"></i><b>14</b> The Basic Ideas in Statistical Inference</a><ul>
+<li class="chapter" data-level="14.1" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#knowledge-without-probabilistic-statistical-inference"><i class="fa fa-check"></i><b>14.1</b> Knowledge without probabilistic statistical inference</a></li>
+<li class="chapter" data-level="14.2" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#the-treatment-of-uncertainty"><i class="fa fa-check"></i><b>14.2</b> The treatment of uncertainty</a></li>
+<li class="chapter" data-level="14.3" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#where-statistical-inference-becomes-crucial"><i class="fa fa-check"></i><b>14.3</b> Where statistical inference becomes crucial</a></li>
+<li class="chapter" data-level="14.4" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#conclusions"><i class="fa fa-check"></i><b>14.4</b> Conclusions</a></li>
+<li class="chapter" data-level="14.5" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#endnotes-3"><i class="fa fa-check"></i><b>14.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html"><i class="fa fa-check"></i><b>15</b> Introduction to Statistical Inference</a><ul>
+<li class="chapter" data-level="15.1" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#statistical-inference-and-random-sampling"><i class="fa fa-check"></i><b>15.1</b> Statistical inference and random sampling</a></li>
+<li class="chapter" data-level="15.2" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#summary-and-conclusions"><i class="fa fa-check"></i><b>15.2</b> Summary and conclusions</a></li>
+<li class="chapter" data-level="15.3" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#endnotes-4"><i class="fa fa-check"></i><b>15.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="point-estimation.html"><a href="point-estimation.html"><i class="fa fa-check"></i><b>16</b> Point Estimation</a><ul>
+<li class="chapter" data-level="16.1" data-path="point-estimation.html"><a href="point-estimation.html#ways-to-estimate-the-mean"><i class="fa fa-check"></i><b>16.1</b> Ways to estimate the mean</a></li>
+<li class="chapter" data-level="16.2" data-path="point-estimation.html"><a href="point-estimation.html#criteria-of-estimates"><i class="fa fa-check"></i><b>16.2</b> Criteria of estimates</a></li>
+<li class="chapter" data-level="16.3" data-path="point-estimation.html"><a href="point-estimation.html#estimation-of-accuracy-of-the-point-estimate"><i class="fa fa-check"></i><b>16.3</b> Estimation of accuracy of the point estimate</a></li>
+<li class="chapter" data-level="16.4" data-path="point-estimation.html"><a href="point-estimation.html#uses-of-the-mean"><i class="fa fa-check"></i><b>16.4</b> Uses of the mean</a></li>
+<li class="chapter" data-level="16.5" data-path="point-estimation.html"><a href="point-estimation.html#conclusion-1"><i class="fa fa-check"></i><b>16.5</b> Conclusion</a></li>
+<li class="chapter" data-level="16.6" data-path="point-estimation.html"><a href="point-estimation.html#endnotes-5"><i class="fa fa-check"></i><b>16.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html"><i class="fa fa-check"></i><b>17</b> Framing Statistical Questions</a><ul>
+<li class="chapter" data-level="17.1" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#introduction-5"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
+<li class="chapter" data-level="17.2" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#translating-scientific-questions-into-probabilistic-and-statistical-questions"><i class="fa fa-check"></i><b>17.2</b> Translating scientific questions into probabilistic and statistical questions</a></li>
+<li class="chapter" data-level="17.3" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#the-three-types-of-questions"><i class="fa fa-check"></i><b>17.3</b> The three types of questions</a></li>
+<li class="chapter" data-level="17.4" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#summary-2"><i class="fa fa-check"></i><b>17.4</b> Summary</a></li>
+<li class="chapter" data-level="17.5" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#endnotes-6"><i class="fa fa-check"></i><b>17.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html"><i class="fa fa-check"></i><b>18</b> Hypothesis-Testing with Counted Data, Part 1</a><ul>
+<li class="chapter" data-level="18.1" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#introduction-6"><i class="fa fa-check"></i><b>18.1</b> Introduction</a></li>
+<li class="chapter" data-level="18.2" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#should-a-single-sample-of-counted-data-be-considered-different-from-a-benchmark-universe"><i class="fa fa-check"></i><b>18.2</b> Should a single sample of counted data be considered different from a benchmark universe?</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html"><i class="fa fa-check"></i><b>19</b> The Concept of Statistical Significance in Testing Hypotheses</a><ul>
+<li class="chapter" data-level="19.1" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-logic-of-hypothesis-tests"><i class="fa fa-check"></i><b>19.1</b> The logic of hypothesis tests</a></li>
+<li class="chapter" data-level="19.2" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-concept-of-statistical-significance"><i class="fa fa-check"></i><b>19.2</b> The concept of statistical significance</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><i class="fa fa-check"></i><b>20</b> The Statistics of Hypothesis-Testing with Counted Data, Part 2</a><ul>
+<li class="chapter" data-level="20.1" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#comparisons-among-more-than-two-samples-of-counted-data"><i class="fa fa-check"></i><b>20.1</b> Comparisons among more than two samples of counted data</a></li>
+<li class="chapter" data-level="20.2" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#paired-comparisons-with-counted-data"><i class="fa fa-check"></i><b>20.2</b> Paired Comparisons With Counted Data</a></li>
+<li class="chapter" data-level="20.3" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#endnotes-7"><i class="fa fa-check"></i><b>20.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html"><i class="fa fa-check"></i><b>21</b> The Statistics of Hypothesis-Testing With Measured Data</a><ul>
+<li class="chapter" data-level="21.1" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#differences-among-four-means"><i class="fa fa-check"></i><b>21.1</b> Differences among four means</a></li>
+<li class="chapter" data-level="21.2" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#using-squared-differences"><i class="fa fa-check"></i><b>21.2</b> Using Squared Differences</a></li>
+<li class="chapter" data-level="21.3" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#endnotes-8"><i class="fa fa-check"></i><b>21.3</b> Endnotes</a></li>
+<li class="chapter" data-level="21.4" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#exercises"><i class="fa fa-check"></i><b>21.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html"><i class="fa fa-check"></i><b>22</b> General Procedures for Testing Hypotheses</a><ul>
+<li class="chapter" data-level="22.1" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#introduction-7"><i class="fa fa-check"></i><b>22.1</b> Introduction</a></li>
+<li class="chapter" data-level="22.2" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#canonical-question-and-answer-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.2</b> Canonical question-and-answer procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.3" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#skeleton-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.3</b> Skeleton procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.4" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#an-example-can-the-bio-engineer-increase-the-female-calf-rate"><i class="fa fa-check"></i><b>22.4</b> An example: can the bio-engineer increase the female calf rate?</a></li>
+<li class="chapter" data-level="22.5" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#conventional-methods"><i class="fa fa-check"></i><b>22.5</b> Conventional methods</a></li>
+<li class="chapter" data-level="22.6" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#choice-of-the-benchmark-universe1"><i class="fa fa-check"></i><b>22.6</b> Choice of the benchmark universe1</a></li>
+<li class="chapter" data-level="22.7" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#why-is-statisticsand-hypothesis-testingso-difficult"><i class="fa fa-check"></i><b>22.7</b> Why is statistics—and hypothesis testing—so difficult?</a></li>
+<li class="chapter" data-level="22.8" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#endnote-1"><i class="fa fa-check"></i><b>22.8</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="23" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><i class="fa fa-check"></i><b>23</b> Confidence Intervals, Part 1: Assessing the Accuracy of Samples</a><ul>
+<li class="chapter" data-level="23.1" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#introduction-8"><i class="fa fa-check"></i><b>23.1</b> Introduction</a></li>
+<li class="chapter" data-level="23.2" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#estimating-the-accuracy-of-a-sample-mean"><i class="fa fa-check"></i><b>23.2</b> Estimating the accuracy of a sample mean</a></li>
+<li class="chapter" data-level="23.3" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#the-logic-of-confidence-intervals"><i class="fa fa-check"></i><b>23.3</b> The logic of confidence intervals</a></li>
+<li class="chapter" data-level="23.4" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#computing-confidence-intervals"><i class="fa fa-check"></i><b>23.4</b> Computing confidence intervals</a></li>
+<li class="chapter" data-level="23.5" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#procedure-for-estimating-confidence-intervals"><i class="fa fa-check"></i><b>23.5</b> Procedure for estimating confidence intervals</a></li>
+<li class="chapter" data-level="23.6" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#summary-3"><i class="fa fa-check"></i><b>23.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><i class="fa fa-check"></i><b>24</b> Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals</a><ul>
+<li class="chapter" data-level="24.1" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-1-the-distance-between-sample-and-population-mean"><i class="fa fa-check"></i><b>24.1</b> Approach 1: The distance between sample and population mean</a></li>
+<li class="chapter" data-level="24.2" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#conventional-calculational-methods"><i class="fa fa-check"></i><b>24.2</b> Conventional Calculational Methods</a></li>
+<li class="chapter" data-level="24.3" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#confidence-intervals-empiricallywith-resampling"><i class="fa fa-check"></i><b>24.3</b> Confidence Intervals Empirically—With Resampling</a></li>
+<li class="chapter" data-level="24.4" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-2-probability-of-various-universes-producing-this-sample"><i class="fa fa-check"></i><b>24.4</b> Approach 2: Probability of various universes producing this sample</a></li>
+<li class="chapter" data-level="24.5" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#interpretation-of-approach-2"><i class="fa fa-check"></i><b>24.5</b> Interpretation of Approach 2</a></li>
+<li class="chapter" data-level="24.6" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#exercises-1"><i class="fa fa-check"></i><b>24.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="25" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html"><i class="fa fa-check"></i><b>25</b> And Some Last Words About the Reliability of Sample Averages</a><ul>
+<li class="chapter" data-level="25.1" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#the-problem-of-uncertainty-about-the-dispersion"><i class="fa fa-check"></i><b>25.1</b> The problem of uncertainty about the dispersion</a></li>
+<li class="chapter" data-level="25.2" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#notes-on-the-use-of-confidence-intervals"><i class="fa fa-check"></i><b>25.2</b> Notes on the use of confidence intervals</a></li>
+<li class="chapter" data-level="25.3" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#overall-summary-and-conclusions-about-confidence-intervals"><i class="fa fa-check"></i><b>25.3</b> Overall summary and conclusions about confidence intervals</a></li>
+<li class="chapter" data-level="25.4" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#endnote-2"><i class="fa fa-check"></i><b>25.4</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="26" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html"><i class="fa fa-check"></i><b>26</b> Correlation and Causation</a><ul>
+<li class="chapter" data-level="26.1" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#preview"><i class="fa fa-check"></i><b>26.1</b> Preview</a></li>
+<li class="chapter" data-level="26.2" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#introduction-to-correlation-and-causation"><i class="fa fa-check"></i><b>26.2</b> Introduction to correlation and causation</a></li>
+<li class="chapter" data-level="26.3" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#a-note-on-association-compared-to-testing-a-hypothesis"><i class="fa fa-check"></i><b>26.3</b> A Note on Association Compared to Testing a Hypothesis</a></li>
+<li class="chapter" data-level="26.4" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#correlation-sum-of-products"><i class="fa fa-check"></i><b>26.4</b> Correlation: sum of products</a></li>
+<li class="chapter" data-level="26.5" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#exercises-2"><i class="fa fa-check"></i><b>26.5</b> Exercises</a></li>
+<li class="chapter" data-level="26.6" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#endnotes-9"><i class="fa fa-check"></i><b>26.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="27" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html"><i class="fa fa-check"></i><b>27</b> How Large a Sample?</a><ul>
+<li class="chapter" data-level="27.1" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#issues-in-determining-sample-size"><i class="fa fa-check"></i><b>27.1</b> Issues in determining sample size</a></li>
+<li class="chapter" data-level="27.2" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#some-practical-examples"><i class="fa fa-check"></i><b>27.2</b> Some practical examples</a></li>
+<li class="chapter" data-level="27.3" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#step-wise-sample-size-determination"><i class="fa fa-check"></i><b>27.3</b> Step-wise sample-size determination</a></li>
+<li class="chapter" data-level="27.4" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#summary-4"><i class="fa fa-check"></i><b>27.4</b> Summary</a></li>
+<li class="chapter" data-level="27.5" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#endnotes-10"><i class="fa fa-check"></i><b>27.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="28" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html"><i class="fa fa-check"></i><b>28</b> Bayesian Analysis by Simulation</a><ul>
+<li class="chapter" data-level="28.1" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#simple-decision-problems"><i class="fa fa-check"></i><b>28.1</b> Simple decision problems</a></li>
+<li class="chapter" data-level="28.2" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#problems-based-on-normal-and-other-distributions"><i class="fa fa-check"></i><b>28.2</b> Problems based on normal and other distributions</a></li>
+<li class="chapter" data-level="28.3" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#endnotes-11"><i class="fa fa-check"></i><b>28.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="29" data-path="exercise-solutions.html"><a href="exercise-solutions.html"><i class="fa fa-check"></i><b>29</b> Exercise Solutions</a><ul>
+<li class="chapter" data-level="29.1" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-18-2"><i class="fa fa-check"></i><b>29.1</b> Solution 18-2</a></li>
+<li class="chapter" data-level="29.2" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-1"><i class="fa fa-check"></i><b>29.2</b> Solution 21-1</a></li>
+<li class="chapter" data-level="29.3" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-2"><i class="fa fa-check"></i><b>29.3</b> Solution 21-2</a></li>
+<li class="chapter" data-level="29.4" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-3"><i class="fa fa-check"></i><b>29.4</b> Solution 21-3</a></li>
+<li class="chapter" data-level="29.5" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-1"><i class="fa fa-check"></i><b>29.5</b> Solution 23-1</a></li>
+<li class="chapter" data-level="29.6" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-2"><i class="fa fa-check"></i><b>29.6</b> Solution 23-2</a></li>
+<li class="chapter" data-level="29.7" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-3"><i class="fa fa-check"></i><b>29.7</b> Solution 23-3</a></li>
+<li class="chapter" data-level="29.8" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-4"><i class="fa fa-check"></i><b>29.8</b> Solution 23-4</a></li>
+</ul></li>
+<li class="chapter" data-level="30" data-path="technical-note-to-the-professional-reader.html"><a href="technical-note-to-the-professional-reader.html"><i class="fa fa-check"></i><b>30</b> Technical Note to the Professional Reader</a></li>
+<li class="chapter" data-level="31" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i><b>31</b> Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Resampling statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="on-variability-in-sampling" class="section level1">
+<h1><span class="header-section-number">12</span> On Variability in Sampling</h1>
+<p><em><span class="math display">\[Debra said\]</span>: “I’ve had such good luck with Japanese cars and poor
+luck with American...”</em></p>
+<p><em>The ’65 Ford Mustang: “It was fun, but I had to put two new
+transmissions in it.”</em></p>
+<p><em>The Ford Torino: “That got two transmissions too. That finished me with
+Ford.”</em></p>
+<p><em>The Plymouth Horizon: “The disaster of all disasters. That should’ve
+been painted bright yellow. What a lemon.”</em></p>
+<p>( <em>Washington Post Magazine</em> , May 17, 1992, p. 19)</p>
+<p>Does the headnote above convince you that Japanese cars are better than
+American? Has Debra got enough evidence to reach the conclusion she now
+holds? That sort of question, and the reasoning we use to address it ,
+is the subject of this chapter.</p>
+<p>More generally, how should one go about using the available data to test
+the hypothesis that Japanese cars are better? That is an example of the
+questions that are the subject of statistics.</p>
+<div id="variability-and-small-samples" class="section level2">
+<h2><span class="header-section-number">12.1</span> Variability and small samples</h2>
+<p>Perhaps the most important idea for sound statistical inference—the
+section of the book we are now beginning, in contrast to problems in
+probability, which we have studied in the previous chapters—is
+recognition of the <em>presence of variability in the results of small
+samples</em> . The fatal error of relying on too-small samples is all too
+common among economic forecasters, journalists, and others who deal with
+trends and public opinion. Athletes, sports coaches, sportswriters, and
+fans too frequently disregard this principle both in their decisions and
+in their discussion.</p>
+<p>Our intuitions often carry us far astray when the results vary from
+situation to situation—that is, when there is variability in
+outcomes—and when we have only a small sample of outcomes to look at.</p>
+<p>To motivate the discussion, I’ll tell you something that almost no
+American sports fan will believe: There is no such thing as a slump in
+baseball batting. That is, a batter often goes an alarming number of
+at-bats without getting a hit, and everyone—the manager, the
+sportswriters, and the batter himself— assumes that something has
+changed, and the probability of the batter getting a hit is now lower
+than it was before the slump. It is common for the manager to replace
+the player for a while, and for the player and coaches to change the
+player’s hitting style so as to remedy the defect. But the chance of a
+given batter getting a hit is just the same after he has gone many
+at-bats without a hit as when he has been hitting well. A belief in
+slumps causes managers to play line-ups which may not be their best.</p>
+<p>By “slump” I mean that a player’s probability of getting a hit in a
+given at-bat is lower during a period than during average periods. And
+when I say there is no such thing as a slump, I mean that the chances of
+getting a hit after any sequence of at-bats without a hit is <em>not</em>
+different than the long-run average.</p>
+<p>The “hot hand” in basketball is another illusion. The hot hand does not
+exist! The chance of a shooter scoring is the same after he has just
+missed a flock of shots as when he has just sunk a long string. That is,
+the chance of scoring a basket is no higher after a run of successes
+than after a run of failures. But even professional teams choose plays
+on the basis of who supposedly has a hot hand.</p>
+<p>Managers who substitute for the “slumping” or “cold-handed” players with
+other players who, in the long run, have lower batting averages, or set
+up plays for the shooter who supposedly has a hot hand, make a mistake.
+The supposed hot hand in basketball, and the slump in baseball, are
+illusions because the observed long runs of outs, or of baskets, are
+statistical artifacts, due to ordinary random variability. The
+identification of slumps and hot hands is superstitious behavior,
+classic cases of the assignment of pattern to a series of events when
+there really is no pattern.</p>
+<p>How do statisticians ascertain that slumps and hot hands do not exist?
+In brief, in baseball we simulate a hitter with a given average—say
+.250—and compare the results with actual hit-</p>
+<p>ters of that average, to see whether they have “slumps” longer than the
+computer. The method of investigation is roughly as follows. You program
+a computer or other machine to behave the way a player would, given the
+player’s long-run average, on the assumption that each trial is a random
+drawing. For example, if a player has a .250 season-long batting
+average, the machine is programmed like a bucket containing three black
+balls and one white ball. Then for each simulated at bat, the machine
+shuffles the “balls” and draws one; it then records whether the result
+is black or white, after which the ball is replaced in the bucket. To study
+a season with four hundred at-bats, a simulated ball is drawn four
+hundred times.</p>
+<p>The records of the player’s real season and the simulated season are
+then compared. If there really is such a thing as a non-random slump or
+streak, there will be fewer but longer “runs” of hits or outs in the
+real record than in the simulated record. On the other hand, if
+performance is independent from at-bat trial to at-bat trial, the actual
+record will change from hit to out and from out to hit as often as does
+the random simulated record. I suggested this sort of test for the
+existence of slumps in my 1969 book that first set forth the resampling
+method, a predecessor of this book.</p>
+<p>For example, Table 9-1 shows the results of one 400 at-bat season for a
+simulated .250 hitter. (1 = hit, 0 = out, sequential atbats ordered
+vertically) Note the “slump”—1 for 24—in columns 7 &amp; 8 (in bold).</p>
+<p>Table 9-1</p>
+<p><strong>A Rookie Season</strong> (400 at-bats)</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>1</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left"><strong>0</strong></td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+</tbody>
+</table>
+<p>Harry Roberts investigated the batting records of a sample of major
+leaguers. He compared players’ season-long records against the behavior
+of random-number drawings. If slumps existed rather than being a fiction
+of the imagination, the real players’ records would shift from a string
+of hits to a string of outs less frequently than would the random-number
+sequences. But in fact the number of shifts, and the average lengths of
+strings of hits and outs, are on average the same for players as for
+player-simulating random-number devices.</p>
+<p>Over long periods, averages may vary systematically, as Ty Cobb’s annual
+batting averages varied non-randomly from season to season, Roberts
+found. But in the short run, most individual and team performances have
+shown results similar to the outcomes that a lottery-type random number
+machine would produce.</p>
+<p>Thomas Gilovich, Robert Vallone and Amos Twersky performed a similar
+study of basketball shooting. They examined the records of shots from
+the floor by the Philadelphia 76’ers, foul shots by the Boston Celtics,
+and a shooting experiment of Cornell University teams. They found that
+“basketball players and fans alike tend to believe that a player’s
+chance of hitting a shot are greater following a hit than following a
+miss on the previous shot. However, detailed analyses…provided no
+evidence for a positive correlation between the outcomes of successive
+shots.”</p>
+<p>To put their conclusion differently, knowing whether a shooter has
+scored or not scored on the previous shot—or in any previous sequence
+of shots—is of absolutely no use in predicting whether the shooter
+will or will not score on the next shot. Similarly, knowledge of the
+past series of at-bats in baseball does not improve a prediction of
+whether a batter will get a hit this time.</p>
+<p>Of course a batter <em>feels</em> —and intensely—as if she or he has a
+better chance of getting a hit at some times than at other times. After
+a series of successful at-bats, both sandlot players and professionals
+feel confident that this time will be a hit, too. And after you have hit
+a bunch of baskets from all over the court, you feel as if you can’t
+miss.</p>
+<p>But notice that cardplayers get the same poignant feeling of being “hot”
+or “cold,” too. After a poker player “fills” several straights and
+flushes in a row, s/he feels s/he will hit the next one too. (Of course
+there are some players who feel just the opposite, that the “law of
+averages” is about to catch up with them.)</p>
+<p>You will agree, I’m sure, that the cards don’t have any memory, and a
+player’s chance of filling a straight or flush remains the same no
+matter how he or she has done in the last series of hands. Clearly,
+then, a person can have a strong feeling that something is about to
+happen even when that feeling has no foundation. This supports the idea
+that even though a player in sports “feels” that s/he is in a slump or
+has a hot hand, this does not imply that the feeling has any basis in
+reality.</p>
+<p>Why, when a batter is low in his/her mind because s/he has been making a
+lot of outs or for personal reasons, does her/ his batting not suffer?
+And why the opposite? Apparently at any given moment there are many
+influences operating upon a player’s performance in a variety of
+directions, with none of them clearly dominant. Hence there is no simple
+convincing explanation why a player gets a hit or an out, a basket or a
+miss, on any given attempt.</p>
+<p>But though science cannot provide an explanation, the sports
+commentators always are ready to offer their analyses. Listen, for
+example, to how they tell you that Joe Zilch must have been trying extra
+hard <em>just because of</em> his slump. There is a sportswriter’s explanation
+for <em>anything</em> that happens.</p>
+<p>Why do we believe the nonsense we hear about “momentum,” “comeback,”
+“she’s due this time,” and so on? The adult of the human species has a
+powerful propensity to believe that he or she can find a pattern even
+when there is no pattern to be found. Two decades ago I cooked up series
+of numbers with a random-number machine that looked as if they were
+prices on the stock market. Subjects in the experiment were told to buy
+and sell whichever stocks they chose. Then I gave them “another day’s
+prices,” and asked them to buy and sell again. The subjects did all
+kinds of fancy figuring, using an incredible variety of
+assumptions—even though there was no way for the figuring to help
+them. That is, people sought patterns even though there was no reason to
+believe that there were any patterns to be found.</p>
+<p>When I stopped the game before the ten buy-and-sell sessions the
+participants expected, people asked that the game continue. Then I would
+tell them that there was no basis for any patterns in the data.
+“Winning” or “losing” had no meaning. But the subjects demanded to
+continue anyway. They continued believing that they could find patterns
+even after I told them that the numbers were randomly looked up and not
+real stock prices.</p>
+<p>The illusions in our thinking about sports have important counterparts
+in our thinking about such real-world phenomena as the climate, the
+stock market, and trends in the prices of raw materials such as mercury,
+copper and wheat. And private and public decisions made on the basis of
+faulty understanding of these real situations, caused by illusory
+thinking on the order of belief in slumps and hot hands, are often
+costly and sometimes disastrous.</p>
+<p>An example of the belief that there are patterns when there are none:
+Systems for finding patterns in the stock market are peddled that have
+about the same reliability as advice from a racetrack tout—and
+millions buy them.</p>
+<p>One of the scientific strands leading into research on variability was
+the body of studies that considers the behavior of stock prices as a
+“random walk.” That body of work asserts that a stock broker or chartist
+who claims to be able to find patterns in past price movements of stocks
+that will predict future movements should be listened to with about the
+same credulity as a racetrack tout or an astrologer. A second strand was
+the work in psychology in the last decade or two which has recognized
+that people’s estimates of uncertain events are systematically biased in
+a variety of interesting and knowable ways.</p>
+<p>The U.S. government has made—and continues to make— blunders costing
+the public scores of billions of dollars, using slump-type fallacious
+reasoning about resources and energy. Forecasts are issued and policies
+are adopted based on the belief that a short-term increase in price
+constitutes a long-term trend. But the “experts” employed by the
+government to make such forecasts do no better on average than do
+private forecasters, and often the system of forecasting that they use
+is much more misleading than would be a random-number generating machine
+of the sort used in the baseball slump experiments.</p>
+<p>Please look at the data in Figure 9-2 for the height of the Nile River
+over about half a century. Is it not natural to think that those data
+show a decline in the height of the river? One can imagine that if our
+modern communication technology existed then, the Cairo newspapers would
+have been calling for research to be done on the fall of the Nile, and
+the television anchors would have been warning the people to change
+their ways and use less water.</p>
+<p><img src="images/13-Chap-9_000.png" /></p>
+<p>1250</p>
+<p>Height (cm)</p>
+<p>1200</p>
+<p>1150</p>
+<p>1100</p>
+<p>1050</p>
+<p>810 A.D. 820 830 840 850</p>
+<p>Year</p>
+<p><strong>Figure 9-2: Height of the Nile River Over Half of a Century</strong></p>
+<p>Let’s look at Figure 9-3 which represents the data over an even longer
+period. What now would you say about the height of the Nile? Clearly the
+“threat” was non-existent, and only appeared threatening because the
+time span represented by the data was too short. The point of this
+display is that looking at too-short a segment of experience frequently
+leads us into error. And “too short” may be as long as a century.</p>
+<p><img src="images/13-Chap-9_001.gif" /></p>
+<p><strong>Figure 9-3: Height of the Nile River for an Extended Period of Time</strong></p>
+<p>Another example is the price of mercury, which is representative of all
+metals. Figure 9-4 shows a forecast made in 1976 by natural-scientist
+Earl Cook. He combined a then-recent upturn in prices with the notion
+that there is a finite amount of mercury on the earth’s surface, plus
+the mathematical charm of plotting a second-degree polynomial with the
+computer. Figures 9-5a and 9-5b show how the forecast was almost
+immediately falsified, and the price continued its long-run decline.</p>
+<p><img src="images/13-Chap-9_002.gif" /></p>
+<p><strong>Figure 9-4: The Price of Mercury, Cook, Earl, “Limits to Exploitation
+of Non-Renewable Resources,”</strong> <strong><em>Science</em></strong> <strong>, 191, 20 Feb 1976, pp.
+677-682</strong></p>
+<p><img src="images/13-Chap-9_003.png" /></p>
+<p>250,000</p>
+<p>200,000</p>
+<p>Metric tons</p>
+<p>150,000</p>
+<p>100,000</p>
+<p>after 1979 reserve base change</p>
+<p>50,000</p>
+<p>0</p>
+<p>1950 1955 1960 1965 1970 1975 1980 1985 1990</p>
+<p>Year</p>
+<p><img src="images/13-Chap-9_004.png" /></p>
+<p>45</p>
+<p>40</p>
+<p>35</p>
+<p>30</p>
+<p>Years</p>
+<p>25</p>
+<p>20</p>
+<p>15</p>
+<p>10</p>
+<p>5 after 1979 reserve base change</p>
+<p>0</p>
+<p>1950 1955 1960 1965 1970 1975 1980 1985 1990</p>
+<p>Year</p>
+<p><strong>Figure 9-5a: Mercury Reserves, 1950-1990</strong></p>
+<p>120</p>
+<p>100</p>
+<p>Index for wages</p>
+<p>80</p>
+<p>Divided by wages Divided by CPI</p>
+<p>175</p>
+<p><img src="images/13-Chap-9_005.png" /></p>
+<p>150</p>
+<p>125</p>
+<p>Index for CPI</p>
+<p>60 100</p>
+<p>75</p>
+<p>40</p>
+<p>50</p>
+<p>20</p>
+<p>25</p>
+<p>0 0</p>
+<p>1850 1870 1890 1910 1930 1950 1970 1990</p>
+<p><strong>Figure 9-5b: Mercury Price Indexes, 1950-1990</strong></p>
+<p>Lack of sound statistical intuition about variability can lead to
+manipulation of the public being by unscrupulous persons. Commodity
+funds sellers use a device of this sort to make their results look good
+( <em>The Washington Post</em> , Sep 28, 1987, p. 71). Some individual
+commodity traders inevitably do well in their private trading, just by
+chance. A firm then hires one of them, builds a public fund around him,
+and claims the private record for the fund’s own history. But of course
+the private record has no predictive power, any more than does the
+record of someone who happened to get ten heads in a row flipping coins.</p>
+<p>How can we avoid falling into such traps? It is best to look at the
+longest possible sweep of history. That is, use the largest possible
+sample of observations to avoid sampling error. For copper we have data
+going back to the 18th century B.C. In Babylonia, over a period of 1000
+years, the price of iron fell to one fifth of what it was under
+Hammurabi (almost 4000 years ago), and the price of copper then cost
+about a thousand times its current price in the U.S., relative to wages.
+So the inevitable short-run increases in price should be considered in
+this long-run context to avoid drawing unsound conclusions due to
+small-sample variability.</p>
+<p>Proof that it is sound judgment to rely on the longest possible series
+is given by the accuracy of predictions one would have made in the past.
+In the context of copper, mercury, and other raw materials, we can refer
+to a sample of years in the past, and from those years imagine ourselves
+forecasting the following year. If you had bet every time that prices
+would go down in consonance with the long-run trend, you would have been
+a big winner on average.</p>
+</div>
+<div id="regression-to-the-mean" class="section level2">
+<h2><span class="header-section-number">12.2</span> Regression to the mean</h2>
+<p>UP, DOWN “The Dodgers demoted last year’s NL rookie of the year, OF Todd
+Hollandsworth (.237, 1 HR, 18 RBI) to AAA Albuquerque...” (Item in
+<em>Washington Post</em> , 6/14/97)</p>
+<p>It is a well-known fact that the Rookie of the Year in a sport such as
+baseball seldom has as outstanding a season in her/his sophomore year.
+Why is this so? Let’s use the knowledge we have acquired of probability
+and simulation to explain this phenomenon.</p>
+<p>The matter at hand might be thought of as a problem in pure
+probability—if one simply asks about the chance that a given player
+(the Rookie of the Year) will repeat. Or it could be considered a
+problem in statistics, as discussed in coming chapters. Let’s consider
+the matter in the context of baseball.</p>
+<p>Imagine 10 mechanical “ball players,” each a machine that has three
+white balls (hits) and 7 black balls. Every time the machine goes to
+bat, you take a ball out of the machine, look to see if it is a hit or
+an out, and put it back. For each “ball player” you do this 100 times.
+One of them is going to do better than the others, and that one becomes
+the Rookie of the Year. (See Table 9-2.)</p>
+<p><strong>Table 9-2</strong></p>
+<p><strong>Rookie Seasons</strong> (100 at bats)</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong># of Hits</strong></td>
+<td align="left"><strong>Batting Average</strong></td>
+</tr>
+<tr class="even">
+<td align="left">32</td>
+<td align="left">.320</td>
+</tr>
+<tr class="odd">
+<td align="left">34</td>
+<td align="left">.340</td>
+</tr>
+<tr class="even">
+<td align="left">33</td>
+<td align="left">.330</td>
+</tr>
+<tr class="odd">
+<td align="left">30</td>
+<td align="left">.300</td>
+</tr>
+<tr class="even">
+<td align="left">35</td>
+<td align="left">.350</td>
+</tr>
+<tr class="odd">
+<td align="left">33</td>
+<td align="left">.330</td>
+</tr>
+<tr class="even">
+<td align="left">30</td>
+<td align="left">.300</td>
+</tr>
+<tr class="odd">
+<td align="left">31</td>
+<td align="left">.310</td>
+</tr>
+<tr class="even">
+<td align="left">28</td>
+<td align="left">.280</td>
+</tr>
+<tr class="odd">
+<td align="left">25</td>
+<td align="left">.250</td>
+</tr>
+</tbody>
+</table>
+<p>Would you now expect that the player who happened to be the best among
+the top ten in the first year to again be the best among the top ten in
+the next year, also? The sports writers do. But of course this seldom
+happens. The Rookie of the Year in major-league baseball seldom has as
+outstanding a season in his sophomore year as in his rookie year. You
+can expect him to do better than the average of all sophomores, but not
+necessarily better than all of the rest of the group of talented players
+who are now sophomores. (Please notice that we are not saying that there
+is no long-run difference among the top ten rookies. But suppose there
+is. Table 9-3 shows the season’s performance for ten batters of
+differing performances).</p>
+<p>Table 9-3</p>
+<p><strong>Season’s Performance</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>“TRUE”</strong></td>
+<td align="left"><strong>ROOKIE</strong></td>
+</tr>
+<tr class="even">
+<td align="left">.270</td>
+<td align="left">.340</td>
+</tr>
+<tr class="odd">
+<td align="left">.270</td>
+<td align="left">.240</td>
+</tr>
+<tr class="even">
+<td align="left">.280</td>
+<td align="left">.330</td>
+</tr>
+<tr class="odd">
+<td align="left">.280</td>
+<td align="left">.300</td>
+</tr>
+<tr class="even">
+<td align="left">.300</td>
+<td align="left">.280</td>
+</tr>
+<tr class="odd">
+<td align="left">.300</td>
+<td align="left">.420</td>
+</tr>
+<tr class="even">
+<td align="left">.320</td>
+<td align="left">.340</td>
+</tr>
+<tr class="odd">
+<td align="left">.320</td>
+<td align="left">.350</td>
+</tr>
+<tr class="even">
+<td align="left">.330</td>
+<td align="left">.260</td>
+</tr>
+<tr class="odd">
+<td align="left">.330</td>
+<td align="left">.330</td>
+</tr>
+</tbody>
+</table>
+<p>We see from Figure 9-3 that we have ten batters whose “true” batting
+averages range from .270 to .330. Their rookie year performance (400 at
+bats), simulated on the basis of their “true”average is on the right.
+Which one is the rookie of the year? It’s #6, who hit .420 during the
+rookie session. Will he do as well next year? Not likely—his “true”
+average is only</p>
+<p>.300.</p>
+<p>Try generating some rookie “seasons” yourself with the following
+commands, ranging the batter’s “true” performance by altering what you
+count as a hit.</p>
+<p><code>GENERATE 400 1,100 at-bats</code></p>
+<p><code>COUNT at-bats &lt;= 30 hits DIVIDE hits 400 average</code></p>
+<p>Simulate a set of 10 or 20 such rookie seasons, and look at the one who
+did best. How did his rookie season compare to his “true” average?</p>
+<p>The explanation is the presence of <em>variability</em> . And lack of
+recognition of the role of variability is at the heart of much
+fallacious reasoning. Being alert to the role of variability is crucial.</p>
+<p>Or consider the example of having a superb meal at a restaurant—the
+best meal you have ever eaten. That fantastic meal is almost surely the
+combination of the restaurant being better than average, plus a lucky
+night for the chef and the dish you ordered. The next time you return
+you can expect a meal better than average, because the restaurant is
+better than average in the long run. But the meal probably will be less
+good than the superb one you had the first time, because there is no
+reason to believe that the chef will get so lucky again and that the
+same sort of variability will happen this time.</p>
+<p>These examples illustrate the concept of “regression to the mean”—a
+confusingly-titled and very subtle effect caused by variability in
+results among successive samples drawn from the same population. This
+phenomenon was given its title more than a century ago by Francis
+Galton, one of the great founders of modern statistics, when at first he
+thought that the height of the human species was becoming more uniform,
+after he noticed that the children of the tallest and shortest parents
+usually are closer to the average of all people than their parents are.
+But later he discovered his fallacy—that the variability in heights of
+children of quite short and quite tall parents also causes some people
+to be even more exceptionally tall or short than their parents. So the
+spread in heights among humans remains much the same from generation to
+generation; there is no “regression to the mean.” The heart of the
+matter is that any exceptional observed case in a group is likely to be
+the result of two forces—a) an <em>underlying propensity</em> to differ from
+the average in one direction or the other, plus b) <em>some chance sampling
+variability</em> that happens (in the observed case) to push even further in
+the exceptional direction.</p>
+<p>A similar phenomenon arises in direct-mail marketing. When a firm tests
+many small samples of many lists of names and then focuses its mass
+mailings on the lists that performed best in the tests, the full list
+“rollouts” usually do not perform as well as the samples did in the
+initial tests. It took many years before mail-order experts (see
+especially Burnett, Ed) finally understood that regression to the mean
+<em>inevitably</em> causes an important part of the dropoff from sample to
+rollout observed in the set of lists that give the very best results in
+a multi-list test.</p>
+<p>The larger the test samples, the less the dropoff, of course, because
+larger samples reduce variability in results. But larger samples risk
+more money. So the test-sample-size decision for the marketer inevitably
+is a trade-off between accuracy and cost.</p>
+<p>And one last amusing example: After I lectured to the class on this
+material, the student who had gotten the best grade on the first
+mid-term exam came up after class and said: “Does that mean that on the
+second mid-term I should expect to do well but not the best in the
+class?” And that’s exactly what happened: He had the second-best score
+in the class on the next midterm.</p>
+<p>A related problem arises when one conducts multiple tests, as when
+testing thousands of drugs for therapeutic value. Some of the drugs may
+appear to have a therapeutic effect just by chance. We will discuss this
+problem later when discussing hypothesis testing.</p>
+</div>
+<div id="summary-and-conclusion" class="section level2">
+<h2><span class="header-section-number">12.3</span> Summary and conclusion</h2>
+<p>The heart of statistics is clear thinking. One of the key elements in
+being a clear thinker is to have a sound gut understanding of
+statistical processes and variability. This chapter amplifies this
+point.</p>
+<p>A great benefit to using simulations rather than formulas to deal with
+problems in probability and statistics is that the presence and
+importance of variability becomes manifest in the course of the
+simulation work.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="the-procedures-of-monte-carlo-simulation-and-resampling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/resampling-stats/resampling-with/edit/master/source/sampling_variability.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/resampling-stats/resampling-with/blob/master/sampling_variability.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

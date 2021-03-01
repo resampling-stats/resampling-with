@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>16 Point Estimation | Resampling statistics</title>
+  <meta name="description" content="16 Point Estimation | Resampling statistics" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="16 Point Estimation | Resampling statistics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://resampling-stats.github.io/resampling-with" />
+  <meta property="og:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+  <meta property="og:description" content="16 Point Estimation | Resampling statistics" />
+  <meta name="github-repo" content="resampling-stats/resampling-with" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="16 Point Estimation | Resampling statistics" />
+  
+  <meta name="twitter:description" content="16 Point Estimation | Resampling statistics" />
+  <meta name="twitter:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+
+<meta name="author" content="Julian Lincoln Simon" />
+<meta name="author" content="Matthew Brett" />
+<meta name="author" content="Stéfan van der Walt" />
+<meta name="author" content="Ian Nimmo-Smith" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-to-statistical-inference.html"/>
+<link rel="next" href="framing-statistical-questions.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>R edition</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html"><i class="fa fa-check"></i>Preface to the third edition</a><ul>
+<li class="chapter" data-level="0.1" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-simon-saw"><i class="fa fa-check"></i><b>0.1</b> What Simon saw</a></li>
+<li class="chapter" data-level="0.2" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#resampling-and-data-science"><i class="fa fa-check"></i><b>0.2</b> Resampling and data science</a></li>
+<li class="chapter" data-level="0.3" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-we-changed"><i class="fa fa-check"></i><b>0.3</b> What we changed</a></li>
+<li class="chapter" data-level="0.4" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#who-should-read-this-book-and-when"><i class="fa fa-check"></i><b>0.4</b> Who should read this book, and when</a></li>
+<li class="chapter" data-level="0.5" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#welcome-to-resampling"><i class="fa fa-check"></i><b>0.5</b> Welcome to resampling</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html"><i class="fa fa-check"></i>Preface to the second edition</a><ul>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-the-resampling-method"><i class="fa fa-check"></i>Brief history of the resampling method</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-statistics"><i class="fa fa-check"></i>Brief history of statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#uses-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.1</b> Uses of Probability and Statistics</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#what-problems"><i class="fa fa-check"></i><b>1.2</b> What kinds of problems shall we solve?</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#probabilities-and-decisions"><i class="fa fa-check"></i><b>1.3</b> Probabilities and decisions</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#types-of-statistics"><i class="fa fa-check"></i><b>1.4</b> Types of statistics</a></li>
+<li class="chapter" data-level="1.5" data-path="introduction.html"><a href="introduction.html#limitations-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.5</b> Limitations of probability and statistics</a></li>
+<li class="chapter" data-level="1.6" data-path="introduction.html"><a href="introduction.html#why-is-statistics-such-a-difficult-subject"><i class="fa fa-check"></i><b>1.6</b> Why is Statistics Such a Difficult Subject?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="about-the-technology.html"><a href="about-the-technology.html"><i class="fa fa-check"></i><b>2</b> About the technology</a><ul>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#the-environment"><i class="fa fa-check"></i>The environment</a></li>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#running-the-code-on-your-own-computer"><i class="fa fa-check"></i>Running the code on your own computer</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="resampling-method.html"><a href="resampling-method.html"><i class="fa fa-check"></i><b>3</b> The Resampling method</a><ul>
+<li class="chapter" data-level="3.1" data-path="resampling-method.html"><a href="resampling-method.html#the-resampling-approach-in-action"><i class="fa fa-check"></i><b>3.1</b> The resampling approach in action</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-physical-methods"><i class="fa fa-check"></i><b>3.1.1</b> Randomness from physical methods</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-your-computer"><i class="fa fa-check"></i><b>3.2</b> Randomness from your computer</a></li>
+<li class="chapter" data-level="3.3" data-path="resampling-method.html"><a href="resampling-method.html#building-the-problem-using-r"><i class="fa fa-check"></i><b>3.3</b> Building the problem using R</a></li>
+<li class="chapter" data-level="3.4" data-path="resampling-method.html"><a href="resampling-method.html#how-resampling-differs-from-the-conventional-approach"><i class="fa fa-check"></i><b>3.4</b> How resampling differs from the conventional approach</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="resampling-with-code.html"><a href="resampling-with-code.html"><i class="fa fa-check"></i><b>4</b> Resampling with code</a></li>
+<li class="chapter" data-level="5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html"><i class="fa fa-check"></i><b>5</b> Basic Concepts in Probability and Statistics, Part 1</a><ul>
+<li class="chapter" data-level="5.1" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-nature-and-meaning-of-the-concept-of-probability"><i class="fa fa-check"></i><b>5.2</b> The nature and meaning of the concept of probability</a></li>
+<li class="chapter" data-level="5.3" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-meaning-of-probability"><i class="fa fa-check"></i><b>5.3</b> The “Meaning” of “Probability”</a></li>
+<li class="chapter" data-level="5.4" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#digression-about-operational-definitions"><i class="fa fa-check"></i><b>5.4</b> Digression about Operational Definitions</a></li>
+<li class="chapter" data-level="5.5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#back-to-proxies"><i class="fa fa-check"></i><b>5.5</b> Back to Proxies</a></li>
+<li class="chapter" data-level="5.6" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-various-ways-of-estimating-probabilities"><i class="fa fa-check"></i><b>5.6</b> The various ways of estimating probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html"><i class="fa fa-check"></i><b>6</b> Basic Concepts in Probability and Statistics, Part 2</a><ul>
+<li class="chapter" data-level="6.1" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-other-magnitudes"><i class="fa fa-check"></i><b>6.1</b> The relationship of probability to other magnitudes</a></li>
+<li class="chapter" data-level="6.2" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-concept-of-chance"><i class="fa fa-check"></i><b>6.2</b> The concept of chance</a></li>
+<li class="chapter" data-level="6.3" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#what-do-we-mean-by-chance"><i class="fa fa-check"></i><b>6.3</b> What Do We Mean by “Chance”?</a></li>
+<li class="chapter" data-level="6.4" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-philosophers-dispute-about-the-concept-of-probability"><i class="fa fa-check"></i><b>6.4</b> The philosophers’ dispute about the concept of probability</a></li>
+<li class="chapter" data-level="6.5" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-the-concept-of-resampling"><i class="fa fa-check"></i><b>6.5</b> The relationship of probability to the concept of resampling</a></li>
+<li class="chapter" data-level="6.6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#conclusion"><i class="fa fa-check"></i><b>6.6</b> Conclusion</a></li>
+<li class="chapter" data-level="6.7" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#endnote"><i class="fa fa-check"></i><b>6.7</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html"><i class="fa fa-check"></i><b>7</b> Probability Theory, Part 1</a><ul>
+<li class="chapter" data-level="7.1" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#definitions"><i class="fa fa-check"></i><b>7.2</b> Definitions</a></li>
+<li class="chapter" data-level="7.3" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#theoretical-and-historical-methods-of-estimation"><i class="fa fa-check"></i><b>7.3</b> Theoretical and historical methods of estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#samples-and-universes"><i class="fa fa-check"></i><b>7.4</b> Samples and universes</a></li>
+<li class="chapter" data-level="7.5" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-conventions-of-probability"><i class="fa fa-check"></i><b>7.5</b> The conventions of probability</a></li>
+<li class="chapter" data-level="7.6" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-deductive-formulaic-method"><i class="fa fa-check"></i><b>7.6</b> The deductive formulaic method</a></li>
+<li class="chapter" data-level="7.7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#multiplication-rule"><i class="fa fa-check"></i><b>7.7</b> Multiplication rule</a></li>
+<li class="chapter" data-level="7.8" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#conditional-and-unconditional-probabilities"><i class="fa fa-check"></i><b>7.8</b> Conditional and unconditional probabilities</a></li>
+<li class="chapter" data-level="7.9" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-skins-again-plus-leaving-the-game-early"><i class="fa fa-check"></i><b>7.9</b> The skins again, plus leaving the game early</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html"><i class="fa fa-check"></i><b>8</b> Probability Theory Part I (continued)</a><ul>
+<li class="chapter" data-level="8.1" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-special-case-of-independence"><i class="fa fa-check"></i><b>8.1</b> The special case of independence</a></li>
+<li class="chapter" data-level="8.2" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-of-probabilities"><i class="fa fa-check"></i><b>8.2</b> The addition of probabilities</a></li>
+<li class="chapter" data-level="8.3" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-rule"><i class="fa fa-check"></i><b>8.3</b> The addition rule</a></li>
+<li class="chapter" data-level="8.4" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#theoretical-devices-for-the-study-of-probability"><i class="fa fa-check"></i><b>8.4</b> Theoretical devices for the study of probability</a></li>
+<li class="chapter" data-level="8.5" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-concept-of-sample-space"><i class="fa fa-check"></i><b>8.5</b> The Concept of Sample Space</a></li>
+<li class="chapter" data-level="8.6" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#endnotes"><i class="fa fa-check"></i><b>8.6</b> Endnotes</a></li>
+<li class="chapter" data-level="8.7" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#afternote-useful-hints-about-simple-numbers"><i class="fa fa-check"></i><b>8.7</b> Afternote: Useful hints about simple numbers</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html"><i class="fa fa-check"></i><b>9</b> Probability Theory, Part 2: Compound Probability</a><ul>
+<li class="chapter" data-level="9.1" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#introduction-3"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#puzzle-problems"><i class="fa fa-check"></i><b>9.2</b> Puzzle Problems</a></li>
+<li class="chapter" data-level="9.3" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#examples-of-basic-problems-in-probability"><i class="fa fa-check"></i><b>9.3</b> Examples of basic problems in probability</a></li>
+<li class="chapter" data-level="9.4" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#the-concepts-of-replacement-and-non-replacement"><i class="fa fa-check"></i><b>9.4</b> The concepts of replacement and non-replacement</a></li>
+<li class="chapter" data-level="9.5" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#endnotes-1"><i class="fa fa-check"></i><b>9.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html"><i class="fa fa-check"></i><b>10</b> Probability Theory, Part 3</a><ul>
+<li class="chapter" data-level="10.1" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-1-the-birthday-problem-illustrating-the-probability-of-duplication-in-a-multi-outcome-sample-from-an-infinite-universefile-birthday"><i class="fa fa-check"></i><b>10.1</b> Example 7-1: The Birthday Problem, Illustrating the Probability of Duplication in a Multi-Outcome Sample from an Infinite Universe(File “Birthday”)</a></li>
+<li class="chapter" data-level="10.2" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-2-three-daughters-among-four-children-illustrating-a-problem-with-two-outcomes-binomial-1-and-sampling-with-replacement-among-equally-likely-outcomes."><i class="fa fa-check"></i><b>10.2</b> Example 7-2: Three Daughters Among Four Children, Illustrating A Problem With Two Outcomes (Binomial <span class="math display">\[1\]</span>) And Sampling With Replacement Among Equally Likely Outcomes.</a></li>
+<li class="chapter" data-level="10.3" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#variations-of-the-daughters-problem"><i class="fa fa-check"></i><b>10.3</b> Variations of the daughters problem</a></li>
+<li class="chapter" data-level="10.4" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#a-note-on-clarifying-and-labeling-problems"><i class="fa fa-check"></i><b>10.4</b> A note on clarifying and labeling problems</a></li>
+<li class="chapter" data-level="10.5" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#binomial-trials"><i class="fa fa-check"></i><b>10.5</b> Binomial trials</a></li>
+<li class="chapter" data-level="10.6" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-3-three-or-more-successful-basketball-shots-in-five-attempts-two-outcome-sampling-with-unequally-likely-outcomes-with-replacementa-binomial-experiment"><i class="fa fa-check"></i><b>10.6</b> Example 7-3: Three or More Successful Basketball Shots in Five Attempts (Two-Outcome Sampling with Unequally-Likely Outcomes, with Replacement—A Binomial Experiment)</a></li>
+<li class="chapter" data-level="10.7" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#note-to-the-student-of-analytic-probability-theory"><i class="fa fa-check"></i><b>10.7</b> Note to the student of analytic probability theory</a></li>
+<li class="chapter" data-level="10.8" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-4-one-in-the-black-two-in-the-white-and-no-misses-in-three-archery-shotsmultiple-outcome-multinomial-sampling-with-unequally-likely-outcomes-with-replacement."><i class="fa fa-check"></i><b>10.8</b> Example 7-4: One in the Black, Two in the White, and No Misses in Three Archery Shots(Multiple Outcome <span class="math display">\[Multinomial\]</span> Sampling With Unequally Likely Outcomes; with Replacement.)</a></li>
+<li class="chapter" data-level="10.9" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-5-two-groups-of-heart-patients"><i class="fa fa-check"></i><b>10.9</b> Example 7-5: Two Groups of Heart Patients</a></li>
+<li class="chapter" data-level="10.10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-6-dispersion-of-a-sum-of-random-variableshammer-lengthsheads-and-handles"><i class="fa fa-check"></i><b>10.10</b> Example 7-6: Dispersion of a Sum of Random Variables—Hammer Lengths—Heads and Handles</a></li>
+<li class="chapter" data-level="10.11" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-7-the-product-of-random-variablestheft-by-employees"><i class="fa fa-check"></i><b>10.11</b> Example 7-7: The Product of Random Variables—Theft by Employees</a></li>
+<li class="chapter" data-level="10.12" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-8-flipping-pennies-to-the-end"><i class="fa fa-check"></i><b>10.12</b> Example 7-8: Flipping Pennies to the End</a></li>
+<li class="chapter" data-level="10.13" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-9-a-drunks-random-walk"><i class="fa fa-check"></i><b>10.13</b> Example 7-9: A Drunk’s Random Walk</a></li>
+<li class="chapter" data-level="10.14" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-10"><i class="fa fa-check"></i><b>10.14</b> Example 7-10</a></li>
+<li class="chapter" data-level="10.15" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#the-general-procedure"><i class="fa fa-check"></i><b>10.15</b> The general procedure</a></li>
+<li class="chapter" data-level="10.16" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#endnotes-2"><i class="fa fa-check"></i><b>10.16</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><i class="fa fa-check"></i><b>11</b> Probability Theory, Part 4: Estimating Probabilities from Finite Universes</a><ul>
+<li class="chapter" data-level="11.1" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#introduction-4"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
+<li class="chapter" data-level="11.2" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#some-building-block-programs"><i class="fa fa-check"></i><b>11.2</b> Some building-block programs</a></li>
+<li class="chapter" data-level="11.3" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#problems-in-finite-universes"><i class="fa fa-check"></i><b>11.3</b> Problems in finite universes</a></li>
+<li class="chapter" data-level="11.4" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-1-what-is-the-probability-of-selecting-four-girls-and-one-boy-when-selecting-five-students-from-any-group-of-twenty-five-girls-and-twenty-five-boys-sampling-without-replacement-when-there-are-two-outcomes-and-the-order-does-not-matter"><i class="fa fa-check"></i><b>11.4</b> Example 8-1: What is the Probability of Selecting Four Girls and One Boy When Selecting Five Students From Any Group of Twenty-five Girls and Twenty-five Boys? (Sampling Without Replacement When There are Two Outcomes and the Order Does Not Matter)</a></li>
+<li class="chapter" data-level="11.5" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-2-nine-spades-and-four-clubs-in-a-bridge-hand-multiple-outcome-sampling-without-replacement-order-does-not-matter"><i class="fa fa-check"></i><b>11.5</b> Example 8-2: Nine Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)</a></li>
+<li class="chapter" data-level="11.6" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-3-a-total-of-fifteen-points-in-a-bridge-hand-when-ace-4-king-3-queen-2-and-jack-1."><i class="fa fa-check"></i><b>11.6</b> Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace = 4, King = 3, Queen = 2, and Jack = 1.</a></li>
+<li class="chapter" data-level="11.7" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-4-four-girls-and-then-one-boy-from-twenty-five-girls-and-twenty-five-boys-order-matters-sampling-without-replacement-two-outcomes-several-of-each-item"><i class="fa fa-check"></i><b>11.7</b> Example 8-4: Four Girls and Then One Boy From Twenty-five Girls and Twenty-five Boys Order Matters, Sampling Without Replacement, Two Outcomes, Several of Each Item</a></li>
+<li class="chapter" data-level="11.8" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-5-four-or-more-couples-getting-their-own-partners-when-ten-couples-are-paired-randomly-probability-of-matching-by-chance"><i class="fa fa-check"></i><b>11.8</b> Example 8-5: Four or More Couples Getting Their Own Partners When Ten Couples are Paired Randomly (Probability of Matching by Chance)</a></li>
+<li class="chapter" data-level="11.9" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-6-matching-santa-hats-another-famous-problem-of-this-sort-the-hat-checker-at-a-restaurant-mixes-up-the-hats-of-a-party-of-6.-what-is-the-probability-that-at-least-one-will-get-his-own-hat"><i class="fa fa-check"></i><b>11.9</b> Example 8-6: Matching Santa Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6. What is the probability that at least one will get his own hat?</a></li>
+<li class="chapter" data-level="11.10" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-7-twenty-executives-are-to-be-assigned-to-two-divisions-of-a-firm"><i class="fa fa-check"></i><b>11.10</b> Example 8-7: Twenty executives are to be assigned to two divisions of a firm</a></li>
+<li class="chapter" data-level="11.11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-8-executives-moving"><i class="fa fa-check"></i><b>11.11</b> Example 8-8: Executives Moving</a></li>
+<li class="chapter" data-level="11.12" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-9-state-liquor-systems-again"><i class="fa fa-check"></i><b>11.12</b> Example 8-9: State Liquor Systems Again</a></li>
+<li class="chapter" data-level="11.13" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-10-a-compound-problem-five-or-more-spades-in-one-bridge-hand-and-four-girls-and-a-boy-in-a-five-child-family"><i class="fa fa-check"></i><b>11.13</b> Example 8-10: A Compound Problem: Five or More Spades in One Bridge Hand, and Four Girls and a Boy in a Five-Child Family</a></li>
+<li class="chapter" data-level="11.14" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#summary"><i class="fa fa-check"></i><b>11.14</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html"><i class="fa fa-check"></i><b>12</b> On Variability in Sampling</a><ul>
+<li class="chapter" data-level="12.1" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#variability-and-small-samples"><i class="fa fa-check"></i><b>12.1</b> Variability and small samples</a></li>
+<li class="chapter" data-level="12.2" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#regression-to-the-mean"><i class="fa fa-check"></i><b>12.2</b> Regression to the mean</a></li>
+<li class="chapter" data-level="12.3" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#summary-and-conclusion"><i class="fa fa-check"></i><b>12.3</b> Summary and conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html"><i class="fa fa-check"></i><b>13</b> The Procedures of Monte Carlo Simulation (and Resampling)</a><ul>
+<li class="chapter" data-level="13.1" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#a-definition-and-general-procedure-for-monte-carlo-simulation"><i class="fa fa-check"></i><b>13.1</b> A definition and general procedure for Monte Carlo simulation</a></li>
+<li class="chapter" data-level="13.2" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#summary-1"><i class="fa fa-check"></i><b>13.2</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html"><i class="fa fa-check"></i><b>14</b> The Basic Ideas in Statistical Inference</a><ul>
+<li class="chapter" data-level="14.1" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#knowledge-without-probabilistic-statistical-inference"><i class="fa fa-check"></i><b>14.1</b> Knowledge without probabilistic statistical inference</a></li>
+<li class="chapter" data-level="14.2" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#the-treatment-of-uncertainty"><i class="fa fa-check"></i><b>14.2</b> The treatment of uncertainty</a></li>
+<li class="chapter" data-level="14.3" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#where-statistical-inference-becomes-crucial"><i class="fa fa-check"></i><b>14.3</b> Where statistical inference becomes crucial</a></li>
+<li class="chapter" data-level="14.4" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#conclusions"><i class="fa fa-check"></i><b>14.4</b> Conclusions</a></li>
+<li class="chapter" data-level="14.5" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#endnotes-3"><i class="fa fa-check"></i><b>14.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html"><i class="fa fa-check"></i><b>15</b> Introduction to Statistical Inference</a><ul>
+<li class="chapter" data-level="15.1" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#statistical-inference-and-random-sampling"><i class="fa fa-check"></i><b>15.1</b> Statistical inference and random sampling</a></li>
+<li class="chapter" data-level="15.2" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#summary-and-conclusions"><i class="fa fa-check"></i><b>15.2</b> Summary and conclusions</a></li>
+<li class="chapter" data-level="15.3" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#endnotes-4"><i class="fa fa-check"></i><b>15.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="point-estimation.html"><a href="point-estimation.html"><i class="fa fa-check"></i><b>16</b> Point Estimation</a><ul>
+<li class="chapter" data-level="16.1" data-path="point-estimation.html"><a href="point-estimation.html#ways-to-estimate-the-mean"><i class="fa fa-check"></i><b>16.1</b> Ways to estimate the mean</a></li>
+<li class="chapter" data-level="16.2" data-path="point-estimation.html"><a href="point-estimation.html#criteria-of-estimates"><i class="fa fa-check"></i><b>16.2</b> Criteria of estimates</a></li>
+<li class="chapter" data-level="16.3" data-path="point-estimation.html"><a href="point-estimation.html#estimation-of-accuracy-of-the-point-estimate"><i class="fa fa-check"></i><b>16.3</b> Estimation of accuracy of the point estimate</a></li>
+<li class="chapter" data-level="16.4" data-path="point-estimation.html"><a href="point-estimation.html#uses-of-the-mean"><i class="fa fa-check"></i><b>16.4</b> Uses of the mean</a></li>
+<li class="chapter" data-level="16.5" data-path="point-estimation.html"><a href="point-estimation.html#conclusion-1"><i class="fa fa-check"></i><b>16.5</b> Conclusion</a></li>
+<li class="chapter" data-level="16.6" data-path="point-estimation.html"><a href="point-estimation.html#endnotes-5"><i class="fa fa-check"></i><b>16.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html"><i class="fa fa-check"></i><b>17</b> Framing Statistical Questions</a><ul>
+<li class="chapter" data-level="17.1" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#introduction-5"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
+<li class="chapter" data-level="17.2" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#translating-scientific-questions-into-probabilistic-and-statistical-questions"><i class="fa fa-check"></i><b>17.2</b> Translating scientific questions into probabilistic and statistical questions</a></li>
+<li class="chapter" data-level="17.3" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#the-three-types-of-questions"><i class="fa fa-check"></i><b>17.3</b> The three types of questions</a></li>
+<li class="chapter" data-level="17.4" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#summary-2"><i class="fa fa-check"></i><b>17.4</b> Summary</a></li>
+<li class="chapter" data-level="17.5" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#endnotes-6"><i class="fa fa-check"></i><b>17.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html"><i class="fa fa-check"></i><b>18</b> Hypothesis-Testing with Counted Data, Part 1</a><ul>
+<li class="chapter" data-level="18.1" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#introduction-6"><i class="fa fa-check"></i><b>18.1</b> Introduction</a></li>
+<li class="chapter" data-level="18.2" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#should-a-single-sample-of-counted-data-be-considered-different-from-a-benchmark-universe"><i class="fa fa-check"></i><b>18.2</b> Should a single sample of counted data be considered different from a benchmark universe?</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html"><i class="fa fa-check"></i><b>19</b> The Concept of Statistical Significance in Testing Hypotheses</a><ul>
+<li class="chapter" data-level="19.1" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-logic-of-hypothesis-tests"><i class="fa fa-check"></i><b>19.1</b> The logic of hypothesis tests</a></li>
+<li class="chapter" data-level="19.2" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-concept-of-statistical-significance"><i class="fa fa-check"></i><b>19.2</b> The concept of statistical significance</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><i class="fa fa-check"></i><b>20</b> The Statistics of Hypothesis-Testing with Counted Data, Part 2</a><ul>
+<li class="chapter" data-level="20.1" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#comparisons-among-more-than-two-samples-of-counted-data"><i class="fa fa-check"></i><b>20.1</b> Comparisons among more than two samples of counted data</a></li>
+<li class="chapter" data-level="20.2" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#paired-comparisons-with-counted-data"><i class="fa fa-check"></i><b>20.2</b> Paired Comparisons With Counted Data</a></li>
+<li class="chapter" data-level="20.3" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#endnotes-7"><i class="fa fa-check"></i><b>20.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html"><i class="fa fa-check"></i><b>21</b> The Statistics of Hypothesis-Testing With Measured Data</a><ul>
+<li class="chapter" data-level="21.1" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#differences-among-four-means"><i class="fa fa-check"></i><b>21.1</b> Differences among four means</a></li>
+<li class="chapter" data-level="21.2" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#using-squared-differences"><i class="fa fa-check"></i><b>21.2</b> Using Squared Differences</a></li>
+<li class="chapter" data-level="21.3" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#endnotes-8"><i class="fa fa-check"></i><b>21.3</b> Endnotes</a></li>
+<li class="chapter" data-level="21.4" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#exercises"><i class="fa fa-check"></i><b>21.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html"><i class="fa fa-check"></i><b>22</b> General Procedures for Testing Hypotheses</a><ul>
+<li class="chapter" data-level="22.1" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#introduction-7"><i class="fa fa-check"></i><b>22.1</b> Introduction</a></li>
+<li class="chapter" data-level="22.2" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#canonical-question-and-answer-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.2</b> Canonical question-and-answer procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.3" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#skeleton-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.3</b> Skeleton procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.4" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#an-example-can-the-bio-engineer-increase-the-female-calf-rate"><i class="fa fa-check"></i><b>22.4</b> An example: can the bio-engineer increase the female calf rate?</a></li>
+<li class="chapter" data-level="22.5" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#conventional-methods"><i class="fa fa-check"></i><b>22.5</b> Conventional methods</a></li>
+<li class="chapter" data-level="22.6" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#choice-of-the-benchmark-universe1"><i class="fa fa-check"></i><b>22.6</b> Choice of the benchmark universe1</a></li>
+<li class="chapter" data-level="22.7" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#why-is-statisticsand-hypothesis-testingso-difficult"><i class="fa fa-check"></i><b>22.7</b> Why is statistics—and hypothesis testing—so difficult?</a></li>
+<li class="chapter" data-level="22.8" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#endnote-1"><i class="fa fa-check"></i><b>22.8</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="23" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><i class="fa fa-check"></i><b>23</b> Confidence Intervals, Part 1: Assessing the Accuracy of Samples</a><ul>
+<li class="chapter" data-level="23.1" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#introduction-8"><i class="fa fa-check"></i><b>23.1</b> Introduction</a></li>
+<li class="chapter" data-level="23.2" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#estimating-the-accuracy-of-a-sample-mean"><i class="fa fa-check"></i><b>23.2</b> Estimating the accuracy of a sample mean</a></li>
+<li class="chapter" data-level="23.3" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#the-logic-of-confidence-intervals"><i class="fa fa-check"></i><b>23.3</b> The logic of confidence intervals</a></li>
+<li class="chapter" data-level="23.4" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#computing-confidence-intervals"><i class="fa fa-check"></i><b>23.4</b> Computing confidence intervals</a></li>
+<li class="chapter" data-level="23.5" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#procedure-for-estimating-confidence-intervals"><i class="fa fa-check"></i><b>23.5</b> Procedure for estimating confidence intervals</a></li>
+<li class="chapter" data-level="23.6" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#summary-3"><i class="fa fa-check"></i><b>23.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><i class="fa fa-check"></i><b>24</b> Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals</a><ul>
+<li class="chapter" data-level="24.1" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-1-the-distance-between-sample-and-population-mean"><i class="fa fa-check"></i><b>24.1</b> Approach 1: The distance between sample and population mean</a></li>
+<li class="chapter" data-level="24.2" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#conventional-calculational-methods"><i class="fa fa-check"></i><b>24.2</b> Conventional Calculational Methods</a></li>
+<li class="chapter" data-level="24.3" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#confidence-intervals-empiricallywith-resampling"><i class="fa fa-check"></i><b>24.3</b> Confidence Intervals Empirically—With Resampling</a></li>
+<li class="chapter" data-level="24.4" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-2-probability-of-various-universes-producing-this-sample"><i class="fa fa-check"></i><b>24.4</b> Approach 2: Probability of various universes producing this sample</a></li>
+<li class="chapter" data-level="24.5" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#interpretation-of-approach-2"><i class="fa fa-check"></i><b>24.5</b> Interpretation of Approach 2</a></li>
+<li class="chapter" data-level="24.6" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#exercises-1"><i class="fa fa-check"></i><b>24.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="25" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html"><i class="fa fa-check"></i><b>25</b> And Some Last Words About the Reliability of Sample Averages</a><ul>
+<li class="chapter" data-level="25.1" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#the-problem-of-uncertainty-about-the-dispersion"><i class="fa fa-check"></i><b>25.1</b> The problem of uncertainty about the dispersion</a></li>
+<li class="chapter" data-level="25.2" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#notes-on-the-use-of-confidence-intervals"><i class="fa fa-check"></i><b>25.2</b> Notes on the use of confidence intervals</a></li>
+<li class="chapter" data-level="25.3" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#overall-summary-and-conclusions-about-confidence-intervals"><i class="fa fa-check"></i><b>25.3</b> Overall summary and conclusions about confidence intervals</a></li>
+<li class="chapter" data-level="25.4" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#endnote-2"><i class="fa fa-check"></i><b>25.4</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="26" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html"><i class="fa fa-check"></i><b>26</b> Correlation and Causation</a><ul>
+<li class="chapter" data-level="26.1" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#preview"><i class="fa fa-check"></i><b>26.1</b> Preview</a></li>
+<li class="chapter" data-level="26.2" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#introduction-to-correlation-and-causation"><i class="fa fa-check"></i><b>26.2</b> Introduction to correlation and causation</a></li>
+<li class="chapter" data-level="26.3" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#a-note-on-association-compared-to-testing-a-hypothesis"><i class="fa fa-check"></i><b>26.3</b> A Note on Association Compared to Testing a Hypothesis</a></li>
+<li class="chapter" data-level="26.4" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#correlation-sum-of-products"><i class="fa fa-check"></i><b>26.4</b> Correlation: sum of products</a></li>
+<li class="chapter" data-level="26.5" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#exercises-2"><i class="fa fa-check"></i><b>26.5</b> Exercises</a></li>
+<li class="chapter" data-level="26.6" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#endnotes-9"><i class="fa fa-check"></i><b>26.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="27" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html"><i class="fa fa-check"></i><b>27</b> How Large a Sample?</a><ul>
+<li class="chapter" data-level="27.1" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#issues-in-determining-sample-size"><i class="fa fa-check"></i><b>27.1</b> Issues in determining sample size</a></li>
+<li class="chapter" data-level="27.2" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#some-practical-examples"><i class="fa fa-check"></i><b>27.2</b> Some practical examples</a></li>
+<li class="chapter" data-level="27.3" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#step-wise-sample-size-determination"><i class="fa fa-check"></i><b>27.3</b> Step-wise sample-size determination</a></li>
+<li class="chapter" data-level="27.4" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#summary-4"><i class="fa fa-check"></i><b>27.4</b> Summary</a></li>
+<li class="chapter" data-level="27.5" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#endnotes-10"><i class="fa fa-check"></i><b>27.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="28" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html"><i class="fa fa-check"></i><b>28</b> Bayesian Analysis by Simulation</a><ul>
+<li class="chapter" data-level="28.1" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#simple-decision-problems"><i class="fa fa-check"></i><b>28.1</b> Simple decision problems</a></li>
+<li class="chapter" data-level="28.2" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#problems-based-on-normal-and-other-distributions"><i class="fa fa-check"></i><b>28.2</b> Problems based on normal and other distributions</a></li>
+<li class="chapter" data-level="28.3" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#endnotes-11"><i class="fa fa-check"></i><b>28.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="29" data-path="exercise-solutions.html"><a href="exercise-solutions.html"><i class="fa fa-check"></i><b>29</b> Exercise Solutions</a><ul>
+<li class="chapter" data-level="29.1" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-18-2"><i class="fa fa-check"></i><b>29.1</b> Solution 18-2</a></li>
+<li class="chapter" data-level="29.2" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-1"><i class="fa fa-check"></i><b>29.2</b> Solution 21-1</a></li>
+<li class="chapter" data-level="29.3" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-2"><i class="fa fa-check"></i><b>29.3</b> Solution 21-2</a></li>
+<li class="chapter" data-level="29.4" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-3"><i class="fa fa-check"></i><b>29.4</b> Solution 21-3</a></li>
+<li class="chapter" data-level="29.5" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-1"><i class="fa fa-check"></i><b>29.5</b> Solution 23-1</a></li>
+<li class="chapter" data-level="29.6" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-2"><i class="fa fa-check"></i><b>29.6</b> Solution 23-2</a></li>
+<li class="chapter" data-level="29.7" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-3"><i class="fa fa-check"></i><b>29.7</b> Solution 23-3</a></li>
+<li class="chapter" data-level="29.8" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-4"><i class="fa fa-check"></i><b>29.8</b> Solution 23-4</a></li>
+</ul></li>
+<li class="chapter" data-level="30" data-path="technical-note-to-the-professional-reader.html"><a href="technical-note-to-the-professional-reader.html"><i class="fa fa-check"></i><b>30</b> Technical Note to the Professional Reader</a></li>
+<li class="chapter" data-level="31" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i><b>31</b> Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Resampling statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="point-estimation" class="section level1">
+<h1><span class="header-section-number">16</span> Point Estimation</h1>
+<p>One of the great questions in statistical inference is: How big is it?
+This can mean—How long? How deep? How much time? At what angle?</p>
+<p>This question about size may pertain to a single object, of which there
+are many measurements; an example is the location of a star in the
+heavens. Or the question may pertain to a varied set of elements and
+their measurements; examples include the effect of treatment with a
+given drug, and the incomes of the people of the United States in 1994.</p>
+<p>From where the observer stands, having only the evidence of a sample in
+hand, it often is impossible to determine whether the data represent
+multiple observations of a single object, or single (or multiple)
+observations of multiple objects. For example, from crude measurements
+of weight you could not know whether one person is being weighed
+repeatedly, or several people have been weighed once. Hence all the
+following discussion of point estimation is the same for both of these
+situations.</p>
+<p>The word “big” in the first sentence above is purposely vague, because
+there are many possible kinds of estimates that one might wish to make
+concerning a given object or collection. For a single object like a
+star, one surely will wish to make a best guess about its location. But
+about the effects of a drug treatment, or the incomes of a nation, there
+are many questions that one may wish to answer. The <em>average</em> effect or
+income is a frequent and important object of our interest. But one may
+also wish to know about the amount of <em>dispersion</em> in the distribution
+of treatment effects, or of incomes, or the sym-</p>
+<p>metry of the distribution. And there are still other questions one may
+wish to answer.</p>
+<p>Even if we focus on the average, the issue often is less clear cut than
+we may think at first. If we are to choose a single number to
+characterize the population (universe) from which a given set of data
+has been drawn, what should that representative number be for the case
+at hand? The answer must depend on the purpose with which we ask the
+question, of course. There are several main possibilities such as the
+mean, the median, and the mode.</p>
+<p>Even if we confine our attention to the mean as our measure of the
+central tendency of a distribution, there are various ways of estimating
+it, each of them having a different rationale. The various methods of
+estimation often lead to the same estimate, especially if the
+distribution is symmetric (such as the distribution of errors you make
+in throwing darts at a dart board). But in an asymmetric case such as a
+distribution of incomes, the results may differ among the contending
+modes of estimation. So the entire topic is more messy than appears at
+first look. Though we will not inquire into the complexities, it is
+important that you understand that the matter is not as simple as it may
+seem. (See <span class="citation">Savage (<a href="#ref-savage1972foundations">1972</a>)</span>, Chapter 15, for more discussion of this topic.)</p>
+<div id="ways-to-estimate-the-mean" class="section level2">
+<h2><span class="header-section-number">16.1</span> Ways to estimate the mean</h2>
+<p><strong>The Method of Moments</strong></p>
+<p>Since elementary school you have been taught to estimate the mean of a
+universe (or calculate the mean of a sample) by taking a simple
+arithmetic average. A fancy name for that process is “the method of
+moments.” It is the equivalent of estimating the center of gravity of a
+pole by finding the place where it will balance on your finger. If the
+pole has the same size and density all along its length, that balance
+point will be halfway between the endpoints, and the point may be
+thought of as the arithmetic average of the distances from the balance
+point of all the one-centimeter segments of the pole.</p>
+<p>Consider this example:</p>
+<p><strong>Example 13-1: Twenty-nine Out of Fifty People Polled Say They Will
+Vote For The Democrat. Who Will Win The Election? The Relationship
+Between The Sample Proportion and The Population Proportion in a
+Two-Outcome Universe.</strong></p>
+<p>You take a random sample of 50 people in Maryland and ask which party’s
+candidate for governor they will vote for. Twenty-nine say they will
+vote for the Democrat. Let’s say it is reasonable to assume in this case
+that people will vote exactly as they say they will. The statistical
+question then facing you is: What proportion of the voters in Maryland
+will vote for the Democrat in the general election?</p>
+<p>Your intuitive best guess is that the proportion of the
+“universe”—which is composed of voters in the general election, in
+this case—will be the same as the proportion of the sample. That is,
+58 percent = 29/50 is likely to be your guess about the proportion that
+will vote Democratic. Of course, your estimate may be too high or too
+low in this particular case, but in the long run—that is, if you take
+many samples like this one—on the average the sample mean will equal
+the universe (population) proportion, for reasons to be discussed later.</p>
+<p>The sample mean seems to be the “natural” estimator of the population
+mean in this and many other cases. That is, it seems quite natural to
+say that the best estimate is the sample mean, and indeed it probably is
+best. But why? This is the problem of inverse probability that has
+bedeviled statisticians for two centuries.</p>
+<p>If the only information that you have (or that seems relevant) is the
+evidence of the sample, then there would seem to be no basis for judging
+that the shape and location of the population differs to the “left” or
+“right” from that of the sample. That is often a strong argument.</p>
+<p>Another way of saying much the same thing: If a sample has been drawn
+randomly, each single observation is a representative estimator of the
+mean; if you only have one observation, that observation is your best
+guess about the center of the distribution (if you have no reason to
+believe that the distribution of the population is peculiar—such as
+not being symmetrical). And therefore the sum of 2, 3…n of such
+observations (divided by their number) should have that same property,
+based on basic principles.</p>
+<p>But if you are on a ship at sea and a leaf comes raining down from the
+sky, your best guess about the location of the tree from which it comes
+is not directly above you, and if two leaves fall, the midpoint of them
+is not the best location guess, either; you know that trees don’t grow
+at sea, and birds sometimes carry leaves out to sea.</p>
+<p>We’ll return to this subject when we discuss criteria of methods.</p>
+<p><strong>Expected Value and the Method of Moments</strong></p>
+<p>Consider this gamble: You and another person roll a die. If it falls
+with the “6” upwards you get $4, and otherwise you pay</p>
+<p>$1. If you play 120 times, at the end of the day you would expect to
+have (20*$4 - 100*$1 =) -$20 dollars. We say that -$20 is your
+“expected value,” and your expected value per roll is (-$20/120 =)
+$.166 or the loss of 1/6 of a dollar. If you get $5 instead of $4,
+your expected value is $0.</p>
+<p>This is exactly the same idea as the method of moments, and we even use
+the same term—“expected value,” or “expectation”—for the outcome of
+a calculation of the mean of a distribution. We say that the expected
+value for the success of rolling a “6” with a single cast of a die is
+1/6, and that the expected value of rolling a “6” or a “5” is (1/6 + 1/6
+= ) 2/6.</p>
+<p><strong>The Maximum Likelihood Principle</strong></p>
+<p>Another way of thinking about estimation of the population mean asks:
+Which population(s) would, among the possible populations, have the
+highest probability of producing the observed sample? This criterion
+frequently produces the same answer as the method of moments, but in
+some situations the estimates differ. Furthermore, the logic of the
+maximum-likelihood principle is important.</p>
+<p>Consider that you draw without replacement six balls—2 black and 4
+white—from a bucket that contains twenty balls. What would you guess is
+the composition of the bucket from which they were drawn? Is it likely that
+those balls came from a bucket with 4 white and 16 black balls? Rather
+obviously not, because it would be most unusual to get all the 4 white
+balls in your draw. Indeed, we can estimate the probability of that
+happening with simulation or formula to be about .003.</p>
+<p>How about a bucket with 2 black and 18 whites? The probability is much
+higher than with the previous bucket, but it still is low—about .075.</p>
+<p>Let us now estimate the probabilities for all buckets across the range of
+probabilities. In Figure 13-1 we see that the bucket with the highest
+probability of producing the observed sample has the same proportions of
+black and white balls as does the sample. This is called the “maximum
+likelihood universe.” Nor should this be very surprising, because that
+universe obviously has an equal chance of producing samples with
+proportions below and above that observed proportion—as was discussed
+in connection with the method of moments.</p>
+<p>We should note, however, that the probability that even such a
+maximum-likelihood universe would produce <em>exactly</em> the observed sample
+is very low (though it has an even lower probability of producing any
+<em>other</em> sample).</p>
+<p>.14</p>
+<p>.12</p>
+<p>.10</p>
+<p>Probability</p>
+<p>.08</p>
+<p>.06</p>
+<p>.04</p>
+<p>.02</p>
+<p>0</p>
+<p>4 White and 2 Black Balls in the Sample</p>
+<p><img src="images/17-Chap-13_000.png" /></p>
+<p>2 4 6 8 10 12 14 16 18 20</p>
+<p>Number of White Balls in the Universe (N=20)</p>
+<p><strong>Figure 13-1</strong></p>
+<p><strong>Choice of Estimation Method</strong></p>
+<p>When should you base your estimate on the method of moments, or of
+maximum likelihood, or still some other principle? There is no general
+answer. Sound estimation requires that you think long and hard about the
+purpose of your estimation, and fit the method to the purpose. I am well
+aware that this is a very vague statement. But though it may be an
+uncomfortable idea to live with, guidance to sound statistical method
+must be vague because it requires sound judgment and deep knowledge of
+the particular set of facts about the situation at hand.</p>
+</div>
+<div id="criteria-of-estimates" class="section level2">
+<h2><span class="header-section-number">16.2</span> Criteria of estimates</h2>
+<p>How should one judge the soundness of the process that produces an
+estimate? General criteria include <em>representativeness</em> and <em>accuracy</em> .
+But these are pretty vague; we’ll have to get more specific.</p>
+<p><strong>Unbiasedness</strong></p>
+<p>Concerning representativeness: We want a procedure that will not be
+systematically in error in one direction or another. In technical terms,
+we want an “unbiased estimate,” if possible. “Unbiased” in this case
+does not mean “friendly” or “unprejudiced,” but rather implies that on
+the average—that is, in the long run, after taking repeated
+samples—estimates that are too high will about balance (in percentage
+terms) those that are too low. The mean of the universe (or the
+proportion, if we are speaking of two-valued “binomial situations”) is a
+frequent object of our interest. And the sample mean is (in most cases)
+an unbiased estimate of the population mean.</p>
+<p>Let’s now see an informal proof that the mean of a randomlydrawn sample
+is an “unbiased” estimator of the population mean. That is, the errors
+of the sample means will cancel out after repeated samples because the
+mean of a large number of sample means approaches the population mean. A
+second “law” to be informally proven is that the size of the inaccuracy
+of a sample proportion is largest when the population proportion is near
+50 percent, and smallest when it approaches zero percent or 100 percent.</p>
+<p>The statement that the sample mean is an unbiased estimate of the
+population mean holds for <em>many but not all kinds</em> of
+samples—proportions of two-outcome (Democrat-Republican) events (as in
+this case) and also the means of many measured-data universes (heights,
+speeds, and so on) that we will come to later.</p>
+<p>But, you object, I have only <em>said</em> that this is so; I haven’t proven
+it. Quite right. Now we will go beyond this simple assertion, though we
+won’t reach the level of formal proof. This discussion applies to
+conventional analytic statistical theory as well as to the resampling
+approach.</p>
+<p>We want to know why the mean of a repeated sample—or the proportion,
+in the case of a binomial universe—tends to equal the mean of the
+universe (or the proportion of a binomial sample). Consider a population
+of one thousand voters. Split the population into random sub-populations
+of 500 voters each; let’s call these sub-populations by the name
+“samples.” Almost inevitably, the proportions voting Democratic in the
+samples will <em>not exactly</em> equal the “true” proportions in the
+population. (Why not? Well, why should they split evenly? There is no
+general reason why they should.) But if the sample proportions do <em>not</em>
+equal the population proportion, we can say that the extent of the
+difference between the two sample proportions and the population
+proportion will be <em>identical but in the opposite direction</em> .</p>
+<p>If the population proportion is 600/1000 = 60 percent, and one sample’s
+proportion is 340/500 = 68 percent, then the other sample’s proportion
+must be (600-340 = 260)/500 = 52 percent. So if in the very long run you
+would choose each of these two samples about half the time (as you would
+if you selected between the two samples randomly) the average of the
+sample proportions would be (68 percent + 52 percent)/2 = 60 percent.
+This shows that on the average the sample proportion is a fair and
+unbiased estimate of the population proportion—if the sample is half
+the size of the population.</p>
+<p>If we now sub-divide each of our two samples of 500 (each of which was
+half the population size) into equal-size subsamples of 250 each, the
+same argument will hold for the proportions of the samples of 250 with
+respect to the sample of 500: The proportion of a 250-voter sample is an
+unbiased estimate of the proportion of the 500-voter sample from which
+it is drawn. It seems inductively reasonable, then, that if the
+proportion of a 250-voter sample is an unbiased estimate of the
+500-voter sample from which it is drawn, and the proportion of a
+500-voter sample is an unbiased estimate of the 1000-voter population,
+then the proportion of a 250-voter sample should be an unbiased estimate
+of the population proportion. And if so, this argument should hold for
+samples of 1/2 x 250 = 125, and so on—in fact for <em>any</em> size sample.</p>
+<p>The argument given above is not a rigorous formal proof. But I doubt
+that the non-mathematician needs, or will benefit from, a more formal
+proof of this proposition. You are more likely to be persuaded if you
+demonstrate this proposition to yourself experimentally in the following
+manner:</p>
+<p><strong>Step 1.</strong> Let “1-6” = Democrat, “7-10” = Republican</p>
+<p><strong>Step 2.</strong> Choose a sample of, say, ten random numbers, and record the
+proportion Democrat (the sample proportion).</p>
+<p><strong>Step 3.</strong> Repeat step 2 a thousand times.</p>
+<p><strong>Step 4.</strong> Compute the mean of the sample proportions, and compare it
+to the population proportion of 60 percent. This result should be close
+enough to reassure you that <em>on the average</em> the sample proportion is an
+“unbiased” estimate of the population proportion, though in any
+particular sample it may be substantially off in either direction.</p>
+<p><strong>Efficiency</strong></p>
+<p>We want an estimate to be accurate, in the sense that it is as close to
+the “actual” value of the parameter as possible. Sometimes it is
+possible to get more accuracy at the cost of biasing the estimate. More
+than that does not need to be said here.</p>
+<p><strong>Maximum Likelihood</strong></p>
+<p>Knowing that a particular value is the most likely of all values may be
+of importance in itself. For example, a person betting on one horse in a
+horse race is interested in his/her estimate of the winner having the
+highest possible probability, and is not the slightest bit interested in
+getting <em>nearly</em> the right horse. Maximum likelihood estimates are of
+particular interest in such situations.</p>
+<p><strong>Criteria of the Criteria</strong></p>
+<p>What should we look for in choosing criteria? Logically, this question
+should precede the above list of criteria.</p>
+<p>Savage (1954, Chapter 15) has urged that we should always think in terms
+of the <em>consequences</em> of choosing criteria, in light of our purposes in
+making the estimate. I believe that he is making an important point. But
+it often is very hard work to think the matter through all the way to
+the consequences of the criteria chosen. And in most cases, such fine
+inquiry is not needed, in the sense that the estimating procedure chosen
+will be the same no matter what consequences are considered.</p>
+</div>
+<div id="estimation-of-accuracy-of-the-point-estimate" class="section level2">
+<h2><span class="header-section-number">16.3</span> Estimation of accuracy of the point estimate</h2>
+<p>So far we have discussed how to make a point estimate, and criteria of
+good estimators. We also are interested in estimating the accuracy of
+that estimate. That subject—which is harder to grapple with—is
+discussed in Chapters 20 and 21 on confidence intervals.</p>
+<p>Most important: One cannot sensibly talk about the accuracy of
+probabilities in the abstract, without reference to some set of facts.
+In the abstract, the notion of accuracy loses any meaning, and invites
+confusion and argument.</p>
+</div>
+<div id="uses-of-the-mean" class="section level2">
+<h2><span class="header-section-number">16.4</span> Uses of the mean</h2>
+<p>Let’s consider when the use of a device such as the mean is valuable, in
+the context of the data on marksmen in Table 13-1. If we wish to compare
+marksman A versus marksman B, we can immediately see that marksman A hit
+the bullseye (80 shots for 3 points each time) as many times as marksman
+B hit <em>either</em> the bullseye or simply got in the black (30 shots for 3
+points and 50 shots for 2 points), and A hit the black (2 points) as
+many times as B just got in the white (1 point). From these two
+comparisons covering all the shots, in both of which comparisons A does
+better, it is immediately obvious that marksman A is better than
+marksman B. We can say that A’s score <em>dominates</em> B’s score.</p>
+<p>Table 13-1</p>
+<p><strong>Score No. of Occurrences Percent / Probability</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td></td>
+<td align="left"><strong>Marksman A</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td align="left">0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="left">20</td>
+<td>.2</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td align="left">80</td>
+<td>.8</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td align="left"><strong>Marksman B</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td align="left">20</td>
+<td>.2</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="left">50</td>
+<td>.5</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td align="left">30</td>
+<td>.3</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td align="left"><strong>Marksman C</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td align="left">40</td>
+<td>.4</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="left">10</td>
+<td>.1</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td align="left">50</td>
+<td>.5</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td align="left"><strong>Marksman D</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td align="left">10</td>
+<td>.1</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="left">60</td>
+<td>.6</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td align="left">30</td>
+<td>.3</td>
+</tr>
+</tbody>
+</table>
+<p>When we turn to comparing marksman C to marksman D, however, we cannot
+say that one “dominates” the other as we could with the comparison of
+marksmen A and B. Therefore, we turn to a summarizing device. One such
+device that is useful here is the mean. For marksman C the mean score is
+(40*1)</p>
+<p>+ (10*2) + (50*3) = 210, while for marksman D the mean score is
+(10*1) + (60*2) + (30*3) = 220. Hence we can say that D is better
+than C even though D’s score does not dominate C’s score in the bullseye
+category.</p>
+<p>Another use of the mean (Gnedenko, 1962, p. 68) is shown in the
+estimation of the number of matches that we need to start fires for an
+operation carried out 20 times in a day (Table 13- 2). Let’s say that
+the number of cases where s/he needs 1, 2 ... 5 matches to start a fire
+are as follows (along with their probabilities) based on the last 100
+fires started:</p>
+<p>Table 13-2</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Number of Matches</strong></td>
+<td align="left"><strong>Number of Cases</strong></td>
+<td align="left"><strong>Probabilities</strong></td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">7</td>
+<td align="left">.16</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">16</td>
+<td align="left">.16</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">55</td>
+<td align="left">.55</td>
+</tr>
+<tr class="odd">
+<td align="left">4</td>
+<td align="left">21</td>
+<td align="left">.21</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">1</td>
+<td align="left">.01</td>
+</tr>
+</tbody>
+</table>
+<p>If you know that the operator will be lighting twenty fires, you can
+estimate the number of matches that s/he will need by multiplying the
+mean number of matches (which turns out be 1*.07 + 2*0.16 + 3* 0.55 +
+4*0.21 + 5*0.01 = 2.93 ) in the ob-</p>
+<p>served experience by 20. Here you are using the mean as an indication of
+a representative case.</p>
+<p>It is common for writers to immediately produce the data in the forms of
+percentages or probabilities. But I think it is important to include in
+our discussion the absolute numbers, because this is what one must begin
+with in practice. And keeping the absolute numbers in mind is likely to
+avoid some confusions that arise if one immediately goes to percentages
+or to probabilities.</p>
+<p>Still another use for the mean is when you have a set of observations
+with error in them. The mean of the observations probably is your best
+guess about which is the “right” one. Furthermore, the distance you are
+likely to be off the mark is less if you select the mean of the
+observations. An example might be a series of witnesses giving the
+police their guesses about the height of a man who overturned an
+outhouse. The mean probably is the best estimate to give to police
+officers as a description of the perpetrator (though it would be helpful
+to give the range of the observations as well).</p>
+<p>We use the mean so often, in so many different circumstances, that we
+become used to it and never think about its nature. So let’s do so a bit
+now.</p>
+<p>Different statistical ideas are appropriate for business and engineering
+decisions, biometrics, econometrics, scientific explanation (the
+philosophers’ case), and other fields. So nothing said here holds
+everywhere and always.</p>
+<p>One might ask: What is the “meaning” of a mean? But that is not a
+helpful question. Rather, we should ask about the <em>uses</em> of a mean.
+Usually a mean is used to summarize a set of data. As we saw with
+marksmen C and D, it often is difficult to look at a table of data and
+obtain an overall idea of how big or how small the observations are; the
+mean (or other measurements) can help. Or if you wish to compare two
+sets of data where the distributions of observations overlap each other,
+comparing the means of the two distributions can often help you better
+understand the matter.</p>
+<p>Another complication is the confusion between <em>description</em> and
+<em>estimation</em> , which makes it difficult to decide where to place the
+topic of descriptive statistics in a textbook. For example, compare the
+mean income of all men in the U. S., as measured by the decennial
+census. This mean of the universe can have a very different meaning from
+the mean of a sample of men with respect to the same characteristic. The
+sample mean is a point estimate, a statistical device, whereas the mean
+of the universe is a description. The use of the mean as an estimator is
+fraught with complications. Still, maybe it is no more complicated than
+deciding what describer to use for a population. This entire matter is
+much more complex than it appears at first glance.</p>
+<p>When the sample size approaches in size the entire population—when the
+sample becomes closer and closer to being the <em>same</em> as the
+population—the two issues blend. What does that tell us? Anything?
+What is the relationship between a baseball player’s average for two
+weeks, and his/her lifetime average? This is subtle stuff—rivaling the
+subtleness of arguments about inference versus probability, and about
+the nature of confidence limits (see Chapters 20 and 21). Maybe the only
+solid answer is to try to stay super-clear on what you are doing for
+what purpose, and to ask continually what job you want the statistic (or
+describer) to do for you.</p>
+<p>The issue of the relationship of sample size to population size arises
+here. If the sample size equals or approaches the population size, the
+very notion of estimation loses its meaning.</p>
+<p>The notion of “best estimator” makes no sense in some situations,
+including the following: a) You draw one black ball from a bucket. You
+cannot put confidence intervals around your estimate of the proportion
+of black balls, except to say that the proportion is somewhere between 1
+and 0. No one would proceed without bringing in more information. That
+is, when there is almost no information, you simply cannot make much of
+an estimate—and the resampling method breaks down, too. It does not
+help much to shift the discussion to the models of the buckets, because
+then the issue is the unknown population of the buckets, in which case we
+need to bring in our general knowledge. b) When the sample size equals
+or is close to the population size, as discussed in Chapter 13, the data
+are a description rather than an estimate, because the sample is getting
+to be much the same as the universe; that is, if there are twelve people
+in your family, and you randomly take a sample of the amount of sugar
+used by eight members of the family, the results of the sample cannot be
+very different than if you com-</p>
+<p>pute the amount for all twelve family members. In such a case, the
+interpretation of the mean becomes complex.</p>
+<p>Underlying all estimation is the assumption of continuation, which
+follows from random sampling—that there is no reason to expect the
+next sample to be different from the present one in any <em>particular</em>
+fashion, mean or variation. But we do expect it to be different in
+<em>some</em> fashion because of sampling variability.</p>
+</div>
+<div id="conclusion-1" class="section level2">
+<h2><span class="header-section-number">16.5</span> Conclusion</h2>
+<p>A <em>Newsweek</em> article says, “According to a recent reader’s survey in
+Bride’s magazine, the average blowout <span class="math display">\[wedding\]</span> will set you back
+about $16,000” (Feb 15, 1993, p. 67). That use of the mean (I assume)
+for the average, rather than the median, could cost the parents of some
+brides a pretty penny. It could be that the cost for the average
+<em>person</em> —that is, the median expenditure—might be a lot less than
+$16,000. (A few million dollar weddings could have a huge effect on a
+survey mean.) An inappropriate standard of comparison might enter into
+some family discussions as a result of this article, and cause higher
+outlays than otherwise. This chapter helps one understand the nature of
+such estimates.</p>
+</div>
+<div id="endnotes-5" class="section level2">
+<h2><span class="header-section-number">16.6</span> Endnotes</h2>
+<ol style="list-style-type: decimal">
+<li><p>See Savage, 1954, Chapter 15, for many other criteria of estimators.</p></li>
+<li><p>This discussion follows Genedenko and Khinchtin, 1962, Chapter 8.</p></li>
+</ol>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-savage1972foundations">
+<p>Savage, Leonard J. 1972. <em>The Foundations of Statistics</em>. New York: Dover Publications, Inc.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-to-statistical-inference.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="framing-statistical-questions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/resampling-stats/resampling-with/edit/master/source/point_estimation.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/resampling-stats/resampling-with/blob/master/point_estimation.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

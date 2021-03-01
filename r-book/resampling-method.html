@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 The Resampling method | Resampling statistics</title>
+  <meta name="description" content="3 The Resampling method | Resampling statistics" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 The Resampling method | Resampling statistics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://resampling-stats.github.io/resampling-with" />
+  <meta property="og:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+  <meta property="og:description" content="3 The Resampling method | Resampling statistics" />
+  <meta name="github-repo" content="resampling-stats/resampling-with" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 The Resampling method | Resampling statistics" />
+  
+  <meta name="twitter:description" content="3 The Resampling method | Resampling statistics" />
+  <meta name="twitter:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+
+<meta name="author" content="Julian Lincoln Simon" />
+<meta name="author" content="Matthew Brett" />
+<meta name="author" content="Stéfan van der Walt" />
+<meta name="author" content="Ian Nimmo-Smith" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="about-the-technology.html"/>
+<link rel="next" href="resampling-with-code.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>R edition</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html"><i class="fa fa-check"></i>Preface to the third edition</a><ul>
+<li class="chapter" data-level="0.1" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-simon-saw"><i class="fa fa-check"></i><b>0.1</b> What Simon saw</a></li>
+<li class="chapter" data-level="0.2" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#resampling-and-data-science"><i class="fa fa-check"></i><b>0.2</b> Resampling and data science</a></li>
+<li class="chapter" data-level="0.3" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-we-changed"><i class="fa fa-check"></i><b>0.3</b> What we changed</a></li>
+<li class="chapter" data-level="0.4" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#who-should-read-this-book-and-when"><i class="fa fa-check"></i><b>0.4</b> Who should read this book, and when</a></li>
+<li class="chapter" data-level="0.5" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#welcome-to-resampling"><i class="fa fa-check"></i><b>0.5</b> Welcome to resampling</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html"><i class="fa fa-check"></i>Preface to the second edition</a><ul>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-the-resampling-method"><i class="fa fa-check"></i>Brief history of the resampling method</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-statistics"><i class="fa fa-check"></i>Brief history of statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#uses-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.1</b> Uses of Probability and Statistics</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#what-problems"><i class="fa fa-check"></i><b>1.2</b> What kinds of problems shall we solve?</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#probabilities-and-decisions"><i class="fa fa-check"></i><b>1.3</b> Probabilities and decisions</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#types-of-statistics"><i class="fa fa-check"></i><b>1.4</b> Types of statistics</a></li>
+<li class="chapter" data-level="1.5" data-path="introduction.html"><a href="introduction.html#limitations-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.5</b> Limitations of probability and statistics</a></li>
+<li class="chapter" data-level="1.6" data-path="introduction.html"><a href="introduction.html#why-is-statistics-such-a-difficult-subject"><i class="fa fa-check"></i><b>1.6</b> Why is Statistics Such a Difficult Subject?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="about-the-technology.html"><a href="about-the-technology.html"><i class="fa fa-check"></i><b>2</b> About the technology</a><ul>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#the-environment"><i class="fa fa-check"></i>The environment</a></li>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#running-the-code-on-your-own-computer"><i class="fa fa-check"></i>Running the code on your own computer</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="resampling-method.html"><a href="resampling-method.html"><i class="fa fa-check"></i><b>3</b> The Resampling method</a><ul>
+<li class="chapter" data-level="3.1" data-path="resampling-method.html"><a href="resampling-method.html#the-resampling-approach-in-action"><i class="fa fa-check"></i><b>3.1</b> The resampling approach in action</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-physical-methods"><i class="fa fa-check"></i><b>3.1.1</b> Randomness from physical methods</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-your-computer"><i class="fa fa-check"></i><b>3.2</b> Randomness from your computer</a></li>
+<li class="chapter" data-level="3.3" data-path="resampling-method.html"><a href="resampling-method.html#building-the-problem-using-r"><i class="fa fa-check"></i><b>3.3</b> Building the problem using R</a></li>
+<li class="chapter" data-level="3.4" data-path="resampling-method.html"><a href="resampling-method.html#how-resampling-differs-from-the-conventional-approach"><i class="fa fa-check"></i><b>3.4</b> How resampling differs from the conventional approach</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="resampling-with-code.html"><a href="resampling-with-code.html"><i class="fa fa-check"></i><b>4</b> Resampling with code</a></li>
+<li class="chapter" data-level="5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html"><i class="fa fa-check"></i><b>5</b> Basic Concepts in Probability and Statistics, Part 1</a><ul>
+<li class="chapter" data-level="5.1" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-nature-and-meaning-of-the-concept-of-probability"><i class="fa fa-check"></i><b>5.2</b> The nature and meaning of the concept of probability</a></li>
+<li class="chapter" data-level="5.3" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-meaning-of-probability"><i class="fa fa-check"></i><b>5.3</b> The “Meaning” of “Probability”</a></li>
+<li class="chapter" data-level="5.4" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#digression-about-operational-definitions"><i class="fa fa-check"></i><b>5.4</b> Digression about Operational Definitions</a></li>
+<li class="chapter" data-level="5.5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#back-to-proxies"><i class="fa fa-check"></i><b>5.5</b> Back to Proxies</a></li>
+<li class="chapter" data-level="5.6" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-various-ways-of-estimating-probabilities"><i class="fa fa-check"></i><b>5.6</b> The various ways of estimating probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html"><i class="fa fa-check"></i><b>6</b> Basic Concepts in Probability and Statistics, Part 2</a><ul>
+<li class="chapter" data-level="6.1" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-other-magnitudes"><i class="fa fa-check"></i><b>6.1</b> The relationship of probability to other magnitudes</a></li>
+<li class="chapter" data-level="6.2" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-concept-of-chance"><i class="fa fa-check"></i><b>6.2</b> The concept of chance</a></li>
+<li class="chapter" data-level="6.3" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#what-do-we-mean-by-chance"><i class="fa fa-check"></i><b>6.3</b> What Do We Mean by “Chance”?</a></li>
+<li class="chapter" data-level="6.4" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-philosophers-dispute-about-the-concept-of-probability"><i class="fa fa-check"></i><b>6.4</b> The philosophers’ dispute about the concept of probability</a></li>
+<li class="chapter" data-level="6.5" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-the-concept-of-resampling"><i class="fa fa-check"></i><b>6.5</b> The relationship of probability to the concept of resampling</a></li>
+<li class="chapter" data-level="6.6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#conclusion"><i class="fa fa-check"></i><b>6.6</b> Conclusion</a></li>
+<li class="chapter" data-level="6.7" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#endnote"><i class="fa fa-check"></i><b>6.7</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html"><i class="fa fa-check"></i><b>7</b> Probability Theory, Part 1</a><ul>
+<li class="chapter" data-level="7.1" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#definitions"><i class="fa fa-check"></i><b>7.2</b> Definitions</a></li>
+<li class="chapter" data-level="7.3" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#theoretical-and-historical-methods-of-estimation"><i class="fa fa-check"></i><b>7.3</b> Theoretical and historical methods of estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#samples-and-universes"><i class="fa fa-check"></i><b>7.4</b> Samples and universes</a></li>
+<li class="chapter" data-level="7.5" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-conventions-of-probability"><i class="fa fa-check"></i><b>7.5</b> The conventions of probability</a></li>
+<li class="chapter" data-level="7.6" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-deductive-formulaic-method"><i class="fa fa-check"></i><b>7.6</b> The deductive formulaic method</a></li>
+<li class="chapter" data-level="7.7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#multiplication-rule"><i class="fa fa-check"></i><b>7.7</b> Multiplication rule</a></li>
+<li class="chapter" data-level="7.8" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#conditional-and-unconditional-probabilities"><i class="fa fa-check"></i><b>7.8</b> Conditional and unconditional probabilities</a></li>
+<li class="chapter" data-level="7.9" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-skins-again-plus-leaving-the-game-early"><i class="fa fa-check"></i><b>7.9</b> The skins again, plus leaving the game early</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html"><i class="fa fa-check"></i><b>8</b> Probability Theory Part I (continued)</a><ul>
+<li class="chapter" data-level="8.1" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-special-case-of-independence"><i class="fa fa-check"></i><b>8.1</b> The special case of independence</a></li>
+<li class="chapter" data-level="8.2" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-of-probabilities"><i class="fa fa-check"></i><b>8.2</b> The addition of probabilities</a></li>
+<li class="chapter" data-level="8.3" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-rule"><i class="fa fa-check"></i><b>8.3</b> The addition rule</a></li>
+<li class="chapter" data-level="8.4" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#theoretical-devices-for-the-study-of-probability"><i class="fa fa-check"></i><b>8.4</b> Theoretical devices for the study of probability</a></li>
+<li class="chapter" data-level="8.5" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-concept-of-sample-space"><i class="fa fa-check"></i><b>8.5</b> The Concept of Sample Space</a></li>
+<li class="chapter" data-level="8.6" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#endnotes"><i class="fa fa-check"></i><b>8.6</b> Endnotes</a></li>
+<li class="chapter" data-level="8.7" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#afternote-useful-hints-about-simple-numbers"><i class="fa fa-check"></i><b>8.7</b> Afternote: Useful hints about simple numbers</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html"><i class="fa fa-check"></i><b>9</b> Probability Theory, Part 2: Compound Probability</a><ul>
+<li class="chapter" data-level="9.1" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#introduction-3"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#puzzle-problems"><i class="fa fa-check"></i><b>9.2</b> Puzzle Problems</a></li>
+<li class="chapter" data-level="9.3" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#examples-of-basic-problems-in-probability"><i class="fa fa-check"></i><b>9.3</b> Examples of basic problems in probability</a></li>
+<li class="chapter" data-level="9.4" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#the-concepts-of-replacement-and-non-replacement"><i class="fa fa-check"></i><b>9.4</b> The concepts of replacement and non-replacement</a></li>
+<li class="chapter" data-level="9.5" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#endnotes-1"><i class="fa fa-check"></i><b>9.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html"><i class="fa fa-check"></i><b>10</b> Probability Theory, Part 3</a><ul>
+<li class="chapter" data-level="10.1" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-1-the-birthday-problem-illustrating-the-probability-of-duplication-in-a-multi-outcome-sample-from-an-infinite-universefile-birthday"><i class="fa fa-check"></i><b>10.1</b> Example 7-1: The Birthday Problem, Illustrating the Probability of Duplication in a Multi-Outcome Sample from an Infinite Universe(File “Birthday”)</a></li>
+<li class="chapter" data-level="10.2" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-2-three-daughters-among-four-children-illustrating-a-problem-with-two-outcomes-binomial-1-and-sampling-with-replacement-among-equally-likely-outcomes."><i class="fa fa-check"></i><b>10.2</b> Example 7-2: Three Daughters Among Four Children, Illustrating A Problem With Two Outcomes (Binomial <span class="math display">\[1\]</span>) And Sampling With Replacement Among Equally Likely Outcomes.</a></li>
+<li class="chapter" data-level="10.3" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#variations-of-the-daughters-problem"><i class="fa fa-check"></i><b>10.3</b> Variations of the daughters problem</a></li>
+<li class="chapter" data-level="10.4" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#a-note-on-clarifying-and-labeling-problems"><i class="fa fa-check"></i><b>10.4</b> A note on clarifying and labeling problems</a></li>
+<li class="chapter" data-level="10.5" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#binomial-trials"><i class="fa fa-check"></i><b>10.5</b> Binomial trials</a></li>
+<li class="chapter" data-level="10.6" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-3-three-or-more-successful-basketball-shots-in-five-attempts-two-outcome-sampling-with-unequally-likely-outcomes-with-replacementa-binomial-experiment"><i class="fa fa-check"></i><b>10.6</b> Example 7-3: Three or More Successful Basketball Shots in Five Attempts (Two-Outcome Sampling with Unequally-Likely Outcomes, with Replacement—A Binomial Experiment)</a></li>
+<li class="chapter" data-level="10.7" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#note-to-the-student-of-analytic-probability-theory"><i class="fa fa-check"></i><b>10.7</b> Note to the student of analytic probability theory</a></li>
+<li class="chapter" data-level="10.8" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-4-one-in-the-black-two-in-the-white-and-no-misses-in-three-archery-shotsmultiple-outcome-multinomial-sampling-with-unequally-likely-outcomes-with-replacement."><i class="fa fa-check"></i><b>10.8</b> Example 7-4: One in the Black, Two in the White, and No Misses in Three Archery Shots(Multiple Outcome <span class="math display">\[Multinomial\]</span> Sampling With Unequally Likely Outcomes; with Replacement.)</a></li>
+<li class="chapter" data-level="10.9" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-5-two-groups-of-heart-patients"><i class="fa fa-check"></i><b>10.9</b> Example 7-5: Two Groups of Heart Patients</a></li>
+<li class="chapter" data-level="10.10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-6-dispersion-of-a-sum-of-random-variableshammer-lengthsheads-and-handles"><i class="fa fa-check"></i><b>10.10</b> Example 7-6: Dispersion of a Sum of Random Variables—Hammer Lengths—Heads and Handles</a></li>
+<li class="chapter" data-level="10.11" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-7-the-product-of-random-variablestheft-by-employees"><i class="fa fa-check"></i><b>10.11</b> Example 7-7: The Product of Random Variables—Theft by Employees</a></li>
+<li class="chapter" data-level="10.12" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-8-flipping-pennies-to-the-end"><i class="fa fa-check"></i><b>10.12</b> Example 7-8: Flipping Pennies to the End</a></li>
+<li class="chapter" data-level="10.13" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-9-a-drunks-random-walk"><i class="fa fa-check"></i><b>10.13</b> Example 7-9: A Drunk’s Random Walk</a></li>
+<li class="chapter" data-level="10.14" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-10"><i class="fa fa-check"></i><b>10.14</b> Example 7-10</a></li>
+<li class="chapter" data-level="10.15" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#the-general-procedure"><i class="fa fa-check"></i><b>10.15</b> The general procedure</a></li>
+<li class="chapter" data-level="10.16" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#endnotes-2"><i class="fa fa-check"></i><b>10.16</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><i class="fa fa-check"></i><b>11</b> Probability Theory, Part 4: Estimating Probabilities from Finite Universes</a><ul>
+<li class="chapter" data-level="11.1" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#introduction-4"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
+<li class="chapter" data-level="11.2" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#some-building-block-programs"><i class="fa fa-check"></i><b>11.2</b> Some building-block programs</a></li>
+<li class="chapter" data-level="11.3" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#problems-in-finite-universes"><i class="fa fa-check"></i><b>11.3</b> Problems in finite universes</a></li>
+<li class="chapter" data-level="11.4" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-1-what-is-the-probability-of-selecting-four-girls-and-one-boy-when-selecting-five-students-from-any-group-of-twenty-five-girls-and-twenty-five-boys-sampling-without-replacement-when-there-are-two-outcomes-and-the-order-does-not-matter"><i class="fa fa-check"></i><b>11.4</b> Example 8-1: What is the Probability of Selecting Four Girls and One Boy When Selecting Five Students From Any Group of Twenty-five Girls and Twenty-five Boys? (Sampling Without Replacement When There are Two Outcomes and the Order Does Not Matter)</a></li>
+<li class="chapter" data-level="11.5" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-2-nine-spades-and-four-clubs-in-a-bridge-hand-multiple-outcome-sampling-without-replacement-order-does-not-matter"><i class="fa fa-check"></i><b>11.5</b> Example 8-2: Nine Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)</a></li>
+<li class="chapter" data-level="11.6" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-3-a-total-of-fifteen-points-in-a-bridge-hand-when-ace-4-king-3-queen-2-and-jack-1."><i class="fa fa-check"></i><b>11.6</b> Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace = 4, King = 3, Queen = 2, and Jack = 1.</a></li>
+<li class="chapter" data-level="11.7" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-4-four-girls-and-then-one-boy-from-twenty-five-girls-and-twenty-five-boys-order-matters-sampling-without-replacement-two-outcomes-several-of-each-item"><i class="fa fa-check"></i><b>11.7</b> Example 8-4: Four Girls and Then One Boy From Twenty-five Girls and Twenty-five Boys Order Matters, Sampling Without Replacement, Two Outcomes, Several of Each Item</a></li>
+<li class="chapter" data-level="11.8" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-5-four-or-more-couples-getting-their-own-partners-when-ten-couples-are-paired-randomly-probability-of-matching-by-chance"><i class="fa fa-check"></i><b>11.8</b> Example 8-5: Four or More Couples Getting Their Own Partners When Ten Couples are Paired Randomly (Probability of Matching by Chance)</a></li>
+<li class="chapter" data-level="11.9" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-6-matching-santa-hats-another-famous-problem-of-this-sort-the-hat-checker-at-a-restaurant-mixes-up-the-hats-of-a-party-of-6.-what-is-the-probability-that-at-least-one-will-get-his-own-hat"><i class="fa fa-check"></i><b>11.9</b> Example 8-6: Matching Santa Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6. What is the probability that at least one will get his own hat?</a></li>
+<li class="chapter" data-level="11.10" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-7-twenty-executives-are-to-be-assigned-to-two-divisions-of-a-firm"><i class="fa fa-check"></i><b>11.10</b> Example 8-7: Twenty executives are to be assigned to two divisions of a firm</a></li>
+<li class="chapter" data-level="11.11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-8-executives-moving"><i class="fa fa-check"></i><b>11.11</b> Example 8-8: Executives Moving</a></li>
+<li class="chapter" data-level="11.12" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-9-state-liquor-systems-again"><i class="fa fa-check"></i><b>11.12</b> Example 8-9: State Liquor Systems Again</a></li>
+<li class="chapter" data-level="11.13" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-10-a-compound-problem-five-or-more-spades-in-one-bridge-hand-and-four-girls-and-a-boy-in-a-five-child-family"><i class="fa fa-check"></i><b>11.13</b> Example 8-10: A Compound Problem: Five or More Spades in One Bridge Hand, and Four Girls and a Boy in a Five-Child Family</a></li>
+<li class="chapter" data-level="11.14" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#summary"><i class="fa fa-check"></i><b>11.14</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html"><i class="fa fa-check"></i><b>12</b> On Variability in Sampling</a><ul>
+<li class="chapter" data-level="12.1" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#variability-and-small-samples"><i class="fa fa-check"></i><b>12.1</b> Variability and small samples</a></li>
+<li class="chapter" data-level="12.2" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#regression-to-the-mean"><i class="fa fa-check"></i><b>12.2</b> Regression to the mean</a></li>
+<li class="chapter" data-level="12.3" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#summary-and-conclusion"><i class="fa fa-check"></i><b>12.3</b> Summary and conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html"><i class="fa fa-check"></i><b>13</b> The Procedures of Monte Carlo Simulation (and Resampling)</a><ul>
+<li class="chapter" data-level="13.1" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#a-definition-and-general-procedure-for-monte-carlo-simulation"><i class="fa fa-check"></i><b>13.1</b> A definition and general procedure for Monte Carlo simulation</a></li>
+<li class="chapter" data-level="13.2" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#summary-1"><i class="fa fa-check"></i><b>13.2</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html"><i class="fa fa-check"></i><b>14</b> The Basic Ideas in Statistical Inference</a><ul>
+<li class="chapter" data-level="14.1" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#knowledge-without-probabilistic-statistical-inference"><i class="fa fa-check"></i><b>14.1</b> Knowledge without probabilistic statistical inference</a></li>
+<li class="chapter" data-level="14.2" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#the-treatment-of-uncertainty"><i class="fa fa-check"></i><b>14.2</b> The treatment of uncertainty</a></li>
+<li class="chapter" data-level="14.3" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#where-statistical-inference-becomes-crucial"><i class="fa fa-check"></i><b>14.3</b> Where statistical inference becomes crucial</a></li>
+<li class="chapter" data-level="14.4" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#conclusions"><i class="fa fa-check"></i><b>14.4</b> Conclusions</a></li>
+<li class="chapter" data-level="14.5" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#endnotes-3"><i class="fa fa-check"></i><b>14.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html"><i class="fa fa-check"></i><b>15</b> Introduction to Statistical Inference</a><ul>
+<li class="chapter" data-level="15.1" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#statistical-inference-and-random-sampling"><i class="fa fa-check"></i><b>15.1</b> Statistical inference and random sampling</a></li>
+<li class="chapter" data-level="15.2" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#summary-and-conclusions"><i class="fa fa-check"></i><b>15.2</b> Summary and conclusions</a></li>
+<li class="chapter" data-level="15.3" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#endnotes-4"><i class="fa fa-check"></i><b>15.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="point-estimation.html"><a href="point-estimation.html"><i class="fa fa-check"></i><b>16</b> Point Estimation</a><ul>
+<li class="chapter" data-level="16.1" data-path="point-estimation.html"><a href="point-estimation.html#ways-to-estimate-the-mean"><i class="fa fa-check"></i><b>16.1</b> Ways to estimate the mean</a></li>
+<li class="chapter" data-level="16.2" data-path="point-estimation.html"><a href="point-estimation.html#criteria-of-estimates"><i class="fa fa-check"></i><b>16.2</b> Criteria of estimates</a></li>
+<li class="chapter" data-level="16.3" data-path="point-estimation.html"><a href="point-estimation.html#estimation-of-accuracy-of-the-point-estimate"><i class="fa fa-check"></i><b>16.3</b> Estimation of accuracy of the point estimate</a></li>
+<li class="chapter" data-level="16.4" data-path="point-estimation.html"><a href="point-estimation.html#uses-of-the-mean"><i class="fa fa-check"></i><b>16.4</b> Uses of the mean</a></li>
+<li class="chapter" data-level="16.5" data-path="point-estimation.html"><a href="point-estimation.html#conclusion-1"><i class="fa fa-check"></i><b>16.5</b> Conclusion</a></li>
+<li class="chapter" data-level="16.6" data-path="point-estimation.html"><a href="point-estimation.html#endnotes-5"><i class="fa fa-check"></i><b>16.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html"><i class="fa fa-check"></i><b>17</b> Framing Statistical Questions</a><ul>
+<li class="chapter" data-level="17.1" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#introduction-5"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
+<li class="chapter" data-level="17.2" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#translating-scientific-questions-into-probabilistic-and-statistical-questions"><i class="fa fa-check"></i><b>17.2</b> Translating scientific questions into probabilistic and statistical questions</a></li>
+<li class="chapter" data-level="17.3" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#the-three-types-of-questions"><i class="fa fa-check"></i><b>17.3</b> The three types of questions</a></li>
+<li class="chapter" data-level="17.4" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#summary-2"><i class="fa fa-check"></i><b>17.4</b> Summary</a></li>
+<li class="chapter" data-level="17.5" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#endnotes-6"><i class="fa fa-check"></i><b>17.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html"><i class="fa fa-check"></i><b>18</b> Hypothesis-Testing with Counted Data, Part 1</a><ul>
+<li class="chapter" data-level="18.1" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#introduction-6"><i class="fa fa-check"></i><b>18.1</b> Introduction</a></li>
+<li class="chapter" data-level="18.2" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#should-a-single-sample-of-counted-data-be-considered-different-from-a-benchmark-universe"><i class="fa fa-check"></i><b>18.2</b> Should a single sample of counted data be considered different from a benchmark universe?</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html"><i class="fa fa-check"></i><b>19</b> The Concept of Statistical Significance in Testing Hypotheses</a><ul>
+<li class="chapter" data-level="19.1" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-logic-of-hypothesis-tests"><i class="fa fa-check"></i><b>19.1</b> The logic of hypothesis tests</a></li>
+<li class="chapter" data-level="19.2" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-concept-of-statistical-significance"><i class="fa fa-check"></i><b>19.2</b> The concept of statistical significance</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><i class="fa fa-check"></i><b>20</b> The Statistics of Hypothesis-Testing with Counted Data, Part 2</a><ul>
+<li class="chapter" data-level="20.1" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#comparisons-among-more-than-two-samples-of-counted-data"><i class="fa fa-check"></i><b>20.1</b> Comparisons among more than two samples of counted data</a></li>
+<li class="chapter" data-level="20.2" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#paired-comparisons-with-counted-data"><i class="fa fa-check"></i><b>20.2</b> Paired Comparisons With Counted Data</a></li>
+<li class="chapter" data-level="20.3" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#endnotes-7"><i class="fa fa-check"></i><b>20.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html"><i class="fa fa-check"></i><b>21</b> The Statistics of Hypothesis-Testing With Measured Data</a><ul>
+<li class="chapter" data-level="21.1" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#differences-among-four-means"><i class="fa fa-check"></i><b>21.1</b> Differences among four means</a></li>
+<li class="chapter" data-level="21.2" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#using-squared-differences"><i class="fa fa-check"></i><b>21.2</b> Using Squared Differences</a></li>
+<li class="chapter" data-level="21.3" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#endnotes-8"><i class="fa fa-check"></i><b>21.3</b> Endnotes</a></li>
+<li class="chapter" data-level="21.4" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#exercises"><i class="fa fa-check"></i><b>21.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html"><i class="fa fa-check"></i><b>22</b> General Procedures for Testing Hypotheses</a><ul>
+<li class="chapter" data-level="22.1" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#introduction-7"><i class="fa fa-check"></i><b>22.1</b> Introduction</a></li>
+<li class="chapter" data-level="22.2" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#canonical-question-and-answer-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.2</b> Canonical question-and-answer procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.3" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#skeleton-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.3</b> Skeleton procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.4" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#an-example-can-the-bio-engineer-increase-the-female-calf-rate"><i class="fa fa-check"></i><b>22.4</b> An example: can the bio-engineer increase the female calf rate?</a></li>
+<li class="chapter" data-level="22.5" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#conventional-methods"><i class="fa fa-check"></i><b>22.5</b> Conventional methods</a></li>
+<li class="chapter" data-level="22.6" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#choice-of-the-benchmark-universe1"><i class="fa fa-check"></i><b>22.6</b> Choice of the benchmark universe1</a></li>
+<li class="chapter" data-level="22.7" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#why-is-statisticsand-hypothesis-testingso-difficult"><i class="fa fa-check"></i><b>22.7</b> Why is statistics—and hypothesis testing—so difficult?</a></li>
+<li class="chapter" data-level="22.8" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#endnote-1"><i class="fa fa-check"></i><b>22.8</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="23" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><i class="fa fa-check"></i><b>23</b> Confidence Intervals, Part 1: Assessing the Accuracy of Samples</a><ul>
+<li class="chapter" data-level="23.1" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#introduction-8"><i class="fa fa-check"></i><b>23.1</b> Introduction</a></li>
+<li class="chapter" data-level="23.2" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#estimating-the-accuracy-of-a-sample-mean"><i class="fa fa-check"></i><b>23.2</b> Estimating the accuracy of a sample mean</a></li>
+<li class="chapter" data-level="23.3" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#the-logic-of-confidence-intervals"><i class="fa fa-check"></i><b>23.3</b> The logic of confidence intervals</a></li>
+<li class="chapter" data-level="23.4" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#computing-confidence-intervals"><i class="fa fa-check"></i><b>23.4</b> Computing confidence intervals</a></li>
+<li class="chapter" data-level="23.5" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#procedure-for-estimating-confidence-intervals"><i class="fa fa-check"></i><b>23.5</b> Procedure for estimating confidence intervals</a></li>
+<li class="chapter" data-level="23.6" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#summary-3"><i class="fa fa-check"></i><b>23.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><i class="fa fa-check"></i><b>24</b> Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals</a><ul>
+<li class="chapter" data-level="24.1" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-1-the-distance-between-sample-and-population-mean"><i class="fa fa-check"></i><b>24.1</b> Approach 1: The distance between sample and population mean</a></li>
+<li class="chapter" data-level="24.2" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#conventional-calculational-methods"><i class="fa fa-check"></i><b>24.2</b> Conventional Calculational Methods</a></li>
+<li class="chapter" data-level="24.3" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#confidence-intervals-empiricallywith-resampling"><i class="fa fa-check"></i><b>24.3</b> Confidence Intervals Empirically—With Resampling</a></li>
+<li class="chapter" data-level="24.4" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-2-probability-of-various-universes-producing-this-sample"><i class="fa fa-check"></i><b>24.4</b> Approach 2: Probability of various universes producing this sample</a></li>
+<li class="chapter" data-level="24.5" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#interpretation-of-approach-2"><i class="fa fa-check"></i><b>24.5</b> Interpretation of Approach 2</a></li>
+<li class="chapter" data-level="24.6" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#exercises-1"><i class="fa fa-check"></i><b>24.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="25" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html"><i class="fa fa-check"></i><b>25</b> And Some Last Words About the Reliability of Sample Averages</a><ul>
+<li class="chapter" data-level="25.1" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#the-problem-of-uncertainty-about-the-dispersion"><i class="fa fa-check"></i><b>25.1</b> The problem of uncertainty about the dispersion</a></li>
+<li class="chapter" data-level="25.2" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#notes-on-the-use-of-confidence-intervals"><i class="fa fa-check"></i><b>25.2</b> Notes on the use of confidence intervals</a></li>
+<li class="chapter" data-level="25.3" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#overall-summary-and-conclusions-about-confidence-intervals"><i class="fa fa-check"></i><b>25.3</b> Overall summary and conclusions about confidence intervals</a></li>
+<li class="chapter" data-level="25.4" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#endnote-2"><i class="fa fa-check"></i><b>25.4</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="26" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html"><i class="fa fa-check"></i><b>26</b> Correlation and Causation</a><ul>
+<li class="chapter" data-level="26.1" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#preview"><i class="fa fa-check"></i><b>26.1</b> Preview</a></li>
+<li class="chapter" data-level="26.2" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#introduction-to-correlation-and-causation"><i class="fa fa-check"></i><b>26.2</b> Introduction to correlation and causation</a></li>
+<li class="chapter" data-level="26.3" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#a-note-on-association-compared-to-testing-a-hypothesis"><i class="fa fa-check"></i><b>26.3</b> A Note on Association Compared to Testing a Hypothesis</a></li>
+<li class="chapter" data-level="26.4" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#correlation-sum-of-products"><i class="fa fa-check"></i><b>26.4</b> Correlation: sum of products</a></li>
+<li class="chapter" data-level="26.5" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#exercises-2"><i class="fa fa-check"></i><b>26.5</b> Exercises</a></li>
+<li class="chapter" data-level="26.6" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#endnotes-9"><i class="fa fa-check"></i><b>26.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="27" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html"><i class="fa fa-check"></i><b>27</b> How Large a Sample?</a><ul>
+<li class="chapter" data-level="27.1" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#issues-in-determining-sample-size"><i class="fa fa-check"></i><b>27.1</b> Issues in determining sample size</a></li>
+<li class="chapter" data-level="27.2" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#some-practical-examples"><i class="fa fa-check"></i><b>27.2</b> Some practical examples</a></li>
+<li class="chapter" data-level="27.3" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#step-wise-sample-size-determination"><i class="fa fa-check"></i><b>27.3</b> Step-wise sample-size determination</a></li>
+<li class="chapter" data-level="27.4" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#summary-4"><i class="fa fa-check"></i><b>27.4</b> Summary</a></li>
+<li class="chapter" data-level="27.5" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#endnotes-10"><i class="fa fa-check"></i><b>27.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="28" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html"><i class="fa fa-check"></i><b>28</b> Bayesian Analysis by Simulation</a><ul>
+<li class="chapter" data-level="28.1" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#simple-decision-problems"><i class="fa fa-check"></i><b>28.1</b> Simple decision problems</a></li>
+<li class="chapter" data-level="28.2" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#problems-based-on-normal-and-other-distributions"><i class="fa fa-check"></i><b>28.2</b> Problems based on normal and other distributions</a></li>
+<li class="chapter" data-level="28.3" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#endnotes-11"><i class="fa fa-check"></i><b>28.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="29" data-path="exercise-solutions.html"><a href="exercise-solutions.html"><i class="fa fa-check"></i><b>29</b> Exercise Solutions</a><ul>
+<li class="chapter" data-level="29.1" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-18-2"><i class="fa fa-check"></i><b>29.1</b> Solution 18-2</a></li>
+<li class="chapter" data-level="29.2" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-1"><i class="fa fa-check"></i><b>29.2</b> Solution 21-1</a></li>
+<li class="chapter" data-level="29.3" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-2"><i class="fa fa-check"></i><b>29.3</b> Solution 21-2</a></li>
+<li class="chapter" data-level="29.4" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-3"><i class="fa fa-check"></i><b>29.4</b> Solution 21-3</a></li>
+<li class="chapter" data-level="29.5" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-1"><i class="fa fa-check"></i><b>29.5</b> Solution 23-1</a></li>
+<li class="chapter" data-level="29.6" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-2"><i class="fa fa-check"></i><b>29.6</b> Solution 23-2</a></li>
+<li class="chapter" data-level="29.7" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-3"><i class="fa fa-check"></i><b>29.7</b> Solution 23-3</a></li>
+<li class="chapter" data-level="29.8" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-4"><i class="fa fa-check"></i><b>29.8</b> Solution 23-4</a></li>
+</ul></li>
+<li class="chapter" data-level="30" data-path="technical-note-to-the-professional-reader.html"><a href="technical-note-to-the-professional-reader.html"><i class="fa fa-check"></i><b>30</b> Technical Note to the Professional Reader</a></li>
+<li class="chapter" data-level="31" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i><b>31</b> Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Resampling statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="resampling-method" class="section level1">
+<h1><span class="header-section-number">3</span> The Resampling method</h1>
+<p>This chapter is a brief introduction to the resampling method of solving
+problems in probability and statistics. A simple illustrative problem is
+stated, and then the step-by-step solution with resampling is shown,
+using both by-hand methods and a computer program. The older conventional
+formulaic approach to such a problem is then discussed. The conventional
+analytic method requires that you understand complex formulas, and too often
+one selects the wrong formula. In contrast, resampling requires that you first
+understand the physical problem fully. Then you simulate a statistical model of
+the physical problem with techniques that are intuitively obvious, and you
+estimate the probability with repeated random sampling.</p>
+<div id="the-resampling-approach-in-action" class="section level2">
+<h2><span class="header-section-number">3.1</span> The resampling approach in action</h2>
+<p>Recall the problem from section <a href="introduction.html#what-problems">1.2</a> in which the contractor
+owns 20 ambulances. The chance that any one ambulance will be unfit for
+service on any given day is about 1 in 10, based on past experience. You want
+to know the probability that on a particular day—tomorrow— <em>three or more</em>
+ambulances will be out of action. The resampling approach produces the
+estimate as follows.</p>
+<div id="randomness-from-physical-methods" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Randomness from physical methods</h3>
+<p>We collect 10 coins, and mark one of them with a pen or pencil or tape
+as being the coin that represents “out-of-order;” the other nine coins
+stand for “in operation.” This set of 10 coins is a “model” of a
+situation where there is a one-in-ten chance—a probability of .10 (10
+percent)—of <em>one</em> particular ambulance being out-of-order on a given day.
+Next, we put the coins into a little jar or bucket, draw out one coin, and
+mark down whether or not that coin is the coin marked “out-of-order.”
+That drawing of the single coin from the bucket represents the chance that
+any one given ambulance among our 20 ambulances (perhaps the one with the
+lowest license-plate number) will be out-of-order tomorrow.</p>
+<p>Then we put the drawn coin back in the bucket, shake all the coins, and
+again draw out a coin. We mark down whether that second-drawing coin is
+or is not the “out-of-order” coin, and that outcome stands for a second
+ambulance in the fleet. We do this <em>20</em> times to represent our 20
+ambulances, replacing the coin after each drawing, of course. Those 20 drawings
+represent one day.</p>
+<p>At the end of the 20 draws we count how many out-of-orders we have got for that
+“day,” checking whether there are <em>three or more</em> out-of-orders. If there are
+three or more, we write down in another column “yes”; if not, we write “no.”
+The work we have done up to now represents one experimental trial of the model
+for a single day.</p>
+<p>Then we repeat perhaps 50 or 100 times the entire experiment described
+above. Each of those 50 or 100 experimental trials represents a single
+day. When we have collected evidence for 50 or 100 experimental days, we
+determine the proportion of the experimental days on which three or more
+ambulances are out of order. That proportion is an estimate of the
+probability that three or more ambulances will be out of order on a given
+day—the answer we seek. This procedure is an example of Monte Carlo
+simulation, which is the heart of the resampling method of statistical
+estimation.</p>
+<p>A more direct way to answer this question would be to examine the firm’s
+actual records for the past 100 days or 500 days to determine how many
+days had three or more ambulances out of order. But the resampling procedure
+described above gives us an estimate even if we do not have such
+long-term information. This is realistic; it is frequently the case in
+the workaday world that we must make estimates on the basis of
+insufficient history about an event.</p>
+<p>A quicker resampling method than the coins could be obtained with 20 ten-sided
+dice or spinners. Each one of the dice, marked with one of its ten sides as
+“out-of-order,” would indicate the chance of a single ambulance being out of
+order on a given day. A single pass with the 20 dice or spinners allows us to
+count whether three or more ambulances turn up out of order. So in a single
+throw of the 20 dice we can get an experimental trial that represents a single
+day. And in a hundred quick throws of the 20 dice—which probably takes less
+than 5 minutes—we can get a fast and reasonably-accurate answer to our
+question. But getting hold of ten-sided dice might be a nuisance.</p>
+</div>
+</div>
+<div id="randomness-from-your-computer" class="section level2">
+<h2><span class="header-section-number">3.2</span> Randomness from your computer</h2>
+<p>Computers make it easy to generate random numbers for resampling. Random
+numbers are numbers were it is effectively impossible to predict which number
+is coming next. For example, let’s say I ask for a random number between 1 and
+10 inclusive. We accept that number is random if I have no way of doing better
+than chance in predicting what that number is going to be. We will go into
+more detail about what we mean by <em>random</em> and <em>chance</em> later in the book.</p>
+<!--
+Press Your Luck
+The Michael Larsen Incident
+
+https://web.archive.org/web/20170712041017/http://www.rotten.com/library/conspiracy/press-your-luck/
+-->
+<p>We can use random numbers from the computer to simulate our problem. For
+example, we can ask the computer to make us a random number between 1 and 10
+(inclusive) to represent one ambulance. If we say that the digit 0 represents
+“out-of-order” and the digits 2 through 10 represent “in operation,” then any
+one random digit gives us a trial observation for a single ambulance. To get
+an experimental trial for a single day we look at 20 digits and count the
+number of ones. If the number of ones is three or more, then we write “yes.”
+We then look at one hundred or two hundred sets of 20 digits and count the
+proportion of sets whose 20 digits show three or more ambulances being
+“out-of-order.” Once again, that proportion estimates the probability that
+three or more ambulances will be out-of-order on any given day.</p>
+<p>Soon we will do all these steps with some R code, but for now,
+please take in on faith that we have made 20 random numbers, each from 1
+through 10, and we have done that 25 times, to simulate 25 days of 20
+ambulances. We could arrange those numbers in a table like table
+<a href="resampling-method.html#tab:veh-numbers">3.1</a>:</p>
+<table>
+<caption><span id="tab:veh-numbers">Table 3.1: </span>25 simulations of 20 ambulances</caption>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">T1</th>
+<th align="right">T2</th>
+<th align="right">T3</th>
+<th align="right">T4</th>
+<th align="right">T5</th>
+<th align="right">T6</th>
+<th align="right">T7</th>
+<th align="right">T8</th>
+<th align="right">T9</th>
+<th align="right">T10</th>
+<th align="right">T11</th>
+<th align="right">T12</th>
+<th align="right">T13</th>
+<th align="right">T14</th>
+<th align="right">T15</th>
+<th align="right">T16</th>
+<th align="right">T17</th>
+<th align="right">T18</th>
+<th align="right">T19</th>
+<th align="right">T20</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="right">8</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">6</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">8</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="right">4</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">9</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">9</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">9</td>
+</tr>
+<tr class="odd">
+<td align="left">9</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">9</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">10</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">11</td>
+<td align="right">6</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">12</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">13</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">14</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">15</td>
+<td align="right">10</td>
+<td align="right">9</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">16</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">17</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">9</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">18</td>
+<td align="right">1</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">19</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">9</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">20</td>
+<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">9</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">21</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">22</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">23</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">24</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">9</td>
+</tr>
+<tr class="odd">
+<td align="left">25</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>To get the answer for each day, we count the number of zeros in each row. The
+counts go in the final column called “#0” (for “number of zeros”).</p>
+<table>
+<caption><span id="tab:veh-numbers-counts">Table 3.2: </span>25 simulations of 20 ambulances, with counts</caption>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">T1</th>
+<th align="right">T2</th>
+<th align="right">T3</th>
+<th align="right">T4</th>
+<th align="right">T5</th>
+<th align="right">T6</th>
+<th align="right">T7</th>
+<th align="right">T8</th>
+<th align="right">T9</th>
+<th align="right">T10</th>
+<th align="right">T11</th>
+<th align="right">T12</th>
+<th align="right">T13</th>
+<th align="right">T14</th>
+<th align="right">T15</th>
+<th align="right">T16</th>
+<th align="right">T17</th>
+<th align="right">T18</th>
+<th align="right">T19</th>
+<th align="right">T20</th>
+<th align="right">#0</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">6</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="right">8</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">6</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">8</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="right">4</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">9</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">9</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">9</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">9</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">10</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">11</td>
+<td align="right">6</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">12</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">13</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">8</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">14</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">15</td>
+<td align="right">10</td>
+<td align="right">9</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">16</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">17</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">9</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">18</td>
+<td align="right">1</td>
+<td align="right">10</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">19</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">9</td>
+<td align="right">6</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">20</td>
+<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">9</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">21</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">22</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">23</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">24</td>
+<td align="right">10</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">9</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">25</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">10</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">5</td>
+</tr>
+</tbody>
+</table>
+<p>Each value in the last column of <a href="resampling-method.html#tab:veh-numbers-counts">3.2</a> is the count of
+zeros in that row, and therefore, the result from our simulation of one day.</p>
+<p>We can estimate how often three or more ambulances would break down by looking
+for values of three or greater in the last column. We find there are <code>r sum(df_counts['#0'] &gt;= 3)</code> rows with three or more in the last column. Finally
+we divide this number of rows by the number of trials (25) to get an
+estimate of the <em>proportion</em> of days with three or more breakdowns. The result
+is 0.32.</p>
+</div>
+<div id="building-the-problem-using-r" class="section level2">
+<h2><span class="header-section-number">3.3</span> Building the problem using R</h2>
+<p>Here we rush ahead to show you how to do this simulation in R.</p>
+<p>In the text that follows we go through the R code for the
+simulation. Please don’t expect to understand this code right away. The rest
+of this book goes into more detail about how R code works, and how
+you can use R to build your own simulations. Here we want to show
+you what this code looks like, to give you an idea of where we are headed.</p>
+<p>For each line of the code below, we give a detailed explanation, but you can
+also <em>run</em> the code yourself, to see it in action. The link below allows you
+to open this code as a <em>notebook</em>, and run it. But, you may want to read the
+next chapter <a href="about-the-technology.html#about-the-technology">About the technology</a>, to learn more about how to run this
+notebook. For now, we encourage you read the text here carefully, without
+using the technology to run the code. The text explains what the code means.
+Later, after you have read more about the technology, you might consider coming
+back to the links here to <em>run</em> the code.</p>
+<div class="rmdcomment">
+
+<p>
+Start of <code>ambulances</code> notebook.
+</p>
+<p>
+<div class="nb-links">
+<p><a class="notebook-link" href=ambulances.Rmd>Download notebook</a></p>
+</p>
+</div>
+</div>
+<p>The first thing to say about the code below is there are many lines in these
+bits of code that don’t do anything. These are the lines beginning with the
+<code>#</code> character (read <code>#</code> as “hash”). Lines beginning with <code>#</code> are called
+<em>comments</em>. When R sees the <code>#</code> at the start of the line, it
+realizes that it should ignore everything else on that line, and skips on the
+next line. Here’s an example of a comment in R:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># R will completely ignore this text.</span></a></code></pre></div>
+<p>Because R ignores lines beginning with <code>#</code>, the text comments is
+just for us, the humans that are reading the code. We often use comments in code to explain what the other parts of the code are doing, to make the rest of the code easier for humans to read and understand.</p>
+<p>Our next task is to use R to simulate a single day of ambulances.
+We will represent each ambulance by a random number from 1 through 10. 20 of
+these numbers represents a simulation of all 20 ambulances available to the
+contractor. We will call a simulation of 20 ambulances — one <em>trial</em>.</p>
+<!---
+Before we begin our first trial, we need to load some helpful routines from the
+Numpy library.  Numpy is a Python library that has many important functions for
+creating and working with data.  We will use routines from Numpy in almost all
+our examples.
+
+
+```python
+# Get the Numpy library, and call it "np" for short.
+import numpy as np
+```
+-->
+<p>The core of the program to simulate one trial of ambulances problem above
+begins with this command to the computer:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># Generate 20 random integers from 1 through 10.</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># We will explain the replace=TRUE later.</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co"># Store the 20 numbers with the name &quot;a&quot;</span></a>
+<a class="sourceLine" id="cb2-4" title="4">a &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">20</span>, <span class="dt">replace=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p>This command orders the computer to randomly generate 20 numbers from <code>1</code>
+through <code>10</code>. Inasmuch as each ambulance has a 1 in 10 chance of being
+defective, we decide arbitrarily that a <code>1</code> stands for a defective ambulance,
+and the other nine numbers (from <code>2</code> to <code>10</code>) stand for a non-defective
+ambulance. The command orders the computer to store the results of the random
+drawing in a location in the computer’s memory to which we give a name such as
+“a” or “ambulances” or “aardvark” — the name is up to us.</p>
+<p>The next key element in the core of the program is:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Count the number of ones in the random numbers.</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co"># The &quot;a == 1&quot; part identifies all the numbers equal to 1.</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co"># The &quot;sum&quot; part counts how many numbers &quot;a == 1&quot; found.</span></a>
+<a class="sourceLine" id="cb3-4" title="4">b &lt;-<span class="st"> </span><span class="kw">sum</span>(a <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</a></code></pre></div>
+<p>This is a <em>counting</em> operation. The command orders the computer to <em>count</em> the
+number of <code>1</code>s among the twenty numbers that are in location <code>a</code> following the
+random drawing carried out by the <code>sample</code> operation.
+The result of the <code>sum</code> operation will be
+somewhere between 0 and 20, the number of ambulances that might be out-of-order
+on a given day. The result is then placed in another location in the computer’s
+memory that we label <code>b</code>.</p>
+<p>Now let us place the <code>sample</code>and <code>r py_or_r('count_nonzero', 'sum')</code> commands within the entire program that we use
+to solve this problem, which is:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># Make an array of 1000 numbers to store our 1000 counts.</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="co"># These all start off as 0, but we fill them in below as we do 1000 trials.</span></a>
+<a class="sourceLine" id="cb4-3" title="3">z &lt;-<span class="st"> </span><span class="kw">numeric</span>(<span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co"># Repeat one trial of the simulation 1000 times.</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>) {</a>
+<a class="sourceLine" id="cb4-6" title="6">    <span class="co"># Everything from the open curly bracket above - {</span></a>
+<a class="sourceLine" id="cb4-7" title="7">    <span class="co"># to the close curly bracket below - } is a *block*.</span></a>
+<a class="sourceLine" id="cb4-8" title="8">    <span class="co"># We run everything in this block, for each trial.</span></a>
+<a class="sourceLine" id="cb4-9" title="9">    <span class="co"># Therefore, R runs all these commands 1000 times.</span></a>
+<a class="sourceLine" id="cb4-10" title="10"></a>
+<a class="sourceLine" id="cb4-11" title="11">    <span class="co"># Generate 20 numbers, each between 1 through 10 and put them in array a.</span></a>
+<a class="sourceLine" id="cb4-12" title="12">    <span class="co"># Each number will represent an ambulance, and we let 1 represent a</span></a>
+<a class="sourceLine" id="cb4-13" title="13">    <span class="co"># defective ambulance.</span></a>
+<a class="sourceLine" id="cb4-14" title="14">    a &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">20</span>, <span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb4-15" title="15">    <span class="co"># Count the number of defective ambulances, and put the result in &quot;b&quot;.</span></a>
+<a class="sourceLine" id="cb4-16" title="16">    b &lt;-<span class="st"> </span><span class="kw">sum</span>(a <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb4-17" title="17">    <span class="co"># Keep track of each trial&#39;s results in &quot;counts&quot;.</span></a>
+<a class="sourceLine" id="cb4-18" title="18">    z[i] &lt;-<span class="st"> </span>b</a>
+<a class="sourceLine" id="cb4-19" title="19">    <span class="co"># End this trial, then go back and repeat the process until all 1000 trials</span></a>
+<a class="sourceLine" id="cb4-20" title="20">    <span class="co"># are complete, then proceed.</span></a>
+<a class="sourceLine" id="cb4-21" title="21">}</a>
+<a class="sourceLine" id="cb4-22" title="22"></a>
+<a class="sourceLine" id="cb4-23" title="23"><span class="co"># This part runs after all 1000 trials have finished.</span></a>
+<a class="sourceLine" id="cb4-24" title="24"></a>
+<a class="sourceLine" id="cb4-25" title="25"><span class="co"># Determine how many trials resulted in more than 3 ambulances out of order.</span></a>
+<a class="sourceLine" id="cb4-26" title="26">k =<span class="st"> </span><span class="kw">sum</span>(z <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb4-27" title="27"></a>
+<a class="sourceLine" id="cb4-28" title="28"><span class="co"># Convert to a proportion.</span></a>
+<a class="sourceLine" id="cb4-29" title="29">kk =<span class="st"> </span>k <span class="op">/</span><span class="st"> </span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb4-30" title="30"></a>
+<a class="sourceLine" id="cb4-31" title="31"><span class="co"># Print the result.</span></a>
+<a class="sourceLine" id="cb4-32" title="32"><span class="kw">print</span>(kk)</a>
+<a class="sourceLine" id="cb4-33" title="33"><span class="co">#&gt; [1] 0.136</span></a></code></pre></div>
+<p>The <code>z[i] &lt;- b</code> statement that follows the <code>r py_or_r('np.count_nonzero', 'sum')</code> <em>counting</em> operation simply keeps track of
+the results of each trial, placing the number of defective ambulances that
+occur in each trial in a location that we usually call <code>z</code>. This is done in
+each of the 1000 trials that we make, and the result eventually is an “array”
+with 1000 numbers in it.</p>
+<p>In order to make 1000 repetitions of our experiment — we could have decided
+to make ten thousand or some other number of repetitions — we surround each trial with the <code>for</code> <em>loop</em>, that has the effect of repeating the operations for one trial 1000 times. We identify the operations to repeat with the
+<!---
+indentation level.  All the indented statements are statements we repeat for
+each time through the `for` loop.
+--></p>
+<p>opening — <code>{</code> — and closing — <code>}</code> — curly brackets.</p>
+<p>Since our aim is to count the number of days in which more than 3 (4 or
+more) defective ambulances occur, we use another <em>counting</em> command
+(<code>sum</code>) at the end of the 1000 trials. This
+counting command <em>counts</em> how many times more than 3 defects occurred in the
+1000 days recorded in our <code>z</code> array, and we place the result in still another
+location <code>k</code>. This gives us the total number of days where 4 or more defective
+ambulances are seen to occur. Then we divide the number in <code>k</code> by 1000, the
+number of trials. Thus we obtain an estimate of the chance, expressed as a
+probability between 0 and 1, that 4 or more ambulances will be defective on a
+given day. And we store that result in a location that we decide to call <code>kk</code>,
+so that it will be there when the computer receives the next command to <code>print</code>
+that result on the screen.</p>
+<p>Please don’t worry about the details of how each of these commands works — we
+will cover those details gradually, over the next few chapters. But, we hope
+that you can see in principle, how each of the operations that the computer
+carries out are analogous to the operations that you yourself executed when you
+solved this problem using a ten-sided spinner or a random-number table. This is
+exactly the procedure that we will use to solve every problem in probability
+and statistics that we must deal with. Either we will use a device such as
+coins or a random number table as an analogy for the physical process we are
+interested in (ambulances becoming defective, in this case), or we will
+simulate the analogy on the computer using some R code like the code
+above.</p>
+<p>The R STATS program called “ambulances” may not seem simple to you at
+first glance. But please believe us when we say that it is vastly simpler than
+the older conventional approach to such problems that has routinely been taught
+to students for decades.</p>
+</div>
+<div id="how-resampling-differs-from-the-conventional-approach" class="section level2">
+<h2><span class="header-section-number">3.4</span> How resampling differs from the conventional approach</h2>
+<p>In the standard approach the student learns to choose and solve a
+formula. Doing the algebra and arithmetic is quick and easy. The
+difficulty is in choosing the correct formula. Unless you are a
+professional mathematician, it may take you quite a while to arrive at
+the correct formula—considerable hard thinking, and perhaps some
+digging in textbooks. More important than the labor, however, is that
+you may come up with the wrong formula, and hence obtain the wrong
+answer. Most students who have had a standard course in probability and
+statistics are quick to tell you that it is not easy to find the correct
+formula, even immediately after finishing a course (or several courses)
+on the subject. After leaving school, it is harder still to choose the
+right formula. Even many people who have taught statistics at the
+university level (including this writer) must look at a book to get the
+correct formula for a problem as simple as the ambulances, and then we are
+not always sure of the right answer. This is the grave disadvantage of
+the standard approach.</p>
+<p>In the past few decades, resampling and other Monte Carlo simulation
+methods have come to be used extensively in scientific research. But in
+contrast to the material in this book, simulation has mostly been used
+in situations so complex that mathematical methods have not yet been
+developed to handle them. Here are examples of such situations:</p>
+<!---
+Better examples.  These are out of date.
+-->
+<ol style="list-style-type: decimal">
+<li><p>For a spaceship that will travel to Mars, calculating the correct flight
+route involves a great many variables, too many to solve with formulas.
+Hence, the Monte Carlo simulation method is used.</p></li>
+<li><p>The Navy might want to know how long the average ship will have to
+wait for dock facilities. The time of completion varies from ship to
+ship, and the number of ships waiting in line for dock work varies
+over time. This problem can be handled quite easily with the
+experimental simulation method, but formal mathematical analysis
+would be difficult or impossible.</p></li>
+<li><p>What are the best tactics in baseball? Should one bunt? Should one
+put the best hitter up first, or later? By trying out various
+tactics with dice or random numbers, Earnshaw Cook (in his book
+<em>Percentage Baseball</em> ), found that it is best never to bunt, and
+the highest-average hitter should be put up first, in contrast to
+usual practice. Finding this answer would have been much more difficult
+with the analytic method.</p></li>
+<li><p>Which search pattern will yield the best results for a ship
+searching for a school of fish? Trying out “models” of various
+search patterns with simulation can provide a fast answer.</p></li>
+<li><p>What strategy in the game of Monopoly will be most likely to win?
+The simulation method systematically plays many games (with a
+computer) testing various strategies to find the best one.</p></li>
+</ol>
+<p>But those five examples are all complex problems. This book and its
+earlier editions break new ground by using this method for <em>simple
+rather than complex problems</em> , especially in statistics rather than
+pure probability, and in teaching <em>beginning rather than advanced</em>
+students to solve problems this way. (Here it is necessary to emphasize
+that the resampling method is used to <em>solve the problems themselves
+rather than as a demonstration device to teach the notions found in the
+standard conventional approach</em> . Simulation has been used in elementary
+courses in the past, but only to demonstrate the operation of the
+analytical mathematical ideas. That is very different than using the
+resampling approach to solve statistics problems themselves, as is done
+here.)</p>
+<p>Once we get rid of the formulas and tables, we can see that statistics
+is a matter of <em>clear thinking, not fancy mathematics</em> . Then we can get
+down to the business of learning how to do that clear statistical
+thinking, and putting it to work for you. <em>The study of probability</em> is
+purely mathematics (though not necessarily formulas) and technique. But
+<em>statistics has to do with meaning</em> . For example, what is the meaning
+of data showing an association just discovered between a type of
+behavior and a disease? Of differences in the pay of men and women in
+your firm? Issues of causation, acceptability of control, design of
+experiments cannot be reduced to technique. This is “philosophy” in the
+fullest sense. Probability and statistics calculations are just one
+input. Resampling simulation enables us to get past issues of
+mathematical technique and focus on the crucial statistical elements of
+statistical problems.</p>
+<p>If you intend to go on to advanced statistical work, the older standard
+method can be learned alongside resampling methods. Your introduction to
+the conventional method may thereby be made much more meaningful.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="about-the-technology.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="resampling-with-code.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/resampling-stats/resampling-with/edit/master/source/resampling_method.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/resampling-stats/resampling-with/blob/master/resampling_method.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

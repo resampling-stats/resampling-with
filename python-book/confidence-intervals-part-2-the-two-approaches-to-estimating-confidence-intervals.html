@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>24 Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals | Resampling statistics</title>
+  <meta name="description" content="24 Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals | Resampling statistics" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="24 Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals | Resampling statistics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://resampling-stats.github.io/resampling-with" />
+  <meta property="og:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+  <meta property="og:description" content="24 Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals | Resampling statistics" />
+  <meta name="github-repo" content="resampling-stats/resampling-with" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="24 Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals | Resampling statistics" />
+  
+  <meta name="twitter:description" content="24 Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals | Resampling statistics" />
+  <meta name="twitter:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+
+<meta name="author" content="Julian Lincoln Simon" />
+<meta name="author" content="Matthew Brett" />
+<meta name="author" content="Stéfan van der Walt" />
+<meta name="author" content="Ian Nimmo-Smith" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"/>
+<link rel="next" href="and-some-last-words-about-the-reliability-of-sample-averages.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Python edition</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html"><i class="fa fa-check"></i>Preface to the third edition</a><ul>
+<li class="chapter" data-level="0.1" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-simon-saw"><i class="fa fa-check"></i><b>0.1</b> What Simon saw</a></li>
+<li class="chapter" data-level="0.2" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#resampling-and-data-science"><i class="fa fa-check"></i><b>0.2</b> Resampling and data science</a></li>
+<li class="chapter" data-level="0.3" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-we-changed"><i class="fa fa-check"></i><b>0.3</b> What we changed</a></li>
+<li class="chapter" data-level="0.4" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#who-should-read-this-book-and-when"><i class="fa fa-check"></i><b>0.4</b> Who should read this book, and when</a></li>
+<li class="chapter" data-level="0.5" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#welcome-to-resampling"><i class="fa fa-check"></i><b>0.5</b> Welcome to resampling</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html"><i class="fa fa-check"></i>Preface to the second edition</a><ul>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-the-resampling-method"><i class="fa fa-check"></i>Brief history of the resampling method</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-statistics"><i class="fa fa-check"></i>Brief history of statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#uses-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.1</b> Uses of Probability and Statistics</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#what-problems"><i class="fa fa-check"></i><b>1.2</b> What kinds of problems shall we solve?</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#probabilities-and-decisions"><i class="fa fa-check"></i><b>1.3</b> Probabilities and decisions</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#types-of-statistics"><i class="fa fa-check"></i><b>1.4</b> Types of statistics</a></li>
+<li class="chapter" data-level="1.5" data-path="introduction.html"><a href="introduction.html#limitations-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.5</b> Limitations of probability and statistics</a></li>
+<li class="chapter" data-level="1.6" data-path="introduction.html"><a href="introduction.html#why-is-statistics-such-a-difficult-subject"><i class="fa fa-check"></i><b>1.6</b> Why is Statistics Such a Difficult Subject?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="about-the-technology.html"><a href="about-the-technology.html"><i class="fa fa-check"></i><b>2</b> About the technology</a><ul>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#the-environment"><i class="fa fa-check"></i>The environment</a></li>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#running-the-code-on-your-own-computer"><i class="fa fa-check"></i>Running the code on your own computer</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="resampling-method.html"><a href="resampling-method.html"><i class="fa fa-check"></i><b>3</b> The Resampling method</a><ul>
+<li class="chapter" data-level="3.1" data-path="resampling-method.html"><a href="resampling-method.html#the-resampling-approach-in-action"><i class="fa fa-check"></i><b>3.1</b> The resampling approach in action</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-physical-methods"><i class="fa fa-check"></i><b>3.1.1</b> Randomness from physical methods</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-your-computer"><i class="fa fa-check"></i><b>3.2</b> Randomness from your computer</a></li>
+<li class="chapter" data-level="3.3" data-path="resampling-method.html"><a href="resampling-method.html#building-the-problem-using-python"><i class="fa fa-check"></i><b>3.3</b> Building the problem using Python</a></li>
+<li class="chapter" data-level="3.4" data-path="resampling-method.html"><a href="resampling-method.html#how-resampling-differs-from-the-conventional-approach"><i class="fa fa-check"></i><b>3.4</b> How resampling differs from the conventional approach</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="resampling-with-code.html"><a href="resampling-with-code.html"><i class="fa fa-check"></i><b>4</b> Resampling with code</a></li>
+<li class="chapter" data-level="5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html"><i class="fa fa-check"></i><b>5</b> Basic Concepts in Probability and Statistics, Part 1</a><ul>
+<li class="chapter" data-level="5.1" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-nature-and-meaning-of-the-concept-of-probability"><i class="fa fa-check"></i><b>5.2</b> The nature and meaning of the concept of probability</a></li>
+<li class="chapter" data-level="5.3" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-meaning-of-probability"><i class="fa fa-check"></i><b>5.3</b> The “Meaning” of “Probability”</a></li>
+<li class="chapter" data-level="5.4" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#digression-about-operational-definitions"><i class="fa fa-check"></i><b>5.4</b> Digression about Operational Definitions</a></li>
+<li class="chapter" data-level="5.5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#back-to-proxies"><i class="fa fa-check"></i><b>5.5</b> Back to Proxies</a></li>
+<li class="chapter" data-level="5.6" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-various-ways-of-estimating-probabilities"><i class="fa fa-check"></i><b>5.6</b> The various ways of estimating probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html"><i class="fa fa-check"></i><b>6</b> Basic Concepts in Probability and Statistics, Part 2</a><ul>
+<li class="chapter" data-level="6.1" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-other-magnitudes"><i class="fa fa-check"></i><b>6.1</b> The relationship of probability to other magnitudes</a></li>
+<li class="chapter" data-level="6.2" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-concept-of-chance"><i class="fa fa-check"></i><b>6.2</b> The concept of chance</a></li>
+<li class="chapter" data-level="6.3" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#what-do-we-mean-by-chance"><i class="fa fa-check"></i><b>6.3</b> What Do We Mean by “Chance”?</a></li>
+<li class="chapter" data-level="6.4" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-philosophers-dispute-about-the-concept-of-probability"><i class="fa fa-check"></i><b>6.4</b> The philosophers’ dispute about the concept of probability</a></li>
+<li class="chapter" data-level="6.5" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-the-concept-of-resampling"><i class="fa fa-check"></i><b>6.5</b> The relationship of probability to the concept of resampling</a></li>
+<li class="chapter" data-level="6.6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#conclusion"><i class="fa fa-check"></i><b>6.6</b> Conclusion</a></li>
+<li class="chapter" data-level="6.7" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#endnote"><i class="fa fa-check"></i><b>6.7</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html"><i class="fa fa-check"></i><b>7</b> Probability Theory, Part 1</a><ul>
+<li class="chapter" data-level="7.1" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#definitions"><i class="fa fa-check"></i><b>7.2</b> Definitions</a></li>
+<li class="chapter" data-level="7.3" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#theoretical-and-historical-methods-of-estimation"><i class="fa fa-check"></i><b>7.3</b> Theoretical and historical methods of estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#samples-and-universes"><i class="fa fa-check"></i><b>7.4</b> Samples and universes</a></li>
+<li class="chapter" data-level="7.5" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-conventions-of-probability"><i class="fa fa-check"></i><b>7.5</b> The conventions of probability</a></li>
+<li class="chapter" data-level="7.6" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-deductive-formulaic-method"><i class="fa fa-check"></i><b>7.6</b> The deductive formulaic method</a></li>
+<li class="chapter" data-level="7.7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#multiplication-rule"><i class="fa fa-check"></i><b>7.7</b> Multiplication rule</a></li>
+<li class="chapter" data-level="7.8" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#conditional-and-unconditional-probabilities"><i class="fa fa-check"></i><b>7.8</b> Conditional and unconditional probabilities</a></li>
+<li class="chapter" data-level="7.9" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-skins-again-plus-leaving-the-game-early"><i class="fa fa-check"></i><b>7.9</b> The skins again, plus leaving the game early</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html"><i class="fa fa-check"></i><b>8</b> Probability Theory Part I (continued)</a><ul>
+<li class="chapter" data-level="8.1" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-special-case-of-independence"><i class="fa fa-check"></i><b>8.1</b> The special case of independence</a></li>
+<li class="chapter" data-level="8.2" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-of-probabilities"><i class="fa fa-check"></i><b>8.2</b> The addition of probabilities</a></li>
+<li class="chapter" data-level="8.3" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-rule"><i class="fa fa-check"></i><b>8.3</b> The addition rule</a></li>
+<li class="chapter" data-level="8.4" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#theoretical-devices-for-the-study-of-probability"><i class="fa fa-check"></i><b>8.4</b> Theoretical devices for the study of probability</a></li>
+<li class="chapter" data-level="8.5" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-concept-of-sample-space"><i class="fa fa-check"></i><b>8.5</b> The Concept of Sample Space</a></li>
+<li class="chapter" data-level="8.6" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#endnotes"><i class="fa fa-check"></i><b>8.6</b> Endnotes</a></li>
+<li class="chapter" data-level="8.7" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#afternote-useful-hints-about-simple-numbers"><i class="fa fa-check"></i><b>8.7</b> Afternote: Useful hints about simple numbers</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html"><i class="fa fa-check"></i><b>9</b> Probability Theory, Part 2: Compound Probability</a><ul>
+<li class="chapter" data-level="9.1" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#introduction-3"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#puzzle-problems"><i class="fa fa-check"></i><b>9.2</b> Puzzle Problems</a></li>
+<li class="chapter" data-level="9.3" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#examples-of-basic-problems-in-probability"><i class="fa fa-check"></i><b>9.3</b> Examples of basic problems in probability</a></li>
+<li class="chapter" data-level="9.4" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#the-concepts-of-replacement-and-non-replacement"><i class="fa fa-check"></i><b>9.4</b> The concepts of replacement and non-replacement</a></li>
+<li class="chapter" data-level="9.5" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#endnotes-1"><i class="fa fa-check"></i><b>9.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html"><i class="fa fa-check"></i><b>10</b> Probability Theory, Part 3</a><ul>
+<li class="chapter" data-level="10.1" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-1-the-birthday-problem-illustrating-the-probability-of-duplication-in-a-multi-outcome-sample-from-an-infinite-universefile-birthday"><i class="fa fa-check"></i><b>10.1</b> Example 7-1: The Birthday Problem, Illustrating the Probability of Duplication in a Multi-Outcome Sample from an Infinite Universe(File “Birthday”)</a></li>
+<li class="chapter" data-level="10.2" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-2-three-daughters-among-four-children-illustrating-a-problem-with-two-outcomes-binomial-1-and-sampling-with-replacement-among-equally-likely-outcomes."><i class="fa fa-check"></i><b>10.2</b> Example 7-2: Three Daughters Among Four Children, Illustrating A Problem With Two Outcomes (Binomial <span class="math display">\[1\]</span>) And Sampling With Replacement Among Equally Likely Outcomes.</a></li>
+<li class="chapter" data-level="10.3" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#variations-of-the-daughters-problem"><i class="fa fa-check"></i><b>10.3</b> Variations of the daughters problem</a></li>
+<li class="chapter" data-level="10.4" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#a-note-on-clarifying-and-labeling-problems"><i class="fa fa-check"></i><b>10.4</b> A note on clarifying and labeling problems</a></li>
+<li class="chapter" data-level="10.5" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#binomial-trials"><i class="fa fa-check"></i><b>10.5</b> Binomial trials</a></li>
+<li class="chapter" data-level="10.6" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-3-three-or-more-successful-basketball-shots-in-five-attempts-two-outcome-sampling-with-unequally-likely-outcomes-with-replacementa-binomial-experiment"><i class="fa fa-check"></i><b>10.6</b> Example 7-3: Three or More Successful Basketball Shots in Five Attempts (Two-Outcome Sampling with Unequally-Likely Outcomes, with Replacement—A Binomial Experiment)</a></li>
+<li class="chapter" data-level="10.7" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#note-to-the-student-of-analytic-probability-theory"><i class="fa fa-check"></i><b>10.7</b> Note to the student of analytic probability theory</a></li>
+<li class="chapter" data-level="10.8" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-4-one-in-the-black-two-in-the-white-and-no-misses-in-three-archery-shotsmultiple-outcome-multinomial-sampling-with-unequally-likely-outcomes-with-replacement."><i class="fa fa-check"></i><b>10.8</b> Example 7-4: One in the Black, Two in the White, and No Misses in Three Archery Shots(Multiple Outcome <span class="math display">\[Multinomial\]</span> Sampling With Unequally Likely Outcomes; with Replacement.)</a></li>
+<li class="chapter" data-level="10.9" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-5-two-groups-of-heart-patients"><i class="fa fa-check"></i><b>10.9</b> Example 7-5: Two Groups of Heart Patients</a></li>
+<li class="chapter" data-level="10.10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-6-dispersion-of-a-sum-of-random-variableshammer-lengthsheads-and-handles"><i class="fa fa-check"></i><b>10.10</b> Example 7-6: Dispersion of a Sum of Random Variables—Hammer Lengths—Heads and Handles</a></li>
+<li class="chapter" data-level="10.11" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-7-the-product-of-random-variablestheft-by-employees"><i class="fa fa-check"></i><b>10.11</b> Example 7-7: The Product of Random Variables—Theft by Employees</a></li>
+<li class="chapter" data-level="10.12" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-8-flipping-pennies-to-the-end"><i class="fa fa-check"></i><b>10.12</b> Example 7-8: Flipping Pennies to the End</a></li>
+<li class="chapter" data-level="10.13" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-9-a-drunks-random-walk"><i class="fa fa-check"></i><b>10.13</b> Example 7-9: A Drunk’s Random Walk</a></li>
+<li class="chapter" data-level="10.14" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-10"><i class="fa fa-check"></i><b>10.14</b> Example 7-10</a></li>
+<li class="chapter" data-level="10.15" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#the-general-procedure"><i class="fa fa-check"></i><b>10.15</b> The general procedure</a></li>
+<li class="chapter" data-level="10.16" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#endnotes-2"><i class="fa fa-check"></i><b>10.16</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><i class="fa fa-check"></i><b>11</b> Probability Theory, Part 4: Estimating Probabilities from Finite Universes</a><ul>
+<li class="chapter" data-level="11.1" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#introduction-4"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
+<li class="chapter" data-level="11.2" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#some-building-block-programs"><i class="fa fa-check"></i><b>11.2</b> Some building-block programs</a></li>
+<li class="chapter" data-level="11.3" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#problems-in-finite-universes"><i class="fa fa-check"></i><b>11.3</b> Problems in finite universes</a></li>
+<li class="chapter" data-level="11.4" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-1-what-is-the-probability-of-selecting-four-girls-and-one-boy-when-selecting-five-students-from-any-group-of-twenty-five-girls-and-twenty-five-boys-sampling-without-replacement-when-there-are-two-outcomes-and-the-order-does-not-matter"><i class="fa fa-check"></i><b>11.4</b> Example 8-1: What is the Probability of Selecting Four Girls and One Boy When Selecting Five Students From Any Group of Twenty-five Girls and Twenty-five Boys? (Sampling Without Replacement When There are Two Outcomes and the Order Does Not Matter)</a></li>
+<li class="chapter" data-level="11.5" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-2-nine-spades-and-four-clubs-in-a-bridge-hand-multiple-outcome-sampling-without-replacement-order-does-not-matter"><i class="fa fa-check"></i><b>11.5</b> Example 8-2: Nine Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)</a></li>
+<li class="chapter" data-level="11.6" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-3-a-total-of-fifteen-points-in-a-bridge-hand-when-ace-4-king-3-queen-2-and-jack-1."><i class="fa fa-check"></i><b>11.6</b> Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace = 4, King = 3, Queen = 2, and Jack = 1.</a></li>
+<li class="chapter" data-level="11.7" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-4-four-girls-and-then-one-boy-from-twenty-five-girls-and-twenty-five-boys-order-matters-sampling-without-replacement-two-outcomes-several-of-each-item"><i class="fa fa-check"></i><b>11.7</b> Example 8-4: Four Girls and Then One Boy From Twenty-five Girls and Twenty-five Boys Order Matters, Sampling Without Replacement, Two Outcomes, Several of Each Item</a></li>
+<li class="chapter" data-level="11.8" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-5-four-or-more-couples-getting-their-own-partners-when-ten-couples-are-paired-randomly-probability-of-matching-by-chance"><i class="fa fa-check"></i><b>11.8</b> Example 8-5: Four or More Couples Getting Their Own Partners When Ten Couples are Paired Randomly (Probability of Matching by Chance)</a></li>
+<li class="chapter" data-level="11.9" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-6-matching-santa-hats-another-famous-problem-of-this-sort-the-hat-checker-at-a-restaurant-mixes-up-the-hats-of-a-party-of-6.-what-is-the-probability-that-at-least-one-will-get-his-own-hat"><i class="fa fa-check"></i><b>11.9</b> Example 8-6: Matching Santa Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6. What is the probability that at least one will get his own hat?</a></li>
+<li class="chapter" data-level="11.10" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-7-twenty-executives-are-to-be-assigned-to-two-divisions-of-a-firm"><i class="fa fa-check"></i><b>11.10</b> Example 8-7: Twenty executives are to be assigned to two divisions of a firm</a></li>
+<li class="chapter" data-level="11.11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-8-executives-moving"><i class="fa fa-check"></i><b>11.11</b> Example 8-8: Executives Moving</a></li>
+<li class="chapter" data-level="11.12" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-9-state-liquor-systems-again"><i class="fa fa-check"></i><b>11.12</b> Example 8-9: State Liquor Systems Again</a></li>
+<li class="chapter" data-level="11.13" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-10-a-compound-problem-five-or-more-spades-in-one-bridge-hand-and-four-girls-and-a-boy-in-a-five-child-family"><i class="fa fa-check"></i><b>11.13</b> Example 8-10: A Compound Problem: Five or More Spades in One Bridge Hand, and Four Girls and a Boy in a Five-Child Family</a></li>
+<li class="chapter" data-level="11.14" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#summary"><i class="fa fa-check"></i><b>11.14</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html"><i class="fa fa-check"></i><b>12</b> On Variability in Sampling</a><ul>
+<li class="chapter" data-level="12.1" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#variability-and-small-samples"><i class="fa fa-check"></i><b>12.1</b> Variability and small samples</a></li>
+<li class="chapter" data-level="12.2" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#regression-to-the-mean"><i class="fa fa-check"></i><b>12.2</b> Regression to the mean</a></li>
+<li class="chapter" data-level="12.3" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#summary-and-conclusion"><i class="fa fa-check"></i><b>12.3</b> Summary and conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html"><i class="fa fa-check"></i><b>13</b> The Procedures of Monte Carlo Simulation (and Resampling)</a><ul>
+<li class="chapter" data-level="13.1" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#a-definition-and-general-procedure-for-monte-carlo-simulation"><i class="fa fa-check"></i><b>13.1</b> A definition and general procedure for Monte Carlo simulation</a></li>
+<li class="chapter" data-level="13.2" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#summary-1"><i class="fa fa-check"></i><b>13.2</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html"><i class="fa fa-check"></i><b>14</b> The Basic Ideas in Statistical Inference</a><ul>
+<li class="chapter" data-level="14.1" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#knowledge-without-probabilistic-statistical-inference"><i class="fa fa-check"></i><b>14.1</b> Knowledge without probabilistic statistical inference</a></li>
+<li class="chapter" data-level="14.2" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#the-treatment-of-uncertainty"><i class="fa fa-check"></i><b>14.2</b> The treatment of uncertainty</a></li>
+<li class="chapter" data-level="14.3" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#where-statistical-inference-becomes-crucial"><i class="fa fa-check"></i><b>14.3</b> Where statistical inference becomes crucial</a></li>
+<li class="chapter" data-level="14.4" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#conclusions"><i class="fa fa-check"></i><b>14.4</b> Conclusions</a></li>
+<li class="chapter" data-level="14.5" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#endnotes-3"><i class="fa fa-check"></i><b>14.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html"><i class="fa fa-check"></i><b>15</b> Introduction to Statistical Inference</a><ul>
+<li class="chapter" data-level="15.1" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#statistical-inference-and-random-sampling"><i class="fa fa-check"></i><b>15.1</b> Statistical inference and random sampling</a></li>
+<li class="chapter" data-level="15.2" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#summary-and-conclusions"><i class="fa fa-check"></i><b>15.2</b> Summary and conclusions</a></li>
+<li class="chapter" data-level="15.3" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#endnotes-4"><i class="fa fa-check"></i><b>15.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="point-estimation.html"><a href="point-estimation.html"><i class="fa fa-check"></i><b>16</b> Point Estimation</a><ul>
+<li class="chapter" data-level="16.1" data-path="point-estimation.html"><a href="point-estimation.html#ways-to-estimate-the-mean"><i class="fa fa-check"></i><b>16.1</b> Ways to estimate the mean</a></li>
+<li class="chapter" data-level="16.2" data-path="point-estimation.html"><a href="point-estimation.html#criteria-of-estimates"><i class="fa fa-check"></i><b>16.2</b> Criteria of estimates</a></li>
+<li class="chapter" data-level="16.3" data-path="point-estimation.html"><a href="point-estimation.html#estimation-of-accuracy-of-the-point-estimate"><i class="fa fa-check"></i><b>16.3</b> Estimation of accuracy of the point estimate</a></li>
+<li class="chapter" data-level="16.4" data-path="point-estimation.html"><a href="point-estimation.html#uses-of-the-mean"><i class="fa fa-check"></i><b>16.4</b> Uses of the mean</a></li>
+<li class="chapter" data-level="16.5" data-path="point-estimation.html"><a href="point-estimation.html#conclusion-1"><i class="fa fa-check"></i><b>16.5</b> Conclusion</a></li>
+<li class="chapter" data-level="16.6" data-path="point-estimation.html"><a href="point-estimation.html#endnotes-5"><i class="fa fa-check"></i><b>16.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html"><i class="fa fa-check"></i><b>17</b> Framing Statistical Questions</a><ul>
+<li class="chapter" data-level="17.1" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#introduction-5"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
+<li class="chapter" data-level="17.2" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#translating-scientific-questions-into-probabilistic-and-statistical-questions"><i class="fa fa-check"></i><b>17.2</b> Translating scientific questions into probabilistic and statistical questions</a></li>
+<li class="chapter" data-level="17.3" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#the-three-types-of-questions"><i class="fa fa-check"></i><b>17.3</b> The three types of questions</a></li>
+<li class="chapter" data-level="17.4" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#summary-2"><i class="fa fa-check"></i><b>17.4</b> Summary</a></li>
+<li class="chapter" data-level="17.5" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#endnotes-6"><i class="fa fa-check"></i><b>17.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html"><i class="fa fa-check"></i><b>18</b> Hypothesis-Testing with Counted Data, Part 1</a><ul>
+<li class="chapter" data-level="18.1" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#introduction-6"><i class="fa fa-check"></i><b>18.1</b> Introduction</a></li>
+<li class="chapter" data-level="18.2" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#should-a-single-sample-of-counted-data-be-considered-different-from-a-benchmark-universe"><i class="fa fa-check"></i><b>18.2</b> Should a single sample of counted data be considered different from a benchmark universe?</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html"><i class="fa fa-check"></i><b>19</b> The Concept of Statistical Significance in Testing Hypotheses</a><ul>
+<li class="chapter" data-level="19.1" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-logic-of-hypothesis-tests"><i class="fa fa-check"></i><b>19.1</b> The logic of hypothesis tests</a></li>
+<li class="chapter" data-level="19.2" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-concept-of-statistical-significance"><i class="fa fa-check"></i><b>19.2</b> The concept of statistical significance</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><i class="fa fa-check"></i><b>20</b> The Statistics of Hypothesis-Testing with Counted Data, Part 2</a><ul>
+<li class="chapter" data-level="20.1" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#comparisons-among-more-than-two-samples-of-counted-data"><i class="fa fa-check"></i><b>20.1</b> Comparisons among more than two samples of counted data</a></li>
+<li class="chapter" data-level="20.2" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#paired-comparisons-with-counted-data"><i class="fa fa-check"></i><b>20.2</b> Paired Comparisons With Counted Data</a></li>
+<li class="chapter" data-level="20.3" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#endnotes-7"><i class="fa fa-check"></i><b>20.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html"><i class="fa fa-check"></i><b>21</b> The Statistics of Hypothesis-Testing With Measured Data</a><ul>
+<li class="chapter" data-level="21.1" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#differences-among-four-means"><i class="fa fa-check"></i><b>21.1</b> Differences among four means</a></li>
+<li class="chapter" data-level="21.2" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#using-squared-differences"><i class="fa fa-check"></i><b>21.2</b> Using Squared Differences</a></li>
+<li class="chapter" data-level="21.3" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#endnotes-8"><i class="fa fa-check"></i><b>21.3</b> Endnotes</a></li>
+<li class="chapter" data-level="21.4" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#exercises"><i class="fa fa-check"></i><b>21.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html"><i class="fa fa-check"></i><b>22</b> General Procedures for Testing Hypotheses</a><ul>
+<li class="chapter" data-level="22.1" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#introduction-7"><i class="fa fa-check"></i><b>22.1</b> Introduction</a></li>
+<li class="chapter" data-level="22.2" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#canonical-question-and-answer-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.2</b> Canonical question-and-answer procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.3" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#skeleton-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.3</b> Skeleton procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.4" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#an-example-can-the-bio-engineer-increase-the-female-calf-rate"><i class="fa fa-check"></i><b>22.4</b> An example: can the bio-engineer increase the female calf rate?</a></li>
+<li class="chapter" data-level="22.5" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#conventional-methods"><i class="fa fa-check"></i><b>22.5</b> Conventional methods</a></li>
+<li class="chapter" data-level="22.6" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#choice-of-the-benchmark-universe1"><i class="fa fa-check"></i><b>22.6</b> Choice of the benchmark universe1</a></li>
+<li class="chapter" data-level="22.7" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#why-is-statisticsand-hypothesis-testingso-difficult"><i class="fa fa-check"></i><b>22.7</b> Why is statistics—and hypothesis testing—so difficult?</a></li>
+<li class="chapter" data-level="22.8" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#endnote-1"><i class="fa fa-check"></i><b>22.8</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="23" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><i class="fa fa-check"></i><b>23</b> Confidence Intervals, Part 1: Assessing the Accuracy of Samples</a><ul>
+<li class="chapter" data-level="23.1" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#introduction-8"><i class="fa fa-check"></i><b>23.1</b> Introduction</a></li>
+<li class="chapter" data-level="23.2" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#estimating-the-accuracy-of-a-sample-mean"><i class="fa fa-check"></i><b>23.2</b> Estimating the accuracy of a sample mean</a></li>
+<li class="chapter" data-level="23.3" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#the-logic-of-confidence-intervals"><i class="fa fa-check"></i><b>23.3</b> The logic of confidence intervals</a></li>
+<li class="chapter" data-level="23.4" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#computing-confidence-intervals"><i class="fa fa-check"></i><b>23.4</b> Computing confidence intervals</a></li>
+<li class="chapter" data-level="23.5" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#procedure-for-estimating-confidence-intervals"><i class="fa fa-check"></i><b>23.5</b> Procedure for estimating confidence intervals</a></li>
+<li class="chapter" data-level="23.6" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#summary-3"><i class="fa fa-check"></i><b>23.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><i class="fa fa-check"></i><b>24</b> Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals</a><ul>
+<li class="chapter" data-level="24.1" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-1-the-distance-between-sample-and-population-mean"><i class="fa fa-check"></i><b>24.1</b> Approach 1: The distance between sample and population mean</a></li>
+<li class="chapter" data-level="24.2" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#conventional-calculational-methods"><i class="fa fa-check"></i><b>24.2</b> Conventional Calculational Methods</a></li>
+<li class="chapter" data-level="24.3" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#confidence-intervals-empiricallywith-resampling"><i class="fa fa-check"></i><b>24.3</b> Confidence Intervals Empirically—With Resampling</a></li>
+<li class="chapter" data-level="24.4" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-2-probability-of-various-universes-producing-this-sample"><i class="fa fa-check"></i><b>24.4</b> Approach 2: Probability of various universes producing this sample</a></li>
+<li class="chapter" data-level="24.5" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#interpretation-of-approach-2"><i class="fa fa-check"></i><b>24.5</b> Interpretation of Approach 2</a></li>
+<li class="chapter" data-level="24.6" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#exercises-1"><i class="fa fa-check"></i><b>24.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="25" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html"><i class="fa fa-check"></i><b>25</b> And Some Last Words About the Reliability of Sample Averages</a><ul>
+<li class="chapter" data-level="25.1" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#the-problem-of-uncertainty-about-the-dispersion"><i class="fa fa-check"></i><b>25.1</b> The problem of uncertainty about the dispersion</a></li>
+<li class="chapter" data-level="25.2" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#notes-on-the-use-of-confidence-intervals"><i class="fa fa-check"></i><b>25.2</b> Notes on the use of confidence intervals</a></li>
+<li class="chapter" data-level="25.3" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#overall-summary-and-conclusions-about-confidence-intervals"><i class="fa fa-check"></i><b>25.3</b> Overall summary and conclusions about confidence intervals</a></li>
+<li class="chapter" data-level="25.4" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#endnote-2"><i class="fa fa-check"></i><b>25.4</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="26" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html"><i class="fa fa-check"></i><b>26</b> Correlation and Causation</a><ul>
+<li class="chapter" data-level="26.1" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#preview"><i class="fa fa-check"></i><b>26.1</b> Preview</a></li>
+<li class="chapter" data-level="26.2" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#introduction-to-correlation-and-causation"><i class="fa fa-check"></i><b>26.2</b> Introduction to correlation and causation</a></li>
+<li class="chapter" data-level="26.3" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#a-note-on-association-compared-to-testing-a-hypothesis"><i class="fa fa-check"></i><b>26.3</b> A Note on Association Compared to Testing a Hypothesis</a></li>
+<li class="chapter" data-level="26.4" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#correlation-sum-of-products"><i class="fa fa-check"></i><b>26.4</b> Correlation: sum of products</a></li>
+<li class="chapter" data-level="26.5" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#exercises-2"><i class="fa fa-check"></i><b>26.5</b> Exercises</a></li>
+<li class="chapter" data-level="26.6" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#endnotes-9"><i class="fa fa-check"></i><b>26.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="27" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html"><i class="fa fa-check"></i><b>27</b> How Large a Sample?</a><ul>
+<li class="chapter" data-level="27.1" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#issues-in-determining-sample-size"><i class="fa fa-check"></i><b>27.1</b> Issues in determining sample size</a></li>
+<li class="chapter" data-level="27.2" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#some-practical-examples"><i class="fa fa-check"></i><b>27.2</b> Some practical examples</a></li>
+<li class="chapter" data-level="27.3" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#step-wise-sample-size-determination"><i class="fa fa-check"></i><b>27.3</b> Step-wise sample-size determination</a></li>
+<li class="chapter" data-level="27.4" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#summary-4"><i class="fa fa-check"></i><b>27.4</b> Summary</a></li>
+<li class="chapter" data-level="27.5" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#endnotes-10"><i class="fa fa-check"></i><b>27.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="28" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html"><i class="fa fa-check"></i><b>28</b> Bayesian Analysis by Simulation</a><ul>
+<li class="chapter" data-level="28.1" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#simple-decision-problems"><i class="fa fa-check"></i><b>28.1</b> Simple decision problems</a></li>
+<li class="chapter" data-level="28.2" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#problems-based-on-normal-and-other-distributions"><i class="fa fa-check"></i><b>28.2</b> Problems based on normal and other distributions</a></li>
+<li class="chapter" data-level="28.3" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#endnotes-11"><i class="fa fa-check"></i><b>28.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="29" data-path="exercise-solutions.html"><a href="exercise-solutions.html"><i class="fa fa-check"></i><b>29</b> Exercise Solutions</a><ul>
+<li class="chapter" data-level="29.1" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-18-2"><i class="fa fa-check"></i><b>29.1</b> Solution 18-2</a></li>
+<li class="chapter" data-level="29.2" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-1"><i class="fa fa-check"></i><b>29.2</b> Solution 21-1</a></li>
+<li class="chapter" data-level="29.3" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-2"><i class="fa fa-check"></i><b>29.3</b> Solution 21-2</a></li>
+<li class="chapter" data-level="29.4" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-3"><i class="fa fa-check"></i><b>29.4</b> Solution 21-3</a></li>
+<li class="chapter" data-level="29.5" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-1"><i class="fa fa-check"></i><b>29.5</b> Solution 23-1</a></li>
+<li class="chapter" data-level="29.6" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-2"><i class="fa fa-check"></i><b>29.6</b> Solution 23-2</a></li>
+<li class="chapter" data-level="29.7" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-3"><i class="fa fa-check"></i><b>29.7</b> Solution 23-3</a></li>
+<li class="chapter" data-level="29.8" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-4"><i class="fa fa-check"></i><b>29.8</b> Solution 23-4</a></li>
+</ul></li>
+<li class="chapter" data-level="30" data-path="technical-note-to-the-professional-reader.html"><a href="technical-note-to-the-professional-reader.html"><i class="fa fa-check"></i><b>30</b> Technical Note to the Professional Reader</a></li>
+<li class="chapter" data-level="31" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i><b>31</b> Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Resampling statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals" class="section level1">
+<h1><span class="header-section-number">24</span> Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals</h1>
+<p>There are two broad conceptual approaches to the question at hand: 1)
+Study the probability of various distances between the sample mean and
+the <em>likeliest</em> population mean; and 2) study the behavior of particular
+<em>border</em> universes. Computationally, both approaches often yield the
+same result, but their interpretations differ. Approach 1 follows the
+conventional logic although carrying out the calculations with
+resampling simulation.</p>
+<div id="approach-1-the-distance-between-sample-and-population-mean" class="section level2">
+<h2><span class="header-section-number">24.1</span> Approach 1: The distance between sample and population mean</h2>
+<p>If the study of probability can tell us the probability that a given
+population will produce a sample with a mean at a given distance x from
+the population mean, and if a sample is an unbiased estimator of the
+population, then it seems natural to turn the matter around and
+interpret the same sort of data as telling us the probability that the
+estimate of the population mean is that far from the “actual” population
+mean. A fly in the ointment is our lack of knowledge of the dispersion,
+but we can safely put that aside for now. (See below, however.)</p>
+<p>This first approach begins by assuming that the universe that actually
+produced the sample has the same amount of dispersion (but not
+necessarily the same mean) that one would estimate from the sample. One
+then produces (either with resampling or with Normal distribution
+theory) the distribution of sample means that would occur with repeated
+sampling from that designated universe with samples the size of the
+observed sample. One can then compute the distance between the (assumed)
+population mean and (say) the inner 45</p>
+<p>percent of sample means on each side of the actuallyobserved sample
+mean.</p>
+<p>The crucial step is to shift vantage points. We look from the sample to
+the universe, instead of <em>from a hypothesized universe to simulated
+samples</em> (as we have done so far). This same interval as computed above
+must be the relevant distance as when one looks from the sample to the
+universe. Putting this algebraically, we can state (on the basis of
+either simulation or formal calculation) that for any given population
+S, and for any given distance d from its mean mu, that p(mu xbar) &lt;
+d) = alpha, where xbar is a randomlygenerated sample mean and alpha is
+the probability resulting from the simulation or calculation.</p>
+<p>The above equation focuses on the deviation of various sample means
+(xbar) from a stated population mean (mu). But we are logically entitled
+to read the algebra in another fashion, focusing on the deviation of mu
+from a randomly generated sample mean. This implies that for any given
+randomly generated sample mean we observe, the same probability (alpha)
+describes the probability that mu will be at a distance d or less from
+the observed xbar. (I believe that this is the logic underlying the
+conventional view of confidence intervals, but I have yet to find a
+clear-cut statement of it; in any case, it appears to be logically
+correct.)</p>
+<p>To repeat this difficult idea in slightly different words: If one draws
+a sample (large enough to not worry about sample size and dispersion),
+one can say in advance that there is a probability p that the sample
+mean (xbar) will fall within z standard deviations of the population
+mean (mu). One estimates the population dispersion from the sample. If
+there is a probability p that xbar is within z standard deviations of
+mu, then with probability p, mu must be within that same z standard
+deviations of xbar. To repeat, this is, I believe, the heart of the
+standard concept of the confidence interval, to the extent that there is
+thoughtthrough consensus on the matter.</p>
+<p>So we can state for such populations the probability that the distance
+between the population and sample means will be d or less. Or with
+respect to a given distance, we can say that the probability that the
+population and sample means will be that close together is p.</p>
+<p>That is, we start by focusing on how much the sample mean diverges from
+the known population mean. But then—and to repeat once more this key
+conceptual step—we refocus our attention to <em>begin with the sample
+mean</em> and then discuss the probability that the population mean will be
+within a given distance. The resulting distance is what we call the
+“confidence interval.”</p>
+<p>Please notice that the distribution (universe) assumed at the beginning
+of this approach did not include the assumption that the distribution is
+centered on the sample mean or anywhere else. It is true that the sample
+mean is used <em>for purposes of reporting the location of the estimated
+universe mean</em> . But despite how the subject is treated in the
+conventional approach, the estimated population mean is not part of the
+work of constructing confidence intervals. Rather, the calculations
+apply in the same way to <em>all universes in the neighborhood of the
+sample</em> (which are assumed, for the purpose of the work, to have the
+same dispersion). And indeed, it must be so, because the probability
+that the universe from which the sample was drawn is centered exactly at
+the sample mean is very small.</p>
+<p>This independence of the confidence-intervals construction from the mean
+of the sample (and the mean of the estimated universe) is surprising at
+first, but after a bit of thought it makes sense.</p>
+<p>In this first approach, as noted more generally above, we do <em>not</em> make
+estimates of the confidence intervals on the basis of any logical
+inference from any one particular sample to any one particular universe,
+because <em>this cannot be done in principle</em> ; it is the futile search for
+this connection that for decades roiled the brains of so many
+statisticians and now continues to trouble the minds of so many
+students. Instead, we investigate the behavior of (in this first
+approach) the universe that has a higher probability of producing the
+observed sample than does any other universe (in the absence of any
+additional evidence to the contrary), and whose characteristics are
+chosen on the basis of its resemblance to the sample. In this way the
+estimation of confidence intervals is like all other statistical
+inference: One investigates the probabilistic behavior of one or more
+hypothesized universes, the universe(s) being implicitly suggested by
+the sample evidence but not logically implied by that evidence. And
+there are no grounds for dispute about exactly what is being done—only
+about how to interpret the results.</p>
+<p>One difficulty with the above approach is that the estimate of the
+population <em>dispersion</em> does not rest on sound foundations; this matter
+will be discussed later, but it is not likely to lead to a seriously
+misleading conclusion.</p>
+<p>A second difficulty with this approach is in interpreting the result.
+What is the justification for focusing our attention on a universe
+centered on the sample mean? While this particular universe may be more
+likely than any other, it undoubtedly has a low probability. And indeed,
+the statement of the confidence intervals refers to the probabilities
+that the sample has come from universes <em>other than</em> the universe
+centered at the sample mean, and quite a distance from it.</p>
+<p>My answer to this question does not rest on a set of meaningful
+mathematical axioms, and I assert that a meaningful axiomatic answer is
+impossible in principle. Rather, I reason that we should consider the
+behavior of this universe because other universes near it will produce
+much the same results, differing only in dispersion from this one, and
+this difference is not likely to be crucial; this last assumption is
+all-important, of course. True, we do not know what the dispersion might
+be for the “true” universe. But elsewhere (Simon, forthcoming) I argue
+that the concept of the “true universe” is not helpful— or maybe even
+worse than nothing—and should be foresworn. And we can postulate a
+dispersion for any <em>other</em> universe we choose to investigate. That is,
+for this postulation we unabashedly bring in any other knowledge we may
+have. The defense for such an almost-arbitrary move would be that this
+is a second-order matter relative to the location of the estimated
+universe mean, and therefore it is not likely to lead to serious error.
+(This sort of approximative guessing sticks in the throats of many
+trained mathematicians, of course, who want to feel an unbroken logic
+leading backwards into the mists of axiom formation. But the axioms
+themselves inevitably are chosen arbitrarily just as there is
+arbitrariness in the practice at hand, though the choice process for
+axioms is less obvious and more hallowed by having been done by the
+masterminds of the past. <span class="math display">\[See Simon, forthcoming, on the necessity for
+judgment.\]</span> The absence of a sequence of equations leading from some
+first principles to the procedure described in the paragraph above is
+evidence of what is felt to be missing by those who crave logical
+justification. The key equation in this approach is formally
+unassailable, but it seems to come from nowhere.)</p>
+<p>In the examples in the following chapter may be found computations for
+two population distributions—one binomial and one quantitative—of
+the histograms of the sample means produced with this procedure.</p>
+<p>Operationally, we use the observed sample mean, together with an
+estimate of the dispersion from the sample, to estimate a mean and
+dispersion for the population. Then with reference to the sample mean we
+state a combination of a dis-</p>
+<p>tance (on each side) and a probability pertaining to the population
+mean. The computational examples will illustrate this procedure.</p>
+<p>Once we have obtained a numerical answer, we must decide how to
+interpret it. There is a natural and almost irresistible tendency to
+talk about the probability that the mean of the universe lies within the
+intervals, but this has proven confusing and controversial.
+Interpretation in terms of a repeated process is not very satisfying
+intuitively <sup>1</sup> . In my view, it is not</p>
+<p>1 An example of this sort of interpretation is as follows: specific
+sample mean Xbar that we happen to observe is almost certain to be a bit
+high or a bit low. Accordingly, if we want to be reasonably confident
+that our inference is correct, we cannot claim that mu is precisely
+equal to the observed Xbar. Instead, we must construct an interval
+estimate or confidence interval of the form: mu = Xbar <em>+</em> sampling
+error</p>
+<p>The crucial question is: How wide must this allowance for sampling error
+be? The answer, of course, will depend on how much Xbar fluctuates...</p>
+<blockquote>
+<p>Constructing 95% confidence intervals is like pitching horseshoes. In each
+there is a fixed target, either the population mu or the stake. We are trying
+to bracket it with some chancy device, either the random interval or the
+horseshoe…</p>
+<p>There are two important ways, however, that confidence intervals differ from
+pitching horseshoes. First, only one confidence interval is customarily
+constructed. Second, the target mu is not visible like a horseshoe stake.
+Thus, whereas the horseshoe player always knows the score (and specifically,
+whether or not the last toss bracketed the stake), the statistician does not.
+He continues to “throw in the dark,” without knowing whether or not a
+specific interval estimate has bracketed mu. All he has to go on is the
+statistical theory that assures him that, in the long run, he will succeed
+95% of the time. <span class="citation">Wonnacott and Wonnacott (<a href="#ref-wonnacott1990introductory">1990</a>)</span>, (p. 258).</p>
+</blockquote>
+<p>Savage refers to this type of interpretation as follows: whenever its
+advocates talk of making assertions that have high probability, whether
+in connection with testing or estimation, they do not actually make such
+assertions themselves, but endlessly pass the buck, saying in effect,
+“This assertion has arisen according to a system that will seldom lead
+you to make false assertions, if you adopt it. As for myself, I assert
+nothing but the properties of the system.”(1972, pp. 260261)</p>
+<p>Lee writes at greater length: "<span class="math display">\[T\]</span>he statement that a 95% confidence
+interval for an unknown parameter ran from 2 to +2 sounded as if the
+parameter lay in that interval with 95% probability and yet I was warned
+that all I could say was that if I carried out similar procedures time
+after time then the unknown parameters would lie in the confidence
+intervals I constructed 95% of the time.</p>
+<p>“Subsequently, I discovered that the whole theory had been worked out in
+very considerable detail in such books as Lehmann (1959, 1986). But
+attempts such as those that Lehmann describes to put everything on a
+firm foundation raised even more questions.” (Lee, 1989, p. vii)</p>
+<p>worth arguing about any “true” interpretation of these computations. One
+could sensibly interpret the computations in terms of the odds a
+decisionmaker, given the evidence, would reasonably offer about the
+relative probabilities that the sample came from one of two specified
+universes (one of them probably being centered on the sample); this does
+provide some information on reliability, but this procedure departs from
+the concept of confidence intervals.</p>
+<p><strong>Example 21-1: Counted Data: The Accuracy of Political Polls</strong></p>
+<p>Consider the reliability of a randomly selected 1988 presidential
+election poll, showing 840 intended votes for Bush and 660 intended
+votes for Dukakis out of 1500 <span class="citation">(Wonnacott and Wonnacott <a href="#ref-wonnacott1990introductory">1990</a>)</span> (p. 5). Let
+us work through the logic of this example.</p>
+<!---
+Just before the 1998 presidential election, a Gallup poll of about 1500 voters
+showed ...
+
+.. multistage sampling ...
+-->
+<p><strong><em>What is the question?</em></strong> Stated technically, what are the 95%
+confidence limits for the proportion of Bush supporters in the
+population? (The proportion is the mean of a binomial population or
+sample, of course.) More broadly, within which bounds could one
+confidently believe that the population proportion was likely to lie? At
+this stage of the work, we must already have translated the conceptual
+question (in this case, a decisionmaking question from the point of view
+of the candidates) into a statistical question. (See Chapter 14 on
+translating questions into statistical form.)</p>
+<p><strong><em>What is the purpose</em></strong> to be served by answering this question? There
+is no sharp and clear answer in this case. The goal could be to satisfy
+public curiosity, or strategy planning for a candidate (though a
+national proportion is not as helpful for planning strategy as state
+data would be). A secondary goal might be to help guide decisions about
+the sample size of subsequent polls.</p>
+<p><strong><em>Is this a “probability” or a “probability-statistics” question?</em></strong>
+The latter; we wish to infer from sample to population rather than the
+converse.</p>
+<p><strong><em>Given that this is a statistics question: What is the form of the
+statistics question—confidence limits or hypothesis testing?</em></strong>
+Confidence limits.</p>
+<p><strong><em>Given that the question is about confidence limits: What is the
+description of the sample that has been observed?</em></strong> a) The raw sample
+data—the observed numbers of interviewees are</p>
+<p>840 for Bush and 660 for Dukakis—constitutes the best description of
+the universe. The <em>statistics of the sample</em> are the given
+proportions—56 percent for Bush, 44 percent for Dukakis.</p>
+<p><strong><em>Which universe?</em></strong> (Assuming that the observed sample is
+representative of the universe from which it is drawn, what is your
+<em>best guess about the properties</em> of the universe about whose parameter
+you wish to make statements? The best guess is that the population
+proportion is the sample proportion—that is, the population contains
+56 percent Bush votes, 44 percent Dukakis votes.</p>
+<p><strong><em>Possibilities for Bayesian analysis</em></strong> <strong>?</strong> Not in this case, unless
+you believe that the sample was biased somehow.</p>
+<p><strong><em>Which parameter(s) do you wish to make statements about?</em></strong> Mean,
+median, standard deviation, range, interquartile range, other? We wish
+to estimate the proportion in favor of Bush (or Dukakis).</p>
+<p><strong><em>Which symbols for the observed entities?</em></strong> Perhaps 56 green and 44
+yellow balls, if a bucket is used, or “0” and “1” if the computer is used.</p>
+<p><strong><em>Discrete or continuous distribution?</em></strong> In principle, discrete. (
+<em>All</em> distributions must be discrete <em>in practice</em> .)</p>
+<p><strong><em>What values or ranges of values?</em></strong> “0” or “1.”</p>
+<p><strong><em>Finite or infinite?</em></strong> Infinite—the sample is small relative to the
+population.</p>
+<p><strong><em>If the universe is what you guess it to be, for which samples do you
+wish to estimate the variation?</em></strong> A sample the same size as the
+observed poll.</p>
+<p>Here one may continue either with resampling or with the conventional
+method. Everything done up to now would be the same whether continuing
+with resampling or with a standard parametric test.</p>
+</div>
+<div id="conventional-calculational-methods" class="section level2">
+<h2><span class="header-section-number">24.2</span> Conventional Calculational Methods</h2>
+<p><em>Estimating the Distribution of Differences Between Sample and
+Population Means With the Normal Distribution</em> .</p>
+<p>In the conventional approach, one could in principle work from first
+principles with lists and sample space, but that would surely be too
+cumbersome. One could work with binomial proportions, but this problem
+has too large a sample for tree-drawing and quincunx techniques; even
+the ordinary textbook table of binomial coefficients is too small for
+this job. Calculating binomial coefficients also is a big job. So
+instead one would use the Normal approximation to the binomial formula.</p>
+<p>(Note to the beginner: The distribution of means that we manipulate has
+the Normal shape because of the operation of the Law of Large Numbers
+(The Central Limit theorem). Sums and averages, when the sample is
+reasonably large, take on this shape even if the underlying distribution
+is not Normal. This is a truly astonishing property of randomlydrawn
+samples— the distribution of their means quickly comes to resemble a
+“Normal” distribution, no matter the shape of the underlying
+distribution. We then standardize it with the standard deviation or
+other devices so that we can state the probability distribution of the
+sampling error of the mean for any sample of reasonable size.)</p>
+<p>The exercise of creating the Normal shape <em>empirically</em> is simply a
+generalization of particular cases such as we will later create here for
+the poll by resampling simulation. One can also go one step further and
+use the formula of de Moivre-Laplace- Gauss to describe the empirical
+distributions, and to serve instead of the empirical distributions.
+Looking ahead now, the difference between resampling and the
+conventional approach can be said to be that in the conventional
+approach we simply plot the Gaussian distribution very carefully, and
+use a formula instead of the empirical histograms, afterwards putting
+the results in a standardized table so that we can read them quickly
+without having to recreate the curve each time we use it. More about the
+nature of the Normal distribution may be found in Simon (forthcoming).</p>
+<p>All the work done above uses the information specified previously—the
+sample size of 1500, the drawing with replacement, the observed
+proportion as the criterion.</p>
+</div>
+<div id="confidence-intervals-empiricallywith-resampling" class="section level2">
+<h2><span class="header-section-number">24.3</span> Confidence Intervals Empirically—With Resampling</h2>
+<p><em>Estimating the Distribution of Differences Between Sample and
+Population Means By Resampling</em></p>
+<p><strong><em>What procedure to produce entities?</em></strong> Random selection from bucket or
+computer.</p>
+<p><strong><em>Simple (single step) or complex (multiple “if” drawings)?</em></strong></p>
+<p>Simple.</p>
+<p><strong><em>What procedure to produce resamples?</em></strong> That is, with or without
+replacement? With replacement.</p>
+<p><strong><em>Number of drawings observations in actual sample, and hence, number
+of drawings in resamples</em></strong> <strong>?</strong> 1500.</p>
+<p><strong><em>What to record as result of each resample drawing?</em></strong> Mean, median,
+or whatever of resample? The proportion is what we seek.</p>
+<p><strong><em>Stating the distribution of results</em></strong> <strong>:</strong> The distribution of
+proportions for the trial samples.</p>
+<p><strong><em>Choice of confidence bounds?</em></strong> <strong>:</strong> 95%, two tails (choice made by
+the textbook that posed the problem).</p>
+<p><strong><em>Computation of probabilities within chosen bounds</em></strong> <strong>:</strong> Read the
+probabilistic result from the histogram of results.</p>
+<p><strong><em>Computation of upper and lower confidence bounds:</em></strong> Locate the
+values corresponding to the 2.5 <sup>th</sup> and 97.5 <sup>th</sup> percentile of the
+resampled proportions.</p>
+<p>Because the theory of confidence intervals is so abstract (even with the
+resampling method of computation), let us now walk through this
+resampling demonstration slowly, using the conventional Approach 1
+described previously. We first produce a sample, and then see how the
+process works in reverse to estimate the reliability of the sample,
+using the Bush-Dukakis poll as an example. The computer program follows
+below.</p>
+<p><strong>Step 1:</strong> Draw a sample of 1500 voters from a universe that, based on
+the observed sample, is 56 percent for Bush, 44 percent for Dukakis. The
+first such sample produced by the computer happens to be 53 percent for
+Bush; it might have been 58 percent, or 55 percent, or very rarely, 49
+percent for Bush.</p>
+<p><strong>Step 2:</strong> Repeat step 1 perhaps 400 or 1000 times.</p>
+<p><strong>Step 3:</strong> Estimate the distribution of means (proportions) of samples
+of size 1500 drawn from this 56-44 percent Bush- Dukakis universe; the
+resampling result is shown below.</p>
+<p><strong>Step 4:</strong> In a fashion similar to what was done in steps 13, now
+compute the 95 percent confidence intervals for some <em>other</em> postulated
+universe mean—say 53% for Bush, 47% for Dukakis. This step produces a
+confidence interval that is not centered on the sample mean and the
+estimated universe mean, and hence it shows the independence of the
+procedure from that magnitude. And we now compare the breadth of the
+estimated confidence interval generated with the 53-47 percent universe
+against the confidence interval derived from the corresponding
+distribution of sample means generated by the “true” Bush-Dukakis
+population of 56 percent—44 percent. If the procedure works well, the
+results of the two procedures should be similar.</p>
+<p>Now we interpret the results using this first approach. The histogram
+shows the probability that the difference between the sample mean and
+the population mean—the error in the sample result—will be about 2.5
+percentage points too low. It follows that about 47.5 percent (half of
+95 percent) of the time, a sample like this one will be between the
+population mean and 2.5 percent too low. We do not know the actual
+population mean. But for any observed sample like this one, we can say
+that there is a 47.5 percent chance that the distance between it and the
+mean of the population that generated it is minus 2.5 percent or less.</p>
+<p>Now a crucial step: We turn around the statement just above, and say
+that there is an 47.5 percent chance that the population mean is less
+than three percentage points higher than the mean of a sample drawn like
+this one, but at or above the sample mean. (And we do the same for the
+other side of the sample mean.) So to recapitulate: We observe a sample
+and its mean. We estimate the error by experimenting with one or more
+universes in that neighborhood, and we then give the probability that
+the population mean is within that margin of error from the sample mean.</p>
+<p><strong>Example 21-2: Measured Data Example—the Bootstrap: A Feed Merchant
+Experiences Varied Pig Weight Gains With a New Ration and Wants to be
+Safe in Advertising an Average Weight Gain</strong></p>
+<p>A feed merchant decides to experiment with a new pig ration— ration
+A—on twelve pigs. To obtain a random sample, he provides twelve
+customers (selected at random) with sufficient food for one pig. After 4
+weeks, the 12 pigs experience an average gain of 508 ounces. The weight
+gain of the individual pigs are as follows: 496, 544, 464, 416, 512,
+560, 608, 544, 480,</p>
+<p>466, 512, 496.</p>
+<p>The merchant sees that the ration produces results that are quite
+variable (from a low of 466 ounces to a high of 560 ounces) and is
+therefore reluctant to advertise an average weight gain of 508 ounces.
+He speculates that a different sample of pigs might well produce a
+different average weight gain.</p>
+<p>Unfortunately, it is impractical to sample additional pigs to gain
+additional information about the universe of weight gains. The merchant
+must rely on the data already gathered. How can these data be used to
+tell us more about the sampling variability of the average weight gain?</p>
+<p>Recalling that all we know about the universe of weight gains is the
+sample we have observed, we can replicate that sample millions of times,
+creating a “pseudo-universe” that embodies all our knowledge about the
+real universe. We can then draw additional samples from this
+pseudo-universe and see how they behave.</p>
+<p>More specifically, we replicate each observed weight gain millions of
+times—we can imagine writing each result that many times on separate
+pieces of paper—then shuffle those weight gains and pick out a sample
+of 12. Average the weight gain for that sample, and record the result.
+Take repeated samples, and record the result for each. We can then make
+a histogram of the results; it might look something like this:</p>
+<p><img src="images/25-Chap-21_000.gif" /></p>
+<p>Though we do not know the true average weight gain, we can use this
+histogram to estimate the bounds within which it falls. The merchant can
+consider various weight gains for advertising purposes, and estimate the
+probability that the true weight gain falls below the value. For
+example, he might wish to advertise a weight gain of 500 ounces.
+Examining the histogram, we see that about 36% of our samples yielded
+weight gains less than 500 ounces. The merchant might wish to choose a
+lower weight gain to advertise, to reduce the risk of overstating the
+effectiveness of the ration.</p>
+<p>This illustrates the “bootstrap” method. By re-using our original sample
+many times (and using nothing else), we are able to make inferences
+about the population from which the sample came. This problem would
+conventionally be addressed with the “t-test.”</p>
+<p><strong>Example 21-3: Measured Data Example: Estimating Tree Diameters</strong></p>
+<p><strong><em>What is the question?</em></strong> A horticulturist is experimenting with a new
+type of tree. She plants 20 of them on a plot of land, and measures
+their trunk diameter after two years. She wants to establish a 90%
+confidence interval for the population average trunk diameter. For the
+data given below, calculate the mean of the sample and calculate (or
+describe a simulation procedure for calculating) a 90% confidence
+interval around the mean. Here are the 20 diameters, in centimeters and
+in no particular order:</p>
+<p>Table 21-1</p>
+<p><strong>Tree Diameters, in Centimeters</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">8.5 7.6 9.3</td>
+<td align="left">5.5</td>
+<td align="left">11.4</td>
+<td align="left">6.9</td>
+<td align="left">6.5</td>
+<td align="left">12.9</td>
+<td align="left">8.7</td>
+<td align="left">4.8</td>
+</tr>
+<tr class="even">
+<td align="left">4.2 8.1 6.5</td>
+<td align="left">5.8</td>
+<td align="left">6.7</td>
+<td align="left">2.4</td>
+<td align="left">11.1</td>
+<td align="left">7.1</td>
+<td align="left">8.8</td>
+<td align="left">7.2</td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>What is the purpose to be served by answering the question?</em></strong></p>
+<p>Either research &amp; development, or pure science.</p>
+<p><strong><em>Is this a “probability” or a “statistics” question?</em></strong> Statistics.</p>
+<p><strong><em>What is the form of the statistics question?</em></strong> Confidence limits.</p>
+<p><strong><em>What is the description of the sample that has been observed?</em></strong></p>
+<p>The raw data as shown above.</p>
+<p><strong><em>Statistics of the sample</em></strong> <strong>?</strong> Mean of the tree data.</p>
+<p><strong><em>Which universe?</em></strong> Assuming that the observed sample is
+representative of the universe from which it is drawn, what is your best
+guess about the properties of the universe whose parameter you wish to
+make statements about? Answer: The universe is like the sample above but
+much, much bigger. That is, in the absence of other information, we
+imagine this “bootstrap” universe as a collection of (say) one million
+trees of 8.5 centimeters width, one million of 7.2 centimeters, and so
+on. We’ll see in a moment that the device of sampling with replacement
+makes it unnecessary for us to work with such a large universe; by
+replacing each element after we draw it in a resample, we achieve the
+same effect as creating an almost-infinite universe from which to draw
+the resamples. (Are there possibilities for Bayesian analysis?) No
+Bayesian prior information will be included.</p>
+<p><strong><em>Which parameter do you wish to make statements about?</em></strong> The mean.</p>
+<p><strong><em>Which symbols for the observed entities?</em></strong> Cards or computer entries
+with numbers 8.5…7.2, sample of an infinite size.</p>
+<p><strong><em>If the universe is as guessed at, for which samples do you wish to
+estimate the variation?</em></strong> Samples of size 20.</p>
+<p>Here one may continue with the conventional method. Everything up to now
+is the same whether continuing with resampling or with a standard
+parametric test. The information listed above is the basis for a
+conventional test.</p>
+<p>Continuing with resampling:</p>
+<p><strong><em>What procedure will be used to produce the trial entities?</em></strong></p>
+<p>Random selection:</p>
+<p>Simple (single step), not complex (multiple “if”) sample drawings).</p>
+<p><strong><em>What procedure to produce resamples?</em></strong> With replacement. As noted
+above, sampling with replacement allows us to forego creating a very
+large bootstrap universe; replacing the elements after we draw them
+achieves the same effect as would an infinite universe.</p>
+<p><strong><em>Number of drawings</em></strong> <strong>?</strong> 20 trees</p>
+<p><strong><em>What to record as result of resample drawing?</em></strong> The mean. <strong><em>How to
+state the distribution of results?</em></strong> See histogram. <strong><em>Choice of
+confidence bounds</em></strong> <strong>:</strong> 90%, two-tailed.</p>
+<p><strong><em>Computation of values of the resample statistic corresponding to
+chosen confidence bounds:</em></strong> Read from histogram.</p>
+<p>As has been discussed in Chapter 13, it often is more appropriate to
+work with the median than with the mean. One reason is that the median
+is not so sensitive to the extreme observations as is the mean. Another
+reason is that one need not assume a Normal distribution for the
+universe under study: this consideration affects conventional statistics
+but usually does not affect resampling, but it is worth keeping mind
+when a statistician is making a choice between a parametric (that is,
+Normal-based) and a non-parametric procedure.</p>
+<p><strong>Example 21-4: Determining a Confidence Interval for the Median
+Aluminum Content in Theban Jars</strong></p>
+<p>Data for the percentages of aluminum content in a sample of 18 ancient
+Theban jars (Desphpande et. al., 1996, p. 31) are as follows, arranged
+in ascending order: 11.4, 13.4, 13.5, 13.8, 13.9,</p>
+<p>14.4, 14.5, 15.0, 15.1, 15.8, 16.0, 16.3, 16.5, 16.9, 17.0, 17.2, 17.5,</p>
+<p>19.0. Consider now putting a confidence interval around the median of
+15.45 (halfway between the middle observations 15.1 and 15.8).</p>
+<p>One may simply estimate a confidence interval around the median with a
+bootstrap procedure by substituting the median for the mean in the usual
+bootstrap procedure for estimating a confidence limit around the mean,
+as follows:</p>
+<p><code>DATA (11.4 13.4 13.5 13.8 13.9 14.4 14.5 15.0 15.1 15.8 16.0</code></p>
+<p><code>16.3 16.5 16.9 17.0 17.2 17.5 19.0) c</code></p>
+<p><code>REPEAT 1000</code></p>
+<p><code>SAMPLE 18 c c$</code></p>
+<p><code>MEDIAN c$ d$ SCORE d$ z</code></p>
+<p><code>END HISTOGRAM z</code></p>
+<p><code>PERCENTILE z (2.5 97.5) k PRINT K</code></p>
+<p>This problem would be approached conventionally with a binomial
+procedure leading to quite wide confidence intervals (Deshpande, p. 32).</p>
+<p><strong>Example 21-5: Determining a Confidence Interval for the Median Price
+Elasticity of Demand for Cigarettes</strong></p>
+<p>The data for a measure of responsiveness of demand to a price change
+(the “elasticity”—percent change in demand divided by percent change
+in price) are shown for cigarette price changes as follows:</p>
+<p>Table 21-2</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">1.725</td>
+<td align="left">1.139</td>
+<td align="left">.957</td>
+<td align="left">.863</td>
+<td align="left">.802</td>
+<td align="left">.517</td>
+<td align="left">.407</td>
+<td align="left">.304</td>
+</tr>
+<tr class="even">
+<td align="left">.204</td>
+<td align="left">.125</td>
+<td align="left">.122</td>
+<td align="left">.106</td>
+<td align="left">.031</td>
+<td align="left">-.032</td>
+<td align="left">-.1</td>
+<td align="left">-.142</td>
+</tr>
+<tr class="odd">
+<td align="left">-.174</td>
+<td align="left">-.234</td>
+<td align="left">-.240</td>
+<td align="left">-.251</td>
+<td align="left">-.277</td>
+<td align="left">-.301</td>
+<td align="left">-.302</td>
+<td align="left">-.302</td>
+</tr>
+<tr class="even">
+<td align="left">-.307</td>
+<td align="left">-.328</td>
+<td align="left">-.329</td>
+<td align="left">-.346</td>
+<td align="left">-.357</td>
+<td align="left">-.376</td>
+<td align="left">-.377</td>
+<td align="left">-.383</td>
+</tr>
+<tr class="odd">
+<td align="left">-.385</td>
+<td align="left">-.393</td>
+<td align="left">-.444</td>
+<td align="left">-.482</td>
+<td align="left">-.511</td>
+<td align="left">-.538</td>
+<td align="left">-.541</td>
+<td align="left">-.549</td>
+</tr>
+<tr class="even">
+<td align="left">-.554</td>
+<td align="left">-.600</td>
+<td align="left">-.613</td>
+<td align="left">-.644</td>
+<td align="left">-.692</td>
+<td align="left">-.713</td>
+<td align="left">-.724</td>
+<td align="left">-.734</td>
+</tr>
+<tr class="odd">
+<td align="left">-.749</td>
+<td align="left">-.752</td>
+<td align="left">-.753</td>
+<td align="left">-.766</td>
+<td align="left">-.805</td>
+<td align="left">-.866</td>
+<td align="left">-.926</td>
+<td align="left">-.971</td>
+</tr>
+<tr class="even">
+<td align="left">-.972</td>
+<td align="left">-.975</td>
+<td align="left">-1.018</td>
+<td align="left">-1.024</td>
+<td align="left">-1.066</td>
+<td align="left">-1.118</td>
+<td align="left">-1.145</td>
+<td align="left">-1.146</td>
+</tr>
+<tr class="odd">
+<td align="left">-1.157</td>
+<td align="left">-1.282</td>
+<td align="left">-1.339</td>
+<td align="left">-1.420</td>
+<td align="left">-1.443</td>
+<td align="left">-1.478</td>
+<td align="left">-2.041</td>
+<td align="left">-2.092</td>
+</tr>
+<tr class="even">
+<td align="left">-7.100</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p>Price elasticity of demand in various states at various dates (computed
+from cigarette sales data preceding and following a tax change in a
+state) (Lyon &amp; Simon, 1968)</p>
+<p>The positive observations (implying an increase in demand when the price
+rises) run against all theory, but can be considered to be the result
+simply of measurement errors, and treated as they stand. Aside from this
+minor complication, the reader may work this example similarly to the
+case of the Theban jars. Here is a RESAMPLING STATS program
+(“cigarett”).</p>
+<p><code>READ file “cigaret.dat” elast</code></p>
+<p>Read in the data from an external file</p>
+<p><code>MEDIAN elast med-elas REPEAT 1000</code></p>
+<p><code>SAMPLE 73 elast elast$</code></p>
+<p>A bootstrap sample (note that the “$” indicates a bootstrap counterpart
+to the observed sample)</p>
+<p><code>MEDIAN elast$ med$ SCORE med$ scrboard</code></p>
+<p><code>END</code></p>
+<p><code>HISTOGRAM scrboard</code></p>
+<p><code>PERCENTILE scrboard (2.5 97.5) interval PRINT med-elas interval</code></p>
+<p><img src="images/25-Chap-21_001.gif" /></p>
+<p>Result:</p>
+<p>MED-ELAS = -0.511 <span class="math display">\[observed value\]</span></p>
+<p>INTERVAL = -0.692 -0.357 <span class="math display">\[estimated 95 percent confidence interval\]</span></p>
+<p><strong>Example 21-6: Measured Data Example: Confidence Intervals For a
+Difference Between Two Means, the Mice Data Again</strong></p>
+<p>Returning to the data on the survival times of the two groups of mice in
+Example 18-4: It is the view of this book that confidence intervals
+should be calculated for a difference between two groups only if one is
+reasonably satisfied that the difference is not due to chance. Some
+statisticians might choose to compute a confidence interval in this case
+nevertheless, some because they believe that the confidence-interval
+machinery is more appropriate to deciding whether the difference is the
+likely outcome of chance than is the machinery of a hypothesis test in
+which you are concerned with the behavior of a benchmark or null
+universe. So let us calculate a confidence interval for these data,
+which will in any case demonstrate the technique for determining a
+confidence interval for a difference between two samples.</p>
+<p>Our starting point is our estimate for the difference in mean survival
+times between the two samples—30.63 days. We ask “How much might this
+estimate be in error? If we drew additional samples from the control
+universe and additional samples from the treatment universe, how much
+might they differ from this result?”</p>
+<p>We do not have the ability to go back to these universes and draw more
+samples, but from the samples themselves we can create hypothetical
+universes that embody all that we know about the treatment and control
+universes. We imagine replicating each element in each sample millions
+of times to create a hypothetical control universe and (separately) a
+hypothetical treatment universe. Then we can draw samples (separately)
+from these hypothetical universes to see how reliable is our original
+estimate of the difference in means (30.63 days).</p>
+<p>Actually, we use a shortcut —instead of copying each sample element a
+million times, we simply replace it after drawing it for our resample,
+thus creating a universe that is effectively infinite.</p>
+<p>Here are the steps:</p>
+<p><strong>Step 1:</strong> Consider the two samples separately as the relevant
+universes.</p>
+<p><strong>Step 2:</strong> Draw a sample of 7 with replacement from the treatment group
+and calculate the mean.</p>
+<p><strong>Step 3:</strong> Draw a sample of 9 with replacement from the control group
+and calculate the mean.</p>
+<p><strong>Step 4:</strong> Calculate the difference in means (treatment minus control)
+&amp; record.</p>
+<p><strong>Step 5:</strong> Repeat steps 2-4 many times.</p>
+<p><strong>Step 6:</strong> Review the distribution of resample means; the 5th and 95th
+percentiles are estimates of the endpoints of a 90 percent confidence
+interval.</p>
+<p>Here is a RESAMPLING STATS program (“mice-ci”):</p>
+<p><code>NUMBERS (94 38 23 197 99 16 141) treatmt</code></p>
+<p>treatment group</p>
+<p><code>NUMBERS (52 10 40 104 51 27 146 30 46) control</code></p>
+<p>control group</p>
+<p><code>REPEAT 1000</code></p>
+<p>step 5 above</p>
+<p><code>SAMPLE 7 treatmt treatmt$</code></p>
+<p>step 2 above</p>
+<p><code>SAMPLE 9 control control$</code></p>
+<p>step 3</p>
+<p><code>MEAN treatmt$ tmean</code></p>
+<p>step 4</p>
+<p><code>MEAN control$ cmean</code></p>
+<p>step 4</p>
+<p><code>SUBTRACT tmean cmean diff</code></p>
+<p>step 4</p>
+<p><code>SCORE diff scrboard</code></p>
+<p>step 4</p>
+<p><code>END</code></p>
+<p>step 5</p>
+<p><code>HISTOGRAM scrboard</code></p>
+<p><code>PERCENTILE scrboard (5 95) interval</code></p>
+<p>step 6</p>
+<p><code>PRINT interval</code></p>
+<p><img src="images/25-Chap-21_002.gif" /></p>
+<p>Result: interval = -15.016 73.825</p>
+<p><strong>Interpretation:</strong> This means that one can be 90 percent confident that
+the mean of the difference (which is estimated to be 30.63) falls
+between -15.016 and 73.825. So the reliability of the estimate of the
+mean is very small.</p>
+<p><strong>Example 21-7: Counted Data Example: Confidence Limit on a Proportion,
+Framingham Cholesterol Data</strong></p>
+<p>The Framingham cholesterol data were used in Chapter 15, exercise 15-7,
+to illustrate the first classic question in statistical
+inference—interpretation of sample data for testing hypotheses. Now we
+use the same data for the other main theme in statistical
+inference—the estimation of confidence intervals. Indeed, the
+bootstrap method discussed above was originally devised for estimation
+of confidence intervals. The bootstrap method may also be used to
+calculate the appropriate sample size for experiments and surveys,
+another important topic in statistics.</p>
+<p>Consider for now just the data for the sub-group of 135 highcholesterol
+men in Table 15-4. Our second classic statistical question is as
+follows: How much confidence should we have that if we were to take a
+much larger sample than was actually obtained, the sample mean (that is,
+the proportion 10/135</p>
+<p>= .07) would be in some close vicinity of the observed sample mean? Let
+us first carry out a resampling procedure to answer the questions,
+waiting until afterwards to discuss the logic of the inference.</p>
+<ol style="list-style-type: decimal">
+<li><p>Construct a bucket containing 135 balls—10 red (infarction) and 125
+green (no infarction) to simulate the universe as we guess it to be.</p></li>
+<li><p>Mix, choose a ball, record its color, replace it, and repeat 135
+times (to simulate a sample of 135 men).</p></li>
+<li><p>Record the number of red balls among the 135 balls drawn.</p></li>
+<li><p>Repeat steps 2-4 perhaps 1000 times, and observe how much the total
+number of reds varies from sample to sample. We arbitrarily denote
+the boundary lines that include 47.5 percent of the hypothetical
+samples on each side of the sample mean as the 95 percent
+“confidence limits” around the mean of the actual population.</p></li>
+</ol>
+<p>Here is a RESAMPLING STATS program (“myocar3”):</p>
+<p><code>URN 10#1 125#0 men</code></p>
+<p>An bucket (called “men”) with ten “1s” (infarctions) and 125 “0s” (no
+infarction)</p>
+<p><code>REPEAT 1000</code></p>
+<p>Do 1000 trials</p>
+<p><code>SAMPLE 135 men a</code></p>
+<p>Sample (with replacement) 135 numbers from the bucket, put them in a</p>
+<p><code>COUNT a =1 b</code></p>
+<p>Count the infarctions</p>
+<p><code>DIVIDE b 135 c</code></p>
+<p>Express as a proportion</p>
+<p><code>SCORE c z</code></p>
+<p>Keep score of the result</p>
+<p><code>END</code></p>
+<p>End the trial, go back and repeat</p>
+<p><code>HISTOGRAM z</code></p>
+<p>Produce a histogram of all trial results</p>
+<p><code>PERCENTILE z (2.5 97.5) k</code></p>
+<p>Determine the 2.5th and 97.5th percentiles of all trial results; these
+points enclose 95 percent of the results</p>
+<p><code>PRINT k</code></p>
+<p><img src="images/25-Chap-21_003.gif" /></p>
+<p><strong>Propor tion with infarction</strong></p>
+<p>Result: k = 0.037037 0.11852</p>
+<p>(This is the 95 percent confidence interval, enclosing 95 percent of the
+resample results)</p>
+<p>The variation in the histogram above highlights the fact that a sample
+containing only 10 cases of infarction is very small, and the number of
+observed cases—or the proportion of cases— necessarily varies
+greatly from sample to sample. Perhaps the most important implication of
+this statistical analysis, then, is that we badly need to collect
+additional data.</p>
+<p>Again, this is a classic problem in confidence intervals, found in all
+subject fields. The language used in the cholesterol-infarction example
+is exactly the same as the language used for the Bush-Dukakis poll above
+except for labels and numbers.</p>
+<p>As noted above, the philosophic logic of confidence intervals is quite
+deep and controversial, less obvious than for the hypothesis test. The
+key idea is that we can estimate for any given universe the probability
+P that a sample’s mean will fall within any given distance D of the
+universe’s mean; we then turn this around and assume that if we know the
+sample mean, the probability is P that the universe mean is within
+distance D of it. This inversion is more slippery than it may seem. But
+the logic is exactly the same for the formulaic method and for
+resampling. The only difference is how one estimates the
+probabilities—either with a numerical resampling simulation (as here),
+or with a formula or other deductive mathematical device (such as
+counting and partitioning all the possibilities, as Galileo did when he
+answered a gambler’s question about three dice). And when one uses the
+resampling method, the probabilistic calculations are the least
+demanding part of the work. One then has mental capacity available to
+focus on the crucial part of the job—framing the original question
+soundly, choosing a model for the facts so as to properly resemble the
+actual situation, and drawing appropriate inferences from the
+simulation.</p>
+</div>
+<div id="approach-2-probability-of-various-universes-producing-this-sample" class="section level2">
+<h2><span class="header-section-number">24.4</span> Approach 2: Probability of various universes producing this sample</h2>
+<p>A second approach to the general question of estimate accuracy is to
+analyze the behavior of a variety of universes centered at <em>other</em>
+points on the line, rather than the universe centered on the sample
+mean. One can ask the probability that a distribution centered away from
+the sample mean, with a given dispersion, would produce (say) a 10-apple
+scatter having a mean as far away from the given point as the observed
+sample mean. If we assume the situation to be symmetric, we can find a
+point at which we can say that a distribution centered there would have
+only a (say) 5 percent chance of producing the observed sample. And we
+can also say that a distribution <em>even further away from the sample
+mean</em> would have an even lower probability of producing the given
+sample. But we cannot turn the matter around and say that there is any
+particular chance that the distribution that <em>actually produced</em> the
+observed sample is between that point and the center of the sample.</p>
+<p>Imagine a situation where you are standing on one side of a canyon, and
+you are hit by a baseball, the only ball in the vicinity that day. Based
+on experiments, you can estimate that a baseball thrower who you see
+standing on the other side of the canyon has only a 5 percent chance of
+hitting you with a single throw. But this does not imply that the source
+of the ball that hit you was someone else standing in the middle of the
+canyon, because that is patently impossible. That is, your knowledge
+about the behavior of the “boundary” universe does not logically imply
+anything about the existence and behavior of any other universes. But
+just as in the discussion of testing hypotheses, if you know that one
+possibility is unlikely, it is reasonable that as a result you will draw
+conclusions about other possibilities in the context of your general
+knowledge and judgment.</p>
+<p>We can find the “boundary” distribution(s) we seek if we a) specify a
+measure of dispersion, and b) try every point along the line leading
+away from the sample mean, until we find that distribution that produces
+samples such as that observed with a (say) 5 percent probability or
+less.</p>
+<p>To estimate the dispersion, in many cases we can safely use an estimate
+based on the sample dispersion, using either resampling or Normal
+distribution theory. The hardest cases for resampling are a) a very
+small sample of data, and b) a proportion near 0 or near 1.0 (because
+the presence or absence in the sample of a small number of observations
+can change the estimate radically, and therefore a large sample is
+needed for reliability). In such situations one should use additional
+outside information, or Normal distribution theory, or both.</p>
+<p>We can also create a confidence interval in the following fashion: We
+can first estimate the dispersion for a universe in the general
+neighborhood of the sample mean, using various devices to be
+“conservative,” if we like <sup>1</sup> . Given the estimated dispersion, we then
+estimate the probability distribution of various amounts of error
+between observed sample means and the population mean. We can do this
+with resampling simulation as follows: a) Create other universes at
+various distances from the sample mean, but with other characteristics
+similar to the universe that we postulate for the immediate neighborhood
+of the sample, and b) experiment with those universes. One can also
+apply the same logic with a more conventional parametric approach, using
+general knowledge of the sampling distribution of the mean, based on
+Normal distribution theory or previous experience with resampling. We
+shall not discuss the latter method here.</p>
+<p>As with approach 1, we do not make any probability statements about
+where the population mean may be found. Rather, we discuss only what
+various hypothetical universes <em>might produce</em> , and make inferences
+about the “actual” population’s characteristics by comparison with those
+hypothesized universes.</p>
+<p>If we are interested in (say) a 95 percent confidence interval, we want
+to find the distribution on each side of the sample mean that would
+produce a sample with a mean that far away only 2.5 percent of the time
+(2 * .025 = 1-.95). A shortcut to find these “border distributions” is
+to plot the sampling distribu-</p>
+<p>2 More about this later; it is, as I said earlier, not of primary
+importance in estimating the accuracy of the confidence intervals; note,
+please, that as we talk about the accuracy of statements about accuracy,
+we are moving down the ladder of sizes of causes of error.</p>
+<p>tion of the mean at the <em>center</em> of the sample, as in Approach 1. Then
+find the (say) 2.5 percent cutoffs at each end of that distribution. On
+the assumption of equal dispersion at the two points along the line, we
+now reproduce the previously-plotted distribution with its centroid
+(mean) at those 2.5 percent points on the line. The new distributions
+will have 2.5 percent of their areas on the other side of the mean of
+the sample.</p>
+<p><strong>Example 21-8: Approach 2 for Counted Data: the Bush- Dukakis Poll</strong></p>
+<p>Let’s implement Approach 2 for counted data, using for comparison the
+Bush-Dukakis poll data discussed earlier in the context of Approach 1.</p>
+<p>We seek to state, for universes that we select on the basis that their
+results will interest us, the probability that they (or it, for a
+particular universe) would produce a sample as far or farther away from
+the mean of the universe in question as the mean of the observed
+sample—56 percent for Bush. The most interesting universe is that
+which produces such a sample only about 5 percent of the time, simply
+because of the correspondence of this value to a conventional breakpoint
+in statistical inference. So we could experiment with various universes
+by trial and error to find this universe.</p>
+<p>We can learn from our previous simulations of the Bush– Dukakis poll in
+Approach 1 that about 95 percent of the samples fall within .025 on
+either side of the sample mean (which we had been implicitly assuming is
+the location of the population mean). If we assume (and there seems no
+reason not to) that the dispersions of the universes we experiment with
+are the same, we will find (by symmetry) that the universe we seek is
+centered on those points .025 away from .56, or .535 and .585.</p>
+<p>From the standpoint of Approach 2, then, the conventional sample formula
+that is centered at the mean can be considered a shortcut to estimating
+the boundary distributions. We say that the boundary is at the point
+that centers a distribution which has only a (say) 2.5 percent chance of
+producing the observed sample; it is that distribution which is the
+subject of the discussion, and not the distribution which is centered at
+mu = xbar. Results of these simulations are shown in Figure 21-1.</p>
+<p><img src="images/25-Chap-21_004.png" /></p>
+<p><strong>Figure 21-1</strong></p>
+<p>About these distributions centered at .535 and .585—or more
+importantly for understanding an election situation, the universe
+centered at .535—one can say: Even if the “true” value is as low as
+53.5 percent for Bush, there is only a 2 ½ percent chance that a sample
+as high as 56 percent pro-Bush would be observed. (The values of a 2 ½
+percent probability and a 2 ½ percent difference between 56 percent and
+53.5 percent coincide only by chance in this case.) It would be even
+more revealing in an election situation to make a similar statement
+about the universe located at 50-50, but this would bring us almost
+entirely within the intellectual ambit of hypothesis testing.</p>
+<p>To restate, then: Moving progressively farther away from the sample
+mean, we can eventually find a universe that has only some (any)
+specified small probability of producing a sample like the one observed.
+One can then say that this point represents a “limit” or “boundary” so
+that the interval between it and the sample mean may be called a
+confidence interval.</p>
+<p><strong>Example 21-9: Approach 2 for Measured Data: The Diameters of Trees</strong></p>
+<p>To implement Approach 2 for measured data, one may proceed exactly as
+with Approach 1 above except that the output of the simulation with the
+sample mean as midpoint will be used for guidance about where to locate
+trial universes for Approach 2. The results for the tree diameter data
+(Table 21-1) are shown in Figure 21-2.</p>
+<p><img src="images/25-Chap-21_005.png" /></p>
+<p><strong>Figure 21-2</strong></p>
+</div>
+<div id="interpretation-of-approach-2" class="section level2">
+<h2><span class="header-section-number">24.5</span> Interpretation of Approach 2</h2>
+<p>Now to interpret the results of the second approach: Assume that the
+sample is not drawn in a biased fashion (such as the wind blowing all
+the apples in the same direction), and that the population has the same
+dispersion as the sample. We can then say that <em>distributions centered
+at the two endpoints of the 95 percent confidence interval (each of them
+including a tail in the direction of the observed sample mean with 2.5
+percent of the area), or even further away from the sample mean, will
+produce the observed sample only 5 percent of the time or less</em> .</p>
+<p>The result of the second approach is more in the spirit of a hypothesis
+test than of the usual interpretation of confidence intervals. Another
+statement of the result of the second approach is: We postulate a given
+universe—say, a universe at (say) the two-tailed 95 percent boundary
+line. We then say: The probability that the observed sample would be
+produced by a universe with a mean as far (or further) from the observed
+sample’s mean as the universe under investigation is only 2.5 percent.
+This is similar to the probvalue interpretation of a hypothesis-test
+framework. It is not a direct statement about the location of the mean
+of the universe from which the sample has been drawn. But it is
+certainly reasonable to derive a betting-odds interpretation of the
+statement just above, to wit: The chances are 2 ½ in 100 (or, the odds
+are 2 ½ to 97 ½ ) that a population located here would generate a sample
+with a mean as far away as the observed sample. And it would seem
+legitimate to proceed to the further betting-odds statement that
+(assuming we have no additional information) the odds are 97 ½ to 2 ½
+that the mean of the universe that generated this sample is no farther
+away from the sample mean than the mean of the boundary universe under
+discussion. About this statement there is nothing slippery, and its
+meaning should not be controversial.</p>
+<p>Here again the tactic for interpreting the statistical procedure is to
+restate the facts of the behavior of the universe that we are
+manipulating and examining at that moment. We use a heuristic device to
+find a particular distribution—the one that is at (say) the 97 ½ –2 ½
+percent boundary—and simply state explicitly what the distribution
+tells us implicitly: The probability of this distribution generating the
+observed sample (or a sample even further removed) is 2 ½ percent. We
+could go on to say (if it were of interest to us at the moment) that
+because the probability of this universe generating the observed sample
+is as low as it is, we “reject” the “hypothesis” that the sample came
+from a universe this far away or further. Or in other words, we could
+say that because we would be very surprised if the sample were to have
+come from this universe, we instead believe that another hypothesis is
+true. The “other” hypothesis often is that the universe that generated
+the sample has a mean located at the sample mean or closer to it than
+the boundary universe.</p>
+<p>The behavior of the universe at the 97 ½ –2 ½ percent boundary line can
+also be interpreted in terms of our “confidence” about the location of
+the mean of the universe that generated the observed sample. We can say:
+At this boundary point lies the end of the region within which we would
+bet 97 ½ to 2 ½ that the mean of the universe that generated this sample
+lies to the (say) right of it.</p>
+<p>As noted in the preview to this chapter, we do not learn about the
+reliability of sample estimates of the population mean (and other
+parameters) by logical inference from any one particular sample to any
+one particular universe, because <em>in principle this cannot be done</em> .
+Instead, in this second approach we investigate the behavior of various
+universes at the borderline of the neighborhood of the sample, those
+universes being chosen on the basis of their resemblances to the sample.
+We seek, for example, to find the universes that would produce samples
+with the mean of the observed sample less than (say) 5 percent of the
+time. In this way the estimation of confidence intervals is like all
+other statistical inference: One investigates the probabilistic behavior
+of hypothesized universes, the hypotheses being implicitly suggested by
+the sample evidence but not logically implied by that evidence.</p>
+<p>Approaches 1 and 2 may (if one chooses) be seen as identical
+conceptually as well as (in many cases) computationally (except for the
+asymmetric distributions mentioned earlier). But as I see it, the
+interpretation of them is rather different, and distinguishing them
+helps one’s intuitive understanding.</p>
+</div>
+<div id="exercises-1" class="section level2">
+<h2><span class="header-section-number">24.6</span> Exercises</h2>
+<p>Solutions for problems may be found in the section titled, “Exercise
+Solutions” at the back of this book.</p>
+<p><strong>Exercise 21-1</strong></p>
+<p>In a sample of 200 people, 7 percent are found to be unemployed.
+Determine a 95 percent confidence interval for the true population
+proportion.</p>
+<p><strong>Exercise 21-2</strong></p>
+<p>A sample of 20 batteries is tested, and the average lifetime is</p>
+<p>28.85 months. Establish a 95 percent confidence interval for the true
+average value. The sample values (lifetimes in months) are listed below.</p>
+<p>30 32 31 28 31 29 29 24 30 31 28 28 32 31 24 23 31 27 27</p>
+<p>31</p>
+<p><strong>Exercise 21-3</strong></p>
+<p>Suppose we have 10 measurements of Optical Density on a batch of HIV
+negative control:</p>
+<p>.02 .026 .023 .017 .022 .019 .018 .018 .017 .022</p>
+<p>Derive a 95 percent confidence interval for the sample mean. Are there
+enough measurements to produce a satisfactory answer?</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-wonnacott1990introductory">
+<p>Wonnacott, Thomas H, and Ronald J Wonnacott. 1990. <em>Introductory Statistics</em>. 5th ed. New York: John Wiley &amp; Sons.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="and-some-last-words-about-the-reliability-of-sample-averages.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/resampling-stats/resampling-with/edit/master/source/confidence_2.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/resampling-stats/resampling-with/blob/master/confidence_2.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

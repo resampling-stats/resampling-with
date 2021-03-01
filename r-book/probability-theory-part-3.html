@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>10 Probability Theory, Part 3 | Resampling statistics</title>
+  <meta name="description" content="10 Probability Theory, Part 3 | Resampling statistics" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="10 Probability Theory, Part 3 | Resampling statistics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://resampling-stats.github.io/resampling-with" />
+  <meta property="og:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+  <meta property="og:description" content="10 Probability Theory, Part 3 | Resampling statistics" />
+  <meta name="github-repo" content="resampling-stats/resampling-with" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="10 Probability Theory, Part 3 | Resampling statistics" />
+  
+  <meta name="twitter:description" content="10 Probability Theory, Part 3 | Resampling statistics" />
+  <meta name="twitter:image" content="https://resampling-stats.github.io/resampling-withcover.png" />
+
+<meta name="author" content="Julian Lincoln Simon" />
+<meta name="author" content="Matthew Brett" />
+<meta name="author" content="Stéfan van der Walt" />
+<meta name="author" content="Ian Nimmo-Smith" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="probability-theory-part-2-compound-probability.html"/>
+<link rel="next" href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>R edition</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html"><i class="fa fa-check"></i>Preface to the third edition</a><ul>
+<li class="chapter" data-level="0.1" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-simon-saw"><i class="fa fa-check"></i><b>0.1</b> What Simon saw</a></li>
+<li class="chapter" data-level="0.2" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#resampling-and-data-science"><i class="fa fa-check"></i><b>0.2</b> Resampling and data science</a></li>
+<li class="chapter" data-level="0.3" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#what-we-changed"><i class="fa fa-check"></i><b>0.3</b> What we changed</a></li>
+<li class="chapter" data-level="0.4" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#who-should-read-this-book-and-when"><i class="fa fa-check"></i><b>0.4</b> Who should read this book, and when</a></li>
+<li class="chapter" data-level="0.5" data-path="preface-to-the-third-edition.html"><a href="preface-to-the-third-edition.html#welcome-to-resampling"><i class="fa fa-check"></i><b>0.5</b> Welcome to resampling</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html"><i class="fa fa-check"></i>Preface to the second edition</a><ul>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-the-resampling-method"><i class="fa fa-check"></i>Brief history of the resampling method</a></li>
+<li class="chapter" data-level="" data-path="preface-to-the-second-edition.html"><a href="preface-to-the-second-edition.html#brief-history-of-statistics"><i class="fa fa-check"></i>Brief history of statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#uses-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.1</b> Uses of Probability and Statistics</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#what-problems"><i class="fa fa-check"></i><b>1.2</b> What kinds of problems shall we solve?</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#probabilities-and-decisions"><i class="fa fa-check"></i><b>1.3</b> Probabilities and decisions</a></li>
+<li class="chapter" data-level="1.4" data-path="introduction.html"><a href="introduction.html#types-of-statistics"><i class="fa fa-check"></i><b>1.4</b> Types of statistics</a></li>
+<li class="chapter" data-level="1.5" data-path="introduction.html"><a href="introduction.html#limitations-of-probability-and-statistics"><i class="fa fa-check"></i><b>1.5</b> Limitations of probability and statistics</a></li>
+<li class="chapter" data-level="1.6" data-path="introduction.html"><a href="introduction.html#why-is-statistics-such-a-difficult-subject"><i class="fa fa-check"></i><b>1.6</b> Why is Statistics Such a Difficult Subject?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="about-the-technology.html"><a href="about-the-technology.html"><i class="fa fa-check"></i><b>2</b> About the technology</a><ul>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#the-environment"><i class="fa fa-check"></i>The environment</a></li>
+<li class="chapter" data-level="" data-path="about-the-technology.html"><a href="about-the-technology.html#running-the-code-on-your-own-computer"><i class="fa fa-check"></i>Running the code on your own computer</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="resampling-method.html"><a href="resampling-method.html"><i class="fa fa-check"></i><b>3</b> The Resampling method</a><ul>
+<li class="chapter" data-level="3.1" data-path="resampling-method.html"><a href="resampling-method.html#the-resampling-approach-in-action"><i class="fa fa-check"></i><b>3.1</b> The resampling approach in action</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-physical-methods"><i class="fa fa-check"></i><b>3.1.1</b> Randomness from physical methods</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="resampling-method.html"><a href="resampling-method.html#randomness-from-your-computer"><i class="fa fa-check"></i><b>3.2</b> Randomness from your computer</a></li>
+<li class="chapter" data-level="3.3" data-path="resampling-method.html"><a href="resampling-method.html#building-the-problem-using-r"><i class="fa fa-check"></i><b>3.3</b> Building the problem using R</a></li>
+<li class="chapter" data-level="3.4" data-path="resampling-method.html"><a href="resampling-method.html#how-resampling-differs-from-the-conventional-approach"><i class="fa fa-check"></i><b>3.4</b> How resampling differs from the conventional approach</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="resampling-with-code.html"><a href="resampling-with-code.html"><i class="fa fa-check"></i><b>4</b> Resampling with code</a></li>
+<li class="chapter" data-level="5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html"><i class="fa fa-check"></i><b>5</b> Basic Concepts in Probability and Statistics, Part 1</a><ul>
+<li class="chapter" data-level="5.1" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-nature-and-meaning-of-the-concept-of-probability"><i class="fa fa-check"></i><b>5.2</b> The nature and meaning of the concept of probability</a></li>
+<li class="chapter" data-level="5.3" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-meaning-of-probability"><i class="fa fa-check"></i><b>5.3</b> The “Meaning” of “Probability”</a></li>
+<li class="chapter" data-level="5.4" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#digression-about-operational-definitions"><i class="fa fa-check"></i><b>5.4</b> Digression about Operational Definitions</a></li>
+<li class="chapter" data-level="5.5" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#back-to-proxies"><i class="fa fa-check"></i><b>5.5</b> Back to Proxies</a></li>
+<li class="chapter" data-level="5.6" data-path="basic-concepts-in-probability-and-statistics-part-1.html"><a href="basic-concepts-in-probability-and-statistics-part-1.html#the-various-ways-of-estimating-probabilities"><i class="fa fa-check"></i><b>5.6</b> The various ways of estimating probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html"><i class="fa fa-check"></i><b>6</b> Basic Concepts in Probability and Statistics, Part 2</a><ul>
+<li class="chapter" data-level="6.1" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-other-magnitudes"><i class="fa fa-check"></i><b>6.1</b> The relationship of probability to other magnitudes</a></li>
+<li class="chapter" data-level="6.2" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-concept-of-chance"><i class="fa fa-check"></i><b>6.2</b> The concept of chance</a></li>
+<li class="chapter" data-level="6.3" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#what-do-we-mean-by-chance"><i class="fa fa-check"></i><b>6.3</b> What Do We Mean by “Chance”?</a></li>
+<li class="chapter" data-level="6.4" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-philosophers-dispute-about-the-concept-of-probability"><i class="fa fa-check"></i><b>6.4</b> The philosophers’ dispute about the concept of probability</a></li>
+<li class="chapter" data-level="6.5" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#the-relationship-of-probability-to-the-concept-of-resampling"><i class="fa fa-check"></i><b>6.5</b> The relationship of probability to the concept of resampling</a></li>
+<li class="chapter" data-level="6.6" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#conclusion"><i class="fa fa-check"></i><b>6.6</b> Conclusion</a></li>
+<li class="chapter" data-level="6.7" data-path="basic-concepts-in-probability-and-statistics-part-2.html"><a href="basic-concepts-in-probability-and-statistics-part-2.html#endnote"><i class="fa fa-check"></i><b>6.7</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html"><i class="fa fa-check"></i><b>7</b> Probability Theory, Part 1</a><ul>
+<li class="chapter" data-level="7.1" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#introduction-2"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#definitions"><i class="fa fa-check"></i><b>7.2</b> Definitions</a></li>
+<li class="chapter" data-level="7.3" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#theoretical-and-historical-methods-of-estimation"><i class="fa fa-check"></i><b>7.3</b> Theoretical and historical methods of estimation</a></li>
+<li class="chapter" data-level="7.4" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#samples-and-universes"><i class="fa fa-check"></i><b>7.4</b> Samples and universes</a></li>
+<li class="chapter" data-level="7.5" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-conventions-of-probability"><i class="fa fa-check"></i><b>7.5</b> The conventions of probability</a></li>
+<li class="chapter" data-level="7.6" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-deductive-formulaic-method"><i class="fa fa-check"></i><b>7.6</b> The deductive formulaic method</a></li>
+<li class="chapter" data-level="7.7" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#multiplication-rule"><i class="fa fa-check"></i><b>7.7</b> Multiplication rule</a></li>
+<li class="chapter" data-level="7.8" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#conditional-and-unconditional-probabilities"><i class="fa fa-check"></i><b>7.8</b> Conditional and unconditional probabilities</a></li>
+<li class="chapter" data-level="7.9" data-path="probability-theory-part-1.html"><a href="probability-theory-part-1.html#the-skins-again-plus-leaving-the-game-early"><i class="fa fa-check"></i><b>7.9</b> The skins again, plus leaving the game early</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html"><i class="fa fa-check"></i><b>8</b> Probability Theory Part I (continued)</a><ul>
+<li class="chapter" data-level="8.1" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-special-case-of-independence"><i class="fa fa-check"></i><b>8.1</b> The special case of independence</a></li>
+<li class="chapter" data-level="8.2" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-of-probabilities"><i class="fa fa-check"></i><b>8.2</b> The addition of probabilities</a></li>
+<li class="chapter" data-level="8.3" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-addition-rule"><i class="fa fa-check"></i><b>8.3</b> The addition rule</a></li>
+<li class="chapter" data-level="8.4" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#theoretical-devices-for-the-study-of-probability"><i class="fa fa-check"></i><b>8.4</b> Theoretical devices for the study of probability</a></li>
+<li class="chapter" data-level="8.5" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#the-concept-of-sample-space"><i class="fa fa-check"></i><b>8.5</b> The Concept of Sample Space</a></li>
+<li class="chapter" data-level="8.6" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#endnotes"><i class="fa fa-check"></i><b>8.6</b> Endnotes</a></li>
+<li class="chapter" data-level="8.7" data-path="probability-theory-part-i-continued.html"><a href="probability-theory-part-i-continued.html#afternote-useful-hints-about-simple-numbers"><i class="fa fa-check"></i><b>8.7</b> Afternote: Useful hints about simple numbers</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html"><i class="fa fa-check"></i><b>9</b> Probability Theory, Part 2: Compound Probability</a><ul>
+<li class="chapter" data-level="9.1" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#introduction-3"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#puzzle-problems"><i class="fa fa-check"></i><b>9.2</b> Puzzle Problems</a></li>
+<li class="chapter" data-level="9.3" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#examples-of-basic-problems-in-probability"><i class="fa fa-check"></i><b>9.3</b> Examples of basic problems in probability</a></li>
+<li class="chapter" data-level="9.4" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#the-concepts-of-replacement-and-non-replacement"><i class="fa fa-check"></i><b>9.4</b> The concepts of replacement and non-replacement</a></li>
+<li class="chapter" data-level="9.5" data-path="probability-theory-part-2-compound-probability.html"><a href="probability-theory-part-2-compound-probability.html#endnotes-1"><i class="fa fa-check"></i><b>9.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html"><i class="fa fa-check"></i><b>10</b> Probability Theory, Part 3</a><ul>
+<li class="chapter" data-level="10.1" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-1-the-birthday-problem-illustrating-the-probability-of-duplication-in-a-multi-outcome-sample-from-an-infinite-universefile-birthday"><i class="fa fa-check"></i><b>10.1</b> Example 7-1: The Birthday Problem, Illustrating the Probability of Duplication in a Multi-Outcome Sample from an Infinite Universe(File “Birthday”)</a></li>
+<li class="chapter" data-level="10.2" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-2-three-daughters-among-four-children-illustrating-a-problem-with-two-outcomes-binomial-1-and-sampling-with-replacement-among-equally-likely-outcomes."><i class="fa fa-check"></i><b>10.2</b> Example 7-2: Three Daughters Among Four Children, Illustrating A Problem With Two Outcomes (Binomial <span class="math display">\[1\]</span>) And Sampling With Replacement Among Equally Likely Outcomes.</a></li>
+<li class="chapter" data-level="10.3" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#variations-of-the-daughters-problem"><i class="fa fa-check"></i><b>10.3</b> Variations of the daughters problem</a></li>
+<li class="chapter" data-level="10.4" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#a-note-on-clarifying-and-labeling-problems"><i class="fa fa-check"></i><b>10.4</b> A note on clarifying and labeling problems</a></li>
+<li class="chapter" data-level="10.5" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#binomial-trials"><i class="fa fa-check"></i><b>10.5</b> Binomial trials</a></li>
+<li class="chapter" data-level="10.6" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-3-three-or-more-successful-basketball-shots-in-five-attempts-two-outcome-sampling-with-unequally-likely-outcomes-with-replacementa-binomial-experiment"><i class="fa fa-check"></i><b>10.6</b> Example 7-3: Three or More Successful Basketball Shots in Five Attempts (Two-Outcome Sampling with Unequally-Likely Outcomes, with Replacement—A Binomial Experiment)</a></li>
+<li class="chapter" data-level="10.7" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#note-to-the-student-of-analytic-probability-theory"><i class="fa fa-check"></i><b>10.7</b> Note to the student of analytic probability theory</a></li>
+<li class="chapter" data-level="10.8" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-4-one-in-the-black-two-in-the-white-and-no-misses-in-three-archery-shotsmultiple-outcome-multinomial-sampling-with-unequally-likely-outcomes-with-replacement."><i class="fa fa-check"></i><b>10.8</b> Example 7-4: One in the Black, Two in the White, and No Misses in Three Archery Shots(Multiple Outcome <span class="math display">\[Multinomial\]</span> Sampling With Unequally Likely Outcomes; with Replacement.)</a></li>
+<li class="chapter" data-level="10.9" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-5-two-groups-of-heart-patients"><i class="fa fa-check"></i><b>10.9</b> Example 7-5: Two Groups of Heart Patients</a></li>
+<li class="chapter" data-level="10.10" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-6-dispersion-of-a-sum-of-random-variableshammer-lengthsheads-and-handles"><i class="fa fa-check"></i><b>10.10</b> Example 7-6: Dispersion of a Sum of Random Variables—Hammer Lengths—Heads and Handles</a></li>
+<li class="chapter" data-level="10.11" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-7-the-product-of-random-variablestheft-by-employees"><i class="fa fa-check"></i><b>10.11</b> Example 7-7: The Product of Random Variables—Theft by Employees</a></li>
+<li class="chapter" data-level="10.12" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-8-flipping-pennies-to-the-end"><i class="fa fa-check"></i><b>10.12</b> Example 7-8: Flipping Pennies to the End</a></li>
+<li class="chapter" data-level="10.13" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-9-a-drunks-random-walk"><i class="fa fa-check"></i><b>10.13</b> Example 7-9: A Drunk’s Random Walk</a></li>
+<li class="chapter" data-level="10.14" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#example-7-10"><i class="fa fa-check"></i><b>10.14</b> Example 7-10</a></li>
+<li class="chapter" data-level="10.15" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#the-general-procedure"><i class="fa fa-check"></i><b>10.15</b> The general procedure</a></li>
+<li class="chapter" data-level="10.16" data-path="probability-theory-part-3.html"><a href="probability-theory-part-3.html#endnotes-2"><i class="fa fa-check"></i><b>10.16</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><i class="fa fa-check"></i><b>11</b> Probability Theory, Part 4: Estimating Probabilities from Finite Universes</a><ul>
+<li class="chapter" data-level="11.1" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#introduction-4"><i class="fa fa-check"></i><b>11.1</b> Introduction</a></li>
+<li class="chapter" data-level="11.2" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#some-building-block-programs"><i class="fa fa-check"></i><b>11.2</b> Some building-block programs</a></li>
+<li class="chapter" data-level="11.3" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#problems-in-finite-universes"><i class="fa fa-check"></i><b>11.3</b> Problems in finite universes</a></li>
+<li class="chapter" data-level="11.4" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-1-what-is-the-probability-of-selecting-four-girls-and-one-boy-when-selecting-five-students-from-any-group-of-twenty-five-girls-and-twenty-five-boys-sampling-without-replacement-when-there-are-two-outcomes-and-the-order-does-not-matter"><i class="fa fa-check"></i><b>11.4</b> Example 8-1: What is the Probability of Selecting Four Girls and One Boy When Selecting Five Students From Any Group of Twenty-five Girls and Twenty-five Boys? (Sampling Without Replacement When There are Two Outcomes and the Order Does Not Matter)</a></li>
+<li class="chapter" data-level="11.5" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-2-nine-spades-and-four-clubs-in-a-bridge-hand-multiple-outcome-sampling-without-replacement-order-does-not-matter"><i class="fa fa-check"></i><b>11.5</b> Example 8-2: Nine Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)</a></li>
+<li class="chapter" data-level="11.6" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-3-a-total-of-fifteen-points-in-a-bridge-hand-when-ace-4-king-3-queen-2-and-jack-1."><i class="fa fa-check"></i><b>11.6</b> Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace = 4, King = 3, Queen = 2, and Jack = 1.</a></li>
+<li class="chapter" data-level="11.7" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-4-four-girls-and-then-one-boy-from-twenty-five-girls-and-twenty-five-boys-order-matters-sampling-without-replacement-two-outcomes-several-of-each-item"><i class="fa fa-check"></i><b>11.7</b> Example 8-4: Four Girls and Then One Boy From Twenty-five Girls and Twenty-five Boys Order Matters, Sampling Without Replacement, Two Outcomes, Several of Each Item</a></li>
+<li class="chapter" data-level="11.8" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-5-four-or-more-couples-getting-their-own-partners-when-ten-couples-are-paired-randomly-probability-of-matching-by-chance"><i class="fa fa-check"></i><b>11.8</b> Example 8-5: Four or More Couples Getting Their Own Partners When Ten Couples are Paired Randomly (Probability of Matching by Chance)</a></li>
+<li class="chapter" data-level="11.9" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-6-matching-santa-hats-another-famous-problem-of-this-sort-the-hat-checker-at-a-restaurant-mixes-up-the-hats-of-a-party-of-6.-what-is-the-probability-that-at-least-one-will-get-his-own-hat"><i class="fa fa-check"></i><b>11.9</b> Example 8-6: Matching Santa Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6. What is the probability that at least one will get his own hat?</a></li>
+<li class="chapter" data-level="11.10" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-7-twenty-executives-are-to-be-assigned-to-two-divisions-of-a-firm"><i class="fa fa-check"></i><b>11.10</b> Example 8-7: Twenty executives are to be assigned to two divisions of a firm</a></li>
+<li class="chapter" data-level="11.11" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-8-executives-moving"><i class="fa fa-check"></i><b>11.11</b> Example 8-8: Executives Moving</a></li>
+<li class="chapter" data-level="11.12" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-9-state-liquor-systems-again"><i class="fa fa-check"></i><b>11.12</b> Example 8-9: State Liquor Systems Again</a></li>
+<li class="chapter" data-level="11.13" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#example-8-10-a-compound-problem-five-or-more-spades-in-one-bridge-hand-and-four-girls-and-a-boy-in-a-five-child-family"><i class="fa fa-check"></i><b>11.13</b> Example 8-10: A Compound Problem: Five or More Spades in One Bridge Hand, and Four Girls and a Boy in a Five-Child Family</a></li>
+<li class="chapter" data-level="11.14" data-path="probability-theory-part-4-estimating-probabilities-from-finite-universes.html"><a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html#summary"><i class="fa fa-check"></i><b>11.14</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html"><i class="fa fa-check"></i><b>12</b> On Variability in Sampling</a><ul>
+<li class="chapter" data-level="12.1" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#variability-and-small-samples"><i class="fa fa-check"></i><b>12.1</b> Variability and small samples</a></li>
+<li class="chapter" data-level="12.2" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#regression-to-the-mean"><i class="fa fa-check"></i><b>12.2</b> Regression to the mean</a></li>
+<li class="chapter" data-level="12.3" data-path="on-variability-in-sampling.html"><a href="on-variability-in-sampling.html#summary-and-conclusion"><i class="fa fa-check"></i><b>12.3</b> Summary and conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html"><i class="fa fa-check"></i><b>13</b> The Procedures of Monte Carlo Simulation (and Resampling)</a><ul>
+<li class="chapter" data-level="13.1" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#a-definition-and-general-procedure-for-monte-carlo-simulation"><i class="fa fa-check"></i><b>13.1</b> A definition and general procedure for Monte Carlo simulation</a></li>
+<li class="chapter" data-level="13.2" data-path="the-procedures-of-monte-carlo-simulation-and-resampling.html"><a href="the-procedures-of-monte-carlo-simulation-and-resampling.html#summary-1"><i class="fa fa-check"></i><b>13.2</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html"><i class="fa fa-check"></i><b>14</b> The Basic Ideas in Statistical Inference</a><ul>
+<li class="chapter" data-level="14.1" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#knowledge-without-probabilistic-statistical-inference"><i class="fa fa-check"></i><b>14.1</b> Knowledge without probabilistic statistical inference</a></li>
+<li class="chapter" data-level="14.2" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#the-treatment-of-uncertainty"><i class="fa fa-check"></i><b>14.2</b> The treatment of uncertainty</a></li>
+<li class="chapter" data-level="14.3" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#where-statistical-inference-becomes-crucial"><i class="fa fa-check"></i><b>14.3</b> Where statistical inference becomes crucial</a></li>
+<li class="chapter" data-level="14.4" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#conclusions"><i class="fa fa-check"></i><b>14.4</b> Conclusions</a></li>
+<li class="chapter" data-level="14.5" data-path="the-basic-ideas-in-statistical-inference.html"><a href="the-basic-ideas-in-statistical-inference.html#endnotes-3"><i class="fa fa-check"></i><b>14.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html"><i class="fa fa-check"></i><b>15</b> Introduction to Statistical Inference</a><ul>
+<li class="chapter" data-level="15.1" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#statistical-inference-and-random-sampling"><i class="fa fa-check"></i><b>15.1</b> Statistical inference and random sampling</a></li>
+<li class="chapter" data-level="15.2" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#summary-and-conclusions"><i class="fa fa-check"></i><b>15.2</b> Summary and conclusions</a></li>
+<li class="chapter" data-level="15.3" data-path="introduction-to-statistical-inference.html"><a href="introduction-to-statistical-inference.html#endnotes-4"><i class="fa fa-check"></i><b>15.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="point-estimation.html"><a href="point-estimation.html"><i class="fa fa-check"></i><b>16</b> Point Estimation</a><ul>
+<li class="chapter" data-level="16.1" data-path="point-estimation.html"><a href="point-estimation.html#ways-to-estimate-the-mean"><i class="fa fa-check"></i><b>16.1</b> Ways to estimate the mean</a></li>
+<li class="chapter" data-level="16.2" data-path="point-estimation.html"><a href="point-estimation.html#criteria-of-estimates"><i class="fa fa-check"></i><b>16.2</b> Criteria of estimates</a></li>
+<li class="chapter" data-level="16.3" data-path="point-estimation.html"><a href="point-estimation.html#estimation-of-accuracy-of-the-point-estimate"><i class="fa fa-check"></i><b>16.3</b> Estimation of accuracy of the point estimate</a></li>
+<li class="chapter" data-level="16.4" data-path="point-estimation.html"><a href="point-estimation.html#uses-of-the-mean"><i class="fa fa-check"></i><b>16.4</b> Uses of the mean</a></li>
+<li class="chapter" data-level="16.5" data-path="point-estimation.html"><a href="point-estimation.html#conclusion-1"><i class="fa fa-check"></i><b>16.5</b> Conclusion</a></li>
+<li class="chapter" data-level="16.6" data-path="point-estimation.html"><a href="point-estimation.html#endnotes-5"><i class="fa fa-check"></i><b>16.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html"><i class="fa fa-check"></i><b>17</b> Framing Statistical Questions</a><ul>
+<li class="chapter" data-level="17.1" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#introduction-5"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
+<li class="chapter" data-level="17.2" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#translating-scientific-questions-into-probabilistic-and-statistical-questions"><i class="fa fa-check"></i><b>17.2</b> Translating scientific questions into probabilistic and statistical questions</a></li>
+<li class="chapter" data-level="17.3" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#the-three-types-of-questions"><i class="fa fa-check"></i><b>17.3</b> The three types of questions</a></li>
+<li class="chapter" data-level="17.4" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#summary-2"><i class="fa fa-check"></i><b>17.4</b> Summary</a></li>
+<li class="chapter" data-level="17.5" data-path="framing-statistical-questions.html"><a href="framing-statistical-questions.html#endnotes-6"><i class="fa fa-check"></i><b>17.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html"><i class="fa fa-check"></i><b>18</b> Hypothesis-Testing with Counted Data, Part 1</a><ul>
+<li class="chapter" data-level="18.1" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#introduction-6"><i class="fa fa-check"></i><b>18.1</b> Introduction</a></li>
+<li class="chapter" data-level="18.2" data-path="hypothesis-testing-with-counted-data-part-1.html"><a href="hypothesis-testing-with-counted-data-part-1.html#should-a-single-sample-of-counted-data-be-considered-different-from-a-benchmark-universe"><i class="fa fa-check"></i><b>18.2</b> Should a single sample of counted data be considered different from a benchmark universe?</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html"><i class="fa fa-check"></i><b>19</b> The Concept of Statistical Significance in Testing Hypotheses</a><ul>
+<li class="chapter" data-level="19.1" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-logic-of-hypothesis-tests"><i class="fa fa-check"></i><b>19.1</b> The logic of hypothesis tests</a></li>
+<li class="chapter" data-level="19.2" data-path="the-concept-of-statistical-significance-in-testing-hypotheses.html"><a href="the-concept-of-statistical-significance-in-testing-hypotheses.html#the-concept-of-statistical-significance"><i class="fa fa-check"></i><b>19.2</b> The concept of statistical significance</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><i class="fa fa-check"></i><b>20</b> The Statistics of Hypothesis-Testing with Counted Data, Part 2</a><ul>
+<li class="chapter" data-level="20.1" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#comparisons-among-more-than-two-samples-of-counted-data"><i class="fa fa-check"></i><b>20.1</b> Comparisons among more than two samples of counted data</a></li>
+<li class="chapter" data-level="20.2" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#paired-comparisons-with-counted-data"><i class="fa fa-check"></i><b>20.2</b> Paired Comparisons With Counted Data</a></li>
+<li class="chapter" data-level="20.3" data-path="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html"><a href="the-statistics-of-hypothesis-testing-with-counted-data-part-2.html#endnotes-7"><i class="fa fa-check"></i><b>20.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html"><i class="fa fa-check"></i><b>21</b> The Statistics of Hypothesis-Testing With Measured Data</a><ul>
+<li class="chapter" data-level="21.1" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#differences-among-four-means"><i class="fa fa-check"></i><b>21.1</b> Differences among four means</a></li>
+<li class="chapter" data-level="21.2" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#using-squared-differences"><i class="fa fa-check"></i><b>21.2</b> Using Squared Differences</a></li>
+<li class="chapter" data-level="21.3" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#endnotes-8"><i class="fa fa-check"></i><b>21.3</b> Endnotes</a></li>
+<li class="chapter" data-level="21.4" data-path="the-statistics-of-hypothesis-testing-with-measured-data.html"><a href="the-statistics-of-hypothesis-testing-with-measured-data.html#exercises"><i class="fa fa-check"></i><b>21.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html"><i class="fa fa-check"></i><b>22</b> General Procedures for Testing Hypotheses</a><ul>
+<li class="chapter" data-level="22.1" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#introduction-7"><i class="fa fa-check"></i><b>22.1</b> Introduction</a></li>
+<li class="chapter" data-level="22.2" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#canonical-question-and-answer-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.2</b> Canonical question-and-answer procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.3" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#skeleton-procedure-for-testing-hypotheses"><i class="fa fa-check"></i><b>22.3</b> Skeleton procedure for testing hypotheses</a></li>
+<li class="chapter" data-level="22.4" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#an-example-can-the-bio-engineer-increase-the-female-calf-rate"><i class="fa fa-check"></i><b>22.4</b> An example: can the bio-engineer increase the female calf rate?</a></li>
+<li class="chapter" data-level="22.5" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#conventional-methods"><i class="fa fa-check"></i><b>22.5</b> Conventional methods</a></li>
+<li class="chapter" data-level="22.6" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#choice-of-the-benchmark-universe1"><i class="fa fa-check"></i><b>22.6</b> Choice of the benchmark universe1</a></li>
+<li class="chapter" data-level="22.7" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#why-is-statisticsand-hypothesis-testingso-difficult"><i class="fa fa-check"></i><b>22.7</b> Why is statistics—and hypothesis testing—so difficult?</a></li>
+<li class="chapter" data-level="22.8" data-path="general-procedures-for-testing-hypotheses.html"><a href="general-procedures-for-testing-hypotheses.html#endnote-1"><i class="fa fa-check"></i><b>22.8</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="23" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><i class="fa fa-check"></i><b>23</b> Confidence Intervals, Part 1: Assessing the Accuracy of Samples</a><ul>
+<li class="chapter" data-level="23.1" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#introduction-8"><i class="fa fa-check"></i><b>23.1</b> Introduction</a></li>
+<li class="chapter" data-level="23.2" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#estimating-the-accuracy-of-a-sample-mean"><i class="fa fa-check"></i><b>23.2</b> Estimating the accuracy of a sample mean</a></li>
+<li class="chapter" data-level="23.3" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#the-logic-of-confidence-intervals"><i class="fa fa-check"></i><b>23.3</b> The logic of confidence intervals</a></li>
+<li class="chapter" data-level="23.4" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#computing-confidence-intervals"><i class="fa fa-check"></i><b>23.4</b> Computing confidence intervals</a></li>
+<li class="chapter" data-level="23.5" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#procedure-for-estimating-confidence-intervals"><i class="fa fa-check"></i><b>23.5</b> Procedure for estimating confidence intervals</a></li>
+<li class="chapter" data-level="23.6" data-path="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html"><a href="confidence-intervals-part-1-assessing-the-accuracy-of-samples.html#summary-3"><i class="fa fa-check"></i><b>23.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="24" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><i class="fa fa-check"></i><b>24</b> Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals</a><ul>
+<li class="chapter" data-level="24.1" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-1-the-distance-between-sample-and-population-mean"><i class="fa fa-check"></i><b>24.1</b> Approach 1: The distance between sample and population mean</a></li>
+<li class="chapter" data-level="24.2" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#conventional-calculational-methods"><i class="fa fa-check"></i><b>24.2</b> Conventional Calculational Methods</a></li>
+<li class="chapter" data-level="24.3" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#confidence-intervals-empiricallywith-resampling"><i class="fa fa-check"></i><b>24.3</b> Confidence Intervals Empirically—With Resampling</a></li>
+<li class="chapter" data-level="24.4" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#approach-2-probability-of-various-universes-producing-this-sample"><i class="fa fa-check"></i><b>24.4</b> Approach 2: Probability of various universes producing this sample</a></li>
+<li class="chapter" data-level="24.5" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#interpretation-of-approach-2"><i class="fa fa-check"></i><b>24.5</b> Interpretation of Approach 2</a></li>
+<li class="chapter" data-level="24.6" data-path="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html"><a href="confidence-intervals-part-2-the-two-approaches-to-estimating-confidence-intervals.html#exercises-1"><i class="fa fa-check"></i><b>24.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="25" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html"><i class="fa fa-check"></i><b>25</b> And Some Last Words About the Reliability of Sample Averages</a><ul>
+<li class="chapter" data-level="25.1" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#the-problem-of-uncertainty-about-the-dispersion"><i class="fa fa-check"></i><b>25.1</b> The problem of uncertainty about the dispersion</a></li>
+<li class="chapter" data-level="25.2" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#notes-on-the-use-of-confidence-intervals"><i class="fa fa-check"></i><b>25.2</b> Notes on the use of confidence intervals</a></li>
+<li class="chapter" data-level="25.3" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#overall-summary-and-conclusions-about-confidence-intervals"><i class="fa fa-check"></i><b>25.3</b> Overall summary and conclusions about confidence intervals</a></li>
+<li class="chapter" data-level="25.4" data-path="and-some-last-words-about-the-reliability-of-sample-averages.html"><a href="and-some-last-words-about-the-reliability-of-sample-averages.html#endnote-2"><i class="fa fa-check"></i><b>25.4</b> Endnote</a></li>
+</ul></li>
+<li class="chapter" data-level="26" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html"><i class="fa fa-check"></i><b>26</b> Correlation and Causation</a><ul>
+<li class="chapter" data-level="26.1" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#preview"><i class="fa fa-check"></i><b>26.1</b> Preview</a></li>
+<li class="chapter" data-level="26.2" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#introduction-to-correlation-and-causation"><i class="fa fa-check"></i><b>26.2</b> Introduction to correlation and causation</a></li>
+<li class="chapter" data-level="26.3" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#a-note-on-association-compared-to-testing-a-hypothesis"><i class="fa fa-check"></i><b>26.3</b> A Note on Association Compared to Testing a Hypothesis</a></li>
+<li class="chapter" data-level="26.4" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#correlation-sum-of-products"><i class="fa fa-check"></i><b>26.4</b> Correlation: sum of products</a></li>
+<li class="chapter" data-level="26.5" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#exercises-2"><i class="fa fa-check"></i><b>26.5</b> Exercises</a></li>
+<li class="chapter" data-level="26.6" data-path="correlation-and-causation.html"><a href="correlation-and-causation.html#endnotes-9"><i class="fa fa-check"></i><b>26.6</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="27" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html"><i class="fa fa-check"></i><b>27</b> How Large a Sample?</a><ul>
+<li class="chapter" data-level="27.1" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#issues-in-determining-sample-size"><i class="fa fa-check"></i><b>27.1</b> Issues in determining sample size</a></li>
+<li class="chapter" data-level="27.2" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#some-practical-examples"><i class="fa fa-check"></i><b>27.2</b> Some practical examples</a></li>
+<li class="chapter" data-level="27.3" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#step-wise-sample-size-determination"><i class="fa fa-check"></i><b>27.3</b> Step-wise sample-size determination</a></li>
+<li class="chapter" data-level="27.4" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#summary-4"><i class="fa fa-check"></i><b>27.4</b> Summary</a></li>
+<li class="chapter" data-level="27.5" data-path="how-large-a-sample.html"><a href="how-large-a-sample.html#endnotes-10"><i class="fa fa-check"></i><b>27.5</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="28" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html"><i class="fa fa-check"></i><b>28</b> Bayesian Analysis by Simulation</a><ul>
+<li class="chapter" data-level="28.1" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#simple-decision-problems"><i class="fa fa-check"></i><b>28.1</b> Simple decision problems</a></li>
+<li class="chapter" data-level="28.2" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#problems-based-on-normal-and-other-distributions"><i class="fa fa-check"></i><b>28.2</b> Problems based on normal and other distributions</a></li>
+<li class="chapter" data-level="28.3" data-path="bayesian-analysis-by-simulation.html"><a href="bayesian-analysis-by-simulation.html#endnotes-11"><i class="fa fa-check"></i><b>28.3</b> Endnotes</a></li>
+</ul></li>
+<li class="chapter" data-level="29" data-path="exercise-solutions.html"><a href="exercise-solutions.html"><i class="fa fa-check"></i><b>29</b> Exercise Solutions</a><ul>
+<li class="chapter" data-level="29.1" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-18-2"><i class="fa fa-check"></i><b>29.1</b> Solution 18-2</a></li>
+<li class="chapter" data-level="29.2" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-1"><i class="fa fa-check"></i><b>29.2</b> Solution 21-1</a></li>
+<li class="chapter" data-level="29.3" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-2"><i class="fa fa-check"></i><b>29.3</b> Solution 21-2</a></li>
+<li class="chapter" data-level="29.4" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-21-3"><i class="fa fa-check"></i><b>29.4</b> Solution 21-3</a></li>
+<li class="chapter" data-level="29.5" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-1"><i class="fa fa-check"></i><b>29.5</b> Solution 23-1</a></li>
+<li class="chapter" data-level="29.6" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-2"><i class="fa fa-check"></i><b>29.6</b> Solution 23-2</a></li>
+<li class="chapter" data-level="29.7" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-3"><i class="fa fa-check"></i><b>29.7</b> Solution 23-3</a></li>
+<li class="chapter" data-level="29.8" data-path="exercise-solutions.html"><a href="exercise-solutions.html#solution-23-4"><i class="fa fa-check"></i><b>29.8</b> Solution 23-4</a></li>
+</ul></li>
+<li class="chapter" data-level="30" data-path="technical-note-to-the-professional-reader.html"><a href="technical-note-to-the-professional-reader.html"><i class="fa fa-check"></i><b>30</b> Technical Note to the Professional Reader</a></li>
+<li class="chapter" data-level="31" data-path="acknowledgements.html"><a href="acknowledgements.html"><i class="fa fa-check"></i><b>31</b> Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Resampling statistics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="probability-theory-part-3" class="section level1">
+<h1><span class="header-section-number">10</span> Probability Theory, Part 3</h1>
+<p>This chapter discusses problems whose appropriate concept of a universe
+is not finite, whereas Chapter 8 discusses problems whose appropriate
+concept of a universe is finite.</p>
+<p>How can a universe be infinite yet known? Consider, for example, the
+possible flips with a given coin; the number is not limited in any
+meaningful sense, yet we understand the properties of the coin and the
+probabilities of a head and a tail.</p>
+<div id="example-7-1-the-birthday-problem-illustrating-the-probability-of-duplication-in-a-multi-outcome-sample-from-an-infinite-universefile-birthday" class="section level2">
+<h2><span class="header-section-number">10.1</span> Example 7-1: The Birthday Problem, Illustrating the Probability of Duplication in a Multi-Outcome Sample from an Infinite Universe(File “Birthday”)</h2>
+<p>As an indication of the power <em>and</em> simplicity of resampling methods,
+consider this famous examination question used in probability courses:
+What is the probability that two or more people among a roomful of (say)
+twenty-five people will have the same birthday? To obtain an answer we
+need simply examine the first twenty-five numbers from the random-number
+table that fall between “001” and “365” (the number of days in the
+year), record whether or not there is a duplication among the
+twenty-five, and repeat the process often enough to obtain a reasonably
+stable probability estimate.</p>
+<p>Pose the question to a mathematical friend of yours, then watch her or
+him sweat for a while, and afterwards compare your answer to hers/his. I
+think you will find the correct answer very surprising. It is not
+unheard of for people who know how this problem works to take advantage
+of their knowledge by making and winning big bets on it. (See how a bit
+of knowledge of probability can immediately be profitable to you by
+avoiding such unfortunate occurrences?)</p>
+<p>More specifically, these steps answer the question for the case of
+twenty-five people in the room:</p>
+<p><strong>Step 1.</strong> Let three-digit random numbers “001-365” stand for the 365
+days in the year. (Ignore leap year for simplicity.)</p>
+<p><strong>Step 2.</strong> Examine for duplication among the first twenty-five random
+numbers chosen “001-365.” (Triplicates or higher-order repeats are
+counted as duplicates here.) If there is one or more duplicate, record
+“yes.” Otherwise record “no.”</p>
+<p><strong>Step 3.</strong> Repeat perhaps a thousand times, and calculate the
+proportion of a duplicate birthday among twenty-five people.</p>
+<p>Here is the first experiment from a random-number table, starting at the
+top left of the page of numbers and ignoring numbers &gt;365: 021, 158,
+116, 066, 353, 164, 019, 080, 312, 020, 353...</p>
+<p>Now try the program written as follows.</p>
+<p>Note: The file “birthday” on the Resampling Stats software disk contains
+this set of commands.</p>
+<p>We have dealt with this example in a rather intuitive and unsystematic
+fashion. From here on, we will work in a more systematic, step-by-step
+manner. And from here on the problems form an orderly sequence of the
+classical types of problems in probability theory (Chapters 7 and 8),
+and inferential statistics (Chapters 14 to 22.)</p>
+</div>
+<div id="example-7-2-three-daughters-among-four-children-illustrating-a-problem-with-two-outcomes-binomial-1-and-sampling-with-replacement-among-equally-likely-outcomes." class="section level2">
+<h2><span class="header-section-number">10.2</span> Example 7-2: Three Daughters Among Four Children, Illustrating A Problem With Two Outcomes (Binomial <span class="math display">\[1\]</span>) And Sampling With Replacement Among Equally Likely Outcomes.</h2>
+<p>What is the probability that exactly three of the four children in a
+four-child family will be daughters?</p>
+<p>The first step is to state that the approximate probability that a
+single birth will produce a daughter is 50-50 (1 in 2). This estimate is
+not strictly correct, because there are roughly 106 male children born
+to each 100 female children. But the approximation is close enough for
+most purposes, and the 50-50 split simplifies the job considerably.
+(Such “false” approximations are part of the everyday work of the
+scientist. The appropriate question is not whether or not a statement is
+“only” an approximation, but whether or not it is a <em>good enough</em>
+approximation for your purposes.)</p>
+<p>The probability that a fair coin will turn up heads is .50 or 50-50,
+close to the probability of having a daughter. Therefore, flip a coin in
+groups of four flips, and count how often three of the flips produce
+<em>heads</em> . (You must decide in <em>advance</em> whether three heads means three
+girls or three boys.) It is as simple as that.</p>
+<p>In resampling estimation it is of the highest importance to work in a
+careful, step-by-step fashion—to write down the steps in the
+estimation, and then to do the experiments just as described in the
+steps. Here are a set of steps that will lead to a correct answer about
+the probability of getting three daughters among four children:</p>
+<p><strong>Step 1.</strong> Using coins, let “heads” equal “boy” and “tails” equal
+“girl.”</p>
+<p><strong>Step 2.</strong> Throw four coins.</p>
+<p><strong>Step 3.</strong> Examine whether the four coins fall with exactly three tails
+up. If so, write “yes” on a record sheet; otherwise write “no.”</p>
+<p><strong>Step 4.</strong> Repeat step 2 perhaps two hundred times.</p>
+<p><strong>Step 5.</strong> Count the proportion “yes.” This proportion is an estimate
+of the probability of obtaining exactly 3 daughters in 4 children.</p>
+<p>The first few experimental trials might appear in the record sheet as
+follows:</p>
+<p><strong>Number of Tails Yes or No</strong></p>
+<p>1 No</p>
+<p>0 No</p>
+<p>3 Yes</p>
+<p>2 No</p>
+<ol style="list-style-type: decimal">
+<li><p>No</p></li>
+<li><p>No</p></li>
+</ol>
+<hr />
+<hr />
+<hr />
+<p>The probability of getting three daughters in four births could also be
+found with a deck of cards, a random number table, a die, or with
+RESAMPLING STATS. For example, half the cards in a deck are black, so
+the probability of getting a black card (“daughter”) from a full deck is
+1 in 2. Therefore, deal a card, record “daughter” or “son,” <em>replace</em>
+the card, shuffle, deal again, and so forth for 200 sets of four cards.
+Then count the proportion of groups of four cards in which you got four
+daughters.</p>
+<p>A RESAMPLING STATS computer solution to the “3Girls” problem mimics the
+above steps:</p>
+<p>Note: The file “3girls” on the Resampling Stats software disk contains
+this set of commands.</p>
+<p>Notice that the procedure outlined in the steps above would have been
+different (though almost identical) if we asked about the probability of
+<em>three or more</em> daughters rather than <em>exactly three</em> daughters among
+four children. For <em>three or more</em> daughters we would have scored “yes”
+on our scorekeeping pad for <em>either</em> three or four heads, rather than
+for just three heads. Likewise, in the computer solution we would have
+used the command “Count a &gt;= 3 k.”</p>
+<p>It is important that, in this case, in contrast to what we did in
+Example 6-1 (the introductory poker example), the card is <em>replaced</em>
+each time so that each card is dealt from a full deck. This method is
+known as <em>sampling with replacement</em> . One samples with replacement
+whenever the successive events are <em>independent</em> ; in this case we
+assume that the chance of having a daughter remains the same (1 girl in
+2 births) no matter what sex the previous births were <span class="math display">\[2\]</span>. But, if the
+first card dealt is black and would <em>not</em> be replaced, the chance of the
+second card being black would no longer be 26 in 52 (.50), but rather 25
+in 51 (.49), if the first <em>three</em> cards are black and would not be
+replaced, the chances of the fourth card’s being black would sink to 23
+in 49 (.47).</p>
+<p>To push the illustration further, consider what would happen if we used
+a deck of only six cards, half (3 of 6) black and half (3 of 6) red,
+instead of a deck of 52 cards. If the chosen card is replaced each time,
+the 6-card deck produces the same results as a 52-card deck; in fact, a
+two-card deck would do as well. But, if the sampling is done <em>without</em>
+replacement, it is <em>impossible</em> to obtain 4 “daughters” with the 6-card
+deck because there are only 3 “daughters” in the deck. To repeat, then,
+whenever you want to estimate the probability of some series of events
+where each event is independent of the other, you must sample <em>with
+replacement</em> .</p>
+</div>
+<div id="variations-of-the-daughters-problem" class="section level2">
+<h2><span class="header-section-number">10.3</span> Variations of the daughters problem</h2>
+<p>In later chapters we will frequently refer to a problem which is
+identical in basic structure to the problem of three girls in four
+children—the probability of getting 9 females in ten calf births if
+the probability of a female birth is (say) .5—when we set this problem
+in the context of the possibility that a genetic engineering practice is
+effective in increasing the proportion of females (desirable for the
+production of milk).</p>
+<p>Another variation: What if we feel the need to get a bit more precise,
+and to consider the biological fact that more males are born than
+females—perhaps 52 to 48. This variation would make a solution using
+coins more tedious. But with the RESAMPLING STATS program it is not at
+all more difficult. The only commands in the above program that need to
+be changed are</p>
+<p>These commands now become</p>
+<p>The rest of the program remains unchanged.</p>
+</div>
+<div id="a-note-on-clarifying-and-labeling-problems" class="section level2">
+<h2><span class="header-section-number">10.4</span> A note on clarifying and labeling problems</h2>
+<p>In conventional analytic texts and courses on inferential statistics,
+students are taught to distinguish between various classes of problems
+in order to decide which formula to apply. I doubt the wisdom of
+categorizing and labeling problems in that fashion, and the practice is
+unnecessary here. I consider it better that the student think through
+every new problem in the most fundamental terms. The exercise of this
+basic thinking avoids the mistakes that come from too-hasty and
+superficial pigeon-holing of problems into categories. Nevertheless, in
+order to help readers connect up the resampling material with the
+conventional curriculum of analytic methods, the examples presented here
+are given their conventional labels. And the examples given here cover
+the range of problems encountered in courses in probability and
+inferential statistics.</p>
+<p>To repeat, one does not need to classify a problem when one proceeds
+with the Monte Carlo resampling method; you simply model the features of
+the situation you wish to analyze. In contrast, with conventional
+methods you must classify the situation and then apply procedures
+according to rules that depend upon the classification; often the
+decision about which rules to follow must be messy because
+classification is difficult in many cases, which contributes to the
+difficulty of choosing correct conventional formulaic methods.</p>
+</div>
+<div id="binomial-trials" class="section level2">
+<h2><span class="header-section-number">10.5</span> Binomial trials</h2>
+<p>The problem of the three daughters in four births is known in the
+conventional literature as a “binomial sampling experiment with
+equally-likely outcomes.” “Binomial” means that the <em>individual</em> simple
+event (a birth or a coin flip) can have only <em>two outcomes</em> (boy or
+girl, heads or tails), “binomial” meaning “two names” in Latin <span class="math display">\[1\]</span>.</p>
+<p>A fundamental property of binomial processes is that the individual
+trials are <em>independent</em> , a concept discussed earlier. A binomial
+sampling process is a <em>series</em> of binomial events about which one may
+ask many sorts of questions—the probability of exactly X heads
+(“successes”) in N trials, or the probability of X or more “successes”
+in N trials, and so on.</p>
+<p>“Equally likely outcomes” means we assume that the probability of a girl
+or boy in any one birth is the same (though this assumption is slightly
+contrary to fact); we represent this assumption with the
+equal-probability heads and tails of a coin. Shortly we will come to
+binomial sampling experiments where the probabilities of the individual
+outcomes are <em>not</em> equal.</p>
+<p>The term “with replacement” was explained earlier; if we were to use a
+deck of red and black cards (instead of a coin) for this resampling
+experiment, we would <em>replace</em> the card each time a card is drawn.</p>
+<p>Example 6-1, the introductory poker example given earlier, illustrated
+sampling without replacement, as will other examples to follow.</p>
+<p>This problem would be done conventionally with the binomial theorem
+using probabilities of .5, or of .48 and .52, asking about 3 successes
+in 4 trials.</p>
+</div>
+<div id="example-7-3-three-or-more-successful-basketball-shots-in-five-attempts-two-outcome-sampling-with-unequally-likely-outcomes-with-replacementa-binomial-experiment" class="section level2">
+<h2><span class="header-section-number">10.6</span> Example 7-3: Three or More Successful Basketball Shots in Five Attempts (Two-Outcome Sampling with Unequally-Likely Outcomes, with Replacement—A Binomial Experiment)</h2>
+<p>What is the probability that a basketball player will score three or
+more baskets in five shots from a spot 30 feet from the basket, if on
+the average she succeeds with 25 percent of her shots from that spot?</p>
+<p>In this problem the probabilities of “success” or “failure” are not
+equal, in contrast to the previous problem of the daughters. Instead of
+a 50-50 coin, then, an appropriate “model” would be a thumbtack that has
+a 25 percent chance of landing “up” when it falls, and a 75 percent
+chance of landing down.</p>
+<p>If we lack a thumbtack known to have a 25 percent chance of landing
+“up,” we could use a card deck and let spades equal “success” and the
+other three suits represent “failure.” Our resampling experiment could
+then be done as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p>Let “spade” stand for “successful shot,” and the other suits stand
+for unsuccessful shot.</p></li>
+<li><p>Draw a card, record its suit and replace. Do so five times (for five
+shots).</p></li>
+<li><p>Record whether the outcome of step 2 was three or more spades. If so
+indicate “yes,” and otherwise “no.”</p></li>
+<li><p>Repeat steps 2-4 perhaps four hundred times.</p></li>
+<li><p>Count the proportion “yes” out of the four hundred throws. That
+proportion estimates the probability of getting three or more
+baskets out of five shots if the probability of a single basket is
+.25.</p>
+<p>The first three repetitions on your score sheet might look like
+this:</p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><ol style="list-style-type: decimal">
+<li>No</li>
+</ol></td>
+<td><p>S (Spade)</p>
+<p>N (Non-spade) N</p>
+<p>N N</p></td>
+<td><ol start="2" style="list-style-type: decimal">
+<li>No</li>
+</ol></td>
+<td>N N N N N</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>N</td>
+<td></td>
+<td>.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>N</td>
+<td></td>
+<td>.</td>
+</tr>
+<tr class="even">
+<td><ol start="3" style="list-style-type: decimal">
+<li>Yes</li>
+</ol></td>
+<td>S</td>
+<td></td>
+<td>.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>S</td>
+<td></td>
+<td>.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>S</td>
+<td></td>
+<td>.</td>
+</tr>
+</tbody>
+</table>
+<p>Instead of cards, we could have used two-digit random numbers, with
+(say) “1-25” standing for “success,” and “26-00” (“00” in place of
+“100”) standing for failure. Then the steps would simply be:</p>
+<ol style="list-style-type: decimal">
+<li><p>Let the random numbers “1-25” stand for “successful shot,”
+“26-00” for unsuccessful shot.</p></li>
+<li><p>Draw five random numbers;</p></li>
+<li><p>Count how many of the numbers are between “01” and “25.” If
+three or more, score “yes.”</p></li>
+<li><p>Repeat step 2 four hundred times.</p>
+<p>If you understand the earlier “girls” program, then the program
+“bball” should be easy: To create 1000 samples, we start with a
+REPEAT statement. We then GENERATE 5 numbers between “1” and “4”
+to simulate the 5 shots, each with a 25 percent—or 1 in
+4—chance of scoring. We decide that “1” will stand for a
+successful shot, and “2” through “4” will stand for a missed
+shot, and therefore we COUNT the number of “1”’s in a to
+determine the number of shots resulting in baskets in the
+current sample. The next step is to transfer the results of each
+trial to vector z by way of a SCORE statement. We then END the
+loop. The final step is to search the vector z after the 1000
+samples have been generated and COUNT the times that 3 or more
+baskets were made. We place the results in k, and then PRINT.</p>
+<p><code>REPEAT 1000</code></p></li>
+</ol></li>
+</ol>
+<p>Note: The file “bball” on the Resampling Stats software disk contains
+this set of commands.</p>
+</div>
+<div id="note-to-the-student-of-analytic-probability-theory" class="section level2">
+<h2><span class="header-section-number">10.7</span> Note to the student of analytic probability theory</h2>
+<p>This problem would be done conventionally with the binomial theorem,
+asking about the chance of getting 3 successes in 5 trials, with the
+probability of a success = .25.</p>
+</div>
+<div id="example-7-4-one-in-the-black-two-in-the-white-and-no-misses-in-three-archery-shotsmultiple-outcome-multinomial-sampling-with-unequally-likely-outcomes-with-replacement." class="section level2">
+<h2><span class="header-section-number">10.8</span> Example 7-4: One in the Black, Two in the White, and No Misses in Three Archery Shots(Multiple Outcome <span class="math display">\[Multinomial\]</span> Sampling With Unequally Likely Outcomes; with Replacement.)</h2>
+<p>Assume from past experience that a given archer puts 10 percent of his
+shots in the black (“bullseye”) and 60 percent of his shots in the white
+ring around the bullseye, but misses with 30 percent of his shots. How
+likely is it that in three shots the shooter will get exactly one
+bullseye, two in the white, and no misses? Notice that unlike the
+previous cases, in this example there are more than two outcomes for
+each trial.</p>
+<p>This problem may be handled with a deck of three colors (or suits) of
+cards in proportions varying according to the probabilities of the
+various outcomes, and sampling with replacement. Using random numbers is
+simpler, however:</p>
+<p><strong>Step 1.</strong> Let “1” = “bullseye,” “2-7” = “in the white,” and “8-0”</p>
+<p>= “miss.”</p>
+<p><strong>Step 2.</strong> Choose three random numbers, and examine whether there are
+one “1” and two numbers “2-7.” If so, record “yes,” otherwise “no.”</p>
+<p><strong>Step 3.</strong> Repeat step 2 perhaps 400 times, and count the proportion of
+“yeses.” This estimates the probability sought.</p>
+<p>This problem would be handled in conventional probability theory with
+what is known as the Multinomial Distribution.</p>
+<p>This problem may be quickly solved on the computer with RESAMPLING STATS
+with the program labeled “bullseye” below. Bullseye has a complication
+not found in previous problems: It tests whether two different sorts of
+events <em>both</em> happen—a bullseye plus two shots in the white.</p>
+<p>After GENERATing three randomly-drawn numbers between 1 and 10, we check
+with the COUNT command to see if there is a bullseye. If there is, the
+IF statement tells the computer to continue with the operations,
+checking if there are two shots in the white; if there is no bullseye,
+the IF command tells the computer to END the trial and start another
+trial. A thousand repetitions are called for, the number of trials
+meeting the criteria are counted, and the results are then printed.</p>
+<p>In addition to showing how this particular problem may be handled with
+RESAMPLING STATS, the “bullseye” program teaches you some more
+fundamentals of computer programming. The IF statement and the two
+loops, one within the other, are basic tools of programming.</p>
+<p>Note: The file “bullseye” on the Resampling Stats software disk contains
+this set of commands.</p>
+<p>This example illustrates the addition rule that was introduced and
+discussed in Chapter 5. In Example 7-4, a bullseye, an in-the-white
+shot, and a missed shot are “mutually exclusive” events because a single
+shot cannot result in more than one of the three possible outcomes. One
+can calculate the probability of <em>either of two</em> mutually-exclusive
+outcomes by adding their probabilities. The probability of <em>either</em> a
+bullseye or a shot in the white is .1 + .6 = .7. The probability of an
+arrow <em>either</em> in the white <em>or</em> a miss is .6 + .3 = .9. The logic of
+the addition rule is obvious when we examine the random numbers given to
+the outcomes. Seven of 10 random numbers belong to “bullseye” or “in the
+white,” and nine of 10 belong to “in the white” or “miss.”</p>
+</div>
+<div id="example-7-5-two-groups-of-heart-patients" class="section level2">
+<h2><span class="header-section-number">10.9</span> Example 7-5: Two Groups of Heart Patients</h2>
+<p>We want to learn how likely it is that, by chance, group A would have as
+little as two deaths more than group B.</p>
+<p>Table 7-1</p>
+<p><strong>Two Groups of Heart Patients</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td></td>
+<td align="left"><strong>Live</strong></td>
+<td align="left"><strong>Die</strong></td>
+</tr>
+<tr class="even">
+<td>Group A</td>
+<td align="left">79</td>
+<td align="left">11</td>
+</tr>
+<tr class="odd">
+<td>Group B</td>
+<td align="left">21</td>
+<td align="left">9</td>
+</tr>
+</tbody>
+</table>
+<p>This problem, phrased here as a question in probability, is the
+prototype of a problem in statistics that we will consider later (which
+the conventional theory would handle with a “chi square distribution”).
+We can handle it in either of two ways, as follows:</p>
+<p><strong>1.</strong> Put 120 balls into a bucket, 100 white (for live) and 20 black (for
+die).</p>
+<p><strong>2a.</strong> Draw 30 balls randomly and assign them to Group B; the others
+are assigned to group A.</p>
+<p><strong>3a.</strong> Count the numbers of black balls in the two groups and determine
+whether Group A’s excess “deaths” (= black balls), compared to Group B,
+is two or fewer (or what is equivalent in this case, whether there are
+11 or fewer black balls in Group A); if so, write “Yes,” otherwise “No.”</p>
+<p><strong>4a.</strong> Repeat steps 2a and 3a perhaps 1000 times and compute the
+proportion “Yes.”</p>
+<p>A second way we shall think about this sort of problem may be handled as
+follows:</p>
+<p><strong>2b.</strong> Draw balls one by one, replacing the drawn ball each time, until
+you have accumulated 90 balls for Group A and 30 balls for Group B. (You
+could, of course, just as well use a bucket for 4 white and 1 black balls
+or 8 white and 2 black in this approach.)</p>
+<p><strong>3b.</strong> As in approach “a” above, count the numbers of black balls in
+the two groups and determine whether Group A’s excess</p>
+<p>deaths is two or fewer; if so, write “Yes,” otherwise “No.”</p>
+<p><strong>4b.</strong> As above, repeat steps 2a and 3a perhaps 1000 times and compute
+the proportion “Yes.”</p>
+<p>We must also take into account the possibility of a similar eye-catching
+“unbalanced” result of a much larger proportion of deaths in Group B. It
+will be a tough decision how to do so, but a reasonable option is to
+simply double the probability computed in step 4a or 4b.</p>
+<p>Deciding which of these two approaches—the “permutation” (without
+replacement) and “bootstrap” (with replacement) methods—is the more
+appropriate is often a thorny matter; it will be discussed latter in
+Chapter 18. In many cases, however, the two approaches will lead to
+similar results.</p>
+<p>Later, we will actually carry out these procedures with the aid of
+RESAMPLING STATS, and estimate the probabilities we seek.</p>
+</div>
+<div id="example-7-6-dispersion-of-a-sum-of-random-variableshammer-lengthsheads-and-handles" class="section level2">
+<h2><span class="header-section-number">10.10</span> Example 7-6: Dispersion of a Sum of Random Variables—Hammer Lengths—Heads and Handles</h2>
+<p>The distribution of lengths for hammer <em>handles</em> is as follows: 20
+percent are 10 inches long, 30 percent are 10.1 inches, 30 percent are
+10.2 inches, and 20 percent are 10.3 inches long. The distribution of
+lengths for hammer <em>heads</em> is as follows: 2.0 inches, 20 percent; 2.1
+inches, 20 percent; 2.2 inches, 30 per-</p>
+<p>cent; 2.3 inches, 20 percent; 2.4 inches, 10 percent.</p>
+<p>If you draw a handle and a head at random, what will be the mean total
+length? In Chapter 5 we saw that the conventional formulaic method tells
+you that an answer with a formula that says the sum of the means is the
+mean of the sums, but it is easy to get the answer with simulation. But
+now we ask about the <em>dispersion</em> of the sum. There are formulaic rules
+for such measures as the variance. But consider this other example: What
+proportion of the hammers made with handles and heads drawn at random
+will have lengths equal to or greater than</p>
+<ol style="list-style-type: decimal">
+<li><p>inches? No simple formula will provide an answer. And if the number
+of categories is increased considerably, any formulaic approach will
+be become burdensome if not undoable. But Monte Carlo simulation
+produces an answer quickly and easily, as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p>Fill a bucket with 2 balls marked “10 inches,” 3 balls marked
+“10.1”... 2 marked “10.3,” for the handles. Fill another bucket
+with 2 balls marked “2.0”... 1 marked “2.4” for the heads.</p></li>
+<li><p>Pick a ball from each bucket, calculate the sum, and replace the
+balls.</p></li>
+<li><p>Repeat perhaps 200 times (more when you write a computer
+program), and calculate the proportion greater than 12.4 inches.</p></li>
+</ol></li>
+</ol>
+<p>You may also want to forego learning the standard “rule,” and simply
+estimate the mean this way, also. As an exercise, compute the
+interquartile range—the difference between the 25th and the 75th
+percentiles.</p>
+</div>
+<div id="example-7-7-the-product-of-random-variablestheft-by-employees" class="section level2">
+<h2><span class="header-section-number">10.11</span> Example 7-7: The Product of Random Variables—Theft by Employees</h2>
+<p>The distribution of the number of thefts per month you can expect in
+your business is as follows:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Number</strong></td>
+<td align="left"><strong>Probability</strong></td>
+</tr>
+<tr class="even">
+<td align="left">0</td>
+<td align="left">.5</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">.2</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">.1</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">.1</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="left">.1</td>
+</tr>
+</tbody>
+</table>
+<p>The amounts that may be stolen on any theft are as follows:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Amount</strong></td>
+<td align="left"><strong>Probability</strong></td>
+</tr>
+<tr class="even">
+<td align="left">$50</td>
+<td align="left">.4</td>
+</tr>
+<tr class="odd">
+<td align="left">$75</td>
+<td align="left">.4</td>
+</tr>
+<tr class="even">
+<td align="left">$100</td>
+<td align="left">.1</td>
+</tr>
+<tr class="odd">
+<td align="left">$125</td>
+<td align="left">.1</td>
+</tr>
+</tbody>
+</table>
+<p>The same procedure as used above to estimate the mean length of
+hammers—add the lengths of handles and heads—can be used for this
+problem except that the results of the drawings from each bucket are
+multiplied rather than added.</p>
+<p>In this case there is again a simple rule: The mean of the products
+equals the product of the means. But this rule holds only when the two
+urns are indeed independent of each other, as they are in this case.</p>
+<p>The next two problems are a bit harder than the previous ones; you might
+skip them for now and come back to them a bit later. However, with the
+Monte Carlo simulation method they are within the grasp of any
+introductory student who has had just a bit of experience with the
+method. In contrast, a standard book whose lead author is Frederick
+Mosteller, as respected a statistician as there is, says of this type of
+problem: “Naturally, in this book we cannot expect to study such
+difficult problems in their full generality <span class="math display">\[that is, show how to solve
+them, rather than merely state them\]</span>, but we can lay a foundation for
+their study” <span class="citation">(Mosteller, Rourke, and Thomas <a href="#ref-mosteller1970probability">1970</a>)</span>.</p>
+</div>
+<div id="example-7-8-flipping-pennies-to-the-end" class="section level2">
+<h2><span class="header-section-number">10.12</span> Example 7-8: Flipping Pennies to the End</h2>
+<p>Two players, each with a stake of ten pennies, engage in the following
+game: A coin is tossed, and if it is (say) heads, player A gives player
+B a penny; if it is tails, player B gives player A a penny. What is the
+probability that one player will lose his or her entire stake of 10
+pennies if they play for 200 tosses?</p>
+<p>This is a classic problem in probability theory; it has many everyday
+applications in situations such as inventory management. For example,
+what is the probability of going out of stock of a given item in a given
+week if customers and deliveries arrive randomly? It also is a model for
+many processes in modern particle physics.</p>
+<p>Solution of the penny-matching problem with coins is straightforward.
+Repeatedly flip a coin and check if one player or the other reaches a
+zero balance before you reach 200 flips. Or with random numbers:</p>
+<p><strong>Step 1.</strong> Numbers “1-5” = head = “+1”; Numbers “6-0” = tail =</p>
+<p>“-1.”</p>
+<p><strong>Step 2.</strong> Proceed down a series of 200 numbers, keeping a running
+tally of the “+1”’s and the “-1”’s. If the tally reaches “+10” or “-10”
+on or before the two-hundredth digit, record “yes”; otherwise record
+“no.”</p>
+<p><strong>Step 3.</strong> Repeat step 2 perhaps 400 or 1000 times, and calculate the
+proportion of “yeses.” This estimates the probability sought.</p>
+<p>The following RESAMPLING STATS program also solves the problem. The
+heart of the program starts at the line where the program models a coin
+flip with the statement “GENERATE 1 1,2 C.” After you study that, go
+back and notice the REPEAT 200 loop that describes the procedure for flipping a
+coin 200 times. Finally, note how the REPEAT 1000 loop simulates 1000 games,
+each game consisting of 200 coin flips.</p>
+<p>Note: The file “pennies” on the Resampling Stats software disk contains
+this set of commands.</p>
+<p>A similar example: Your warehouse starts out with a supply of twelve
+capacirators. Every three days a new shipment of two capacirators is
+received. There is a .6 probability that a capacirator will be used each
+morning, and the same each afternoon. (It is as if a random drawing is
+made each half-day to see if a capacirator is used; two capacirators may
+be used in a single day, or one or none). How long will be it, on the
+average, before the warehouse runs out of stock?</p>
+</div>
+<div id="example-7-9-a-drunks-random-walk" class="section level2">
+<h2><span class="header-section-number">10.13</span> Example 7-9: A Drunk’s Random Walk</h2>
+<p>If a drunk chooses the direction of each step randomly, will he ever get
+home? If he can only walk on the road on which he lives, the problem is
+almost the same as the gambler’s-ruin problem above (“pennies”). But if
+the drunk can go north-south as well as east-west, the problem becomes a
+bit different and interesting.</p>
+<p>Looking now at figure <a href="probability-theory-part-3.html#fig:drunk-walk">10.1</a> — what is the probability of the
+drunk reaching <em>either</em> his house (at 3 steps east, 2 steps north) <em>or</em> my
+house (1 west, 4 south) before he finishes taking twelve steps?</p>
+<p>One way to handle the problem would be to use a four-directional spinner
+such as is used with a child’s board game, and then keep track of each
+step on a piece of graph paper. The reader may construct a RESAMPLING
+STATS program as an exercise.</p>
+<div class="figure" style="text-align: center"><span id="fig:drunk-walk"></span>
+<img src="images/drunks_walk.svg" alt="Drunk's random walk" width="70%" />
+<p class="caption">
+Figure 10.1: Drunk’s random walk
+</p>
+</div>
+</div>
+<div id="example-7-10" class="section level2">
+<h2><span class="header-section-number">10.14</span> Example 7-10</h2>
+<p>Let’s end this chapter with an actual example that will be used again in
+Chapter 8 when discussing probability in finite universes, and then at
+great length in the context of statistics in Chapter 18. This example
+also illustrates the close connection between problems in pure
+probability and those in statistical inference.</p>
+<p>As of 1963, there were 26 U.S. states in whose liquor systems the retail
+liquor stores are privately owned, and 16 “monopoly” states where the
+state government owns the retail liquor stores. (Some states were
+omitted for technical reasons.) These were the representative 1961
+prices of a fifth of Seagram 7 Crown whiskey in the two sets of states:</p>
+<p><strong>16 monopoly states:</strong> $4.65, $4.55, $4.11, $4.15, $4.20, $4.55,
+$3.80,</p>
+<p>$4.00, $4.19, $4.75, $4.74, $4.50, $4.10, $4.00, $5.05, $4.20.</p>
+<p>Mean = $4.35</p>
+<p><strong>26 private-ownership states:</strong> $4.82, $5.29, $4.89, $4.95, $4.55,
+$4.90,</p>
+<p>$5.25, $5.30, $4.29, $4.85, $4.54, $4.75, $4.85, $4.85, $4.50,
+$4.75,</p>
+<p>$4.79, $4.85, $4.79, $4.95, $4.95, $4.75, $5.20, $5.10, $4.80,
+$4.29.</p>
+<p>Mean = $4.84</p>
+<p><img src="images/11-Chap-7_001.png" /></p>
+<p>GOVERNMENT</p>
+<p>5</p>
+<p>0</p>
+<p>350 400 450 500 550</p>
+<p>Cents</p>
+<p>Mean: $4.35</p>
+<p><img src="images/11-Chap-7_002.png" /></p>
+<p>PRIVATE</p>
+<p>5</p>
+<p>0</p>
+<p>350 400 450 500 550</p>
+<p>Cents</p>
+<p>Mean: $4.84</p>
+<p><img src="images/11-Chap-7_003.png" /></p>
+<p>PRIVATE + GOVERNMENT</p>
+<p>5</p>
+<p>0</p>
+<p>350 400 450 500 550</p>
+<p>Cents</p>
+<p><strong>Figure 7-2: Liquor Prices</strong></p>
+<p>Let us consider that all these states’ prices constitute one single
+universe (an assumption whose justification will be discussed later). If
+so, one can ask: If these 42 states constitute a single universe, how
+likely is it that one would choose two samples at random, containing 16
+and 26 observations, that would have prices as different as $.49 (the
+difference between the means that was actually observed)?</p>
+<p>This can be thought of as problem in pure probability because we begin
+with a known universe and ask how it would behave with random drawings
+from it. We sample <em>with replacement</em> ; the decision to do so, rather
+than to sample without replacement (which is the way I had first done
+it, and for which there may be better justification) will be discussed
+later. We do so to introduce a “bootstrap”-type procedure (defined
+later) as follows: Write each of the forty-two observed state prices on
+a separate card. The shuffled deck simulated a situation in which each
+state has an equal chance for each price. Repeatedly deal groups of 16
+and 26 cards, replacing the cards as they are chosen, to simulate
+hypothetical monopoly-state and private-state samples. For each trial,
+calculate the difference in mean prices.</p>
+<p>These are the steps systematically:</p>
+<p><strong>Step A:</strong> Write each of the 42 prices on a card and shuffle.</p>
+<p><strong>Steps B and C</strong> (combined in this case): i) Draw cards randomly with
+replacement into groups of 16 and 26 cards. Then ii) calculate the mean
+price difference between the groups, and iii) compare the
+simulation-trial difference to the observed mean difference of $4.84 -
+$4.35 = $.49; if it is as great or greater than</p>
+<p>$.49, write “yes,” otherwise “no.”</p>
+<p><strong>Step D:</strong> Repeat step B-C a hundred or a thousand times. Calculate the
+proportion “yes,” which estimates the probability we seek.</p>
+<p>The probability that the postulated universe would produce a difference
+between groups as large or larger than observed in 1961 is estimated by
+how frequently the mean of the group of randomly-chosen sixteen prices
+from the simulated state-ownership universe is less than (or equal to)
+the mean of the actual sixteen state-ownership prices. The following
+computer program performs the operations described above.</p>
+<p>The results shown above—not even one “success” in 1,000 trials—imply
+that there is only a very small probability that two groups with mean
+prices as different as were observed would happen by chance if drawn
+with replacement from the universe of 42 observed prices.</p>
+<p>Here we think of these states as if they came from a non-finite
+universe, which is one possible interpretation for one particular
+context. However, in Chapter 8 we will postulate a finite universe,
+which is appropriate if it is reasonable to consider that these
+observations constitute the entire universe (aside from those states
+excluded from the analysis because of data complexities).</p>
+</div>
+<div id="the-general-procedure" class="section level2">
+<h2><span class="header-section-number">10.15</span> The general procedure</h2>
+<p>Chapter 19 generalizes what we have done in the probability problems
+above into a general procedure, which will in turn be a subpart of a
+general procedure for all of resampling.</p>
+</div>
+<div id="endnotes-2" class="section level2">
+<h2><span class="header-section-number">10.16</span> Endnotes</h2>
+<ol style="list-style-type: decimal">
+<li><p>Conventional labels such as “binomial” are used here for general
+background and as guideposts to orient the student of conventional
+statistics. You do not need to know these labels to understand the
+resampling approach; one of the advantages of resampling is that it
+avoids errors resulting from incorrect pigeonholing of problems.</p></li>
+<li><p>This assumption is slightly contrary to scientific fact. A better
+example would be: What is the probability that four mothers
+delivering successively in a hospital will all have daughters? But
+that example has other difficulties—which is the way science
+always is.</p></li>
+</ol>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-mosteller1970probability">
+<p>Mosteller, Frederick, Robert E. K. Rourke, and George Brinton Thomas Jr. 1970. <em>Probability with Statistical Applications</em>. 2nd ed. Reading, Mass.: Addison-Wesley Publishing Company.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="probability-theory-part-2-compound-probability.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="probability-theory-part-4-estimating-probabilities-from-finite-universes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/resampling-stats/resampling-with/edit/master/source/probability_theory_3.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/resampling-stats/resampling-with/blob/master/probability_theory_3.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

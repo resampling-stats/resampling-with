@@ -1,0 +1,381 @@
+The first thing to say about the code below is there are many lines in
+these bits of code that don’t do anything. These are the lines beginning
+with the `#` character (read `#` as “hash”). Lines beginning with `#`
+are called *comments*. When R sees the `#` at the start of the line, it
+realizes that it should ignore everything else on that line, and skips
+on the next line. Here’s an example of a comment in R:
+
+```{r}
+# R will completely ignore this text.
+```
+
+Because R ignores lines beginning with `#`, the text comments is just
+for us, the humans that are reading the code. We often use comments in
+code to explain what the other parts of the code are doing, to make the
+rest of the code easier for humans to read and understand.
+
+Our next task is to use R to simulate a single day of ambulances. We
+will represent each ambulance by a random number from 1 through 10. 20
+of these numbers represents a simulation of all 20 ambulances available
+to the contractor. We will call a simulation of 20 ambulances — one
+*trial*.
+
+
+
+The core of the program to simulate one trial of ambulances problem
+above begins with this command to the computer:
+
+```{r}
+# Generate 20 random integers from 1 through 10.
+# We will explain the replace=TRUE later.
+# Store the 20 numbers with the name "a"
+a <- sample(1:10, 20, replace=TRUE)
+```
+
+This command orders the computer to randomly generate 20 numbers from
+`1` through `10`. Inasmuch as each ambulance has a 1 in 10 chance of
+being defective, we decide arbitrarily that a `1` stands for a defective
+ambulance, and the other nine numbers (from `2` to `10`) stand for a
+non-defective ambulance. The command orders the computer to store the
+results of the random drawing in a location in the computer’s memory to
+which we give a name such as “a” or “ambulances” or “aardvark” — the
+name is up to us.
+
+The next key element in the core of the program is:
+
+```{r}
+# Count the number of ones in the random numbers.
+# The "a == 1" part identifies all the numbers equal to 1.
+# The "sum" part counts how many numbers "a == 1" found.
+b <- sum(a == 1)
+```
+
+This is a *counting* operation. The command orders the computer to
+*count* the number of `1`s among the twenty numbers that are in location
+`a` following the random drawing carried out by the `sample` operation.
+The result of the `sum` operation will be somewhere between 0 and 20,
+the number of ambulances that might be out-of-order on a given day. The
+result is then placed in another location in the computer’s memory that
+we label `b`.
+
+Now let us place the `sample`and `r py_or_r('count_nonzero', 'sum')`
+commands within the entire program that we use to solve this problem,
+which is:
+
+```{r}
+# Make an array of 1000 numbers to store our 1000 counts.
+# These all start off as 0, but we fill them in below as we do 1000 trials.
+z <- numeric(1000)
+# Repeat one trial of the simulation 1000 times.
+for (i in 1:1000) {
+    # Everything from the open curly bracket above - {
+    # to the close curly bracket below - } is a *block*.
+    # We run everything in this block, for each trial.
+    # Therefore, R runs all these commands 1000 times.
+
+    # Generate 20 numbers, each between 1 through 10 and put them in array a.
+    # Each number will represent an ambulance, and we let 1 represent a
+    # defective ambulance.
+    a <- sample(1:10, 20, replace=TRUE)
+    # Count the number of defective ambulances, and put the result in "b".
+    b <- sum(a == 1)
+    # Keep track of each trial's results in "counts".
+    z[i] <- b
+    # End this trial, then go back and repeat the process until all 1000 trials
+    # are complete, then proceed.
+}
+
+# This part runs after all 1000 trials have finished.
+
+# Determine how many trials resulted in more than 3 ambulances out of order.
+k = sum(z > 3)
+
+# Convert to a proportion.
+kk = k / 1000
+
+# Print the result.
+print(kk)
+#> [1] 0.136
+```
+
+The `z[i] <- b` statement that follows the `r
+py_or_r('np.count_nonzero', 'sum')` *counting* operation simply keeps
+track of the results of each trial, placing the number of defective
+ambulances that occur in each trial in a location that we usually call
+`z`. This is done in each of the 1000 trials that we make, and the
+result eventually is an “array” with 1000 numbers in it.
+
+In order to make 1000 repetitions of our experiment — we could have
+decided to make ten thousand or some other number of repetitions — we
+surround each trial with the `for` *loop*, that has the effect of
+repeating the operations for one trial 1000 times. We identify the
+operations to repeat with the 
+
+opening — `{` — and closing — `}` — curly brackets.
+
+Since our aim is to count the number of days in which more than 3 (4 or
+more) defective ambulances occur, we use another *counting* command
+(`sum`) at the end of the 1000 trials. This counting command *counts*
+how many times more than 3 defects occurred in the 1000 days recorded in
+our `z` array, and we place the result in still another location `k`.
+This gives us the total number of days where 4 or more defective
+ambulances are seen to occur. Then we divide the number in `k` by 1000,
+the number of trials. Thus we obtain an estimate of the chance,
+expressed as a probability between 0 and 1, that 4 or more ambulances
+will be defective on a given day. And we store that result in a location
+that we decide to call `kk`, so that it will be there when the computer
+receives the next command to `print` that result on the screen.
+
+Please don’t worry about the details of how each of these commands works
+— we will cover those details gradually, over the next few chapters.
+But, we hope that you can see in principle, how each of the operations
+that the computer carries out are analogous to the operations that you
+yourself executed when you solved this problem using a ten-sided spinner
+or a random-number table. This is exactly the procedure that we will use
+to solve every problem in probability and statistics that we must deal
+with. Either we will use a device such as coins or a random number table
+as an analogy for the physical process we are interested in (ambulances
+becoming defective, in this case), or we will simulate the analogy on
+the computer using some R code like the code above.
+
+The R STATS program called “ambulances” may not seem simple to you at
+first glance. But please believe us when we say that it is vastly
+simpler than the older conventional approach to such problems that has
+routinely been taught to students for decades.
+
+## 3.4 How resampling differs from the conventional approach
+
+In the standard approach the student learns to choose and solve a
+formula. Doing the algebra and arithmetic is quick and easy. The
+difficulty is in choosing the correct formula. Unless you are a
+professional mathematician, it may take you quite a while to arrive at
+the correct formula—considerable hard thinking, and perhaps some digging
+in textbooks. More important than the labor, however, is that you may
+come up with the wrong formula, and hence obtain the wrong answer. Most
+students who have had a standard course in probability and statistics
+are quick to tell you that it is not easy to find the correct formula,
+even immediately after finishing a course (or several courses) on the
+subject. After leaving school, it is harder still to choose the right
+formula. Even many people who have taught statistics at the university
+level (including this writer) must look at a book to get the correct
+formula for a problem as simple as the ambulances, and then we are not
+always sure of the right answer. This is the grave disadvantage of the
+standard approach.
+
+In the past few decades, resampling and other Monte Carlo simulation
+methods have come to be used extensively in scientific research. But in
+contrast to the material in this book, simulation has mostly been used
+in situations so complex that mathematical methods have not yet been
+developed to handle them. Here are examples of such situations:
+
+
+
+1.  For a spaceship that will travel to Mars, calculating the correct
+    flight route involves a great many variables, too many to solve with
+    formulas. Hence, the Monte Carlo simulation method is used.
+
+2.  The Navy might want to know how long the average ship will have to
+    wait for dock facilities. The time of completion varies from ship to
+    ship, and the number of ships waiting in line for dock work varies
+    over time. This problem can be handled quite easily with the
+    experimental simulation method, but formal mathematical analysis
+    would be difficult or impossible.
+
+3.  What are the best tactics in baseball? Should one bunt? Should one
+    put the best hitter up first, or later? By trying out various
+    tactics with dice or random numbers, Earnshaw Cook (in his book
+    *Percentage Baseball* ), found that it is best never to bunt, and
+    the highest-average hitter should be put up first, in contrast to
+    usual practice. Finding this answer would have been much more
+    difficult with the analytic method.
+
+4.  Which search pattern will yield the best results for a ship
+    searching for a school of fish? Trying out “models” of various
+    search patterns with simulation can provide a fast answer.
+
+5.  What strategy in the game of Monopoly will be most likely to win?
+    The simulation method systematically plays many games (with a
+    computer) testing various strategies to find the best one.
+
+But those five examples are all complex problems. This book and its
+earlier editions break new ground by using this method for *simple
+rather than complex problems* , especially in statistics rather than
+pure probability, and in teaching *beginning rather than advanced*
+students to solve problems this way. (Here it is necessary to emphasize
+that the resampling method is used to *solve the problems themselves
+rather than as a demonstration device to teach the notions found in the
+standard conventional approach* . Simulation has been used in elementary
+courses in the past, but only to demonstrate the operation of the
+analytical mathematical ideas. That is very different than using the
+resampling approach to solve statistics problems themselves, as is done
+here.)
+
+Once we get rid of the formulas and tables, we can see that statistics
+is a matter of *clear thinking, not fancy mathematics* . Then we can get
+down to the business of learning how to do that clear statistical
+thinking, and putting it to work for you. *The study of probability* is
+purely mathematics (though not necessarily formulas) and technique. But
+*statistics has to do with meaning* . For example, what is the meaning
+of data showing an association just discovered between a type of
+behavior and a disease? Of differences in the pay of men and women in
+your firm? Issues of causation, acceptability of control, design of
+experiments cannot be reduced to technique. This is “philosophy” in the
+fullest sense. Probability and statistics calculations are just one
+input. Resampling simulation enables us to get past issues of
+mathematical technique and focus on the crucial statistical elements of
+statistical problems.
+
+If you intend to go on to advanced statistical work, the older standard
+method can be learned alongside resampling methods. Your introduction to
+the conventional method may thereby be made much more meaningful.
+
+
+
+# 4 Resampling with code
+
+Chapter <a href="#resampling-method">3</a> used simulation and
+resampling from tables of random numbers, dice and coins. Making random
+choices in this way can make it easier to understand the process, but of
+course, physical methods of making random outcomes can be slow and
+boring.
+
+On the other hand, short computer programs can do a huge number of
+resampling trials in a few seconds. The flexibility of a programming
+language makes it possible to simulate many different outcomes and
+tests.
+
+In this chapter, we begin using the R language to build up tables of
+random numbers, and do simple tasks like counting the number of values
+in a row, and taking proportions.
+
+With these simple tools, we can simulate many problems in probability
+and statistics.
+
+Here is our first R example program. Do not expect to follow all of it
+straightaway. For now, read the code below to get an idea of how it
+implements the procedure above. We will be coming back to the specifics
+later.
+
+The key to reading code is to think about what the computer will do,
+when it sees the code.
+
+
+
+A simple place to start is the *comment*. A comment is a statement that
+the computer will *ignore*. It is text that we put in the program for
+our benefit, to explain what is going on to a human reader.
+
+This is an example of a comment:
+
+```{r}
+# This is a comment. It doesn't have any effect.
+```
+
+The comment starts with a hash character `#`. This character tells the
+computer that the rest of the line is a comment, and therefore, that it
+can ignore everything on that line that follows the `#`.
+
+
+
+To solve the problem, we have to generate some random numbers:
+
+
+
+```{r}
+a = sample(1:10, 20, replace=TRUE)
+```
+
+This uses the `sample` function to generate random integers (counting
+numbers) from 1 through 10. The 20 in the command tells R to generate 20
+of these numbers. `replace=TRUE` tells R to sample *with replacement*.
+
+For example, the chances of getting a particular result - such as a 3 -
+for the first random number - are 1 in 10, or p= 1/10 = 0.1. If we
+resample *with replacement* then the chances of getting 3 in the second
+number are unchanged, at p=0.1. It is as if we put 10 balls into a
+bucket, numbered one through ten, and then selected 20 balls from the
+bucket; but after we have selected a ball, we record the number and
+*replace* it in the bucket, and shake up the bucket again.
+
+Inasmuch as each ambulance has a 1 in 10 chance of being defective, we
+decide arbitrarily that a “1” stands for a defective ambulance, and the
+other nine numbers (from “2” to “10”) stand for a not-defective
+ambulance. The command above orders the computer to store the results of
+the random drawing in a location in the computer’s memory to which we
+give a name, in this case `a` (we could have chosen any name such as,
+for example, `ambulances`). When we run a statement like the one above,
+`a` is a *variable* - the *name* `a` refers to the *value*, which is the
+sequence of random numbers the computer created using `sample`.
+
+We can display the value of the variable `a` by using the `print`
+function:
+
+```{r}
+print(a)
+#>  [1] 7 5 6 4 6 9 5 5 8 2 7 5 5 2 6 4 2 3 9 6
+```
+
+This shows the 20 random values that we got from `sample`.
+
+The next key element in the core of the program is:
+
+```{r}
+b = sum(a == 1)
+```
+
+This command can be broken up into two pieces: the first (`a == 1`)
+compares each element in `a` to 1, resulting in a True or False value.
+We then proceed to count those values, to determine how many of the 20
+values in `a` are equal to 1. The result of the count will be somewhere
+between 0 and 20, the number of ambulances that might be out-of-order on
+a given day. The result is then placed in another location in the
+computer’s memory that we label `b`.
+
+```{r}
+# Show the value of b
+print(b)
+#> [1] 0
+```
+
+Now let us place the commands to generate the random numbers, and count
+how many `1`s we get, within a program that solves this problem:
+
+```{r}
+# Make an array that has 400 elements.
+# We will use this to store the counts for our 400 repetitions
+results <- numeric(400)
+
+# Repeat the simulation 400 times
+for (i in 1:400) {
+
+    # The commands between the { above and the } below are the procedure for
+    # one trial.
+    # The computer runs these commands from first to last, for each trial.
+
+    # Generate 20 numbers, each between "1" and "10," and put them in vector a.
+    # Each number will represent an ambulance, and we let 1 represent
+    # a defective ambulance.
+    a <- sample(1:10, 20, replace=TRUE)
+
+    # Count the number of defective ambulances, and put the result in b.
+    b <- sum(a == 1)
+
+    # Keep track of each trial's result in "results".
+    results[i] <- b
+
+    # End this trial, then go back and repeat the process until all 400 trials
+    # are complete.
+}
+
+# Now we have finished the 400 trials.
+
+# Determine how many trials resulted in more than 3 ambulances out of order.
+bad_day_count <- sum(results > 3)
+
+# Convert to a proportion.
+bad_day_prop <- bad_day_count / 400
+
+# Print the result.
+print(bad_day_prop)
+#> [1] 0.158
+```
