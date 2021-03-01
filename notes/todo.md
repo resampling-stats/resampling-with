@@ -1,5 +1,13 @@
 # To do
 
+## Gently work up to using `choice` with `p`
+
+We want to get to using `choice(['foo', 'bar'], p=[0.7, 0.3])`
+
+Start with say using random integers, or choice with the correct proportion of
+inputs (`choice(['foo'] * 7 + ['bar'] * 3])`). Work up to probability, and the
+`p=` form above.
+
 ## Binderhub setup for Python version
 
 Need something to embed link to BinderHub notebook.
