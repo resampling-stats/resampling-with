@@ -392,30 +392,60 @@ percent of risk, i. e., a driver with a probability of .6 should pay
 If nothing is known of a driver except that they had an accident last
 year, what fee should they pay?
 
+Another way to phrase this question is: given that a driver had an accident last year, what is the probability of them having an accident overall?
+
+We will proceed as follows:
+
+1. Generate a population of N people.  Label each as `good driver` or `poor driver`.
+
+1. Simulate the last year for each person: did they have an accident or not?
+
+2. Select only the ones that had an accident last year.
+
+3. Among those, calculate what their average risk is of making an accident.  This will indicate the appropriate insurance premium.
+
 ```{python}
+N = 100000
+cost_per_percent = 100
+
+people = np.random.choice(
+    ['good driver', 'poor driver'], p=[0.8, 0.2],
+    size=N
+)
+
+good_driver = (people == 'good driver')
+poor_driver = ~good_driver
+
+# Did they have an accident last year?
+had_accident = np.zeros(N, dtype=bool)
+had_accident[good_driver] = np.random.choice(
+    [True, False], p=[0.06, 0.94],
+    size=np.count_nonzero(good_driver)
+)
+had_accident[poor_driver] = np.random.choice(
+    [True, False], p=[0.6, 0.4],
+    size=np.count_nonzero(poor_driver)
+)
+
+ppl_with_accidents = people[had_accident]
+N_good_driver_accidents = np.count_nonzero(ppl_with_accidents == 'good driver')
+N_poor_driver_accidents = np.count_nonzero(ppl_with_accidents == 'poor driver')
+N_all_with_accidents = N_good_driver_accidents + N_poor_driver_accidents
+
+avg_risk_percent = (N_good_driver_accidents * 0.06 +
+                    N_poor_driver_accidents * 0.6) / N_all_with_accidents * 100
+
+premium = avg_risk_percent * cost_per_percent
+
+print(f'{premium:.0f} USD')
 
 ```
 
-This procedure will produce the answer:
-
-1.  Construct bucket A with 6 red and 94 green balls, and bucket B with 60 red
-    and 40 green balls.
-
-2.  Randomly select a bucket with probabilities for A = .8 and B = .2, and
-    record the bucket chosen.
-
-3.  Select a ball at random from the chosen bucket. If the ball is green,
-    go back to step 2; if red, continue to step 4. In either case,
-    replace the ball selected.
-
-4.  Select another ball from the bucket chosen in step 2. If it is red,
-    record "Y," if green, record "N."
-
-5.  Repeat steps 2 - 4 perhaps 1000 times, and determine the proportion
-    "Y" in relation to (Y + N). The final answer should be approximately
-    \$4450.
+The answer should be around 4450 USD.
 
 **Screening for Disease**
+
+**TODO: SHALL WE REMOVE THIS PROBLEM, OR INTEGRATE PARTS OF ITS DESCRIPTION WITH THE COVID EXAMPLE?**
 
 This is a classic Bayesian problem (quoted by Tversky and Kahnemann,
 1982, pp. 153-154, from Cascells, Schoenberger, and Grayboys, 1978, p.
@@ -561,14 +591,10 @@ Creating the correct simulation procedure is not easy, because Bayesian
 reasoning is very subtle---a reason it has been the cause of controversy
 for more than two centuries. But it certainly is not easier to create a
 correct procedure using analytic tools (except in the cookbook sense of
-plug in and pray). And the difficult mathematics that underlie the
-analytic method (see
-
-e\. g., Box and Tiao, Appendix A1.1) make it almost impossible for the
-statistician to fully understand the procedure from be-
-
-ginning to end; if one is interested in insight, the simulation
-procedure might well be preferred. ^2^
+plug-and-pray). And the difficult mathematics that underlie the
+analytic method (see e.g. Box and Tiao, Appendix A1.1) make it almost impossible for the
+statistician to fully understand the procedure from beginning to end; if one is interested in insight, the simulation
+procedure might well be preferred.
 
 A computer program to speed the above steps appears in the Appendix to
 this chapter. The result found with a set of 1000 repetitions is .987.
