@@ -55,7 +55,7 @@ requirement of a clearly visualized model is a strong point in favor of simulati
 1. Note that we are only interested in outcomes where the mechanic
    approved a car.
 
-2. We start with N cars.  For each car, generate a label of either
+2. For each car, generate a label of either
    "faulty" or "working" with probabilities of 0.3 and 0.7, respectively.
 
 3. For each *faulty car*, we generate one of two labels, "approved" or
@@ -72,7 +72,42 @@ Here is the whole thing:
 ```{python}
 import numpy as np
 
-N = 1000000  # number of cars
+N = 10000  # number of cars
+
+# Counters for number of approved, number of approved and faulty
+approved = 0
+approved_and_faulty = 0
+
+for i in range(N):
+
+    # Decide whether the car is faulty or working, with a probability of
+    # 0.3 and 0.7 respectively
+    car = np.random.choice(['faulty', 'working'], p=[0.3, 0.7])
+    
+    if car == 'faulty':
+        # What the mechanic says of a faulty car
+        mechanic_says = np.random.choice(['approved', 'not approved'], p=[0.1, 0.9])
+    else:
+        # What the mechanic says of a working car
+        mechanic_says = np.random.choice(['approved', 'not approved'], p=[0.7, 0.3])
+        
+    if mechanic_says == 'approved':
+        approved += 1
+    
+        if car == 'faulty':
+            approved_and_faulty += 1
+
+k = approved_and_faulty / approved
+
+print(f'{k * 100:.2}%')
+```
+
+The answer is somewhere between 5 and 6%.  The code clearly follows the description step by step, but it is also quite slow.  If we can improve the code, we may be able to do our simulation with more cars, and get a more accurate answer.
+
+Let's use arrays to store the states of all cars in the lot simultaneously:
+
+```{python}
+N = 1000000  # number of cars; we made this number larger by a factor of 100
 
 # Generate an array with as many entries as there are cars, each
 # being either 'working' or 'faulty'
@@ -119,7 +154,7 @@ k = N_faulty_but_approved / N_approved
 print(f'{k * 100:.2}%')
 ```
 
-There is about a 5% chance of a car being broken after it has been
+The code now runs much faster, and with a larger number of cars we see that the answer is closer to a 5% chance of a car being broken after it has been
 approved by a mechanic.
 
 ### Calculation without simulation
@@ -181,11 +216,12 @@ In these examples, we often calculate proportions.
 In the given simulation:
 How many cars are approved by a mechanic?  59/100.
 How many of those 59 were faulty? 3/59.
-We also count how commonly events occur: "it rained 4 out of the 10 days".
+We often count how commonly events occur: "it rained 4 out of the 10 days".
 
 An extension of this idea is to *predict* the probability of an event occurring, based on what we had seen in the past.
-We can say "out of 100 observations, condition X occurred 20 times; therefore, I  estimate that the probability of X occurring, $P(X)$, is 20/100".
-The more observations we have, the better our probability estimates become.
+We can say "out of 100 days, there was some rain on 20 of them; we therefore estimate that the probability of rain occurring is 20/100".
+Of course, this is not a complex or very accurate weather model; for that, we'd need to take other factors—such as season—into consideration.
+Overall, the more observations we have, the better our probability estimates become.
 We discussed this idea previously in "The Law of Large Numbers".
 
 ** TODO: REFERENCE SECTION ON LARGE NUMBERS **
@@ -198,7 +234,7 @@ To calculate that, we'd first count the number of red cars, then the number of t
 We could just as well have worked in percentages: `percentage_of_red_cars_broken / percentage_of_cars_that_are_red`, since
 that is `(red_cars_broken / 100) / (red_cars / 100)`—the same ratio calculated before.
 
-I.e., the denominator doesn't matter when calculating ratios, so we
+Point being that the denominator doesn't matter when calculating ratios, so we
 could just as well have written:
 
 (red_cars_broken / all_cars) / (red_cars / all_cars)
@@ -260,7 +296,60 @@ We have the following information:
 
 ![](diagrams/covid-tree.png)
 
-We will use `P+`/`P-` to indicate COVID positive or negative, and `T+`/`T-` to indicate positive or negative test results.
+Again, we start with our simulation.
+
+```{python}
+# The number of people
+N = 1000000
+
+# For each person, generate a True or False label,
+# indicating that they have / don't have COVID
+person_has_covid = np.random.choice(
+    [True, False], p=[0.015, 0.985],
+    size=N
+)
+
+# Calculate the numbers of people with and without COVID
+nr_with_covid = np.count_nonzero(person_has_covid)
+nr_without_covid = N - nr_with_covid
+
+# In this array, we will store, for each person, whether they
+# had a positive or a negative test
+test_result = np.zeros_like(person_has_covid, dtype=bool)
+
+# Draw test results for people with COVID
+test_result[person_has_covid] = np.random.choice(
+    [True, False], p=[0.6, 0.4],
+    size=nr_with_covid
+)
+
+# Draw test results for people without COVID
+test_result[~person_has_covid] = np.random.choice(
+    [True, False], p=[0.005, 0.995],
+    size=nr_without_covid
+)
+
+# Get the COVID statuses of all those with negative tests
+# (`test_result` is a boolean mask, like `[True, False, False, True, ...]`,
+# and `~test_result` flips all boolean values to `[False, True, True, False, ...]`.
+covid_status_negative_test = person_has_covid[~test_result]
+
+# Now, count how many with COVID had a negative test results
+nr_with_covid_and_negative_test = np.count_nonzero(covid_status_negative_test)
+
+# And how many people, overall, had negative test results
+nr_with_negative_test = len(covid_status_negative_test)
+
+k = nr_with_covid_and_negative_test / nr_with_negative_test
+
+print(k)
+```
+
+This gives around 0.006 or 0.6%.
+
+Now that we have a rough indication of what the answer should be, let's try and calculate it directly, based on the tree of informatiom shown earlier.
+
+We use `P+`/`P-` to indicate COVID positive or negative, and `T+`/`T-` to indicate positive or negative test results.
 
 You would like to know the probability of having COVID *given that* your test was negative.  Using the conditional probability relationship from above, we can write:
 
@@ -280,63 +369,32 @@ We can now calculate
 
 $ P(T-) = P(T- | C-) * P(C-) + P(T- | C+) * P(C+) = .995 * .985 + .4 * .015 = 0.986$
 
-We can now calculate our answer:
+The answer, then, is:
 
 $P(C+ | T-) = 0.006 / 0.986 = 0.0061 or 0.61%$.
 
-OK, so we have a number... is that number even close to correct?  Doing the simulation is a lot easier than figuring out the calculation above:
-
-```{python}
-N = 1000000
-
-person_has_covid = np.random.choice(
-    [True, False], p=[0.015, 0.985],
-    size=N
-)
-nr_with_covid = np.count_nonzero(person_has_covid)
-nr_without_covid = N - nr_with_covid
-
-test_result = np.zeros_like(person_has_covid, dtype=bool)
-
-# Draw test results for people with COVID
-test_result[person_has_covid] = np.random.choice(
-    [True, False], p=[0.6, 0.4],
-    size=nr_with_covid
-)
-
-# Draw test results for people without COVID
-test_result[~person_has_covid] = np.random.choice(
-    [True, False], p=[0.005, 0.995],
-    size=nr_without_covid
-)
-
-covid_status_negative_test = person_has_covid[~test_result]
-nr_with_covid_and_negative_test = np.count_nonzero(covid_status_negative_test)
-nr_with_negative_test = len(covid_status_negative_test)
-
-k = nr_with_covid_and_negative_test / nr_with_negative_test
-
-print(k)
-```
-
-This gives around 0.006; that matches our calculated answer!
+This matches very closely our simulation result, so we have some confidence that we have done the calculation correctly.
 
 **Estimating Driving Risk for Insurance Purposes**
 
 Another sort of introductory problem, following after @feller1968introduction,
 p 122:
 
-A mutual insurance company charges its members according to the risk of
-having an auto accident. It is known that there are two classes of
+A mutual insurance company charges its members according to the risk
+of having an auto accident. It is known that there are two classes of
 people---80 percent of the population with good driving judgment and
 with a probability of .06 of having an accident each year, and 20
-percent with poor judgment and a probability of .6 of having an accident
-each year. The company's policy is to charge (in addition to a fee to
-cover overhead expenses) \$100 for each percent of risk, i. e., a driver
-with a probability of .6 should pay 60\*\$100 = \$6000.
+percent with poor judgment and a probability of .6 of having an
+accident each year. The company's policy is to charge \$100 for each
+percent of risk, i. e., a driver with a probability of .6 should pay
+60\*\$100 = \$6000.
 
-If nothing is known of a driver except that he had an accident last
-year, what fee should he pay?
+If nothing is known of a driver except that they had an accident last
+year, what fee should they pay?
+
+```{python}
+
+```
 
 This procedure will produce the answer:
 
