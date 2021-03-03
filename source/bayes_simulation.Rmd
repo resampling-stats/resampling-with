@@ -506,98 +506,141 @@ One may obtain an answer as follows:
     only one piece of training for simulation is required: Teach the
     habit of saying "I'll simulate it" and then actually doing so.
 
-    Fundamental problems in statistical practice
-    --------------------------------------------
+## Fundamental problems in statistical practice
 
-    Box and Tiao begin their classic exposition of Bayesian statistics
-    with the analysis of a famous problem first published by Fisher
-    (1959).
+Box and Tiao begin their classic exposition of Bayesian statistics
+with the analysis of a famous problem first published by Fisher
+(1959).
 
-    ...there are mice of two colors, black and brown. The black mice are
-    of two genetic kinds, homozygotes ( *BB* ) and heterozygotes ( *Bb*
-    ), and the brown mice are of one kind ( *bb* ). It is known from
-    established genetic theory that the probabilities associated with
-    offspring from various matings are as \[in Table 25-1\]:
+> ...there are mice of two colors, black and brown. The black mice are
+> of two genetic kinds, homozygotes (*BB*) and heterozygotes (*Bb*),
+> and the brown mice are of one kind (*bb*). It is known from
+> established genetic theory that the probabilities associated with
+> offspring from various matings are as listed in \@ref(tab:mice-genetics).
 
-    Suppose we have a "test" mouse which is black and has been produced
-    by a mating between two ( *Bb* ) mice. Using the information in the
-    last line of the table, it is seen that, in this case, the prior
-    probabilities of the test mouse being homozygous ( *BB* ) and
-    heterozygous ( *Bb* ) are precisely known, and are 1/3 and 2/3
-    respectively. Given this prior information, Fisher supposed that the
-    test mouse was now mated with a brown mouse and produced (by way of
-    data) seven black offspring. One can then calculate, as Fisher
-    (1959, p.17) did, the probabilities, posterior to the data, of the
-    test mouse being homozygous ( *BB* ) and heterozygous ( *Bb* ) using
-    Bayes' rule. . .
+                   BB (black)  Bb (black)  bb (brown)
+------------------ ----------- ----------- ----------
+BB mated with bb   0           1           0
+Bb mated with bb   0           ½           ½
+Bb mated with Bb   ¼           ½           ¼
+------------------ ----------- ----------- ----------
 
-    We see that, given the genetic characteristics of the offspring, the
-    mating results of 7 black offspring changes our knowledge
-    considerably about the test mouse being ( *BB* ) or ( *Bb* ), from a
-    prior probability ratio of 2:1 in favor of ( *Bb* ) to a posterior
-    ratio of 64:1 against it (1973, pp. 12-14).
+Table: (\#tab:mice-genetics) Probabilities for Genetic Character of Mice Offspring. Source: Box and Tiao, 1973, pp. 12-14
 
-    1.  Let us begin, as do Box and Tiao, by restricting our attention
-        to the third line in Table 25-1, and let us represent those
-        results with 4 balls---1 black with "BB" painted on it, 2 black
-        with "Bb" painted on them, and 1 brown which we immediately
-        throw away because we are told that the "test mouse" is black.
-        The remaining 3 (black) balls are put into a bucket labeled
-        "test."
+Suppose we have a "test" mouse which is black and has been produced
+by a mating between two (*Bb*) mice. Using the information in the
+last line of the table, it is seen that, in this case, the prior
+probabilities of the test mouse being homozygous (*BB*) and
+heterozygous (*Bb*) are precisely known, and are 1/3 and 2/3
+respectively ((1/4)/(1/4 + 1/2) vs (1/2)/(1/4 + 1/2)). Given this prior information, Fisher supposed that the
+test mouse was now mated with a brown mouse and produced (by way of
+data) seven black offspring. One can then calculate, as Fisher
+(1959, p.17) did, the probabilities, posterior to the data, of the
+test mouse being homozygous ( *BB* ) and heterozygous ( *Bb* ) using
+Bayes' rule.
 
-        Table 25-1
+Original instructions XXX TODO REWRITE XXX:
 
-        **Probabilities for Genetic Character of Mice Offspring**
+1.  Let us begin, as do Box and Tiao, by restricting our attention
+    to the third line in Table 25-1, and let us represent those
+    results with 4 balls---1 black with "BB" painted on it, 2 black
+    with "Bb" painted on them, and 1 brown which we immediately
+    throw away because we are told that the "test mouse" is black.
+    The remaining 3 (black) balls are put into a bucket labeled
+    "test."
 
-        **Mice BB (black) Bb (black) bb (brown)**
+2.  From prior knowledge we know that a BB black mouse mated with a
+    bb brown mouse will produce all black mice (line 1 in the
+    table), and a Bb black mouse mated with a bb brown mouse will
+    produce 50 percent black mice and 50 percent brown mice. We
+    therefore construct two more buckets, one with a single black ball
+    (the bucket labeled "BB") and the other with one black ball and one
+    brown ball (the bucket labeled "Bb"). We now have three buckets.
 
-          ------------------ --- --- ---
-          BB mated with bb   0   1   0
-          Bb mated with bb   0   ½   ½
-          Bb mated with Bb   ¼   ½   ¼
-          ------------------ --- --- ---
+3.  Take a ball from bucket "test." If its label is "BB," record that
+    fact, take a ball (the only ball, which is black) from the BB
+    bucket, record its color (we knew this already), and replace the
+    ball into the BB bucket; the overall record of this trial is
+    "BB-black." If the ball drawn from bucket "test" says "Bb," draw a
+    ball from the Bb bucket, record, and replace; the record will
+    either be "Bb-black" or "Bb-brown."
 
-         Source: Box and Tiao, 1973, pp. 12-14
+4.  Repeat step 3 seven times.
 
-    2.  From prior knowledge we know that a BB black mouse mated with a
-        bb brown mouse will produce all black mice (line 1 in the
-        table), and a Bb black mouse mated with a bb brown mouse will
-        produce 50 percent black mice and 50 percent brown mice. We
-        therefore construct two more buckets, one with a single black ball
-        (the bucket labeled "BB") and the other with one black ball and one
-        brown ball (the bucket labeled "Bb"). We now have three buckets.
+5.  Examine whether the record of the seven balls drawn from the BB
+    and Bb buckets are all black; if so, record "Y," otherwise "N."
 
-    3.  Take a ball from bucket "test." If its label is "BB," record that
-        fact, take a ball (the only ball, which is black) from the BB
-        bucket, record its color (we knew this already), and replace the
-        ball into the BB bucket; the overall record of this trial is
-        "BB-black." If the ball drawn from bucket "test" says "Bb," draw a
-        ball from the Bb bucket, record, and replace; the record will
-        either be "Bb-black" or "Bb-brown."
+6.  Repeat steps 3-5 perhaps 1000 times.
 
-    4.  Repeat step 3 seven times.
+7.  Ignore all "N" records. Proceeding now if the result of step 5
+    is "Y": Count the number of cases which are BB and the number
+    which are Bb. The proportions of BB/"Y" and Bb/"Y" trials are
+    the probabilities that the test mouse is BB and Bb respectively.
 
-    5.  Examine whether the record of the seven balls drawn from the BB
-        and Bb buckets are all black; if so, record "Y," otherwise "N."
 
-    6.  Repeat steps 3-5 perhaps 1000 times.
+```{python}
+N = 100000
 
-    7.  Ignore all "N" records. Proceeding now if the result of step 5
-        is "Y": Count the number of cases which are BB and the number
-        which are Bb. The proportions of BB/"Y" and Bb/"Y" trials are
-        the probabilities that the test mouse is BB and Bb respectively.
+# In N trials, pair two Bb mice and generate a child
+test_mice = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25], size=N)
+
+# The resulting test mouse is black, so filter out all brown ones
+test_mice = test_mice[test_mice != 'bb']
+M = len(test_mice)
+
+# The mouse will now be mated with a brown mouse, producing 7 offspring.
+# we create an Mx7 array to store those in.
+babies = np.zeros((M, 7), dtype=object)
+
+for i in range(M):
+    mouse = test_mice[i]
+    
+    if mouse == 'BB':
+        # If the mouse is 'BB', we are assured that all its children
+        # will be 'Bb'
+        babies[i, :] = 'Bb'
+
+    elif mouse == 'Bb':
+        # If the mouse is 'Bb', then we refer to the middle row of the table
+        # to see what its offspring are likely to be.
+        babies[i, :] = np.random.choice(['Bb', 'bb'], p=[0.5, 0.5], size=7)
+
+# Find out which mice produced 7 black offspring (we were told that this
+# was the outcome of the experiment, so we are only interested in those
+# cases).
+all_babies_with_B = np.all(babies == 'Bb', axis=1)
+
+# Find the parents' genetic kinds
+parents = test_mice[all_babies_with_B]
+
+# Calculate what fraction of parents were 'BB' vs 'Bb'
+parents_BB = (parents == 'BB')
+parents_Bb = (parents == 'Bb')
+N_B = np.count_nonzero(all_babies_with_B)
+
+p_BB = np.count_nonzero(parents_BB) / N_B
+p_Bb = np.count_nonzero(parents_Bb) / N_B
+
+print(f'p_BB = {p_BB:.3f}')
+print(f'p_Bb = {p_Bb:.3f}')
+print(f'Ratio: {p_BB/p_Bb:.1f}')
+```
+
+We see that, given the genetic characteristics of the offspring, the
+mating results of 7 black offspring changes our knowledge
+considerably about the test mouse being *BB* or *Bb*: from a
+prior probability ratio of 2:1 in favor of *Bb* to a posterior
+ratio of 64:1 against it (1973, pp. 12-14).
+
+XXX TODO: How can we show how to derive this quantity using a filter tree type approach? XXX
 
 Creating the correct simulation procedure is not easy, because Bayesian
 reasoning is very subtle---a reason it has been the cause of controversy
 for more than two centuries. But it certainly is not easier to create a
 correct procedure using analytic tools (except in the cookbook sense of
 plug-and-pray). And the difficult mathematics that underlie the
-analytic method (see e.g. Box and Tiao, Appendix A1.1) make it almost impossible for the
-statistician to fully understand the procedure from beginning to end; if one is interested in insight, the simulation
+analytic method (see e.g. Box and Tiao, Appendix A1.1) make it almost impossible for the statistician to fully understand the procedure from beginning to end; if one is interested in insight, the simulation
 procedure might well be preferred.
-
-A computer program to speed the above steps appears in the Appendix to
-this chapter. The result found with a set of 1000 repetitions is .987.
 
 ## Problems based on normal and other distributions
 
@@ -623,7 +666,7 @@ conventional practice of working with a continuous distribution itself,
 of course. But a simulation necessarily works with discrete values. A
 feasible procedure must bridge this gulf.
 
-The logic for a problem of Schlaifer's will be only be sketched out. The
+The logic for a problem of Schlaifer's will only be sketched out. The
 procedure is rather novel, but it has not heretofore been published and
 therefore must be considered tentative and requiring particular
 scrutiny.
@@ -759,33 +802,34 @@ proportions of sample means that fall into this interval.
     the *difference* between the two tails; for a universe with the same
     mean as the sample, this difference would be zero.
 
-    Conclusion
-    ----------
+## Conclusion
 
-    All but the simplest problems in conditional probability are
-    confusing to the intuition even if not difficult mathematically. But
-    when one tackles Bayesian and other problems in probability with
-    experimental simulation methods rather than with logic, neither
-    simple nor complex problems need be difficult for experts or
-    beginners.
+All but the simplest problems in conditional probability are
+confusing to the intuition even if not difficult mathematically. But
+when one tackles Bayesian and other problems in probability with
+experimental simulation methods rather than with logic, neither
+simple nor complex problems need be difficult for experts or
+beginners.
 
-    This chapter shows how simulation can be a helpful and illuminating
-    way to approach problems in Bayesian analysis.
+This chapter shows how simulation can be a helpful and illuminating
+way to approach problems in Bayesian analysis.
 
-    Simulation has two valuable properties for Bayesian analysis:
+Simulation has two valuable properties for Bayesian analysis:
 
-    1.  It can provide an effective way to handle problems whose
-        analytic solution may be difficult or impossible. 2) Simulation
-        can provide insight to problems that otherwise are difficult to
-        understand fully, as is peculiarly the case with Bayesian
-        analysis.
+1. It can provide an effective way to handle problems whose
+   analytic solution may be difficult or impossible.
+   
+2. Simulation can provide insight to problems that otherwise are
+   difficult to understand fully, as is peculiarly the case with
+   Bayesian analysis.
 
 Bayesian problems of updating estimates can be handled easily and
 straightforwardly with simulation, whether the data are discrete or
 continuous. The process and the results tend to be intuitive and
 transparent. Simulation works best with the original raw data rather
-than with abstractions from them via percentages and distributions. This
-can aid the understanding as well as facilitate computation.
+than with abstractions from them via percentages and
+distributions. This can aid the understanding as well as facilitate
+computation.
 
 ## Endnotes
 
