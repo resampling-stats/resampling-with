@@ -30,31 +30,23 @@ always_allow_html: true
 
 This chapter introduces you to probability and statistics. First come
 examples of the kinds of practical problems that this knowledge can
-solve for us. Next this Introduction discusses the relationship of
-probabilities to decisions. Then comes a discussion of the two general
-types of statistics, descriptive and inferential. Following this is a
-discussion of the limitations of probability and statistics. And last is
-a discussion of why statistics can be such a difficult subject. Most important,
-this chapter describes the types of problems the book will tackle.
+solve for us. One reason that the term "statistic" often scares and confuses people is that the term has several sorts of meanings.  We discuss the various meanings of "statistics" in the section "Types of statistics".
+Then comes a discussion on the relationship of probabilities to decisions.
+Following this we talk about the limitations of probability and statistics.
+And last is a discussion of why statistics can be such a difficult subject.
+Most important, this chapter describes the types of problems the book will
+tackle.
 
-Because the term "statistic" often scares and confuses people--- and
-indeed, the term has several sorts of meanings---the chapter includes a
-short section on "Types of Statistics." Descriptive statistics are
-numbers that summarize the information contained in a group of data.
-Inferential statistics are procedures to estimate unknown quantities;
-that is, these procedures infer estimates and conclusions based on
-whatever descriptive statistics are available.
-
-At the foundation of sound decision-making lies the ability to make
-accurate estimates of the probabilities of future events. Probabilistic
-problems confront everyone---from the business person considering plant
-expansion, to the scientist testing a new wonder drug, to the individual
-deciding whether to carry an umbrella to work.
+At the foundation of sound decision-making lies the ability to make accurate
+estimates of the probabilities of future events. Probabilistic problems
+confront everyone --- a company owner considering whether to expand their
+business, to the scientist testing a vaccine, to the individual deciding
+whether to buy insurance.
 
 ## What kinds of problems shall we solve? {#what-problems}
 
-These are some examples of the kinds of problems that we can handle with
-the methods described in this book:
+These are some examples of the kinds of problems that we can handle with the
+methods described in this book:
 
 1. *You are a doctor* trying to develop a cure for cancer. Currently you are
    working on a medicine labeled CCC. You have data from patients to whom
@@ -77,7 +69,7 @@ the methods described in this book:
    pollution in a lake in Ireland [@zhou2000long].  The average value for the
    9 previous years of measurement is 74 units, but this year's value is 111
    units.  Is this increase due to some important change in phosphorus levels
-   reaching the lake, or is this just some random fluctuation in the
+   reaching the lake, or could this be the result of fluctuation in the
    phosphorus measurements?
 
 The core of all these problems, and of the others that we will deal with in
@@ -87,8 +79,8 @@ or that something is true or false. To put it another way, we want to answer
 questions about "What is the probability that...?", given the body of
 information that you have in hand.
 
-The question "What is the probability that...?" is usually not the
-ultimate question that interests us at a given moment.
+The question "What is the probability that...?" is usually not the ultimate
+question that interests us at a given moment.
 
 Eventually, a person wants to use the estimated probability to help make a
 *decision* concerning some action one might take. These are the kinds of
@@ -114,7 +106,7 @@ ultimately we would like to make:
    campaign in New Hampshire. Analysis of the chances of winning in New
    Hampshire based on the poll data can help you make this decision sensibly.
 
-3. *Should your firm buy more ambulances*? Clearly the answer to this
+3. *Should your company buy more ambulances*? Clearly the answer to this
    question is affected by the probability that a given number of your
    ambulances will be out of action on a given day. But of course this
    estimated probability will be only one part of the decision.
@@ -129,6 +121,39 @@ The kinds of questions to which we wish to find probabilistic and statistical
 answers may be found throughout the social, biological and physical sciences;
 in business; in politics; in engineering; and in most other forms of human
 endeavor.
+
+## Types of statistics
+
+The term *statistics* sometimes causes confusion and therefore needs
+explanation.
+
+A statistic is a *number* or set of numbers that we can calculate from a
+larger collection of numbers we are interested in.  A statistic can be
+*descriptive* or *inferential*.  A descriptive statistic is a number (or set
+of numbers) that aim to describe the larger set of number. Some common
+examples are the *total*, measures of the center of a distribution such as the
+*mean* and *median*, and numbers conveying the spread of the distribution such
+as the *range*, and the *standard deviation*.
+
+For example, in a famous set of data, 
+
+They come in to 
+Typical examples, include the total, 
+
+(descriptive) statistics and *probability* statistics. The most important
+summarization statistics are the *total*, the *distribution*, measures of the
+center of a distribution such as the *mean* and *median*, the *range*, and
+other measures of variation.
+
+Such statistics are nothing new to you; you have been using many of them all
+your life. Inferential statistics, which this book deals with, uses descriptive
+statistics as its input.
+
+Inferential statistics can be used for two purposes: to aid scientific
+*understanding* by estimating the probability that a statement is true
+or not, and to aid in making *sound decisions* by estimating which
+alternative among a range of possibilities is most desirable.
+
 
 ## Probabilities and decisions
 
@@ -172,47 +197,27 @@ probability is only one part of the overall web of consequences and
 evaluations that must be taken into account when making your decision
 whether or not to do further research on medicine CCC.
 
-Why does this book limit itself to the specific probability questions
-when ultimately we are interested in decisions? A first reason is
-division of labor. The more general aspects of the decision-making
-process in the face of uncertainty are treated well in other books. This
-book's special contribution is its new approach to the crucial process
-of estimating the chances that an event will occur.
+Why does this book limit itself to the specific probability questions when
+ultimately we are interested in decisions? A first reason is division of
+labor. The more general aspects of the decision-making process in the face of
+uncertainty are treated well in other books. This book's special contribution
+is its new approach to the crucial process of estimating the chances that an
+event will occur.
 
 Second, the specific elements of the overall decision-making process taught in
 this book belong to the interrelated subjects of *probability theory* and
-*inferential statistics* . Though probabilistic and inferential-statistical
-theory ultimately is intended to be part of the general decision-making
-process, often only the estimation of probabilities is done systematically, and
-the rest of the decision-making process---for example, the decision whether or
-not to proceed with further research on medicine CCC---is done in informal and
-unsystematic fashion. This is regrettable, but the fact that this is standard
-practice is an additional reason why the treatment of inferential statistics
-and probability in this book is sufficiently complete.
+*statistics* . Though probabilistic and statistical theory ultimately is
+intended to be part of the general decision-making process, often only the
+estimation of probabilities is done systematically, and the rest of the
+decision-making process---for example, the decision whether or not to proceed
+with further research on medicine CCC---is done in informal and unsystematic
+fashion. This is regrettable, but the fact that this is standard practice is
+an additional reason why the treatment of statistics and probability in this
+book is sufficiently complete.
 
-A third reason that this book covers only inferential statistics and not
-decision statistics is because most college and university statistics
-courses and books are limited to inferential statistics.
-
-## Types of statistics
-
-The term *statistics* sometimes causes confusion and therefore needs
-explanation.
-
-A statistic is a *number* . There are two kinds of statistics, *summarization*
-(descriptive) statistics and *probability* statistics. The most important
-summarization statistics are the *total*, the *distribution*, measures of the
-center of a distribution such as the *mean* and *median*, the *range*, and
-other measures of variation.
-
-Such statistics are nothing new to you; you have been using many of them all
-your life. Inferential statistics, which this book deals with, uses descriptive
-statistics as its input.
-
-Inferential statistics can be used for two purposes: to aid scientific
-*understanding* by estimating the probability that a statement is true
-or not, and to aid in making *sound decisions* by estimating which
-alternative among a range of possibilities is most desirable.
+A third reason that this book covers only statistics and not numerical
+reasoning about decisions is because most college and university statistics
+courses and books are limited to statistics.
 
 ## Limitations of probability and statistics
 
