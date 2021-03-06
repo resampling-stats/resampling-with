@@ -102,7 +102,7 @@ k = approved_and_faulty / approved
 print(f'{k * 100:.2}%')
 ```
 
-The answer is somewhere between 5 and 6%.  The code clearly follows the description step by step, but it is also quite slow.  If we can improve the code, we may be able to do our simulation with more cars, and get a more accurate answer.
+The answer looks to be somewhere between 5 and 6%.  The code clearly follows the description step by step, but it is also quite slow.  If we can improve the code, we may be able to do our simulation with more cars, and get a more accurate answer.
 
 Let's use arrays to store the states of all cars in the lot simultaneously:
 
@@ -200,7 +200,7 @@ The percentage of faulty cars, out of approved cars, becomes:
 
 $$ 3% / (56% + 3%) = 5.08%. $$
 
-Notation-wise, it is a bit easier to calculate these sums using fractions rather than percentages:
+Notation-wise, it is a bit easier to calculate these sums using proportions rather than percentages:
 
 1. Faulty cars approved by a mechanic: 0.3 * 0.1 = 0.03
 2. Working cars approved by a mechanic: 0.7 * 0.8 = 0.56
@@ -215,9 +215,11 @@ We see that every time the tree branches, it filters the cars: some go to one br
 
 In these examples, we often calculate proportions.
 In the given simulation:
-How many cars are approved by a mechanic?  59/100.
-How many of those 59 were faulty? 3/59.
-We often count how commonly events occur: "it rained 4 out of the 10 days".
+
+- How many cars are approved by a mechanic?  59/100.
+- How many of those 59 were faulty? 3/59.
+
+We often also count how commonly events occur: "it rained 4 out of the 10 days".
 
 An extension of this idea is to *predict* the probability of an event occurring, based on what we had seen in the past.
 We can say "out of 100 days, there was some rain on 20 of them; we therefore estimate that the probability of rain occurring is 20/100".
@@ -225,7 +227,7 @@ Of course, this is not a complex or very accurate weather model; for that, we'd 
 Overall, the more observations we have, the better our probability estimates become.
 We discussed this idea previously in "The Law of Large Numbers".
 
-** TODO: REFERENCE SECTION ON LARGE NUMBERS **
+<!-- ** TODO: REFERENCE SECTION ON LARGE NUMBERS ** -->
 
 **Ratios of proportions**
 
@@ -235,7 +237,7 @@ To calculate that, we'd first count the number of red cars, then the number of t
 We could just as well have worked in percentages: `percentage_of_red_cars_broken / percentage_of_cars_that_are_red`, since
 that is `(red_cars_broken / 100) / (red_cars / 100)`â€”the same ratio calculated before.
 
-Point being that the denominator doesn't matter when calculating ratios, so we
+Our point is that the denominator doesn't matter when calculating ratios, so we
 could just as well have written:
 
 (red_cars_broken / all_cars) / (red_cars / all_cars)
@@ -244,7 +246,7 @@ or
 
 P(cars that are red and that are broken) / P(red cars)
 
-** TODO: THE ABOVE MAY BE A SUBTLE POINT THAT NEEDS TO EXPANDED, BUT THE TEXT IS GETTING LONG AS-IS **
+<!-- ** TODO: THE ABOVE MAY BE A SUBTLE POINT THAT NEEDS TO EXPANDED, BUT THE TEXT IS GETTING LONG AS-IS ** -->
 
 **Probability relationships: conditional probability**
 
@@ -273,7 +275,7 @@ To make things even more compact, we write "GIVEN THAT" as a vertical bar `|` â€
 $$ \mathrm{ P(B | R) } $$
 
 We read this as "the probability that the car is broken given that the car is red".
-Such a probability is known as a *conditional probability*.  We discuss these in more details in **TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY**.
+Such a probability is known as a *conditional probability*.  We discuss these in more details in Ch X <!-- **TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY** -->.
 
 In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
 
@@ -281,9 +283,9 @@ $P(car_broken | mechanic_approved) = P(car_broken \& mechanic_approved) / P(mech
 
 More generally, conditional probabilities are expressed as:
 
-$P(X | Y) = P(X \cup Y) / P(Y)$
+$P(X | Y) = P(X \cap Y) / P(Y)$
 
-Where $\cup$ means "AND".
+Where $\cap$ means "AND", i.e. that both happen simultaneously.
 
 **Example: conditional probability**
 
@@ -311,8 +313,8 @@ person_has_covid = np.random.choice(
 )
 
 # Calculate the numbers of people with and without COVID
-nr_with_covid = np.count_nonzero(person_has_covid)
-nr_without_covid = N - nr_with_covid
+N_with_covid = np.count_nonzero(person_has_covid)
+N_without_covid = N - N_with_covid
 
 # In this array, we will store, for each person, whether they
 # had a positive or a negative test
@@ -321,13 +323,13 @@ test_result = np.zeros_like(person_has_covid, dtype=bool)
 # Draw test results for people with COVID
 test_result[person_has_covid] = np.random.choice(
     [True, False], p=[0.6, 0.4],
-    size=nr_with_covid
+    size=N_with_covid
 )
 
 # Draw test results for people without COVID
 test_result[~person_has_covid] = np.random.choice(
     [True, False], p=[0.005, 0.995],
-    size=nr_without_covid
+    size=N_without_covid
 )
 
 # Get the COVID statuses of all those with negative tests
@@ -336,12 +338,12 @@ test_result[~person_has_covid] = np.random.choice(
 covid_status_negative_test = person_has_covid[~test_result]
 
 # Now, count how many with COVID had a negative test results
-nr_with_covid_and_negative_test = np.count_nonzero(covid_status_negative_test)
+N_with_covid_and_negative_test = np.count_nonzero(covid_status_negative_test)
 
 # And how many people, overall, had negative test results
-nr_with_negative_test = len(covid_status_negative_test)
+N_with_negative_test = len(covid_status_negative_test)
 
-k = nr_with_covid_and_negative_test / nr_with_negative_test
+k = N_with_covid_and_negative_test / N_with_negative_test
 
 print(k)
 ```
@@ -354,17 +356,17 @@ We use `P+`/`P-` to indicate COVID positive or negative, and `T+`/`T-` to indica
 
 You would like to know the probability of having COVID *given that* your test was negative.  Using the conditional probability relationship from above, we can write:
 
-$$ \mathrm{ P(C+ | T-) = P(C+ \cup T-) / P(T-) } $$
+$$ \mathrm{ P(C+ | T-) = P(C+ \cap T-) / P(T-) } $$
 
-We see from the tree diagram that $P(C+ \cup T-) = P(T- | C+) * P(C+) = .4 * .015 = 0.006$ (** TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES **).
+We see from the tree diagram that $P(C+ \cap T-) = P(T- | C+) * P(C+) = .4 * .015 = 0.006$. <!-- **TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES** -->
 
-We observe that $P(T-) = P(T- \cup C-) + P(T- \cup C+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
+We observe that $P(T-) = P(T- \cap C-) + P(T- \cap C+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
 
-$P(T- \cup C-) = P(T- | C-) * P(C-)$
+$P(T- \cap C-) = P(T- | C-) * P(C-)$
 
 and
 
-$P(T- \cup C+) = P(T- | C+) * P(C+)$.
+$P(T- \cap C+) = P(T- | C+) * P(C+)$.
 
 We can now calculate
 
@@ -382,7 +384,7 @@ Another sort of introductory problem, following after @feller1968introduction,
 p 122:
 
 A mutual insurance company charges its members according to the risk
-of having an auto accident. It is known that there are two classes of
+of having an car accident. It is known that there are two classes of
 people---80 percent of the population with good driving judgment and
 with a probability of .06 of having an accident each year, and 20
 percent with poor judgment and a probability of .6 of having an
@@ -446,7 +448,7 @@ The answer should be around 4450 USD.
 
 **Screening for Disease**
 
-**TODO: SHALL WE REMOVE THIS PROBLEM, OR INTEGRATE PARTS OF ITS DESCRIPTION WITH THE COVID EXAMPLE?**
+<!- **TODO: SHALL WE REMOVE THIS PROBLEM, OR INTEGRATE PARTS OF ITS DESCRIPTION WITH THE COVID EXAMPLE?** -->
 
 This is a classic Bayesian problem (quoted by Tversky and Kahnemann,
 1982, pp. 153-154, from Cascells, Schoenberger, and Grayboys, 1978, p.
@@ -663,7 +665,7 @@ print(f'p_Bb = {p_Bb:.3f}')
 print(f'Ratio: {p_BB/p_Bb:.1f}')
 ```
 
-XXX TODO: How can we show how to derive this quantity using a filter tree type approach? XXX
+<!-- XXX TODO: How can we show how to derive this quantity using a filter tree type approach? XXX -->
 
 Creating the correct simulation procedure is not easy, because Bayesian
 reasoning is very subtle---a reason it has been the cause of controversy
