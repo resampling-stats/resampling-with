@@ -663,7 +663,7 @@ parents = test_mice[all_offspring_black]
 # Calculate what fraction of parents were 'BB' vs 'Bb'
 parents_BB = (parents == 'BB')
 parents_Bb = (parents == 'Bb')
-N_B = np.count_nonzero(all_babies_with_B)
+N_B = np.count_nonzero(all_offspring_black)
 
 p_BB = np.count_nonzero(parents_BB) / N_B
 p_Bb = np.count_nonzero(parents_Bb) / N_B
