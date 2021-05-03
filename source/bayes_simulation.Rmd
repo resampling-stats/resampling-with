@@ -27,10 +27,9 @@ also can sometimes be used in science. The range of its recommended uses
 is controversial, but this chapter deals only with those uses of
 Bayesian analysis that are uncontroversial.
 
-Better than defining Bayesian analysis in formal terms is to demonstrate
-its use. Therefore, to make clear the nature of "Bayes' rule," we shall
-start with the simplest sort of problem, and proceed gradually from
-there.
+Better than defining Bayesian analysis in formal terms is to
+demonstrate its use. We shall start with the simplest sort of problem,
+and proceed gradually from there.
 
 ## Simple decision problems
 
@@ -45,150 +44,411 @@ correctly identifies 80 percent as "OK" but says that 20 percent are
 percent as faulty and says (incorrectly) that 10 percent are OK.
 
 We wish to know the probability that if the mechanic *says* a car is
-"OK," it *really* is faulty.
+"OK," it *really* is faulty.  Phrased differently, what is the
+probability of a car being faulty if the mechanic said it was OK?
 
-One can get the desired probabilities directly by simulation without
-knowing Bayes' Law, as we shall see. But one must be able to model the
+We can get the desired probabilities directly by simulation without
+knowing Bayes' rule, as we shall see. But one must be able to model the
 physical problem correctly in order to proceed with the simulation; this
-requirement of a clearly-vi-
+requirement of a clearly visualized model is a strong point in favor of simulation.
 
-sualized model is a strong point in favor of simulation.
+1. Note that we are only interested in outcomes where the mechanic
+   approved a car.
 
-The following steps determine the probability that a car *said*
+2. For each car, generate a label of either
+   "faulty" or "working" with probabilities of 0.3 and 0.7, respectively.
 
-to be "OK" will turn out to be *really* faulty:
+3. For each *faulty car*, we generate one of two labels, "approved" or
+   "not approved" with probabilities 0.1 and 0.9, respectively.
 
-1.  Model in percentages the universe of all cars as a bucket of 100
-    balls. Working from the data as given above, and referring to first
-    principles, color (.9 \* .3 =) .27 of the 100 balls violet (the 27
-    faulty balls said to be "faulty"), (.1 \* .3 =) .03 of the 100 balls
-    blue (3 balls said "OK" but faulty), (.2 \* .7 =) .14 of the balls
-    orange (14 OK cars said to be "faulty" balls), and (.8 \* .7
+4. For each *working car*, we generate one of two labels, "approved" or
+   "not approved" with probabilities 0.7 and 0.3, respectively.
 
-    = ) 56 balls maroon (said to be "OK" that really are OK). A Venn
-    diagram may help with this step, but it is not necessary.
+5. Out of all cars "approved", count how many are "faulty".
+   The ratio between these numbers is our answer.
 
-    An even better procedure would be to work directly from the concrete
-    data. One would note, for example, that of 200 cars previously
-    observed, 54 were faulty and were said to be "faulty," 6 were faulty
-    and were said to be "OK," 28 were OK but were said to be "faulty,"
-    and 112 were OK and were said to be "OK." Then make a bucket of 54
-    violets, 6 blue, 28 orange, and 112 maroon.
+Here is the whole thing:
 
-2.  Draw a ball. If it is one of those said to be "faulty"---that is,
-    violet or orange---draw (with replacement) another ball. Continue
-    until obtaining a ball said to be "OK"---that is, a blue or maroon
-    ball. Then record its color.
+```{python}
+import numpy as np
 
-3.  Repeat step 2 perhaps 1000 times and compute the proportions of
-    blues among the recorded results.
+N = 10000  # number of cars
 
--OR-
+# Counters for number of approved, number of approved and faulty
+approved = 0
+approved_and_faulty = 0
 
-1.  Choose a number randomly between "1" and "100."
+for i in range(N):
 
-2.  If "28-30" or "31-45:, record; otherwise draw another number, and
-    repeat until a number is recorded.
+    # Decide whether the car is faulty or working, with a probability of
+    # 0.3 and 0.7 respectively
+    car = np.random.choice(['faulty', 'working'], p=[0.3, 0.7])
+    
+    if car == 'faulty':
+        # What the mechanic says of a faulty car
+        mechanic_says = np.random.choice(['approved', 'not approved'], p=[0.1, 0.9])
+    else:
+        # What the mechanic says of a working car
+        mechanic_says = np.random.choice(['approved', 'not approved'], p=[0.7, 0.3])
+        
+    if mechanic_says == 'approved':
+        approved += 1
+    
+        if car == 'faulty':
+            approved_and_faulty += 1
 
-3.  Repeat step 2 and count the proportion "28-30" among the total
-    "28-45."
+k = approved_and_faulty / approved
 
-The key modeling step is excluding a trial from consideration (without
-making any record of it) if it produces an irrelevant observation, and
-continuing to do so until the process produces an observation of the
-sort about which you are presently inquiring.
+print(f'{k * 100:.2}%')
+```
 
-Using RESAMPLING STATS, an answer may be produced as follows:
+The answer looks to be somewhere between 5 and 6%.  The code clearly follows the description step by step, but it is also quite slow.  If we can improve the code, we may be able to do our simulation with more cars, and get a more accurate answer.
 
-"01 - 27" = actually faulty, said to be "faulty" "28 - 30 = faulty, said
-to be "OK"
+Let's use arrays to store the states of all cars in the lot simultaneously:
 
-"31 - 86" = OK, "OK"
+```{python}
+N = 1000000  # number of cars; we made this number larger by a factor of 100
 
-"87 - 100" = OK, "faulty"
+# Generate an array with as many entries as there are cars, each
+# being either 'working' or 'faulty'
+cars = np.random.choice(['working', 'faulty'], p=[0.7, 0.3], size=N)
 
-`           REPEAT 1000         `
+# Count how many cars are working
+N_working = np.count_nonzero(cars == 'working')
 
-Do 1000 repetitions
+# All the rest are faulty
+N_faulty = N - N_working
 
-`           GENERATE 1 1,100 a         `
+# Create a new array in which to store what a mechanic says
+# about the car: 'approved' or 'not approved'
+mechanic_says = np.empty_like(cars, dtype=object)
 
-Generate a number between "1" and "100"
+# We start with the working cars; what does the mechanic say about them?
+# Generate 'approved' or 'not approved' labels with the given probabilities.
+mechanic_says[cars == 'working'] = np.random.choice(
+    ['approved', 'not approved'], p=[0.8, 0.2], size=N_working
+)
 
-`           IF a between 28 86         `
+# Similarly, for each faulty car, generate 'approved'/'not approved'
+# labels with the given probabilities.
+mechanic_says[cars == 'faulty'] = np.random.choice(
+    ['approved', 'not approved'], p=[0.1, 0.9], size=N_faulty
+)
 
-If it's between "28" and "86" (those that say "good")
+# Identify all cars that were approved
+# This produces a binary mask, an array that looks like:
+# [True, False, False, True, ... ]
+approved = (mechanic_says == 'approved')
 
-`           SCORE a z         `
+# Identify cars that are faulty AND were approved
+faulty_but_approved = (cars == 'faulty') & approved
 
-Score this number
+# Count the number of cars that are faulty but approved, as well as
+# the total number of cars that were approved
+N_faulty_but_approved = np.count_nonzero(faulty_but_approved)
+N_approved = np.count_nonzero(approved)
 
-`           END         `
+# Calculate the ratio, which is the answer we seek
+k = N_faulty_but_approved / N_approved
 
-End the IF condition
+print(f'{k * 100:.2}%')
+```
 
-`           END         `
+The code now runs much faster, and with a larger number of cars we see that the answer is closer to a 5% chance of a car being broken after it has been
+approved by a mechanic.
 
-End REPEAT loop
+### Calculation without simulation
 
-`           COUNT z between 28 30 k         `
+Simulation forces us to model our problem clearly and concretely in code.
+Such code is most often easier to reason about than opaque statistical methods.
+Running the simulation gives a good sense of what the correct answer should be.
+Thereafter, we can still look into different---sometimes more elegant or
+accurate---ways of modeling and solving the problem.
 
-How many of the SCORED numbers were between "28\--30" (faulty, "OK")
+Let's examine the following diagram of our car selection:
 
-`           SIZE z s         `
+![](diagrams/car-tree.png)
 
-How many numbers were scored
+We see that there are two paths, highlighted, that results in a car
+being approved by a mechanic.  Either a car can be working, and
+correctly identified as such by a mechanic; or the car can be broken,
+while the mechanic mistakenly determines it to be working. Our
+question only pertains to these two paths, so we do not need to
+study the rest of the tree.
 
-`           DIVIDE k s kk         `
+In the long run, in our simulation, about 70% of the cars will end
+with the label "working", and about 30% will end up with the label
+"faulty". We just took 10000 sample cars above but, in fact, the
+larger the number of cars we take, the closer we will get to 70%
+"working" and 30% "faulty". So, with many samples, we can think of 70%
+of these samples flowing down the "working" path, and 30% flowing
+along the "faulty" path.
 
-What proportion were faulty, "OK"
+Now, we want to know, of all the cars approved by a mechanic, how many
+are faulty:
 
-`           PRINT kk         `
+$$ \frac{\mathrm{cars_{\mathrm{faulty}}}}{\mathrm{cars}_{\mathrm{approved}}} $$
 
-Print result
+We follow the two highlighted paths in the tree:
 
-Result kk = 0.039
+1. Of a large sample of cars, 30% are faulty.  Of these, 10% are
+   approved by a mechanic.  That is, 30% * 10% = 3% of all cars.
+2. Of all cars, 70% work.  Of these, 80% are approved by a mechanic.  That is,
+   70% * 80% = 56% of all cars.
 
-Hence, we estimate that the probability that a car identified as "OK"
-will really be faulty is .039.
+The percentage of faulty cars, out of approved cars, becomes:
+
+$$ 3% / (56% + 3%) = 5.08%. $$
+
+Notation-wise, it is a bit easier to calculate these sums using proportions rather than percentages:
+
+1. Faulty cars approved by a mechanic: 0.3 * 0.1 = 0.03
+2. Working cars approved by a mechanic: 0.7 * 0.8 = 0.56
+
+Fraction of faulty cars out of approved cars: 0.03 / (0.03 + 0.56) = 0.0508
+
+We see that every time the tree branches, it filters the cars: some go to one branch, the rest to another.  In our code, we used the AND (`&`) operator to find the intersection between faulty AND approved cars, i.e., to filter out from all faulty cars only the cars that were ALSO approved.
+
+### Probability interpretation
+
+**Probability from proportion**
+
+In these examples, we often calculate proportions.
+In the given simulation:
+
+- How many cars are approved by a mechanic?  59/100.
+- How many of those 59 were faulty? 3/59.
+
+We often also count how commonly events occur: "it rained 4 out of the 10 days".
+
+An extension of this idea is to *predict* the probability of an event occurring, based on what we had seen in the past.
+We can say "out of 100 days, there was some rain on 20 of them; we therefore estimate that the probability of rain occurring is 20/100".
+Of course, this is not a complex or very accurate weather model; for that, we'd need to take other factors—such as season—into consideration.
+Overall, the more observations we have, the better our probability estimates become.
+We discussed this idea previously in "The Law of Large Numbers".
+
+<!-- ** TODO: REFERENCE SECTION ON LARGE NUMBERS ** -->
+
+**Ratios of proportions**
+
+At our mechanic's yard, we can ask "how many red cars here are faulty"?
+To calculate that, we'd first count the number of red cars, then the number of those red cars that are also broken, then calculate the ratio: `red_cars_faulty / red_cars`.
+
+We could just as well have worked in percentages: `percentage_of_red_cars_broken / percentage_of_cars_that_are_red`, since
+that is `(red_cars_broken / 100) / (red_cars / 100)`—the same ratio calculated before.
+
+Our point is that the denominator doesn't matter when calculating ratios, so we
+could just as well have written:
+
+(red_cars_broken / all_cars) / (red_cars / all_cars)
+
+or
+
+P(cars that are red and that are broken) / P(red cars)
+
+<!-- ** TODO: THE ABOVE MAY BE A SUBTLE POINT THAT NEEDS TO EXPANDED, BUT THE TEXT IS GETTING LONG AS-IS ** -->
+
+**Probability relationships: conditional probability**
+
+Here's one way of writing the probability that a car is broken:
+
+$$ \mathrm{ P(car is broken) } $$
+
+We can shorten "car is broken" to B, and write the same thing as:
+
+$$ \mathrm{ P(B) } $$
+
+Similarly, we could write the probability that a car is red as:
+
+$$ \mathrm{ P(R) } $$
+
+We might also want to express the conditional probability, as in the probability that the car is broken, given that we already know that the car is red:
+
+$$ \mathrm{ P(car is broken GIVEN THAT car is red)  } $$
+
+That is getting getting pretty verbose, so we will shorten this as we did above:
+
+$$ \mathrm{ P(B GIVEN THAT R) } $$
+
+To make things even more compact, we write "GIVEN THAT" as a vertical bar `|` — so the whole thing becomes:
+
+$$ \mathrm{ P(B | R) } $$
+
+We read this as "the probability that the car is broken given that the car is red".
+Such a probability is known as a *conditional probability*.  We discuss these in more details in Ch X <!-- **TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY** -->.
+
+In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
+
+$P(car_broken | mechanic_approved) = P(car_broken \& mechanic_approved) / P(mechanic_approved)$.
+
+More generally, conditional probabilities are expressed as:
+
+$P(X | Y) = P(X \cap Y) / P(Y)$
+
+Where $\cap$ means "AND", i.e. that both happen simultaneously.
+
+**Example: conditional probability**
+
+Let's discuss a very relevant example.  You get a COVID test, and the test is negative.  Now, you would like to know what the chance is of you having COVID.
+
+We have the following information:
+
+- 1.5% of people in your area have COVID
+- The false positive rate of the tests (i.e., that they detect COVID when it is absent) is very low at 0.5%
+- The false negative rate (i.e., that they fail to detect COVID when it is present) is quite high at 40%
+
+![](diagrams/covid-tree.png)
+
+Again, we start with our simulation.
+
+```{python}
+# The number of people
+N = 1000000
+
+# For each person, generate a True or False label,
+# indicating that they have / don't have COVID
+person_has_covid = np.random.choice(
+    [True, False], p=[0.015, 0.985],
+    size=N
+)
+
+# Calculate the numbers of people with and without COVID
+N_with_covid = np.count_nonzero(person_has_covid)
+N_without_covid = N - N_with_covid
+
+# In this array, we will store, for each person, whether they
+# had a positive or a negative test
+test_result = np.zeros_like(person_has_covid, dtype=bool)
+
+# Draw test results for people with COVID
+test_result[person_has_covid] = np.random.choice(
+    [True, False], p=[0.6, 0.4],
+    size=N_with_covid
+)
+
+# Draw test results for people without COVID
+test_result[~person_has_covid] = np.random.choice(
+    [True, False], p=[0.005, 0.995],
+    size=N_without_covid
+)
+
+# Get the COVID statuses of all those with negative tests
+# (`test_result` is a boolean mask, like `[True, False, False, True, ...]`,
+# and `~test_result` flips all boolean values to `[False, True, True, False, ...]`.
+covid_status_negative_test = person_has_covid[~test_result]
+
+# Now, count how many with COVID had a negative test results
+N_with_covid_and_negative_test = np.count_nonzero(covid_status_negative_test)
+
+# And how many people, overall, had negative test results
+N_with_negative_test = len(covid_status_negative_test)
+
+k = N_with_covid_and_negative_test / N_with_negative_test
+
+print(k)
+```
+
+This gives around 0.006 or 0.6%.
+
+Now that we have a rough indication of what the answer should be, let's try and calculate it directly, based on the tree of informatiom shown earlier.
+
+We use `P+`/`P-` to indicate COVID positive or negative, and `T+`/`T-` to indicate positive or negative test results.
+
+You would like to know the probability of having COVID *given that* your test was negative.  Using the conditional probability relationship from above, we can write:
+
+$$ \mathrm{ P(C+ | T-) = P(C+ \cap T-) / P(T-) } $$
+
+We see from the tree diagram that $P(C+ \cap T-) = P(T- | C+) * P(C+) = .4 * .015 = 0.006$. <!-- **TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES** -->
+
+We observe that $P(T-) = P(T- \cap C-) + P(T- \cap C+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
+
+$P(T- \cap C-) = P(T- | C-) * P(C-)$
+
+and
+
+$P(T- \cap C+) = P(T- | C+) * P(C+)$.
+
+We can now calculate
+
+$ P(T-) = P(T- | C-) * P(C-) + P(T- | C+) * P(C+) = .995 * .985 + .4 * .015 = 0.986$
+
+The answer, then, is:
+
+$P(C+ | T-) = 0.006 / 0.986 = 0.0061 or 0.61%$.
+
+This matches very closely our simulation result, so we have some confidence that we have done the calculation correctly.
 
 **Estimating Driving Risk for Insurance Purposes**
 
 Another sort of introductory problem, following after @feller1968introduction,
 p 122:
 
-A mutual insurance company charges its members according to the risk of
-having an auto accident. It is known that there are two classes of
+A mutual insurance company charges its members according to the risk
+of having an car accident. It is known that there are two classes of
 people---80 percent of the population with good driving judgment and
 with a probability of .06 of having an accident each year, and 20
-percent with poor judgment and a probability of .6 of having an accident
-each year. The company's policy is to charge (in addition to a fee to
-cover overhead expenses) \$100 for each percent of risk, i. e., a driver
-with a probability of .6 should pay 60\*\$100 = \$6000.
+percent with poor judgment and a probability of .6 of having an
+accident each year. The company's policy is to charge \$100 for each
+percent of risk, i. e., a driver with a probability of .6 should pay
+60\*\$100 = \$6000.
 
-If nothing is known of a driver except that he had an accident last
-year, what fee should he pay?
+If nothing is known of a driver except that they had an accident last
+year, what fee should they pay?
 
-This procedure will produce the answer:
+Another way to phrase this question is: given that a driver had an accident last year, what is the probability of them having an accident overall?
 
-1.  Construct bucket A with 6 red and 94 green balls, and bucket B with 60 red
-    and 40 green balls.
+We will proceed as follows:
 
-2.  Randomly select a bucket with probabilities for A = .8 and B = .2, and
-    record the bucket chosen.
+1. Generate a population of N people.  Label each as `good driver` or `poor driver`.
 
-3.  Select a ball at random from the chosen bucket. If the ball is green,
-    go back to step 2; if red, continue to step 4. In either case,
-    replace the ball selected.
+1. Simulate the last year for each person: did they have an accident or not?
 
-4.  Select another ball from the bucket chosen in step 2. If it is red,
-    record "Y," if green, record "N."
+2. Select only the ones that had an accident last year.
 
-5.  Repeat steps 2 - 4 perhaps 1000 times, and determine the proportion
-    "Y" in relation to (Y + N). The final answer should be approximately
-    \$4450.
+3. Among those, calculate what their average risk is of making an accident.  This will indicate the appropriate insurance premium.
+
+```{python}
+N = 100000
+cost_per_percent = 100
+
+people = np.random.choice(
+    ['good driver', 'poor driver'], p=[0.8, 0.2],
+    size=N
+)
+
+good_driver = (people == 'good driver')
+poor_driver = ~good_driver
+
+# Did they have an accident last year?
+had_accident = np.zeros(N, dtype=bool)
+had_accident[good_driver] = np.random.choice(
+    [True, False], p=[0.06, 0.94],
+    size=np.count_nonzero(good_driver)
+)
+had_accident[poor_driver] = np.random.choice(
+    [True, False], p=[0.6, 0.4],
+    size=np.count_nonzero(poor_driver)
+)
+
+ppl_with_accidents = people[had_accident]
+N_good_driver_accidents = np.count_nonzero(ppl_with_accidents == 'good driver')
+N_poor_driver_accidents = np.count_nonzero(ppl_with_accidents == 'poor driver')
+N_all_with_accidents = N_good_driver_accidents + N_poor_driver_accidents
+
+avg_risk_percent = (N_good_driver_accidents * 0.06 +
+                    N_poor_driver_accidents * 0.6) / N_all_with_accidents * 100
+
+premium = avg_risk_percent * cost_per_percent
+
+print(f'{premium:.0f} USD')
+
+```
+
+The answer should be around 4450 USD.
 
 **Screening for Disease**
+
+<!- **TODO: SHALL WE REMOVE THIS PROBLEM, OR INTEGRATE PARTS OF ITS DESCRIPTION WITH THE COVID EXAMPLE?** -->
 
 This is a classic Bayesian problem (quoted by Tversky and Kahnemann,
 1982, pp. 153-154, from Cascells, Schoenberger, and Grayboys, 1978, p.
@@ -249,102 +509,181 @@ One may obtain an answer as follows:
     only one piece of training for simulation is required: Teach the
     habit of saying "I'll simulate it" and then actually doing so.
 
-    Fundamental problems in statistical practice
-    --------------------------------------------
+## Fundamental problems in statistical practice
 
-    Box and Tiao begin their classic exposition of Bayesian statistics
-    with the analysis of a famous problem first published by Fisher
-    (1959).
+Box and Tiao begin their classic exposition of Bayesian statistics
+with the analysis of a famous problem first published by Fisher
+(1959).
 
-    ...there are mice of two colors, black and brown. The black mice are
-    of two genetic kinds, homozygotes ( *BB* ) and heterozygotes ( *Bb*
-    ), and the brown mice are of one kind ( *bb* ). It is known from
-    established genetic theory that the probabilities associated with
-    offspring from various matings are as \[in Table 25-1\]:
+> ...there are mice of two colors, black and brown. The black mice are
+> of two genetic kinds, homozygotes (*BB*) and heterozygotes (*Bb*),
+> and the brown mice are of one kind (*bb*). It is known from
+> established genetic theory that the probabilities associated with
+> offspring from various matings are as listed in \@ref(tab:mice-genetics).
 
-    Suppose we have a "test" mouse which is black and has been produced
-    by a mating between two ( *Bb* ) mice. Using the information in the
-    last line of the table, it is seen that, in this case, the prior
-    probabilities of the test mouse being homozygous ( *BB* ) and
-    heterozygous ( *Bb* ) are precisely known, and are 1/3 and 2/3
-    respectively. Given this prior information, Fisher supposed that the
-    test mouse was now mated with a brown mouse and produced (by way of
-    data) seven black offspring. One can then calculate, as Fisher
-    (1959, p.17) did, the probabilities, posterior to the data, of the
-    test mouse being homozygous ( *BB* ) and heterozygous ( *Bb* ) using
-    Bayes' theorem. . .
+                   BB (black)  Bb (black)  bb (brown)
+------------------ ----------- ----------- ----------
+BB mated with bb   0           1           0
+Bb mated with bb   0           ½           ½
+Bb mated with Bb   ¼           ½           ¼
+------------------ ----------- ----------- ----------
 
-    We see that, given the genetic characteristics of the offspring, the
-    mating results of 7 black offspring changes our knowledge
-    considerably about the test mouse being ( *BB* ) or ( *Bb* ), from a
-    prior probability ratio of 2:1 in favor of ( *Bb* ) to a posterior
-    ratio of 64:1 against it (1973, pp. 12-14).
+Table: (\#tab:mice-genetics) Probabilities for Genetic Character of Mice Offspring. Source: Box and Tiao, 1973, pp. 12-14
 
-    1.  Let us begin, as do Box and Tiao, by restricting our attention
-        to the third line in Table 25-1, and let us represent those
-        results with 4 balls---1 black with "BB" painted on it, 2 black
-        with "Bb" painted on them, and 1 brown which we immediately
-        throw away because we are told that the "test mouse" is black.
-        The remaining 3 (black) balls are put into a bucket labeled
-        "test."
+Suppose we have a "test" mouse which has been produced
+by a mating between two (*Bb*) mice and is black.
+What is the genetic kind of this mouse?
 
-        Table 25-1
+To answer that, we look at the information in the last line of the table:
+it shows that the probabilities of a test mouse is of kind *BB* and *Bb* are precisely known, and are 1/3 and 2/3 respectively ((1/4)/(1/4 + 1/2) vs (1/2)/(1/4 + 1/2)).  We call this our "prior" estimate---in other words, our estimate before seeing data.
 
-        **Probabilities for Genetic Character of Mice Offspring**
+Suppose the test mouse is now mated with a brown mouse (of kind *bb*)
+and produces seven black offspring.
+Before, we thought that it was more likely for the parent to be of kind *Bb* than of kind *BB*.
+But if that were true, then we would have expected to have seen some brown offspring (the probability of mating *Bb* with *bb* resulting in brown offspring is given as 0.5).
+Therefore, we sense that it may now be more likely that the parent was of type *BB* instead.
+How do we quantify that?
 
-        **Mice BB (black) Bb (black) bb (brown)**
+One can calculate, as Fisher (1959, p.17) did, the probabilities after seeing the data (we call this the *posterior* probability).
+This is typically done using using Bayes' rule.
 
-          ------------------ --- --- ---
-          BB mated with bb   0   1   0
-          Bb mated with bb   0   ½   ½
-          Bb mated with Bb   ¼   ½   ¼
-          ------------------ --- --- ---
+But instead of doing that, let's take the easy route out and simulate
+the situation instead.
 
-         Source: Box and Tiao, 1973, pp. 12-14
+1.  We begin, as do Box and Tiao, by restricting our attention
+    to the third line in Table \@ref(tab:mice-genetics).
+    We draw a mouse with label 'BB', 'Bb', or 'bb', using those
+    probabilities.
+    We were told that the "test mouse" is black, so if we draw 'bb',
+    we try again.
+    (Alternatively, we could draw 'BB' and 'Bb' with probabilities of
+    1/3 and 2/3 respectively.)
 
-    2.  From prior knowledge we know that a BB black mouse mated with a
-        bb brown mouse will produce all black mice (line 1 in the
-        table), and a Bb black mouse mated with a bb brown mouse will
-        produce 50 percent black mice and 50 percent brown mice. We
-        therefore construct two more buckets, one with a single black ball
-        (the bucket labeled "BB") and the other with one black ball and one
-        brown ball (the bucket labeled "Bb"). We now have three buckets.
+2.  We now want to examine the offspring of the test mouse when mated
+    with a brown "bb" mouse.  Specifically, we are only interested in
+    cases where all offspring were black.  We will store the genetic
+    kind of the parents of such offspring so that we can count them
+    later.
 
-    3.  Take a ball from bucket "test." If its label is "BB," record that
-        fact, take a ball (the only ball, which is black) from the BB
-        bucket, record its color (we knew this already), and replace the
-        ball into the BB bucket; the overall record of this trial is
-        "BB-black." If the ball drawn from bucket "test" says "Bb," draw a
-        ball from the Bb bucket, record, and replace; the record will
-        either be "Bb-black" or "Bb-brown."
+    If our test mouse is "BB", we already know that all their offspring will
+    be black ("Bb").  Thus, store "BB" in the parent list.
 
-    4.  Repeat step 3 seven times.
+3.  If our test mouse is "Bb", we have a bit more work to do.  Draw
+    seven offspring from the middle row of Table \@ref(tab:mice-genetics).
+    If all the offspring are black, store "Bb" in the parent list.
 
-    5.  Examine whether the record of the seven balls drawn from the BB
-        and Bb buckets are all black; if so, record "Y," otherwise "N."
+4.  Repeat steps 1-3 perhaps 10000 times.
 
-    6.  Repeat steps 3-5 perhaps 1000 times.
+5.  Now, out of all parents count the numbers of "BB" vs "Bb".
 
-    7.  Ignore all "N" records. Proceeding now if the result of step 5
-        is "Y": Count the number of cases which are BB and the number
-        which are Bb. The proportions of BB/"Y" and Bb/"Y" trials are
-        the probabilities that the test mouse is BB and Bb respectively.
+We will do a naïve implementation that closely follows the logic described above, followed by a slightly optimized version.
 
-Creating the correct simulation procedure is not easy, because Bayesian
-reasoning is very subtle---a reason it has been the cause of controversy
+```{python}
+N = 100000
+
+parents = []
+
+for i in range(N):
+    test_mouse = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25])
+
+    # The test mouse is black; since we drew a brown mouse skip this trial
+    if test_mouse == 'bb':
+        continue
+
+    # If the test mouse is 'BB', all 7 children are guaranteed to
+    # be 'Bb' black.
+    # Therefore, add 'BB' to the parent list.
+    if test_mouse == 'BB':
+        parents.append('BB')
+
+    # If the parent mouse is 'Bb', we draw 7 children to
+    # see whether all of them are black ('Bb').
+    # The probabilities come from the middle row of the table.
+    if test_mouse == 'Bb':
+      children = np.random.choice(['Bb', 'bb'], p=[0.5, 0.5], size=7)
+      if np.all(children == 'Bb'):
+          parents.append('Bb')
+
+# Now, count how many parents were 'BB' vs 'Bb'
+parents = np.array(parents)
+
+parents_BB = (parents == 'BB')
+parents_Bb = (parents == 'Bb')
+N_B = len(parents)
+
+p_BB = np.count_nonzero(parents_BB) / N_B
+p_Bb = np.count_nonzero(parents_Bb) / N_B
+
+print(f'p_BB = {p_BB:.3f}')
+print(f'p_Bb = {p_Bb:.3f}')
+print(f'Ratio: {p_BB/p_Bb:.1f}')
+```
+
+We see that all the offspring being black considerably changes the
+situation!
+We started with the odds being 2:1 in favor of Bb vs BB.
+The "posterior" or "after the evidence" ratio is closer to 64:1 in
+favor of *BB*! (1973, pp. 12-14)
+
+Let's tune the code a bit to run faster.  Instead of doing the trials
+one mouse at a time, we will do the whole bunch together.
+
+```{python}
+N = 1000000
+
+# In N trials, pair two Bb mice and generate a child
+test_mice = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25], size=N)
+
+# The resulting test mouse is black, so filter out all brown ones
+test_mice = test_mice[test_mice != 'bb']
+M = len(test_mice)
+
+# Each test mouse will now be mated with a brown mouse, producing 7 offspring.
+# We then store whether all the offspring were black or not.
+all_offspring_black = np.zeros(M, dtype=bool)
+
+# If a test mouse is 'BB', we are assured that all its offspring
+# will be black
+all_offspring_black[test_mice == 'BB'] = True
+
+# If a test mouse is 'Bb', we have to generate its offspring and
+# see whether they are all black or not
+test_mice_Bb = (test_mice == 'Bb')
+N_test_mice_Bb = np.count_nonzero(test_mice_Bb)
+
+# Generate all offspring of all 'Bb' test mice
+offspring = np.random.choice(
+    ['Bb', 'bb'], p=[0.5, 0.5], size=(N_test_mice_Bb, 7)
+)
+all_offspring_black[test_mice_Bb] = np.all(offspring == 'Bb', axis=1)
+
+# Find the genetic types of the parents of all-black offspring
+parents = test_mice[all_offspring_black]
+
+# Calculate what fraction of parents were 'BB' vs 'Bb'
+parents_BB = (parents == 'BB')
+parents_Bb = (parents == 'Bb')
+N_B = np.count_nonzero(all_offspring_black)
+
+p_BB = np.count_nonzero(parents_BB) / N_B
+p_Bb = np.count_nonzero(parents_Bb) / N_B
+
+print(f'p_BB = {p_BB:.3f}')
+print(f'p_Bb = {p_Bb:.3f}')
+print(f'Ratio: {p_BB/p_Bb:.1f}')
+```
+
+This yields a similar result, but in much shorter time---which means we can increase the number of trials and get a more accurate result.
+
+<!-- XXX TODO: How can we show how to derive this quantity using a filter tree type approach? XXX -->
+
+Creating the correct simulation procedure is not trivial, because Bayesian
+reasoning is subtle---a reason it has been the cause of controversy
 for more than two centuries. But it certainly is not easier to create a
 correct procedure using analytic tools (except in the cookbook sense of
-plug in and pray). And the difficult mathematics that underlie the
-analytic method (see
-
-e\. g., Box and Tiao, Appendix A1.1) make it almost impossible for the
-statistician to fully understand the procedure from be-
-
-ginning to end; if one is interested in insight, the simulation
-procedure might well be preferred. ^2^
-
-A computer program to speed the above steps appears in the Appendix to
-this chapter. The result found with a set of 1000 repetitions is .987.
+plug-and-pray). And the difficult mathematics that underlie the
+analytic method (see e.g. Box and Tiao, Appendix A1.1) make it almost impossible for the statistician to fully understand the procedure from beginning to end.
+If one is interested in insight, the simulation procedure might well be preferred.
 
 ## Problems based on normal and other distributions
 
@@ -370,7 +709,7 @@ conventional practice of working with a continuous distribution itself,
 of course. But a simulation necessarily works with discrete values. A
 feasible procedure must bridge this gulf.
 
-The logic for a problem of Schlaifer's will be only be sketched out. The
+The logic for a problem of Schlaifer's will only be sketched out. The
 procedure is rather novel, but it has not heretofore been published and
 therefore must be considered tentative and requiring particular
 scrutiny.
@@ -506,33 +845,34 @@ proportions of sample means that fall into this interval.
     the *difference* between the two tails; for a universe with the same
     mean as the sample, this difference would be zero.
 
-    Conclusion
-    ----------
+## Conclusion
 
-    All but the simplest problems in conditional probability are
-    confusing to the intuition even if not difficult mathematically. But
-    when one tackles Bayesian and other problems in probability with
-    experimental simulation methods rather than with logic, neither
-    simple nor complex problems need be difficult for experts or
-    beginners.
+All but the simplest problems in conditional probability are
+confusing to the intuition even if not difficult mathematically. But
+when one tackles Bayesian and other problems in probability with
+experimental simulation methods rather than with logic, neither
+simple nor complex problems need be difficult for experts or
+beginners.
 
-    This chapter shows how simulation can be a helpful and illuminating
-    way to approach problems in Bayesian analysis.
+This chapter shows how simulation can be a helpful and illuminating
+way to approach problems in Bayesian analysis.
 
-    Simulation has two valuable properties for Bayesian analysis:
+Simulation has two valuable properties for Bayesian analysis:
 
-    1.  It can provide an effective way to handle problems whose
-        analytic solution may be difficult or impossible. 2) Simulation
-        can provide insight to problems that otherwise are difficult to
-        understand fully, as is peculiarly the case with Bayesian
-        analysis.
+1. It can provide an effective way to handle problems whose
+   analytic solution may be difficult or impossible.
+   
+2. Simulation can provide insight to problems that otherwise are
+   difficult to understand fully, as is peculiarly the case with
+   Bayesian analysis.
 
 Bayesian problems of updating estimates can be handled easily and
 straightforwardly with simulation, whether the data are discrete or
 continuous. The process and the results tend to be intuitive and
 transparent. Simulation works best with the original raw data rather
-than with abstractions from them via percentages and distributions. This
-can aid the understanding as well as facilitate computation.
+than with abstractions from them via percentages and
+distributions. This can aid the understanding as well as facilitate
+computation.
 
 ## Endnotes
 

@@ -7,13 +7,20 @@ python-all: python-book python-nb
 
 r-all: r-book r-nb
 
+vector_images := $(wildcard diagrams/*.svg)
+
+diagrams := $(vector_images:.svg=.png)
+
+%.png : %.svg
+	-inkscape --export-area-drawing --export-png=$@ --export-dpi=300 $<
+
 book-%:
 	BOOK_ED=$* Rscript -e \
 			'bookdown::render_book("index.Rmd", config_file="_$*_bookdown.yml")'
 
-python-book: book-python
+python-book: $(diagrams) book-python
 
-r-book: book-r
+r-book: $(diagrams) book-r
 
 nb-%:
 	# Build notebooks for given version
