@@ -26,6 +26,9 @@ jobs:
             ~/R-dev
           key: ${{ runner.os }}-${{ hashFiles('requirements.txt') }}-${{ hashFiles('scripts/install_r_requirements.R') }}
 
+      - name: Install inkscape
+        run: sudo apt install inkscape
+
       - uses: actions/setup-python@v1
         with:
           python-version: '3.8'
