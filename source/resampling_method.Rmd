@@ -290,7 +290,7 @@ to solve this problem, which is:
 ```{python, opts.label="py_ed"}
 # Make an array of 1000 numbers to store our 1000 counts.
 # These all start off as 0, but we fill them in below as we do 1000 trials.
-counts = np.zeros(1000)
+z = np.zeros(1000)
 
 # Repeat one trial of the simulation 1000 times.
 for i in np.arange(1000):
@@ -304,15 +304,15 @@ for i in np.arange(1000):
     a = np.random.randint(1, 11, size=20)
     # Count the number of defective ambulances, and put the result in "b".
     b = np.count_nonzero(a == 1)
-    # Keep track of each trial's results in "counts".
-    counts[i] = b
+    # Keep track of each trial's results in "z".
+    z[i] = b
     # End this trial, then go back and repeat the process until all 1000 trials
     # are complete, then proceed.
 
 # This part runs after all 1000 trials have finished.
 
 # Determine how many trials resulted in more than 3 ambulances out of order.
-k = np.count_nonzero(counts > 3)
+k = np.count_nonzero(z > 3)
 
 # Convert to a proportion.
 kk = k / 1000
@@ -324,7 +324,7 @@ print(kk)
 ```{r, opts.label="r_ed"}
 # Make an array of 1000 numbers to store our 1000 counts.
 # These all start off as 0, but we fill them in below as we do 1000 trials.
-counts <- numeric(1000)
+z <- numeric(1000)
 # Repeat one trial of the simulation 1000 times.
 for (i in 1:1000) {
     # Everything from the open curly bracket above - {
@@ -338,8 +338,8 @@ for (i in 1:1000) {
     a <- sample(1:10, 20, replace=TRUE)
     # Count the number of defective ambulances, and put the result in "b".
     b <- sum(a == 1)
-    # Keep track of each trial's results in "counts".
-    counts[i] <- b
+    # Keep track of each trial's results in "z".
+    z[i] <- b
     # End this trial, then go back and repeat the process until all 1000 trials
     # are complete, then proceed.
 }
@@ -347,7 +347,7 @@ for (i in 1:1000) {
 # This part runs after all 1000 trials have finished.
 
 # Determine how many trials resulted in more than 3 ambulances out of order.
-k = sum(counts > 3)
+k = sum(z > 3)
 
 # Convert to a proportion.
 kk = k / 1000
@@ -356,7 +356,7 @@ kk = k / 1000
 print(kk)
 ```
 
-The `r py_or_r('counts[i] = b', 'counts[i] <- b')` statement that follows the `r
+The `r py_or_r('z[i] = b', 'z[i] <- b')` statement that follows the `r
 py_or_r('np.count_nonzero', 'sum')` *counting* operation simply keeps track of
 the results of each trial, placing the number of defective ambulances that
 occur in each trial in a location that we usually call `z`. This is done in
@@ -376,7 +376,7 @@ opening --- `{` --- and closing --- `}` --- curly brackets.
 Since our aim is to count the number of days in which more than 3 (4 or
 more) defective ambulances occur, we use another *counting* command
 (`r py_or_r('count_nonzero', 'sum')`) at the end of the 1000 trials.  This
-counting command *counts* how many times more than 3 defects occurred in the
+command *counts* how many times more than 3 defects occurred in the
 1000 days recorded in our `z` array, and we place the result in still another
 location `k`. This gives us the total number of days where 4 or more defective
 ambulances are seen to occur. Then we divide the number in `k` by 1000, the
