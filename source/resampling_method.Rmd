@@ -238,12 +238,29 @@ The core of the program to simulate one trial of ambulances problem above
 begins with this command to the computer:
 
 ```{python, opts.label="py_ed"}
-# Use NumPy ("np") to generate 20 random integers from 1 up to, but *not
+# Get NumPy's random number generator: its "set of dice"
+rng = np.random.default_rng()
+
+# Now, roll the die 20 times to generate random integers from 1 up to, but *not
 # including* 11.  Therefore, this generates 20 numbers from 1 through 10
 # inclusive.
 # Store the 20 numbers as an "array" with the name "a"
-a = np.random.randint(1, 11, size=20)
+a = rng.integers(1, 11, size=20)
 ```
+
+::: {.callout} :::
+::: {.title}
+NumPy's Random Number Generator
+:::
+
+Here some text about how NumPy's RNG works.
+
+```python
+def foo(x):
+    return x**2
+```
+
+::::::::::::::::::
 
 ```{r, opts.label="r_ed"}
 # Generate 20 random integers from 1 through 10.
