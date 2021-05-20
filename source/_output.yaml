@@ -1,6 +1,8 @@
 bookdown::gitbook:
   css: [style.css, font-awesome.min.css]
   table_css: false
+  includes:
+    in_header: table-style.html
   config:
     toc:
       collapse: section
