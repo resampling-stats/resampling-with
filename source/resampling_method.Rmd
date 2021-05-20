@@ -144,11 +144,7 @@ df = pd.DataFrame(
 ```
 
 ```{r, veh-numbers, echo=FALSE}
-knitr::kable(py$df,
-  booktabs = TRUE,
-  row.names = TRUE,
-  caption = '25 simulations of 20 ambulances'
-)
+table(py$df, caption = '25 simulations of 20 ambulances')
 ```
 
 To get the answer for each day, we count the number of zeros in each row.  The
@@ -161,9 +157,8 @@ df_counts['#1'] = (df == 1).sum(axis=1)
 ```
 
 ```{r, veh-numbers-counts, echo=FALSE}
-knitr::kable(py$df_counts,
-  booktabs = TRUE,
-  row.names = TRUE,
+table(
+  py$df_counts,
   caption = '25 simulations of 20 ambulances, with counts'
 )
 ```
