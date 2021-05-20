@@ -45,7 +45,7 @@ make python-all
 Then, to rebuild an individual chapter:
 
 ```
-./scripts/rebuild_chapter.sh source/bayes_simulation.Rmd
+scripts/rebuild_chapter.sh bayes_simulation.Rmd
 ```
 
 *You need to do a full build first before the individual chapter build will work*.  The script should warn you about this if you forget.
