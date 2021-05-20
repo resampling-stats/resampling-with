@@ -21,6 +21,20 @@ resampling_with:
 
 # The Resampling method {#resampling-method}
 
+Check out \@ref(tab:mice-genetics).
+
+::: {.lightable}
+                   BB (black)  Bb (black)  bb (brown)
+------------------ ----------- ----------- ----------
+BB mated with bb   0           1           0
+Bb mated with bb   0           ½           ½
+Bb mated with Bb   ¼           ½           ¼
+------------------ ----------- ----------- ----------
+
+Table: (\#tab:mice-genetics) Probabilities for Genetic Character of Mice Offspring.
+       Source: Box and Tiao, 1973, pp. 12-14
+:::
+
 This chapter is a brief introduction to the resampling method of solving
 problems in probability and statistics. A simple illustrative problem is
 stated, and then the step-by-step solution with resampling is shown,

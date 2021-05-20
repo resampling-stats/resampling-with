@@ -117,6 +117,7 @@ table <- function(df, caption) {
     rt,
     lightable_options = c("striped", "hover"),
     latex_options = c("striped", "scale_down"),
-    full_width = F
+    full_width = T,
+    position = "center"
   )
 }
