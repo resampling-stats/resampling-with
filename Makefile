@@ -33,7 +33,7 @@ website: webclean python-all r-all landing-page
 	cp -r $(R_BOOK_DIR) $(WEB_DIR)
 
 github: website
-	ghp-import -n _www
+	ghp-import -n $(WEB_DIR)
 	git push origin gh-pages:gh-pages --force
 	@echo
 	@echo "Published to Github"
