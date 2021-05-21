@@ -25,7 +25,9 @@ if (length(to_install)) {
 # "In this mode, R will install packages to ~/R-dev. This is useful to avoid
 # clobbering the existing versions of CRAN packages that you need for other
 # tasks."
+fs::dir_create('~/R-dev')  # ?also correct for Windows
 devtools::dev_mode(on=TRUE)
+
 # Always install reticulate from Github
 # Reticulate is the package that allows execution of Python in the R notebook,
 # and interaction between the R and Python workspace.

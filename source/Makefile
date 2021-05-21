@@ -12,7 +12,7 @@ vector_images := $(wildcard diagrams/*.svg)
 diagrams := $(vector_images:.svg=.png)
 
 %.png : %.svg
-	-inkscape --export-area-drawing --export-png=$@ --export-dpi=300 $<
+	inkscape --export-area-drawing --export-png=$@ --export-dpi=300 $<
 
 book-%:
 	BOOK_ED=$* Rscript -e \
