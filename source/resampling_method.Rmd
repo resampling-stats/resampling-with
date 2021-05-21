@@ -280,6 +280,7 @@ rng = np.random.default_rng()
 # including* 11.  Therefore, this generates 20 numbers from 1 through 10
 # inclusive.
 # Store the 20 numbers as an "array" with the name "a"
+rng = np.random.default_rng()
 a = rng.integers(1, 11, size=20)
 ```
 
