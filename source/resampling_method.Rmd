@@ -19,30 +19,27 @@ resampling_with:
     ed2_fname: 05-Chap-1
 ---
 
-# The Resampling method {#resampling-method}
+# The resampling method {#resampling-method}
 
-Check out \@ref(tab:mice-genetics).
+This chapter is a brief introduction to the resampling method of
+solving problems in probability and statistics.  We're going to dive
+right in and solve a problem hands-on.
 
-                   BB (black)  Bb (black)  bb (brown)
------------------- ----------- ----------- ----------
-BB mated with bb   0           1           0
-Bb mated with bb   0           ½           ½
-Bb mated with Bb   ¼           ½           ¼
------------------- ----------- ----------- ----------
+You will see that the resampling method is easy to understand and
+apply: all it requires is to understand the physical problem. You then
+simulate a statistical model of the physical problem with techniques
+that are intuitively obvious, and estimate the probability sought with
+repeated random sampling.
 
-Table: (\#tab:mice-genetics)Probabilities for Genetic Character of Mice Offspring.
-       Source: Box and Tiao, 1973, pp. 12-14
+After finding a solution, we will look at the more conventional
+formulaic approach, and how that compares.  Here's the spoiler: it
+requires you to understand complex formulas, and to choose the correct
+one from many.
 
-This chapter is a brief introduction to the resampling method of solving
-problems in probability and statistics. A simple illustrative problem is
-stated, and then the step-by-step solution with resampling is shown,
-using both by-hand methods and a computer program. The older conventional
-formulaic approach to such a problem is then discussed. The conventional
-analytic method requires that you understand complex formulas, and too often
-one selects the wrong formula. In contrast, resampling requires that you first
-understand the physical problem fully. Then you simulate a statistical model of
-the physical problem with techniques that are intuitively obvious, and you
-estimate the probability with repeated random sampling.
+After reading this chapter, you will understand why we are excited
+about the resampling method, and why it will allow you to approach
+even even hard problems without knowing sophisticated statistic
+techniques.
 
 ## The resampling approach in action
 
@@ -74,44 +71,47 @@ procedure for ambulance #2, ambulance #3 and so forth. Having repeated
 the procedure *20* times, we now have a representation of all
 ambulances for a single day.
 
-We can now repeat this whole process as many times as we like, each
-time coming up with a representation of a different day and how many
-ambulances will be out-of-service then.
+We can now repeat this whole process as many times as we like: each
+time, we come up with a representation for a different day, telling us
+how many ambulances will be out-of-service on that day.
 
-After collecting evidence for, say, 50 or 100 experimental days we
-determine the proportion of the experimental days on which three or
-more ambulances are out of order. That proportion is an estimate of
-the probability that three or more ambulances will be out of order on
-a given day---the answer we seek. This procedure is an example of
-Monte Carlo simulation, which is the heart of the resampling method of
+After collecting evidence for, say, 50 experimental days we determine
+the proportion of the experimental days on which three or more
+ambulances are out of order. That proportion is an estimate of the
+probability that three or more ambulances will be out of order on a
+given day---the answer we seek. This procedure is an example of Monte
+Carlo simulation, which is the heart of the resampling method of
 statistical estimation.
 
-A more direct way to answer this question would be to examine the firm's
-actual records for the past 100 days or 500 days to determine how many
-days had three or more ambulances out of order. But the resampling procedure
-described above gives us an estimate even if we do not have such
-long-term information. This is realistic; it is frequently the case in
-the workaday world that we must make estimates on the basis of
-insufficient history about an event.
+A more direct way to answer this question would be to examine the
+firm's actual records for the past 100 days or, better, 500 days (if
+that's available) to determine how many days had three or more
+ambulances out of order. But the resampling procedure described above
+gives us an estimate even if we do not have such long-term
+information. This is realistic; it is frequently the case in the real
+world that we must make estimates on the basis of insufficient history
+about an event.
 
-A quicker resampling method than the coins could be obtained with 20 ten-sided
-dice or spinners. Each one of the dice, marked with one of its ten sides as
-"out-of-order," would indicate the chance of a single ambulance being out of
-order on a given day. A single pass with the 20 dice or spinners allows us to
-count whether three or more ambulances turn up out of order. So in a single
-throw of the 20 dice we can get an experimental trial that represents a single
-day. And in a hundred quick throws of the 20 dice---which probably takes less
-than 5 minutes---we can get a fast and reasonably-accurate answer to our
-question. But getting hold of ten-sided dice might be a nuisance.
+A quicker resampling method than the coins could be obtained with 20
+ten-sided dice or spinners (like those found in the popular Dungeons &
+Dragons games). For each die, we mark one of its ten sides as
+"out-of-order".  This indicate the chance of a single ambulance being
+out of order on a given day. In a single throw of the 20 dice we now
+get an experimental trial that represents a single day; we just have
+to count whether three or more ambulances turn up "out of order". In a
+hundred quick throws of the 20 dice---which probably takes less than 5
+minutes---we can get a fast and reasonably-accurate answer to our
+question.
 
 ## Randomness from your computer
 
-Computers make it easy to generate random numbers for resampling.  Random
-numbers are numbers were it is effectively impossible to predict which number
-is coming next.  For example, let's say I ask for a random number between 1 and
-10 inclusive.  We accept that number is random if I have no way of doing better
-than chance in predicting what that number is going to be.  We will go into
-more detail about what we mean by *random* and *chance* later in the book.
+Computers make it easy to generate random numbers for resampling.
+Random numbers are numbers were it is effectively impossible to
+predict which number is coming next. If we ask the computer for a
+number between 1 and 10, and we are unable to do better than chance in
+predicting what that number is going to be, we accept that it is
+random.  We will go into more detail about what exactly we mean by
+*random* and *chance* later in the book.
 
 <!--
 Press Your Luck
@@ -120,23 +120,22 @@ The Michael Larsen Incident
 https://web.archive.org/web/20170712041017/http://www.rotten.com/library/conspiracy/press-your-luck/
 -->
 
-We can use random numbers from the computer to simulate our problem.  For
-example, we can ask the computer to make us a random number between 1 and 10
-(inclusive) to represent one ambulance. If we say that the digit 1 represents
-"out-of-order" and the digits 2 through 10 represent "in operation", then any
-one random digit gives us a trial observation for a single ambulance.  To get
-an experimental trial for a single day we look at 20 digits and count the
-number of ones.
-We then look at one hundred or two hundred sets of 20 digits and count the
-proportion of sets whose 20 digits show three or more ambulances being
-"out-of-order". Once again, that proportion estimates the probability that
-three or more ambulances will be out-of-order on any given day.
+We can use random numbers from computers to simulate our problem.  For
+example, we can ask the computer to choose a random number between 1
+and 10 to represent one ambulance. Let's say the number 1 represents
+"out-of-order" and 2 through 9 "in operation", then any one random
+number gives us a trial observation for a single ambulance.  To get an
+experimental trial for a single day we look at 20 numbers and count
+how many of them are 1.  We then look at, say, one hundred sets of 20
+numbers and count the proportion of sets whose 20 numbers show three or
+more ambulances being "out-of-order". Once again, that proportion
+estimates the probability that three or more ambulances will be
+out-of-order on any given day.
 
-Soon we will do all these steps with some `r book_lang` code, but for now,
-please take in on faith that we have made 20 random numbers, each from 1
-through 10, and we have done that 25 times, to simulate 25 days of 20
-ambulances. We could arrange those numbers in a table like table
-\@ref(tab:veh-numbers):
+Soon we will do all these steps with some `r book_lang` code, but for
+now, consider Table \@ref(tab:veh-numbers).  In each row, we placed 20
+numbers, each one representing an ambulance.  We added 25 such rows,
+each one representing a different day.
 
 ```{python, echo=FALSE}
 import numpy as np
@@ -159,8 +158,9 @@ df = pd.DataFrame(
 table(py$df, caption = '25 simulations of 20 ambulances')
 ```
 
-To get the answer for each day, we count the number of zeros in each row.  The
-counts go in the final column called "#1" (for "number of ones").
+To know how many ambulances were "out of order" on any given day, we
+count number of ones in that row.  We place the the counts in the final column
+called "#1" (for "number of ones"):
 
 ```{python, echo=FALSE}
 # Count the number of ones in each row, put in new column
@@ -175,34 +175,35 @@ table(
 )
 ```
 
-Each value in the last column of \@ref(tab:veh-numbers-counts) is the count of
-ones in that row, and therefore, the result from our simulation of one day.
+Each value in the last column of Table \@ref(tab:veh-numbers-counts)
+is the count of ones in that row and, therefore, the result from our
+simulation of one day.
 
 We can estimate how often three or more ambulances would break down by looking
-for values of three or greater in the last column.  We find there are `r
-sum(py$df_counts['#1'] >= 3)` rows with three or more in the last column. Finally
+for values of three or greater in the last column.  We find there are
+`r sum(py$df_counts['#1'] >= 3)` rows with three or more in the last column. Finally
 we divide this number of rows by the number of trials (`r py$n_trials`) to get an
 estimate of the *proportion* of days with three or more breakdowns. The result
 is `r sum(py$df_counts['#1'] >= 3) / py$n_trials`.
 
-## Building the problem using `r book_lang`
+## Solving the problem using `r book_lang`
 
 Here we rush ahead to show you how to do this simulation in `r book_lang`.
 
-In the text that follows we go through the `r book_lang` code for the
-simulation.  Please don't expect to understand this code right away.  The rest
-of this book goes into more detail about how `r book_lang` code works, and how
-you can use `r book_lang` to build your own simulations.  Here we want to show
-you what this code looks like, to give you an idea of where we are headed.
+We go through the `r book_lang` code for the simulation, but we don't
+expect you to understand all of it right now.  The rest of this book
+goes into more detail about how `r book_lang` code works, and how you
+can use `r book_lang` to build your own simulations.  Here we just
+want to show you what this code looks like, to give you an idea of
+where we are headed.
 
-For each line of the code below, we give a detailed explanation, but you can
-also *run* the code yourself, to see it in action.  The link below allows you
-to open this code as a *notebook*, and run it.  But, you may want to read the
-next chapter [About the technology], to learn more about how to run this
-notebook.  For now, we encourage you read the text here carefully, without
-using the technology to run the code.  The text explains what the code means.
-Later, after you have read more about the technology, you might consider coming
-back to the links here to *run* the code.
+While you can *run* the code below on your own computer, for now we
+only need you to read it and follow along; the text explains what each
+line of code does.
+
+Later, after reading the "[About the technology]" chapter---which
+shows how to execute notebooks online or on your own computer---you
+can come back and try it for yourself.
 
 `r begin_nb('ambulances')`
 
