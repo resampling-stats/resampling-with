@@ -128,11 +128,36 @@ endeavor.
 The term *statistics* sometimes causes confusion and therefore needs
 explanation.
 
-Statistics has two common meanings.  It can be the plural of *statistic*,
+*Statistics* has two common meanings.  It can be the plural of *statistic*,
 meaning more than one statistic.  A statistic is a *number* that we can
 calculate from a larger collection of numbers we are interested in.  We talk
 more about this below.  Statistics can also refer to a field of inquiry that
-studies how we can calculate and interpret such numbers.  For example, many universities have departments of statistics.
+studies how we can calculate and interpret such numbers.  For example, many
+universities have departments of statistics.
+
+We said that a *statistic* is a number we can calculate from a larger
+collection of numbers.  For example, at the end of the 19th century, a
+scientist named Francis Galton was interested in the inheritance of human
+characteristics such as height [-@galton1886regression]. To study this, he did
+a survey where he asked people to send in their heights, and the heights of
+their adult children.  He wanted to see how well the heights of the parents
+predicted the heights of the children.  We have Galton's original notebooks,
+so we can work out all 205 of the mothers' heights he recorded from his
+survey.  Here are the heights for the first 10 mothers, in inches:
+
+```{python, echo=FALSE}
+import os.path as op
+import pandas as pd
+families = pd.read_csv(op.join('data', 'galton_families.csv'))
+mothers = families.loc[:, 'mother':'mother'].rename(
+    columns={'mother': 'Height (inches)'})
+```
+
+```{r, mothers-heights, echo=FALSE}
+table(py$mothers[1:10,], caption = "First 10 mothers' heights")
+```
+
+Like Galton, we may well want to *summarize* this collection of 205 numbers.  For example, we might want to calculate the minimum of the heights, or the maximum, or the average.
 
 statistic can be *descriptive* or *inferential*.  A descriptive statistic is a
 number (or set of numbers) that aim to describe the larger set of number. Some
