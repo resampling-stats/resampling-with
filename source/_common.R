@@ -108,3 +108,17 @@ knitr::opts_template$set(r_ed = list(eval=is_r_ed, echo=is_r_ed),
 
 # For Python code.
 library(reticulate)
+
+table <- function(df, caption) {
+  rt <- kableExtra::kable(df, caption = caption, booktabs = T)
+
+  # See https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
+  # Update table-style.html to match
+  kableExtra::kable_paper(
+    rt,
+    lightable_options = c("striped", "hover"),
+    latex_options = c("striped", "scale_down"),
+    full_width = F,
+    position = "center"
+  )
+}

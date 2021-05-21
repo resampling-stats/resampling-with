@@ -41,3 +41,42 @@ div.interact-context {
 .notebook-link:hover {
   text-decoration:none;
 }
+
+.callout {
+  border: 1px solid gray;
+  margin: 2rem;
+}
+
+.callout > :not(:first-child) {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.callout .title {
+  background: lightBlue;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+  line-height: 3.5rem;
+  height: 3.5rem;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+table {
+  font-size: 80%;
+  border-bottom: 1px solid darkgray;
+}
+
+table caption {
+  text-align: left;
+  font-size: 125%;
+  font-weight: bold;
+  overflow-x: visible;
+  white-space: pre;
+  border-bottom: 1px solid darkgray;
+  margin-bottom: 1.5rem;
+}
+
+.lightable-paper {
+  width: auto;
+}
