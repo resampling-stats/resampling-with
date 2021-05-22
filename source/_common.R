@@ -112,7 +112,7 @@ library(reticulate)
 # Nice-looking table.
 ketable <- function(df, caption) {
   rt <- kableExtra::kable(df, caption = caption, booktabs = T)
-
+  if (knitr::is_latex_output()) { return(rt) }
   # See https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
   # Update table-style.html to match
   kableExtra::kable_paper(
