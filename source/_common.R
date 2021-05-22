@@ -123,3 +123,17 @@ ketable <- function(df, caption) {
     position = "center"
   )
 }
+
+# Including SVG
+# https://stackoverflow.com/a/56044642/1939576
+# Notice need for `rsvg-convert` binary.
+include_svg = function(path) {
+  if (knitr::is_latex_output()) {
+    output = xfun::with_ext(path, 'pdf')
+    # you can compare the timestamp of pdf against svg to avoid conversion if necessary
+    system2('rsvg-convert', c('-f', 'pdf', '-a', '-o', shQuote(c(output, path))))
+  } else {
+    output = path
+  }
+  knitr::include_graphics(output)
+}

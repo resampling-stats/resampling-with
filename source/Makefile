@@ -18,6 +18,10 @@ book-%:
 	BOOK_ED=$* Rscript -e \
 			'bookdown::render_book("index.Rmd", config_file="_$*_bookdown.yml")'
 
+pdf-book-%:
+	BOOK_ED=$* Rscript -e \
+			'bookdown::render_book("index.Rmd", config_file="_$*_bookdown.yml", output_format="bookdown::pdf_book")'
+
 python-book: $(diagrams) book-python
 
 r-book: $(diagrams) book-r
