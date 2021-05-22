@@ -9,6 +9,8 @@ github-repo: resampling-stats/resampling-with
 cover-image: cover.png
 site: bookdown::bookdown_site
 documentclass: book
+# Must be here as well as in individual docs using ketable.
+always_allow_html: true
 bibliography: ["simon_refs.bib", "data_science.bib"]
 biblio-style: "apalike"
 link-citations: true
