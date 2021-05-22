@@ -49,11 +49,11 @@ whether to buy insurance.
 These are some examples of the kinds of problems that we can handle with the
 methods described in this book:
 
-1. *You are a doctor* trying to develop a cure for cancer. Currently you are
-   working on a medicine labeled CCC. You have data from patients to whom
-   medicine CCC was given. You want to judge on the basis of those results
-   whether CCC really cures cancer or whether it is no better than a sugar
-   pill.
+1. *You are a doctor* trying to develop a treatment for blood clots in COVID19.
+   Currently you are working on a medicine labeled CCC. You have data from
+   patients to whom medicine CCC was given. You want to judge on the basis of
+   those results whether CCC really reduces blood clots or whether it is no
+   better than a sugar pill.
 
 2. *You are the campaign manager* for the Republicrat candidate for President
    of the United States. You have the results from a recent poll taken in New
@@ -67,18 +67,17 @@ methods described in this book:
    three or more of them will be out of action.
 
 2. *You are an environmental scientist* monitoring levels of phosphorus
-   pollution in a lake in Ireland [@zhou2000long].  The average value for the
-   9 previous years of measurement is 74 units, but this year's value is 111
-   units.  Is this increase due to some important change in phosphorus levels
-   reaching the lake, or could this be the result of the usual fluctuation in
-   the phosphorus measurements?
+   pollution in a lake [@zhou2000long].  The phosphorus levels have all been
+   been below 70 units until 1990, but they have all been above 70 since then.
+   Does this increase indicate some important change or could it be due to some
+   chance ordinary variation in the yearly levels?
 
 The core of all these problems, and of the others that we will deal with in
-this book, is that you want to know the "chance" or "probability" —
-different words for the same idea — that some event will or will not happen, or
-that something is true or false. To put it another way, we want to answer
-questions about "What is the probability that...?", given the body of
-information that you have in hand.
+this book, is that you want to know the "chance" or "probability" — different
+words for the same idea — that some event will or will not happen, or that
+something is true or false. To put it another way, we want to answer questions
+about "What is the probability that...?", given the body of information that
+you have in hand.
 
 The question "What is the probability that...?" is usually not the ultimate
 question that interests us at a given moment.
@@ -89,23 +88,23 @@ decisions, related to the questions about probability stated above, that
 ultimately we would like to make:
 
 1. *Should you (the researcher) advise doctors to prescribe medicine CCC* for
-   patients, or, should you (the researcher) continue to study CCC before
-   releasing it for use? A related matter: should you and other research
+   COVID19 patients, or, should you (the researcher) continue to study CCC
+   before releasing it for use? A related matter: should you and other research
    workers feel sufficiently encouraged by the results of medicine CCC so that
    you should continue research in this general direction rather than turning
-   to some other promising line of research? These are just two of the
-   possible decisions that might be influenced by the answer to the question
-   about the probability that medicine CCC cures cancer.
+   to some other promising line of research? These are just two of the possible
+   decisions that might be influenced by the answer to the question about the
+   probability that medicine CCC treats blood clots in COVID19.
 
 2. *Should you advise the Republicrat presidential candidate to go to New
    Hampshire* to campaign? If the poll tells you conclusively that she or he
    will not win in New Hampshire, you might decide that it is not worthwhile
    investing effort to campaign there. Similarly, if the poll tells you
-   conclusively that she or he surely will win in New Hampshire, you probably
-   would not want to campaign further there. But if the poll is not conclusive
-   in one direction or the other, you might choose to invest the effort to
-   campaign in New Hampshire. Analysis of the chances of winning in New
-   Hampshire based on the poll data can help you make this decision sensibly.
+   conclusively that they surely will win in New Hampshire, you probably would
+   not want to campaign further there. But if the poll is not conclusive in one
+   direction or the other, you might choose to invest the effort to campaign in
+   New Hampshire. Analysis of the chances of winning in New Hampshire based on
+   the poll data can help you make this decision sensibly.
 
 3. *Should your company buy more ambulances*? Clearly the answer to this
    question is affected by the probability that a given number of your
@@ -113,10 +112,10 @@ ultimately we would like to make:
    estimated probability will be only one part of the decision.
 
 4. *Should we invest in a search for new causes of phosphorus pollution* as a
-   result of the most recent measurement from the lake?  If the causes have
-   not changed, and the unusual value we observed was just the result of
-   the usual variability, we will have invested time and money in a search
-   where it could better have been spent elsewhere.
+   result of the recent measurement from the lake?  If the causes have not
+   changed, and the higher recent values were just the result of ordinary
+   variation across the years, we could end up investing time and money in a
+   search where it could better have been spent elsewhere.
 
 The kinds of questions to which we wish to find probabilistic and statistical
 answers may be found throughout the social, biological and physical sciences;
@@ -128,62 +127,65 @@ endeavor.
 The term *statistics* sometimes causes confusion and therefore needs
 explanation.
 
-*Statistics* has two common meanings.  It can be the plural of *statistic*,
-meaning more than one statistic.  A statistic is a *number* that we can
-calculate from a larger collection of numbers we are interested in.  We talk
-more about this below.  Statistics can also refer to a field of inquiry that
-studies how we can calculate and interpret such numbers.  For example, many
-universities have departments of statistics.
-
-We said that a *statistic* is a number we can calculate from a larger
-collection of numbers.  For example, at the end of the 19th century, a
-scientist named Francis Galton was interested in the inheritance of human
-characteristics such as height [-@galton1886regression]. To study this, he did
-a survey where he asked people to send in their heights, and the heights of
-their adult children.  He wanted to see how well the heights of the parents
-predicted the heights of the children.  We have Galton's original notebooks,
-so we can work out all 205 of the mothers' heights he recorded from his
-survey.  Here are the heights for the first 10 mothers, in inches:
+A statistic is a *number* that we can calculate from a larger collection of
+numbers we are interested in.  For example, here are the yearly measures of
+"soluble reactive phosphorus" (SRP) from a Lough Erne — a lake in Ireland.
 
 ```{python, echo=FALSE}
 import os.path as op
+import numpy as np
 import pandas as pd
-families = pd.read_csv(op.join('data', 'galton_families.csv'))
-mothers = families.loc[:, 'mother':'mother'].rename(
-    columns={'mother': 'Height (inches)'})
+lake = pd.read_csv(op.join('data', 'lough_erne.csv'))
+yearly_srp = lake.loc[:, ['Year', 'SRP']].copy()
 ```
 
-```{r, mothers-heights, echo=FALSE}
-ketable(head(py$mothers, 10), caption = "First 10 mothers' heights")
+```{r, yearly-srp, echo=FALSE}
+ketable(py$yearly_srp, caption = "Soluble Reactive Phosphorus in Lough Erne")
 ```
 
-Like Galton, we may well want to *summarize* this collection of 205 numbers.  For example, we might want to calculate the minimum of the heights, or the maximum, or the average.
+We may well want to *summarize* this set of SRP measurements.
+For example, we could add up all the SRP values to give the *total*.  To
+describe the center of this collection of numbers, we could divide the total by
+the number of measurements, to give the *average* SRP level.  Or we could
+measure the spread of the values by finding the *minimum* and the *maximum*.
+All these numbers are *descriptive statistics*.
 
-statistic can be *descriptive* or *inferential*.  A descriptive statistic is a
-number (or set of numbers) that aim to describe the larger set of number. Some
-common examples are the *total*, measures of the center of a distribution such
-as the *mean* and *median*, and numbers conveying the spread of the
-distribution such as the *range*, and the *standard deviation*.
+```{python, echo=FALSE}
+srp = np.array(yearly_srp['SRP'])
+srp_stats = pd.DataFrame({'Descriptive statistics for SRP': pd.Series({
+    'Total': np.sum(srp),
+    'Mean': np.mean(srp),
+    'Minimum': np.min(srp),
+    'Maximum': np.max(srp)})})
+```
 
-For example, in a famous set of data, 
+```{r, srp-stats, echo=FALSE}
+ketable(head(py$srp_stats), caption = "Statistics for SRP levels")
+```
 
-They come in to 
-Typical examples, include the total, 
-
-(descriptive) statistics and *probability* statistics. The most important
-summarization statistics are the *total*, the *distribution*, measures of the
-center of a distribution such as the *mean* and *median*, the *range*, and
-other measures of variation.
+These numbers are *descriptive* statistics, because they are summaries that
+*describe* the collection of SRP measurements.
 
 Such statistics are nothing new to you; you have been using many of them all
-your life. Inferential statistics, which this book deals with, uses descriptive
-statistics as its input.
+your life.
 
-Inferential statistics can be used for two purposes: to aid scientific
-*understanding* by estimating the probability that a statement is true
-or not, and to aid in making *sound decisions* by estimating which
-alternative among a range of possibilities is most desirable.
+We can calculate other numbers that can be useful for drawing *conclusions* or
+*inferences* from a collection of numbers; these are *inferential statistics*.
+Inferential statistics are often probability values that give the answer to
+questions like "What are the chances that ...".
 
+For example, imagine we have measured a SRP value of 120 for 1998, and we
+wonder whether this value is a sign that something has changed in the
+environment around the lake.  We could use methods that you will see in this
+book to calculate a probability value that is the answer to "What are the
+chances that we will see an SRP value of 120 or greater given the collection of
+values we have seen up until now?".
+
+Inferential statistics use descriptive statistics as their input. Inferential
+statistics can be used for two purposes: to aid scientific *understanding* by
+estimating the probability that a statement is true or not, and to aid in
+making *sound decisions* by estimating which alternative among a range of
+possibilities is most desirable.
 
 ## Probabilities and decisions
 
@@ -199,33 +201,33 @@ the ultimate decision problems:
     of probabilities and consequences*, together with their
     evaluations. For example: In the case of the contractor's
     ambulances, it is clear that there will be a monetary loss to the
-    contractor if she makes a commitment to have 16 ambulances available for
+    contractor if she makes a commitment to have 17 ambulances available for
     tomorrow and then cannot produce that many. Furthermore, the contractor
     must take into account the further consequence that there *may* be a loss
     of goodwill for the future if she fails to meet her obligations
     tomorrow --- and then again there *may not* be any such loss; and if there
     is such loss of goodwill it might be a loss worth \$10,000 *or* \$20,000
     *or* \$30,000. Here the decision problem involves not only the probability
-    that there will be fewer than 16 ambulances tomorrow but also the
+    that there will be fewer than 17 ambulances tomorrow but also the
     immediate monetary loss and the subsequent possible losses of goodwill,
     and the valuation of all these consequences.
 
 Continuing with the decision concerning whether to do more research on
 medicine CCC: If you do decide to continue research on CCC, (a) you may,
-or (b) you may not, come up with an important general cure within, say,
-the next 3 years. If you do come up with such a general cure, of course
-it will have very great social benefits. Furthermore, (c) if you decide
-not to do further research on CCC now, you can direct your time and that
-of other people to research in other directions, with some chance that
-the other research will produce a less-general but nevertheless useful
-cure for some relatively infrequent forms of cancer. Those three
-possibilities have different social benefits. The probability that
-medicine CCC really has some curative effect on cancer, as judged by
-your prior research, obviously will influence your decision on whether
-or not to do more research on medicine CCC. But that judgment about the
-probability is only one part of the overall web of consequences and
-evaluations that must be taken into account when making your decision
-whether or not to do further research on medicine CCC.
+or (b) you may not, come up with an important general cure for clotting in
+viral infections within, say, the next 3 years. If you do come up with such a
+general cure, of course it will have very great social benefits. Furthermore,
+(c) if you decide not to do further research on CCC now, you can direct your
+time and that of other people to research in other directions, with some chance
+that the other research will produce a less-general but nevertheless useful
+cure for some relatively infrequent causes of blood clotting. Those three
+possibilities have different social benefits. The probability that medicine CCC
+really has some curative effect on blood clotting, as judged by your prior
+research, obviously will influence your decision on whether or not to do more
+research on medicine CCC. But that judgment about the probability is only one
+part of the overall web of consequences and evaluations that must be taken into
+account when making your decision whether or not to do further research on
+medicine CCC.
 
 Why does this book limit itself to the specific probability questions when
 ultimately we are interested in decisions? A first reason is division of
@@ -332,32 +334,29 @@ tonight at the local cinema; you can look it up on the web or call the cinema
 and ask. But consider by contrast how difficult it is to determine with
 accuracy:
 
-a. what will be the result of more than a hundred million Americans voting for
+1. What will be the result of more than a hundred million Americans voting for
    president a month hence; the best attempt usually is a sample of 2000
    people, selected in some fashion or another that is far from random, weeks
    before the election, asked questions that are by no means the same as the
    actual voting act, and so on;
-
-b. to assess, on the basis of the data on the prices of a single brand of
+2. To assess, on the basis of the data on the prices of a single brand of
    liquor in 42 states, 16 of which have liquor distribution systems run by
-   state government and 26 run privately, whether prices will be higher in
-   a state newly admitted to the union if it chooses the private system; or
+   state government and 26 run privately, whether prices will be higher in a
+   state newly admitted to the union if it chooses the private system; or
+3. How men feel about women and vice versa.
 
-c. how men feel about women and vice versa.
-
-The cleverest and wisest people have pondered
-for thousands of years how to obtain answers to questions like these,
-and made little progress. Dealing with uncertainty was completely
-outside the scope of the ancient philosophers. It was not until two or
-three hundred years ago that people began to make any progress at all on
-these sorts of questions, and it was only about one century ago that we
-began to have reasonably competent procedures---simply because the problems are
-inherently difficult. So it is no wonder that the body of these methods is
-difficult.
+The cleverest and wisest people have pondered for thousands of years how to
+obtain answers to questions like these, and made little progress. Dealing with
+uncertainty was completely outside the scope of the ancient philosophers. It
+was not until two or three hundred years ago that people began to make any
+progress at all on these sorts of questions, and it was only about one century
+ago that we began to have reasonably competent procedures---simply because the
+problems are inherently difficult. So it is no wonder that the body of these
+methods is difficult.
 
 So: The bad news is that the subject is extremely difficult. The good
-news is that you---and that means *you* ---can understand it with hard
-thinking, even if you have no mathematical background beyond arithmetic
-and you think that you have no mathematical capability. That's because
-the difficulty lies in such matters as pin-pointing the right question,
-but not in any difficulties of mathematical manipulation.
+news is that you — and that means *you* — can understand it with hard thinking,
+even if you have no mathematical background beyond arithmetic and you think
+that you have no mathematical capability. That's because the difficulty lies in
+such matters as pin-pointing the right question, but not in any difficulties of
+mathematical manipulation.
