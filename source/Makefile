@@ -1,11 +1,12 @@
-.PHONY: python-book r-book python-nb r-nb serve-python serve-r
+.PHONY: python-html-book python-pdf-book r-html-book r-pdf-book python-nb \
+	r-nb serve-python serve-r clean
 
 # Markdown files generated during build.
 BUILD_MDS:=$(patsubst %.Rmd,%.md,$(wildcard *.Rmd))
 
-python-all: python-book python-nb
+python-all: python-html-book python-nb python-pdf-book
 
-r-all: r-book r-nb
+r-all: r-html-book r-nb r-pdf-book
 
 vector_images := $(wildcard diagrams/*.svg)
 
@@ -14,17 +15,20 @@ diagrams := $(vector_images:.svg=.png)
 %.png : %.svg
 	inkscape --export-area-drawing --export-png=$@ --export-dpi=300 $<
 
-book-%:
-	BOOK_ED=$* Rscript -e \
-			'bookdown::render_book("index.Rmd", config_file="_$*_bookdown.yml")'
+html-book-%:
+	../scripts/build_book.R -e $* -f html
 
 pdf-book-%:
-	BOOK_ED=$* Rscript -e \
-			'bookdown::render_book("index.Rmd", config_file="_$*_bookdown.yml", output_format="bookdown::pdf_book")'
+	../scripts/build_book.R -e $* -f pdf
+	mv ../$*-book/_main.pdf ../$*-book/resampling_with_$*.pdf
 
-python-book: $(diagrams) book-python
+python-html-book: $(diagrams) html-book-python
 
-r-book: $(diagrams) book-r
+python-pdf-book: $(diagrams) pdf-book-python
+
+r-html-book: $(diagrams) html-book-r
+
+r-html-book: $(diagrams) pdf-book-r
 
 nb-%:
 	# Build notebooks for given version
