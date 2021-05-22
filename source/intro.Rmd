@@ -154,7 +154,7 @@ mothers = families.loc[:, 'mother':'mother'].rename(
 ```
 
 ```{r, mothers-heights, echo=FALSE}
-table(py$mothers[1:10,], caption = "First 10 mothers' heights")
+ketable(head(py$mothers, 10), caption = "First 10 mothers' heights")
 ```
 
 Like Galton, we may well want to *summarize* this collection of 205 numbers.  For example, we might want to calculate the minimum of the heights, or the maximum, or the average.
