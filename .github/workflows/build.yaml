@@ -29,6 +29,9 @@ jobs:
       - name: Install inkscape
         run: sudo apt install inkscape
 
+      - name: Install rsvg tools
+        run: sudo apt install librsvg2-bin
+
       - uses: actions/setup-python@v1
         with:
           python-version: '3.8'
