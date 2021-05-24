@@ -382,33 +382,71 @@ somewhere between 0 and 20, the number of ambulances that might be out-of-order
 on a given day. The result is then placed in another location in the computer's
 memory that we label `b`.
 
-Now let us place the  `r py_or_r('randint', 'sample')`and `r
-py_or_r('count_nonzero', 'sum')` commands within the entire program that we use
-to solve this problem, which is:
+### The solution
+
+Now, it is our big moment! We get to combine the elements shown
+above to perform our ambulance simulation over, say, 100 days.
+
+To solve resampling problems, we typically figure out the structure of
+a single trial and then place that trial in a loop that executes it
+multiple times (once for each day, in our case).  Here's how that
+would look like (this code snippet won't run, it is just a sketch):
+
+```python
+# Create an array of zeros, `z`, for storing a result for each day.
+# The zeros are place holders that we replace with values later on.
+# We'll call these our trial results.
+z = np.zeros(100)
+
+# The Python `range` command gives us the numbers 0..999.
+# The for loop sets `i = 0`, runs the code,
+#         then sets `i = 1`, runs the code again,
+#         then sets `i = 2`, runs the code again, and so forth.
+
+for i in range(100):
+    # In other words, Python runs all the commands in this indented block
+    # 100 times.
+
+    # Execute a single trial, the result of which is
+    # stored in `b`
+    b = ...
+
+    # Save the result in the trial result array:
+    z[i] = b
+
+    # End of this trial.
+    # Go back and repeat the process until all 100 trials
+    # are complete, then proceed.
+
+
+# This part runs after all 100 trials have finished.
+
+# Take a look at the trial result array
+# and calculate whatever we are interested in
+...
+```
+
+Now, let's apply the above structure to our ambulance problem.  We
+simulate 1000 days:
 
 ```{python, opts.label="py_ed"}
-# Make an array of 1000 numbers to store our 1000 counts.
-# These all start off as 0, but we fill them in below as we do 1000 trials.
+# Make an array of 1000 numbers, one slot per day.
+# In each slot, we will store the number of ambulances out of order
+# on that day.
 z = np.zeros(1000)
 
 # Repeat one trial of the simulation 1000 times.
-for i in np.arange(1000):
-    # Everything in the indented block is part of one trial.
-    # We run everything in the indented block for each trial.
-    # Therefore, Python runs all these commands 1000 times.
+for i in range(1000):
+    # These are the commands for a single trial:
 
-    # Generate 20 numbers, each between 1 through 10 and put them in array a.
-    # Each number will represent an ambulance, and we let 1 represent a
-    # defective ambulance.
     a = np.random.randint(1, 11, size=20)
-    # Count the number of defective ambulances, and put the result in "b".
     b = np.count_nonzero(a == 1)
+
     # Keep track of each trial's results in "z".
     z[i] = b
-    # End this trial, then go back and repeat the process until all 1000 trials
-    # are complete, then proceed.
 
-# This part runs after all 1000 trials have finished.
+# After finishing all our trials, we analyze our trial array `z` to
+# compute our answer.
 
 # Determine how many trials resulted in more than 3 ambulances out of order.
 k = np.count_nonzero(z > 3)
@@ -485,22 +523,17 @@ given day. And we store that result in a location that we decide to call `kk`,
 so that it will be there when the computer receives the next command to `print`
 that result on the screen.
 
-Please don't worry about the details of how each of these commands works --- we
+Don't worry too much about the details of how each of these commands works --- we
 will cover those details gradually, over the next few chapters.  But, we hope
-that you can see in principle, how each of the operations that the computer
+that you can see, in principle, how each of the operations that the computer
 carries out are analogous to the operations that you yourself executed when you
-solved this problem using a ten-sided spinner or a random-number table. This is
+solved this problem using a ten-sided die. This is
 exactly the procedure that we will use to solve every problem in probability
-and statistics that we must deal with. Either we will use a device such as
-coins or a random number table as an analogy for the physical process we are
-interested in (ambulances becoming defective, in this case), or we will
-simulate the analogy on the computer using some `r BL` code like the code
-above.
+and statistics that we must deal with.
 
-The `r BL` STATS program called "ambulances" may not seem simple to you at
-first glance. But please believe us when we say that it is vastly simpler than
-the older conventional approach to such problems that has routinely been taught
-to students for decades.
+While writing programs like these take a bit of getting used to, it is
+vastly simpler than the older, more conventional approaches to such
+problems routinely taught to students.
 
 
 ## How resampling differs from the conventional approach
@@ -512,14 +545,16 @@ professional mathematician, it may take you quite a while to arrive at
 the correct formula---considerable hard thinking, and perhaps some
 digging in textbooks. More important than the labor, however, is that
 you may come up with the wrong formula, and hence obtain the wrong
-answer. Most students who have had a standard course in probability and
+answer. And how would you know if you were wrong?
+
+Most students who have had a standard course in probability and
 statistics are quick to tell you that it is not easy to find the correct
 formula, even immediately after finishing a course (or several courses)
 on the subject. After leaving school, it is harder still to choose the
 right formula. Even many people who have taught statistics at the
 university level (including this writer) must look at a book to get the
 correct formula for a problem as simple as the ambulances, and then we are
-not always sure of the right answer. This is the grave disadvantage of
+still often unsure of the right answer. This is the grave disadvantage of
 the standard approach.
 
 In the past few decades, resampling and other Monte Carlo simulation
@@ -546,7 +581,7 @@ Better examples.  These are out of date.
 3.  What are the best tactics in baseball? Should one bunt? Should one
     put the best hitter up first, or later? By trying out various
     tactics with dice or random numbers, Earnshaw Cook (in his book
-    *Percentage Baseball* ), found that it is best never to bunt, and
+    *Percentage Baseball*), found that it is best never to bunt, and
     the highest-average hitter should be put up first, in contrast to
     usual practice. Finding this answer would have been much more difficult
     with the analytic method.
@@ -580,7 +615,7 @@ purely mathematics (though not necessarily formulas) and technique. But
 *statistics has to do with meaning* . For example, what is the meaning
 of data showing an association just discovered between a type of
 behavior and a disease? Of differences in the pay of men and women in
-your firm? Issues of causation, acceptability of control, design of
+your firm? Issues of causation, acceptability of control, and design of
 experiments cannot be reduced to technique. This is "philosophy" in the
 fullest sense. Probability and statistics calculations are just one
 input. Resampling simulation enables us to get past issues of
@@ -590,4 +625,3 @@ statistical problems.
 If you intend to go on to advanced statistical work, the older standard
 method can be learned alongside resampling methods. Your introduction to
 the conventional method may thereby be made much more meaningful.
-
