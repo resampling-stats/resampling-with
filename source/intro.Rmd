@@ -49,10 +49,10 @@ whether to buy insurance.
 These are some examples of the kinds of problems that we can handle with the
 methods described in this book:
 
-1. *You are a doctor* trying to develop a treatment for blood clots in COVID19.
-   Currently you are working on a medicine labeled CCC. You have data from
-   patients to whom medicine CCC was given. You want to judge on the basis of
-   those results whether CCC really reduces blood clots or whether it is no
+1. *You are a doctor* trying to develop a treatment for COVID19. Currently you
+   are working on a medicine labeled AntiAnyVir. You have data from patients to
+   whom medicine AntiAnyVir was given. You want to judge on the basis of those
+   results whether AntiAnyVir really improves survival or whether it is no
    better than a sugar pill.
 
 2. *You are the campaign manager* for the Republicrat candidate for President
@@ -67,10 +67,11 @@ methods described in this book:
    three or more of them will be out of action.
 
 2. *You are an environmental scientist* monitoring levels of phosphorus
-   pollution in a lake [@zhou2000long].  The phosphorus levels have all been
-   been below 70 units until 1990, but they have all been above 70 since then.
-   Does this increase indicate some important change or could it be due to some
-   chance ordinary variation in the yearly levels?
+   pollution in a lake.  The phosphorus levels have been fluctuated around a
+   relatively low level until recently, but they have been higher in the last
+   few years. Does these recent higher levels indicate some important change or
+   can we put them down to some chance and ordinary variation from year to
+   year?
 
 The core of all these problems, and of the others that we will deal with in
 this book, is that you want to know the "chance" or "probability" — different
@@ -87,14 +88,14 @@ Eventually, a person wants to use the estimated probability to help make a
 decisions, related to the questions about probability stated above, that
 ultimately we would like to make:
 
-1. *Should you (the researcher) advise doctors to prescribe medicine CCC* for
-   COVID19 patients, or, should you (the researcher) continue to study CCC
+1. *Should you (the researcher) advise doctors to prescribe medicine AntiAnyVir* for
+   COVID19 patients, or, should you (the researcher) continue to study AntiAnyVir
    before releasing it for use? A related matter: should you and other research
-   workers feel sufficiently encouraged by the results of medicine CCC so that
+   workers feel sufficiently encouraged by the results of medicine AntiAnyVir so that
    you should continue research in this general direction rather than turning
    to some other promising line of research? These are just two of the possible
    decisions that might be influenced by the answer to the question about the
-   probability that medicine CCC treats blood clots in COVID19.
+   probability that medicine AntiAnyVir is effective in treating COVID19.
 
 2. *Should you advise the Republicrat presidential candidate to go to New
    Hampshire* to campaign? If the poll tells you conclusively that she or he
@@ -111,11 +112,11 @@ ultimately we would like to make:
    ambulances will be out of action on a given day. But of course this
    estimated probability will be only one part of the decision.
 
-4. *Should we invest in a search for new causes of phosphorus pollution* as a
-   result of the recent measurement from the lake?  If the causes have not
-   changed, and the higher recent values were just the result of ordinary
-   variation across the years, we could end up investing time and money in a
-   search where it could better have been spent elsewhere.
+4. *Should we search for new causes of phosphorus pollution* as a result of the
+   recent measurements from the lake?  If the causes have not changed, and the
+   recent higher values were just the result of ordinary variation, our search
+   will end up wasting time and money that could have been better spent
+   elsewhere.
 
 The kinds of questions to which we wish to find probabilistic and statistical
 answers may be found throughout the social, biological and physical sciences;
@@ -127,9 +128,14 @@ endeavor.
 The term *statistics* sometimes causes confusion and therefore needs
 explanation.
 
-A statistic is a *number* that we can calculate from a larger collection of
-numbers we are interested in.  For example, here are the yearly measures of
-"soluble reactive phosphorus" (SRP) from a Lough Erne — a lake in Ireland.
+Statistics can mean two related things.  It can refer to a certain sort of
+*number* — of which more below.  Or it can refer to the field of inquiry that
+studies these numbers.
+
+A *statistic* is a *number* that we can calculate from a larger collection of
+numbers we are interested in.  For example, table \@ref(tab:yearly-srp) has
+some yearly measures of "soluble reactive phosphorus" (SRP) from a Lough Erne —
+a lake in Ireland [@zhou2000lake].
 
 ```{python, echo=FALSE}
 import os.path as op
@@ -143,12 +149,13 @@ yearly_srp = lake.loc[:, ['Year', 'SRP']].copy()
 ketable(py$yearly_srp, caption = "Soluble Reactive Phosphorus in Lough Erne")
 ```
 
-We may well want to *summarize* this set of SRP measurements.
-For example, we could add up all the SRP values to give the *total*.  To
-describe the center of this collection of numbers, we could divide the total by
-the number of measurements, to give the *average* SRP level.  Or we could
-measure the spread of the values by finding the *minimum* and the *maximum*.
-All these numbers are *descriptive statistics*.
+We may want to *summarize* this set of SRP measurements. For example, we could
+add up all the SRP values to give the *total*.  We could also divide the total
+by the number of measurements, to give the *average*.  Or we could measure the
+spread of the values by finding the *minimum* and the *maximum* — see table
+\@ref(tab:srp-stats). All these numbers are *descriptive statistics*, because
+they are summaries that *describe* the collection of SRP measurements.
+
 
 ```{python, echo=FALSE}
 srp = np.array(yearly_srp['SRP'])
@@ -163,23 +170,29 @@ srp_stats = pd.DataFrame({'Descriptive statistics for SRP': pd.Series({
 ketable(head(py$srp_stats), caption = "Statistics for SRP levels")
 ```
 
-These numbers are *descriptive* statistics, because they are summaries that
-*describe* the collection of SRP measurements.
-
-Such statistics are nothing new to you; you have been using many of them all
-your life.
+Descriptive statistics are nothing new to you; you have been using many of them
+all your life.
 
 We can calculate other numbers that can be useful for drawing *conclusions* or
 *inferences* from a collection of numbers; these are *inferential statistics*.
 Inferential statistics are often probability values that give the answer to
 questions like "What are the chances that ...".
 
-For example, imagine we have measured a SRP value of 120 for 1998, and we
-wonder whether this value is a sign that something has changed in the
-environment around the lake.  We could use methods that you will see in this
-book to calculate a probability value that is the answer to "What are the
-chances that we will see an SRP value of 120 or greater given the collection of
-values we have seen up until now?".
+```{r, echo=FALSE}
+ysrp <- py$yearly_srp
+pre_1990 <- mean(ysrp[ysrp$Year < 1990, 'SRP'])
+post_1990 <- mean(ysrp[ysrp$Year > 1990, 'SRP'])
+```
+
+For example, imagine we suspect there was some environmental change in 1990.
+We see that the average SRP value before 1990 was `r round(pre_1990, 2)` and
+the average SRP value after 1990 was `r round(post_1990, 2)`.  That gives us a
+difference in the average of `r round(post_1990 - pre_1990, 2)`. But, could
+this difference be due to chance fluctuations from year to year?  Were we just
+unlucky in getting a few larger measurements in later years?  We could use
+methods that you will see in this book to calculate a *probability value* for
+that question.  The probability value is an *inferential* statistic, because we
+can use it to draw an *inference* about the measures.
 
 Inferential statistics use descriptive statistics as their input. Inferential
 statistics can be used for two purposes: to aid scientific *understanding* by
@@ -193,8 +206,8 @@ There are two differences between questions about probabilities and
 the ultimate decision problems:
 
 1.  Decision problems always involve *evaluation of the
-    consequences* --- that is, taking into account the benefits and
-    the costs of the consequences --- whereas pure questions about
+    consequences*  —  that is, taking into account the benefits and
+    the costs of the consequences  —  whereas pure questions about
     probabilities are estimated without evaluations of the consequences.
 
 2.  Decision problems often involve a *complex combination* of *sets
@@ -205,7 +218,7 @@ the ultimate decision problems:
     tomorrow and then cannot produce that many. Furthermore, the contractor
     must take into account the further consequence that there *may* be a loss
     of goodwill for the future if she fails to meet her obligations
-    tomorrow --- and then again there *may not* be any such loss; and if there
+    tomorrow  —  and then again there *may not* be any such loss; and if there
     is such loss of goodwill it might be a loss worth \$10,000 *or* \$20,000
     *or* \$30,000. Here the decision problem involves not only the probability
     that there will be fewer than 17 ambulances tomorrow but also the
@@ -213,21 +226,20 @@ the ultimate decision problems:
     and the valuation of all these consequences.
 
 Continuing with the decision concerning whether to do more research on
-medicine CCC: If you do decide to continue research on CCC, (a) you may,
-or (b) you may not, come up with an important general cure for clotting in
-viral infections within, say, the next 3 years. If you do come up with such a
-general cure, of course it will have very great social benefits. Furthermore,
-(c) if you decide not to do further research on CCC now, you can direct your
-time and that of other people to research in other directions, with some chance
-that the other research will produce a less-general but nevertheless useful
-cure for some relatively infrequent causes of blood clotting. Those three
-possibilities have different social benefits. The probability that medicine CCC
-really has some curative effect on blood clotting, as judged by your prior
-research, obviously will influence your decision on whether or not to do more
-research on medicine CCC. But that judgment about the probability is only one
-part of the overall web of consequences and evaluations that must be taken into
-account when making your decision whether or not to do further research on
-medicine CCC.
+medicine AntiAnyVir: If you do decide to continue research on AntiAnyVir, (a) you may,
+or (b) you may not, come up with an important general treatment for viral
+infections within, say, the next 3 years. If you do come up with such a general
+treatment, of course it will have very great social benefits. Furthermore, (c)
+if you decide not to do further research on AntiAnyVir now, you can direct your time
+and that of other people to research in other directions, with some chance that
+the other research will produce a less-general but nevertheless useful
+treatment for some relatively infrequent viral infections. Those three possibilities have different social benefits. The probability that medicine AntiAnyVir
+really has some benefit in treating COVID19, as judged by your prior research,
+obviously will influence your decision on whether or not to do more research on
+medicine AntiAnyVir. But that judgment about the probability is only one part of the
+overall web of consequences and evaluations that must be taken into account
+when making your decision whether or not to do further research on medicine
+AntiAnyVir.
 
 Why does this book limit itself to the specific probability questions when
 ultimately we are interested in decisions? A first reason is division of
@@ -241,11 +253,11 @@ this book belong to the interrelated subjects of *probability theory* and
 *statistics* . Though probabilistic and statistical theory ultimately is
 intended to be part of the general decision-making process, often only the
 estimation of probabilities is done systematically, and the rest of the
-decision-making process---for example, the decision whether or not to proceed
-with further research on medicine CCC---is done in informal and unsystematic
-fashion. This is regrettable, but the fact that this is standard practice is
-an additional reason why the treatment of statistics and probability in this
-book is sufficiently complete.
+decision-making process — for example, the decision whether or not to proceed
+with further research on medicine AntiAnyVir — is done in informal and
+unsystematic fashion. This is regrettable, but the fact that this is standard
+practice is an additional reason why the treatment of statistics and
+probability in this book is sufficiently complete.
 
 A third reason that this book covers only statistics and not numerical
 reasoning about decisions is because most college and university statistics
@@ -280,19 +292,18 @@ research thinking. Kinsey long ago put it this way:
 > college courses on the mathematical treatment of data, we shall come nearer
 > to having a science of human behavior. [@kinsey1948sexual, p 35].
 
-In much---even most---research in social and physical sciences,
-statistical testing is not necessary. Where there are large differences
-between different sorts of circumstances---for example, if a new
-medicine cures 90 patients out of 100 and the old medicine cures only 10
-patients out of 100---we do not need refined statistical tests to tell
-us whether or not the new medicine really has an effect. And the best
-research is that which shows large differences, because it is the large
-effects that matter. If the researcher finds that s/he must use refined
-statistical tests to reveal whether there are differences, this
-sometimes means that the differences do not matter much.
+In much — even most — research in social and physical sciences,
+statistical testing is not necessary. Where there are large differences between
+different sorts of circumstances for example, if a new medicine cures 90
+patients out of 100 and the old medicine cures only 10 patients out of 100 — we
+do not need refined statistical tests to tell us whether or not the new
+medicine really has an effect. And the best research is that which shows large
+differences, because it is the large effects that matter. If the researcher
+finds that s/he must use refined statistical tests to reveal whether there are
+differences, this sometimes means that the differences do not matter much.
 
-To repeat, then, some or even much research---especially in the physical and
-biological sciences---does not need the kind of statistical manipulation that
+To repeat, then, some or even much research — especially in the physical and
+biological sciences — does not need the kind of statistical manipulation that
 will be described in this book. But most decision problems *do* need the kind
 of probabilistic and statistical input that is described in this book.
 
@@ -306,7 +317,7 @@ helpful, and may be misleading. To put it another way, one cannot make bread
 without flour, yeast, and water. And good raw data are the flour, yeast and
 water necessary to get an accurate estimate of a probability. The most refined
 statistical and probabilistic manipulations are useless if the input data are
-poor---the result of unrepresentative samples, uncontrolled experiments,
+poor — the result of unrepresentative samples, uncontrolled experiments,
 inaccurate measurement, and the host of other ways that information gathering
 can go wrong. (See @simon1985basic for a catalog of the obstacles to obtaining
 good data.) Therefore, we should constantly direct our attention to ensuring
@@ -325,7 +336,7 @@ imply, this view is out-and-out wrong; lack of general intelligence on the
 part of students is *not* the root of the problem.
 
 Scan this book and you will find almost no formal mathematics. Yet
-nearly every student finds the subject very difficult--- as difficult as
+nearly every student finds the subject very difficult —  as difficult as
 anything taught at universities. The root of the difficulty is that the
 *subject matter* is extremely difficult. Let's find out *why* .
 
@@ -350,7 +361,7 @@ obtain answers to questions like these, and made little progress. Dealing with
 uncertainty was completely outside the scope of the ancient philosophers. It
 was not until two or three hundred years ago that people began to make any
 progress at all on these sorts of questions, and it was only about one century
-ago that we began to have reasonably competent procedures---simply because the
+ago that we began to have reasonably competent procedures — simply because the
 problems are inherently difficult. So it is no wonder that the body of these
 methods is difficult.
 
