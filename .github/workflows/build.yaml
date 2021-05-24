@@ -32,6 +32,9 @@ jobs:
       - name: Install rsvg tools
         run: sudo apt install librsvg2-bin
 
+      - name: PDF build packages
+        run: sudo apt install texlive-xetex
+
       - uses: actions/setup-python@v1
         with:
           python-version: '3.8'
