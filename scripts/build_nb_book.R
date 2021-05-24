@@ -26,16 +26,16 @@ opt__ <- optparse::parse_args(opt_parser)
 
 # Check
 if (is.null(opt__$edition)){
-  print_help(opt_parser)
+  optparse::print_help(opt_parser)
   stop("Specify edition", call.=FALSE)
 }
 opt__$edition <- tolower(opt__$edition)
 if (!is.element(opt__$edition, c('python', 'r'))) {
-  print_help(opt_parser)
+  optparse::print_help(opt_parser)
   stop("edition must be 'python' or 'r'", call.=FALSE)
 }
 if (is.null(opt__$out_dir)){
-  print_help(opt_parser)
+  optparse::print_help(opt_parser)
   stop("Specify output directory", call.=FALSE)
 }
 
@@ -54,10 +54,7 @@ opt__$fmt$pandoc$args <- c(opt__$fmt$pandoc$args,
                      '--metadata',
                      'link-citations=no')
 # Build single Markdown output document.
-# See https://github.com/rstudio/bookdown/issues/835
-# for explanation of clean_envir
 rm(opt_list, opt_parser)
 bookdown::render_book('index.Rmd', opt__$fmt,
-                      clean_envir=FALSE,
                       config_file=opt__$config,
                       output_dir=opt__$out_dir)
