@@ -360,19 +360,23 @@ sum(a == 1)
 ```
 
 What exactly happens here under the hood?  First `a == 1` creates an
-array that only contains true or false values, depending on whether
-each element is equal to 1 or not.
+array that only contains
+`r py_or_r('True', 'TRUE')` or `r py_or_r('False', 'FALSE')` values,
+depending on whether each element is equal to 1 or not.
 
 Then, we ask `r book_lang` to `r py_or_r('count', 'sum')` only the
 true elements in that array.
+`r begin_isr()`
+`TRUE` evaluates to 1, and `FALSE` evaluates to 0; thus we can use `sum` to
+count the number of `TRUE` values.
+`r end_isr()`
 
 This comes down to asking "how many elements in `a` are equal to 1".
 ::::::::::::::::::
 
-
 This is a *counting* operation. The command orders the computer to *count* the
 number of `1`s among the twenty numbers that are in location `a` following the
-random drawing carried out by the `r py_or_r('randint', 'sample')` operation.
+random draw carried out by the `r py_or_r('rnd.integers', 'sample')` operation.
 The result of the `r py_or_r('count_nonzero', 'sum')` operation will be
 somewhere between 0 and 20, the number of ambulances that might be out-of-order
 on a given day. The result is then placed in another location in the computer's
