@@ -134,7 +134,7 @@ studies these numbers.
 
 A *statistic* is a *number* that we can calculate from a larger collection of
 numbers we are interested in.  For example, table \@ref(tab:yearly-srp) has
-some yearly measures of "soluble reactive phosphorus" (SRP) from a Lough Erne —
+some yearly measures of "soluble reactive phosphorus" (SRP) from Lough Erne —
 a lake in Ireland [@zhou2000lake].
 
 ```{python, echo=FALSE}
@@ -180,19 +180,19 @@ questions like "What are the chances that ...".
 
 ```{r, echo=FALSE}
 ysrp <- py$yearly_srp
-pre_1990 <- mean(ysrp[ysrp$Year < 1990, 'SRP'])
-post_1990 <- mean(ysrp[ysrp$Year > 1990, 'SRP'])
+pre_1990 <- round(mean(ysrp[ysrp$Year < 1990, 'SRP']), 1)
+post_1990 <- round(mean(ysrp[ysrp$Year > 1990, 'SRP']), 1)
 ```
 
-For example, imagine we suspect there was some environmental change in 1990.
-We see that the average SRP value before 1990 was `r round(pre_1990, 2)` and
-the average SRP value after 1990 was `r round(post_1990, 2)`.  That gives us a
-difference in the average of `r round(post_1990 - pre_1990, 2)`. But, could
-this difference be due to chance fluctuations from year to year?  Were we just
-unlucky in getting a few larger measurements in later years?  We could use
-methods that you will see in this book to calculate a *probability value* for
-that question.  The probability value is an *inferential* statistic, because we
-can use it to draw an *inference* about the measures.
+For example, imagine we suspect there was some environmental change in 1990. We
+see that the average SRP value before 1990 was `r pre_1990` and the average SRP
+value after 1990 was `r post_1990`.  That gives us a difference in the average
+of `r post_1990 - pre_1990`. But, could this difference be due to chance
+fluctuations from year to year?  Were we just unlucky in getting a few larger
+measurements in later years?  We could use methods that you will see in this
+book to calculate a *probability value* for that question.  The probability
+value is an *inferential* statistic, because we can use it to draw an
+*inference* about the measures.
 
 Inferential statistics use descriptive statistics as their input. Inferential
 statistics can be used for two purposes: to aid scientific *understanding* by
