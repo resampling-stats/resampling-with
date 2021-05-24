@@ -54,10 +54,7 @@ opt__$fmt$pandoc$args <- c(opt__$fmt$pandoc$args,
                      '--metadata',
                      'link-citations=no')
 # Build single Markdown output document.
-# See https://github.com/rstudio/bookdown/issues/835
-# for explanation of clean_envir
 rm(opt_list, opt_parser)
 bookdown::render_book('index.Rmd', opt__$fmt,
-                      clean_envir=FALSE,
                       config_file=opt__$config,
                       output_dir=opt__$out_dir)

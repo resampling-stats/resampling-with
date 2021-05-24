@@ -45,8 +45,5 @@ Sys.setenv(BOOK_ED=opt__$edition)
 # Configuration file for build.
 opt__$config <- stringr::str_interp('_${opt__$edition}_bookdown.yml')
 # Build document
-# See https://github.com/rstudio/bookdown/issues/835
-# for explanation of clean_envir
 rm(opt_list, opt_parser)
-bookdown::render_book('index.Rmd', out_fmt__, clean_envir=FALSE,
-                      config_file=opt__$config)
+bookdown::render_book('index.Rmd', out_fmt__, config_file=opt__$config)
