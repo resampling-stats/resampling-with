@@ -17,6 +17,8 @@ jupyter:
     name: python3
 resampling_with:
     ed2_fname: 05-Chap-1
+# Needed for ketable in combination with build_nb_book gfm build
+always_allow_html: true
 ---
 
 # The resampling method {#resampling-method}
@@ -266,15 +268,17 @@ Here's an example of some of the random operations we can perform with NumPy:
    rnd.integers(low=1, high=11)
    ```
 
-   Should `high` perhaps be 10? No; NumPy generates numbers higher or
-   equal to `low` but *less* than `high`.
-
+   Note that NumPy generates numbers equal to `low` but *less* than `high`.
+   This is known as a *half-open interval*.
 
 2. Generate 5 random numbers between 1 and 10:
 
    ```{python}
    rnd.integers(low=1, high=11, size=5)
    ```
+
+   By specifying the `size` keyword, we can generate more than one
+   random number at a time.
 
 3. Make a random choice between three words:
 
@@ -293,16 +297,25 @@ Here's an example of some of the random operations we can perform with NumPy:
 `r end_ispy()` <!-- end Python-only section -->
 
 
-The core of the program to simulate one trial of ambulances problem above
-begins with this command to the computer:
+Recall that we want twenty 10-sided dice—one per ambulance.  Die dice
+are 10-sided, because each ambulance has a 1-in-10 chance of being out
+of order. We decide, arbitrarily, that if a die is rolled and lands on
+1 that that ambulance is out of order (we could just as well have used
+7; we just need to pick one out of the 10 different values).
+
+The program to simulate one trial of the ambulances problem therefore
+begins with this command:
 
 ```{python, opts.label="py_ed"}
-# Now, roll the die 20 times to generate random integers from 1 up to, but *not
-# including* 11.  Therefore, this generates 20 numbers from 1 through 10
-# inclusive.
-# Store the 20 numbers as an "array" with the name "a"
-rng = np.random.default_rng()
-a = rng.integers(1, 11, size=20)
+# Ask NumPy to generate 20 integers between 1 and 10.
+
+# Note that NumPy generates numbers higher or equal to `low` but
+# *less than* `high`:
+
+# Store the resulting 20 numbers as an "array" (a collection of numbers)
+# with the name "a"
+
+a = rnd.integers(low=1, high=11, size=20)
 ```
 
 ```{r, opts.label="r_ed"}
@@ -312,19 +325,15 @@ a = rng.integers(1, 11, size=20)
 a <- sample(1:10, 20, replace=TRUE)
 ```
 
-This command orders the computer to randomly generate 20 numbers from `1`
-through `10`. Inasmuch as each ambulance has a 1 in 10 chance of being
-defective, we decide arbitrarily that a `1` stands for a defective ambulance,
-and the other nine numbers (from `2` to `10`) stand for a non-defective
-ambulance. The command orders the computer to store the results of the random
+The command orders the computer to store the results of the random
 drawing in a location in the computer's memory to which we give a name such as
 "a" or "ambulances" or "aardvark" --- the name is up to us.
 
-The next key element in the core of the program is:
+Next, we need to count the number of defective ambulances:
 
 ```{python, opts.label="py_ed"}
 # Count the number of ones among the random numbers, using the NumPy ("np")
-# "count_nonzero" function.
+# `count_nonzero` function.
 b = np.count_nonzero(a == 1)
 ```
 
@@ -334,6 +343,32 @@ b = np.count_nonzero(a == 1)
 # The "sum" part counts how many numbers "a == 1" found.
 b <- sum(a == 1)
 ```
+
+::: {.callout} :::
+::: {.title}
+Counting array elements
+:::
+
+We see that the code uses:
+
+```{python, opts.label="py_ed"}
+np.count_nonzero(a == 1)
+```
+
+```{r, opts.label="r_ed"}
+sum(a == 1)
+```
+
+What exactly happens here under the hood?  First `a == 1` creates an
+array that only contains true or false values, depending on whether
+each element is equal to 1 or not.
+
+Then, we ask `r book_lang` to `r py_or_r('count', 'sum')` only the
+true elements in that array.
+
+This comes down to asking "how many elements in `a` are equal to 1".
+::::::::::::::::::
+
 
 This is a *counting* operation. The command orders the computer to *count* the
 number of `1`s among the twenty numbers that are in location `a` following the
