@@ -28,7 +28,7 @@ python-pdf-book: $(diagrams) pdf-book-python
 
 r-html-book: $(diagrams) html-book-r
 
-r-html-book: $(diagrams) pdf-book-r
+r-pdf-book: $(diagrams) pdf-book-r
 
 nb-%:
 	# Build notebooks for given version
