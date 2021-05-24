@@ -7,14 +7,11 @@ PIP_INSTALL_CMD ?= $(PYTHON) -m pip install
 
 .PHONY: python-book r-book
 
-clean:
-	cd $(SOURCE_DIR) && make clean
-
 python-book:
-	cd $(SOURCE_DIR) && make python-book
+	cd $(SOURCE_DIR) && make python-html-book
 
 r-book:
-	cd $(SOURCE_DIR) && make r-book
+	cd $(SOURCE_DIR) && make r-html-book
 
 python-all:
 	cd $(SOURCE_DIR) && make python-all

@@ -26,16 +26,16 @@ opt__ <- optparse::parse_args(opt_parser)
 
 # Check
 if (is.null(opt__$edition)){
-  print_help(opt_parser)
+  optparse::print_help(opt_parser)
   stop("Specify edition", call.=FALSE)
 }
 opt__$edition <- tolower(opt__$edition)
 if (!is.element(opt__$edition, c('python', 'r'))) {
-  print_help(opt_parser)
+  optparse::print_help(opt_parser)
   stop("edition must be 'python' or 'r'", call.=FALSE)
 }
 if (is.null(opt__$out_dir)){
-  print_help(opt_parser)
+  optparse::print_help(opt_parser)
   stop("Specify output directory", call.=FALSE)
 }
 

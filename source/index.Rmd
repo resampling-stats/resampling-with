@@ -9,9 +9,30 @@ github-repo: resampling-stats/resampling-with
 cover-image: cover.png
 site: bookdown::bookdown_site
 documentclass: book
+# Must be here as well as in individual docs using ketable.
+always_allow_html: true
 bibliography: ["simon_refs.bib", "data_science.bib"]
 biblio-style: "apalike"
 link-citations: true
+pdf_document:
+  includes:
+    in_header: "preamble.tex"
+# Rscript -e "kableExtra::kableExtra_latex_packages()"
+header-includes:
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage[utf8]{inputenc}
+  - \usepackage{makecell}
 ---
 
 # `r book_lang` edition {-}
