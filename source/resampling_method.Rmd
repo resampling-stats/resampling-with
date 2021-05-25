@@ -384,34 +384,33 @@ memory that we label `b`.
 
 ### The solution
 
-Now, it is our big moment! We get to combine the elements shown
-above to perform our ambulance simulation over, say, 100 days.
+Now, it is our big moment! We get to combine the elements shown above
+to perform our ambulance simulation over, say, 100 days.  Just a quick
+reminder that you are not expected to understand all detail of the
+code below; but see if you can follow along with the gist of it.
 
 To solve resampling problems, we typically figure out the structure of
 a single trial and then place that trial in a loop that executes it
-multiple times (once for each day, in our case).  Here's how that
+multiple times (once for each day, in our case).  Here's what that
 would look like (this code snippet won't run, it is just a sketch):
 
 ```python
 # Create an array of zeros, `z`, for storing a result for each day.
-# The zeros are place holders that we replace with values later on.
-# We'll call these our trial results.
+# The zeros are place holders that we replace with trial results later on.
+
 z = np.zeros(100)
 
-# The Python `range` command gives us the numbers 0..999.
-# The for loop sets `i = 0`, runs the code,
-#         then sets `i = 1`, runs the code again,
-#         then sets `i = 2`, runs the code again, and so forth.
+# The next line is Python for
+# "repeat what is in the indented code block 100 times"
 
 for i in range(100):
-    # In other words, Python runs all the commands in this indented block
-    # 100 times.
 
     # Execute a single trial, the result of which is
     # stored in `b`
     b = ...
 
-    # Save the result in the trial result array:
+    # Save the result in the trial result array
+    # at position `i`, where `i` is the trial number
     z[i] = b
 
     # End of this trial.
@@ -527,7 +526,7 @@ Don't worry too much about the details of how each of these commands works --- w
 will cover those details gradually, over the next few chapters.  But, we hope
 that you can see, in principle, how each of the operations that the computer
 carries out are analogous to the operations that you yourself executed when you
-solved this problem using a ten-sided die. This is
+solved this problem using the equivalent of a ten-sided die. This is
 exactly the procedure that we will use to solve every problem in probability
 and statistics that we must deal with.
 
@@ -550,11 +549,11 @@ answer. And how would you know if you were wrong?
 Most students who have had a standard course in probability and
 statistics are quick to tell you that it is not easy to find the correct
 formula, even immediately after finishing a course (or several courses)
-on the subject. After leaving school, it is harder still to choose the
-right formula. Even many people who have taught statistics at the
+on the subject. After leaving school or university, it is harder still
+to choose the right formula. Even many people who have taught statistics at the
 university level (including this writer) must look at a book to get the
 correct formula for a problem as simple as the ambulances, and then we are
-still often unsure of the right answer. This is the grave disadvantage of
+often still not sure we have the right answer. This is the grave disadvantage of
 the standard approach.
 
 In the past few decades, resampling and other Monte Carlo simulation
