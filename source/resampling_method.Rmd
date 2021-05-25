@@ -125,14 +125,13 @@ https://web.archive.org/web/20170712041017/http://www.rotten.com/library/conspir
 We can use random numbers from computers to simulate our problem.  For
 example, we can ask the computer to choose a random number between 1
 and 10 to represent one ambulance. Let's say the number 1 represents
-"out-of-order" and 2 through 9 "in operation", then any one random
-number gives us a trial observation for a single ambulance.  To get an
-experimental trial for a single day we look at 20 numbers and count
-how many of them are 1.  We then look at, say, one hundred sets of 20
-numbers and count the proportion of sets whose 20 numbers show three or
-more ambulances being "out-of-order". Once again, that proportion
-estimates the probability that three or more ambulances will be
-out-of-order on any given day.
+"out-of-order" and 2 through 10 "in operation", then any one random number
+gives us a trial observation for a single ambulance.  To get an experimental
+trial for a single day we look at 20 numbers and count how many of them are 1.
+We then look at, say, one hundred sets of 20 numbers and count the proportion
+of sets whose 20 numbers show three or more ambulances being "out-of-order".
+Once again, that proportion estimates the probability that three or more
+ambulances will be out-of-order on any given day.
 
 Soon we will do all these steps with some `r book_lang` code, but for
 now, consider Table \@ref(tab:veh-numbers).  In each row, we placed 20
