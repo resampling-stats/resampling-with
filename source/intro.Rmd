@@ -30,37 +30,30 @@ always_allow_html: true
 
 This chapter introduces you to probability and statistics. First come
 examples of the kinds of practical problems that this knowledge can
-solve for us. Next this Introduction discusses the relationship of
-probabilities to decisions. Then comes a discussion of the two general
-types of statistics, descriptive and inferential. Following this is a
-discussion of the limitations of probability and statistics. And last is
-a discussion of why statistics can be such a difficult subject. Most important,
-this chapter describes the types of problems the book will tackle.
+solve for us. One reason that the term "statistic" often scares and confuses
+people is that the term has several sorts of meanings.  We discuss the meanings
+of "statistics" in the section "Types of statistics". Then comes a discussion
+on the relationship of probabilities to decisions. Following this we talk about
+the limitations of probability and statistics. And last is a discussion of why
+statistics can be such a difficult subject. Most important, this chapter
+describes the types of problems the book will tackle.
 
-Because the term "statistic" often scares and confuses people--- and
-indeed, the term has several sorts of meanings---the chapter includes a
-short section on "Types of Statistics." Descriptive statistics are
-numbers that summarize the information contained in a group of data.
-Inferential statistics are procedures to estimate unknown quantities;
-that is, these procedures infer estimates and conclusions based on
-whatever descriptive statistics are available.
-
-At the foundation of sound decision-making lies the ability to make
-accurate estimates of the probabilities of future events. Probabilistic
-problems confront everyone---from the business person considering plant
-expansion, to the scientist testing a new wonder drug, to the individual
-deciding whether to carry an umbrella to work.
+At the foundation of sound decision-making lies the ability to make accurate
+estimates of the probabilities of future events. Probabilistic problems
+confront everyone — a company owner considering whether to expand their
+business, to the scientist testing a vaccine, to the individual deciding
+whether to buy insurance.
 
 ## What kinds of problems shall we solve? {#what-problems}
 
-These are some examples of the kinds of problems that we can handle with
-the methods described in this book:
+These are some examples of the kinds of problems that we can handle with the
+methods described in this book:
 
-1. *You are a doctor* trying to develop a cure for cancer. Currently you are
-   working on a medicine labeled CCC. You have data from patients to whom
-   medicine CCC was given. You want to judge on the basis of those results
-   whether CCC really cures cancer or whether it is no better than a sugar
-   pill.
+1. *You are a doctor* trying to develop a treatment for COVID19. Currently you
+   are working on a medicine labeled AntiAnyVir. You have data from patients to
+   whom medicine AntiAnyVir was given. You want to judge on the basis of those
+   results whether AntiAnyVir really improves survival or whether it is no
+   better than a sugar pill.
 
 2. *You are the campaign manager* for the Republicrat candidate for President
    of the United States. You have the results from a recent poll taken in New
@@ -70,65 +63,142 @@ the methods described in this book:
 3. *You are the manager and part owner* of one of several contractors
    providing ambulances to a hospital. You own 20 ambulances. The chance that
    any one ambulance will be unfit for service on any given day is about one
-   in ten. You want to know the chance on a particular day --- tomorrow ---
-   that three or more of them will be out of action.
+   in ten. You want to know the chance on a particular day — tomorrow — that
+   three or more of them will be out of action.
 
 2. *You are an environmental scientist* monitoring levels of phosphorus
-   pollution in a lake in Ireland [@zhou2000long].  The average value for the
-   9 previous years of measurement is 74 units, but this year's value is 111
-   units.  Is this increase due to some important change in phosphorus levels
-   reaching the lake, or is this just some random fluctuation in the
-   phosphorus measurements?
+   pollution in a lake.  The phosphorus levels have been fluctuated around a
+   relatively low level until recently, but they have been higher in the last
+   few years. Does these recent higher levels indicate some important change or
+   can we put them down to some chance and ordinary variation from year to
+   year?
 
 The core of all these problems, and of the others that we will deal with in
-this book, is that you want to know the "chance" or "probability" ---
-different words for the same idea --- that some event will or will not happen,
-or that something is true or false. To put it another way, we want to answer
-questions about "What is the probability that...?", given the body of
-information that you have in hand.
+this book, is that you want to know the "chance" or "probability" — different
+words for the same idea — that some event will or will not happen, or that
+something is true or false. To put it another way, we want to answer questions
+about "What is the probability that...?", given the body of information that
+you have in hand.
 
-The question "What is the probability that...?" is usually not the
-ultimate question that interests us at a given moment.
+The question "What is the probability that...?" is usually not the ultimate
+question that interests us at a given moment.
 
 Eventually, a person wants to use the estimated probability to help make a
 *decision* concerning some action one might take. These are the kinds of
 decisions, related to the questions about probability stated above, that
 ultimately we would like to make:
 
-1. *Should you (the researcher) advise doctors to prescribe medicine CCC* for
-   patients, or, should you (the researcher) continue to study CCC before
-   releasing it for use? A related matter: should you and other research
-   workers feel sufficiently encouraged by the results of medicine CCC so that
+1. *Should you (the researcher) advise doctors to prescribe medicine AntiAnyVir* for
+   COVID19 patients, or, should you (the researcher) continue to study AntiAnyVir
+   before releasing it for use? A related matter: should you and other research
+   workers feel sufficiently encouraged by the results of medicine AntiAnyVir so that
    you should continue research in this general direction rather than turning
-   to some other promising line of research? These are just two of the
-   possible decisions that might be influenced by the answer to the question
-   about the probability that medicine CCC cures cancer.
+   to some other promising line of research? These are just two of the possible
+   decisions that might be influenced by the answer to the question about the
+   probability that medicine AntiAnyVir is effective in treating COVID19.
 
 2. *Should you advise the Republicrat presidential candidate to go to New
-   Hampshire* to campaign? If the poll tells you conclusively that he or she
+   Hampshire* to campaign? If the poll tells you conclusively that she or he
    will not win in New Hampshire, you might decide that it is not worthwhile
    investing effort to campaign there. Similarly, if the poll tells you
-   conclusively that he or she surely will win in New Hampshire, you probably
-   would not want to campaign further there. But if the poll is not conclusive
-   in one direction or the other, you might choose to invest the effort to
-   campaign in New Hampshire. Analysis of the chances of winning in New
-   Hampshire based on the poll data can help you make this decision sensibly.
+   conclusively that they surely will win in New Hampshire, you probably would
+   not want to campaign further there. But if the poll is not conclusive in one
+   direction or the other, you might choose to invest the effort to campaign in
+   New Hampshire. Analysis of the chances of winning in New Hampshire based on
+   the poll data can help you make this decision sensibly.
 
-3. *Should your firm buy more ambulances*? Clearly the answer to this
+3. *Should your company buy more ambulances*? Clearly the answer to this
    question is affected by the probability that a given number of your
    ambulances will be out of action on a given day. But of course this
    estimated probability will be only one part of the decision.
 
-4. *Should we invest in a search for new causes of phosphorus pollution* as a
-   result of the most recent measurement from the lake?  If the causes have
-   not changed, and the unusual value we observed was just the result of
-   random variability, we will have invested time and money in a search where
-   it could better have been spent elsewhere.
+4. *Should we search for new causes of phosphorus pollution* as a result of the
+   recent measurements from the lake?  If the causes have not changed, and the
+   recent higher values were just the result of ordinary variation, our search
+   will end up wasting time and money that could have been better spent
+   elsewhere.
 
 The kinds of questions to which we wish to find probabilistic and statistical
 answers may be found throughout the social, biological and physical sciences;
 in business; in politics; in engineering; and in most other forms of human
 endeavor.
+
+## Types of statistics
+
+The term *statistics* sometimes causes confusion and therefore needs
+explanation.
+
+Statistics can mean two related things.  It can refer to a certain sort of
+*number* — of which more below.  Or it can refer to the field of inquiry that
+studies these numbers.
+
+A *statistic* is a *number* that we can calculate from a larger collection of
+numbers we are interested in.  For example, table \@ref(tab:yearly-srp) has
+some yearly measures of "soluble reactive phosphorus" (SRP) from Lough Erne —
+a lake in Ireland [@zhou2000lake].
+
+```{python, echo=FALSE}
+import os.path as op
+import numpy as np
+import pandas as pd
+lake = pd.read_csv(op.join('data', 'lough_erne.csv'))
+yearly_srp = lake.loc[:, ['Year', 'SRP']].copy()
+```
+
+```{r, yearly-srp, echo=FALSE}
+ketable(py$yearly_srp, caption = "Soluble Reactive Phosphorus in Lough Erne")
+```
+
+We may want to *summarize* this set of SRP measurements. For example, we could
+add up all the SRP values to give the *total*.  We could also divide the total
+by the number of measurements, to give the *average*.  Or we could measure the
+spread of the values by finding the *minimum* and the *maximum* — see table
+\@ref(tab:srp-stats). All these numbers are *descriptive statistics*, because
+they are summaries that *describe* the collection of SRP measurements.
+
+
+```{python, echo=FALSE}
+srp = np.array(yearly_srp['SRP'])
+srp_stats = pd.DataFrame({'Descriptive statistics for SRP': pd.Series({
+    'Total': np.sum(srp),
+    'Mean': np.mean(srp),
+    'Minimum': np.min(srp),
+    'Maximum': np.max(srp)})})
+```
+
+```{r, srp-stats, echo=FALSE}
+ketable(head(py$srp_stats), caption = "Statistics for SRP levels")
+```
+
+Descriptive statistics are nothing new to you; you have been using many of them
+all your life.
+
+We can calculate other numbers that can be useful for drawing *conclusions* or
+*inferences* from a collection of numbers; these are *inferential statistics*.
+Inferential statistics are often probability values that give the answer to
+questions like "What are the chances that ...".
+
+```{r, echo=FALSE}
+ysrp <- py$yearly_srp
+pre_1990 <- round(mean(ysrp[ysrp$Year < 1990, 'SRP']), 1)
+post_1990 <- round(mean(ysrp[ysrp$Year > 1990, 'SRP']), 1)
+```
+
+For example, imagine we suspect there was some environmental change in 1990. We
+see that the average SRP value before 1990 was `r pre_1990` and the average SRP
+value after 1990 was `r post_1990`.  That gives us a difference in the average
+of `r post_1990 - pre_1990`. But, could this difference be due to chance
+fluctuations from year to year?  Were we just unlucky in getting a few larger
+measurements in later years?  We could use methods that you will see in this
+book to calculate a *probability* to answer that question.  The probability
+value is an *inferential* statistic, because we can use it to draw an
+*inference* about the measures.
+
+Inferential statistics use descriptive statistics as their input. Inferential
+statistics can be used for two purposes: to aid scientific *understanding* by
+estimating the probability that a statement is true or not, and to aid in
+making *sound decisions* by estimating which alternative among a range of
+possibilities is most desirable.
 
 ## Probabilities and decisions
 
@@ -136,83 +206,63 @@ There are two differences between questions about probabilities and
 the ultimate decision problems:
 
 1.  Decision problems always involve *evaluation of the
-    consequences* --- that is, taking into account the benefits and
-    the costs of the consequences --- whereas pure questions about
+    consequences*  —  that is, taking into account the benefits and
+    the costs of the consequences  —  whereas pure questions about
     probabilities are estimated without evaluations of the consequences.
 
 2.  Decision problems often involve a *complex combination* of *sets
     of probabilities and consequences*, together with their
     evaluations. For example: In the case of the contractor's
     ambulances, it is clear that there will be a monetary loss to the
-    contractor if she makes a commitment to have 16 ambulances available for
+    contractor if she makes a commitment to have 17 ambulances available for
     tomorrow and then cannot produce that many. Furthermore, the contractor
     must take into account the further consequence that there *may* be a loss
     of goodwill for the future if she fails to meet her obligations
-    tomorrow --- and then again there *may not* be any such loss; and if there
+    tomorrow  —  and then again there *may not* be any such loss; and if there
     is such loss of goodwill it might be a loss worth \$10,000 *or* \$20,000
     *or* \$30,000. Here the decision problem involves not only the probability
-    that there will be fewer than 16 ambulances tomorrow but also the
+    that there will be fewer than 17 ambulances tomorrow but also the
     immediate monetary loss and the subsequent possible losses of goodwill,
     and the valuation of all these consequences.
 
-Continuing with the decision concerning whether to do more research on
-medicine CCC: If you do decide to continue research on CCC, (a) you may,
-or (b) you may not, come up with an important general cure within, say,
-the next 3 years. If you do come up with such a general cure, of course
-it will have very great social benefits. Furthermore, (c) if you decide
-not to do further research on CCC now, you can direct your time and that
-of other people to research in other directions, with some chance that
-the other research will produce a less-general but nevertheless useful
-cure for some relatively infrequent forms of cancer. Those three
-possibilities have different social benefits. The probability that
-medicine CCC really has some curative effect on cancer, as judged by
-your prior research, obviously will influence your decision on whether
-or not to do more research on medicine CCC. But that judgment about the
-probability is only one part of the overall web of consequences and
-evaluations that must be taken into account when making your decision
-whether or not to do further research on medicine CCC.
+Continuing with the decision concerning whether to do more research on medicine
+AntiAnyVir: If you do decide to continue research on AntiAnyVir, (a) you may,
+or (b) you may not, come up with an important general treatment for viral
+infections within, say, the next 3 years. If you do come up with such a general
+treatment, of course it will have very great social benefits. Furthermore, (c)
+if you decide not to do further research on AntiAnyVir now, you can direct your
+time and that of other people to research in other directions, with some chance
+that the other research will produce a less-general but nevertheless useful
+treatment for some relatively infrequent viral infections. Those three
+possibilities have different social benefits. The probability that medicine
+AntiAnyVir really has some benefit in treating COVID19, as judged by your prior
+research, obviously will influence your decision on whether or not to do more
+research on medicine AntiAnyVir. But that judgment about the probability is
+only one part of the overall web of consequences and evaluations that must be
+taken into account when making your decision whether or not to do further
+research on medicine AntiAnyVir.
 
-Why does this book limit itself to the specific probability questions
-when ultimately we are interested in decisions? A first reason is
-division of labor. The more general aspects of the decision-making
-process in the face of uncertainty are treated well in other books. This
-book's special contribution is its new approach to the crucial process
-of estimating the chances that an event will occur.
+Why does this book limit itself to the specific probability questions when
+ultimately we are interested in decisions? A first reason is division of
+labor. The more general aspects of the decision-making process in the face of
+uncertainty are treated well in other books. This book's special contribution
+is its new approach to the crucial process of estimating the chances that an
+event will occur.
 
 Second, the specific elements of the overall decision-making process taught in
 this book belong to the interrelated subjects of *probability theory* and
-*inferential statistics* . Though probabilistic and inferential-statistical
-theory ultimately is intended to be part of the general decision-making
-process, often only the estimation of probabilities is done systematically, and
-the rest of the decision-making process---for example, the decision whether or
-not to proceed with further research on medicine CCC---is done in informal and
+*statistics* . Though probabilistic and statistical theory ultimately is
+intended to be part of the general decision-making process, often only the
+estimation of probabilities is done systematically, and the rest of the
+decision-making process — for example, the decision whether or not to proceed
+with further research on medicine AntiAnyVir — is done in informal and
 unsystematic fashion. This is regrettable, but the fact that this is standard
-practice is an additional reason why the treatment of inferential statistics
-and probability in this book is sufficiently complete.
+practice is an additional reason why the treatment of statistics and
+probability in this book is sufficiently complete.
 
-A third reason that this book covers only inferential statistics and not
-decision statistics is because most college and university statistics
-courses and books are limited to inferential statistics.
-
-## Types of statistics
-
-The term *statistics* sometimes causes confusion and therefore needs
-explanation.
-
-A statistic is a *number* . There are two kinds of statistics, *summarization*
-(descriptive) statistics and *probability* statistics. The most important
-summarization statistics are the *total*, the *distribution*, measures of the
-center of a distribution such as the *mean* and *median*, the *range*, and
-other measures of variation.
-
-Such statistics are nothing new to you; you have been using many of them all
-your life. Inferential statistics, which this book deals with, uses descriptive
-statistics as its input.
-
-Inferential statistics can be used for two purposes: to aid scientific
-*understanding* by estimating the probability that a statement is true
-or not, and to aid in making *sound decisions* by estimating which
-alternative among a range of possibilities is most desirable.
+A third reason that this book covers only statistics and not numerical
+reasoning about decisions is because most college and university statistics
+courses and books are limited to statistics.
 
 ## Limitations of probability and statistics
 
@@ -243,19 +293,18 @@ research thinking. Kinsey long ago put it this way:
 > college courses on the mathematical treatment of data, we shall come nearer
 > to having a science of human behavior. [@kinsey1948sexual, p 35].
 
-In much---even most---research in social and physical sciences,
-statistical testing is not necessary. Where there are large differences
-between different sorts of circumstances---for example, if a new
-medicine cures 90 patients out of 100 and the old medicine cures only 10
-patients out of 100---we do not need refined statistical tests to tell
-us whether or not the new medicine really has an effect. And the best
-research is that which shows large differences, because it is the large
-effects that matter. If the researcher finds that s/he must use refined
-statistical tests to reveal whether there are differences, this
-sometimes means that the differences do not matter much.
+In much — even most — research in social and physical sciences,
+statistical testing is not necessary. Where there are large differences between
+different sorts of circumstances for example, if a new medicine cures 90
+patients out of 100 and the old medicine cures only 10 patients out of 100 — we
+do not need refined statistical tests to tell us whether or not the new
+medicine really has an effect. And the best research is that which shows large
+differences, because it is the large effects that matter. If the researcher
+finds that s/he must use refined statistical tests to reveal whether there are
+differences, this sometimes means that the differences do not matter much.
 
-To repeat, then, some or even much research---especially in the physical and
-biological sciences---does not need the kind of statistical manipulation that
+To repeat, then, some or even much research — especially in the physical and
+biological sciences — does not need the kind of statistical manipulation that
 will be described in this book. But most decision problems *do* need the kind
 of probabilistic and statistical input that is described in this book.
 
@@ -269,7 +318,7 @@ helpful, and may be misleading. To put it another way, one cannot make bread
 without flour, yeast, and water. And good raw data are the flour, yeast and
 water necessary to get an accurate estimate of a probability. The most refined
 statistical and probabilistic manipulations are useless if the input data are
-poor---the result of unrepresentative samples, uncontrolled experiments,
+poor — the result of unrepresentative samples, uncontrolled experiments,
 inaccurate measurement, and the host of other ways that information gathering
 can go wrong. (See @simon1985basic for a catalog of the obstacles to obtaining
 good data.) Therefore, we should constantly direct our attention to ensuring
@@ -288,7 +337,7 @@ imply, this view is out-and-out wrong; lack of general intelligence on the
 part of students is *not* the root of the problem.
 
 Scan this book and you will find almost no formal mathematics. Yet
-nearly every student finds the subject very difficult--- as difficult as
+nearly every student finds the subject very difficult —  as difficult as
 anything taught at universities. The root of the difficulty is that the
 *subject matter* is extremely difficult. Let's find out *why* .
 
@@ -297,32 +346,31 @@ tonight at the local cinema; you can look it up on the web or call the cinema
 and ask. But consider by contrast how difficult it is to determine with
 accuracy:
 
-a. what will be the result of more than a hundred million Americans voting for
-   president a month hence; the best attempt usually is a sample of 2000
+1. Whether we will save lives by recommending vitamin D supplements for the
+   whole population as protection against viral infections.  Some evidence
+   suggests that low vitamin D levels predispose to more severe lung
+   infections, and that taking supplements can help [@martineau2017vitamin].
+   But, how certain can we be of the evidence?  How safe are the supplements?
+   Does the benefit, and the risk, differ by ethnicity?
+2. What will be the result of more than a hundred million Americans voting for
+   president a month from now; the best attempt usually is a sample of 2000
    people, selected in some fashion or another that is far from random, weeks
    before the election, asked questions that are by no means the same as the
    actual voting act, and so on;
+3. How men feel about women and vice versa.
 
-b. to assess, on the basis of the data on the prices of a single brand of
-   liquor in 42 states, 16 of which have liquor distribution systems run by
-   state government and 26 run privately, whether prices will be higher in
-   a state newly admitted to the union if it chooses the private system; or
-
-c. how men feel about women and vice versa.
-
-The cleverest and wisest people have pondered
-for thousands of years how to obtain answers to questions like these,
-and made little progress. Dealing with uncertainty was completely
-outside the scope of the ancient philosophers. It was not until two or
-three hundred years ago that people began to make any progress at all on
-these sorts of questions, and it was only about one century ago that we
-began to have reasonably competent procedures---simply because the problems are
-inherently difficult. So it is no wonder that the body of these methods is
-difficult.
+The cleverest and wisest people have pondered for thousands of years how to
+obtain answers to questions like these, and made little progress. Dealing with
+uncertainty was completely outside the scope of the ancient philosophers. It
+was not until two or three hundred years ago that people began to make any
+progress at all on these sorts of questions, and it was only about one century
+ago that we began to have reasonably competent procedures — simply because the
+problems are inherently difficult. So it is no wonder that the body of these
+methods is difficult.
 
 So: The bad news is that the subject is extremely difficult. The good
-news is that you---and that means *you* ---can understand it with hard
-thinking, even if you have no mathematical background beyond arithmetic
-and you think that you have no mathematical capability. That's because
-the difficulty lies in such matters as pin-pointing the right question,
-but not in any difficulties of mathematical manipulation.
+news is that you — and that means *you* — can understand it with hard thinking,
+even if you have no mathematical background beyond arithmetic and you think
+that you have no mathematical capability. That's because the difficulty lies in
+such matters as pin-pointing the right question, but not in any difficulties of
+mathematical manipulation.
