@@ -52,7 +52,7 @@ owns 20 ambulances:
 >  providing ambulances to a hospital. You own 20 ambulances. Based on
 >  past experience, the chance that any one ambulance will be unfit
 >  for service on any given day is about one in ten. You want to know
->  the chance on a particular day --- tomorrow --- that three or more
+>  the chance on a particular day — tomorrow — that three or more
 >  of them will be out of action.
 
 The resampling approach produces the estimate as follows.
@@ -62,8 +62,8 @@ The resampling approach produces the estimate as follows.
 We collect 10 coins, and mark one of them with a pen or pencil or tape
 as being the coin that represents "out-of-order;" the other nine coins
 stand for "in operation". For any one ambulance, this set of 10 coins
-provides a "model" for the one-in-ten chance---a probability of .10
-(10 percent)---of it being out of order on a given day.  We put the
+provides a "model" for the one-in-ten chance — a probability of .10
+(10 percent) — of it being out of order on a given day.  We put the
 coins into a little jar or bucket.
 
 For ambulance #1, we draw a single coin from the bucket.  This coin
@@ -81,7 +81,7 @@ After collecting evidence for, say, 50 experimental days we determine
 the proportion of the experimental days on which three or more
 ambulances are out of order. That proportion is an estimate of the
 probability that three or more ambulances will be out of order on a
-given day---the answer we seek. This procedure is an example of Monte
+given day — the answer we seek. This procedure is an example of Monte
 Carlo simulation, which is the heart of the resampling method of
 statistical estimation.
 
@@ -101,8 +101,8 @@ Dragons games). For each die, we mark one of its ten sides as
 out of order on a given day. In a single throw of the 20 dice we now
 get an experimental trial that represents a single day; we just have
 to count whether three or more ambulances turn up "out of order". In a
-hundred quick throws of the 20 dice---which probably takes less than 5
-minutes---we can get a fast and reasonably-accurate answer to our
+hundred quick throws of the 20 dice — which probably takes less than 5
+minutes — we can get a fast and reasonably-accurate answer to our
 question.
 
 ## Randomness from your computer
@@ -203,8 +203,8 @@ While you can *run* the code below on your own computer, for now we
 only need you to read it and follow along; the text explains what each
 line of code does.
 
-Later, after reading the "[About the technology]" chapter---which
-shows how to execute notebooks online or on your own computer---you
+Later, after reading the "[About the technology]" chapter — which
+shows how to execute notebooks online or on your own computer — you
 can come back and try it for yourself.
 
 `r begin_nb('ambulances')`
@@ -251,7 +251,7 @@ known as a "random number generator".
 
 ```{python}
 # Ask for NumPy's default random number generator and name
-# it `rnd`---short for "random"
+# it `rnd` — short for "random"
 rnd = np.random.default_rng()
 ```
 
@@ -327,7 +327,7 @@ a <- sample(1:10, 20, replace=TRUE)
 
 The command orders the computer to store the results of the random
 drawing in a location in the computer's memory to which we give a name such as
-"a" or "ambulances" or "aardvark" --- the name is up to us.
+"a" or "ambulances" or "aardvark" — the name is up to us.
 
 Next, we need to count the number of defective ambulances:
 
@@ -559,14 +559,14 @@ track of the results of each trial, placing the number of defective
 ambulances for each trial inside of an array called `z`. The array has
 1000 positions: one for each trial.
 
-In order to make 1000 repetitions of our experiment --- we could have decided
-to make ten thousand or some other number of repetitions --- we surround each trial with the `for` *loop*, that has the effect of repeating the operations for one trial 1000 times.  We identify the operations to repeat with the
+In order to make 1000 repetitions of our experiment — we could have decided
+to make ten thousand or some other number of repetitions — we surround each trial with the `for` *loop*, that has the effect of repeating the operations for one trial 1000 times.  We identify the operations to repeat with the
 `r begin_ispy()`
 indentation level.  All the indented statements are statements we repeat for
 each time through the `for` loop.
 `r end_ispy()`
 `r begin_isr()`
-opening --- `{` --- and closing --- `}` --- curly brackets.
+opening — `{` — and closing — `}` — curly brackets.
 `r end_isr()`
 
 Since our aim is to count the number of days in which more than 3 (4 or
@@ -580,7 +580,7 @@ number of trials. Thus we obtain an estimate of the chance, expressed as a
 probability between 0 and 1, that 4 or more ambulances will be defective on a
 given day. And we store that result in a location that we call `kk`, which is subsequently printed to screen.
 
-Don't worry too much about the details of how each of these commands works --- we
+Don't worry too much about the details of how each of these commands works — we
 will cover those details gradually, over the next few chapters.  But, we hope
 that you can see, in principle, how each of the operations that the computer
 carries out are analogous to the operations that you yourself executed when you
@@ -599,7 +599,7 @@ In the standard approach the student learns to choose and solve a
 formula. Doing the algebra and arithmetic is quick and easy. The
 difficulty is in choosing the correct formula. Unless you are a
 professional mathematician, it may take you quite a while to arrive at
-the correct formula---considerable hard thinking, and perhaps some
+the correct formula — considerable hard thinking, and perhaps some
 digging in textbooks. More important than the labor, however, is that
 you may come up with the wrong formula, and hence obtain the wrong
 answer. And how would you know if you were wrong?
