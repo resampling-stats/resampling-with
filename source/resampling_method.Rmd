@@ -240,7 +240,7 @@ from 1 through 10.  20 of these numbers represents a simulation of all
 20 ambulances available to the contractor.  We call a simulation
 of all ambulances for a specific day one *trial*.
 
-`r begin_ispy()` <!-- start Python-only section -->
+`r begin_ispy()`
 Before we begin our first trial, we need to load some helpful routines
 from the NumPy software library.  NumPy is a Python library that has
 many important functions for creating and working with numerical data.
@@ -260,7 +260,7 @@ an object is known as a "random number generator".
 rnd = np.random.default_rng()
 ```
 
-`r end_ispy()` <!-- end Python-only section -->
+`r end_ispy()`
 
 Recall that we want twenty 10-sided dice—one per ambulance.  Our dice should be
 10-sided, because each ambulance has a 1-in-10 chance of being out of order. We
@@ -280,7 +280,7 @@ numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 # Store the 20 numbers with with the name "a"
 a = rnd.choice(numbers, size=20)
 
-# The result is a collection (array) of 20 numbers.
+# The result is a sequence (array) of 20 numbers.
 a
 ```
 
@@ -290,12 +290,12 @@ a
 # These are the numbers we will ask R to select from.
 numbers <- 1:10
 
-# Get 20 values from the *numbers* collection.
+# Get 20 values from the *numbers* sequence.
 # Store the 20 numbers with with the name "a"
 # We will explain the replace=TRUE later.
 a <- sample(numbers, 20, replace=TRUE)
 
-# The result is a collection of 21 numbers.
+# The result is a sequence of 20 numbers.
 a
 ```
 
@@ -324,7 +324,7 @@ b
 
 ::: {.callout} :::
 ::: {.title}
-Counting array elements
+Counting sequence elements
 :::
 
 We see that the code uses:
@@ -386,7 +386,7 @@ The standard way to repeat steps in `r BL` is a `for` loop.  For example, let us
 ```{python, opts.label="py_ed"}
 # Read the next line as "repeat the following steps five times".
 for i in range(5):
-    # The indented stuff is the stuff we repeat five times.
+    # The indented stuff is the code we repeat five times.
     # Print "Hello" to the screen.
     print("Hello")
 ```
@@ -394,7 +394,7 @@ for i in range(5):
 ```{r, opts.label="r_ed"}
 # Read the next line as "repeat the following steps five times".
 for (i in 1:5) {
-    # The stuff between the curly brackets is the stuff we
+    # The stuff between the curly brackets is the code we
     # repeat five times.
     # Print "Hello" to the screen.
     print("Hello")
@@ -407,7 +407,8 @@ one trial inside a `for` loop, to repeat that trial code many times.
 Our next job is to *store* the results of each trial.  If we are going to run
 1000 trials, we need to store 1000 results.
 
-To do this, we start with a collection of 1000 zeros, that we will fill in later, like this:
+To do this, we start with a sequence of 1000 zeros, that we will fill in later,
+like this:
 
 ```{python, opts.label="py_ed"}
 # Ask NumPy to make a sequence of 1000 zeros that we will use
@@ -458,7 +459,7 @@ numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 # Read the next line as "repeat the following steps 1000 times".
 for i in range(1000):
-    # The indented stuff is the stuff we repeat 1000 times.
+    # The indented stuff is the code we repeat 1000 times.
 
     # Get 20 (size=20) values from the *numbers* list.
     # Store the 20 numbers with with the name "a"
@@ -483,10 +484,10 @@ numbers <- 1:10
 
 # Read the next line as "repeat the following steps 1000 times".
 for (i in 1:1000) {
-    # The stuff between the curly brackets is the stuff we
-    # repeat five times.
+    # The stuff between the curly brackets is the code we
+    # repeat 1000 times.
 
-    # Get 20 values from the *numbers* collection.
+    # Get 20 values from the *numbers* sequence.
     # Store the 20 numbers with with the name "a"
     a <- sample(numbers, 20, replace=TRUE)
 
@@ -497,6 +498,7 @@ for (i in 1:1000) {
 
     # Store the result from this trial in the sequence "z"
     z[i] <- b
+}
 ```
 
 The `r py_or_r('z[i] = b', 'z[i] <- b')` statement that follows the
