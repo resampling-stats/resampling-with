@@ -11,6 +11,15 @@ if [ -z "$rmd" ]; then
 fi
 shift
 edition=$(echo ${1:-python} | tr "[:upper:]" "[:lower:]")
+shift
+fmt=$(echo ${1:-html} | tr "[:upper:]" "[:lower:]")
+
+if [ "$fmt" == "html" ]; then
+    fmt="bookdown::gitbook"
+elif [ "$fmt" == "pdf" ]; then
+    fmt="bookdown::pdf_book"
+fi
+
 echo "Building $rmd for $edition edition."
 
 MY_DIR=$(dirname "${BASH_SOURCE[0]}")
@@ -26,4 +35,4 @@ rmd_root="${rmd%.*}"
 rm -rf _bookdown_files/${rmd_root}_cache/*
 config="_${edition}_bookdown.yml"
 export BOOK_ED=${edition}
-Rscript -e "bookdown::preview_chapter('${rmd_root}.Rmd', config_file='${config}')"
+Rscript -e "bookdown::preview_chapter('${rmd_root}.Rmd', output=\"$fmt\", config_file='${config}')"
