@@ -57,4 +57,4 @@ check-ds-refs :
 
 check-refs: check-simon-refs check-ds-refs
 
-# See ../scripts/rebuild_chapter.sh for single chapter rebuild.
+# See ../scripts/rebuild_chapter.py for single chapter rebuild.
