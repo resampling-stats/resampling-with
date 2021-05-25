@@ -215,11 +215,12 @@ chapter that explains how to execute notebooks online or on your own computer.
 
 `r begin_nb('ambulances')`
 
-The first thing to say about the code below is there are some lines
-that don't do anything; these the lines beginning with a `#` character
-(read `#` as "hash").  Lines beginning with `#` are called *comments*.  When
-`r book_lang` sees a `#` at the start of a line, it ignores everything else on
-that line, and skips to the next. Here's an example of a comment:
+The first thing to say about the code you will see below is there are some
+lines that do not do anything; these are the lines beginning with a `#`
+character (read `#` as "hash").  Lines beginning with `#` are called
+*comments*.  When `r book_lang` sees a `#` at the start of a line, it ignores
+everything else on that line, and skips to the next. Here's an example of a
+comment:
 
 ```{python, opts.label="py_ed"}
 # Python will completely ignore this text.
@@ -267,7 +268,7 @@ decide, arbitrarily, that if a die is rolled and lands on 1 that means the
 corresponding ambulance is out of order.
 
 The program to simulate one trial of the ambulances problem therefore
-begins with this command:
+begins with these commands:
 
 ```{python, opts.label="py_ed"}
 # Ask NumPy to generate 20 numbers between 1 and 10.
