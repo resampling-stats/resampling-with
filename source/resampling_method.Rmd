@@ -17,104 +17,103 @@ jupyter:
     name: python3
 resampling_with:
     ed2_fname: 05-Chap-1
+# Needed for ketable in combination with build_nb_book gfm build
+always_allow_html: true
 ---
 
-# The Resampling method {#resampling-method}
+# The resampling method {#resampling-method}
 
-Check out \@ref(tab:mice-genetics).
+This chapter is a brief introduction to the resampling method of
+solving problems in probability and statistics.  We're going to dive
+right in and solve a problem hands-on.
 
-                   BB (black)  Bb (black)  bb (brown)
------------------- ----------- ----------- ----------
-BB mated with bb   0           1           0
-Bb mated with bb   0           ½           ½
-Bb mated with Bb   ¼           ½           ¼
------------------- ----------- ----------- ----------
+You will see that the resampling method is easy to understand and
+apply: all it requires is to understand the physical problem. You then
+simulate a statistical model of the physical problem with techniques
+that are intuitively obvious, and estimate the probability sought with
+repeated random sampling.
 
-Table: (\#tab:mice-genetics)Probabilities for Genetic Character of Mice Offspring.
-       Source: Box and Tiao, 1973, pp. 12-14
+After finding a solution, we will look at the more conventional
+formulaic approach, and how that compares.  Here's the spoiler: it
+requires you to understand complex formulas, and to choose the correct
+one from many.
 
-This chapter is a brief introduction to the resampling method of solving
-problems in probability and statistics. A simple illustrative problem is
-stated, and then the step-by-step solution with resampling is shown,
-using both by-hand methods and a computer program. The older conventional
-formulaic approach to such a problem is then discussed. The conventional
-analytic method requires that you understand complex formulas, and too often
-one selects the wrong formula. In contrast, resampling requires that you first
-understand the physical problem fully. Then you simulate a statistical model of
-the physical problem with techniques that are intuitively obvious, and you
-estimate the probability with repeated random sampling.
+After reading this chapter, you will understand why we are excited
+about the resampling method, and why it will allow you to approach
+even even hard problems without knowing sophisticated statistic
+techniques.
 
 ## The resampling approach in action
 
 Recall the problem from section \@ref(what-problems) in which the contractor
-owns 20 ambulances. The chance that any one ambulance will be unfit for
-service on any given day is about 1 in 10, based on past experience. You want
-to know the probability that on a particular day---tomorrow--- *three or more*
-ambulances will be out of action. The resampling approach produces the
-estimate as follows.
+owns 20 ambulances:
+
+> *You are the manager and part owner* of one of several contractors
+>  providing ambulances to a hospital. You own 20 ambulances. Based on
+>  past experience, the chance that any one ambulance will be unfit
+>  for service on any given day is about one in ten. You want to know
+>  the chance on a particular day --- tomorrow --- that three or more
+>  of them will be out of action.
+
+The resampling approach produces the estimate as follows.
 
 ### Randomness from physical methods
 
 We collect 10 coins, and mark one of them with a pen or pencil or tape
 as being the coin that represents "out-of-order;" the other nine coins
-stand for "in operation." This set of 10 coins is a "model" of a
-situation where there is a one-in-ten chance---a probability of .10 (10
-percent)---of *one* particular ambulance being out-of-order on a given day.
-Next, we put the coins into a little jar or bucket, draw out one coin, and
-mark down whether or not that coin is the coin marked "out-of-order."
-That drawing of the single coin from the bucket represents the chance that
-any one given ambulance among our 20 ambulances (perhaps the one with the
-lowest license-plate number) will be out-of-order tomorrow.
+stand for "in operation". For any one ambulance, this set of 10 coins
+provides a "model" for the one-in-ten chance---a probability of .10
+(10 percent)---of it being out of order on a given day.  We put the
+coins into a little jar or bucket.
 
-Then we put the drawn coin back in the bucket, shake all the coins, and
-again draw out a coin. We mark down whether that second-drawing coin is
-or is not the "out-of-order" coin, and that outcome stands for a second
-ambulance in the fleet. We do this *20* times to represent our 20
-ambulances, replacing the coin after each drawing, of course. Those 20 drawings
-represent one day.
+For ambulance #1, we draw a single coin from the bucket.  This coin
+represents whether that ambulance is going to be broken tomorrow.
+After replacing the coin and shaking the bucket, we repeat the same
+procedure for ambulance #2, ambulance #3 and so forth. Having repeated
+the procedure *20* times, we now have a representation of all
+ambulances for a single day.
 
-At the end of the 20 draws we count how many out-of-orders we have got for that
-"day," checking whether there are *three or more* out-of-orders. If there are
-three or more, we write down in another column "yes"; if not, we write "no."
-The work we have done up to now represents one experimental trial of the model
-for a single day.
+We can now repeat this whole process as many times as we like: each
+time, we come up with a representation for a different day, telling us
+how many ambulances will be out-of-service on that day.
 
-Then we repeat perhaps 50 or 100 times the entire experiment described
-above. Each of those 50 or 100 experimental trials represents a single
-day. When we have collected evidence for 50 or 100 experimental days, we
-determine the proportion of the experimental days on which three or more
+After collecting evidence for, say, 50 experimental days we determine
+the proportion of the experimental days on which three or more
 ambulances are out of order. That proportion is an estimate of the
-probability that three or more ambulances will be out of order on a given
-day---the answer we seek. This procedure is an example of Monte Carlo
-simulation, which is the heart of the resampling method of statistical
-estimation.
+probability that three or more ambulances will be out of order on a
+given day---the answer we seek. This procedure is an example of Monte
+Carlo simulation, which is the heart of the resampling method of
+statistical estimation.
 
-A more direct way to answer this question would be to examine the firm's
-actual records for the past 100 days or 500 days to determine how many
-days had three or more ambulances out of order. But the resampling procedure
-described above gives us an estimate even if we do not have such
-long-term information. This is realistic; it is frequently the case in
-the workaday world that we must make estimates on the basis of
-insufficient history about an event.
+A more direct way to answer this question would be to examine the
+firm's actual records for the past 100 days or, better, 500 days (if
+that's available) to determine how many days had three or more
+ambulances out of order. But the resampling procedure described above
+gives us an estimate even if we do not have such long-term
+information. This is realistic; it is frequently the case in the real
+world that we must make estimates on the basis of insufficient history
+about an event.
 
-A quicker resampling method than the coins could be obtained with 20 ten-sided
-dice or spinners. Each one of the dice, marked with one of its ten sides as
-"out-of-order," would indicate the chance of a single ambulance being out of
-order on a given day. A single pass with the 20 dice or spinners allows us to
-count whether three or more ambulances turn up out of order. So in a single
-throw of the 20 dice we can get an experimental trial that represents a single
-day. And in a hundred quick throws of the 20 dice---which probably takes less
-than 5 minutes---we can get a fast and reasonably-accurate answer to our
-question. But getting hold of ten-sided dice might be a nuisance.
+A quicker resampling method than the coins could be obtained with 20
+ten-sided dice or spinners (like those found in the popular Dungeons &
+Dragons games). For each die, we mark one of its ten sides as
+"out-of-order".  This indicate the chance of a single ambulance being
+out of order on a given day. In a single throw of the 20 dice we now
+get an experimental trial that represents a single day; we just have
+to count whether three or more ambulances turn up "out of order". In a
+hundred quick throws of the 20 dice---which probably takes less than 5
+minutes---we can get a fast and reasonably-accurate answer to our
+question.
 
 ## Randomness from your computer
 
-Computers make it easy to generate random numbers for resampling.  Random
-numbers are numbers were it is effectively impossible to predict which number
-is coming next.  For example, let's say I ask for a random number between 1 and
-10 inclusive.  We accept that number is random if I have no way of doing better
-than chance in predicting what that number is going to be.  We will go into
-more detail about what we mean by *random* and *chance* later in the book.
+Computers make it easy to generate random numbers for resampling.
+Random numbers are numbers were it is effectively impossible to
+predict which number is coming next. If we ask the computer for a
+number between 1 and 10, and we are unable to do better than chance in
+predicting what that number is going to be, we accept that it is
+random.  We will go into more detail about what exactly we mean by
+*random* and *chance* later in the book.
 
 <!--
 Press Your Luck
@@ -123,93 +122,99 @@ The Michael Larsen Incident
 https://web.archive.org/web/20170712041017/http://www.rotten.com/library/conspiracy/press-your-luck/
 -->
 
-We can use random numbers from the computer to simulate our problem.  For
-example, we can ask the computer to make us a random number between 1 and 10
-(inclusive) to represent one ambulance. If we say that the digit 0 represents
-"out-of-order" and the digits 2 through 10 represent "in operation," then any
-one random digit gives us a trial observation for a single ambulance.  To get
-an experimental trial for a single day we look at 20 digits and count the
-number of ones. If the number of ones is three or more, then we write "yes."
-We then look at one hundred or two hundred sets of 20 digits and count the
-proportion of sets whose 20 digits show three or more ambulances being
-"out-of-order." Once again, that proportion estimates the probability that
-three or more ambulances will be out-of-order on any given day.
+We can use random numbers from computers to simulate our problem.  For
+example, we can ask the computer to choose a random number between 1
+and 10 to represent one ambulance. Let's say the number 1 represents
+"out-of-order" and 2 through 9 "in operation", then any one random
+number gives us a trial observation for a single ambulance.  To get an
+experimental trial for a single day we look at 20 numbers and count
+how many of them are 1.  We then look at, say, one hundred sets of 20
+numbers and count the proportion of sets whose 20 numbers show three or
+more ambulances being "out-of-order". Once again, that proportion
+estimates the probability that three or more ambulances will be
+out-of-order on any given day.
 
-Soon we will do all these steps with some `r book_lang` code, but for now,
-please take in on faith that we have made 20 random numbers, each from 1
-through 10, and we have done that 25 times, to simulate 25 days of 20
-ambulances. We could arrange those numbers in a table like table
-\@ref(tab:veh-numbers):
+Soon we will do all these steps with some `r book_lang` code, but for
+now, consider Table \@ref(tab:veh-numbers).  In each row, we placed 20
+numbers, each one representing an ambulance.  We added 25 such rows,
+each one representing a different day.
 
-```{r, veh-numbers, echo=FALSE}
-# Builds a table of numbers as a figure.
-n_vehicles <- 20
-n_trials <- 25
-# Make 25 * 20 random numbers
-random_nos <- sample(1:10, n_trials * n_vehicles, replace=TRUE)
-# Put them into a 25 x 20 matrix
-random_matrix <- matrix(random_nos, nrow=25, byrow=TRUE)
-# Add column names.
-colnames(random_matrix) <- sapply(1:20, {function (n) paste('T', n, sep='')})
-# Put these numbers into a table for display
-df <- tibble::as_tibble(random_matrix)
-knitr::kable(df,
-  booktabs = TRUE,
-  row.names = TRUE,
-  caption = '25 simulations of 20 ambulances'
+```{python, echo=FALSE}
+import numpy as np
+import pandas as pd
+
+n_vehicles = 20
+n_trials = 25
+
+rng = np.random.default_rng()
+trials = rng.integers(1, 11, size=(n_trials, n_vehicles))
+
+df = pd.DataFrame(
+    trials,
+    index=[f'Day{i + 1}' for i in range(n_trials)],
+    columns=[f'A{i + 1}' for i in range(n_vehicles)]
 )
 ```
 
-To get the answer for each day, we count the number of zeros in each row.  The
-counts go in the final column called "#0" (for "number of zeros").
+```{r, veh-numbers, echo=FALSE}
+ketable(py$df, caption = '25 simulations of 20 ambulances')
+```
+
+To know how many ambulances were "out of order" on any given day, we
+count number of ones in that row.  We place the the counts in the final column
+called "#1" (for "number of ones"):
+
+```{python, echo=FALSE}
+# Count the number of ones in each row, put in new column
+df_counts = df.copy()
+df_counts['#1'] = (df == 1).sum(axis=1)
+```
 
 ```{r, veh-numbers-counts, echo=FALSE}
-# Count the number of ones in each row, put in new column.
-df_counts <- tibble::add_column(df, '#0'=rowSums(df == 1))
-knitr::kable(df_counts,
-  booktabs = TRUE,
-  row.names = TRUE,
+ketable(
+  py$df_counts,
   caption = '25 simulations of 20 ambulances, with counts'
 )
 ```
 
-Each value in the last column of \@ref(tab:veh-numbers-counts) is the count of
-zeros in that row, and therefore, the result from our simulation of one day.
+Each value in the last column of Table \@ref(tab:veh-numbers-counts)
+is the count of ones in that row and, therefore, the result from our
+simulation of one day.
 
 We can estimate how often three or more ambulances would break down by looking
-for values of three or greater in the last column.  We find there are `r
-sum(df_counts['#0'] >= 3)` rows with three or more in the last column. Finally
-we divide this number of rows by the number of trials (`r n_trials`) to get an
+for values of three or greater in the last column.  We find there are
+`r sum(py$df_counts['#1'] >= 3)` rows with three or more in the last column. Finally
+we divide this number of rows by the number of trials (`r py$n_trials`) to get an
 estimate of the *proportion* of days with three or more breakdowns. The result
-is `r sum(df_counts['#0'] >= 3) / n_trials`.
+is `r sum(py$df_counts['#1'] >= 3) / py$n_trials`.
 
-## Building the problem using `r book_lang`
+## Solving the problem using `r book_lang`
 
 Here we rush ahead to show you how to do this simulation in `r book_lang`.
 
-In the text that follows we go through the `r book_lang` code for the
-simulation.  Please don't expect to understand this code right away.  The rest
-of this book goes into more detail about how `r book_lang` code works, and how
-you can use `r book_lang` to build your own simulations.  Here we want to show
-you what this code looks like, to give you an idea of where we are headed.
+We go through the `r book_lang` code for the simulation, but we don't
+expect you to understand all of it right now.  The rest of this book
+goes into more detail about how `r book_lang` code works, and how you
+can use `r book_lang` to build your own simulations.  Here we just
+want to show you what this code looks like, to give you an idea of
+where we are headed.
 
-For each line of the code below, we give a detailed explanation, but you can
-also *run* the code yourself, to see it in action.  The link below allows you
-to open this code as a *notebook*, and run it.  But, you may want to read the
-next chapter [About the technology], to learn more about how to run this
-notebook.  For now, we encourage you read the text here carefully, without
-using the technology to run the code.  The text explains what the code means.
-Later, after you have read more about the technology, you might consider coming
-back to the links here to *run* the code.
+While you can *run* the code below on your own computer, for now we
+only need you to read it and follow along; the text explains what each
+line of code does.
+
+Later, after reading the "[About the technology]" chapter---which
+shows how to execute notebooks online or on your own computer---you
+can come back and try it for yourself.
 
 `r begin_nb('ambulances')`
 
-The first thing to say about the code below is there are many lines in these
-bits of code that don't do anything.  These are the lines beginning with the
-`#` character (read `#` as "hash").  Lines beginning with `#` are called
-*comments*.  When `r book_lang` sees the `#` at the start of the line, it
-realizes that it should ignore everything else on that line, and skips on the
-next line. Here's an example of a comment in `r book_lang`:
+The first thing to say about the code below is there are some lines
+that don't do anything, namely the ones beginning with a `#` character
+(read `#` as "hash").  These are called *comments*.  When `r
+book_lang` sees a `#` at the start of a line, it ignores everything
+else on that line, and skips to the next. Here's an example of a
+comment:
 
 ```{python, opts.label="py_ed"}
 # Python will completely ignore this text.
@@ -219,36 +224,35 @@ next line. Here's an example of a comment in `r book_lang`:
 # R will completely ignore this text.
 ```
 
-Because `r book_lang` ignores lines beginning with `#`, the text comments is
-just for us, the humans that are reading the code.  We often use comments in code to explain what the other parts of the code are doing, to make the rest of the code easier for humans to read and understand.
+Because `r book_lang` ignores lines beginning with `#`, the text
+comments is just for us, the humans reading the code.  The author of
+the code typically uses comments to explain what the code is doing.
 
-Our next task is to use `r book_lang` to simulate a single day of ambulances.
-We will represent each ambulance by a random number from 1 through 10.  20 of
-these numbers represents a simulation of all 20 ambulances available to the
-contractor.  We will call a simulation of 20 ambulances --- one *trial*.
+Our next task is to use `r book_lang` to simulate a single day of
+ambulances.  We will again represent each ambulance by a random number
+from 1 through 10.  20 of these numbers represents a simulation of all
+20 ambulances available to the contractor.  We call a simulation
+of all ambulances for a specific day one *trial*.
 
-`r begin_ispy()`
-Before we begin our first trial, we need to load some helpful routines from the
-Numpy library.  Numpy is a Python library that has many important functions for
-creating and working with data.  We will use routines from Numpy in almost all
-our examples.
+`r begin_ispy()` <!-- start Python-only section -->
+Before we begin our first trial, we need to load some helpful routines
+from the NumPy software library.  NumPy is a Python library that has
+many important functions for creating and working with numerical data.
+We will use routines from NumPy in almost all our examples.
 
 ```{python}
 # Get the Numpy library, and call it "np" for short.
 import numpy as np
 ```
-`r end_ispy()`
 
-The core of the program to simulate one trial of ambulances problem above
-begins with this command to the computer:
+We also need to ask NumPy for an object that generates random numbers,
+makes random choices, and shuffles lists of numbers.  Such an object is
+known as a "random number generator".
 
-```{python, opts.label="py_ed"}
-# Use Numpy ("np") to generate 20 random integers from 1 up to, but *not
-# including* 11.  Therefore, this generates 20 numbers from 1 through 10
-# inclusive.
-# Store the 20 numbers as an "array" with the name "a"
-rng = np.random.default_rng()
-a = rng.integers(1, 11, size=20)
+```{python}
+# Ask for NumPy's default random number generator and name
+# it `rnd`---short for "random"
+rnd = np.random.default_rng()
 ```
 
 ::: {.callout} :::
@@ -256,14 +260,63 @@ a = rng.integers(1, 11, size=20)
 NumPy's Random Number Generator
 :::
 
-Here some text about how NumPy's RNG works.
+Here's an example of some of the random operations we can perform with NumPy:
 
-```python
-def foo(x):
-    return x**2
-```
+1. Generate a single random number, `x`, between 1 and 10.
+
+   ```{python}
+   rnd.integers(low=1, high=11)
+   ```
+
+   Note that NumPy generates numbers equal to `low` but *less* than `high`.
+   This is known as a *half-open interval*.
+
+2. Generate 5 random numbers between 1 and 10:
+
+   ```{python}
+   rnd.integers(low=1, high=11, size=5)
+   ```
+
+   By specifying the `size` keyword, we can generate more than one
+   random number at a time.
+
+3. Make a random choice between three words:
+
+   ```{python}
+   rnd.choice(['apple', 'orange', 'banana'])
+   ```
+
+4. Shuffle a list of numbers:
+
+   ```{python}
+   rnd.permutation([1, 2, 3, 4, 5])
+   ```
 
 ::::::::::::::::::
+
+`r end_ispy()` <!-- end Python-only section -->
+
+
+Recall that we want twenty 10-sided dice—one per ambulance.  Die dice
+are 10-sided, because each ambulance has a 1-in-10 chance of being out
+of order. We decide, arbitrarily, that if a die is rolled and lands on
+1 that that ambulance is out of order (we could just as well have used
+7; we just need to pick one out of the 10 different values).
+
+The program to simulate one trial of the ambulances problem therefore
+begins with this command:
+
+```{python, opts.label="py_ed"}
+# Ask NumPy to generate 20 integers between 1 and 10.
+
+# Note that NumPy generates numbers higher or equal to `low` but
+# *less than* `high`:
+
+# Store the resulting 20 numbers as an "array" (a collection of numbers)
+# with the name "a"
+
+a = rnd.integers(low=1, high=11, size=20)
+```
 
 ```{r, opts.label="r_ed"}
 # Generate 20 random integers from 1 through 10.
@@ -272,19 +325,15 @@ def foo(x):
 a <- sample(1:10, 20, replace=TRUE)
 ```
 
-This command orders the computer to randomly generate 20 numbers from `1`
-through `10`. Inasmuch as each ambulance has a 1 in 10 chance of being
-defective, we decide arbitrarily that a `1` stands for a defective ambulance,
-and the other nine numbers (from `2` to `10`) stand for a non-defective
-ambulance. The command orders the computer to store the results of the random
+The command orders the computer to store the results of the random
 drawing in a location in the computer's memory to which we give a name such as
 "a" or "ambulances" or "aardvark" --- the name is up to us.
 
-The next key element in the core of the program is:
+Next, we need to count the number of defective ambulances:
 
 ```{python, opts.label="py_ed"}
-# Count the number of ones among the random numbers, using the Numpy ("np")
-# "count_nonzero" function.
+# Count the number of ones among the random numbers, using the NumPy ("np")
+# `count_nonzero` function.
 b = np.count_nonzero(a == 1)
 ```
 
@@ -295,40 +344,169 @@ b = np.count_nonzero(a == 1)
 b <- sum(a == 1)
 ```
 
+::: {.callout} :::
+::: {.title}
+Counting array elements
+:::
+
+We see that the code uses:
+
+```{python, opts.label="py_ed"}
+np.count_nonzero(a == 1)
+```
+
+```{r, opts.label="r_ed"}
+sum(a == 1)
+```
+
+What exactly happens here under the hood?  First `a == 1` creates an
+array that only contains
+`r py_or_r('True', 'TRUE')` or `r py_or_r('False', 'FALSE')` values,
+depending on whether each element is equal to 1 or not.
+
+Then, we ask `r book_lang` to `r py_or_r('count_nonzero', 'sum')` only the
+true elements in that array.
+`r begin_isr()`
+`TRUE` evaluates to 1, and `FALSE` evaluates to 0; thus we can use `sum` to
+count the number of `TRUE` values.
+`r end_isr()`
+
+This comes down to asking "how many elements in `a` are equal to 1".
+::::::::::::::::::
+
 This is a *counting* operation. The command orders the computer to *count* the
 number of `1`s among the twenty numbers that are in location `a` following the
-random drawing carried out by the `r py_or_r('randint', 'sample')` operation.
+random draw carried out by the `r py_or_r('rnd.integers', 'sample')` operation.
 The result of the `r py_or_r('count_nonzero', 'sum')` operation will be
 somewhere between 0 and 20, the number of ambulances that might be out-of-order
 on a given day. The result is then placed in another location in the computer's
 memory that we label `b`.
 
-Now let us place the  `r py_or_r('randint', 'sample')`and `r
-py_or_r('count_nonzero', 'sum')` commands within the entire program that we use
-to solve this problem, which is:
+### The solution
 
-```{python, opts.label="py_ed"}
-# Make an array of 1000 numbers to store our 1000 counts.
-# These all start off as 0, but we fill them in below as we do 1000 trials.
-z = np.zeros(1000)
-# Repeat one trial of the simulation 1000 times.
-for i in np.arange(1000):
-    # Everything in the indented block is part of one trial.
-    # We run everything in the indented block for each trial.
-    # Therefore, Python runs all these commands 1000 times.
+Now, it is our big moment! We get to combine the elements shown above
+to perform our ambulance simulation over, say, 100 days.  Just a quick
+reminder that you are not expected to understand all detail of the
+code below; but see if you can follow along with the gist of it.
 
-    # Generate 20 numbers, each between 1 through 10 and put them in array a.
-    # Each number will represent an ambulance, and we let 1 represent a
-    # defective ambulance.
-    a = np.random.randint(1, 11, size=20)
-    # Count the number of defective ambulances, and put the result in "b".
-    b = np.count_nonzero(a == 1)
-    # Keep track of each trial's results in "counts".
+To solve resampling problems, we typically figure out the structure of
+a single trial and then place that trial in a loop that executes it
+multiple times (once for each day, in our case).  Here's what that
+would look like (this code snippet won't run, it is just a sketch):
+
+```python
+# Create an array of zeros, `z`, for storing a result for each day.
+# The zeros are place holders that we replace with trial results later on.
+
+z = np.zeros(100)
+
+# The next line is Python for
+# "repeat what is in the indented code block 100 times"
+
+for i in range(100):
+
+    # Execute a single trial, the result of which is
+    # stored in `b`
+    b = ...
+
+    # Save the result in the trial result array
+    # at position `i`, where `i` is the trial number
     z[i] = b
-    # End this trial, then go back and repeat the process until all 1000 trials
+
+    # End of this trial.
+    # Go back and repeat the process until all 100 trials
     # are complete, then proceed.
 
-# This part runs after all 1000 trials have finished.
+
+# This part runs after all 100 trials have finished.
+
+# Take a look at the trial result array
+# and calculate whatever we are interested in
+...
+```
+
+::: {.callout} :::
+::: {.title}
+For loops
+:::
+
+For loops are common across many programming languages, and offers a way to
+repeat part of the program several times.
+
+You can think of a factory robot that slides along a worktable on
+which several items have been placed.  It services each of these
+items, one by one, until it is done.
+
+So the robot knows *which* item it is operating on, each item is given
+a label.
+
+Here is an example:
+
+```{python}
+for item in ['shoe', 'saddle', 'jacket']:
+    print('I am stitching a', item)
+```
+
+Here, the label ("shoe", "saddle", etc.) is assigned to "item", which
+can be accessed from inside the for loop.  The code can be unpacked
+into the following equivalent program:
+
+```python
+item = 'shoe'
+print('I am stitching a', item)
+
+item = 'saddle'
+print('I am stitching a', item)
+
+item = 'jacket'
+print('I am stitching a', item)
+```
+
+We used the name `item` here, but any other name would do.  Thus, the following is equivalent:
+
+```python
+for package in ['shoe', 'saddle', 'jacket']:
+    print('I am stitching a', package)
+```
+
+It is common to use a number as a label in a for loop:
+
+```{python}
+for i in [0, 1, 2, 3, 4]:
+    print('The square of', i, ' is ', i * i)
+```
+
+When we want to count to a hundred, it becomes laborious to type out the numbers.  For that, Python has a shorthand called `range`:
+
+```{python}
+for i in range(5):
+    print('The square of', i, ' is ', i * i)
+```
+
+::::::::::::::::::
+
+
+Now, let's apply the above structure to our ambulance problem.  We
+simulate 1000 days:
+
+```{python, opts.label="py_ed"}
+# Make an array of 1000 numbers, one slot per day.
+# In each slot, we will store the number of ambulances out of order
+# on that day.
+z = np.zeros(1000)
+
+# Repeat one trial of the simulation 1000 times.
+for i in range(1000):
+    # These are the commands for a single trial:
+
+    a = np.random.randint(1, 11, size=20)
+    b = np.count_nonzero(a == 1)
+
+    # Keep track of each trial's results in position i of "z"
+    z[i] = b
+
+# After finishing all our trials, we analyze our trial array `z` to
+# compute our answer.
 
 # Determine how many trials resulted in more than 3 ambulances out of order.
 k = np.count_nonzero(z > 3)
@@ -357,7 +535,7 @@ for (i in 1:1000) {
     a <- sample(1:10, 20, replace=TRUE)
     # Count the number of defective ambulances, and put the result in "b".
     b <- sum(a == 1)
-    # Keep track of each trial's results in "counts".
+    # Keep track of each trial's results in "z".
     z[i] <- b
     # End this trial, then go back and repeat the process until all 1000 trials
     # are complete, then proceed.
@@ -376,11 +554,10 @@ print(kk)
 ```
 
 The `r py_or_r('z[i] = b', 'z[i] <- b')` statement that follows the `r
-py_or_r('np.count_nonzero', 'sum')` *counting* operation simply keeps track of
-the results of each trial, placing the number of defective ambulances that
-occur in each trial in a location that we usually call `z`. This is done in
-each of the 1000 trials that we make, and the result eventually is an "array"
-with 1000 numbers in it.
+py_or_r('np.count_nonzero', 'sum')` *counting* operation simply keeps
+track of the results of each trial, placing the number of defective
+ambulances for each trial inside of an array called `z`. The array has
+1000 positions: one for each trial.
 
 In order to make 1000 repetitions of our experiment --- we could have decided
 to make ten thousand or some other number of repetitions --- we surround each trial with the `for` *loop*, that has the effect of repeating the operations for one trial 1000 times.  We identify the operations to repeat with the
@@ -395,32 +572,25 @@ opening --- `{` --- and closing --- `}` --- curly brackets.
 Since our aim is to count the number of days in which more than 3 (4 or
 more) defective ambulances occur, we use another *counting* command
 (`r py_or_r('count_nonzero', 'sum')`) at the end of the 1000 trials.  This
-counting command *counts* how many times more than 3 defects occurred in the
-1000 days recorded in our `z` array, and we place the result in still another
-location `k`. This gives us the total number of days where 4 or more defective
+command *counts* how many times more than 3 defects occurred in the
+1000 days recorded in our `z` array, and we place the result in another
+location, `k`. This gives us the total number of days where 4 or more defective
 ambulances are seen to occur. Then we divide the number in `k` by 1000, the
 number of trials. Thus we obtain an estimate of the chance, expressed as a
 probability between 0 and 1, that 4 or more ambulances will be defective on a
-given day. And we store that result in a location that we decide to call `kk`,
-so that it will be there when the computer receives the next command to `print`
-that result on the screen.
+given day. And we store that result in a location that we call `kk`, which is subsequently printed to screen.
 
-Please don't worry about the details of how each of these commands works --- we
+Don't worry too much about the details of how each of these commands works --- we
 will cover those details gradually, over the next few chapters.  But, we hope
-that you can see in principle, how each of the operations that the computer
+that you can see, in principle, how each of the operations that the computer
 carries out are analogous to the operations that you yourself executed when you
-solved this problem using a ten-sided spinner or a random-number table. This is
+solved this problem using the equivalent of a ten-sided die. This is
 exactly the procedure that we will use to solve every problem in probability
-and statistics that we must deal with. Either we will use a device such as
-coins or a random number table as an analogy for the physical process we are
-interested in (ambulances becoming defective, in this case), or we will
-simulate the analogy on the computer using some `r BL` code like the code
-above.
+and statistics that we must deal with.
 
-The `r BL` STATS program called "ambulances" may not seem simple to you at
-first glance. But please believe us when we say that it is vastly simpler than
-the older conventional approach to such problems that has routinely been taught
-to students for decades.
+While writing programs like these take a bit of getting used to, it is
+vastly simpler than the older, more conventional approaches to such
+problems routinely taught to students.
 
 
 ## How resampling differs from the conventional approach
@@ -432,14 +602,16 @@ professional mathematician, it may take you quite a while to arrive at
 the correct formula---considerable hard thinking, and perhaps some
 digging in textbooks. More important than the labor, however, is that
 you may come up with the wrong formula, and hence obtain the wrong
-answer. Most students who have had a standard course in probability and
+answer. And how would you know if you were wrong?
+
+Most students who have had a standard course in probability and
 statistics are quick to tell you that it is not easy to find the correct
 formula, even immediately after finishing a course (or several courses)
-on the subject. After leaving school, it is harder still to choose the
-right formula. Even many people who have taught statistics at the
+on the subject. After leaving school or university, it is harder still
+to choose the right formula. Even many people who have taught statistics at the
 university level (including this writer) must look at a book to get the
 correct formula for a problem as simple as the ambulances, and then we are
-not always sure of the right answer. This is the grave disadvantage of
+often still not sure we have the right answer. This is the grave disadvantage of
 the standard approach.
 
 In the past few decades, resampling and other Monte Carlo simulation
@@ -466,7 +638,7 @@ Better examples.  These are out of date.
 3.  What are the best tactics in baseball? Should one bunt? Should one
     put the best hitter up first, or later? By trying out various
     tactics with dice or random numbers, Earnshaw Cook (in his book
-    *Percentage Baseball* ), found that it is best never to bunt, and
+    *Percentage Baseball*), found that it is best never to bunt, and
     the highest-average hitter should be put up first, in contrast to
     usual practice. Finding this answer would have been much more difficult
     with the analytic method.
@@ -500,7 +672,7 @@ purely mathematics (though not necessarily formulas) and technique. But
 *statistics has to do with meaning* . For example, what is the meaning
 of data showing an association just discovered between a type of
 behavior and a disease? Of differences in the pay of men and women in
-your firm? Issues of causation, acceptability of control, design of
+your firm? Issues of causation, acceptability of control, and design of
 experiments cannot be reduced to technique. This is "philosophy" in the
 fullest sense. Probability and statistics calculations are just one
 input. Resampling simulation enables us to get past issues of
@@ -510,4 +682,3 @@ statistical problems.
 If you intend to go on to advanced statistical work, the older standard
 method can be learned alongside resampling methods. Your introduction to
 the conventional method may thereby be made much more meaningful.
-
