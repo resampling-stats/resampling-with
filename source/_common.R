@@ -67,9 +67,10 @@ nb_template__ <- paste('<div class="rmdcomment">\n',
                        sep='\n')
 
 nb_begin__ <- function(nb_fname, nb_path) {
-  if (knitr::is_html_output()) {
-    return (stringr::str_interp(nb_template__))
-  }
+    # Omit notebook links unless HTML-like format.
+    if (knitr::is_html_output()) {
+        return (stringr::str_interp(nb_template__))
+    }
 }
 
 begin_nb <- function(nb_fname) {
