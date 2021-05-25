@@ -10,7 +10,7 @@ if [ -z "$rmd" ]; then
     exit 1
 fi
 shift
-edition=${1:-python}
+edition=$(echo ${1:-python} | tr "[:upper:]" "[:lower:]")
 echo "Building $rmd for $edition edition."
 
 MY_DIR=$(dirname "${BASH_SOURCE[0]}")
@@ -25,4 +25,5 @@ cd $MY_DIR/../source
 rmd_root="${rmd%.*}"
 rm -rf _bookdown_files/${rmd_root}_cache/*
 config="_${edition}_bookdown.yml"
+export BOOK_ED=${edition}
 Rscript -e "bookdown::preview_chapter('${rmd_root}.Rmd', config_file='${config}')"
