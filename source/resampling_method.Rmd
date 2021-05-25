@@ -202,16 +202,11 @@ While you can *run* the code below on your own computer, for now we
 only need you to read it and follow along; the text explains what each
 line of code does.
 
-::: {.callout} :::
-::: {.title}
-Coming back to the example
-:::
-
+`r begin_callout('Coming back to the example')`
 If you are interested, you can come back to this example later, and run it for
 yourself.  To do this, we recommend you read the "[About the technology]"
 chapter that explains how to execute notebooks online or on your own computer.
-
-::::::::::::::::::
+`r end_callout()
 
 `r begin_nb('ambulances')`
 
@@ -322,11 +317,7 @@ b <- sum(a == 1)
 b
 ```
 
-::: {.callout} :::
-::: {.title}
-Counting sequence elements
-:::
-
+`r begin_callout('Counting sequence elements')`
 We see that the code uses:
 
 ```{python, opts.label="py_ed"}
@@ -349,7 +340,7 @@ count the number of `TRUE` values.
 `r end_isr()`
 
 This comes down to asking "how many elements in `a` are equal to 1".
-::::::::::::::::::
+`r end_callout()`
 
 The `r py_or_r('count_nonzero', 'sum')`
 command is a *counting* operation. It asks the computer to *count*
