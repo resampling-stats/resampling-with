@@ -33,7 +33,7 @@ def rebuild_chapter(rmd, edition, fmt):
     os.environ['BOOK_ED'] = edition
     check_call(['Rscript', '-e',
                 f"bookdown::preview_chapter('{rmd_root}.Rmd', "
-                f"output=\"{fmt}\", config_file='{config}')"],
+                f"output='{fmt}', config_file='{config}')"],
                cwd=book_source)
 
 
