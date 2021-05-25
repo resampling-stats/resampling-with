@@ -79,6 +79,25 @@ begin_nb <- function(nb_fname) {
     return (stringr::str_interp('${comment_start} nb:${nb_path} ${comment_end}'))
 }
 
+begin_callout <- function(title) {
+    if (knitr::is_latex_output()) {
+        return (stringr::str_interp(paste(
+':::: {.tcolorbox data-latex=""}\n',
+'**${title}**\n',
+sep='\n')))
+    }
+    return (stringr::str_interp(paste(
+':::: {.callout}',
+'::: {.title}',
+'${title}',
+':::\n',
+sep='\n')))
+}
+
+end_callout <- function() {
+    '\n::::\n'
+}
+
 end_nb <- function() {
     if (is_nb) {
         return (stringr::str_interp('${comment_start} nb:end ${comment_end}'))
