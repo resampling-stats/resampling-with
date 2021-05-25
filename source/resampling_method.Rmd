@@ -364,7 +364,7 @@ array that only contains
 `r py_or_r('True', 'TRUE')` or `r py_or_r('False', 'FALSE')` values,
 depending on whether each element is equal to 1 or not.
 
-Then, we ask `r book_lang` to `r py_or_r('count', 'sum')` only the
+Then, we ask `r book_lang` to `r py_or_r('count_nonzero', 'sum')` only the
 true elements in that array.
 `r begin_isr()`
 `TRUE` evaluates to 1, and `FALSE` evaluates to 0; thus we can use `sum` to
@@ -424,6 +424,67 @@ for i in range(100):
 # and calculate whatever we are interested in
 ...
 ```
+
+::: {.callout} :::
+::: {.title}
+For loops
+:::
+
+For loops are common across many programming languages, and offers a way to
+repeat part of the program several times.
+
+You can think of a factory robot that slides along a worktable on
+which several items have been placed.  It services each of these
+items, one by one, until it is done.
+
+So the robot knows *which* item it is operating on, each item is given
+a label.
+
+Here is an example:
+
+```{python}
+for item in ['shoe', 'saddle', 'jacket']:
+    print('I am stitching a', item)
+```
+
+Here, the label ("shoe", "saddle", etc.) is assigned to "item", which
+can be accessed from inside the for loop.  The code can be unpacked
+into the following equivalent program:
+
+```python
+item = 'shoe'
+print('I am stitching a', item)
+
+item = 'saddle'
+print('I am stitching a', item)
+
+item = 'jacket'
+print('I am stitching a', item)
+```
+
+We used the name `item` here, but any other name would do.  Thus, the following is equivalent:
+
+```python
+for package in ['shoe', 'saddle', 'jacket']:
+    print('I am stitching a', package)
+```
+
+It is common to use a number as a label in a for loop:
+
+```{python}
+for i in [0, 1, 2, 3, 4]:
+    print('The square of', i, ' is ', i * i)
+```
+
+When we want to count to a hundred, it becomes laborious to type out the numbers.  For that, Python has a shorthand called `range`:
+
+```{python}
+for i in range(5):
+    print('The square of', i, ' is ', i * i)
+```
+
+::::::::::::::::::
+
 
 Now, let's apply the above structure to our ambulance problem.  We
 simulate 1000 days:
@@ -493,11 +554,10 @@ print(kk)
 ```
 
 The `r py_or_r('z[i] = b', 'z[i] <- b')` statement that follows the `r
-py_or_r('np.count_nonzero', 'sum')` *counting* operation simply keeps track of
-the results of each trial, placing the number of defective ambulances that
-occur in each trial in a location that we usually call `z`. This is done in
-each of the 1000 trials that we make, and the result eventually is an "array"
-with 1000 numbers in it.
+py_or_r('np.count_nonzero', 'sum')` *counting* operation simply keeps
+track of the results of each trial, placing the number of defective
+ambulances for each trial inside of an array called `z`. The array has
+1000 positions: one for each trial.
 
 In order to make 1000 repetitions of our experiment --- we could have decided
 to make ten thousand or some other number of repetitions --- we surround each trial with the `for` *loop*, that has the effect of repeating the operations for one trial 1000 times.  We identify the operations to repeat with the
@@ -513,14 +573,12 @@ Since our aim is to count the number of days in which more than 3 (4 or
 more) defective ambulances occur, we use another *counting* command
 (`r py_or_r('count_nonzero', 'sum')`) at the end of the 1000 trials.  This
 command *counts* how many times more than 3 defects occurred in the
-1000 days recorded in our `z` array, and we place the result in still another
-location `k`. This gives us the total number of days where 4 or more defective
+1000 days recorded in our `z` array, and we place the result in another
+location, `k`. This gives us the total number of days where 4 or more defective
 ambulances are seen to occur. Then we divide the number in `k` by 1000, the
 number of trials. Thus we obtain an estimate of the chance, expressed as a
 probability between 0 and 1, that 4 or more ambulances will be defective on a
-given day. And we store that result in a location that we decide to call `kk`,
-so that it will be there when the computer receives the next command to `print`
-that result on the screen.
+given day. And we store that result in a location that we call `kk`, which is subsequently printed to screen.
 
 Don't worry too much about the details of how each of these commands works --- we
 will cover those details gradually, over the next few chapters.  But, we hope
