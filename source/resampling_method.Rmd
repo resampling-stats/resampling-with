@@ -502,7 +502,7 @@ for i in range(1000):
     a = np.random.randint(1, 11, size=20)
     b = np.count_nonzero(a == 1)
 
-    # Keep track of each trial's results in "z".
+    # Keep track of each trial's results in position i of "z"
     z[i] = b
 
 # After finishing all our trials, we analyze our trial array `z` to
