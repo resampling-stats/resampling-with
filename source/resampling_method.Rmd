@@ -170,10 +170,8 @@ df_counts['#1'] = (df == 1).sum(axis=1)
 ```
 
 ```{r, veh-numbers-counts, echo=FALSE}
-ketable(
-  py$df_counts,
-  caption = '25 simulations of 20 ambulances, with counts'
-)
+ketable(py$df_counts,
+        caption = '25 simulations of 20 ambulances, with counts')
 ```
 
 Each value in the last column of Table \@ref(tab:veh-numbers-counts)
