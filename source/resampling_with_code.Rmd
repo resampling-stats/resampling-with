@@ -1,24 +1,121 @@
 # Resampling with code
 
 Chapter \@ref(resampling-method) used simulation and resampling from
-tables of random numbers, dice and coins.  Making random choices in this way
+tables of random numbers, dice, and coins.  Making random choices in this way
 can make it easier to understand the process, but of course, physical methods
 of making random outcomes can be slow and boring.
 
-On the other hand, short computer programs can do a huge number of resampling
+We saw that short computer programs can do a huge number of resampling
 trials in a few seconds.  The flexibility of a programming language makes it
 possible to simulate many different outcomes and tests.
 
-In this chapter, we begin using the `r book_lang` language to build up tables of
-random numbers, and do simple tasks like counting the number of values in
-a row, and taking proportions.
+Programs can build up tables of random numbers, and do simple
+tasks like counting the number of values in a row, and taking
+proportions.  With these simple tools, we can simulate many problems
+in probability and statistics.
 
-With these simple tools, we can simulate many problems in probability and
-statistics.
+In this chapter, we will again model a problem using `r book_lang`,
+but this time we will explain all the constructs used in detail.
 
-Here is our first `r book_lang` example program.  Do not expect to follow all
-of it straightaway.  For now, read the code below to get an idea of how it
-implements the procedure above.  We will be coming back to the specifics later.
+By the end of the chapter, you will be able to ...
+
+
+## A treatment for Burkitt's lymphoma
+
+In 2006, researchers came up with a new treatment for Burkitt's
+lymphoma—a cancer of the lymphatic system.  In developed countries,
+the cure rate for Burkitt's lymphoma is about 90%.  The new treatment
+was applied to 17 patients, and all 17 patients were cured.
+
+The first question that comes to mind is: how likely is that to happen
+by chance?  In other words, is what we saw something special that
+warrants further investigation, or is it pretty common for 17
+randomly chosen patients to all be cured using a 90% effective
+treatment?
+
+Before we start, we import NumPy and ask for its random number generator:
+
+```{python}
+import numpy as np
+
+# Ask for NumPy's default random number generator and name
+# it `rnd`---short for "random"
+rnd = np.random.default_rng()
+```
+
+Next, we need to come up with a physical model.  To simulate whether a
+given patient is cured or not by a 90% effective treatment, we throw a
+ten sided die:
+
+```{python}
+outcomes = ['cured', 'cured', 'cured',
+            'cured', 'cured', 'cured',
+            'cured', 'cured', 'cured',
+            'not cured']
+single_patient_outcome = rnd.choice(outcomes)
+```
+
+Here, we take all possible outcomes and then ask NumPy to pick one at random.
+An alternative would be to ask for specific outcomes with given probabilities:
+
+```python
+single_patient_outcome = choice(['cured', 'not cured'], p=[0.9, 0.1])
+```
+
+
+Let us simulate a single trial, where seventeen patients are treated
+with the 90% effective treatment:
+
+```{python}
+N = 17
+
+cured = np.zeros(N, dtype=bool)
+for i in range(N):
+    outcome = rnd.choice(['cured', 'not cured'], p=[0.9, 0.1])
+    cured[i] = outcome
+
+all_cured = np.all(cured == 'cured')
+```
+
+Here, for each of the 17 patients, we draw 'cured' (90% probable) or 'not cured' (10% probable) from our outcomes.
+We could just as easily draw all 17 at the same time:
+
+```{python}
+cured = rnd.choice(['cured', 'not cured'], p=[0.9, 0.1], size=17)
+all_cured = np.all(cured == 'cured')
+```
+
+The above resembles one trial where 17 patients were treated.  We would like to count, over many trials, how often *all* patients were cured:
+
+```{python}
+T = 10000
+
+# Array to store trial outcomes in
+z = np.zeros(T, dtype=bool)
+
+for i in range(T):
+    cured = rnd.choice(['cured', 'not cured'], p=[0.9, 0.1], size=17)
+    all_cured = np.all(cured == 'cured')
+
+    z[i] = all_cured
+
+# Determine in how many trials all patients were cured
+k = np.count_nonzero(z)
+
+# Convert to a proportion
+kk = k / T
+
+print(kk)
+```
+
+From this experiment, we see that there is roughly a one-in-six chance that all 17 patients are cured when using a 90% effective treatment.
+
+---
+
+Here is our first `r book_lang` example program.  Do not expect to
+follow all of it straightaway.  For now, read the code below to get an
+idea of how it implements the procedure above.  We will be coming back
+to the specifics later.
 
 The key to reading code is to think about what the computer will do, when it sees the code.
 
