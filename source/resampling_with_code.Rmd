@@ -10,7 +10,7 @@ trials in a few seconds.  The flexibility of a programming language makes it
 possible to simulate many different outcomes and tests.
 
 Programs can build up tables of random numbers, and do simple
-tasks like counting the number of values in a row, and taking
+tasks like counting the number of values in a row or taking
 proportions.  With these simple tools, we can simulate many problems
 in probability and statistics.
 
@@ -19,13 +19,13 @@ but this time we will explain all the constructs used in detail.
 
 By the end of the chapter, you will be able to ...
 
-
 ## A treatment for Burkitt's lymphoma
 
 In 2006, researchers came up with a new treatment for Burkitt's
 lymphoma—a cancer of the lymphatic system.  In developed countries,
 the cure rate for Burkitt's lymphoma is about 90%.  The new treatment
-was applied to 17 patients, and all 17 patients were cured.
+was applied to 17 patients, and all 17 patients were "cured"
+(were progression-free after two years).
 
 The first question that comes to mind is: how likely is that to happen
 by chance?  In other words, is what we saw something special that
@@ -33,7 +33,7 @@ warrants further investigation, or is it pretty common for 17
 randomly chosen patients to all be cured using a 90% effective
 treatment?
 
-Before we start, we import NumPy and ask for its random number generator:
+Before we start, we again import NumPy and get its random number generator:
 
 ```{python}
 import numpy as np
@@ -45,7 +45,7 @@ rnd = np.random.default_rng()
 
 Next, we need to come up with a physical model.  To simulate whether a
 given patient is cured or not by a 90% effective treatment, we throw a
-ten sided die:
+ten sided die, of which one side denotes "not cured":
 
 ```{python}
 outcomes = ['cured', 'cured', 'cured',
@@ -55,33 +55,164 @@ outcomes = ['cured', 'cured', 'cured',
 single_patient_outcome = rnd.choice(outcomes)
 ```
 
-Here, we take all possible outcomes and then ask NumPy to pick one at random.
-An alternative would be to ask for specific outcomes with given probabilities:
+Here, we take all possible outcomes and then ask NumPy to pick one at
+random.  An equivalent, and more concise, alternative is to ask for
+specific outcomes with given probabilities:
 
 ```python
 single_patient_outcome = choice(['cured', 'not cured'], p=[0.9, 0.1])
 ```
 
+`r begin_callout('Array data types')`
+Since we will be working with NumPy arrays a lot, it is worth knowing more about them.
 
-Let us simulate a single trial, where seventeen patients are treated
+A NumPy array is a container that stores many elements of the same type.  With type, we mean things like integers (-2, -1, 0, 1, 2, 3, etc.), floating point numbers (1.5, 3.3, etc.), objects like strings ("hello", "world", etc.), and boolean values (True or False).
+
+Often, we will create a NumPy array to store our results before we begin.  We do this with the "zeros" command, which makes an empty array of a given size:
+
+```{python}
+x = np.zeros(3, dtype=int)
+y = np.zeros(3, dtype=float)
+z = np.zeros(3, dtype=bool)
+print(x, y, z)
+```
+
+We can now assign elements into specific positions:
+
+```{python}
+x[2] = 5
+print(x)
+```
+
+We will also be making use of arrays that store strings.  We initialize these arrays as above:
+
+```{python}
+w = np.zeros(3, dtype=object)
+print(w)
+```
+
+Note that, by default, NumPy fills these arrays with zeros (integers).  But because the array is set to store *objects*, we can replace those integers with strings:
+
+```{python}
+w[1] = "hello"
+w[2] = "world"
+print(w)
+```
+
+What happens when we ask NumPy to check whether each element in the array is equal to "world"?  We get the following:
+
+```{python}
+w == "world"
+```
+
+This is a *boolean* array (True or False), telling us the answer to that question.  We often count the number of "True" responses as follows:
+
+```{python}
+np.count_nonzero(w == "world")
+```
+
+(In Python, True is equivalent to 1 and False is equivalent to 0.)
+
+`r end_callout()`
+
+Let us now simulate a single trial, where seventeen patients are treated
 with the 90% effective treatment:
 
 ```{python}
 N = 17
 
-cured = np.zeros(N, dtype=bool)
-for i in range(N):
-    outcome = rnd.choice(['cured', 'not cured'], p=[0.9, 0.1])
-    cured[i] = outcome
+# An array of 17 slots in which we stored 'cured' or 'not cured' for
+# each patient
+cured = np.zeros(N, dtype=object)
 
-all_cured = np.all(cured == 'cured')
+for i in range(N):
+    # For each of the 17 patients, do the following:
+
+    outcome = rnd.choice(['cured', 'not cured'], p=[0.9, 0.1])
+    
+    # Store in the cured array at position i whether this patient
+    # was cured or not
+    cured[i] = 'cured'
+
+# Count the number of patients cured
+number_cured = np.count_nonzero(cured == 'cured')
+
+# Were all 17 patients cured?  This will be True or False
+all_cured = (number_cured == N)
 ```
 
+`r begin_callout('For-loops in Python')`
+We first saw for-loops in Chapter \@ref(resampling-method).  We will now dive into them a bit more deeply.
+
+Imagine a factory robot that slides along a worktable on which several
+items have been placed.  It services each of these items, one by one,
+until it is done.
+
+So the robot knows *which* item it is operating on, each item is given
+a label.
+
+Here is an example:
+
+```{python}
+for item in ['shoe', 'saddle', 'jacket']:
+    print('I am stitching a', item)
+```
+
+Here, the robot is working its way through three items: a shoe, a saddle, and a jacket.
+As it moves on to each object, it assigns the label ("shoe", "saddle", etc.) to the variable `item`.
+The indented block of code under the for is executed for each item, and in this code block `label` can be accessed.
+The code above can therefore be unpacked into the following equivalent program:
+
+```python
+item = 'shoe'
+print('I am stitching a', item)
+
+item = 'saddle'
+print('I am stitching a', item)
+
+item = 'jacket'
+print('I am stitching a', item)
+```
+
+We used the name `item` here, but any other name would do.
+Thus, the following is equivalent:
+
+```python
+for package in ['shoe', 'saddle', 'jacket']:
+    print('I am stitching a', package)
+```
+
+It is common to use a number as a label in a for loop:
+
+```{python}
+for i in [0, 1, 2, 3, 4]:
+    print('The square of', i, 'is', i * i)
+```
+
+When we want to count to a hundred, it becomes laborious to type out the numbers.
+For that, Python has a shorthand called `range`:
+
+```{python}
+for i in range(5):
+    print('The square of', i, ' is ', i * i)
+```
+`r end_callout()`
+
 Here, for each of the 17 patients, we draw 'cured' (90% probable) or 'not cured' (10% probable) from our outcomes.
-We could just as easily draw all 17 at the same time:
+We could just as easily draw all 17 outcomes at the same time:
 
 ```{python}
 cured = rnd.choice(['cured', 'not cured'], p=[0.9, 0.1], size=17)
+number_cured = np.count_nonzero(cured == 'cured')
+all_cured = (number_cured == N)
+```
+
+Instead of explicitly counting the number of cured patients, we can also use the NumPy `all` command:
+
+```{python}
+cured = rnd.choice(['cured', 'not cured'], p=[0.9, 0.1], size=17)
+
+# This is True or False
 all_cured = np.all(cured == 'cured')
 ```
 
