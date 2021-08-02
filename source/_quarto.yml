@@ -1,0 +1,28 @@
+project:
+  type: book
+
+book:
+  title: "Resampling with"
+  author: "Jane Doe"
+  date: "7/20/2021"
+  chapters:
+    - index.Rmd
+    - preface_third.Rmd
+    - preface_second.Rmd
+    - intro.Rmd
+    # "02-Intro.Rmd", - incorporated into intro.Rmd
+    # "03-Afternote-1.Rmd", - dramatizing_resampling.Rmd
+    # Also "monty_hall.Rmd" - new, incorporate?
+    # "04-Afternote-2.Rmd" - incorporated into intro.Rmd
+    - about_technology_python.Rmd
+    - resampling_method.Rmd
+    - resampling_with_code.Rmd
+    - references.Rmd
+
+bibliography: [simon_refs.bib, data_science.bib]
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreport
