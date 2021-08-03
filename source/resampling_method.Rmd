@@ -138,7 +138,7 @@ Once again, that proportion estimates the probability that three or more
 ambulances will be out-of-order on any given day.
 
 Soon we will do all these steps with some `r book_lang` code, but for
-now, consider Table \@ref(tab:veh-numbers).  In each row, we placed 20
+now, consider Table @tbl-veh-numbers.  In each row, we placed 20
 numbers, each one representing an ambulance.  We added 25 such rows,
 each representing a simulation of one day.
 
@@ -161,7 +161,8 @@ df = pd.DataFrame(
 
 ```{r, veh-numbers, echo=FALSE}
 kableExtra::kable_styling(
-    ketable(py$df, caption = '25 simulated days of 20 ambulances'),
+    ketable(py$df,
+            caption = '25 simulations of 20 ambulances, with counts {#tbl-veh-numbers}')
     latex_options = "scale_down")
 ```
 
@@ -178,11 +179,11 @@ df_counts['#1'] = (df == 1).sum(axis=1)
 ```{r, veh-numbers-counts, echo=FALSE}
 kableExtra::kable_styling(ketable(
   py$df_counts,
-  caption = '25 simulations of 20 ambulances, with counts'
+  caption = '25 simulations of 20 ambulances, with counts {#tbl-veh-numbers-counts}')
   ), latex_options = "scale_down")
 ```
 
-Each value in the last column of Table \@ref(tab:veh-numbers-counts)
+Each value in the last column of Table @tbl-veh-numbers-counts
 is the count of ones in that row and, therefore, the result from our
 simulation of one day.
 

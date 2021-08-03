@@ -138,9 +138,9 @@ Statistics can mean two related things.  It can refer to a certain sort of
 studies these numbers.
 
 A *statistic* is a *number* that we can calculate from a larger collection of
-numbers we are interested in.  For example, table \@ref(tab:yearly-srp) has
-some yearly measures of "soluble reactive phosphorus" (SRP) from Lough Erne —
-a lake in Ireland [@zhou2000lake].
+numbers we are interested in.  For example, table @tbl-yearly-srp has some
+yearly measures of "soluble reactive phosphorus" (SRP) from Lough Erne — a
+lake in Ireland [@zhou2000lake].
 
 ```{python, echo=FALSE}
 import os.path as op
@@ -150,15 +150,16 @@ lake = pd.read_csv(op.join('data', 'lough_erne.csv'))
 yearly_srp = lake.loc[:, ['Year', 'SRP']].copy()
 ```
 
-```{r, yearly-srp, echo=FALSE}
-ketable(py$yearly_srp, caption = "Soluble Reactive Phosphorus in Lough Erne")
+```{r, echo=FALSE}
+ketable(py$yearly_srp,
+        caption = "Soluble Reactive Phosphorus in Lough Erne {#tbl-yearly-srp}")
 ```
 
 We may want to *summarize* this set of SRP measurements. For example, we could
 add up all the SRP values to give the *total*.  We could also divide the total
 by the number of measurements, to give the *average*.  Or we could measure the
 spread of the values by finding the *minimum* and the *maximum* — see table
-\@ref(tab:srp-stats). All these numbers are *descriptive statistics*, because
+@tbl-srp-stats). All these numbers are *descriptive statistics*, because
 they are summaries that *describe* the collection of SRP measurements.
 
 
@@ -171,8 +172,9 @@ srp_stats = pd.DataFrame({'Descriptive statistics for SRP': pd.Series({
     'Maximum': np.max(srp)})})
 ```
 
-```{r, srp-stats, echo=FALSE}
-ketable(head(py$srp_stats), caption = "Statistics for SRP levels")
+```{r, echo=FALSE}
+ketable(head(py$srp_stats),
+        caption = "Statistics for SRP levels {#tbl-srp-stats}")
 ```
 
 Descriptive statistics are nothing new to you; you have been using many of them
