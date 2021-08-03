@@ -1,39 +1,14 @@
 ---
-knit: "bookdown::render_book"
 title: "Resampling statistics"
 author: ["Julian Lincoln Simon", "Matthew Brett",
          "Stéfan van der Walt", "Ian Nimmo-Smith"]
 description: "Resampling statistics"
 url: "https://resampling-stats.github.io/resampling-with"
 github-repo: resampling-stats/resampling-with
-cover-image: cover.png
 site: bookdown::bookdown_site
 documentclass: book
-# Must be here as well as in individual docs using ketable.
-always_allow_html: true
-bibliography: ["simon_refs.bib", "data_science.bib"]
 biblio-style: "apalike"
 link-citations: true
-pdf_document:
-  includes:
-    in_header: "preamble.tex"
-# Rscript -e "kableExtra::kableExtra_latex_packages()"
-header-includes:
-  - \usepackage{booktabs}
-  - \usepackage{longtable}
-  - \usepackage{array}
-  - \usepackage{multirow}
-  - \usepackage{wrapfig}
-  - \usepackage{float}
-  - \usepackage{colortbl}
-  - \usepackage{pdflscape}
-  - \usepackage{tabu}
-  - \usepackage{threeparttable}
-  - \usepackage{threeparttablex}
-  - \usepackage[normalem]{ulem}
-  - \usepackage[utf8]{inputenc}
-  - \usepackage{makecell}
-  - \usepackage{tcolorbox}
 ---
 
 ```{r setup, include=FALSE}
@@ -56,10 +31,10 @@ is published.
 
 We wrote this book in
 [RMarkdown](https://rmarkdown.rstudio.com) with
-[bookdown](https://bookdown.org). It is automatically rebuilt
+[Quarto](https://quarto.org). It is automatically rebuilt
 from
 [source](https://github.com/resampling-stats/resampling-with) by
-[travis](http://travis-ci.org/).
+[Github ](http://github.com)
 
 <!---
 Links that we may use in several chapters.
