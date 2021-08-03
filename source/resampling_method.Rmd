@@ -209,11 +209,13 @@ While you can *run* the code below on your own computer, for now we
 only need you to read it and follow along; the text explains what each
 line of code does.
 
-`r begin_callout('Coming back to the example')`
+:::{.callout-note}
+## Coming back to the example
+
 If you are interested, you can come back to this example later, and run it for
 yourself.  To do this, we recommend you read the "[About the technology]"
 chapter that explains how to execute notebooks online or on your own computer.
-`r end_callout()`
+:::
 
 `r begin_nb('ambulances')`
 
@@ -262,7 +264,9 @@ an object is known as a "random number generator".
 rnd = np.random.default_rng()
 ```
 
-`r begin_callout("NumPy's Random Number Generator")`
+:::{.callout-note}
+## NumPy's Random Number Generator
+
 Here are some examples of the random operations we can perform with
 NumPy:
 
@@ -283,8 +287,7 @@ NumPy:
    ```{python}
    rnd.permutation([1, 2, 3, 4, 5])
    ```
-
-`r end_callout()`
+:::
 
 `r end_ispy()`
 
@@ -348,7 +351,9 @@ b <- sum(a == 1)
 b
 ```
 
-`r begin_callout('Counting sequence elements')`
+:::{.callout-note}
+## Counting sequence elements
+
 We see that the code uses:
 
 ```{python, opts.label="py_ed"}
@@ -371,7 +376,7 @@ count the number of `TRUE` values.
 `r end_isr()`
 
 This comes down to asking "how many elements in `a` are equal to 1".
-`r end_callout()`
+:::
 
 The `r py_or_r('count_nonzero', 'sum')`
 command is a *counting* operation. It asks the computer to *count*
