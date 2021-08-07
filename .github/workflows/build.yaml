@@ -33,7 +33,7 @@ jobs:
         run: sudo apt install librsvg2-bin
 
       - name: PDF build packages
-        run: sudo apt install texlive-xetex
+        run: sudo apt install texlive-base texlive-fonts-extra
 
       - name: Install quarto
         run: |
