@@ -15,7 +15,7 @@ if (getOption('repos')["CRAN"] == "@CRAN@") {
 }
 
 # https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them
-to_install <- c("devtools", "optparse", "kableExtra")
+to_install <- c("optparse", "kableExtra", 'quarto', 'reticulate')
 to_install <- to_install[!(to_install %in% installed.packages()[,"Package"])]
 if (length(to_install)) {
     install.packages(to_install)
@@ -27,10 +27,3 @@ if (length(to_install)) {
 # tasks."
 fs::dir_create('~/R-dev')  # ?also correct for Windows
 devtools::dev_mode(on=TRUE)
-
-# Always install reticulate from Github
-# Reticulate is the package that allows execution of Python in the R notebook,
-# and interaction between the R and Python workspace.
-# We may be able to drop back to latest; this was to deal with a bug; I have
-# forgotten which.
-devtools::install_github("rstudio/reticulate")

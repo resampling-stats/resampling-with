@@ -35,6 +35,12 @@ jobs:
       - name: PDF build packages
         run: sudo apt install texlive-xetex
 
+      - name: Install quarto
+        run: |
+          sudo apt install -y curl
+          curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v0.2.62/quarto-0.2.62-amd64.deb
+          dpkg --install quarto-0.2.62-amd64.deb
+
       - uses: actions/setup-python@v1
         with:
           python-version: '3.8'

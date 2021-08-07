@@ -45,10 +45,8 @@ make python-all
 Then, to rebuild an individual chapter:
 
 ```
-scripts/rebuild_chapter.py bayes_simulation.Rmd
+quarto render bayes_simulation.Rmd
 ```
-
-*You need to do a full build first before the individual chapter build will work*.  The script should warn you about this if you forget.
 
 If you get errors you weren't expecting, try:
 
@@ -58,4 +56,3 @@ make python-all
 ```
 
 It seems that caching can trip up the build.
-
