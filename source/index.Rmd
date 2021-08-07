@@ -1,27 +1,14 @@
----
-title: "Resampling statistics"
-author: ["Julian Lincoln Simon", "Matthew Brett",
-         "Stéfan van der Walt", "Ian Nimmo-Smith"]
-description: "Resampling statistics"
-url: "https://resampling-stats.github.io/resampling-with"
-github-repo: resampling-stats/resampling-with
-site: bookdown::bookdown_site
-documentclass: book
-biblio-style: "apalike"
-link-citations: true
----
-
 ```{r setup, include=FALSE}
 source("_common.R")
 ```
 
-# `r book_lang` edition {-}
+# {{< var lang >}} edition {-}
 
-There are two editions of this book; one with examples in the Python
-programming language [^python], and another with examples in the R language
-[^R].
+There are two editions of this book; one with examples in the R
+programming language [^R], and another with examples in the Python language
+[^python].
 
-This is the `r book_lang` edition.
+This is the {{< var lang >}} edition.
 
 The files on this website are free to view and download. We release the content
 under the [Creative Commons Attribution / No Derivatives

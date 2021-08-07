@@ -16,8 +16,8 @@ knitr::opts_chunk$set(
 options(dplyr.print_min = 6, dplyr.print_max = 6)
 
 # Book edition from build spec
-._spec <- yaml::yaml.load_file(input = '_quarto.yml')
-book_edition <- ._spec$rsbook_edition
+._spec <- yaml::yaml.load_file(input = '_variables.yml')
+book_edition <- ._spec$edition
 
 # Can be notebook edition, as in 'python-nb'
 ._parts <- strsplit(book_edition, '-')[[1]]
