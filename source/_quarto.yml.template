@@ -1,11 +1,15 @@
+# vi: set ft=yaml:
+# Filled in from set_version.py script.
 project:
   type: book
   output-dir: ../{version}-book
 
 book:
-  title: "Resampling with"
-  author: "Jane Doe"
-  date: "7/20/2021"
+  title: "Resampling statistics"
+  author: ["Julian Lincoln Simon",
+    "Matthew Brett",
+    "Stéfan van der Walt",
+    "Ian Nimmo-Smith"]
   chapters:
     - index.Rmd
     - preface_third.Rmd
