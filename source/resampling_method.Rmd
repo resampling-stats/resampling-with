@@ -156,7 +156,9 @@ df = pd.DataFrame(
 ```
 
 ```{r, veh-numbers, echo=FALSE}
-ketable(py$df, caption = '25 simulated days of 20 ambulances')
+kableExtra::kable_styling(
+    ketable(py$df, caption = '25 simulated days of 20 ambulances'),
+    latex_options = "scale_down")
 ```
 
 To know how many ambulances were "out of order" on any given day, we
@@ -170,8 +172,10 @@ df_counts['#1'] = (df == 1).sum(axis=1)
 ```
 
 ```{r, veh-numbers-counts, echo=FALSE}
-ketable(py$df_counts,
-        caption = '25 simulations of 20 ambulances, with counts')
+kableExtra::kable_styling(ketable(
+  py$df_counts,
+  caption = '25 simulations of 20 ambulances, with counts'
+  ), latex_options = "scale_down")
 ```
 
 Each value in the last column of Table \@ref(tab:veh-numbers-counts)
