@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: ../{version}-book
 
 book:
   title: "Resampling with"
@@ -32,4 +33,4 @@ filters:
   - quarto
   - ../noteout/noteout/write_notebooks.py
 
-rsbook_edition:
+rsbook_edition: {version}

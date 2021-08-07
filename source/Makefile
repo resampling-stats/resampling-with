@@ -13,16 +13,12 @@ diagrams := $(vector_images:.svg=.png)
 	inkscape --export-area-drawing --export-png=$@ --export-dpi=300 $<
 
 html-book-%:
-	echo "  $*" | cat _quarto.yml.template -  > _quarto.yml
+	../scripts/set_version.py $*
 	quarto render .
-	mkdir -p ../$*-book
-	mv _book/* ../$*-book
 
 pdf-book-%:
-	echo "  $*" | cat _quarto.yml.template -  > _quarto.yml
+	../scripts/set_version.py $*
 	quarto render . --to pdf
-	mkdir -p ../$*-book
-	mv _book/* ../$*-book
 
 python-html-book: $(diagrams) html-book-python
 
