@@ -15,13 +15,9 @@ knitr::opts_chunk$set(
 
 options(dplyr.print_min = 6, dplyr.print_max = 6)
 
-# Book edition from environment variable
-book_edition <- Sys.getenv('BOOK_ED')
-
-# Default is Python edition
-if (book_edition == "") {
-    book_edition <- 'python'
-}
+# Book edition from build spec
+._spec <- yaml::yaml.load_file(input = '_quarto.yml')
+book_edition <- ._spec$rsbook_edition
 
 # Can be notebook edition, as in 'python-nb'
 ._parts <- strsplit(book_edition, '-')[[1]]
@@ -48,71 +44,6 @@ end_isnb <- function () { return ( if (!is_nb) { comment_end } ) }
 py_or_r <- function(is_py, is_r, backticks=TRUE) {
     result <- if (is_py_ed) is_py else is_r
     if (backticks) stringr::str_interp("`${result}`") else result
-}
-
-nb_ext <- if (is_py_ed) 'ipynb' else 'Rmd'
-
-binder_url__ ='https://mybinder.org/v2/gh/resampling-stats/resampling-with/gh-pages?filepath=python-book/'
-
-# Parsing somehow fails for multiline strings, so split and join.
-nb_template__ <- paste('<div class="rmdcomment">\n',
-                       '<p>Start of <code>${nb_fname}</code> notebook.</p>\n',
-                       '<p>',
-                       '<div class="nb-links">',
-                       '<a class="notebook-link" href=${nb_path}>Download notebook</a>',
-                       if (is_py_ed) '<a class="interact-button" href="${binder_url__}${nb_path}">Interact</a>' else NULL,
-                       '</p>',
-                       '</div>',
-                       '</div>\n',
-                       sep='\n')
-
-nb_begin__ <- function(nb_fname, nb_path) {
-    # Omit notebook links unless HTML-like format.
-    if (knitr::is_html_output()) {
-        return (stringr::str_interp(nb_template__))
-    }
-}
-
-begin_nb <- function(nb_fname) {
-    assign("nb_fname__", nb_fname, envir = .GlobalEnv)
-    nb_path <- stringr::str_interp('${nb_fname}.${nb_ext}')
-    if (!is_nb) {
-        return (nb_begin__(nb_fname, nb_path))
-    }
-    return (stringr::str_interp('${comment_start} nb:${nb_path} ${comment_end}'))
-}
-
-begin_callout <- function(title) {
-    if (knitr::is_latex_output()) {
-        return (stringr::str_interp(paste(
-':::: {.tcolorbox data-latex=""}\n',
-'**${title}**\n',
-sep='\n')))
-    }
-    return (stringr::str_interp(paste(
-':::: {.callout}',
-'::: {.title}',
-'${title}',
-':::\n',
-sep='\n')))
-}
-
-end_callout <- function() {
-    '\n::::\n'
-}
-
-end_nb <- function() {
-    if (is_nb) {
-        return (stringr::str_interp('${comment_start} nb:end ${comment_end}'))
-    } else {
-        # Parsing fails for multiline strings, use paste instead.
-        return (stringr::str_interp(paste(
-'<div class="rmdcomment">\n',
-'<p>End of <code>${nb_fname__}</code> notebook.</p>\n',
-'</div>\n',
-sep='\n')))
-    }
-    assign("nb_fname__", NULL, envir = .GlobalEnv)
 }
 
 # Language for use inside Markdown text.

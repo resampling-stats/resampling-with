@@ -217,7 +217,7 @@ yourself.  To do this, we recommend you read the "[About the technology]"
 chapter that explains how to execute notebooks online or on your own computer.
 :::
 
-`r begin_nb('ambulances')`
+::: {#notebook name="ambulances"}
 
 The first thing to say about the code you will see below is there are some
 lines that do not do anything; these are the lines beginning with a `#`
@@ -565,7 +565,7 @@ print(kk)
 This is the estimate we wanted; the proportion of days where more than three
 ambulances were out of action.
 
-`r end_nb()`
+:::
 
 Don't worry about the detail of how each of these commands works — we will
 cover those details gradually, over the next few chapters.  But, we hope that
