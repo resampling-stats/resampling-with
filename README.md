@@ -34,6 +34,23 @@ raise an error on book build - see [RMarkdown release
 notes](https://github.com/rstudio/rmarkdown/releases).  Upgrade with
 `install.packages('rmarkdown')`.
 
+## Quarto
+
+We use [Quarto](https://quarto.org) as the build machinery for the website and for PDF.
+
+See [the Quarto installation instructions](https://quarto.org/docs/getting-started/installation.html).  Afterwards, install the matching R package.
+
+```
+Rscript -e 'install.packages("quarto")'
+```
+
+Then check the installation:
+
+```
+quarto check install
+quarto check knitr
+```
+
 ## A build
 
 For Python (*mutatis mutandis* for R):
