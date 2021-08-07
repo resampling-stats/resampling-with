@@ -19,6 +19,10 @@ resampling_with:
     ed2_fname: 29-Chap-25
 ---
 
+```{r setup, include=FALSE}
+source("_common.R")
+```
+
 # Bayesian Analysis by Simulation
 
 Bayesian analysis is a way of thinking about problems in probability and
@@ -519,7 +523,7 @@ with the analysis of a famous problem first published by Fisher
 > of two genetic kinds, homozygotes (*BB*) and heterozygotes (*Bb*),
 > and the brown mice are of one kind (*bb*). It is known from
 > established genetic theory that the probabilities associated with
-> offspring from various matings are as listed in \@ref(tab:mice-genetics).
+> offspring from various matings are as listed in @tbl-mice-genetics.
 
                    BB (black)  Bb (black)  bb (brown)
 ------------------ ----------- ----------- ----------
@@ -528,7 +532,7 @@ Bb mated with bb   0           ½           ½
 Bb mated with Bb   ¼           ½           ¼
 ------------------ ----------- ----------- ----------
 
-Table: (\#tab:mice-genetics) Probabilities for Genetic Character of Mice Offspring. Source: Box and Tiao, 1973, pp. 12-14
+: Probabilities for Genetic Character of Mice Offspring [@box2009bayesian, pp. 12-14] {#tbl-mice-genetics}
 
 Suppose we have a "test" mouse which has been produced
 by a mating between two (*Bb*) mice and is black.
@@ -551,7 +555,7 @@ But instead of doing that, let's take the easy route out and simulate
 the situation instead.
 
 1.  We begin, as do Box and Tiao, by restricting our attention
-    to the third line in Table \@ref(tab:mice-genetics).
+    to the third line in Table @tbl-mice-genetics.
     We draw a mouse with label 'BB', 'Bb', or 'bb', using those
     probabilities.
     We were told that the "test mouse" is black, so if we draw 'bb',
@@ -569,7 +573,7 @@ the situation instead.
     be black ("Bb").  Thus, store "BB" in the parent list.
 
 3.  If our test mouse is "Bb", we have a bit more work to do.  Draw
-    seven offspring from the middle row of Table \@ref(tab:mice-genetics).
+    seven offspring from the middle row of Table tbl-mice-genetics.
     If all the offspring are black, store "Bb" in the parent list.
 
 4.  Repeat steps 1-3 perhaps 10000 times.

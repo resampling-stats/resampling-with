@@ -19,6 +19,10 @@ resampling_with:
     ed2_fname: 03-Afternote-1
 ---
 
+```{r setup, include=FALSE}
+source("_common.R")
+```
+
 # Dramatizing the Power of Simulation
 
 A problem in probability is at the heart of every problem in statistics.
@@ -44,7 +48,7 @@ and record the outcomes. But that experiment does not resemble the
 situation of interest. A proper modeling throws *two* coins, examines to
 see if there is a head on *either* , and then examines the *other*.
 
-Or consider table \@ref(tab:otherboy), where we asked the computer to do this
+Or consider table @tbl-otherboy, where we asked the computer to do this
 work for us.  The computer has done 50 trials, where one trial is one family of
 two children.  It decided the gender of the two children, by choosing at random
 from "Boy" or "Girl", and then classified the pair of children as to whether
@@ -92,7 +96,8 @@ t = tibble::as_tibble(py$boys_df)
 knitr::kable(list(t[1:25,],
                   t[26:50,]),
   booktabs = TRUE,
-  caption = '50 simulations of a family with two children'
+  caption = '50 simulations of a family with two children
+  {#tbl-otherboy}'
 )
 ```
 
