@@ -135,7 +135,7 @@ of sets whose 20 numbers show three or more ambulances being "out-of-order".
 Once again, that proportion estimates the probability that three or more
 ambulances will be out-of-order on any given day.
 
-Soon we will do all these steps with some `r book_lang` code, but for
+Soon we will do all these steps with some {{< var lang >}} code, but for
 now, consider Table @tbl-veh-numbers.  In each row, we placed 20
 numbers, each one representing an ambulance.  We added 25 such rows,
 each representing a simulation of one day.
@@ -195,14 +195,14 @@ rows by the number of trials (`r py$n_trials`) to get an estimate of the
 *proportion* of days with three or more breakdowns. The result is
 `r sum(py$df_counts['#1'] >= 3) / py$n_trials`.
 
-## Solving the problem using `r book_lang`
+## Solving the problem using {{< var lang >}}
 
-Here we rush ahead to show you how to do this simulation in `r book_lang`.
+Here we rush ahead to show you how to do this simulation in {{< var lang >}}.
 
-We go through the `r book_lang` code for the simulation, but we don't
+We go through the {{< var lang >}} code for the simulation, but we don't
 expect you to understand all of it right now.  The rest of this book
-goes into more detail on reading and writing `r book_lang` code, and how you
-can use `r book_lang` to build your own simulations.  Here we just want to show
+goes into more detail on reading and writing {{< var lang >}} code, and how you
+can use {{< var lang >}} to build your own simulations.  Here we just want to show
 you what this code looks like, to give you an idea of where we are headed.
 
 While you can *run* the code below on your own computer, for now we
@@ -222,7 +222,7 @@ chapter that explains how to execute notebooks online or on your own computer.
 The first thing to say about the code you will see below is there are some
 lines that do not do anything; these are the lines beginning with a `#`
 character (read `#` as "hash").  Lines beginning with `#` are called
-*comments*.  When `r book_lang` sees a `#` at the start of a line, it ignores
+*comments*.  When {{< var lang >}} sees a `#` at the start of a line, it ignores
 everything else on that line, and skips to the next. Here's an example of a
 comment:
 
@@ -234,17 +234,17 @@ comment:
 # R will completely ignore this text.
 ```
 
-Because `r book_lang` ignores lines beginning with `#`, the text after the `#`
+Because {{< var lang >}} ignores lines beginning with `#`, the text after the `#`
 is just for us, the humans reading the code.  The person writing the code will
 often use comments to explain what the code is doing.
 
-Our next task is to use `r book_lang` to simulate a single day of
+Our next task is to use {{< var lang >}} to simulate a single day of
 ambulances.  We will again represent each ambulance by a random number
 from 1 through 10.  20 of these numbers represents a simulation of all
 20 ambulances available to the contractor.  We call a simulation
 of all ambulances for a specific day one *trial*.
 
-`r begin_ispy()`
+::: Python
 Before we begin our first trial, we need to load some helpful routines
 from the NumPy software library.  NumPy is a Python library that has
 many important functions for creating and working with numerical data.
@@ -289,7 +289,7 @@ NumPy:
    ```
 :::
 
-`r end_ispy()`
+:::
 
 Recall that we want twenty 10-sided dice—one per ambulance.  Our dice should be
 10-sided, because each ambulance has a 1-in-10 chance of being out of order. We
@@ -365,24 +365,31 @@ sum(a == 1)
 ```
 
 What exactly happens here under the hood?  First `a == 1` creates an sequence
-of values that only contains `r py_or_r('True', 'TRUE')` or `r py_or_r('False',
-'FALSE')` values, depending on whether each element is equal to 1 or not.
+of values that only contains
+[`True`]{.Python}[`TRUE`]{.R} or
+[`False`]{.Python}[`FALSE`]{.R}
+values, depending on whether each element is equal to 1 or not.
 
-Then, we ask `r book_lang` to `r py_or_r('count_nonzero', 'sum')` only the
-true elements in that sequence.
-`r begin_isr()`
+Then, we ask {{< var lang >}} to
+[`count_nonzero`]{.Python}[`sum`]{.R}
+only the true elements in that sequence.
+
+::: R
 R counts `TRUE` as 1, and `FALSE` as 0; thus we can use `sum` to
 count the number of `TRUE` values.
-`r end_isr()`
+:::
 
 This comes down to asking "how many elements in `a` are equal to 1".
 :::
 
-The `r py_or_r('count_nonzero', 'sum')`
+
+The [`count_nonzero`]{.Python}[`sum`]{.R}
 command is a *counting* operation. It asks the computer to *count*
 the number of `1`s among the twenty numbers that are in location `a` following
-the random draw carried out by the `r py_or_r('rnd.choice', 'sample')`
-operation. The result of the `r py_or_r('count_nonzero', 'sum')` operation will
+the random draw carried out by the [`rnd.choice`]{.Python}[`sample`]{.R}
+operation. The result of the
+[`count_nonzero`]{.Python}[`sum`]{.R}
+operation will
 be somewhere between 0 and 20, the number of simulated ambulances that were
 out-of-order on a given simulated day. The result is then placed in another
 location in the computer's memory that we label `b`.
@@ -403,12 +410,12 @@ tasks many times, so we do not have to.  Our next task is to ask the computer
 to repeat the single trial many times — say 1000 times — and count up the
 results for us.
 
-Of course `r BL` is very good at repeating things, but the instructions to tell
-`r BL` to repeat things will take a little while to get used to. Soon, we will
+Of course {{< var lang >}} is very good at repeating things, but the instructions to tell
+{{< var lang >}} to repeat things will take a little while to get used to. Soon, we will
 spend some time going over it in more detail.  For now though, we show you how
 what it looks like, and ask you to take our word for it.
 
-The standard way to repeat steps in `r BL` is a `for` loop.  For example, let us say we wanted to display (`print`) "Hello" five times.  Here is how we would do that with a `for` loop:
+The standard way to repeat steps in {{< var lang >}} is a `for` loop.  For example, let us say we wanted to display (`print`) "Hello" five times.  Here is how we would do that with a `for` loop:
 
 ```{python, opts.label="py_ed"}
 # Read the next line as "repeat the following steps five times".
@@ -457,7 +464,7 @@ broken-down ambulances), and we will store the result in the `z` store.  We end
 up with 1000 trial results stored in `z`.
 
 With these parts, we are now ready to solve the ambulance problem, using
-`r BL`.
+{{< var lang >}}.
 
 ### The solution
 
@@ -528,8 +535,8 @@ for (i in 1:1000) {
 }
 ```
 
-The `r py_or_r('z[i] = b', 'z[i] <- b')` statement that follows the
-`r py_or_r('np.count_nonzero', 'sum')`
+The [`z[i] = b`]{.Python}[`z[i] <- b`]{.R} statement that follows the
+[`np.count_nonzero`]{.Python}[`sum`]{.R}
 *counting* operation simply keeps track of the results of each trial, placing
 the number of defective ambulances for each trial inside the sequence called
 `z`. The sequence has 1000 positions: one for each trial.
@@ -541,7 +548,7 @@ days for which we had more than three broken-down ambulances.
 
 Since our aim is to count the number of days in which more than 3 (4 or more)
 defective ambulances occur, we use another *counting* command
-(`r py_or_r('count_nonzero', 'sum')`) at the end of the 1000 trials.  This
+[`np.count_nonzero`]{.Python}[`sum`]{.R} at the end of the 1000 trials.  This
 command *counts* how many times more than 3 defects occurred in the 1000 days
 recorded in our `z` sequence, and we place the result in another location, `k`.
 This gives us the total number of days where 4 or more defective ambulances are
@@ -557,6 +564,17 @@ k = np.count_nonzero(z > 3)
 
 # Convert to a proportion.
 kk = k / 1000
+
+# Print the result.
+print(kk)
+```
+
+```{r, opts.label="r_ed"}
+# How many trials resulted in more than 3 ambulances out of order?
+k <- sum(z > 3)
+
+# Convert to a proportion.
+kk <- k / 1000
 
 # Print the result.
 print(kk)
