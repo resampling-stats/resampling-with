@@ -19,23 +19,6 @@ resampling_with:
     ed2_fname: 12-Chap-8
 ---
 
----
-jupyter:
-  jupytext:
-    formats: ''
-    notebook_metadata_filter: all,-language_info
-    split_at_heading: true
-    text_representation:
-      extension: .Rmd
-      format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 1.0.0-rc0
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
 # Probability Theory, Part 4: Estimating Probabilities from Finite Universes
 
 ## Introduction
@@ -286,7 +269,7 @@ The results of a few experimental trials are shown in Table 8-1.
 |              3 | 'girl, 'girl', 'girl', 'boy', 'girl'  | Yes           |
 +----------------+---------------------------------------+---------------+
 
-A solution to this problem with `r BL` is presented below.
+A solution to this problem with {{< var lang >}} is presented below.
 
 ```{python, opts.label="py_ed"}
 import numpy as np
@@ -354,7 +337,8 @@ In analytic probability theory this problem is worked with a formula for
 ## Example 8-2: Nine Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)
 
 This problem is similar to Example 8-1 except that now there are four
-equally-likely outcomes instead of only two. `r py_or_r("A Python", "An R")` solution is:
+equally-likely outcomes instead of only two.
+[A Python]{.Python}[An R]{.R} solution is:
 
 ```{python, opts.label="py_ed"}
 # Constitute the deck of 52 cards.

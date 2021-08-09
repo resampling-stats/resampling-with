@@ -34,14 +34,14 @@ On the other hand, short computer programs can do a huge number of resampling
 trials in a few seconds.  The flexibility of a programming language makes it
 possible to simulate many different outcomes and tests.
 
-In this chapter, we begin using the `r book_lang` language to build up tables of
+In this chapter, we begin using the {{< var lang >}} language to build up tables of
 random numbers, and do simple tasks like counting the number of values in
 a row, and taking proportions.
 
 With these simple tools, we can simulate many problems in probability and
 statistics.
 
-Here is our first `r book_lang` example program.  Do not expect to follow all
+Here is our first {{< var lang >}} example program.  Do not expect to follow all
 of it straightaway.  For now, read the code below to get an idea of how it
 implements the procedure above.  We will be coming back to the specifics later.
 
@@ -68,7 +68,7 @@ The comment starts with a hash character `#`.  This character tells the
 computer that the rest of the line is a comment, and therefore, that it can
 ignore everything on that line that follows the `#`.
 
-`r begin_ispy()`
+::: Python
 
 In the next bit of code, we load the *function* `randint` that
 produces random numbers.
@@ -86,11 +86,11 @@ import numpy as np
 from numpy.random import randint
 ```
 
-`r end_ispy()`
+:::
 
 To solve the problem, we have to generate some random numbers:
 
-`r begin_ispy()`
+::: Python
 
 ```{python, opts.label="py_ed"}
 a = randint(1, 11, 20)
@@ -98,9 +98,9 @@ a = randint(1, 11, 20)
 
 This uses the `randint` *function* to generate random integers (counting numbers) from 1 up to, *but not including*, 11.  Therefore, this command will generate random numbers from 1 through 10.  The 20 in the command tells the function to generate 20 of these numbers.
 
-`r end_ispy()`
+:::
 
-`r begin_isr()`
+::: R
 
 ```{r, opts.label="r_ed"}
 a = sample(1:10, 20, replace=TRUE)
@@ -118,7 +118,7 @@ and then selected 20 balls from the bucket; but after we have selected a ball,
 we record the number and *replace* it in the bucket, and shake up the bucket
 again.
 
-`r end_isr()`
+:::
 
 Inasmuch as each ambulance has a 1 in 10 chance of being
 defective, we decide arbitrarily that a "1" stands for a defective ambulance,
@@ -126,8 +126,8 @@ and the other nine numbers (from "2" to "10") stand for a not-defective
 ambulance. The command above orders the computer to store the results of the random
 drawing in a location in the computer's memory to which we give a name, in this case `a` (we could have chosen any name such as, for example, `ambulances`).  When we run a statement like the one above, `a` is
 a *variable* - the *name* `a` refers to the *value*, which is the sequence of
-random numbers the computer created using `r py_or_r("randint", "sample",
-backticks=TRUE)`.
+random numbers the computer created using
+[`randint`]{.Python}[`sample`]{.R}
 
 We can display the value of the variable `a` by using the `print` function:
 
@@ -140,7 +140,7 @@ print(a)
 ```
 
 This shows the 20 random values that we got from
-`r py_or_r("randint", "sample")`.
+[`randint`]{.Python}[`sample`]{.R}
 
 
 The next key element in the core of the program is:
@@ -253,37 +253,36 @@ print(bad_day_prop)
 :::
 
 The
-`r py_or_r("results[i] = b", "results[i] <- b")`
+[`results[i] = b`]{.Python}[`results[i] <- b`]{.R}
 statement that follows the
-`r py_or_r("b = np.count_nonzero(a == 1)", "b = sum(a == 1)")`
+[`b = np.count_nonzero(a == 1)`]{.Python}[`b = sum(a == 1)`]{.R}
 operation keeps track of the results of each trial, placing the number
 of defective ambulances that occur in each trial in a location that we
 call "results". This is done in each of the 400 trials that we make, and the
 result eventually is a "vector" with 400 numbers in it.  A vector is just
 a sequence of numbers.
 
-In order to make 400 repetitions of our experiment---we could have
-decided to make a thousand or some other number of repetitions---we put
-`r py_or_r("for i in np.arange(400):", "for (i in 1:400) {")`
+In order to make 400 repetitions of our experiment --- we could have
+decided to make a thousand or some other number of repetitions --- we put
+[`for i in np.arange(400):`]{.Python}[`for (i in 1:400) {`]{.R}
 before the statements that generate the random numbers, count how many of these numbers are 1, representing a defective ambulance, and store this result
-of a single trial. Then we complete each repetition "loop" by `r begin_ispy()`
-bringing the indentation of the statements back to the left margin
-`r end_ispy()` `r begin_isr()`
-adding a closing `}` bracket.
-`r end_isr()`
+of a single trial. Then we complete each repetition "loop" by
+[bringing the indentation of the statements back to the left margin]{.Python}
+[adding a closing `}` bracket]{.R}.
 
 Since our aim is to count the number of days in which more than 3 (4 or more)
 defective ambulances occur, we use the
-`r py_or_r("bad_day_count = np.count_nonzero(results > 3)", "bad_day_count = sum(results > 3)")`
+[`bad_day_count = np.count_nonzero(results > 3)`]{.Python}
+[`bad_day_count = sum(results > 3)`]{.R}
 command to count how many times in the 400 days recorded in our results vector
 at the end of the 400 trials more than 3 defects occurred, and we place the
-result in still another location "bad_day_count".
+result in still another location: `bad_day_count`.
 
 This gives us the total number of days where 4 or more defective ambulances are
 seen to occur. Then we divide the number in "bad_day_count" by 400, the number
 of trials. Thus we obtain an estimate of the chance, expressed as a probability
 between 0 and 1, that 4 or more ambulances will be defective on a given day.
-And we store that result in a location that we decide to call "bad_day_prop" so
+And we store that result in a location that we decide to call `bad_day_prop` so
 that it will be there when the computer receives the next command to `print`
 that result on the screen.
 
@@ -294,7 +293,7 @@ procedure that we will use to solve every problem in probability and statistics
 that we must deal with. Either we will use a device such as coins or a random
 number table as an analogy for the physical process we are interested in
 (ambulances becoming defective, in this case), or we will simulate the analogy
-on the computer using the `r book_lang` program above.
+on the computer using the {{< var lang >}} program above.
 
 The program above may not seem simple at first glance, but we think
 you will find, over the course of this book, that these programs
