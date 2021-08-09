@@ -171,19 +171,19 @@ Dan Weidenfeld, called *Resampling Stats*. Resampling Stats is well designed
 for expressing the steps in simulating worlds that include elements of
 randomness, and it was a useful contribution at the time that it was written.
 Since then, and particularly in the last decade, there have been many
-improvements in more powerful and general languages, such as `r BL` and
-`r other_lang`.  These languages are particularly suitable for beginners in
+improvements in more powerful and general languages, such as {{< var lang >}} and
+{{< var other_lang >}}.  These languages are particularly suitable for beginners in
 data analysis, and they come with a huge range of tools and libraries for a
 many tasks in data analysis, including the kinds of models and simulations you
-will see in this book.  We have updated the book to use `r BL`,
-instead of *Resampling Stats*.  If you already know `r BL` or a similar
-language, such as `r other_lang`, you will have a big head start in reading
+will see in this book.  We have updated the book to use {{< var lang >}},
+instead of *Resampling Stats*.  If you already know {{< var lang >}} or a similar
+language, such as {{< var other_lang >}}, you will have a big head start in reading
 this book, but even if you do not, we have written the book so it will be
-possible to pick up the `r BL` code that you need to understand and build the
+possible to pick up the {{< var lang >}} code that you need to understand and build the
 kind of models that Simon uses.  The advantage to us, your authors, is that we
-can use the very powerful tools associated with `r BL` to make it easier to run
+can use the very powerful tools associated with {{< var lang >}} to make it easier to run
 and explain the code.  The advantage to you, our readers, is that you can also
-learn these tools, and the `r BL` language.  They will serve you well for the
+learn these tools, and the {{< var lang >}} language.  They will serve you well for the
 rest of your career in data analysis.
 
 <!---
@@ -227,7 +227,7 @@ noisy data.  This approach is quickly becoming the standard in teaching of data
 science, partly because it is so much easier to explain, and partly because of
 the increasing role of code in data analysis.
 
-Our book teaches the basics of using the `r BL` language, basic probability,
+Our book teaches the basics of using the {{< var lang >}} language, basic probability,
 statistical inference through simulation and resampling, confidence intervals,
 and basic Bayesian reasoning, all through the use of model building in simple
 code.
@@ -259,8 +259,9 @@ arcane formulations of traditional statistics.
 Our book is only part of a data science course.  There are several important
 aspects to data science. A data science course needs all the elements we list
 above, but it should also cover the process of reading, cleaning, and
-reorganizing data using `r BL`, or another language, such as `r other_lang`. It
-may also go into more detail about the experimental design, and cover
+reorganizing data using {{< var lang >}}, or another language, such as
+{{< var other_lang >}}
+It may also go into more detail about the experimental design, and cover
 prediction techniques, such as classification with machine learning, and data
 exploration with plots, tables, and summary measures.  We do not cover those
 here.  If you are teaching a full data science course, we suggest that you use
