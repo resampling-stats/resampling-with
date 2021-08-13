@@ -68,7 +68,7 @@ The comment starts with a hash character `#`.  This character tells the
 computer that the rest of the line is a comment, and therefore, that it can
 ignore everything on that line that follows the `#`.
 
-::: Python
+::: python
 
 In the next bit of code, we load the *function* `randint` that
 produces random numbers.
@@ -90,7 +90,7 @@ from numpy.random import randint
 
 To solve the problem, we have to generate some random numbers:
 
-::: Python
+::: python
 
 ```{python, opts.label="py_ed"}
 a = randint(1, 11, 20)
@@ -100,7 +100,7 @@ This uses the `randint` *function* to generate random integers (counting numbers
 
 :::
 
-::: R
+::: r
 
 ```{r, opts.label="r_ed"}
 a = sample(1:10, 20, replace=TRUE)
@@ -127,7 +127,7 @@ ambulance. The command above orders the computer to store the results of the ran
 drawing in a location in the computer's memory to which we give a name, in this case `a` (we could have chosen any name such as, for example, `ambulances`).  When we run a statement like the one above, `a` is
 a *variable* - the *name* `a` refers to the *value*, which is the sequence of
 random numbers the computer created using
-[`randint`]{.Python}[`sample`]{.R}
+[`randint`]{.python}[`sample`]{.r}
 
 We can display the value of the variable `a` by using the `print` function:
 
@@ -140,7 +140,7 @@ print(a)
 ```
 
 This shows the 20 random values that we got from
-[`randint`]{.Python}[`sample`]{.R}
+[`randint`]{.python}[`sample`]{.r}
 
 
 The next key element in the core of the program is:
@@ -253,9 +253,9 @@ print(bad_day_prop)
 :::
 
 The
-[`results[i] = b`]{.Python}[`results[i] <- b`]{.R}
+[`results[i] = b`]{.python}[`results[i] <- b`]{.r}
 statement that follows the
-[`b = np.count_nonzero(a == 1)`]{.Python}[`b = sum(a == 1)`]{.R}
+[`b = np.count_nonzero(a == 1)`]{.python}[`b = sum(a == 1)`]{.r}
 operation keeps track of the results of each trial, placing the number
 of defective ambulances that occur in each trial in a location that we
 call "results". This is done in each of the 400 trials that we make, and the
@@ -264,16 +264,16 @@ a sequence of numbers.
 
 In order to make 400 repetitions of our experiment --- we could have
 decided to make a thousand or some other number of repetitions --- we put
-[`for i in np.arange(400):`]{.Python}[`for (i in 1:400) {`]{.R}
+[`for i in np.arange(400):`]{.python}[`for (i in 1:400) {`]{.r}
 before the statements that generate the random numbers, count how many of these numbers are 1, representing a defective ambulance, and store this result
 of a single trial. Then we complete each repetition "loop" by
-[bringing the indentation of the statements back to the left margin]{.Python}
-[adding a closing `}` bracket]{.R}.
+[bringing the indentation of the statements back to the left margin]{.python}
+[adding a closing `}` bracket]{.r}.
 
 Since our aim is to count the number of days in which more than 3 (4 or more)
 defective ambulances occur, we use the
-[`bad_day_count = np.count_nonzero(results > 3)`]{.Python}
-[`bad_day_count = sum(results > 3)`]{.R}
+[`bad_day_count = np.count_nonzero(results > 3)`]{.python}
+[`bad_day_count = sum(results > 3)`]{.r}
 command to count how many times in the 400 days recorded in our results vector
 at the end of the 400 trials more than 3 defects occurred, and we place the
 result in still another location: `bad_day_count`.

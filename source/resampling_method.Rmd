@@ -244,7 +244,7 @@ from 1 through 10.  20 of these numbers represents a simulation of all
 20 ambulances available to the contractor.  We call a simulation
 of all ambulances for a specific day one *trial*.
 
-::: Python
+::: python
 Before we begin our first trial, we need to load some helpful routines
 from the NumPy software library.  NumPy is a Python library that has
 many important functions for creating and working with numerical data.
@@ -366,15 +366,15 @@ sum(a == 1)
 
 What exactly happens here under the hood?  First `a == 1` creates an sequence
 of values that only contains
-[`True`]{.Python}[`TRUE`]{.R} or
-[`False`]{.Python}[`FALSE`]{.R}
+[`True`]{.python}[`TRUE`]{.r} or
+[`False`]{.python}[`FALSE`]{.r}
 values, depending on whether each element is equal to 1 or not.
 
 Then, we ask {{< var lang >}} to
-[`count_nonzero`]{.Python}[`sum`]{.R}
+[`count_nonzero`]{.python}[`sum`]{.r}
 only the true elements in that sequence.
 
-::: R
+::: r
 R counts `TRUE` as 1, and `FALSE` as 0; thus we can use `sum` to
 count the number of `TRUE` values.
 :::
@@ -383,12 +383,12 @@ This comes down to asking "how many elements in `a` are equal to 1".
 :::
 
 
-The [`count_nonzero`]{.Python}[`sum`]{.R}
+The [`count_nonzero`]{.python}[`sum`]{.r}
 command is a *counting* operation. It asks the computer to *count*
 the number of `1`s among the twenty numbers that are in location `a` following
-the random draw carried out by the [`rnd.choice`]{.Python}[`sample`]{.R}
+the random draw carried out by the [`rnd.choice`]{.python}[`sample`]{.r}
 operation. The result of the
-[`count_nonzero`]{.Python}[`sum`]{.R}
+[`count_nonzero`]{.python}[`sum`]{.r}
 operation will
 be somewhere between 0 and 20, the number of simulated ambulances that were
 out-of-order on a given simulated day. The result is then placed in another
@@ -535,8 +535,8 @@ for (i in 1:1000) {
 }
 ```
 
-The [`z[i] = b`]{.Python}[`z[i] <- b`]{.R} statement that follows the
-[`np.count_nonzero`]{.Python}[`sum`]{.R}
+The [`z[i] = b`]{.python}[`z[i] <- b`]{.r} statement that follows the
+[`np.count_nonzero`]{.python}[`sum`]{.r}
 *counting* operation simply keeps track of the results of each trial, placing
 the number of defective ambulances for each trial inside the sequence called
 `z`. The sequence has 1000 positions: one for each trial.
@@ -548,7 +548,7 @@ days for which we had more than three broken-down ambulances.
 
 Since our aim is to count the number of days in which more than 3 (4 or more)
 defective ambulances occur, we use another *counting* command
-[`np.count_nonzero`]{.Python}[`sum`]{.R} at the end of the 1000 trials.  This
+[`np.count_nonzero`]{.python}[`sum`]{.r} at the end of the 1000 trials.  This
 command *counts* how many times more than 3 defects occurred in the 1000 days
 recorded in our `z` sequence, and we place the result in another location, `k`.
 This gives us the total number of days where 4 or more defective ambulances are
