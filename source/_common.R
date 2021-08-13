@@ -15,12 +15,10 @@ knitr::opts_chunk$set(
 
 options(dplyr.print_min = 6, dplyr.print_max = 6)
 
-# Book edition from build spec
-._spec <- yaml::yaml.load_file(input = '_variables.yml')
-book_edition <- tolower(._spec$edition)
-
-is_r_ed <- book_edition == 'r'
-is_py_ed <- book_edition == 'python'
+# Book edition from notebook format in build spec
+._spec <- yaml::yaml.load_file(input = '_quarto.yml')
+is_py_ed <- ._spec$noteout$`nb-format` == 'ipynb'
+is_r_ed <- !is_py_ed
 
 knitr::opts_template$set(r_ed = list(eval=is_r_ed, echo=is_r_ed),
                          py_ed = list(eval=is_py_ed, echo=is_py_ed))
