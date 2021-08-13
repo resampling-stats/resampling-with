@@ -1,9 +1,9 @@
-.PHONY: python-html-book python-pdf-book r-html-book r-pdf-book python-nb \
-	r-nb serve-python serve-r clean
+.PHONY: python-html-book python-pdf-book r-html-book r-pdf-book \
+	clean
 
-python-all: python-html-book python-nb python-pdf-book
+python-all: python-html-book python-pdf-book
 
-r-all: r-html-book r-nb r-pdf-book
+r-all: r-html-book r-pdf-book
 
 vector_images := $(wildcard diagrams/*.svg)
 
@@ -19,6 +19,7 @@ html-book-%:
 pdf-book-%:
 	../scripts/set_version.py $*
 	quarto render . --to pdf
+	mv ../$*-book/Resampling\ statistics.pdf ../$*-book/resampling_with_$*.pdf
 
 python-html-book: $(diagrams) html-book-python
 
