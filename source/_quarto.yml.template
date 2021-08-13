@@ -35,6 +35,12 @@ format:
     documentclass: scrreport
 
 filters:
-  - ../noteout/noteout/drop_div_spans.py
+  - noteout-filter-divspans
   - quarto
-  - ../noteout/noteout/write_notebooks.py
+  - noteout-write-notebooks
+  - noteout-filter-nb-only
+
+noteout:
+  filter-divspans: {filter_divspans}
+  nb-format: {nb_format}
+  binder-url: https://mybinder.org/v2/gh/resampling-stats/resampling-with/gh-pages?filepath={version}-book/

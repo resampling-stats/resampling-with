@@ -17,8 +17,16 @@ def get_parser():
 
 def set_version(version):
     version = version.lower()
-    language = version.capitalize()
-    other_language = 'Python' if language == 'R' else 'R'
+    if version == 'r':
+        filter_divspans = "['python']"
+        nb_format = 'Rmd'
+        language = 'R'
+        other_language = 'Python'
+    else:
+        filter_divspans = "['r']"
+        nb_format = 'ipynb'
+        language = 'Python'
+        other_language = 'R'
     for fname in (QUARTO_TEMPLATE, VARS_TEMPLATE):
         with open(fname, 'rt') as fobj:
             fmt_str = fobj.read()
