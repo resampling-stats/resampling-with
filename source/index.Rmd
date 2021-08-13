@@ -1,8 +1,12 @@
-```{r setup, include=FALSE}
-source("_common.R")
-```
-
-# {{< var lang >}} edition {-}
+<!---
+Var substitution interferes with numberirng.
+-->
+::: r
+# R edition {.unnumbered}
+:::
+::: python
+# Python edition {.unnumbered}
+:::
 
 There are two editions of this book; one with examples in the R
 programming language [^R], and another with examples in the Python language
