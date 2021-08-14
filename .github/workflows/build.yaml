@@ -3,7 +3,7 @@ name: Build book
 on:
   push:
     branches:
-      - master
+      - main
     pull_request:
 
 jobs:
@@ -61,7 +61,7 @@ jobs:
         run: make website
 
       - name: Deploy PR to Netlify
-        if: github.ref != 'refs/heads/master'
+        if: github.ref != 'refs/heads/main'
         id: netlify
         uses: netlify/actions/cli@master
         env:
@@ -71,7 +71,7 @@ jobs:
           args: deploy --dir=_www
 
       - name: Point GitHub status to PR preview
-        if: github.ref != 'refs/heads/master'
+        if: github.ref != 'refs/heads/main'
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
@@ -80,7 +80,7 @@ jobs:
           target_url: ${{ steps.netlify.outputs.NETLIFY_URL }}
 
       - name: Deploy docs
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           FOLDER: _www
