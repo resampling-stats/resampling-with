@@ -15,7 +15,7 @@ if (getOption('repos')["CRAN"] == "@CRAN@") {
 }
 
 # https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them
-to_install <- c("optparse", "kableExtra", 'quarto', 'reticulate')
+to_install <- c("optparse", "fs", "kableExtra", 'quarto', 'reticulate')
 to_install <- to_install[!(to_install %in% installed.packages()[,"Package"])]
 if (length(to_install)) {
     install.packages(to_install)
