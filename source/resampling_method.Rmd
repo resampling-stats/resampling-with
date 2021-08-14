@@ -306,7 +306,7 @@ begins with these commands:
 numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 # Get 20 (size=20) values from the *numbers* list.
-# Store the 20 numbers with with the name "a"
+# Store the 20 numbers with the name "a"
 a = rnd.choice(numbers, size=20)
 
 # The result is a sequence (array) of 20 numbers.
@@ -320,7 +320,7 @@ a
 numbers <- 1:10
 
 # Get 20 values from the *numbers* sequence.
-# Store the 20 numbers with with the name "a"
+# Store the 20 numbers with the name "a"
 # We will explain the replace=TRUE later.
 a <- sample(numbers, 20, replace=TRUE)
 
@@ -496,7 +496,7 @@ for i in range(1000):
     # The indented stuff is the code we repeat 1000 times.
 
     # Get 20 (size=20) values from the *numbers* list.
-    # Store the 20 numbers with with the name "a"
+    # Store the 20 numbers with the name "a"
     a = rnd.choice(numbers, size=20)
 
     # Count the number of ones among the random numbers
@@ -522,7 +522,7 @@ for (i in 1:1000) {
     # repeat 1000 times.
 
     # Get 20 values from the *numbers* sequence.
-    # Store the 20 numbers with with the name "a"
+    # Store the 20 numbers with the name "a"
     a <- sample(numbers, 20, replace=TRUE)
 
     # Count the number of ones in the random numbers.
