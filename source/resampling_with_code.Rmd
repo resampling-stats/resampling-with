@@ -41,39 +41,118 @@ in probability and statistics.
 
 In this chapter, we will again model a problem using
 {{< var lang >}},
-but this time we will explain all the constructs used in detail.
+but this time we will explain how the code works in more detail.
 
-By the end of the chapter, you will be able to ...
+By the end of the chapter, you will be able to understand better how
+{{< var lang >}}
+can build up complete simulations using random numbers, and how the programming instructions relate to the tasks we need to do.
 
-## A treatment for Burkitt's lymphoma
+We have already emphasized that *statistics* is a way of drawing conclusions
+about data from the real world, in the presence of random variation, and
+*probability* is the way of reasoning about random variation.  This chapter
+introduces our first *statistical* problem, where we use probability to draw
+conclusions about some important data — about a potential cure for a type of
+cancer.  We will not make much of the distinction between probability and
+statistics here, but we will come back to it several times in later chapters.
 
-In 2006, researchers came up with a new treatment for Burkitt's
-lymphoma—a cancer of the lymphatic system.  In developed countries,
-the cure rate for Burkitt's lymphoma is about 90%.  The new treatment
-was applied to 17 patients, and all 17 patients were "cured"
-(were progression-free after two years).
+<!---
+*TODO* - Check we have discussed this before.
+-->
 
-The first question that comes to mind is: how likely is that to happen
-by chance?  In other words, is what we saw something special that
-warrants further investigation, or is it pretty common for 17
-randomly chosen patients to all be cured using a 90% effective
-treatment?
+## A new treatment for Burkitt lymphoma
 
-Before we start, we again import NumPy and get its random number generator:
+In 2006, researchers in the US National Cancer Institute tested a new
+treatment for Burkitt lymphoma.  [Burkitt
+lymphoma](https://en.wikipedia.org/wiki/Burkitt_lymphoma) is a rather unusual
+cancer of the lymphatic system — a vein-like network throughout the body that
+is involved in the immune reaction to disease. In developed countries, with
+standard treatment, the cure rate for Burkitt lymphoma is about 90%.  The
+National Cancer Institute's gave their new treatment to 17 patients, and found
+that all 17 patients were "cured" — meaning that the disease had not
+progressed in any of the 17 patients, in more than two years of follow-up.
 
-```{python}
+Here is where we put on our statistical hat.  Now we are wearing that hat, we
+wonder whether the 100% could be due to random variation.
+
+How could it happen by chance, that 17 out of 17 patients were cured?
+
+We know that the average cure rate in the developed world is 90%.  That means,
+that each patient that we treat has a 90% chance of being cured.  Let's say we
+treat one patient with some new treatment, and they are cured.   Is the
+treatment better or worse than the standard treatment?   We don't really know,
+because there is a 90% chance they would be cured, if the treatment is just
+the same as the standard treatment, and so it is more likely than not that
+they will be cured, even if the treatment as about the same as the standard
+treatment.
+
+What if we treat two patients with the new treatment, and they are both cured?
+We are still not sure the new treatment is better, because, even if the
+treatment is exactly as effective as the standard treatment, both patients
+individually had a very good chance of cure, so it seems likely that there's a
+pretty good chance they would both be cured.  Still, if both patients are
+cured, that still seems like better evidence than just one patient being
+cured.
+
+Now we get to the question at hand.  The National Cancer Institute study found
+the new treatment cured 17 out of 17 patients.  If the new treatment is
+exactly as effective as the standard treatments, at 90% rate of cure, then we
+would expect a lot of the patients to be cured.  But, if it is really true
+that each patient has a 90% chance of cure, how likely is it that all 17
+patients would be cured?  It seems like something that could happen, but how
+likely is it? In other words, is the result that the researchers saw something
+special that warrants further investigation, or is it something that could reasonably have come about by chance?
+
+This is exactly the kind of question we ask in statistics — is this result
+*surprising* or *unusual*, given that we know that there is an element of
+chance?
+
+First we come up with a *model* of the world we expect, when the treatment is
+90% effective.  This model has to allow for *chance* because each patient has
+a 90% *chance* of cure.
+
+::: python
+To put chance into our model, we will be asking the computer to generate many
+random numbers.  So, before we start, we again import NumPy and get its
+*random number generator*:
+
+```{python, opts.label="py_ed"}
 import numpy as np
 
 # Ask for NumPy's default random number generator and name
-# it `rnd`---short for "random"
+# it `rnd`.  `rnd` is short for "random".
 rnd = np.random.default_rng()
 ```
+:::
 
-Next, we need to come up with a physical model.  To simulate whether a
-given patient is cured or not by a 90% effective treatment, we throw a
-ten sided die, of which one side denotes "not cured":
+It is often useful to think how we would make a physical model of chance in
+this world.  For example, to simulate whether a given patient is cured or not
+by a 90% effective treatment, we could throw a ten sided die and record the
+result.  We could say, arbitrarily, that a result of 0 means "not cured", and
+all the numbers 1 through 9 mean "cured" (typical 10-sided dice have sides
+numbered 0 through 9).
 
-```{python}
+We could roll 17 dice to simulate one "trial" in this random world.  For each
+trial, we record the number of dice that show numbers 1 through 9 (and not
+0).  This will be a number between 0 and 17, and it is the number of patients
+"cured" in our simulated trial.
+
+Here is the result of one such trial we did with a set of 17 10-sided dice we happened to have near to hand:
+
+:::{.callout-note}
+We need a photo of 17 10-sided dice here
+:::
+
+In this case there is one 0, and the rest are from 1 through 9, so there were 16 out of 17 "patients" who were "cured" in this trial.
+
+<!---
+Adapt above to picture.
+-->
+
+<!---
+My edits finish here.
+-->
+
+```{python, opts.label="py_ed"}
 outcomes = ['cured', 'cured', 'cured',
             'cured', 'cured', 'cured',
             'cured', 'cured', 'cured',
