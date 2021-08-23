@@ -167,15 +167,15 @@ The computer uses lots of tricks to give us numbers that are random, in a
 practical sense — meaning that there is no *practical* way for you or anyone
 else to predict the next number.  These practical-sense random numbers are
 also called *pseudo-random* numbers.  The pseudo-random numbers from
-[Numpy]{.python}[R]{.r} use some very serious machinery to make the numbers
+[NumPy]{.python}[R]{.r} use some very serious machinery to make the numbers
 hard to predict, and practically random.  No-one can guarantee that it is
 absolutely *impossible* to find some way of improving our prediction for the
 next pseudo-random number that
-[Numpy]{.python}[R]{.r}
+[NumPy]{.python}[R]{.r}
 gives us, but we, and the rest of the scientific world, do not know of any way
 to do it. That practical sense of randomness from the computer is good enough
 for every case that we cover in this book, and we bet it will also be true for
-every possible case that you will come across.
+every case that you will come across in practice.
 :::
 
 This is how to get 17 random numbers 
