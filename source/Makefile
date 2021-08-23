@@ -12,12 +12,15 @@ diagrams := $(vector_images:.svg=.png)
 %.png : %.svg
 	inkscape --export-area-drawing --export-png=$@ --export-dpi=300 $<
 
-html-book-%:
+set-version-%:
 	../scripts/set_version.py $*
+
+html-book-%:
+	$(MAKE) set-version-$*
 	quarto render .
 
 pdf-book-%:
-	../scripts/set_version.py $*
+	$(MAKE) set-version-$*
 	quarto render . --to pdf
 	mv ../$*-book/Resampling\ statistics.pdf ../$*-book/resampling_with_$*.pdf
 
