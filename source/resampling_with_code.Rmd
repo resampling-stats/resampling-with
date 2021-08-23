@@ -39,7 +39,8 @@ tasks like counting the number of values in a row or taking
 proportions.  With these simple tools, we can simulate many problems
 in probability and statistics.
 
-In this chapter, we will again model a problem using `r book_lang`,
+In this chapter, we will again model a problem using
+{{< var lang >}},
 but this time we will explain all the constructs used in detail.
 
 By the end of the chapter, you will be able to ...
@@ -88,7 +89,9 @@ specific outcomes with given probabilities:
 single_patient_outcome = choice(['cured', 'not cured'], p=[0.9, 0.1])
 ```
 
-`r begin_callout('Array data types')`
+:::{.callout-note}
+## Array data types
+
 Since we will be working with NumPy arrays a lot, it is worth knowing more about them.
 
 A NumPy array is a container that stores many elements of the same type.  With type, we mean things like integers (-2, -1, 0, 1, 2, 3, etc.), floating point numbers (1.5, 3.3, etc.), objects like strings ("hello", "world", etc.), and boolean values (True or False).
@@ -137,8 +140,7 @@ np.count_nonzero(w == "world")
 ```
 
 (In Python, True is equivalent to 1 and False is equivalent to 0.)
-
-`r end_callout()`
+:::
 
 Let us now simulate a single trial, where seventeen patients are treated
 with the 90% effective treatment:
@@ -154,7 +156,7 @@ for i in range(N):
     # For each of the 17 patients, do the following:
 
     outcome = rnd.choice(['cured', 'not cured'], p=[0.9, 0.1])
-    
+
     # Store in the cured array at position i whether this patient
     # was cured or not
     cured[i] = 'cured'
@@ -166,8 +168,11 @@ number_cured = np.count_nonzero(cured == 'cured')
 all_cured = (number_cured == N)
 ```
 
-`r begin_callout('For-loops in Python')`
-We first saw for-loops in Chapter \@ref(resampling-method).  We will now dive into them a bit more deeply.
+:::{.callout-note}
+## For-loops in Python
+
+We first saw for-loops in Chapter @sec-resampling-method.  We will now dive
+into them a bit more deeply.
 
 Imagine a factory robot that slides along a worktable on which several
 items have been placed.  It services each of these items, one by one,
@@ -221,7 +226,7 @@ For that, Python has a shorthand called `range`:
 for i in range(5):
     print('The square of', i, ' is ', i * i)
 ```
-`r end_callout()`
+:::
 
 Here, for each of the 17 patients, we draw 'cured' (90% probable) or 'not cured' (10% probable) from our outcomes.
 We could just as easily draw all 17 outcomes at the same time:
@@ -268,7 +273,9 @@ From this experiment, we see that there is roughly a one-in-six chance that all 
 
 ---
 
-Here is our first `r book_lang` example program.  Do not expect to
+Here is our first
+{{< var lang >}}
+example program.  Do not expect to
 follow all of it straightaway.  For now, read the code below to get an
 idea of how it implements the procedure above.  We will be coming back
 to the specifics later.
