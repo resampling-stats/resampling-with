@@ -128,16 +128,16 @@ In this case there is one 0, and the rest are from 1 through 9, so there were 16
 Adapt above to picture.
 -->
 
-We can use the computer to do something very similar.   We can ask the
-computer for 17 random counting numbers from 0 through 9.
+We can use the computer to do something very similar, by asking the computer
+for 17 random whole numbers from 0 through 9.
 
 :::{.callout-note}
-## Counting numbers
+## Whole numbers
 
-A counting number is a number that you use for counting things, and are also
-called *whole* numbers or *integers*.  0 and 1 and 2 and 3 are counting
-numbers, but 1.5 is not.  The counting numbers from 0 through 9 are 1, 2, 3,
-4, 5, 6, 7, 8, 9.
+A whole number is a number that is not negative, and does not have fractional
+part (does not have anything after a decimal point).  0 and 1 and 2 and 3 are
+whole numbers, but -1 and $\frac{3/5}$ and 11.3 are not. The whole numbers
+from 0 through 9 are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9.
 :::
 
 :::{.callout-note}
@@ -149,16 +149,32 @@ more about what we mean by it.
 We say something is random when we cannot completely predict the result.  The randomness is the part we cannot predict.
 
 Let us say we toss a coin, and we could get either a *head* or a *tail*.  Let
-us also say that we know for sure that 50% of time we get a head and 50% we
-get a tail.  We can predict some things about this coin toss.  We can predict
-that it will either be a head or a tail, and we can predict that it will be a
-head 50% of the time. But we can't predict which of heads or tails we will get
-on the next throw.  We say the result of each throw is *random* if we cannot
-do anything to improve our prediction of 50% for heads (or tails) on the next
-toss.
-:::
+us also say that we know for sure that 50% of the time we get a head and 50%
+we get a tail.  We can predict some things about this coin toss.  We can
+predict that it will either be a head or a tail, and we can predict that it
+will be a head 50% of the time. But we can't predict *which one* of heads or
+tails we will get on the next throw.  We say the result of each throw is
+*random* if we cannot do anything to improve our prediction of 50% for heads
+(or tails) on the next toss.
 
-When we ask for a random counting number from zero
+When we ask for a random whole number from 0 through 9, we mean that we can't
+do anything to predict which of the 10 possible numbers we will get on any one
+trial.  We can't do better than guessing that the next value will be — say — 0 - and we will only ever have a 10% chance of being correct.
+
+The computer uses lots of tricks to give us numbers that are random, in a
+practical sense — meaning that there is no *practical* way for you or anyone
+else to predict the next number.  These practical-sense random numbers are
+also called *pseudo-random* numbers.  The pseudo-random number from
+[Numpy]{.python}[R]{.r} use some very serious machinery to make the numbers
+hard to predict, and practically random.  No-one can guarantee that it is
+absolutely *impossible* to find some way of improving our prediction for the
+next pseudo-random number that
+[Numpy]{.python}[R]{.r}
+gives us, but we, and the rest of the scientific world, do not know of any way
+to do it. That practical sense of randomness from the computer is good enough
+for every case that we cover in this book, and we bet it will also be true for
+every possible case that you will come across.
+:::
 
 This is how to get 17 random numbers 
 
