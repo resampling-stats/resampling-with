@@ -26,4 +26,3 @@ if (length(to_install)) {
 # clobbering the existing versions of CRAN packages that you need for other
 # tasks."
 fs::dir_create('~/R-dev')  # ?also correct for Windows
-devtools::dev_mode(on=TRUE)
