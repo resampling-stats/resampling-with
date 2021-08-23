@@ -104,20 +104,6 @@ First we come up with a *model* of the world we expect, when the treatment is
 90% effective.  This model has to allow for *chance* because each patient has
 a 90% *chance* of cure.
 
-::: python
-To put chance into our model, we will be asking the computer to generate many
-random numbers.  So, before we start, we again import NumPy and get its
-*random number generator*:
-
-```{python, opts.label="py_ed"}
-import numpy as np
-
-# Ask for NumPy's default random number generator and name
-# it `rnd`.  `rnd` is short for "random".
-rnd = np.random.default_rng()
-```
-:::
-
 It is often useful to think how we would make a physical model of chance in
 this world.  For example, to simulate whether a given patient is cured or not
 by a 90% effective treatment, we could throw a ten sided die and record the
@@ -142,9 +128,57 @@ In this case there is one 0, and the rest are from 1 through 9, so there were 16
 Adapt above to picture.
 -->
 
-<!---
-My edits finish here.
--->
+We can use the computer to do something very similar.   We can ask the
+computer for 17 random counting numbers from 0 through 9.
+
+:::{.callout-note}
+## Counting numbers
+
+A counting number is a number that you use for counting things, and are also
+called *whole* numbers or *integers*.  0 and 1 and 2 and 3 are counting
+numbers, but 1.5 is not.  The counting numbers from 0 through 9 are 1, 2, 3,
+4, 5, 6, 7, 8, 9.
+:::
+
+:::{.callout-note}
+## What do we mean by *random*?
+
+We have been throwing around the term random, but now we will say a little
+more about what we mean by it.
+
+We say something is random when we cannot completely predict the result.  The randomness is the part we cannot predict.
+
+Let us say we toss a coin, and we could get either a *head* or a *tail*.  Let
+us also say that we know for sure that 50% of time we get a head and 50% we
+get a tail.  We can predict some things about this coin toss.  We can predict
+that it will either be a head or a tail, and we can predict that it will be a
+head 50% of the time. But we can't predict which of heads or tails we will get
+on the next throw.  We say the result of each throw is *random* if we cannot
+do anything to improve our prediction of 50% for heads (or tails) on the next
+toss.
+:::
+
+When we ask for a random counting number from zero
+
+This is how to get 17 random numbers 
+
+::: python
+We will be asking the computer to generate many random numbers.  So, before we
+start, we again import NumPy and get its *random number generator*:
+
+```{python, opts.label="py_ed"}
+import numpy as np
+
+# Ask for NumPy's default random number generator and name
+# it `rnd`.  `rnd` is short for "random".
+rnd = np.random.default_rng()
+```
+:::
+
+
+
+
+
 
 ```{python, opts.label="py_ed"}
 outcomes = ['cured', 'cured', 'cured',
