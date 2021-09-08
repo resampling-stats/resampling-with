@@ -51,6 +51,10 @@ quarto check install
 quarto check knitr
 ```
 
+Quarto uses various [Pandoc markdown
+extensions](https://linux.die.net/man/5/pandoc_markdown), as do we (Div and
+Span elements for custom inline elements and blocks).
+
 ## A build
 
 For Python (*mutatis mutandis* for R):
