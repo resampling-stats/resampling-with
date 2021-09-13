@@ -45,7 +45,8 @@ but this time we will explain how the code works in more detail.
 
 By the end of the chapter, you will be able to understand better how
 {{< var lang >}}
-can build up complete simulations using random numbers, and how the programming instructions relate to the tasks we need to do.
+can build up complete simulations using random numbers, and how the
+programming instructions relate to the tasks we need to do.
 
 We have already emphasized that *statistics* is a way of drawing conclusions
 about data from the real world, in the presence of random variation, and
@@ -67,51 +68,40 @@ network throughout the body that is involved in the immune reaction to
 disease. In developed countries, with standard treatment, the cure rate for
 Burkitt lymphoma is about 90%.
 
-In 2006, researchers in the US National Cancer Institute tested a new
+In 2006, researchers at the US National Cancer Institute (NCI), tested a new
 treatment for Burkitt lymphoma [@dunleavy2006burkitt]. They gave their new
 treatment to 17 patients, and found that all 17 patients were "cured" —
 meaning that the disease had not progressed in any of the 17 patients, in more
 than two years of follow-up.
 
-Here is where we put on our statistical hat and wonder
-whether the 100% could be due to random variation.
+Here is where we put on our statistical hat and ask ourselves the following
+question — *how surprised are we that the NCI researchers saw their 17 out of
+17 result?*
 
-How could it happen, by chance, that 17 out of 17 patients were cured?
+At this stage you might and should ask, what could we possibly mean by
+"surprised"?  That is a good and important question, and we will discuss that
+much more in the chapters to come.  For now, please bear with us as we do a thought experiment.
 
-We know that the average cure rate in the developed world is 90%.  Lacking any
-further information, we could therefore think of each patient being treated as
-having a 90% chance of being cured.  If a patient now receives the new
-treatment and is cured, does this tell us whether the new treatment is better
-than the standard treatment? We don't really know: as long as the new
-treatment is not a lot worse than the standard treatment, curing the patient
-is the outcome we expect.
+Let us forget the 17 out of 17 result of the NCI study for a moment. Imagine
+that there is another hospital, called Saint Hypothetical General (SHG), just
+down the road from the NCI, that was also treating 17 patients with Burkitt
+lymphoma, but they were not using the NCI treatment, they were using the
+standard treatment.
 
-What if we treat two patients with the new treatment, and they are both cured?
-We are still not sure the new treatment is better, because, even if the
-treatment is exactly as effective as the standard treatment, both patients
-individually had a very good chance of cure, so it seems likely that there's a
-pretty good chance they would both be cured.  Still, if both patients are
-cured, that still seems like better evidence than just one patient being
-cured.
+We know from the background information above, that each patient given the
+standard treatment has a 90% chance of cure.  Given that 90% rate, what is the
+chance that 17 out of 17 of the Hypothetical group will be cured?
 
-Now we get to the question at hand.  The National Cancer Institute study found
-the new treatment cured 17 out of 17 patients.  If the new treatment is
-exactly as effective as the standard treatments, at 90% rate of cure, then we
-would expect a lot of the patients to be cured.  But, if it is really true
-that each patient has a 90% chance of cure, how likely is it that all 17
-patients would be cured?  It seems like something that could happen, but how
-likely is it? In other words, is the result that the researchers saw something
-special that warrants further investigation, or is it something that could reasonably have come about by chance?
+You may notice that this question about the Hypothetical group, is rather
+similar to the problem of the 20 ambulances in Chapter @sec-resampling-method.
+In that problem, we were interested to know how likely it was that 3 or more
+of 20 ambulances would be out of action on any one day, given that each
+ambulance had a 10% chance of being out of action.  Here we would like to know
+the chances that all 17 patients would be cured, given that each patient has a 90% chance of being cured.
 
-This is exactly the kind of question we ask in statistics — is this result
-*surprising* or *unusual*, given that we know that there is an element of
-chance?
+## A physical model of the hypothetical hospital
 
-First we come up with a *model* of the world we expect, when the treatment is
-90% effective.  This model has to allow for *chance* because each patient has
-a 90% *chance* of cure.
-
-It is often useful to think how we would make a physical model of chance in
+As in the ambulance example, we could make a physical model of chance in
 this world.  For example, to simulate whether a given patient is cured or not
 by a 90% effective treatment, we could throw a ten sided die and record the
 result.  We could say, arbitrarily, that a result of 0 means "not cured", and
@@ -125,18 +115,30 @@ trial, we record the number of dice that show numbers 1 through 9 (and not
 
 Here is the result of one such trial we did with a set of 17 10-sided dice we happened to have near to hand:
 
-:::{.callout-note}
-We need a photo of 17 10-sided dice here
-:::
+![One roll of 17 10-sided dice](images/17_d10s.png)
 
-In this case there is one 0, and the rest are from 1 through 9, so there were 16 out of 17 "patients" who were "cured" in this trial.
+In this case there are four 0s, and the rest are from 1 through 9, so there
+were 13 out of 17 not-zero numbers, and therefore, 13 out of 17 "patients" who
+were "cured" in this simulated trial.
 
 <!---
-Adapt above to picture.
+Adapt text above to picture.
 -->
 
-We can use the computer to do something very similar, by asking the computer
-for 17 random whole numbers from 0 through 9.
+We could repeat this simulated trial procedure 100 times, and we would then
+have 100 counts of the not-zero numbers. Each of the 100 counts would be the
+number of patients cured in that trial.  Then we could see what proportion of
+the simulated trials had 17 out of 17 patients cured.   If the 17 out of 17
+count is only a small proportion — say, less than 5% — then we conclude that,
+if 17 Burkitt Lymphoma patients have the standard treatment, it is *unlikely*
+that all of them will be cured.  But if there is a fairly large proportion of
+17 out of 17 counts, then we cannot conclude that the 17 out of 17 result is
+unlikely.
+
+## Simulating the physical model with the computer
+
+We can use the computer to do something very similar to rolling 17 10-sided
+dice,, by asking the computer for 17 random whole numbers from 0 through 9.
 
 :::{.callout-note}
 ## Whole numbers
@@ -156,11 +158,11 @@ more about what we mean by it.
 We say something is random when we cannot completely predict the result.  The randomness is the part we cannot predict.
 
 Let us say we toss a coin, and we could get either a *head* or a *tail*.  Let
-us also say that we know for sure that 50% of the time we get a head and 50%
-we get a tail.  We can predict some things about this coin toss.  We can
-predict that it will either be a head or a tail, and we can predict that it
-will be a head 50% of the time. But we can't predict *which one* of heads or
-tails we will get on the next throw.  We say the result of each throw is
+us also say that we already know for sure that 50% of the time we get a head
+and 50% we get a tail.  We can predict some things about this coin toss.  We
+can predict that it will either be a head or a tail, and we can predict that
+it will be a head 50% of the time. But we can't predict *which one* of heads
+or tails we will get on the next throw.  We say the result of each throw is
 *random* if we cannot do anything to improve our prediction of 50% for heads
 (or tails) on the next toss.
 
@@ -171,21 +173,21 @@ trial.  We can't do better than guessing that the next value will be — say —
 correct.
 
 The computer uses lots of tricks to give us numbers that are random, in a
-practical sense — meaning that there is no *practical* way for you or anyone
-else to predict the next number.  These practical-sense random numbers are
-also called *pseudo-random* numbers.  The pseudo-random numbers from
-[NumPy]{.python}[R]{.r} use some very serious machinery to make the numbers
-hard to predict, and practically random.  No-one can guarantee that it is
-absolutely *impossible* to find some way of improving our prediction for the
-next pseudo-random number that
-[NumPy]{.python}[R]{.r}
-gives us, but we, and the rest of the scientific world, do not know of any way
-to do it. That practical sense of randomness from the computer is good enough
-for every case that we cover in this book, and we bet it will also be true for
-every case that you will come across in practice.
+practical sense — meaning that there is no *practical* way for you, or even a
+very powerful computer, to do anything to improve the prediction for the next
+number.  These practical-sense random numbers are also called *pseudo-random*
+numbers.  The pseudo-random numbers from [NumPy]{.python}[R]{.r} use some very
+careful programming to make the numbers hard to predict, and practically
+random. No-one can guarantee that it is absolutely *impossible* to find some
+way of improving our prediction for the next pseudo-random number that
+[NumPy]{.python}[R]{.r} gives us, but we, and the rest of the scientific
+world, do not know of any way to do it. That practical sense of randomness
+from the computer is good enough for every case that we cover in this book,
+and we bet it will also be true for every case that you will come across in
+practice.
 :::
 
-This is how to get 17 random numbers 
+This is how to get 17 random numbers from [Numpy]{.python}[R]{.r}:
 
 ::: python
 We will be asking the computer to generate many random numbers.  So, before we
@@ -198,12 +200,62 @@ import numpy as np
 # it `rnd`.  `rnd` is short for "random".
 rnd = np.random.default_rng()
 ```
+
+We prepare the list of numbers that we want Numpy to select from:
+
+```{python, opts.label="py_ed"}
+# Make the list of numbers, store with the name "numbers".
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+```
+
+Use `rnd` thing to choose a single number *at random* from the list of
+`numbers`:
+
+```{python, opts.label="py_ed"}
+rnd.choice(numbers)
+```
+
+We can also ask Numpy to select 17 numbers at random from the list of numbers, by adding the `size=17` instruction to the code:
+
+
+```{python}
+# Get 17 (size=17) values from the *numbers* list.
+# Store the 17 numbers with the name "a"
+a = rnd.choice(numbers, size=17)
+a
+```
+:::
+:::r
+
+Here is the sequence of numbers we want R to select from:
+
+```{r, opts.label="r_ed"}
+numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+```
+
+We can use the `sample` command to select values a single value at random from
+the sequence of numbers.
+
+```{r, opts.label="r_ed"}
+sample(numbers)
+```
+
+We can also ask `sample` to select 17 numbers at random from the sequence.  To
+do this in the way we need, we have to tell `sample` that we mean to sample
+*with replacement*.  To do that, we use the `replace=TRUE` instruction to
+`sample`, like this:
+
+```{r}
+# Get 17 (size=17) values from the *numbers* sequence.
+# Store the 17 numbers with the name "a"
+a <- sample(numbers, 17, replace=TRUE)
+a
+```
 :::
 
-
-
-
-
+<!---
+We need discussion of resampling with replacement.
+-->
 
 ```{python, opts.label="py_ed"}
 outcomes = ['cured', 'cured', 'cured',
