@@ -92,7 +92,7 @@ We know from the background information above, that each patient given the
 standard treatment has a 90% chance of cure.  Given that 90% rate, what is the
 chance that 17 out of 17 of the Hypothetical group will be cured?
 
-You may notice that this question about the Hypothetical group, is rather
+You may notice that this question about the Hypothetical group is 
 similar to the problem of the 20 ambulances in Chapter @sec-resampling-method.
 In that problem, we were interested to know how likely it was that 3 or more
 of 20 ambulances would be out of action on any one day, given that each
@@ -127,13 +127,17 @@ Adapt text above to picture.
 
 We could repeat this simulated trial procedure 100 times, and we would then
 have 100 counts of the not-zero numbers. Each of the 100 counts would be the
-number of patients cured in that trial.  Then we could see what proportion of
-the simulated trials had 17 out of 17 patients cured.   If the 17 out of 17
-count is only a small proportion — say, less than 5% — then we conclude that,
-if 17 Burkitt Lymphoma patients have the standard treatment, it is *unlikely*
-that all of them will be cured.  But if there is a fairly large proportion of
-17 out of 17 counts, then we cannot conclude that the 17 out of 17 result is
-unlikely.
+number of patients cured in that trial.  We can ask how many of these 100
+counts were equal to 17.  This will give us an estimate of the probability we
+would see 17 out of 17 patients cured, given that any one patient has a 90%
+chance of cure.  For example, say we saw 15 out of 100 counts were equal to
+17.  That would give us an estimate of 15 / 100 or 0.15 or 15%, for the
+probability we would see 17 out of 17 patients cured.
+
+So, if Saint Hypothetical General did see 17 out of 17 patients cured with the
+standard treatment, they would be a little surprised, because they would only
+expect to see that happen 15% of the time.  But they would not be *very*
+surprised — they do expect to see that result more than one time in 10.
 
 ## Simulating the physical model with the computer
 
@@ -205,7 +209,7 @@ We prepare the list of numbers that we want NumPy to select from:
 
 ```{python, opts.label="py_ed"}
 # Make the list of numbers, store with the name "numbers".
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
 Use `rnd` thing to choose a single number *at random* from the list of
