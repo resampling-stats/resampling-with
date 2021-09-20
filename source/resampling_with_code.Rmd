@@ -142,56 +142,29 @@ surprised — they do expect to see that result more than one time in 10.
 ## Simulating the physical model with the computer
 
 We can use the computer to do something very similar to rolling 17 10-sided
-dice,, by asking the computer for 17 random whole numbers from 0 through 9.
+dice, by asking the computer for 17 random whole numbers from 0 through 9.
 
 :::{.callout-note}
 ## Whole numbers
 
 A whole number is a number that is not negative, and does not have fractional
 part (does not have anything after a decimal point).  0 and 1 and 2 and 3 are
-whole numbers, but -1 and $\frac{3/5}$ and 11.3 are not. The whole numbers
+whole numbers, but -1 and $\frac{3}{5}$ and 11.3 are not. The whole numbers
 from 0 through 9 are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9.
 :::
 
 :::{.callout-note}
-## What do we mean by *random*?
+## What do we mean by random?
 
-We have been throwing around the term random, but now we will say a little
-more about what we mean by it.
-
-We say something is random when we cannot completely predict the result.  The randomness is the part we cannot predict.
-
-Let us say we toss a coin, and we could get either a *head* or a *tail*.  Let
-us also say that we already know for sure that 50% of the time we get a head
-and 50% we get a tail.  We can predict some things about this coin toss.  We
-can predict that it will either be a head or a tail, and we can predict that
-it will be a head 50% of the time. But we can't predict *which one* of heads
-or tails we will get on the next throw.  We say the result of each throw is
-*random* if we cannot do anything to improve our prediction of 50% for heads
-(or tails) on the next toss.
-
-When we ask for a random whole number from 0 through 9, we mean that we can't
-do anything to predict which of the 10 possible numbers we will get on any one
-trial.  We can't do better than guessing that the next value will be — say — 0
-— and whichever number we guess, we will only ever have a 10% chance of being
-correct.
-
-The computer uses lots of tricks to give us numbers that are random, in a
-practical sense — meaning that there is no *practical* way for you, or even a
-very powerful computer, to do anything to improve the prediction for the next
-number.  These practical-sense random numbers are also called *pseudo-random*
-numbers.  The pseudo-random numbers from [NumPy]{.python}[R]{.r} use some very
-careful programming to make the numbers hard to predict, and practically
-random. No-one can guarantee that it is absolutely *impossible* to find some
-way of improving our prediction for the next pseudo-random number that
-[NumPy]{.python}[R]{.r} gives us, but we, and the rest of the scientific
-world, do not know of any way to do it. That practical sense of randomness
-from the computer is good enough for every case that we cover in this book,
-and we bet it will also be true for every case that you will come across in
-practice.
+We said above that we want 17 *random* whole numbers from 0 through 9.  What do
+we mean by *random* here?  We will talk about this much more in the section
+@sec-what-is-chance}.  For now let us say only that random means we cannot do
+anything to predict the number.  When we get each new number, we know it will
+be some number from 0 through 9, but we cannot do anything more to predict
+which number this will be.  There is an equal chance that the new number will
+be any one of the numbers 0 through 9 — there is a 10% chance we will get a
+0, a 10% chance of a 1, and so on.
 :::
-
-This is how to get 17 random numbers from [Numpy]{.python}[R]{.r}:
 
 ::: python
 We will be asking the computer to generate many random numbers.  So, before we
@@ -204,57 +177,59 @@ import numpy as np
 # it `rnd`.  `rnd` is short for "random".
 rnd = np.random.default_rng()
 ```
+:::
 
-We prepare the list of numbers that we want NumPy to select from:
+We prepare the sequence of numbers that we want [NumPy]{.python}[R]{.r} to
+select from:
 
 ```{python, opts.label="py_ed"}
-# Make the list of numbers, store with the name "numbers".
-numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+# Make sequence of numbers, store with the name "some_numbers".
+some_numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-Use `rnd` thing to choose a single number *at random* from the list of
-`numbers`:
-
-```{python, opts.label="py_ed"}
-rnd.choice(numbers)
+```{r, opts.label="r_ed"}
+# Make sequence of numbers, store with the name "some_numbers".
+some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 ```
 
-We can also ask Numpy to select 17 numbers at random from the list of numbers, by adding the `size=17` instruction to the code:
+We can use [`rnd`]{.python}[the `sample` command]{.r} to select a single value
+*at random* from the sequence of numbers in `some_numbers`.
 
+We can also ask `sample` to select 17 numbers at random from the sequence.  To
 
 ```{python, opts.label="py_ed"}
-# Get 17 (size=17) values from the *numbers* list.
+rnd.choice(some_numbers)
+```
+
+```{r, opts.label="r_ed"}
+sample(some_numbers)
+```
+
+We can also ask [Numpy]{.python}[R]{.r} to select 17 numbers at random from the
+sequence of `some_numbers`.
+
+:::python
+To do this, we add the `size=17` instruction to the code.
+
+```{python, opts.label="py_ed"}
+# Get 17 (size=17) values from the *some_numbers* sequence.
 # Store the 17 numbers with the name "a"
-a = rnd.choice(numbers, size=17)
+a = rnd.choice(some_numbers, size=17)
 a
 ```
 :::
-:::r
 
-Here is the sequence of numbers we want R to select from:
-
-```{r, opts.label="r_ed"}
-numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-```
-
-We can use the `sample` command to select values a single value at random from
-the sequence of numbers.
+::: r
+To do this, we specify the number 17, and add an extra instruction
+`replace=TRUE`.  `replace=TRUE` tells R to sample `some_numbers` *with
+replacement*.  We will soon explain more about what this means, but for now,
+please take our word for it that `replace=TRUE` gives use the same effect as
+rolling the 10-sided dice.
 
 ```{r, opts.label="r_ed"}
-sample(numbers)
-```
-
-We can also ask `sample` to select 17 numbers at random from the sequence.  To
-do this in the way we need, we have to tell `sample` that we mean to sample
-*with replacement*, using the `replace=TRUE` instruction.  We will explain more
-about what sampling *with replacement*  means soon, but until then, *with
-replacement* gives us the same effect as rolling the 10-sided dice.
-
-```{r}
-# Get 17 (size=17) values from the *numbers* sequence.
+# Get 17 (size=17) values from the *some_numbers* sequence.
 # Store the 17 numbers with the name "a"
-a <- sample(numbers, 17, replace=TRUE)
-a
+a <- sample(some_numbers, 17, replace=TRUE)
 ```
 :::
 
@@ -262,21 +237,31 @@ a
 Section on resampling with and without replacement in later chapter.
 :::
 
+## More about [arrays]{.python}[vectors]{.r}
+
+Now we take a closer look at the thing that came back from the
+[`rnd.choice`]{.python}[`sample`]{.r}
+command.
+
 ```{python, opts.label="py_ed"}
-outcomes = ['cured', 'cured', 'cured',
-            'cured', 'cured', 'cured',
-            'cured', 'cured', 'cured',
-            'not cured']
-single_patient_outcome = rnd.choice(outcomes)
+# Show the value stored in "a".
+a
 ```
 
-Here, we take all possible outcomes and then ask NumPy to pick one at
-random.  An equivalent, and more concise, alternative is to ask for
-specific outcomes with given probabilities:
-
-```python
-single_patient_outcome = choice(['cured', 'not cured'], p=[0.9, 0.1])
+```{r, opts.label="r_ed"}
+# Show the value stored in "a".
+a
 ```
+
+Notice that `a` contains 17 numbers.  In fact, `a` is a *container*, where the
+container holds 17 numbers.  In [Python]{.python}[R]{.r}, this container for numbers is called [an *array*]{.python}[a *vector*]{.r}.  We will use these containers all the time to store sequences of numbers.
+
+::: todo
+
+* Getting values with indexing
+* Setting values with indexing
+* Making a new vector of zeros.
+:::
 
 :::{.callout-note}
 ## Array data types

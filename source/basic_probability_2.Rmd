@@ -235,7 +235,7 @@ predictable, we say it is not random but rather is determined.
 Again, this shows that the randomness is not a property of the physical
 event, but rather of a person's knowledge and skill.
 
-## What Do We Mean by "Chance"?
+## What Do We Mean by "Chance"? {#sec-what-is-chance}
 
 We have defined "chance" as the absence of predictive power and/or
 explanation and/or control. Here we should not confuse the concepts of
@@ -353,6 +353,46 @@ chance-like.
 It is interesting to consider the relationship of this concept to the
 quincunx: Therein, any one ball's fate seems chance-like, but the
 overall distribution is determined.
+
+## Randomness again
+
+::: todo
+Integrate this with the rest of the chapter
+:::
+
+We have been throwing around the term random, but now we will say a little
+more about what we mean by it.
+
+We say something is random when we cannot completely predict the result.  The randomness is the part we cannot predict.
+
+Let us say we toss a coin, and we could get either a *head* or a *tail*.  Let
+us also say that we already know for sure that 50% of the time we get a head
+and 50% we get a tail.  We can predict some things about this coin toss.  We
+can predict that it will either be a head or a tail, and we can predict that
+it will be a head 50% of the time. But we can't predict *which one* of heads
+or tails we will get on the next throw.  We say the result of each throw is
+*random* if we cannot do anything to improve our prediction of 50% for heads
+(or tails) on the next toss.
+
+When we ask for a random whole number from 0 through 9, we mean that we can't
+do anything to predict which of the 10 possible numbers we will get on any one
+trial.  We can't do better than guessing that the next value will be — say — 0
+— and whichever number we guess, we will only ever have a 10% chance of being
+correct.
+
+The computer uses lots of tricks to give us numbers that are random, in a
+practical sense — meaning that there is no *practical* way for you, or even a
+very powerful computer, to do anything to improve the prediction for the next
+number.  These practical-sense random numbers are also called *pseudo-random*
+numbers.  The pseudo-random numbers from [NumPy]{.python}[R]{.r} use some very
+careful programming to make the numbers hard to predict, and practically
+random. No-one can guarantee that it is absolutely *impossible* to find some
+way of improving our prediction for the next pseudo-random number that
+[NumPy]{.python}[R]{.r} gives us, but we, and the rest of the scientific
+world, do not know of any way to do it. That practical sense of randomness
+from the computer is good enough for every case that we cover in this book,
+and we bet it will also be true for every case that you will come across in
+practice.
 
 ## The philosophers' dispute about the concept of probability
 
