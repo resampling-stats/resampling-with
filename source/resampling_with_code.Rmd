@@ -222,7 +222,7 @@ rnd.choice(numbers)
 We can also ask Numpy to select 17 numbers at random from the list of numbers, by adding the `size=17` instruction to the code:
 
 
-```{python}
+```{python, opts.label="py_ed"}
 # Get 17 (size=17) values from the *numbers* list.
 # Store the 17 numbers with the name "a"
 a = rnd.choice(numbers, size=17)
@@ -246,8 +246,9 @@ sample(numbers)
 
 We can also ask `sample` to select 17 numbers at random from the sequence.  To
 do this in the way we need, we have to tell `sample` that we mean to sample
-*with replacement*.  To do that, we use the `replace=TRUE` instruction to
-`sample`, like this:
+*with replacement*, using the `replace=TRUE` instruction.  We will explain more
+about what sampling *with replacement*  means soon, but until then, *with
+replacement* gives us the same effect as rolling the 10-sided dice.
 
 ```{r}
 # Get 17 (size=17) values from the *numbers* sequence.
@@ -257,9 +258,9 @@ a
 ```
 :::
 
-<!---
-We need discussion of resampling with replacement.
--->
+::: todo
+Section on resampling with and without replacement in later chapter.
+:::
 
 ```{python, opts.label="py_ed"}
 outcomes = ['cured', 'cured', 'cured',
@@ -286,7 +287,7 @@ A NumPy array is a container that stores many elements of the same type.  With t
 
 Often, we will create a NumPy array to store our results before we begin.  We do this with the "zeros" command, which makes an empty array of a given size:
 
-```{python}
+```{python, opts.label="py_ed"}
 x = np.zeros(3, dtype=int)
 y = np.zeros(3, dtype=float)
 z = np.zeros(3, dtype=bool)
@@ -295,21 +296,21 @@ print(x, y, z)
 
 We can now assign elements into specific positions:
 
-```{python}
+```{python, opts.label="py_ed"}
 x[2] = 5
 print(x)
 ```
 
 We will also be making use of arrays that store strings.  We initialize these arrays as above:
 
-```{python}
+```{python, opts.label="py_ed"}
 w = np.zeros(3, dtype=object)
 print(w)
 ```
 
 Note that, by default, NumPy fills these arrays with zeros (integers).  But because the array is set to store *objects*, we can replace those integers with strings:
 
-```{python}
+```{python, opts.label="py_ed"}
 w[1] = "hello"
 w[2] = "world"
 print(w)
@@ -317,13 +318,13 @@ print(w)
 
 What happens when we ask NumPy to check whether each element in the array is equal to "world"?  We get the following:
 
-```{python}
+```{python, opts.label="py_ed"}
 w == "world"
 ```
 
 This is a *boolean* array (True or False), telling us the answer to that question.  We often count the number of "True" responses as follows:
 
-```{python}
+```{python, opts.label="py_ed"}
 np.count_nonzero(w == "world")
 ```
 
@@ -333,7 +334,7 @@ np.count_nonzero(w == "world")
 Let us now simulate a single trial, where seventeen patients are treated
 with the 90% effective treatment:
 
-```{python}
+```{python, opts.label="py_ed"}
 N = 17
 
 # An array of 17 slots in which we stored 'cured' or 'not cured' for
@@ -371,7 +372,7 @@ a label.
 
 Here is an example:
 
-```{python}
+```{python, opts.label="py_ed"}
 for item in ['shoe', 'saddle', 'jacket']:
     print('I am stitching a', item)
 ```
@@ -381,7 +382,7 @@ As it moves on to each object, it assigns the label ("shoe", "saddle", etc.) to 
 The indented block of code under the for is executed for each item, and in this code block `label` can be accessed.
 The code above can therefore be unpacked into the following equivalent program:
 
-```python
+```{python, opts.label="py_ed"}
 item = 'shoe'
 print('I am stitching a', item)
 
@@ -395,14 +396,14 @@ print('I am stitching a', item)
 We used the name `item` here, but any other name would do.
 Thus, the following is equivalent:
 
-```python
+```{python, opts.label="py_ed"}
 for package in ['shoe', 'saddle', 'jacket']:
     print('I am stitching a', package)
 ```
 
 It is common to use a number as a label in a for loop:
 
-```{python}
+```{python, opts.label="py_ed"}
 for i in [0, 1, 2, 3, 4]:
     print('The square of', i, 'is', i * i)
 ```
@@ -410,7 +411,7 @@ for i in [0, 1, 2, 3, 4]:
 When we want to count to a hundred, it becomes laborious to type out the numbers.
 For that, Python has a shorthand called `range`:
 
-```{python}
+```{python, opts.label="py_ed"}
 for i in range(5):
     print('The square of', i, ' is ', i * i)
 ```
@@ -419,7 +420,7 @@ for i in range(5):
 Here, for each of the 17 patients, we draw 'cured' (90% probable) or 'not cured' (10% probable) from our outcomes.
 We could just as easily draw all 17 outcomes at the same time:
 
-```{python}
+```{python, opts.label="py_ed"}
 cured = rnd.choice(['cured', 'not cured'], p=[0.9, 0.1], size=17)
 number_cured = np.count_nonzero(cured == 'cured')
 all_cured = (number_cured == N)
@@ -427,7 +428,7 @@ all_cured = (number_cured == N)
 
 Instead of explicitly counting the number of cured patients, we can also use the NumPy `all` command:
 
-```{python}
+```{python, opts.label="py_ed"}
 cured = rnd.choice(['cured', 'not cured'], p=[0.9, 0.1], size=17)
 
 # This is True or False
@@ -436,7 +437,7 @@ all_cured = np.all(cured == 'cured')
 
 The above resembles one trial where 17 patients were treated.  We would like to count, over many trials, how often *all* patients were cured:
 
-```{python}
+```{python, opts.label="py_ed"}
 T = 10000
 
 # Array to store trial outcomes in
