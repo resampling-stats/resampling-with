@@ -123,15 +123,21 @@ one ambulance out of order.
 In a hundred quick throws of the 20 dice — which probably takes less than 5
 minutes — we can get a fast and reasonably accurate answer to our question.
 
-## Randomness from your computer
+## Randomness from your computer {#sec-randomness-computer}
 
 Computers make it easy to generate random numbers for resampling.
-Random numbers are numbers where it is effectively impossible to
-predict which number is coming next. If we ask the computer for a
-number between 0 and 9, and we are unable to do better than chance in
-predicting what that number is going to be, we accept that it is
-random.  We will go into more detail about what exactly we mean by
-*random* and *chance* later in the book.
+
+:::{.callout-note}
+## What do we mean by random?
+
+Random numbers are numbers where it is impossible to predict which number is
+coming next. If we ask the computer for a number between 0 and 9, we will get
+one of the numbers 0 though 9, but we cannot do any better than that in
+predicting *which* number it will give us. There is an equal (10%) chance we
+will get any of the numbers 0 through 9 — just as there is when we roll a fair
+10-sided die. We will go into more detail about what exactly we mean by
+*random* and *chance* later in the book (@sec-what-is-chance).
+:::
 
 <!--
 Press Your Luck
