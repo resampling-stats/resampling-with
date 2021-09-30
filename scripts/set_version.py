@@ -22,11 +22,13 @@ def set_version(version):
         nb_format = 'Rmd'
         language = 'R'
         other_language = 'Python'
+        cell = 'chunk'
     else:
         filter_divspans = "['r']"
         nb_format = 'ipynb'
         language = 'Python'
         other_language = 'R'
+        cell = 'cell'
     for fname in (QUARTO_TEMPLATE, VARS_TEMPLATE):
         with open(fname, 'rt') as fobj:
             fmt_str = fobj.read()
