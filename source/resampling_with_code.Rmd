@@ -31,10 +31,10 @@ can make it easier to understand the process, but of course, physical methods
 of making random outcomes can be slow and boring.
 
 We saw that short computer programs can do a huge number of resampling
-trials in a few seconds.  The flexibility of a programming language makes it
-possible to simulate many different outcomes and tests.
+trials in a less than a second.  The flexibility of a programming language
+makes it possible to simulate many different outcomes and tests.
 
-Programs can build up tables of random numbers, and do simple
+Programs can build up tables of random numbers, and do basic
 tasks like counting the number of values in a row or taking
 proportions.  With these simple tools, we can simulate many problems
 in probability and statistics.
@@ -49,7 +49,7 @@ can build up complete simulations using random numbers, and how the
 programming instructions relate to the tasks we need to do.
 
 We have already emphasized that *statistics* is a way of drawing conclusions
-about data from the real world, in the presence of random variation, and
+about data from the real world, in the presence of random variation;
 *probability* is the way of reasoning about random variation.  This chapter
 introduces our first *statistical* problem, where we use probability to draw
 conclusions about some important data — about a potential cure for a type of
@@ -62,21 +62,22 @@ statistics here, but we will come back to it several times in later chapters.
 
 ## A new treatment for Burkitt lymphoma
 
-[Burkitt lymphoma](https://en.wikipedia.org/wiki/Burkitt_lymphoma) is a rather
+[Burkitt lymphoma](https://en.wikipedia.org/wiki/Burkitt_lymphoma) is an
 unusual cancer of the lymphatic system.  The lymphatic system is a vein-like
-network throughout the body that is involved in the immune reaction to
-disease. In developed countries, with standard treatment, the cure rate for
-Burkitt lymphoma is about 90%.
+network throughout the body that is involved in the immune reaction to disease.
+In developed countries, with standard treatment, the cure rate for Burkitt
+lymphoma is about 90%.
 
 In 2006, researchers at the US National Cancer Institute (NCI), tested a new
-treatment for Burkitt lymphoma [@dunleavy2006burkitt]. They gave their new
-treatment to 17 patients, and found that all 17 patients were "cured" —
-meaning that the disease had not progressed in any of the 17 patients, in more
-than two years of follow-up.
+treatment for Burkitt lymphoma [@dunleavy2006burkitt]. They gave the new
+treatment to 17 patients, and found that all 17 patients were doing well after
+two years or more of follow up.  By "doing well", we mean that their lymphoma
+had not progressed; as a short-hand, we will say that these patients were
+"cured", but of course, we do not know what happened to them after this follow
+up.
 
 Here is where we put on our statistical hat and ask ourselves the following
-question — *how surprised are we that the NCI researchers saw their 17 out of
-17 result?*
+question — *how surprised are we that the NCI researchers saw their result of 17 out of 17 patients cured?*
 
 At this stage you might and should ask, what could we possibly mean by
 "surprised"?  That is a good and important question, and we will discuss that
@@ -85,19 +86,20 @@ much more in the chapters to come.  For now, please bear with us as we do a thou
 Let us forget the 17 out of 17 result of the NCI study for a moment. Imagine
 that there is another hospital, called Saint Hypothetical General (SHG), just
 down the road from the NCI, that was also treating 17 patients with Burkitt
-lymphoma, but they were not using the NCI treatment, they were using the
-standard treatment.
+lymphoma. Saint Hypothetical were not using the NCI treatment, they were using
+the standard treatment.
 
-We know from the background information above, that each patient given the
-standard treatment has a 90% chance of cure.  Given that 90% rate, what is the
-chance that 17 out of 17 of the Hypothetical group will be cured?
+We already know that each patient given the standard treatment has a 90% chance
+of cure.  Given that 90% cure rate, what is the chance that 17 out of 17 of the
+Hypothetical group will be cured?
 
-You may notice that this question about the Hypothetical group is 
-similar to the problem of the 20 ambulances in Chapter @sec-resampling-method.
-In that problem, we were interested to know how likely it was that 3 or more
-of 20 ambulances would be out of action on any one day, given that each
-ambulance had a 10% chance of being out of action.  Here we would like to know
-the chances that all 17 patients would be cured, given that each patient has a 90% chance of being cured.
+You may notice that this question about the Hypothetical group is similar to
+the problem of the 20 ambulances in Chapter @sec-resampling-method. In that
+problem, we were interested to know how likely it was that 3 or more of 20
+ambulances would be out of action on any one day, given that each ambulance had
+a 10% chance of being out of action.  Here we would like to know the chances
+that all 17 patients would be cured, given that each patient has a 90% chance
+of being cured.
 
 ## A physical model of the hypothetical hospital
 
@@ -113,16 +115,18 @@ trial, we record the number of dice that show numbers 1 through 9 (and not
 0).  This will be a number between 0 and 17, and it is the number of patients
 "cured" in our simulated trial.
 
-Here is the result of one such trial we did with a set of 17 10-sided dice we happened to have near to hand:
+@fig-17-d10s is the result of one such trial we did with a set of 17 10-sided
+dice we happened to have to hand:
 
-![One roll of 17 10-sided dice](images/17_d10s.png)
+![One roll of 17 10-sided dice](images/17_d10s.png){#fig-17-d10s}
 
-In this case there are four 0s, and the rest are from 1 through 9, so there
-were 13 out of 17 not-zero numbers, and therefore, 13 out of 17 "patients" who
-were "cured" in this simulated trial.
+The trial in @fig-17-d10s shows are four dice with the 0 face uppermost, and
+the rest with numbers from 1 through 9.  Therefore, there were 13 out of 17
+not-zero numbers, meaning that 13 out of 17 simulated "patients" were "cured"
+in this simulated trial.
 
 <!---
-Adapt text above to picture.
+Check we have adapted text above to picture.
 -->
 
 We could repeat this simulated trial procedure 100 times, and we would then
@@ -137,7 +141,7 @@ probability we would see 17 out of 17 patients cured.
 So, if Saint Hypothetical General did see 17 out of 17 patients cured with the
 standard treatment, they would be a little surprised, because they would only
 expect to see that happen 15% of the time.  But they would not be *very*
-surprised — they do expect to see that result more than one time in 10.
+surprised — 15% of the time is uncommon, but not *very* uncommon.
 
 ## Simulating the physical model with the computer
 
@@ -173,26 +177,40 @@ We prepare the sequence of numbers that we want [NumPy]{.python}[R]{.r} to
 select from:
 
 ```{python, opts.label="py_ed"}
-# Make sequence of numbers, store with the name "some_numbers".
+# Make a sequence of numbers, store with the name "some_numbers".
 some_numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
 ```{r, opts.label="r_ed"}
-# Make sequence of numbers, store with the name "some_numbers".
+# Make a sequence of numbers, store with the name "some_numbers".
 some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 ```
 
 We can use [`rnd`]{.python}[the `sample` command]{.r} to select a single value
 *at random* from the sequence of numbers in `some_numbers`.
 
-We can also ask `sample` to select 17 numbers at random from the sequence.  To
-
 ```{python, opts.label="py_ed"}
-rnd.choice(some_numbers)
+# Select a number from the choices in some_numbers
+my_number = rnd.choice(some_numbers)
 ```
 
 ```{r, opts.label="r_ed"}
-sample(some_numbers)
+# Select a number from the choices in some_numbers
+my_number <- sample(some_numbers)
+```
+
+
+
+We can ask {{< var lang >}} to show us the result inside the notebook, by executing a {{< var cell >}} that contains the variable name on its own on a line:
+
+```{python, opts.label="py_ed"}
+# Show the value of my_number
+my_number
+```
+
+```{r, opts.label="r_ed"}
+# Show the value of my_number
+my_number
 ```
 
 We can also ask [Numpy]{.python}[R]{.r} to select 17 numbers at random from the
