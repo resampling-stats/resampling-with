@@ -41,6 +41,10 @@ filters:
   - noteout-write-notebooks
   - noteout-filter-nb-only
 
+knitr:
+  # Comment preceding code output.
+  out-comment: ""
+
 noteout:
   # Divs, spans to filter before further processing.
   pre-filter: ['todo', 'comment']
