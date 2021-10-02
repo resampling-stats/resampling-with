@@ -199,13 +199,13 @@ The contents of the {{< var cell >}} above is {{< var lang >}} code.  As you
 would predict, {{< var lang >}} understands numbers like `10.50`, and it
 understands `+` between the numbers as an instruction to add the numbers.
 
-When you press {{< var run_key >}}, {{< var lang >}} makes its own
-representation of `10.50`, and its own representation of `9.25`, and then runs
-the *addition* operation on these two, which results in Python's
-representation of `19.75`.
+When you press {{< var run_key >}}, {{< var lang >}} finds `10.50`, realizes
+it is a number, and stores that number somewhere in memory. It does the same
+thing for `9.25`, and then it runs the *addition* operation on these two numbers in memory, which gives the number 19.75.
 
-Finally, {{< var lang >}} sends back the `19.75`.  The notebook detects that
-{{< var lang >}} sent back a value, and shows it to us.
+Finally, {{< var lang >}} sends the resulting number (19.75) back to the
+notebook for display.  The notebook detects that {{< var lang >}} sent back a
+value, and shows it to us.
 
 This is exactly what a calculator would do.
 
