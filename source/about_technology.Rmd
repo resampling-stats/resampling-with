@@ -305,12 +305,12 @@ This is the role of *variables*.  A *variable* is a value with a name.
 Here is a variable:
 
 ```{python, opts.label="py_ed"}
-# The cost of Allie's meal.
+# The cost of Alex's meal.
 a = 10.50
 ```
 
 ```{r, opts.label="r_ed"}
-# The cost of Allie's meal.
+# The cost of Alex's meal.
 a <- 10.50
 ```
 
@@ -332,13 +332,13 @@ a
 We did not have to use the name `a` — we can choose almost any name we like.  For example, we could have chosen `alex_meal` instead:
 
 ```{python, opts.label="py_ed"}
-# The cost of Allie's meal.
+# The cost of Alex's meal.
 # alex_meal gets the value 10.50
 alex_meal = 10.50
 ```
 
 ```{r, opts.label="r_ed"}
-# The cost of Allie's meal.
+# The cost of Alex's meal.
 # alex_meal gets the value 10.50
 alex_meal <- 10.50
 ```
@@ -358,7 +358,7 @@ billie_meal
 ```
 
 ```{r, opts.label="r_ed"}
-# The cost of Allie's meal.
+# The cost of Alex's meal.
 # billie_meal gets the value 10.50
 billie_meal <- 10.50
 # Show the value of billie_meal
@@ -405,7 +405,7 @@ to go for the Hummus plate, at £7.75.  Now we can tell {{< var lang >}} that
 we want `alex_meal` to have the value 7.75 instead of 10.50:
 
 ```{python, opts.label="py_ed"}
-# The new cost of Allie's meal.
+# The new cost of Alex's meal.
 # alex_meal gets the value 7.75
 alex_meal = 7.75
 # Show the value of alex_meal
@@ -413,7 +413,7 @@ alex_meal
 ```
 
 ```{r, opts.label="r_ed"}
-# The new cost of Allie's meal.
+# The new cost of Alex's meal.
 # alex_meal gets the value 7.75
 alex_meal = 7.75
 # Show the value of alex_meal
