@@ -432,7 +432,10 @@ alex_meal = 7.75
 alex_meal
 ```
 
-Notice that `alex_meal` has a new value now.  It was 10.50, but now it is 7.75.  We have *reset* the value of `alex_meal`.   Now we have done this, we can *recalculate* the bill before tip with *exactly the same code as before*:
+Notice that `alex_meal` now has a new value.  It was 10.50, but now it is 7.75.
+We have *reset* the value of `alex_meal`.   In order to use the new value for
+`alex_meal`, we must *recalculate* the bill before tip with *exactly the same
+code as before*:
 
 ```{python, opts.label="py_ed"}
 # The new cost of both meals, before tip.
@@ -477,10 +480,10 @@ Now you have done some practice with the notebook, and with variables, you are
 ready for a new problem in probability and statistics, in the next chapter.
 :::
 
-## Running the code on your own computer {-}
+## Running the code on your own computer
 
 Many people, including your humble authors, like to be able to run code
-examples on our own computers.  This section explains how you can set up to
+examples on their own computers.  This section explains how you can set up to
 run the notebooks on your own computer.
 
 ::: python
