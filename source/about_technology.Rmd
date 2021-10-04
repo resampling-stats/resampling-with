@@ -56,8 +56,8 @@ is a package that makes it easier to work with sequences of data values, such
 as sequences of numbers.  These are typical in probability and statistics.
 
 Later, we be using the *Matplotlib* [^matplotlib] package. This is the main
-Python library for producing plots, such as bar charts, histograms, and
-scatter plots.  See the rest of the book for more details on these plots.
+Python package with code for producing plots, such as bar charts, histograms,
+and scatter plots.  See the rest of the book for more details on these plots.
 
 Still further on in the book, we will use more specialized libraries for data
 manipulation and analysis.  *Pandas* [^pandas] is the standard Python package
@@ -67,6 +67,7 @@ statistical methods. The *Statsmodels* [^statsmodels] package has code for
 many more statistical procedures. We will often find ourselves comparing the
 results of our own resampling algorithms to those in Scipy and Statsmodels.
 :::
+
 ::: r
 This version of the book uses the *R* programming language to implement
 resampling algorithms.
@@ -83,16 +84,16 @@ Although many people use R as a simple way of exploring data and doing standard 
 :::
 
 It is very important that {{< var lang >}} is a *programming language* and not
-a set of canned routines of "doing statistics".  For us it means that we can
+a set of canned routines for "doing statistics".  For us it means that we can
 explore the *ideas* of probability and statistics using the *language* of {{<
 var lang >}} to express those ideas.  It also means that you, and I, and
-others around the world can write new code that we can share with others, so
-they can benefit from our work, understand it, and improve it.  This book is
-one example; we have written this book using {{< var lang >}} to make it
-easier to understand the ideas behind probability and statistics.  We hope you
-will help us by testing what we have done and sending us suggestions for
-improvement.  Please see the preface for more information about how to do
-that.
+anyone in the world, can write new code to share with others, so they can
+benefit from our work, understand it, and improve it.  This book is one
+example; we have written the {{< var lang >}} code in this book as clearly as
+we can to make it easy to follow, and to explain the underlying ideas.  We hope
+you will help us by testing what we have done and sending us suggestions for
+ways we could improve. Please see the preface for more information about how to
+do that.
 
 ## The environment
 
@@ -126,6 +127,7 @@ web interfaces.
 A notebook can contain blocks of text — like this one — as well as code, and
 the results from running the code.
 
+::: nb-only
 ::: python
 Jupyter Notebooks are made up of *cells*.  This is a cell with text — a text
 cell.
@@ -137,9 +139,12 @@ snippets of code, in *code chunks*.  You will see examples of code chunks
 soon.
 :::
 
-Notebook text can have formatting, such as links.  For example, this sentence
+Notebook text can have formatting, such as links.
+
+For example, this sentence
 ends with a link to the earlier [second edition of this
 book](https://resample.statistics.com/intro-text-online).
+:::
 
 If you are in the notebook interface (rather than reading this in the
 textbook), you will see the {{< var nb_app >}} menu near the top of the page,
