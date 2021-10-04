@@ -50,8 +50,8 @@ popular language for teaching, but is also used widely in industry and
 academia.  It is one of the most widely used programming languages in the
 world, and the most popular language for data science.
 
-For many of the initial examples, we will also be using the *Numpy* [^numpy]
-package for Python. A *package* is a library of Python code and data.  Numpy
+For many of the initial examples, we will also be using the *NumPy* [^numpy]
+package for Python. A *package* is a library of Python code and data.  NumPy
 is a package that makes it easier to work with sequences of data values, such
 as sequences of numbers.  These are typical in probability and statistics.
 
@@ -61,11 +61,11 @@ and scatter plots.  See the rest of the book for more details on these plots.
 
 Still further on in the book, we will use more specialized libraries for data
 manipulation and analysis.  *Pandas* [^pandas] is the standard Python package
-for loading data files and working with data tables.  *Scipy* [^scipy] is a
+for loading data files and working with data tables.  *SciPy* [^scipy] is a
 package that houses a wide range of numerical routines, including some simple
 statistical methods. The *Statsmodels* [^statsmodels] package has code for
 many more statistical procedures. We will often find ourselves comparing the
-results of our own resampling algorithms to those in Scipy and Statsmodels.
+results of our own resampling algorithms to those in SciPy and Statsmodels.
 :::
 
 ::: r
@@ -74,7 +74,7 @@ resampling algorithms.
 
 The current title of the main website for R [^r] is "The R Project for
 Statistical Computing", and this is a good summary of how R started, and what
-R is particularly good at.  The people who designed R, designed it for
+R is particularly good at.  The people who designed R designed it for
 themselves, and you and I — those of us who are working to find and understand
 the patterns in data.  Over the last 20 years, it has gained wide use for data
 analysis across many fields, especially in life sciences, data science and
@@ -110,7 +110,8 @@ In the print version of the book, we point you to the web version, to get the
 links.
 
 At the end of this chapter, we give explain how to run these notebooks on your
-own computer.  We start with an example notebook; you might want to run this on the cloud to get started.
+own computer.  We start with an example notebook; you might want to run this in
+the cloud to get started.
 
 ## Getting started with the notebook
 
@@ -196,7 +197,7 @@ in the {{< var cell >}} below, to see the total.
 10.50 + 9.25
 ```
 
-```{python, opts.label="r_ed"}
+```{r, opts.label="r_ed"}
 10.50 + 9.25
 ```
 
@@ -252,7 +253,8 @@ They think it would be reasonable to leave a 15% tip.  Now they need to
 multiply their total bill by 0.15, to get the tip.  The bill is about £20, so
 they know that the tip will be about £3.
 
-In {{< var lang >}}, as for your calculator, `*` means multiplication.
+In {{< var lang >}} `*` means multiplication.  This is the equivalent of the
+"×" key on a calculator.
 
 What about this, for the correct calculation?
 
@@ -261,7 +263,7 @@ What about this, for the correct calculation?
 10.50 + 9.25 * 0.15
 ```
 
-```{python, opts.label="r_ed"}
+```{r, opts.label="r_ed"}
 # The tip - with a nasty mistake.
 10.50 + 9.25 * 0.15
 ```
@@ -285,7 +287,7 @@ the multiplication.  We do this with round brackets (parentheses):
 (10.50 + 9.25) * 0.15
 ```
 
-```{python, opts.label="r_ed"}
+```{r, opts.label="r_ed"}
 # The bill plus tip - mistake fixed.
 (10.50 + 9.25) * 0.15
 ```
@@ -293,6 +295,11 @@ the multiplication.  We do this with round brackets (parentheses):
 The obvious next step is to calculate the bill *including the tip*.
 
 ```{python, opts.label="py_ed"}
+# The bill, including the tip
+10.50 + 9.25 + (10.50 + 9.25) * 0.15
+```
+
+```{r, opts.label="r_ed"}
 # The bill, including the tip
 10.50 + 9.25 + (10.50 + 9.25) * 0.15
 ```
@@ -479,9 +486,9 @@ run the notebooks on your own computer.
 ::: python
 You will need to install the Python language on your computer, and then install the following packages:
 
-* Numpy
+* NumPy
 * Matplotlib - for plots
-* Scipy - a collection of modules for scientific computing;
+* SciPy - a collection of modules for scientific computing;
 * Pandas - for loading, saving and manipulating data tables;
 * Statsmodels - for traditional statistical analysis.
 * Jupyter - to run the Jupyter Notebook on your own computer.
