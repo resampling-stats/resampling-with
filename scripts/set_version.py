@@ -19,6 +19,7 @@ def set_version(version):
     version = version.lower()
     if version == 'r':
         filter_divspans = "['python']"
+        nb_flatten_divspans = "['+', 'r']"
         nb_format = 'Rmd'
         language = 'R'
         other_language = 'Python'
@@ -28,7 +29,8 @@ def set_version(version):
         run_key = 'Ctl/Cmd-Shift-Enter'
     else:
         filter_divspans = "['r']"
-        nb_format = 'ipynb'
+        nb_flatten_divspans = "['+', 'python']"
+        nb_format ='ipynb'
         language = 'Python'
         other_language = 'R'
         cell = 'cell'
