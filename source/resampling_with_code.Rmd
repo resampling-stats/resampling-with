@@ -56,9 +56,9 @@ conclusions about some important data — about a potential cure for a type of
 cancer.  We will not make much of the distinction between probability and
 statistics here, but we will come back to it several times in later chapters.
 
-<!---
-*TODO* - Check we have discussed this before.
--->
+::: todo
+Check we have discussed this before.
+:::
 
 ## A new treatment for Burkitt lymphoma
 
@@ -173,18 +173,60 @@ rnd = np.random.default_rng()
 ```
 :::
 
-We prepare the sequence of numbers that we want [NumPy]{.python}[R]{.r} to
-select from:
+## From numbers to {{< var array_name >}}s
+
+We [next]{.python} need to prepare the *sequence* of numbers that we want
+{{< var np_or_r >}} to select from.
+
+We have already seen the idea that {{< var lang >}} has *values* that are
+individual numbers.   Remember, a *variable* is a *named value*.  Here we
+attach the name `a` to the value 1.
 
 ```{python, opts.label="py_ed"}
-# Make a sequence of numbers, store with the name "some_numbers".
-some_numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+a = 1
+# Show the value of "a"
+a
 ```
 
 ```{r, opts.label="r_ed"}
-# Make a sequence of numbers, store with the name "some_numbers".
-some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+a <- 1
+# Show the value of "a"
+a
 ```
+
+{{< var np_or_r >}} also allows *values* that are *sequences of numbers*.  {{< var np_or_r >}} calls these sequences *{{< var array_name >}}s*.
+
+::: r
+The name *vector* sounds rather technical and mathematical, but the key idea is only that a *vector* stores a sequence of numbers.
+:::
+
+Here we make a {{< var array_name >}} that contains the 10 numbers we will
+select from:
+
+```{python, opts.label="py_ed"}
+# Make an array of numbers, store with the name "some_numbers".
+some_numbers = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+# Show the value of "some_numbers"
+some_numbers
+```
+
+```{r, opts.label="r_ed"}
+# Make a vector of numbers, store with the name "some_numbers".
+some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+# Show the value of "some_numbers"
+some_numbers
+```
+
+Notice that the value for `some_numbers` is a[n]{.python} {{< var array_name
+>}}, and that this value *contains* 10 numbers.
+
+Put another way, `some_number` is now the name we can use for this collection
+of 10 values.
+
+{{< var array_name >}}s are very useful for simulations and data analysis, and
+we will be using them all the time.
+
+## Sampling from {{< var array_name >}}s
 
 We can use [`rnd`]{.python}[the `sample` command]{.r} to select a single value
 *at random* from the sequence of numbers in `some_numbers`.
@@ -192,29 +234,20 @@ We can use [`rnd`]{.python}[the `sample` command]{.r} to select a single value
 ```{python, opts.label="py_ed"}
 # Select a number from the choices in some_numbers
 my_number = rnd.choice(some_numbers)
+# Show the value that results.
+my_number
 ```
 
 ```{r, opts.label="r_ed"}
 # Select a number from the choices in some_numbers
 my_number <- sample(some_numbers)
-```
-
-
-
-We can ask {{< var lang >}} to show us the result inside the notebook, by executing a {{< var cell >}} that contains the variable name on its own on a line:
-
-```{python, opts.label="py_ed"}
-# Show the value of my_number
-my_number
-```
-
-```{r, opts.label="r_ed"}
-# Show the value of my_number
+# Show the value that results.
 my_number
 ```
 
 We can also ask [Numpy]{.python}[R]{.r} to select 17 numbers at random from the
-sequence of `some_numbers`.
+sequence of `some_numbers`.  As you might have guessed, {{< var np_or_r >}}
+will give us these numbers as a[n]{.python} {{< var array_name >}}:
 
 :::python
 To do this, we add the `size=17` instruction to the code.
