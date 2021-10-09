@@ -776,6 +776,13 @@ more depth.
 
 ## For-loops in {{< var lang >}}
 
+::: todo
+Need to switch for-loops to use integers rather than strings here.
+
+Can we get away without "print"?  Probably not, but then, need to introduce
+it.
+:::
+
 Imagine a factory robot that slides along a worktable on which several items
 have been placed.  It services each of these items, one by one, until it is
 done.
@@ -985,14 +992,8 @@ p <- n_all_cured / 100
 p
 ```
 
-```{r fancy-chunk}
-get_var('p')
-get('p')
-print(p)
-```
-
-From this experiment, we see that there is roughly a `r get_var('p')` chance
-that all 17 patients are cured when using a 90% effective treatment.
+From this experiment, we see that there is roughly a one-in-six chance that
+all 17 patients are cured when using a 90% effective treatment.
 
 ## Conclusions
 
