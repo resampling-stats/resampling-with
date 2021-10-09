@@ -1,0 +1,241 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+```{r setup, include=FALSE}
+source("_common.R")
+```
+
+# Introduction to functions
+
+This is a very short introduction to functions.
+
+Functions are *recipes* with names [^berkeley-thanks].
+
+[^berkeley-thanks]: Thanks to [the Berkeley
+  team](https://www.inferentialthinking.com/chapters/08/Functions_and_Tables)
+  for this metaphor.
+
+
+Let's start with an example where you have seen functions - mathematics.
+
+## cosine
+
+You have used functions in mathematics.  For example, `cosine` is a function in
+mathematics.  We often write the `cosine` function as `cos`
+
+We might write something like this, in mathematics:
+
+$$
+y = cos(0)
+$$
+
+You can read $cos(0)$ as:
+
+> Call the function "cos" with the value 0, and return the result.
+
+Then $y = cos(0)$ means:
+
+> Call the function "cos" with the value 0, and return the result, storing the
+> result in "y".
+
+We *pass* a value to the function.  In our case we pass the value $0$.  The
+value that we pass is called the *argument*.
+
+The function *returns* a value.  In our case it returns the calculation of the
+cosine of $0$.
+
+You may remember that the cosine of 0 is 1.  So, after $y = cos(0)$, we expect
+$y$ to equal 1.
+
+Functions in Python work in a similar way.
+
+## Functions in {{< var lang >}}
+
+::: python
+First we load up the `cos` function from a library called `numpy`.
+
+Don't worry about the command to load the function, for now.  We will come back
+to that later.  Here is the command you need. Just run it in the notebook.
+
+```{python}
+# Get the cos function from the numpy library.
+from numpy import cos
+```
+:::
+
+We *call* the `cos` function, *passing* the value 0, and see what we get:
+
+```{python, opts.label="python_ed"}
+cos(0)
+```
+
+```{r, opts.label="r_ed"}
+cos(0)
+```
+
+* `cos` is the *name* of the function;
+* `0` is the *value* we *pass* to the function.
+* The value we pass to the function goes between the parentheses `(` and `)`
+  [^brackets].
+* `1.0` is the value that the function *returns*.  It is the *return value* of
+  the function.
+
+[^brackets]: Please be very careful to distinguish between different types of
+  brackets in {{< var lang >}}.  The different types of brackets
+  are: *parentheses* (round brackets), as in `()`; *square brackets* as in
+  `[]`; and *curly brackets* as in `{}`.  These brackets have different
+  meanings to {{< var lang >}}; if you use the wrong type of brackets, you
+  will either get an error, or you will get a result you didn't expect.
+  When we call functions, we use parentheses.
+
+The value we pass to the function is also called the function *argument*.
+
+In our case we pass `0` as the *argument* to the `cos` function.
+
+We can also store the return value in a variable, like this:
+
+```{python, opts.label="python_ed"}
+y = cos(0)
+# Show the result
+y
+```
+
+```{r, opts.label="r_ed"}
+y <- cos(0)
+# Show the result
+y
+```
+
+Read this code as:
+
+> Pass the value 0 to the `cos` function.  Put the result into the variable
+> `y`. Show the contents of variable `y`.
+
+## The recipe analogy
+
+A *function* is like a *recipe*.  When we cook a dish for a meal, we may follow a recipe. At the top of the recipe, we see the *list of ingredients*.  These are the things that the recipe will work on.  The recipe itself gives the procedure to follow to turn the ingredients into a dish.
+
+For example, here is a recipe for a cheese omelet:
+
+> Name: "My favorite cheese omelet"
+>
+> ## Ingredients
+> * Eggs
+> * Butter
+> * Salt
+> * Pepper
+> * Cheese
+>
+> ## Procedure
+>
+* * Heat pan to medium heat with a little oil.
+> * Grate cheese.
+> * Crack the eggs into a bowl.
+> * Add the pepper and butter.
+> * Beat mixture with fork until well mixed.
+> * Pour mixture into heated pan.
+> * Tilt pan to spread mixture.
+> * Add cheese and salt.
+> * Fold sides.
+> * Cook for about 30 seconds.
+>
+> ## Result
+> An actual cheese omelet
+
+The recipe has a:
+
+* Name ("My favorite cheese omelet");
+* List of ingredients (eggs, butter, etc)
+* Procedure (heat pan, etc)
+* Result (a nice cheese omelet)
+
+Functions work in the same way. `cos`
+is a recipe that does a certain task — in this case, it calculates the cosine value corresponding to the value we sent it.
+
+* Name: `cos`
+* List of ingredients (the input value to calculate the cosine for, in our
+  case, the value of `x`);
+* Procedure (do some calculation work to get the corresponding cosine value)
+* Result (the corresponding cosine value).
+
+The list of ingredients to the function are called the *arguments*. The *arguments* are the things that we send to the function.
+
+In our case, there is just one argument: the value of `x`, that we want to calculate the cosine for.
+
+The result is called the *return value*. The *return value* is the thing that
+the function sends back.
+
+In our case, the return value is the cosine value corresponding to the input
+`x` value.
+
+Returning to the recipe analogy, I can give my recipe any name I want.  Above
+I called it "My favorite cheese omelet", but could call my recipe "Recipe
+number 4", or anything another name that I liked.  Whatever I called it, it
+would be the same recipe.  I might prefer a name that describes what the
+recipe makes, to help me remember.
+
+Likewise, the name `cos` refers to a procedure above.  The folks who wrote the
+{{< var np_or_r >}} functions could have given the function another name, like
+`some_function`, but `cos` is a good name, because it helps us remember what
+the procedure does.
+
+
+## Practice with functions
+
+So far we have used the `cos` function from {{< var np_or_r >}}.  Let's try
+doing the same thing with the `sin` function:
+
+::: python
+```{python}
+# Get the sin function from the numpy library.
+from numpy import sin
+```
+:::
+
+```{python}
+sin(0)
+```
+
+* `sin` - the function name;
+* `0` - the value we pass to the function;
+* The value goes after the function name, and between parentheses;
+* `0.0` - the value that the function returns.
+
+We pass `0` as the *argument* to the `sin` function.
+
+
+Now your turn.
+
+The `sqrt` function is (you guessed it) the procedure to go from a number (the
+argument) to the square root of that number (the return value).
+
+::: python
+Try importing the `sqrt` function from NumPy.
+```{python}
+# Get the sqrt function from the NumPy library.
+# Your code here.
+```
+:::
+
+Call the `sqrt` function with the value `9`; you should see this returns the
+value `3.0`.
+
+```{python, opts.label="python_ed"}
+# Your code here.
+```
+
+```{r, opts.label="r_ed"}
+# Your code here.
+```
