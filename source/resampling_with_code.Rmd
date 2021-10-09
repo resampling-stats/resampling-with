@@ -980,20 +980,19 @@ p
 
 ```{r, opts.label="r_ed"}
 # Proportion of trials where all patients were cured.
-p < n_all_cured / 100
+p <- n_all_cured / 100
 # Show the result
 p
 ```
 
-::: python
-
-```{r, opts.label="py_ed", include=FALSE}
-# Set variable for inline use.
-p <- py$p
+```{r fancy-chunk}
+get_var('p')
+get('p')
+print(p)
 ```
 
-From this experiment, we see that there is roughly a `r p` chance that all
-17 patients are cured when using a 90% effective treatment.
+From this experiment, we see that there is roughly a `r get_var('p')` chance
+that all 17 patients are cured when using a 90% effective treatment.
 
 ## Conclusions
 

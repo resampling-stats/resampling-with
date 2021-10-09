@@ -57,3 +57,11 @@ include_svg = function(path) {
   }
   knitr::include_graphics(output)
 }
+
+# Python variable in Python edition else R variable.
+get_var = function(name) {
+  if (is_py_ed) {
+    return (py[[name]])
+  }
+  return (get(name))
+}
