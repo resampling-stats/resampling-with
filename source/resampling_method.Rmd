@@ -374,7 +374,7 @@ b
 ```{r, opts.label="r_ed"}
 # Count the number of nines in the random numbers.
 # The "a == 9" part identifies all the numbers equal to 9.
-# The "sum" part counts how many numbers "a == 9" fod.
+# The "sum" part counts how many numbers "a == 9" found.
 b <- sum(a == 9)
 # Show the result
 b
@@ -534,6 +534,8 @@ for i in range(1000):
 
     # Store the result from this trial in the sequence "z"
     z[i] = b
+
+    # Now go back and repeat the trial, until done.
 ```
 
 ```{r, opts.label="r_ed"}
@@ -561,6 +563,8 @@ for (i in 1:1000) {
 
     # Store the result from this trial in the sequence "z"
     z[i] <- b
+
+    # Now go back and repeat the trial, until done.
 }
 ```
 
