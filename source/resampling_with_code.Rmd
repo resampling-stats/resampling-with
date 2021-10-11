@@ -274,6 +274,13 @@ The production line does some work on this value — in this case, selecting one
 
 The production line sends back the finished result — in this case, a number selected at random.  The thing that comes back from a function is called the *return value*.
 
+@fig-function-factory is a diagram illustrating an example run of this production line.
+
+![Example run of the
+[`rnd.choice`]{.python}[the `sample` function]{.r} production line
+](images/function_factory.jpg){#fig-function-factory}
+
+
 Here is the same code again, with new comments.
 
 ```{python, opts.label="py_ed"}
