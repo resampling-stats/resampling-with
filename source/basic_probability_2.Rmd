@@ -384,7 +384,7 @@ The computer uses lots of tricks to give us numbers that are random, in a
 practical sense — meaning that there is no *practical* way for you, or even a
 very powerful computer, to do anything to improve the prediction for the next
 number.  These practical-sense random numbers are also called *pseudo-random*
-numbers.  The pseudo-random numbers from [NumPy]{.python}[R]{.r} use some very
+numbers. The pseudo-random numbers from {{< var np_or_r >}} use some very
 careful programming to make the numbers hard to predict, and practically
 random. No-one can guarantee that it is absolutely *impossible* to find some
 way of improving our prediction for the next pseudo-random number that
