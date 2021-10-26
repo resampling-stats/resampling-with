@@ -608,6 +608,58 @@ print(kk)
 This is the estimate we wanted; the proportion of days where more than three
 ambulances were out of action.
 
+We have crept up on the solution, so it might be clear to you how few steps you
+needed to do this task.  To show that more clearly, here is the whole solution
+to the problem, without the comments:
+
+```{python, opts.label="py_ed"}
+import numpy as np
+
+z = np.zeros(1000)
+numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+for i in range(1000):
+    a = rnd.choice(numbers, size=20)
+    b = np.count_nonzero(a == 9)
+    z[i] = b
+
+k = np.count_nonzero(z > 3)
+kk = k / 1000
+print(kk)
+```
+
+```{r, opts.label="r_ed"}
+z <- numeric(1000)
+numbers <- 0:9
+
+for (i in 1:1000) {
+    a <- sample(numbers, 20, replace=TRUE)
+    b <- sum(a == 9)
+    z[i] <- b
+}
+
+k <- sum(z > 3)
+kk <- k / 1000
+print(kk)
+```
+
+Notice that the code above is *exactly* the same as the code we built up in
+steps.  But notice too, that the answer we got from this code was slightly
+different from the answer we got first.
+
+Why did we get a different answer from the same code?
+
+:::{.callout-note}
+## Randomness in estimates
+
+This is an essential point — our code uses *random numbers* to get an
+*estimate* of the quantity we want — in this case, the probability of three or
+more ambulances being out of order.  Every run of our code will use a different
+set of random numbers.  Therefore, every run of our code will give us a very
+slightly different number.  As you will soon see, we can make our estimate more
+and more accurate, and less and less different between each run, by doing many
+trials in each run.  Here we did 1000 trials, but we will usually do 10000
+trials, to give us a good estimate, that does not vary much from run to run.
 :::
 
 Don't worry about the detail of how each of these commands works — we will
