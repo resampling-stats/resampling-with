@@ -292,23 +292,23 @@ rnd = np.random.default_rng()
 Here are some examples of the random operations we can perform with
 NumPy:
 
-1. Make a random choice between three words:
+1.  Make a random choice between three words:
 
-   ```{python}
-   rnd.choice(['apple', 'orange', 'banana'])
-   ```
+    ```{python}
+    rnd.choice(['apple', 'orange', 'banana'])
+    ```
 
-2. Make five random choices of three words, using the "size=" argument:
+2.  Make five random choices of three words, using the "size=" argument:
 
-   ```{python}
-   rnd.choice(['apple', 'orange', 'banana'], size=5)
-   ```
+    ```{python}
+    rnd.choice(['apple', 'orange', 'banana'], size=5)
+    ```
 
-3. Shuffle a list of numbers:
+3.  Shuffle a list of numbers:
 
-   ```{python}
-   rnd.permutation([1, 2, 3, 4, 5])
-   ```
+    ```{python}
+    rnd.permutation([1, 2, 3, 4, 5])
+    ```
 :::
 
 :::
@@ -338,7 +338,7 @@ a
 # Ask R to generate 20 numbers from 0 through 9.
 
 # These are the numbers we will ask R to select from.
-numbers <- 0:9
+numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 
 # Get 20 values from the *numbers* sequence.
 # Store the 20 numbers with the name "a"
@@ -356,9 +356,10 @@ in a location in the computer's memory to which we give a name such as "a" or
 Next, we need to count the number of defective ambulances:
 
 ```{python, opts.label="py_ed"}
-# Count the number of nines among the random numbers, using the NumPy ("np")
-# `count_nonzero` function.
-b = np.count_nonzero(a == 9)
+# Count the number of nines in the random numbers.
+# The "a == 9" part identifies all the numbers equal to 9.
+# The "sum" part counts how many numbers "a == 9" found.
+b = np.sum(a == 9)
 # Show the result
 b
 ```
@@ -378,7 +379,7 @@ b
 We see that the code uses:
 
 ```{python, opts.label="py_ed"}
-np.count_nonzero(a == 9)
+np.sum(a == 9)
 ```
 
 ```{r, opts.label="r_ed"}
@@ -387,35 +388,32 @@ sum(a == 9)
 
 What exactly happens here under the hood?  First `a == 9` creates an sequence
 of values that only contains
-[`True`]{.python}[`TRUE`]{.r} or
-[`False`]{.python}[`FALSE`]{.r}
+{{< var true_val >}} or {{< var false_val >}}
 values, depending on whether each element is equal to 9 or not.
 
-Then, we ask {{< var lang >}} to
-[`count_nonzero`]{.python}[`sum`]{.r}
-only the true elements in that sequence.
+Then, we ask {{< var lang >}} to add up (`sum`) only the {{< var true_val >}}
+elements in that sequence.
 
-::: r
-R counts `TRUE` as 1, and `FALSE` as 0; thus we can use `sum` to
-count the number of `TRUE` values.
-:::
+{{< var lang >}} counts {{< var true_val >}} as 1, and {{< var false_val >}}
+as 0; thus we can use `sum` to count the number of {{< var false_val >}}
+values.
 
 This comes down to asking "how many elements in `a` are equal to 9".
+
+Don't worry, we will go over this again in the next chapter.
 :::
 
 
-The [`count_nonzero`]{.python}[`sum`]{.r}
-command is a *counting* operation. It asks the computer to *count*
+The `sum` command is a *counting* operation. It asks the computer to *count*
 the number of `9`s among the twenty numbers that are in location `a` following
 the random draw carried out by the [`rnd.choice`]{.python}[`sample`]{.r}
-operation. The result of the
-[`count_nonzero`]{.python}[`sum`]{.r}
-operation will
-be somewhere between 0 and 20, the number of simulated ambulances that were
-out-of-order on a given simulated day. The result is then placed in another
-location in the computer's memory that we label `b`.
+operation. The result of the `sum` operation will be somewhere between 0 and
+20, the number of simulated ambulances that were out-of-order on a given
+simulated day. The result is then placed in another location in the computer's
+memory that we label `b`.
 
-Above you see that we have worked out how to tell the computer to do a single trial — one simulated day.
+Above you see that we have worked out how to tell the computer to do a single
+trial — one simulated day.
 
 ### Repeating trials
 
@@ -440,7 +438,7 @@ The standard way to repeat steps in {{< var lang >}} is a `for` loop.  For examp
 
 ```{python, opts.label="py_ed"}
 # Read the next line as "repeat the following steps five times".
-for i in range(5):
+for i in np.arange(0, 5):
     # The indented stuff is the code we repeat five times.
     # Print "Hello" to the screen.
     print("Hello")
@@ -513,16 +511,17 @@ z = np.zeros(1000)
 numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 # Read the next line as "repeat the following steps 1000 times".
-for i in range(1000):
+for i in np.arange(0, 1000):
     # The indented stuff is the code we repeat 1000 times.
 
     # Get 20 (size=20) values from the *numbers* list.
     # Store the 20 numbers with the name "a"
     a = rnd.choice(numbers, size=20)
 
-    # Count the number of ones among the random numbers
-    # using the NumPy ("np") `count_nonzero` function.
-    b = np.count_nonzero(a == 9)
+    # Count the number of nines in the random numbers.
+    # The "a == 9" part identifies all the numbers equal to 9.
+    # The "sum" part counts how many numbers "a == 9" found.
+    b = np.sum(a == 9)
 
     # Store the result from this trial in the sequence "z"
     z[i] = b
@@ -548,7 +547,7 @@ for (i in 1:1000) {
     # Store the 20 numbers with the name "a"
     a <- sample(numbers, 20, replace=TRUE)
 
-    # Count the number of ones in the random numbers.
+    # Count the number of nines in the random numbers.
     # The "a == 9" part identifies all the numbers equal to 9.
     # The "sum" part counts how many numbers "a == 9" found.
     b <- sum(a == 9)
@@ -560,11 +559,11 @@ for (i in 1:1000) {
 }
 ```
 
-The [`z[i] = b`]{.python}[`z[i] <- b`]{.r} statement that follows the
-[`np.count_nonzero`]{.python}[`sum`]{.r}
-*counting* operation simply keeps track of the results of each trial, placing
-the number of defective ambulances for each trial inside the sequence called
-`z`. The sequence has 1000 positions: one for each trial.
+The [`z[i] = b`]{.python}[`z[i] <- b`]{.r}
+statement that follows the `sum` *counting* operation simply keeps track of
+the results of each trial, placing the number of defective ambulances for each
+trial inside the sequence called `z`. The sequence has 1000 positions: one for
+each trial.
 
 When we have run the code above, we have stored 1000 trial results in the
 sequence `z`.  These are 1000 counts of out-of-order ambulances, one for each
@@ -572,20 +571,19 @@ of our simulated days.  Our last task is to calculate the proportion of these
 days for which we had more than three broken-down ambulances.
 
 Since our aim is to count the number of days in which more than 3 (4 or more)
-defective ambulances occur, we use another *counting* command
-[`np.count_nonzero`]{.python}[`sum`]{.r} at the end of the 1000 trials.  This
-command *counts* how many times more than 3 defects occurred in the 1000 days
-recorded in our `z` sequence, and we place the result in another location, `k`.
-This gives us the total number of days where 4 or more defective ambulances are
-seen to occur. Then we divide the number in `k` by 1000, the number of trials.
-Thus we obtain an estimate of the chance, expressed as a probability between 0
-and 1, that 4 or more ambulances will be defective on a given day. And we store
-that result in a location that we call `kk`, which is subsequently printed to
-screen.
+defective ambulances occur, we use another *counting* `sum` command
+at the end of the 1000 trials.  This command *counts* how many times more than
+3 defects occurred in the 1000 days recorded in our `z` sequence, and we place
+the result in another location, `k`. This gives us the total number of days
+where 4 or more defective ambulances are seen to occur. Then we divide the
+number in `k` by 1000, the number of trials. Thus we obtain an estimate of the
+chance, expressed as a probability between 0 and 1, that 4 or more ambulances
+will be defective on a given day. And we store that result in a location that
+we call `kk`, which is subsequently printed to screen.
 
 ```{python, opts.label="py_ed"}
 # How many trials resulted in more than 3 ambulances out of order?
-k = np.count_nonzero(z > 3)
+k = np.sum(z > 3)
 
 # Convert to a proportion.
 kk = k / 1000
@@ -618,12 +616,12 @@ import numpy as np
 z = np.zeros(1000)
 numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-for i in range(1000):
+for i in np.arange(0, 1000):
     a = rnd.choice(numbers, size=20)
-    b = np.count_nonzero(a == 9)
+    b = np.sum(a == 9)
     z[i] = b
 
-k = np.count_nonzero(z > 3)
+k = np.sum(z > 3)
 kk = k / 1000
 print(kk)
 ```

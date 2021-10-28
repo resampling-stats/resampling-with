@@ -23,7 +23,7 @@ resampling_with:
 source("_common.R")
 ```
 
-# Resampling with code
+# Resampling with code {#sec-resampling-code}
 
 Chapter @sec-resampling-method used simulation and resampling from
 tables of random numbers, dice, and coins.  Making random choices in this way
@@ -39,14 +39,28 @@ tasks like counting the number of values in a row or taking
 proportions.  With these simple tools, we can simulate many problems
 in probability and statistics.
 
-In this chapter, we will again model a problem using
-{{< var lang >}},
-but this time we will explain how the code works in more detail.
+In this chapter, we will model another problem using
+{{< var lang >}}, but this chapter will add three new things.
 
-By the end of the chapter, you will be able to understand better how
-{{< var lang >}}
-can build up complete simulations using random numbers, and how the programming
-instructions relate to the tasks we need to do.
+* The problem we will work on is a little different from the ambulances from
+  problem from @sec-resampling-method.  It is a real problem about deciding whether a new cancer treatment is better than the alternatives, and it introduces the idea of making a model of the world, to ask questions about chances and probabilities.
+* We will slow down a little to emphasize the steps in solving this kind of
+  problem.  First we work out how to simulate a single *trial*.  Then we work
+  out how to run many simulated trials.
+* We sprinted through the code in @sec-resampling-method, with the promise we
+  would come back to the details.  Here we go into more detail about some ideas
+  from the code in the last chapter.  These are:
+
+  * Storing several values together in one place, with
+    [arrays]{.python}[vectors]{.r}.
+  * Using *functions* (code recipes) to apply procedures.
+  * *Comparing* numbers to other numbers.
+  * *Counting* numbers that match a condition.
+
+In the next chapter, we will talk more about *using {{< var array_name >}}s* to
+store results, and *for loops* to repeat a procedure many times.
+
+## Statistics and probability
 
 We have already emphasized that *statistics* is a way of drawing conclusions
 about data from the real world, in the presence of random variation;
@@ -86,8 +100,8 @@ much more in the chapters to come.  For now, please bear with us as we do a
 thought experiment.
 
 Let us forget the 17 out of 17 result of the NCI study for a moment. Imagine
-that there is another hospital, called Saint Hypothetical General (SHG), just
-down the road from the NCI, that was also treating 17 patients with Burkitt
+that there is another hospital, called Saint Hypothetical General, just down
+the road from the NCI, that was also treating 17 patients with Burkitt
 lymphoma. Saint Hypothetical were not using the NCI treatment, they were using
 the standard treatment.
 
@@ -145,7 +159,33 @@ standard treatment, they would be a little surprised, because they would only
 expect to see that happen 15% of the time.  But they would not be *very*
 surprised — 15% of the time is uncommon, but not *very* uncommon.
 
-## Simulating the physical model with the computer
+## A trial, a run, a count and a proportion
+
+Here we stop to emphasize the steps in the process of a random simulation.
+
+1. *We decide what we mean by one trial*.  Here one trial has the same meaning
+   in medicine as resampling — we mean the result of treating 17 patients. One
+   *simulated trial* is then the simulation of one set of outcomes from 17
+   patients.
+2. Work out the *outcome* of interest from the trial.  The outcome here is the
+   number of patients cured.
+3. We work out a way to *simulate one trial*.  Here we chose to throw 17
+   10-sided dice, and count the number of not zero values.  This is the outcome
+   from one simulation trial.
+4. We *repeat* the simulated trial procedure many times, and collect the
+   results from each trial.  Say we repeat the trial procedure 100 times; we
+   will this a *run* of 100 trials.
+5. We *count* the number of trials with an outcome that matches the outcome we
+   are interested in. In this case we are interested in the outcome 17 out of 17 cured, so we count the number of trials with a score of 17.  Say 15 out of the run of 100 trials had an outcome of 17 cured. That is our *count*.
+6. Finally we divide the count by the number of trials to get the *proportion*.
+   From the example above, we divide 15 by 100 to 0.15 (15%).  This is our
+   estimate of the chance of seeing 17 out of 17 patients cured in any one
+   trial.  We can also call this an estimate of the *probability* that 17 out
+   of 17 patients will be cured on any on trial.
+
+Our next step is to work out the code for step 2: *simulate one trial*.
+
+## Simulate one trial with code
 
 We can use the computer to do something very similar to rolling 17 10-sided
 dice, by asking the computer for 17 random whole numbers from 0 through 9.
@@ -200,8 +240,8 @@ a
 var np_or_r >}} calls these sequences *{{< var array_name >}}s*.
 
 ::: r
-The name *vector* sounds rather technical and mathematical, but the key idea is
-only that a *vector* stores a sequence of numbers.
+The name *vector* sounds rather technical and mathematical, but the only
+important idea for us is that a *vector* stores a *sequence* of numbers.
 :::
 
 Here we make a {{< var array_name >}} that contains the 10 numbers we will
@@ -224,11 +264,11 @@ some_numbers
 Notice that the value for `some_numbers` is a[n]{.python} {{< var array_name
 >}}, and that this value *contains* 10 numbers.
 
-Put another way, `some_number` is now the name we can use for this collection
+Put another way, `some_numbers` is now the name we can use for this collection
 of 10 values.
 
 {{< var array_name >}}s are very useful for simulations and data analysis, and
-we will be using for nearly every example in this book.
+we will be using these for nearly every example in this book.
 
 ## Functions
 
@@ -263,9 +303,12 @@ so please forgive our strategic imprecision, and let us continue to say that
 :::
 :::
 
-We will go into more detail on functions later.  For now, think of a function as a *production line*.  We sent the function raw material to work on.  The production line does some work on the raw materials.  A finished result comes off the other end.
+For now, think of a function as a named *production line*.  We sent the
+function raw material to work on.  The production line does some work on the
+raw materials.  A finished result comes off the other end.
 
-[`rnd.choice`]{.python}[the `sample` function]{.r} is the production line.
+In our case, the production line has the name [`rnd.choice`]{.python}[the
+`sample` function]{.r}.
 
 We sent it a value to work on, in this case, the value of `some_numbers`.  The
 values we send to functions are called *function arguments*.
@@ -301,29 +344,67 @@ my_number <- sample(some_numbers)
 my_number
 ```
 
+`round` is another function that we may find ourselves using.
+`round` is the name for a very simple production line, that takes in a number,
+and sends back the number rounded to the nearest *integer*.
+
+:::{.callout-note}
+## Integers
+
+Therefore, a number is an *integer* if the number is *either* a whole number
+(0, 1, 2 ...), *or* a negative whole number (-1, -2, -3 ...). All of -208, -2,
+0, 10, 105 are integers, but $\frac{3}{5}$, -10.3 and 0.2 are not.
+
+We will use the term *integer* fairly often, because it is a convenient way to
+name all the positive and negative whole numbers.
+:::
+
+For example, here you see `round` taking in a not-integer number, as an *argument*, and sending back the nearest integer, as the result:
+
+```{python, opts.label="py_ed"}
+# Put in 3.2, round sends back 3.
+round(3.2)
+```
+
+```{python, opts.label="py_ed"}
+# Put in -2.7, round sends back -3.
+round(-2.7)
+```
+
+```{r, opts.label="r_ed"}
+# Put in 3.2, round sends back 3.
+round(3.2)
+```
+
+```{r, opts.label="r_ed"}
+# Put in -2.7, round sends back -3.
+round(-2.7)
+```
+
 ## Sampling from {{< var array_name >}}s
 
-In the code above, we asked
-[`rnd.choice`]{.python}[the `sample` function]{.r}
+In the code above, we asked [`rnd.choice`]{.python}[the `sample` function]{.r}
 to select a single number at random.
 
-In fact, the people who wrote
-[`rnd.choice`]{.python}[the `sample` function]{.r},
-wrote it to be flexible in the work that it can do.  In particular, we can tell
-[`rnd.choice`]{.python}[the `sample` function]{.r} to select *any number of
-values* at random, by adding a new *argument* to the function.
+In fact, the people who wrote [`rnd.choice`]{.python}[the `sample`
+function]{.r}, wrote it to be flexible in the work that it can do.  In
+particular, we can tell [`rnd.choice`]{.python}[the `sample` function]{.r} to
+select *any number of values* at random, by adding a new *argument* to the
+function.
 
 In our case, we would like
 [NumPy]{.python}[R]{.r} to select 17 numbers at random from the
 sequence of `some_numbers`.
 
-To do this, we add an argument to the function that tells it *how many* numbers we want it to select.
+To do this, we add an argument to the function that tells it *how many* numbers
+we want it to select.
 
 ::: r
 To get the result we want, we must also add an extra argument: `replace=TRUE`.
 `replace=TRUE` tells R to sample `some_numbers` *with replacement*.  We will
 soon explain more about what this means, but for now, please take our word for
-it that `replace=TRUE` gives use the same effect as rolling the 10-sided dice.
+it that `replace=TRUE` gives us the same effect as rolling several 10-sided
+dice.
 :::
 
 ::: todo
@@ -347,22 +428,26 @@ a
 ```
 
 As you can see, the function sent back (returned) 17 numbers.  Because it is
-sending back more than one number, the thing it sends back is a[n]{.python}
-{{< var array_name >}}, where the {{< var array_name >}} has 17 elements.
+sending back more than one number, the thing it sends back is a[n]{.python} {{<
+var array_name >}}, where the {{< var array_name >}} has 17 elements.
 
 ## Counting results
 
-We now have the code to do the equivalent of throwing 17 10-sided dice.  When we
-run the code above, we get the equivalent of 17 dice rolls.  This is the basis
-for one simulated trial in our simulated world of Saint Hypothetical General.
+We now have the code to do the equivalent of throwing 17 10-sided dice. This is
+the basis for one simulated trial in our simulated world of Saint Hypothetical
+General.
 
 Our next job is to get the code to count the number of numbers that are not
 zero in the {{< var array_name >}} `a`.  That will give us the number of
 patients who were cured in our simulated trial.
 
-Another way of asking this question, is to ask how many elements in `a` are greater than zero.
+Another way of asking this question, is to ask how many elements in `a` are
+greater than zero.
 
-To do this, we use *comparison*.  Here is a *greater than zero* comparison on a single number:
+### Comparison
+
+To ask whether a number is greater than zero, we use *comparison*.  Here is a
+*greater than zero* comparison on a single number:
 
 ```{python, opts.label="py_ed"}
 n = 5
@@ -378,14 +463,15 @@ n <- 5
 n > 0
 ```
 
-`>` is a *comparison* — it asks a question about the numbers either side of it.
-In this case `>` is asking the question "is the value of `n` greater than 0?"
-The value of `n` is 5, so the question becomes, "is 5 greater than 0?" The
-answer is Yes, and {{< var lang >}} represents this Yes answer as the value
-[`True`]{.python}[`TRUE`]{.r}.
+`>` is a *comparison* — it *asks a question* about the numbers either side of
+it. In this case `>` is asking the question "is the value of `n` (on the left
+hand side) greater than 0 (on the right hand side)?" The value of `n` is 5, so
+the question becomes, "is 5 greater than 0?"  The answer is Yes, and {{< var
+lang >}} represents this Yes answer as the value {{< var true_val >}}.
 
-In contrast, here the comparison boils down to "is 0 greater than 0?", to which the answer is No, and {{< var lang >}} represents this as
-[`False`]{.python}[`FALSE`]{.r}.
+In contrast, the comparison below boils down to "is 0 greater than 0?", to
+which the answer is No, and {{< var lang >}} represents this as
+{{< var false_val >}}.
 
 ```{python, opts.label="py_ed"}
 p = 0
@@ -401,9 +487,9 @@ p <- 0
 p > 0
 ```
 
-This is the result of the comparison on a single number.  Now say we do the
-same comparison on a[n]{.python} {{< var array_name >}}.  For example, say we
-ask the question "is the value of `a` greater than 0"?  Remember, `a` is
+So far you have seen the results of comparison on a single number.  Now say we
+do the same comparison on a[n]{.python} {{< var array_name >}}.  For example,
+say we ask the question "is the value of `a` greater than 0"?  Remember, `a` is
 a[n]{.python} {{< var array_name >}} containing 17 values.  We are comparing 17
 values to one value (0). What answer do you think {{< var np_or_r >}} will
 give?  You may want to think a little about this before you read on.
@@ -434,12 +520,12 @@ a > 0
 a > 0
 ```
 
-There are 17 values in `a`, so the comparison to 0 means there are 17 answers.
-{{< var np_or_r >}} therefore returns a[n]{.python} *{{< var array_name >}}*
-of 17 elements, containing these 17 answers.  The first answer is the answer to
-the question "is the value of the first element of `a` greater than 0", and the
-second is the answer to "is the value of the second element of `a` greater than
-0".
+There are 17 values in `a`, so the comparison to 0 means there are 17
+comparisons, and 17 answers. {{< var np_or_r >}} therefore returns
+a[n]{.python} *{{< var array_name >}}* of 17 elements, containing these 17
+answers.  The first answer is the answer to the question "is the value of the
+*first* element of `a` greater than 0", and the second is the answer to "is the
+value of the *second* element of `a` greater than 0".
 
 Let us store the result of this comparison to work on:
 
@@ -447,77 +533,105 @@ Let us store the result of this comparison to work on:
 # Is the value of "a" greater than 0
 # Store as another array "q".
 q = a > 0
-# Show the value of q
+# Show the value of r
 q
 ```
 
 ```{r, opts.label="r_ed"}
 # Is the value of "a" greater than 0?
-# Store as another array "q".
+# Store as another vector "q".
 q <- a > 0
 # Show the value of q
 q
 ```
 
-Notice that there is one
-[`True`]{.python}[`TRUE`]{.r}
-element in `q` for every element in `a` that was greater than 0.  It only
-remains to count the number of
-[`True`]{.python}[`TRUE`]{.r}
-values in `q`, to get the count of patients in our simulated trial who were
-cured.
+## Counting {{< var true_val >}} values with `sum`
 
-::: python
-NumPy has a function that will do that count of `True` elements, called
-`np.count_nonzero`.  It will count the number of elements in an array that are
-not equivalent to zero.  `False` is equivalent to 0 in Python:
+Notice above that there is one {{< var true_val >}} element in `q` for every
+element in `a` that was greater than 0.  It only remains to *count* the number
+of {{< var true_val >}} values in `q`, to get the count of patients in our
+simulated trial who were cured.
+
+We can use the {{< var np_or_r >}} function [`sum`]{.r}[`np.sum`]{.python} to
+count the number of {{< var true_val >}} elements in {{< var a_array_name >}}.
+As you can imagine,
+[`sum`]{.r}[`np.sum`]{.python}
+adds up all the elements in {{< var a_array_name >}}, to give a single
+number. This will work as we want for the `q` {{< var array_name >}}, because
+{{< var lang >}} counts {{< var false_val >}} as equal to 0 and {{< var
+true_val >}} as equal to 1:
 
 ```{python, opts.label="py_ed"}
 # Question: is False equal to 0?
+# Answer - Yes! (True)
 False == 0
 ```
 
-`True` is equivalent to 1 in Python:
-
 ```{python, opts.label="py_ed"}
 # Question: is True equal to 0?
+# Answer - Yes! (True)
 True == 1
 ```
 
-Therefore, `np.count_nozero`, when applied to `q`, will count the number of `True` values in the array:
-
-```{python, opts.label="py_ed"}
-# Count the number of True values in "q"
-# This is the same as the number of values in "a" that are greater than 0.
-count = np.count_nonzero(q)
-# Show the result
-count
-```
-:::
-
-::: r
-We can use the R function `sum` to count the number of `TRUE` elements in a
-vector.  As you can imagine, `sum` adds up all the elements in a vector, to give a single number.  This will work as we want for the `q` vector, because R counts `FALSE` as 0 and `TRUE` as 1:
-
 ```{r, opts.label="r_ed"}
 # Question: is FALSE equal to 0?
+# Answer - Yes! (TRUE)
 FALSE == 0
 ```
 
 ```{r, opts.label="r_ed"}
 # Question: is TRUE equal to 1?
+# Answer - Yes! (TRUE)
 TRUE == 1
 ```
 
-Therefore, the function `sum`, when applied to `q`, will count the number of
-`TRUE` values in the array:
+Therefore, the function `sum`, when applied to {{< var a_array_name >}} of
+{{< var true_val >}} and {{< var false_val >}}
+values, will count the number of {{< var true_val >}} values in the {{< var
+array_name >}}.
+
+To see this in action we can make a new {{< var array_name >}} of
+{{< var true_val >}} and {{< var false_val >}}
+values, and try using
+[`sum`]{.r}[`np.sum`]{.python}
+on the new array.
+
+```{python, opts.label="py_ed"}
+# An array containing three True values and two False values.
+trues_and_falses = np.array([True, False, True, True, False])
+# Show the new array.
+trues_and_falses
+```
+
+```{r, opts.label="r_ed"}
+# A vector containing three TRUE values and two FALSE values.
+trues_and_falses <- c(TRUE, FALSE, TRUE, TRUE, FALSE)
+# Show the new vector.
+trues_and_falses
+```
+
+The `sum` operation adds all the elements in the {{< var array_name >}}.
+Because {{< var true_val >}} counts as 1, and {{< var false_val >}} counts as
+0, adding all the elements in `trues_and_falses` is the same as adding up the
+values 1 + 0 + 1 + 1 + 0, to give 3.
+
+We can apply the same operation on `q` to count the number of {{< var true_val
+>}} values.
+
+```{python, opts.label="py_ed"}
+# Count the number of True values in "q"
+# This is the same as the number of values in "a" that are greater than 0.
+b = np.sum(q)
+# Show the result
+b
+```
 
 ```{r, opts.label="r_ed"}
 # Count the number of TRUE values in "q"
 # This is the same as the number of values in "a" that are greater than 0.
-count <- sum(q)
+b <- sum(q)
 # Show the result
-count
+b
 ```
 
 ## The procedure for one simulated trial
@@ -533,9 +647,9 @@ a = rnd.choice(some_numbers, 17)
 # Is the value of "a" greater than 0
 q = a > 0
 # Count the number of True values in "q"
-count = np.count_nonzero(q)
+b = np.sum(q)
 # Show the result of this simulated trial.
-count
+b
 ```
 
 ```{r, opts.label="r_ed"}
@@ -547,369 +661,75 @@ a <- sample(some_numbers, 17, replace=TRUE)
 # Is the value of "a" greater than 0?
 q <- a > 0
 # Count the number of TRUE values in "q"
-count <- sum(q)
+b <- sum(q)
 # Show the result of this simulated trial.
-count
-# Show the result
+b
 ```
 
-Now we know how to do one simulated trial, we could just keep running the {{< var cell >}} above, and writing down the result each time.  Once we had run the {{< var cell >}} 100 times, we would have 100 counts.  Then we could look at the 100 counts to see how many were equal to 17 (all 17 simulated patients cured on that trial).  That would at least be much faster than rolling 17 dice 100 times, but we would also like the computer to automate the process of repeating the trial, and keeping track of the counts.   In order to do that, we need to know a little more about arrays, and we need to use a `for` loop.
+## Repeating the trial
 
-## More on {{< var array_name >}}s
+Now we know how to do one simulated trial, we could just keep running the {{< var cell >}} above, and writing down the result each time.  Once we had run the {{< var cell >}} 100 times, we would have 100 counts.  Then we could look at the 100 counts to see how many were equal to 17 (all 17 simulated patients cured on that trial).  At least that would be much faster than rolling 17 dice 100 times, but we would also like the computer to automate the process of repeating the trial, and keeping track of the counts.
 
-Since we will be working with {{< var array_name >}}s a lot, it is worth
-knowing more about them.
+Please forgive us as we race ahead again, as we did in the last chapter.  As in
+the last chapter, we will use a *results* {{< var array_name >}} called `z` to
+store the count for each trial.  As in the last chapter, we will use a `for`
+loop to repeat the trial procedure many times.  As in the last chapter, we will
+not explain the counts {{< var array_name >}} of the `for` loop in any detail, because we are going to cover those in the next chapter.
 
-A [NumPy array]{.python}[vector]{.r} is a *container* that stores many elements
-of the same type.  You have already seen how we can create a[n]{.python} {{<
-var array_name >}} from a sequence of numbers using the
-[`np.array`]{.python}[`c()`] function.
+Let us now imagine that we want to do 100 simulated trials at Saint Hypothetical General.  This will give us 100 counts.  We will want to store the count for each trial.
 
-```{python, opts.label="py_ed"}
-# Make an array of numbers, store with the name "some_numbers".
-some_numbers = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-# Show the value of "some_numbers"
-some_numbers
-```
-
-```{r, opts.label="r_ed"}
-# Make a vector of numbers, store with the name "some_numbers".
-some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-# Show the value of "some_numbers"
-some_numbers
-```
-
-Another way that we can create {{< var array_name >}}s is to use the
-[`np.zeros`]{.python}[`numeric`]{.r} function to make a new array where all the
-elements are 0.  Before we make our first {{< var array_name >}} of zeros, we need a short diversion to talk about types in {{< var array_name >}}.
-
-Remember we said that a[n]{.python} {{< var array_name >}} stores elements of
-the same type.  So far in this chapter, we have only used whole numbers, and
-{{< var lang >}} uses the *integer* *type* for whole numbers.
-
-:::{.callout-note}
-## Integers
-An integer is a number with no fractional part.  All whole numbers are
-integers, but the definition of whole numbers does not allow negative numbers,
-so the integers are *either* whole numbers, or negative whole numbers. All of
--208, -2, 0, 10, 105 are integers, but $\frac{3}{5}$, -10.3 and 0.2 are not.
-:::
-
-When we create a new {{< var array_name >}} of zeros, we tell {{< var np_or_r
->}} what *type* it should use for the new {{< var array_name >}}.
-
-In our case, we want to make a new {{< var array_name >}} of *integers*.
-
-```{python, opts.label="py_ed"}
-# Make a new array of integer type, containing 5 zeros.
-# store with the name "z".
-z = np.zeros(5, dtype=int)
-# Show the value of "z"
-z
-```
-
-```{r, opts.label="r_ed"}
-# Make a new vector of integer type, containing 5 zeros.
-z <- integer(5)
-# Show the value of "z"
-z
-```
-
-Notice the argument `5` to the [`np.zeros`]{.python}[`integer`]{.r} function.
-This tells the function how many zeros we want in the {{< var array_name >}}
-that the function will return.
-
-::: python
-Notice too the extra `dtype=int` extra argument to `np.zeros`.  This tells
-NumPy that it should make an array of integer type.  The `d` in `dtype` refers
-to the Data Type of the values in the array.
-:::
-
-The are various useful things we can do with this {{< var array_name >}} container.  One is to ask how many elements there are in the {{< var array_name >}} container.  We can use the [`len`]{.python}[`length`]{.r} function to calculate the number of elements in a[n]{.python} {{< var array_name >}}:
-
-```{python, opts.label="py_ed"}
-# Show the number of elements in "z"
-len(z)
-```
-
-```{r, opts.label="r_ed"}
-# Show the number of elements in "z"
-length(z)
-```
-
-Another thing we can do is *set* the value for a particular element in the {{<
-var array_name >}}.  To do this, we use square brackets following the {{< var
-array_name >}} value, on the left hand side of the equals sign, like this:
-
-```{python, opts.label="py_ed"}
-# Set the value of the *first* element in the array.
-z[0] = 99
-# Show the new contents of the array.
-z
-```
-
-```{r, opts.label="r_ed"}
-# Set the value of the first element in the vector.
-z[1] = 99
-# Show the new contents of the vector.
-z
-```
-
-Read the first line of code as "the element at position
-[0]{.python}[1]{.r}
-gets the value 99".
-
-::: python
-Notice that the position number of the first element in the array is 0, and the
-position number of the second element is 1.  Think of the position as a
-*offset* from the beginning of the array.  The first element is at the
-beginning of the array, and so it is at offset (position) 0.  This can be a
-little difficult to get used to at first, but you fill find that thinking of
-the positions of offsets in this way soon starts to come naturally, and later,
-you will also find it helps you avoid some common mistakes when using positions
-for getting and setting values.
-:::
-
-For practice, let us also set the value of the third element in the {{< var array_name >}}:
-
-```{python, opts.label="py_ed"}
-# Set the value of the *third* element in the array.
-z[2] = 99
-# Show the new contents of the array.
-z
-```
-
-```{r, opts.label="r_ed"}
-# Set the value of the third element in the vector.
-z[3] = 99
-# Show the new contents of the vector.
-z
-```
-
-We can also *get* the value of the element at a given position, using the same square-bracket notation:
-
-```{python, opts.label="py_ed"}
-# Get the value of the *first* element in the array.
-# Store the value with name "v"
-v = z[0]
-# Show the value we got
-v
-```
-
-```{r, opts.label="r_ed"}
-# Get the value of the *first* element in the array.
-# Store the value with name "v"
-v = z[0]
-# Show the value we got
-v
-```
-
-Read the first code line here as "v gets the value at position 0 in the {{< var array_name >}}.
-
-Using square brackets to get and set element values is called *indexing* into
-the {{< var array_name >}}.
-
-As a preview, let us now imagine that we want to do 100 simulated trials at Saint Hypothetical General.  This will give us 100 counts.  We will want to store the count for each trial.
-
-In order to do this, we make a[n]{.python} {{< var array_name >}} to hold the 100 counts.
+To do this, we make a[n]{.python} {{< var array_name >}} called `z` to hold the
+100 counts.  We have called the {{< var array_name >}} `z`, but we could have
+called it anything we liked, such as `counts` or `results` or `cecilia`.
 
 ```{python, opts.label="py_ed"}
 # An array to hold the 100 count values.
-counts = np.zeros(100, dtype=int)
+# Later, we will fill this in with real count values from simulated trials.
+z = np.zeros(100)
 ```
 
 ```{r, opts.label="r_ed"}
 # A vector to hold the 100 count values.
-counts <- integer(100)
+# Later, we will fill this in with real count values from simulated trials.
+z <- numeric(100)
 ```
 
-Now we could run a single trial to get a single simulated count.  Here we just repeat the code {{< var cell >}} you saw above.  Notice that we can get a different result each time we run this code, because the numbers in `a` are *random* choices from `some_numbers`, and different random numbers will give different counts.
+Next we use a `for` loop to *repeat the single trial procedure*.
 
-```{python, opts.label="py_ed"}
-# Procedure for one simulated trial
+Notice that the single trial procedure, inside this `for` loop, is the same as the single trial procedure above — the only two differences are:
 
-# Get 17 values from the *some_numbers* array.
-# Store the 17 numbers with the name "a"
-a = rnd.choice(some_numbers, 17)
-# Is the value of "a" greater than 0
-q = a > 0
-# Count the number of True values in "q"
-count = np.count_nonzero(q)
-# Show the result of this simulated trial.
-count
-```
+* The trial procedure is inside the loop, and
+* We are storing the count for each trial as we go.
 
-```{r, opts.label="r_ed"}
-# Procedure for one simulated trial
-
-# Get 17 values from the *some_numbers* vector.
-# Store the 17 numbers with the name "a"
-a <- sample(some_numbers, 17, replace=TRUE)
-# Is the value of "a" greater than 0?
-q <- a > 0
-# Count the number of TRUE values in "q"
-count <- sum(q)
-# Show the result of this simulated trial.
-count
-# Show the result
-```
-
-Now we have the result of a single trial, we can store it as the first number
-in the `counts` {{< var array_name >}}:
-
-```{python, opts.label="py_ed"}
-# Store the single trial count as the first value in the "counts" array.
-counts[0] = count
-# Show all the values in the "counts" array.
-counts
-```
-
-```{r, opts.label="r_ed"}
-# Store the single trial count as the first value in the "counts" vector.
-counts[1] <- count
-# Show all the values in the "counts" vector.
-counts
-```
-
-Of course we could just keep doing this: run the {{< var cell >}} corresponding
-to a trial, above, to get a new count, and then store it at the next position
-in the `counts` {{< var array_name >}} with:
-[`counts[1] = count`]{.python}[`counts[2] <- count`]{.r},
-and so on, but that also looks like a task that the computer is well-suited
-for.  And indeed it is, because {{< var lang >}} an excellent way of repeating
-the same set of steps many times — the `for` loop.  You have already seen a
-preview of the `for` loop in @sec-resampling-method. Here we dive into them in
-more depth.
-
-## For-loops in {{< var lang >}}
-
-::: todo
-Need to switch for-loops to use integers rather than strings here.
-
-Can we get away without "print"?  Probably not, but then, need to introduce
-it.
-:::
-
-Imagine a factory robot that slides along a worktable on which several items
-have been placed.  It services each of these items, one by one, until it is
-done.
-
-So the robot knows *which* item it is operating on, each item is given
-a label.
-
-Here is an example:
-
-```{python, opts.label="py_ed"}
-for item in ['shoe', 'saddle', 'jacket']:
-    print('I am stitching a', item)
-```
-
-Here, the robot is working its way through three items: a shoe, a saddle, and a jacket.
-As it moves on to each object, it assigns the label ("shoe", "saddle", etc.) to the variable `item`.
-The indented block of code under the for is executed for each item, and in this code block `label` can be accessed.
-The code above can therefore be unpacked into the following equivalent program:
-
-```{python, opts.label="py_ed"}
-item = 'shoe'
-print('I am stitching a', item)
-
-item = 'saddle'
-print('I am stitching a', item)
-
-item = 'jacket'
-print('I am stitching a', item)
-```
-
-We used the name `item` here, but any other name would do.
-Thus, the following is equivalent:
-
-```{python, opts.label="py_ed"}
-for package in ['shoe', 'saddle', 'jacket']:
-    print('I am stitching a', package)
-```
-
-It is common to use a number as a label in a for loop:
-
-```{python, opts.label="py_ed"}
-for i in [0, 1, 2, 3, 4]:
-    print('The square of', i, 'is', i * i)
-```
-
-When we want to count to a hundred, it becomes laborious to type out the numbers.
-For that, Python has a shorthand called `range`:
-
-```{python, opts.label="py_ed"}
-for i in range(5):
-    print('The square of', i, ' is ', i * i)
-```
-:::
-
-## Putting it all together
-
-We found that we could construct the code for a single trial.  Here is the code for a single trial, again:
-
-```{python, opts.label="py_ed"}
-# Procedure for one simulated trial
-
-# Get 17 values from the *some_numbers* array.
-# Store the 17 numbers with the name "a"
-a = rnd.choice(some_numbers, 17)
-# Is the value of "a" greater than 0
-q = a > 0
-# Count the number of True values in "q"
-count = np.count_nonzero(q)
-# Show the result of this simulated trial.
-count
-```
-
-```{r, opts.label="r_ed"}
-# Procedure for one simulated trial
-
-# Get 17 values from the *some_numbers* vector.
-# Store the 17 numbers with the name "a"
-a <- sample(some_numbers, 17, replace=TRUE)
-# Is the value of "a" greater than 0?
-q <- a > 0
-# Count the number of TRUE values in "q"
-count <- sum(q)
-# Show the result of this simulated trial.
-count
-# Show the result
-```
-
-Then we found that we could use {{< var array_name >}}s to store the results of
-these trials, and that we could use `for` loops to do many repeats of steps
-like those for a single trial.
-
-Now we can put these parts together to do 100 simulated trials at Saint Hypothetical:
+We will go into more detail on how this works in the next chapter.
 
 ```{python, opts.label="py_ed"}
 # Procedure for 100 simulated trials.
 
 # An array to store the counts for each trial.
-counts = np.zeros(100, dtype=int)
+z = np.zeros(100)
 
 # Repeat the trial procedure 100 times.
 for i in range(100):
     # Get 17 values from the *some_numbers* array.
-    # Store the 17 numbers with the name "a"
+    # Store the 17 numbers with the name "a".
     a = rnd.choice(some_numbers, 17)
-    # Is the value of "a" greater than 0
+    # Is the value of "a" greater than 0.
     q = a > 0
-    # Count the number of True values in "q"
-    count = np.count_nonzero(q)
-    # Store the result at the next position in the "counts" array.
-    counts[i] = count
+    # Count the number of True values in "q".
+    b = np.sum(q)
+    # Store the result at the next position in the "z" array.
+    z[i] = b
     # Now go back and do the next trial until finished.
 # Show the result of all 100 trials.
-counts
+z
 ```
 
 ```{r, opts.label="r_ed"}
 # Procedure for 100 simulated trials.
 
-# An array to store the counts for each trial.
-counts <- integer(100)
+# A vector to store the counts for each trial.
+z <- numeric(100)
 
 # Repeat the trial procedure 100 times.
 for (i in 1:100) {
@@ -918,72 +738,99 @@ for (i in 1:100) {
     a <- sample(some_numbers, 17, replace=TRUE)
     # Is the value of "a" greater than 0?
     q <- a > 0
-    # Count the number of TRUE values in "q"
-    count <- sum(q)
-    # Store the result at the next position in the "counts" array.
-    counts[i] = count
+    # Count the number of TRUE values in "q".
+    b <- sum(q)
+    # Store the result at the next position in the "z" vector.
+    z[i] = b
     # Now go back and do the next trial until finished.
 }
 # Show the result of all 100 trials.
-counts
+z
 ```
 
-Finally, we need to count how many of the trials in `counts` gave a "cured"
-count of 17.
+Finally, we need to count how many of the trials results we stored in `z` gave
+a "cured" count of 17.
 
-We can ask the question whether a single number is equal to 17, like this:
+We can ask the question whether a single number is equal to 17 using the *double equals* comparison: `==`.
 
 ```{python, opts.label="py_ed"}
-r = 17
-# Is the value of r equal to 17?
+s = 17
+# Is the value of s equal to 17?
 # Show the result of the comparison.
-r == 17
+s == 17
 ```
 
 ```{r, opts.label="r_ed"}
-r <- 17
-# Is the value of r equal to 17?
+s <- 17
+# Is the value of s equal to 17?
 # Show the result of the comparison.
-r == 17
+s == 17
 ```
 
-We can ask this question of *all 100 counts* by asking the question: is the {{< var array_name >}} `counts` equal to 17, like this:
+::: {.callout-note}
+::: Python
+## Single and double equals
+
+Notice that the *double equals* `==` means something entirely different to
+Python than the single equals `=`.  In the code above, Python reads `s = 17` to
+mean "Set the variable `s` to have the value 17".  In technical terms the
+single equals is called an *assignment* operator, because it means *assign* the
+value 17 to the variable `s`.
+
+The code `s == 17` has a completely different meaning.
+:::
+::: r
+## Double equals
+
+The *double equals* `==` above is a *comparison* in R.
+:::
+It means "give {{< var true_val >}} if the value in `s` is equal to 17, and {{<
+var false_val >}} otherwise".  The `==` is a *comparison* operator — it is for
+comparing two values — here the value in `s`
+and the value 17.  This comparison, like all comparisons, returns an answer
+that is either {{< var true_val >}} or {{< var false_val >}}.  In our case `s`
+has the value 17, so the comparison becomes `17 == 17`, meaning "is 17 equal to
+17", to which the answer is Yes, and {lang sends back {{< var true_val >}}.
+::::::
+
+We can ask this question of *all 100 counts* by asking the question: is the {{<
+var array_name >}} `z` equal to 17, like this:
 
 ```{python, opts.label="py_ed"}
-# Is the value of counts to 17?
-were_cured = counts == 17
+# Is the value of z equal to 17?
+were_cured = z == 17
 # Show the result of the comparison.
 were_cured
 ```
 
 ```{r, opts.label="r_ed"}
-# Is the value of counts to 17?
-were_cured <- counts == 17
+# Is the value of z equal to 17?
+were_cured <- z == 17
 # Show the result of the comparison.
 were_cured
 ```
 
-Now we need to get the number of
-[`True`]{.python}[`TRUE`]{.r}
-values in `were_cured`, to find how many trials gave 17 out of 17 cured:
+Finally we use `sum` to count the number of {{< var true_val >}} values in the `were_cured` {{< var array_name >}}, to give the number of trials where all 17 patients were cured.
 
 ```{python, opts.label="py_ed"}
 # Count the number of True values in "were_cured"
-# This is the same as the number of values in "counts" that are equal to 17.
-n_all_cured = np.count_nonzero(were_cured)
+# This is the same as the number of values in "z" that are equal to 17.
+n_all_cured = np.sum(were_cured)
 # Show the result of the comparison.
 n_all_cured
 ```
 
 ```{r, opts.label="r_ed"}
-# Count the number of True values in "were_cured"
-# This is the same as the number of values in "counts" that are equal to 17.
+# Count the number of TRUE values in "were_cured"
+# This is the same as the number of values in "z" that are equal to 17.
 n_all_cured <- sum(were_cured)
 # Show the result of the comparison.
 n_all_cured
 ```
 
-`n_all_cured` is the number of simulated trials for which all patients were cured.  It only remains to get the proportion of trials for which this was true, and to do this, we divide by the number of trials.
+`n_all_cured` is the number of simulated trials for which all patients were
+cured.  It only remains to get the proportion of trials for which this was
+true, and to do this, we divide by the number of trials.
 
 ```{python, opts.label="py_ed"}
 # Proportion of trials where all patients were cured.
@@ -1001,6 +848,46 @@ p
 
 From this experiment, we see that there is roughly a one-in-six chance that
 all 17 patients are cured when using a 90% effective treatment.
+
+## What have we learned from Saint Hypothetical?
+
+We started with a question about the results of the NIH trial on the new drug.
+The question was — was the result of their trial — 17 out of 17 patients cured
+— surprising.
+
+Then, for some reason, we changed tack, and asked the same question about a
+hypothetical set of 17 patients getting the standard treatment in Saint
+Hypothetical General.
+
+That question turns out to be fairly easy to answer, because we can use simulation to estimate the chances that 17 out of 17 patients would be cured in such a hypothetical trial, on the assumption that each patient has a 90% chance of being cured with the standard treatment.
+
+The answer for Saint Hypothetical General was — we would be somewhat surprised,
+but not astonished.  We only get 17 out of 17 patients cured about one time in
+six.
+
+Now let us return to the NIH trial.  Should the trial authors be surprised by
+their results?  We know know that they can say — assuming that our new
+treatment is exactly as effective as the standard treatment, and no more
+effective, the result of the trial is a bit unusual, just by chance.  It is up
+us to decide whether the result is unusual enough, to make us think that the
+actual NIH treatment might have been more effective than the standard
+treatment.
+
+You will see this move again and again as we go through the book.  We take
+something that really happened — in this case the 17 out of 17 patients cured.
+Then we imagine a hypothetical world in which the results only depend on
+chance.  We do simulations in that hypothetical world to see how often we get a
+result like the one that happened in the real world.  If the real world result
+(17 out of 17) is an unusual, surprising result in the simulated world, we take
+that as evidence that the real world result might not be due to chance alone.
+
+We have just described the main idea in statistical inference.  If that all
+seems strange and backwards to you, do not worry, we will go over that idea
+many times in this book.  It is not a simple idea to grasp in one go.  We hope
+you will find that, as you do more simulations, and think of more hypothetical
+worlds, the idea will start to make more sense.  But later, we will start to
+think about asking other questions about probability and chance in the real
+world.
 
 ## Conclusions
 
