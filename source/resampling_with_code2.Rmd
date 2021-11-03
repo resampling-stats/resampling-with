@@ -126,11 +126,12 @@ the juror is Black if the random number is in the range 74 though 99.  There
 are 26 such numbers, so the juror has a 26% chance of getting the label
 "Black".
 
-Next we need a way of getting a random number in the range 0 through 99. One
-way of doing this is by throwing *two* 10-sided dice, say a blue die and a
-green die.  The face of the blue die will be the 10s digit, and the green face
-will be the ones digit.  So, if the blue die comes up with 8 and the green die
-has 4, then the random number is 84.
+Next we need a way of getting a random number in the range 0 through 99. This
+is an easy job for the computer, but if we had to do this with a physical
+device, we could get a single number by throwing *two* 10-sided dice, say a
+blue die and a green die.  The face of the blue die will be the 10s digit, and
+the green face will be the ones digit.  So, if the blue die comes up with 8 and
+the green die has 4, then the random number is 84.
 
 We could then simulate 12 jurors by repeating this process 12 times, each time
 writing down "White" if the number is from 0 through 74, and "Black"

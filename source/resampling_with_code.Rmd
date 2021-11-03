@@ -270,7 +270,7 @@ of 10 values.
 {{< var array_name >}}s are very useful for simulations and data analysis, and
 we will be using these for nearly every example in this book.
 
-## Functions
+## Functions {#sec-functions-production}
 
 We can use [`rnd.choice`]{.python}[the `sample` function]{.r} to select a single
 value *at random* from the sequence of numbers in `some_numbers`.
@@ -303,21 +303,27 @@ so please forgive our strategic imprecision, and let us continue to say that
 :::
 :::
 
-For now, think of a function as a named *production line*.  We sent the
-function raw material to work on.  The production line does some work on the
-raw materials.  A finished result comes off the other end.
+Think of a function as named *production line*.  We sent the function
+(production line) raw material to work on.  The production line does some work
+on the raw materials. A finished result comes off the other end.
 
-In our case, the production line has the name [`rnd.choice`]{.python}[the
-`sample` function]{.r}.
+In our case, the production line has the name
+[`rnd.choice`]{.python}[the `sample` function]{.r}.
 
-We sent it a value to work on, in this case, the value of `some_numbers`.  The
-values we send to functions are called *function arguments*.
+We sent
+[`rnd.choice`]{.python}[the `sample` function]{.r}.
+a value to work on, in this case, the value of `some_numbers`.  The
+values we send to functions are called function function *arguments*.
 
-The production line does some work on this value — in this case, selecting one of the numbers at random.
+The production line does some work on this value — in this case, selecting one
+of the numbers at random.
 
-The production line sends back the finished result — in this case, a number selected at random.  The thing that comes back from a function is called the *return value*.
+Then the production line sends back the finished result — in this case, a
+number selected at random.  The thing that comes back from a function is called
+the function *return value*.
 
-@fig-function-factory is a diagram illustrating an example run of this production line.
+@fig-function-factory is a diagram illustrating an example run of this
+production line.
 
 ![Example run of the
 [`rnd.choice`]{.python}[the `sample` function]{.r} production line
@@ -344,22 +350,26 @@ my_number <- sample(some_numbers)
 my_number
 ```
 
-`round` is another function that we may find ourselves using.
-`round` is the name for a very simple production line, that takes in a number,
-and sends back the number rounded to the nearest *integer*.
+`round` is another function that we may find ourselves using. `round` is the
+name for a very simple production line, that takes in a number, and sends back
+the number rounded to the nearest *integer*.
 
 :::{.callout-note}
-## Integers
+## What is an integer?
 
-Therefore, a number is an *integer* if the number is *either* a whole number
-(0, 1, 2 ...), *or* a negative whole number (-1, -2, -3 ...). All of -208, -2,
-0, 10, 105 are integers, but $\frac{3}{5}$, -10.3 and 0.2 are not.
+An *integer* is a positive or negative *whole number*.
+
+In other words, a number is an *integer* if the number is *either* a whole
+number (0, 1, 2 ...), *or* a negative whole number (-1, -2, -3 ...). All of
+-208, -2, 0, 10, 105 are integers, but $\frac{3}{5}$, -10.3 and 0.2 are not.
 
 We will use the term *integer* fairly often, because it is a convenient way to
 name all the positive and negative whole numbers.
 :::
 
-For example, here you see `round` taking in a not-integer number, as an *argument*, and sending back the nearest integer, as the result:
+In the next few code {{< var cell >}}s, you see examples where `round` takes in
+a not-integer number, as an *argument*, and sends back the nearest integer as
+the *return value*:
 
 ```{python, opts.label="py_ed"}
 # Put in 3.2, round sends back 3.
