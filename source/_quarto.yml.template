@@ -19,9 +19,10 @@ book:
     # "03-Afternote-1.Rmd", - dramatizing_resampling.Rmd
     # Also "monty_hall.Rmd" - new, incorporate?
     # "04-Afternote-2.Rmd" - incorporated into intro.Rmd
-    - about_technology_{version}.Rmd
-    - resampling_method.Rmd
+    - resampling_method.Rmd  # 05-Chap-1
+    - about_technology.Rmd
     - resampling_with_code.Rmd
+    - resampling_with_code2.Rmd
     - references.Rmd
 
 bibliography: [simon_refs.bib, data_science.bib]
@@ -35,12 +36,21 @@ format:
     documentclass: scrreport
 
 filters:
+  - noteout-filter-pre
   - noteout-filter-divspans
   - quarto
   - noteout-write-notebooks
   - noteout-filter-nb-only
 
+knitr:
+  # Comment preceding code output.
+  out-comment: ""
+
 noteout:
+  # Divs, spans to filter before further processing.
+  pre-filter: ['todo', 'comment']
   filter-divspans: {filter_divspans}
+  nb-flatten-divspans: {nb_flatten_divspans}
   nb-format: {nb_format}
+  strip-header-nos: false
   binder-url: https://mybinder.org/v2/gh/resampling-stats/resampling-with/gh-pages?filepath={version}-book/

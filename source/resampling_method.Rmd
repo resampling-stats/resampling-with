@@ -98,24 +98,46 @@ about an event.
 
 A quicker resampling method than the coins could be obtained with 20
 ten-sided dice or spinners (like those found in the popular Dungeons &
-Dragons games). For each die, we mark one of its ten sides as
-"out-of-order".  This indicate the chance of a single ambulance being
-out of order on a given day. In a single throw of the 20 dice we now
-get an experimental trial that represents a single day; we just have
-to count whether three or more ambulances turn up "out of order". In a
-hundred quick throws of the 20 dice — which probably takes less than 5
-minutes — we can get a fast and reasonably-accurate answer to our
-question.
+Dragons games). For each die, we identify one of its ten sides as
+"out-of-order".
 
-## Randomness from your computer
+Funnily enough, standard 10-sided dice have the numbers 0 through 9 on their
+faces, rather than 1 through 10.  @fig-one-d10s shows a standard 10-sided die:
+
+![10-sided die](images/one_d10s.jpg){#fig-one-d10s}
+
+We decide, arbitrarily, that the 9 side means "out-of-order". We could even put
+a little bit of paint on the 9 side to remind us. The die represents an
+ambulance.  If we roll the die, and get this face, this indicates that the
+ambulance was out of order.  If we get any of the other faces — 0 through 8 —
+this ambulance was in working order. A single throw of all 20 dice will be our
+experimental trial that represents a single day; we just have to count whether
+three or more ambulances turn up "out of order".  @fig-20-d10s show the result
+of one trial — throwing 20 dice:
+
+![20 10-sided dice](images/20_d10s.jpg){#fig-20-d10s}
+
+As you can see, the trial in @fig-20-d10s gave us a single 9, so there was only
+one ambulance out of order.
+
+In a hundred quick throws of the 20 dice — which probably takes less than 5
+minutes — we can get a fast and reasonably accurate answer to our question.
+
+## Randomness from your computer {#sec-randomness-computer}
 
 Computers make it easy to generate random numbers for resampling.
-Random numbers are numbers were it is effectively impossible to
-predict which number is coming next. If we ask the computer for a
-number between 1 and 10, and we are unable to do better than chance in
-predicting what that number is going to be, we accept that it is
-random.  We will go into more detail about what exactly we mean by
-*random* and *chance* later in the book.
+
+:::{.callout-note}
+## What do we mean by random?
+
+Random numbers are numbers where it is impossible to predict which number is
+coming next. If we ask the computer for a number between 0 and 9, we will get
+one of the numbers 0 though 9, but we cannot do any better than that in
+predicting *which* number it will give us. There is an equal (10%) chance we
+will get any of the numbers 0 through 9 — just as there is when we roll a fair
+10-sided die. We will go into more detail about what exactly we mean by
+*random* and *chance* later in the book (@sec-what-is-chance).
+:::
 
 <!--
 Press Your Luck
@@ -125,11 +147,11 @@ https://web.archive.org/web/20170712041017/http://www.rotten.com/library/conspir
 -->
 
 We can use random numbers from computers to simulate our problem.  For
-example, we can ask the computer to choose a random number between 1
-and 10 to represent one ambulance. Let's say the number 1 represents
-"out-of-order" and 2 through 10 "in operation", then any one random number
+example, we can ask the computer to choose a random number between 0
+and 9 to represent one ambulance. Let's say the number 9 represents
+"out-of-order" and 0 through 8 "in operation", then any one random number
 gives us a trial observation for a single ambulance.  To get an experimental
-trial for a single day we look at 20 numbers and count how many of them are 1.
+trial for a single day we look at 20 numbers and count how many of them are 9.
 We then look at, say, one hundred sets of 20 numbers and count the proportion
 of sets whose 20 numbers show three or more ambulances being "out-of-order".
 Once again, that proportion estimates the probability that three or more
@@ -148,7 +170,7 @@ n_vehicles = 20
 n_trials = 25
 
 rng = np.random.default_rng()
-trials = rng.integers(1, 11, size=(n_trials, n_vehicles))
+trials = rng.integers(0, 10, size=(n_trials, n_vehicles))
 
 df = pd.DataFrame(
     trials,
@@ -167,12 +189,12 @@ kableExtra::kable_styling(
 
 To know how many ambulances were "out of order" on any given day, we
 count number of ones in that row.  We place the counts in the final column
-called "#1" (for "number of ones"):
+called "#9" (for "number of nines"):
 
 ```{python, echo=FALSE}
-# Count the number of ones in each row, put in new column
+# Count the number of nines in each row, put in new column
 df_counts = df.copy()
-df_counts['#1'] = (df == 1).sum(axis=1)
+df_counts['#9'] = (df == 9).sum(axis=1)
 ```
 
 ```{r, veh-numbers-counts, echo=FALSE}
@@ -184,16 +206,16 @@ kableExtra::kable_styling(ketable(
 ```
 
 Each value in the last column of Table @tbl-veh-numbers-counts
-is the count of ones in that row and, therefore, the result from our
+is the count of 9s in that row and, therefore, the result from our
 simulation of one day.
 
 We can estimate how often three or more ambulances would break down by looking
 for values of three or greater in the last column.  We find there are 
-`r sum(py$df_counts['#1'] >= 3)`
+`r sum(py$df_counts['#9'] >= 3)`
 rows with three or more in the last column. Finally we divide this number of
 rows by the number of trials (`r py$n_trials`) to get an estimate of the
 *proportion* of days with three or more breakdowns. The result is
-`r sum(py$df_counts['#1'] >= 3) / py$n_trials`.
+`r sum(py$df_counts['#9'] >= 3) / py$n_trials`.
 
 ## Solving the problem using {{< var lang >}}
 
@@ -240,7 +262,7 @@ often use comments to explain what the code is doing.
 
 Our next task is to use {{< var lang >}} to simulate a single day of
 ambulances.  We will again represent each ambulance by a random number
-from 1 through 10.  20 of these numbers represents a simulation of all
+from 0 through 9.  20 of these numbers represents a simulation of all
 20 ambulances available to the contractor.  We call a simulation
 of all ambulances for a specific day one *trial*.
 
@@ -270,40 +292,39 @@ rnd = np.random.default_rng()
 Here are some examples of the random operations we can perform with
 NumPy:
 
-1. Make a random choice between three words:
+1.  Make a random choice between three words:
 
-   ```{python}
-   rnd.choice(['apple', 'orange', 'banana'])
-   ```
+    ```{python}
+    rnd.choice(['apple', 'orange', 'banana'])
+    ```
 
-2. Make five random choices of three words, using the "size=" argument:
+2.  Make five random choices of three words, using the "size=" argument:
 
-   ```{python}
-   rnd.choice(['apple', 'orange', 'banana'], size=5)
-   ```
+    ```{python}
+    rnd.choice(['apple', 'orange', 'banana'], size=5)
+    ```
 
-3. Shuffle a list of numbers:
+3.  Shuffle a list of numbers:
 
-   ```{python}
-   rnd.permutation([1, 2, 3, 4, 5])
-   ```
+    ```{python}
+    rnd.permutation([1, 2, 3, 4, 5])
+    ```
 :::
 
 :::
 
-Recall that we want twenty 10-sided dice—one per ambulance.  Our dice should be
-10-sided, because each ambulance has a 1-in-10 chance of being out of order. We
-decide, arbitrarily, that if a die is rolled and lands on 1 that means the
-ambulance is out of order.
+Recall that we want twenty 10-sided dice — one per ambulance.  Our dice should
+be 10-sided, because each ambulance has a 1-in-10 chance of being out of order.
 
 The program to simulate one trial of the ambulances problem therefore
 begins with these commands:
 
 ```{python, opts.label="py_ed"}
-# Ask NumPy to generate 20 numbers between 1 and 10.
+# Ask NumPy to generate 20 numbers from 0 through 9.
 
 # These are the numbers we will ask NumPy to select from.
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+# We store the numbers together in an *array*.
+numbers = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
 # Get 20 (size=20) values from the *numbers* list.
 # Store the 20 numbers with the name "a"
@@ -314,10 +335,10 @@ a
 ```
 
 ```{r, opts.label="r_ed"}
-# Ask R to generate 20 numbers between 1 and 10.
+# Ask R to generate 20 numbers from 0 through 9.
 
 # These are the numbers we will ask R to select from.
-numbers <- 1:10
+numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 
 # Get 20 values from the *numbers* sequence.
 # Store the 20 numbers with the name "a"
@@ -335,18 +356,19 @@ in a location in the computer's memory to which we give a name such as "a" or
 Next, we need to count the number of defective ambulances:
 
 ```{python, opts.label="py_ed"}
-# Count the number of ones among the random numbers, using the NumPy ("np")
-# `count_nonzero` function.
-b = np.count_nonzero(a == 1)
+# Count the number of nines in the random numbers.
+# The "a == 9" part identifies all the numbers equal to 9.
+# The "sum" part counts how many numbers "a == 9" found.
+b = np.sum(a == 9)
 # Show the result
 b
 ```
 
 ```{r, opts.label="r_ed"}
-# Count the number of ones in the random numbers.
-# The "a == 1" part identifies all the numbers equal to 1.
-# The "sum" part counts how many numbers "a == 1" found.
-b <- sum(a == 1)
+# Count the number of nines in the random numbers.
+# The "a == 9" part identifies all the numbers equal to 9.
+# The "sum" part counts how many numbers "a == 9" found.
+b <- sum(a == 9)
 # Show the result
 b
 ```
@@ -357,44 +379,41 @@ b
 We see that the code uses:
 
 ```{python, opts.label="py_ed"}
-np.count_nonzero(a == 1)
+np.sum(a == 9)
 ```
 
 ```{r, opts.label="r_ed"}
-sum(a == 1)
+sum(a == 9)
 ```
 
-What exactly happens here under the hood?  First `a == 1` creates an sequence
+What exactly happens here under the hood?  First `a == 9` creates an sequence
 of values that only contains
-[`True`]{.python}[`TRUE`]{.r} or
-[`False`]{.python}[`FALSE`]{.r}
-values, depending on whether each element is equal to 1 or not.
+{{< var true_val >}} or {{< var false_val >}}
+values, depending on whether each element is equal to 9 or not.
 
-Then, we ask {{< var lang >}} to
-[`count_nonzero`]{.python}[`sum`]{.r}
-only the true elements in that sequence.
+Then, we ask {{< var lang >}} to add up (`sum`) only the {{< var true_val >}}
+elements in that sequence.
 
-::: r
-R counts `TRUE` as 1, and `FALSE` as 0; thus we can use `sum` to
-count the number of `TRUE` values.
+{{< var lang >}} counts {{< var true_val >}} as 1, and {{< var false_val >}}
+as 0; thus we can use `sum` to count the number of {{< var false_val >}}
+values.
+
+This comes down to asking "how many elements in `a` are equal to 9".
+
+Don't worry, we will go over this again in the next chapter.
 :::
 
-This comes down to asking "how many elements in `a` are equal to 1".
-:::
 
-
-The [`count_nonzero`]{.python}[`sum`]{.r}
-command is a *counting* operation. It asks the computer to *count*
-the number of `1`s among the twenty numbers that are in location `a` following
+The `sum` command is a *counting* operation. It asks the computer to *count*
+the number of `9`s among the twenty numbers that are in location `a` following
 the random draw carried out by the [`rnd.choice`]{.python}[`sample`]{.r}
-operation. The result of the
-[`count_nonzero`]{.python}[`sum`]{.r}
-operation will
-be somewhere between 0 and 20, the number of simulated ambulances that were
-out-of-order on a given simulated day. The result is then placed in another
-location in the computer's memory that we label `b`.
+operation. The result of the `sum` operation will be somewhere between 0 and
+20, the number of simulated ambulances that were out-of-order on a given
+simulated day. The result is then placed in another location in the computer's
+memory that we label `b`.
 
-Above you see that we have worked out how to tell the computer to do a single trial — one simulated day.
+Above you see that we have worked out how to tell the computer to do a single
+trial — one simulated day.
 
 ### Repeating trials
 
@@ -419,7 +438,7 @@ The standard way to repeat steps in {{< var lang >}} is a `for` loop.  For examp
 
 ```{python, opts.label="py_ed"}
 # Read the next line as "repeat the following steps five times".
-for i in range(5):
+for i in np.arange(0, 5):
     # The indented stuff is the code we repeat five times.
     # Print "Hello" to the screen.
     print("Hello")
@@ -489,22 +508,25 @@ result of the trial.  Bear with us for that; we will come to it soon.
 z = np.zeros(1000)
 
 # These are the numbers we will ask NumPy to select from.
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 # Read the next line as "repeat the following steps 1000 times".
-for i in range(1000):
+for i in np.arange(0, 1000):
     # The indented stuff is the code we repeat 1000 times.
 
     # Get 20 (size=20) values from the *numbers* list.
     # Store the 20 numbers with the name "a"
     a = rnd.choice(numbers, size=20)
 
-    # Count the number of ones among the random numbers
-    # using the NumPy ("np") `count_nonzero` function.
-    b = np.count_nonzero(a == 1)
+    # Count the number of nines in the random numbers.
+    # The "a == 9" part identifies all the numbers equal to 9.
+    # The "sum" part counts how many numbers "a == 9" found.
+    b = np.sum(a == 9)
 
     # Store the result from this trial in the sequence "z"
     z[i] = b
+
+    # Now go back and repeat the trial, until done.
 ```
 
 ```{r, opts.label="r_ed"}
@@ -514,7 +536,7 @@ for i in range(1000):
 z <- numeric(1000)
 
 # These are the numbers we will ask R to select from.
-numbers <- 1:10
+numbers <- 0:9
 
 # Read the next line as "repeat the following steps 1000 times".
 for (i in 1:1000) {
@@ -525,21 +547,23 @@ for (i in 1:1000) {
     # Store the 20 numbers with the name "a"
     a <- sample(numbers, 20, replace=TRUE)
 
-    # Count the number of ones in the random numbers.
-    # The "a == 1" part identifies all the numbers equal to 1.
-    # The "sum" part counts how many numbers "a == 1" found.
-    b <- sum(a == 1)
+    # Count the number of nines in the random numbers.
+    # The "a == 9" part identifies all the numbers equal to 9.
+    # The "sum" part counts how many numbers "a == 9" found.
+    b <- sum(a == 9)
 
     # Store the result from this trial in the sequence "z"
     z[i] <- b
+
+    # Now go back and repeat the trial, until done.
 }
 ```
 
-The [`z[i] = b`]{.python}[`z[i] <- b`]{.r} statement that follows the
-[`np.count_nonzero`]{.python}[`sum`]{.r}
-*counting* operation simply keeps track of the results of each trial, placing
-the number of defective ambulances for each trial inside the sequence called
-`z`. The sequence has 1000 positions: one for each trial.
+The [`z[i] = b`]{.python}[`z[i] <- b`]{.r}
+statement that follows the `sum` *counting* operation simply keeps track of
+the results of each trial, placing the number of defective ambulances for each
+trial inside the sequence called `z`. The sequence has 1000 positions: one for
+each trial.
 
 When we have run the code above, we have stored 1000 trial results in the
 sequence `z`.  These are 1000 counts of out-of-order ambulances, one for each
@@ -547,20 +571,19 @@ of our simulated days.  Our last task is to calculate the proportion of these
 days for which we had more than three broken-down ambulances.
 
 Since our aim is to count the number of days in which more than 3 (4 or more)
-defective ambulances occur, we use another *counting* command
-[`np.count_nonzero`]{.python}[`sum`]{.r} at the end of the 1000 trials.  This
-command *counts* how many times more than 3 defects occurred in the 1000 days
-recorded in our `z` sequence, and we place the result in another location, `k`.
-This gives us the total number of days where 4 or more defective ambulances are
-seen to occur. Then we divide the number in `k` by 1000, the number of trials.
-Thus we obtain an estimate of the chance, expressed as a probability between 0
-and 1, that 4 or more ambulances will be defective on a given day. And we store
-that result in a location that we call `kk`, which is subsequently printed to
-screen.
+defective ambulances occur, we use another *counting* `sum` command
+at the end of the 1000 trials.  This command *counts* how many times more than
+3 defects occurred in the 1000 days recorded in our `z` sequence, and we place
+the result in another location, `k`. This gives us the total number of days
+where 4 or more defective ambulances are seen to occur. Then we divide the
+number in `k` by 1000, the number of trials. Thus we obtain an estimate of the
+chance, expressed as a probability between 0 and 1, that 4 or more ambulances
+will be defective on a given day. And we store that result in a location that
+we call `kk`, which is subsequently printed to screen.
 
 ```{python, opts.label="py_ed"}
 # How many trials resulted in more than 3 ambulances out of order?
-k = np.count_nonzero(z > 3)
+k = np.sum(z > 3)
 
 # Convert to a proportion.
 kk = k / 1000
@@ -583,6 +606,58 @@ print(kk)
 This is the estimate we wanted; the proportion of days where more than three
 ambulances were out of action.
 
+We have crept up on the solution, so it might be clear to you how few steps you
+needed to do this task.  To show that more clearly, here is the whole solution
+to the problem, without the comments:
+
+```{python, opts.label="py_ed"}
+import numpy as np
+
+z = np.zeros(1000)
+numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+for i in np.arange(0, 1000):
+    a = rnd.choice(numbers, size=20)
+    b = np.sum(a == 9)
+    z[i] = b
+
+k = np.sum(z > 3)
+kk = k / 1000
+print(kk)
+```
+
+```{r, opts.label="r_ed"}
+z <- numeric(1000)
+numbers <- 0:9
+
+for (i in 1:1000) {
+    a <- sample(numbers, 20, replace=TRUE)
+    b <- sum(a == 9)
+    z[i] <- b
+}
+
+k <- sum(z > 3)
+kk <- k / 1000
+print(kk)
+```
+
+Notice that the code above is *exactly* the same as the code we built up in
+steps.  But notice too, that the answer we got from this code was slightly
+different from the answer we got first.
+
+Why did we get a different answer from the same code?
+
+:::{.callout-note}
+## Randomness in estimates
+
+This is an essential point — our code uses *random numbers* to get an
+*estimate* of the quantity we want — in this case, the probability of three or
+more ambulances being out of order.  Every run of our code will use a different
+set of random numbers.  Therefore, every run of our code will give us a very
+slightly different number.  As you will soon see, we can make our estimate more
+and more accurate, and less and less different between each run, by doing many
+trials in each run.  Here we did 1000 trials, but we will usually do 10000
+trials, to give us a good estimate, that does not vary much from run to run.
 :::
 
 Don't worry about the detail of how each of these commands works — we will

@@ -1,0 +1,563 @@
+---
+jupyter:
+  jupytext:
+    metadata_filter:
+      notebook:
+        additional: all
+        excluded:
+        - language_info
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.6
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+resampling_with:
+    ed2_fname: null
+---
+
+```{r setup, include=FALSE}
+source("_common.R")
+```
+
+## Introducing {{< var lang >}} and the {{< var nb_app >}} notebook
+
+This chapter introduces you to the technology we will use throughout the book.
+By *technology*, we mean two things:
+
+* The {{< var lang >}} programming language, along with some important add-on
+  libraries for data analysis.
+* The {{< var nb_app >}} notebook system for running and editing {{< var lang
+  >}} code in a [graphical]{.r}[web]{.python} interface.
+
+The chapter introduces [the R language]{.r}[Python and its
+libraries]{.python}, and then gives an example to introduce {{< var lang >}}
+and the {{< var nb_app >}} Notebook.  If you have not used {{< var lang >}}
+before, the example notebook will get you started.  The example also shows how
+we will be using notebooks through the rest of the book.
+
+::: python
+## Python and packages
+
+This version of the book uses the *Python* [^python] programming language to
+implement resampling algorithms.
+
+Python is a programming language that can be used for many tasks.  It is a
+popular language for teaching, but is also used widely in industry and
+academia.  It is one of the most widely used programming languages in the
+world, and the most popular language for data science.
+
+For many of the initial examples, we will also be using the *NumPy* [^numpy]
+package for Python. A *package* is a library of Python code and data.  NumPy
+is a package that makes it easier to work with sequences of data values, such
+as sequences of numbers.  These are typical in probability and statistics.
+
+Later, we be using the *Matplotlib* [^matplotlib] package. This is the main
+Python package with code for producing plots, such as bar charts, histograms,
+and scatter plots.  See the rest of the book for more details on these plots.
+
+Still further on in the book, we will use more specialized libraries for data
+manipulation and analysis.  *Pandas* [^pandas] is the standard Python package
+for loading data files and working with data tables.  *SciPy* [^scipy] is a
+package that houses a wide range of numerical routines, including some simple
+statistical methods. The *Statsmodels* [^statsmodels] package has code for
+many more statistical procedures. We will often find ourselves comparing the
+results of our own resampling algorithms to those in SciPy and Statsmodels.
+:::
+
+::: r
+This version of the book uses the *R* programming language to implement
+resampling algorithms.
+
+The current title of the main website for R [^r] is "The R Project for
+Statistical Computing", and this is a good summary of how R started, and what
+R is particularly good at.  The people who designed R designed it for
+themselves, and you and I — those of us who are working to find and understand
+the patterns in data.  Over the last 20 years, it has gained wide use for data
+analysis across many fields, especially in life sciences, data science and
+statistics.
+
+Although many people use R as a simple way of exploring data and doing standard statistical tests, it is a full-fledged programming language.
+:::
+
+It is very important that {{< var lang >}} is a *programming language* and not
+a set of canned routines for "doing statistics".  For us it means that we can
+explore the *ideas* of probability and statistics using the *language* of {{<
+var lang >}} to express those ideas.  It also means that you, and I, and
+anyone in the world, can write new code to share with others, so they can
+benefit from our work, understand it, and improve it.  This book is one
+example; we have written the {{< var lang >}} code in this book as clearly as
+we can to make it easy to follow, and to explain the underlying ideas.  We hope
+you will help us by testing what we have done and sending us suggestions for
+ways we could improve. Please see the preface for more information about how to
+do that.
+
+## The environment
+
+Many of the chapters have sections with code for you to run, and experiment
+with. These sections contain *{{< var nb_fmt >}} notebooks*.  We mark the
+start of each notebook in the text with a note and link heading like the one
+you see below. In the web edition of this book, you can click on the
+*Download* link in this header to download the section as a notebook. You can
+also click on the *Interact* link in this header to open the notebook on a
+cloud computer.  This allows you to interact with the notebook on the cloud
+computer.  You can run the code, and experiment by making changes.
+
+In the print version of the book, we point you to the web version, to get the
+links.
+
+At the end of this chapter, we give explain how to run these notebooks on your
+own computer.  We start with an example notebook; you might want to run this in
+the cloud to get started.
+
+## Getting started with the notebook
+
+The next section contains a notebook called "Billie's Bill".  If you are
+looking at the web edition, you will see links to interact with this notebook
+in the cloud, or download it to your computer.
+
+::: {.notebook name="billies_bill" title="Billie's Bill"}
+
+The text in this notebook section assumes you have opened the page as an
+interactive notebook, on your own computer, or one of the {{< var nb_app >}}
+web interfaces.
+
+A notebook can contain blocks of text — like this one — as well as code, and
+the results from running the code.
+
+::: nb-only
+::: python
+Jupyter Notebooks are made up of *cells*.  This is a cell with text — a text
+cell.
+:::
+
+::: r
+RMarkdown notebooks contain text — like this, but they can also contain
+snippets of code, in *code chunks*.  You will see examples of code chunks
+soon.
+:::
+
+Notebook text can have formatting, such as links.
+
+For example, this sentence
+ends with a link to the earlier [second edition of this
+book](https://resample.statistics.com/intro-text-online).
+:::
+
+If you are in the notebook interface (rather than reading this in the
+textbook), you will see the {{< var nb_app >}} menu near the top of the page,
+with headings "File", "Edit" and so on.
+
+::: python
+Underneath that, by default, you may see a row of icons - the "Toolbar".
+
+In the toolbar, you may see icons to run the current cell, among others.
+
+To move from one cell to the next, you can click the run icon in the toolbar, but it is more efficient to press the Shift key, and press Enter (with Shift still held down).  We will write this as {{< var run_key >}}.
+:::
+
+::: r
+Underneath that, by default, you may see a row of icons - the "Toolbar".
+
+In the toolbar, you may see a list box that will allow you to run the code in the notebook, among other icons.
+
+When we get to code chunks, you will also see a green play icon at the right edge of the interface, in the chunk.  This will allow you to run the code chunk.
+
+Although you can use this "run" button, we suggest you get used to using the
+keyboard shortcut.  The default shortcut on Windows or Linux is to hold down
+the Control key and the Shift key and the Enter (Return) key at the same time.
+We will call this Control-Shift-Enter.  On Mac the default combination is
+Command-Shift-Enter, where Command is the key with the four-leaf-clover-like
+icon to the left of the space-bar.  To save us having to say this each time, we will call this combination {{< var run_key >}}.
+:::
+
+In this, our first notebook, we will be using {{< var lang >}} to solve one of
+those difficult and troubling problems in life — working out the bill in a
+restaurant.
+
+
+## The meal in question
+
+
+Alex and Billie are at a restaurant, getting ready to order. They do not have
+much money, so they are calculating the expected bill before they order.
+
+Alex is thinking of having the fish for £10.50, and Billie is leaning towards
+the chicken, at £9.25.  First they calculate their combined bill.
+
+Below this text you see a *code* {{< var cell >}}.  It contains the {{< var
+lang >}} code to calculate the total bill. Press
+[Control-Shift-Enter or Cmd-Shift-Enter (on Mac)]{.r}[Shift-Enter]{.python}
+in the {{< var cell >}} below, to see the total.
+
+```{python, opts.label="py_ed"}
+10.50 + 9.25
+```
+
+```{r, opts.label="r_ed"}
+10.50 + 9.25
+```
+
+The contents of the {{< var cell >}} above is {{< var lang >}} code.  As you
+would predict, {{< var lang >}} understands numbers like `10.50`, and it
+understands `+` between the numbers as an instruction to add the numbers.
+
+When you press {{< var run_key >}}, {{< var lang >}} finds `10.50`, realizes
+it is a number, and stores that number somewhere in memory. It does the same
+thing for `9.25`, and then it runs the *addition* operation on these two numbers in memory, which gives the number 19.75.
+
+Finally, {{< var lang >}} sends the resulting number (19.75) back to the
+notebook for display.  The notebook detects that {{< var lang >}} sent back a
+value, and shows it to us.
+
+This is exactly what a calculator would do.
+
+
+## Comments
+
+Unlike a calculator, we can also put notes next to our calculations, to remind
+us what they are for.   One way of doing this is to use a "comment".  You have
+already seen comments in the previous chapter.
+
+A comment is some text that the computer will ignore.  In {{< var lang >}},
+you can make a comment by starting a line with the `#` (hash) character.  For
+example, the next cell is a code cell, but when you run it, it does not show
+any result.  In this case, that is because the computer sees the `#` at the
+beginning of the line, and then ignores the rest.
+
+```{python, opts.label="py_ed"}
+# This bit of text is for me to read, and the computer to ignore.
+```
+
+Many of the code cells you see will have comments in them, to explain what the
+code is doing.
+
+Practice writing comments for your own code.  It is a very good habit to get
+into.  You will find that experienced programmers write many comments on their
+code.  They do not do this to show off, but because they have a lot of
+experience in reading code, and they know that comments make it much easier to
+read and understand code.
+
+
+## More calculations
+
+Let us continue with the struggle that Alex and Billie are having with their
+bill.
+
+They realize that they will also need to pay a tip.
+
+They think it would be reasonable to leave a 15% tip.  Now they need to
+multiply their total bill by 0.15, to get the tip.  The bill is about £20, so
+they know that the tip will be about £3.
+
+In {{< var lang >}} `*` means multiplication.  This is the equivalent of the
+"×" key on a calculator.
+
+What about this, for the correct calculation?
+
+```{python, opts.label="py_ed"}
+# The tip - with a nasty mistake.
+10.50 + 9.25 * 0.15
+```
+
+```{r, opts.label="r_ed"}
+# The tip - with a nasty mistake.
+10.50 + 9.25 * 0.15
+```
+
+Oh dear, no, that isn't doing the right calculation.
+
+{{< var lang >}} follows the normal rules of *precedence* with calculations.
+These rules tell us to do multiplication before addition.
+
+See <https://en.wikipedia.org/wiki/Order_of_operations> for more detail on the standard rules.
+
+In the case above the rules tell {{< var lang >}} to first calculate `9.25 *
+0.15` (to get `1.3875`) and then to add the result to `10.50`, giving
+`11.8875`.
+
+We need to tell {{< var lang >}} we want it to do the *addition* and *then*
+the multiplication.  We do this with round brackets (parentheses):
+
+```{python, opts.label="py_ed"}
+# The bill plus tip - mistake fixed.
+(10.50 + 9.25) * 0.15
+```
+
+```{r, opts.label="r_ed"}
+# The bill plus tip - mistake fixed.
+(10.50 + 9.25) * 0.15
+```
+
+The obvious next step is to calculate the bill *including the tip*.
+
+```{python, opts.label="py_ed"}
+# The bill, including the tip
+10.50 + 9.25 + (10.50 + 9.25) * 0.15
+```
+
+```{r, opts.label="r_ed"}
+# The bill, including the tip
+10.50 + 9.25 + (10.50 + 9.25) * 0.15
+```
+
+At this stage we start to feel that we are doing to much typing.  Notice that
+we had to type out `10.50 + 9.25` twice there.  That is a little boring, but
+it also makes it easier to make mistakes. The more we have to type, the more
+chance we have to make a mistake.
+
+To make things simpler, we would like to be able to *store* the result of the
+calculation `10.50 + 9.25`, and then re-use this value, to calculate the tip.
+
+This is the role of *variables*.  A *variable* is a value with a name.
+
+Here is a variable:
+
+```{python, opts.label="py_ed"}
+# The cost of Alex's meal.
+a = 10.50
+```
+
+```{r, opts.label="r_ed"}
+# The cost of Alex's meal.
+a <- 10.50
+```
+
+`a` is a *name* we give to the value 10.50.  You can read the line above as
+"The variable `a` *gets the value* 10.50".  We can also talk of *setting* the variable.  Here we are *setting* `a` to equal 10.50.
+
+Now, when we use `a` in code, it refers to the value we gave it.  For example, we can put `a` on a line on its own, and {{< var lang >}} will show us the *value* of `a`:
+
+```{python, opts.label="py_ed"}
+# The value of a
+a
+```
+
+```{r, opts.label="r_ed"}
+# The value of a
+a
+```
+
+We did not have to use the name `a` — we can choose almost any name we like.  For example, we could have chosen `alex_meal` instead:
+
+```{python, opts.label="py_ed"}
+# The cost of Alex's meal.
+# alex_meal gets the value 10.50
+alex_meal = 10.50
+```
+
+```{r, opts.label="r_ed"}
+# The cost of Alex's meal.
+# alex_meal gets the value 10.50
+alex_meal <- 10.50
+```
+
+We often set variables like this, and then display the result, all in the same
+{{< var cell >}}.  We do this by first setting the variable, as above, and
+then, on the final line of the {{< var cell >}}, we put the variable name on a
+line on its own, to ask {{< var lang >}} to show us the value of the variable.
+Here we set `billie_meal` to have the value 9.25, and then show the value of
+`billie_meal`, all in the same {{< var cell >}}.
+
+```{python, opts.label="py_ed"}
+# The cost of Billie's meal.
+billie_meal = 9.25
+# Show the value of billies_meal
+billie_meal
+```
+
+```{r, opts.label="r_ed"}
+# The cost of Alex's meal.
+# billie_meal gets the value 10.50
+billie_meal <- 10.50
+# Show the value of billie_meal
+billie_meal
+```
+
+Of course, here, we did not learn much, but we often set variable values with the results of a calculation.  For example:
+
+```{python, opts.label="py_ed"}
+# The cost of both meals, before tip.
+bill_before_tip = 10.50 + 9.25
+# Show the value of both meals.
+bill_before_tip
+```
+
+```{r, opts.label="r_ed"}
+# The cost of both meals, before tip.
+bill_before_tip <- 10.50 + 9.25
+# Show the value of both meals.
+bill_before_tip
+```
+
+But wait — we can do better than typing in the calculation like this.  We can use the values of our variables, instead of typing in the values again.
+
+```{python, opts.label="py_ed"}
+# The cost of both meals, before tip, using variables.
+bill_before_tip = alex_meal + billie_meal
+# Show the value of both meals.
+bill_before_tip
+```
+
+```{r, opts.label="r_ed"}
+# The cost of both meals, before tip, using variables.
+bill_before_tip <- alex_meal + billie_meal
+# Show the value of both meals.
+bill_before_tip
+```
+
+We make the calculation clearer by writing the calculation this way — we are
+calculating the bill before the tip by adding the cost of Alex's and Billie's
+meal — and that's what the code looks like.  But this also allows us to
+*change* the variable value, and recalculate.  For example, say Alex decided
+to go for the hummus plate, at £7.75.  Now we can tell {{< var lang
+>}} that we want `alex_meal` to have the value 7.75 instead of 10.50:
+
+```{python, opts.label="py_ed"}
+# The new cost of Alex's meal.
+# alex_meal gets the value 7.75
+alex_meal = 7.75
+# Show the value of alex_meal
+alex_meal
+```
+
+```{r, opts.label="r_ed"}
+# The new cost of Alex's meal.
+# alex_meal gets the value 7.75
+alex_meal = 7.75
+# Show the value of alex_meal
+alex_meal
+```
+
+Notice that `alex_meal` now has a new value.  It was 10.50, but now it is 7.75.
+We have *reset* the value of `alex_meal`.   In order to use the new value for
+`alex_meal`, we must *recalculate* the bill before tip with *exactly the same
+code as before*:
+
+```{python, opts.label="py_ed"}
+# The new cost of both meals, before tip.
+bill_before_tip = alex_meal + billie_meal
+# Show the value of both meals.
+bill_before_tip
+```
+
+```{r, opts.label="r_ed"}
+# The new cost of both meals, before tip.
+bill_before_tip <- alex_meal + billie_meal
+# Show the value of both meals.
+bill_before_tip
+```
+
+Notice that, now we have rerun this calculation, we have *reset* the value for `bill_before_tip` to the correct value corresponding to the new value for `alex_meal`.
+
+All that remains is to recalculate the bill plus tip, using the new value for
+the variable:
+
+```{python, opts.label="py_ed"}
+# The cost of both meals, after tip.
+bill_after_tip = bill_before_tip + bill_before_tip * 0.15
+# Show the value of both meals, after tip.
+bill_after_tip
+```
+
+```{r, opts.label="r_ed"}
+# The cost of both meals, after tip.
+bill_after_tip = bill_before_tip + bill_before_tip * 0.15
+# Show the value of both meals, after tip.
+bill_after_tip
+```
+
+Now we are using variables with relevant names, the calculation looks right to
+our eye.  The code expresses the calculation as we mean it: the bill after tip
+is equal to the bill before the tip, plus the bill before the tip times 0.15.
+
+## And so, on
+
+Now you have done some practice with the notebook, and with variables, you are
+ready for a new problem in probability and statistics, in the next chapter.
+:::
+
+## Running the code on your own computer
+
+Many people, including your humble authors, like to be able to run code
+examples on their own computers.  This section explains how you can set up to
+run the notebooks on your own computer.
+
+Once you have done this setup, you can use the "download" link
+
+::: python
+You will need to install the Python language on your computer, and then install the following packages:
+
+* NumPy
+* Matplotlib - for plots
+* SciPy - a collection of modules for scientific computing;
+* Pandas - for loading, saving and manipulating data tables;
+* Statsmodels - for traditional statistical analysis.
+* Jupyter - to run the Jupyter Notebook on your own computer.
+
+One easy way to all install all these packages on Windows, Mac or Linux, is to
+use the *Anaconda Python distribution* [^anaconda_distro].  Anaconda provides
+a single installer that will install Python and all the packages above, by
+default.
+
+Another method is to install Python from the Python website [^python].  Then use the *Pip* [^pip] installer to install the packages you need.
+
+To use Pip, start a terminal (Start key, "cmd" in Windows, Command key and space then "Terminal" on Mac), and then, at the prompt, type:
+
+```{bash, eval=FALSE}
+pip install numpy matplotlib scipy pandas statsmodels jupyter
+```
+
+Now you should be able to start the Jupyter notebook application.  See the
+[Jupyter documentation for how to start
+Jupyter](https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#starting-the-notebook-server).
+Open the notebook you downloaded for the chapter; you will now be able to run
+the code on your own computer, and experiment by making changes.
+:::
+
+::: r
+To run the R notebook, you will need two software packages on your computer.  These are:
+
+* The base R language
+* The RStudio graphical interface to R.
+
+The base R language gives you the software to run R code and show results. You
+can use the base R language on its own, but, in order to interact with the R
+notebook on your computer, you will need the RStudio interface.  RStudio gives
+you a richer interface to interact with the R language, including the ability
+to open, edit and run R notebooks, like the notebook in this chapter.  RStudio
+uses the base R language to run R code from the notebook, and show the
+results.
+
+Install the base R language by going to the main R website at
+<https://www.r-project.org>, following the links to the package for your
+system (Windows, Mac, or Linux), and install according to the instructions on
+the website.
+
+Then install the RStudio interface by visiting the RStudio website at
+<https://www.rstudio.com>, and navigating to the download links for the free
+edition of the "RStudio IDE".  IDE stands for Integrated Development
+Environment; it refers to the RStudio application's ability make it easier to
+interact with, and develop, R code.  You only need the free version; it has
+all the features you will need.  The free version is the only version that we,
+your humble authors, have used for this book, and for all our own work and
+teaching.
+:::
+
+<!---
+Links
+-->
+
+[^python]: <https://python.org>
+[^r]: <https://www.r-project.org>
+[^numpy]: <https://numpy.org>
+[^matplotlib]: <https://matplotlib.org>
+[^scipy]: <https://scipy.org>
+[^pandas]: <https://pandas.pydata.org>
+[^statsmodels]: <https://www.statsmodels.org>
+[^jupyter-nb]: <https://jupyter.org>
+[^anaconda_distro]: <https://www.anaconda.com/distribution>
+[^pip]: <https://pip.pypa.io>

@@ -22,10 +22,10 @@ r-all:
 landing-page:
 	cd website && make landing-page
 
-website: webclean python-all r-all landing-page
+website: clean python-all source-clean r-all landing-page
 	mkdir $(WEB_DIR)
 	cp website/*.html $(WEB_DIR)
-	cp requirements.txt $(WEB_DIR)
+	cp environment.yml requirements.txt $(WEB_DIR)
 	cp -r $(PYTHON_BOOK_DIR) $(WEB_DIR)
 	cp -r $(R_BOOK_DIR) $(WEB_DIR)
 
@@ -47,8 +47,10 @@ python-build-requirements:
 build-init: r-build-requirements python-build-requirements
 	git submodule update --init --recursive
 
-clean:
+clean: source-clean
 	rm -rf $(PYTHON_BOOK_DIR) $(R_BOOK_DIR)
+
+source-clean:
 	cd $(SOURCE_DIR) && make clean
 
 bibcheck: source/simon_refs.bib

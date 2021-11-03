@@ -1,10 +1,14 @@
 # Common options for all chapters
+
+# Quarto variables for later use.
+._spec <- yaml::yaml.load_file(input = '_quarto.yml')
+
+# Code execution and outputs
 set.seed(1014)
 options(digits = 3)
 
 knitr::opts_chunk$set(
-  comment = "#>",
-  collapse = TRUE,
+  comment = ._spec$knitr$`out-comment`,
   cache = TRUE,
   out.width = "70%",
   fig.align = 'center',
@@ -16,7 +20,6 @@ knitr::opts_chunk$set(
 options(dplyr.print_min = 6, dplyr.print_max = 6)
 
 # Book edition from notebook format in build spec
-._spec <- yaml::yaml.load_file(input = '_quarto.yml')
 is_py_ed <- ._spec$noteout$`nb-format` == 'ipynb'
 is_r_ed <- !is_py_ed
 
@@ -53,4 +56,12 @@ include_svg = function(path) {
     output = path
   }
   knitr::include_graphics(output)
+}
+
+# Python variable in Python edition else R variable.
+get_var = function(name) {
+  if (is_py_ed) {
+    return (py[[name]])
+  }
+  return (get(name))
 }
