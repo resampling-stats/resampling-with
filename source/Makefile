@@ -22,7 +22,6 @@ html-book-%:
 pdf-book-%:
 	$(MAKE) set-version-$*
 	quarto render . --to pdf
-	mv ../$*-book/Resampling-statistics.pdf ../$*-book/resampling_with_$*.pdf
 
 python-html-book: $(diagrams) html-book-python
 
