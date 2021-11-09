@@ -23,9 +23,9 @@ landing-page:
 	cd website && make landing-page
 
 website: clean python-all source-clean r-all landing-page
-	mkdir $(WEB_DIR)
+	mkdir -p $(WEB_DIR)
 	cp website/*.html $(WEB_DIR)
-	cp environment.yml requirements.txt $(WEB_DIR)
+	cp requirements.txt $(WEB_DIR)
 	cp -r $(PYTHON_BOOK_DIR) $(WEB_DIR)
 	cp -r $(R_BOOK_DIR) $(WEB_DIR)
 
