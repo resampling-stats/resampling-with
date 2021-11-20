@@ -26,6 +26,11 @@ book:
     - resampling_with_code2.Rmd
     - references.Rmd
 
+crossref:
+  sec-prefix: Section     # (default is "sec.")
+  fig-prefix: Figure      # (default is "fig.")
+  tbl-prefix: Table       # (default is "tbl.")
+
 bibliography: [simon_refs.bib, data_science.bib]
 
 format:
