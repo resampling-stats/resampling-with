@@ -239,7 +239,7 @@ yourself.  To do this, we recommend you read the "[About the technology]"
 chapter that explains how to execute notebooks online or on your own computer.
 :::
 
-::: {.notebook name="ambulances"}
+:::::: {.notebook name="ambulances"}
 
 The first thing to say about the code you will see below is there are some
 lines that do not do anything; these are the lines beginning with a `#`
@@ -640,6 +640,8 @@ k <- sum(z > 3)
 kk <- k / 1000
 print(kk)
 ```
+
+::::::
 
 Notice that the code above is *exactly* the same as the code we built up in
 steps.  But notice too, that the answer we got from this code was slightly
