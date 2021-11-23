@@ -1,10 +1,6 @@
 .PHONY: python-html-book python-pdf-book r-html-book r-pdf-book \
 	clean
 
-python-all: python-html-book python-pdf-book
-
-r-all: r-html-book r-pdf-book
-
 vector_images := $(wildcard diagrams/*.svg)
 
 diagrams := $(vector_images:.svg=.png)
@@ -17,19 +13,28 @@ set-version-%:
 
 html-book-%:
 	$(MAKE) set-version-$*
-	quarto render .
+	quarto render . --to html
 
 pdf-book-%:
 	$(MAKE) set-version-$*
 	quarto render . --to pdf
 
+all-book-%:
+	# Since 0.2.260, quarto renders all formats by default.
+	$(MAKE) set-version-$*
+	quarto render .
+
 python-html-book: $(diagrams) html-book-python
 
 python-pdf-book: $(diagrams) pdf-book-python
 
+python-all: $(diagrams) all-book-python
+
 r-html-book: $(diagrams) html-book-r
 
 r-pdf-book: $(diagrams) pdf-book-r
+
+r-all: $(diagrams) all-book-r
 
 clean:
 	rm -rf *_cache/ .quarto/
