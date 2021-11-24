@@ -25,9 +25,9 @@ source("_common.R")
 
 # More resampling with code
 
-@sec-resampling code introduced a problem in probability, that was also a problem in statistics.  We asked how surprised we should be the results of a trial of a new cancer treatment regime.
+@sec-resampling-code introduced a problem in probability, that was also a problem in statistics.  We asked how surprised we should be at the results of a trial of a new cancer treatment regime.
 
-Here we study another urgent problem in the real world - racial bias and the
+Here we study another urgent problem in the real world—racial bias and the
 death penalty.
 
 ## A question of life and death
@@ -40,62 +40,66 @@ Robert Swain was a young Black man who was sentenced to death in the early
 the eligible jurors in that county were Black, but every member of Swain's
 jury was White.  Swain and his legal team appealed to the Alabama Supreme
 Court, and then to the [US Supreme
-Court](https://en.wikipedia.org/wiki/Swain_v._Alabama), arguing there was
-that Black jurors were very rarely selected for juries in Talladega county, even though they made up about a quarter of the eligible pool of jurors.
+Court](https://en.wikipedia.org/wiki/Swain_v._Alabama), arguing
+that Black jurors were very rarely selected for juries in Talladegna county, even though they made up about a quarter of the eligible pool of jurors.
 The US Supreme Court rejected this argument, in a 6 to 3 opinion, writing that
 "The overall percentage disparity has been small and reflects no studied
 attempt to include or exclude a specified number of Negros.".
 
-The courts heard a lot of evidence on this bias in selection, but one
-observation that Swain and his team made, was that Swain's own jury was
-entirely White. To make our task simpler, we will only look at the composition
-of Swain's jury.
-
-The Supreme Court decided that the "disparity" between selection of White and
-Black jurors "has been small" — but how would they, and how would we, make a rational decision about whether this disparity really was "small"?
+And while the courts heard a lot of evidence on bias in jury selection, one observation made by Swain and his team stands out: that Swain's own jury was *entirely* White.
+The Supreme Court decided that the "disparity" between selection of White and Black jurors "has been small" — but how would they, and how would we, make a rational decision about whether this disparity *really* was "small"?
 
 ## A small disparity and a hypothetical world
 
 To answer the question that the Supreme Court asked, we return to the method we used in the last chapter.
 
-Let us imagine a hypothetical world, where each individual Black or White
-jurors had an equal chance of being selected for the jury.  Call this world Hypothetical County, Alabama.
+Let us imagine a hypothetical world, in which each individual Black or White
+person had an equal chance of being selected for the jury.  Call this world Hypothetical County, Alabama.
 
-Just as in 1960's Talladega County, 26% of the eligible jurors in Hypothetical
+Just as in 1960's Talladega County, 26% of eligible jurors in Hypothetical
 County are Black.  Hypothetical County jury selection has no bias against
-Black men, so we expect around 26% of the jury will be Black. 0.26 * 12 =
-3.12, so we expect that, on average, a little more than 3 out of 12 jurors in
+Black men, so we expect around 26% of the jury to be Black. 0.26 * 12 =
+3.12, so we expect that, on average, just over 3 out of 12 jurors in
 a Hypothetical County jury will be Black.  But, if we select each juror at
-random from the population, that means that sometimes, by chance, we will have
+random from the population, that means that, sometimes, by chance, we will have
 fewer than 3 Black jurors, and sometimes will have more than 3 Black jurors.
 And, by chance, sometimes we will have no Black jurors.  But, if the jurors
 really are selected at random, how often would we expect this to happen — that
-there are no Black jurors.  We would like to estimate the *probability* that
+there are no Black jurors?  We would like to estimate the *probability* that
 we will get no Black jurors.  If that probability is small, then we have some
 evidence that the disparity in selection between Black and White jurors, was
 not "small".
 
-## One trial
+::: {.question}
+What is the probability of an *all White* jury being randomly selected out of a population having 26% Black people?
+:::
 
-Remember the six steps:
+## Designing the experiment
 
-1. *We decide what we mean by one trial*.
-2. Work out the *outcome* of interest from the trial.
-2. Work out how to *simulate one trial*.
-3. *Repeat* the simulated trial procedure.
-4. *Count* the number of trials with an outcome that matches the outcome we
+Before we start, we need to figure out three things:
+
+1. What do we mean by one trial?
+2. What is the outcome of interest from the trial?
+3. How do we simulate one trial?
+
+We then take **three steps** to calculate the desired probability:
+
+1. *Repeat* the simulated trial procedure N times.
+2. *Count* M, the number of trials with an outcome that matches the outcome we
    are interested in.
-5. Calculate the *proportion*.
+3. Calculate the *proportion*, M/N.
+   This is an estimate of the probability in question.
 
-Are task in step 1 is made a little easier by the fact that our *trial* (in the resampling sense) is a simulated *trial* (in the legal sense).
+For this problem, our task is made a little easier by the fact that our *trial* (in the resampling sense) is a simulated *trial* (in the legal sense). One trial requires 12 simulated jurors, each labeled by race (White or Black).
 
-One trial, is 12 simulated jurors, each labeled by race (White or Black). For
-step 2, the outcome we are interested in is the number of Black jurors.
+The outcome we are interested in is the number of Black jurors.
 
 Now comes the harder part.  How do we simulate one trial?
 
-One trial is 12 jurors, and we are interested only the race of each juror.  In
-our hypothesized world, where selection by race is entirely random, each juror
+### One trial
+
+One trial requires 12 jurors, and we are interested only in the race of each juror.
+In our hypothesized world, where selection by race is entirely random, each juror
 has a 26% chance of being Black.
 
 We need a way of simulating a 26% chance.
@@ -104,7 +108,7 @@ One way of doing this is by getting a random number from 0 through 99
 (inclusive).  There are 100 number in the range 0 through 99 (inclusive).
 
 ::: {.callout-note}
-## Pick a number from 1 through 5
+#### Pick a number from 1 through 5
 
 Ranges can be confusing in normal speech because it is not always clear
 whether they include their beginning and end.  For example, if someone says
@@ -117,7 +121,7 @@ To avoid this confusion, we will nearly always use "from" and "through" in
 ranges, meaning that we do include both the start and the end number.  For
 example, if we say "pick a number from 1 through 5" we mean one of 1 or 2 or 3
 or 4 or 5.
-"""
+:::
 
 We will arbitrarily say that the juror is White if the random number is in the
 range from 0 through 73.  74 of the 100 numbers are in this range, so
@@ -135,12 +139,10 @@ the green die has 4, then the random number is 84.
 
 We could then simulate 12 jurors by repeating this process 12 times, each time
 writing down "White" if the number is from 0 through 74, and "Black"
-otherwise.  The trial outcome is the number of times we wrote "Black" of these
+otherwise.  The trial outcome is the number of times we wrote "Black" for these
 12 simulated jurors.
 
-## Using code for simulated trial
-
-::: {.python}
+### Using code to simulate a trial
 
 We use the same logic to simulate a trial with the computer. A little code
 makes the job easier, because we can ask {{< var lang >}} to give us 12 random
@@ -148,9 +150,10 @@ numbers from 0 through 99, and to count how many of these numbers are in the
 range from 75 through 99.  Numbers in the range from 75 through 99 correspond
 to Black jurors.
 
-### Ranges in {{< var lang >}}
+:::: {.callout-note}
+#### Ranges in {{< var lang >}}
 
-We said above, that ranges can be confusing, and we use "from 1 through 5" to avoid this confusion.
+We said above that ranges can be confusing, and we use "from 1 through 5" to avoid this confusion.
 
 ::: {.python}
 Python and NumPy also have the concept of a range of integers (positive or
@@ -169,7 +172,7 @@ some_numbers
 
 Notice that `np.arange(0, 6)` means "from 0 through 5" — the range *does not
 include* the last value.  Another way of putting this is that `np.arange(0,
-6)` means "from 0 up to, but not including 6".
+6)` means "from 0 up to, but not including, 6".
 
 This takes a little getting used to, but we think you will find it starts to
 come naturally after a while.
@@ -191,9 +194,11 @@ Notice that `0:5` means exactly "from 0 through 5" — the range includes all
 the integers starting at 0 and including 5.
 :::
 
-### Random numbers from 0 through 99
+::::
 
-We can now use {{< var np_or_r >}} and the random number function from the last chapter, to get 12 random numbers from 0 through 99.
+#### Random numbers from 0 through 99
+
+We can now use {{< var np_or_r >}} and the random number function from the last chapter to get 12 random numbers from 0 through 99.
 
 ```{python, opts.label="py_ed"}
 # Ask NumPy for a random number generator.
@@ -201,8 +206,7 @@ rnd = np.random.default_rng()
 
 # Get 12 random numbers from 0 through 99
 # (from 0, up to, but not including 100).
-zero_through_99 = np.arange(0, 100)
-a = rnd.choice(zero_through_99, 12)
+a = rnd.integers(0, 100, size=12)
 
 # Show the result
 a
@@ -216,7 +220,7 @@ a <- sample(0:99, 12, replace=TRUE)
 a
 ```
 
-### Counting the jurors
+#### Counting the jurors
 
 We use *comparison* and [`np.sum`]{.python}[`sum`]{.r} to count how
 many numbers are are greater than 74, and therefore, in the range from 75
@@ -231,22 +235,24 @@ b
 
 ```{r, opts.label="r_ed"}
 # How many numbers are greater than 74?
-b <- sum(a == 9)
+b <- sum(a > 74)
 # Show the result
 b
 ```
 
-### A single simulated trial
+#### A single simulated trial
 
-We assemble the pieces from the last few sections to make a {{< var cell >}} that simulated a single trial:
+We assemble the pieces from the last few sections to make a {{< var cell >}} that simulates a single trial:
 
 ```{python, opts.label="py_ed"}
 rnd = np.random.default_rng()
+
 # Get 12 random numbers from 0 through 99
-zero_through_99 = np.arange(0, 100)
-a = rnd.choice(zero_through_99, 12)
+a = rnd.integers(0, 100, size=12)
+
 # How many numbers are greater than 74?
 b = np.sum(a > 74)
+
 # Show the result
 b
 ```
@@ -260,28 +266,31 @@ b <- sum(a > 74)
 b
 ```
 
-## Repeating trials
+## Three simulation steps
 
 Now we come back to the details of how we:
 
-* Repeat the simulated trial many times;
-* Record the results for each trial.
+1. Repeat the simulated trial many times;
+2. record the results for each trial;
+3. calculate the required proportion as an estimate of the probability
+   we seek.
 
 Repeating the trial many times is the job of the `for` loop, and we will come
 to that soon.
 
-In order to record the results, we will store each trial result in an {{< var
-array_name >}}.
+In order to record the results, we will store each trial result in {{< var
+an_array >}}.
 
-### More on {{< var array_name >}}s
+:::{.callout-note}
+### More on {{< var array >}}s
 
-Since we will be working with {{< var array_name >}}s a lot, it is worth
+Since we will be working with {{< var array >}}s a lot, it is worth
 knowing more about them.
 
 A [NumPy array]{.python}[vector]{.r} is a *container* that stores many
 elements of the same type.  You have already seen, in @sec-resampling-method,
-how we can create a[n]{.python} {{< var array_name >}} from a sequence of
-numbers using the [`np.array`]{.python}[`c()`] function.
+how we can create a[n]{.python} {{< var array >}} from a sequence of
+numbers using the [`np.array`]{.python}[`c()`]{.r} function.
 
 ```{python, opts.label="py_ed"}
 # Make an array of numbers, store with the name "some_numbers".
@@ -297,7 +306,7 @@ some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 some_numbers
 ```
 
-Another way that we can create {{< var array_name >}}s is to use the
+Another way that we can create {{< var array >}}s is to use the
 [`np.zeros`]{.python}[`numeric`]{.r} function to make a new array where all
 the elements are 0.
 
@@ -317,10 +326,12 @@ z
 ```
 
 Notice the argument `5` to the [`np.zeros`]{.python}[`integer`]{.r} function.
-This tells the function how many zeros we want in the {{< var array_name >}}
+This tells the function how many zeros we want in the {{< var array >}}
 that the function will return.
 
-The are various useful things we can do with this {{< var array_name >}} container.  One is to ask how many elements there are in the {{< var array_name >}} container.  We can use the [`len`]{.python}[`length`]{.r} function to calculate the number of elements in a[n]{.python} {{< var array_name >}}:
+The are various useful things we can do with this {{< var array >}} container.
+One is to ask how many elements there are in the {{< var array >}} container.
+We can use the [`len`]{.python}[`length`]{.r} function to calculate the number of elements in a[n]{.python} {{< var array >}}:
 
 ```{python, opts.label="py_ed"}
 # Show the number of elements in "z"
@@ -332,9 +343,10 @@ len(z)
 length(z)
 ```
 
-Another thing we can do is *set* the value for a particular element in the {{<
-var array_name >}}.  To do this, we use square brackets following the {{< var
-array_name >}} value, on the left hand side of the equals sign, like this:
+Another thing we can do is *set* the value for a particular element in the
+{{< var array >}}.  To do this, we use square brackets following the
+{{< var array >}} value, on the left hand side of the equals sign,
+like this:
 
 ```{python, opts.label="py_ed"}
 # Set the value of the *first* element in the array.
@@ -351,21 +363,19 @@ z
 ```
 
 Read the first line of code as "the element at position
-[0]{.python}[1]{.r}
-gets the value 99".
+[0]{.python}[1]{.r} gets a value of 99".
 
 ::: python
 Notice that the position number of the first element in the array is 0, and the
-position number of the second element is 1.  Think of the position as a
+position number of the second element is 1.  Think of the position as an
 *offset* from the beginning of the array.  The first element is at the
 beginning of the array, and so it is at offset (position) 0.  This can be a
 little difficult to get used to at first, but you fill find that thinking of
-the positions of offsets in this way soon starts to come naturally, and later,
-you will also find it helps you avoid some common mistakes when using positions
-for getting and setting values.
+the positions of offsets in this way soon starts to come naturally, and later
+you will also find that it helps you to avoid some common mistakes when using positions for getting and setting values.
 :::
 
-For practice, let us also set the value of the third element in the {{< var array_name >}}:
+For practice, let us also set the value of the third element in the {{< var array >}}:
 
 ```{python, opts.label="py_ed"}
 # Set the value of the *third* element in the array.
@@ -400,16 +410,19 @@ v = z[0]
 v
 ```
 
-Read the first code line here as "v gets the value at position 0 in the {{< var array_name >}}.
+Read the first code line here as "v gets the value at position 0 in the {{< var array >}}.
 
 Using square brackets to get and set element values is called *indexing* into
-the {{< var array_name >}}.
+the {{< var array >}}.
+:::
+
+### Repeating trials
 
 As a preview, let us now imagine that we want to do 100 simulated trials of
 Robert Swain's jury.  This will give us 100 counts.  We will want to store the
 count for each trial.
 
-In order to do this, we make a[n]{.python} {{< var array_name >}} to hold the 100 counts.  Call this {{< var array_name >}} `z`.
+In order to do this, we make {{< var an_array >}} to hold the 100 counts.  Call this {{< var array >}} `z`.
 
 ```{python, opts.label="py_ed"}
 # An array to hold the 100 count values.
@@ -430,8 +443,7 @@ different counts.
 ```{python, opts.label="py_ed"}
 rnd = np.random.default_rng()
 # Get 12 random numbers from 0 through 99
-zero_through_99 = np.arange(0, 100)
-a = rnd.choice(zero_through_99, 12)
+a = rnd.integers(0, 100, 12)
 # How many numbers are greater than 74?
 b = np.sum(a > 74)
 # Show the result
@@ -448,7 +460,7 @@ b
 ```
 
 Now we have the result of a single trial, we can store it as the first number
-in the `z` {{< var array_name >}}:
+in the `z` {{< var array >}}:
 
 ```{python, opts.label="py_ed"}
 # Store the single trial count as the first value in the "z" array.
@@ -466,29 +478,21 @@ z
 
 Of course we could just keep doing this: run the {{< var cell >}} corresponding
 to a trial, above, to get a new count, and then store it at the next position
-in the `z` {{< var array_name >}} with:
+in the `z` {{< var array >}} with:
 [`z[1] = count`]{.python}[`z[2] <- count`]{.r},
 and so on, but that also looks like a task that the computer is well-suited
-for.  And indeed it is, because {{< var lang >}} an excellent way of repeating
-the same set of steps many times — the `for` loop.  You have already seen a
+for.  And indeed it is, because {{< var lang >}} has an excellent way of
+repeating the same set of steps many times — the `for` loop.  You have already seen a
 preview of the `for` loop in @sec-resampling-method. Here we dive into them in
 more depth.
 
-## For-loops in {{< var lang >}}
+:::{.callout-box}
+### For-loops in {{< var lang >}}
 
-::: todo
-Need to switch for-loops to use integers rather than strings here.
+<!-- Matthew wants to switch this to integers instead of strings; S needs to find out why -->
 
-Can we get away without "print"?  Probably not, but then, need to introduce
-it.
-:::
-
-Imagine a factory robot that slides along a worktable on which several items
-have been placed.  It services each of these items, one by one, until it is
-done.
-
-So the robot knows *which* item it is operating on, each item is given
-a label.
+Imagine a factory robot in front of a conveyor belt along which several items have been placed.
+It services each of these items, one by one, using the same procedure, until its work is done.
 
 Here is an example:
 
@@ -497,10 +501,19 @@ for item in ['shoe', 'saddle', 'jacket']:
     print('I am stitching a', item)
 ```
 
+```{r}
+items <- c('shoe', 'saddle', 'jacket')
+for (item in items) {
+  message('I am stitching a ', item)
+}
+```
+
 Here, the robot is working its way through three items: a shoe, a saddle, and a jacket.
-As it moves on to each object, it assigns the label ("shoe", "saddle", etc.) to the variable `item`.
-The indented block of code under the for is executed for each item, and in this code block `label` can be accessed.
-The code above can therefore be unpacked into the following equivalent program:
+Every time that a new object arrives in front of it, that object is assigned the label `item`.
+The [indented block of code under]{.python}[block of code inside]{.r} the `for` is executed for each one, and in this code block `label` can be accessed.
+You will also notice us using a new function: [`print`]{.python}[`message`]{.r}. This function receives several arguments, and then prints them out to screen.
+
+The code above can be unpacked into the following equivalent program:
 
 ```{python, opts.label="py_ed"}
 item = 'shoe'
@@ -513,6 +526,17 @@ item = 'jacket'
 print('I am stitching a', item)
 ```
 
+```{r}
+item = 'shoe'
+message('I am stitching a ', item)
+
+item = 'saddle'
+message('I am stitching a ', item)
+
+item = 'jacket'
+message('I am stitching a ', item)
+```
+
 We used the name `item` here, but any other name would do.
 Thus, the following is equivalent:
 
@@ -521,31 +545,51 @@ for package in ['shoe', 'saddle', 'jacket']:
     print('I am stitching a', package)
 ```
 
-It is common to use a number as a label in a for loop:
+```{r}
+items <- c('shoe', 'saddle', 'jacket')
+for (package in items) {
+  message('I am stitching a ', package)
+}
+```
+
+It is also common to operate on numbers in a for loop:
 
 ```{python, opts.label="py_ed"}
 for i in [0, 1, 2, 3, 4]:
     print('The square of', i, 'is', i * i)
 ```
 
+```{r}
+numbers = c(0, 1, 2, 3, 4)
+for (i in numbers) {
+  message('The square of ', i, ' is ', i * i)
+}
+```
+
 When we want to count to a hundred, it becomes laborious to type out the
-numbers. For that, Python has a shorthand called `range`:
+numbers. For that, {{< var lang> }} has a shorthand [called `range`]{.python}—very similar to NumPy's `arange`]{.python}:
 
 ```{python, opts.label="py_ed"}
 for i in range(5):
     print('The square of', i, ' is ', i * i)
 ```
+
+```{r}
+for (i in 0:4) {
+  message('The square of ', i, ' is ', i * i)
+}
+```
+
 :::
 
-## Putting it all together
+### Putting it all together
 
 We found that we could construct the code for a single trial.  Here is the code for a single trial, again:
 
 ```{python, opts.label="py_ed"}
 rnd = np.random.default_rng()
 # Get 12 random numbers from 0 through 99
-zero_through_99 = np.arange(0, 100)
-a = rnd.choice(zero_through_99, 12)
+a = rnd.integers(0, 100, 12)
 # How many numbers are greater than 74?
 b = np.sum(a > 74)
 # Show the result
@@ -561,7 +605,7 @@ b <- sum(a == 9)
 b
 ```
 
-Then we found that we could use {{< var array_name >}}s to store the results
+Then we found that we could use {{< var array >}}s to store the results
 of these trials, and that we could use `for` loops to do many repeats of steps
 like those for a single trial.
 
@@ -610,26 +654,24 @@ z
 
 Finally, we need to count how many of the trials in `z` ended up with all-White juries.  These are the trials with a `z` value of 0.
 
-We can ask this question of *all 100 counts* by asking the question: is the {{< var array_name >}} `z` equal to 0, like this:
+We can ask this question of *all 100 counts* by asking the question: is the {{< var array >}} `z` equal to 0, like this:
 
 ```{python, opts.label="py_ed"}
 # Is the value of z equal to 0?
-all_white = z == 0
+all_white = (z == 0)
 # Show the result of the comparison.
 all_white
 ```
 
 ```{r, opts.label="r_ed"}
 # Is the value of z equal to 0?
-all_white <- z == 0
+all_white <- (z == 0)
 # Show the result of the comparison.
 all_white
 ```
 
-Now we need to get the number of
-[`True`]{.python}[`TRUE`]{.r}
-values in `all_white`, to find how many simulated trials gave all-white
-juries.
+Now we need to get the number of {{< var true >}} values in `all_white`, to find
+how many simulated trials gave all-white juries.
 
 ```{python, opts.label="py_ed"}
 # Count the number of True values in "all_white"
