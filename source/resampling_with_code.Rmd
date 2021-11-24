@@ -57,7 +57,7 @@ In this chapter, we will model another problem using
   * *Comparing* numbers to other numbers.
   * *Counting* numbers that match a condition.
 
-In the next chapter, we will talk more about *using {{< var array_name >}}s* to
+In the next chapter, we will talk more about *using {{< var array >}}s* to
 store results, and *for loops* to repeat a procedure many times.
 
 ## Statistics and probability
@@ -215,7 +215,7 @@ rnd = np.random.default_rng()
 ```
 :::
 
-## From numbers to {{< var array_name >}}s
+## From numbers to {{< var array >}}s
 
 We [next]{.python} need to prepare the *sequence* of numbers that we want
 {{< var np_or_r >}} to select from.
@@ -237,14 +237,14 @@ a
 ```
 
 {{< var np_or_r >}} also allows *values* that are *sequences of numbers*.  {{<
-var np_or_r >}} calls these sequences *{{< var array_name >}}s*.
+var np_or_r >}} calls these sequences *{{< var array >}}s*.
 
 ::: r
 The name *vector* sounds rather technical and mathematical, but the only
 important idea for us is that a *vector* stores a *sequence* of numbers.
 :::
 
-Here we make a {{< var array_name >}} that contains the 10 numbers we will
+Here we make a {{< var array >}} that contains the 10 numbers we will
 select from:
 
 ```{python, opts.label="py_ed"}
@@ -261,13 +261,13 @@ some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 some_numbers
 ```
 
-Notice that the value for `some_numbers` is a[n]{.python} {{< var array_name
+Notice that the value for `some_numbers` is a[n]{.python} {{< var array
 >}}, and that this value *contains* 10 numbers.
 
 Put another way, `some_numbers` is now the name we can use for this collection
 of 10 values.
 
-{{< var array_name >}}s are very useful for simulations and data analysis, and
+{{< var array >}}s are very useful for simulations and data analysis, and
 we will be using these for nearly every example in this book.
 
 ## Functions {#sec-functions-production}
@@ -391,7 +391,7 @@ round(3.2)
 round(-2.7)
 ```
 
-## Sampling from {{< var array_name >}}s
+## Sampling from {{< var array >}}s
 
 In the code above, we asked [`rnd.choice`]{.python}[the `sample` function]{.r}
 to select a single number at random.
@@ -439,7 +439,7 @@ a
 
 As you can see, the function sent back (returned) 17 numbers.  Because it is
 sending back more than one number, the thing it sends back is a[n]{.python} {{<
-var array_name >}}, where the {{< var array_name >}} has 17 elements.
+var array >}}, where the {{< var array >}} has 17 elements.
 
 ## Counting results
 
@@ -448,7 +448,7 @@ the basis for one simulated trial in our simulated world of Saint Hypothetical
 General.
 
 Our next job is to get the code to count the number of numbers that are not
-zero in the {{< var array_name >}} `a`.  That will give us the number of
+zero in the {{< var array >}} `a`.  That will give us the number of
 patients who were cured in our simulated trial.
 
 Another way of asking this question, is to ask how many elements in `a` are
@@ -477,11 +477,11 @@ n > 0
 it. In this case `>` is asking the question "is the value of `n` (on the left
 hand side) greater than 0 (on the right hand side)?" The value of `n` is 5, so
 the question becomes, "is 5 greater than 0?"  The answer is Yes, and {{< var
-lang >}} represents this Yes answer as the value {{< var true_val >}}.
+lang >}} represents this Yes answer as the value {{< var true >}}.
 
 In contrast, the comparison below boils down to "is 0 greater than 0?", to
 which the answer is No, and {{< var lang >}} represents this as
-{{< var false_val >}}.
+{{< var false >}}.
 
 ```{python, opts.label="py_ed"}
 p = 0
@@ -498,9 +498,9 @@ p > 0
 ```
 
 So far you have seen the results of comparison on a single number.  Now say we
-do the same comparison on a[n]{.python} {{< var array_name >}}.  For example,
+do the same comparison on a[n]{.python} {{< var array >}}.  For example,
 say we ask the question "is the value of `a` greater than 0"?  Remember, `a` is
-a[n]{.python} {{< var array_name >}} containing 17 values.  We are comparing 17
+a[n]{.python} {{< var array >}} containing 17 values.  We are comparing 17
 values to one value (0). What answer do you think {{< var np_or_r >}} will
 give?  You may want to think a little about this before you read on.
 
@@ -532,7 +532,7 @@ a > 0
 
 There are 17 values in `a`, so the comparison to 0 means there are 17
 comparisons, and 17 answers. {{< var np_or_r >}} therefore returns
-a[n]{.python} *{{< var array_name >}}* of 17 elements, containing these 17
+a[n]{.python} *{{< var array >}}* of 17 elements, containing these 17
 answers.  The first answer is the answer to the question "is the value of the
 *first* element of `a` greater than 0", and the second is the answer to "is the
 value of the *second* element of `a` greater than 0".
@@ -555,20 +555,20 @@ q <- a > 0
 q
 ```
 
-## Counting {{< var true_val >}} values with `sum`
+## Counting {{< var true >}} values with `sum`
 
-Notice above that there is one {{< var true_val >}} element in `q` for every
+Notice above that there is one {{< var true >}} element in `q` for every
 element in `a` that was greater than 0.  It only remains to *count* the number
-of {{< var true_val >}} values in `q`, to get the count of patients in our
+of {{< var true >}} values in `q`, to get the count of patients in our
 simulated trial who were cured.
 
 We can use the {{< var np_or_r >}} function [`sum`]{.r}[`np.sum`]{.python} to
-count the number of {{< var true_val >}} elements in {{< var a_array_name >}}.
+count the number of {{< var true >}} elements in {{< var an_array >}}.
 As you can imagine,
 [`sum`]{.r}[`np.sum`]{.python}
-adds up all the elements in {{< var a_array_name >}}, to give a single
-number. This will work as we want for the `q` {{< var array_name >}}, because
-{{< var lang >}} counts {{< var false_val >}} as equal to 0 and {{< var
+adds up all the elements in {{< var an_array >}}, to give a single
+number. This will work as we want for the `q` {{< var array >}}, because
+{{< var lang >}} counts {{< var false >}} as equal to 0 and {{< var
 true_val >}} as equal to 1:
 
 ```{python, opts.label="py_ed"}
@@ -595,13 +595,13 @@ FALSE == 0
 TRUE == 1
 ```
 
-Therefore, the function `sum`, when applied to {{< var a_array_name >}} of
-{{< var true_val >}} and {{< var false_val >}}
-values, will count the number of {{< var true_val >}} values in the {{< var
+Therefore, the function `sum`, when applied to {{< var an_array >}} of
+{{< var true >}} and {{< var false >}}
+values, will count the number of {{< var true >}} values in the {{< var
 array_name >}}.
 
-To see this in action we can make a new {{< var array_name >}} of
-{{< var true_val >}} and {{< var false_val >}}
+To see this in action we can make a new {{< var array >}} of
+{{< var true >}} and {{< var false >}}
 values, and try using
 [`sum`]{.r}[`np.sum`]{.python}
 on the new array.
@@ -620,12 +620,12 @@ trues_and_falses <- c(TRUE, FALSE, TRUE, TRUE, FALSE)
 trues_and_falses
 ```
 
-The `sum` operation adds all the elements in the {{< var array_name >}}.
-Because {{< var true_val >}} counts as 1, and {{< var false_val >}} counts as
+The `sum` operation adds all the elements in the {{< var array >}}.
+Because {{< var true >}} counts as 1, and {{< var false >}} counts as
 0, adding all the elements in `trues_and_falses` is the same as adding up the
 values 1 + 0 + 1 + 1 + 0, to give 3.
 
-We can apply the same operation on `q` to count the number of {{< var true_val
+We can apply the same operation on `q` to count the number of {{< var true
 >}} values.
 
 ```{python, opts.label="py_ed"}
@@ -681,15 +681,15 @@ b
 Now we know how to do one simulated trial, we could just keep running the {{< var cell >}} above, and writing down the result each time.  Once we had run the {{< var cell >}} 100 times, we would have 100 counts.  Then we could look at the 100 counts to see how many were equal to 17 (all 17 simulated patients cured on that trial).  At least that would be much faster than rolling 17 dice 100 times, but we would also like the computer to automate the process of repeating the trial, and keeping track of the counts.
 
 Please forgive us as we race ahead again, as we did in the last chapter.  As in
-the last chapter, we will use a *results* {{< var array_name >}} called `z` to
+the last chapter, we will use a *results* {{< var array >}} called `z` to
 store the count for each trial.  As in the last chapter, we will use a `for`
 loop to repeat the trial procedure many times.  As in the last chapter, we will
-not explain the counts {{< var array_name >}} of the `for` loop in any detail, because we are going to cover those in the next chapter.
+not explain the counts {{< var array >}} of the `for` loop in any detail, because we are going to cover those in the next chapter.
 
 Let us now imagine that we want to do 100 simulated trials at Saint Hypothetical General.  This will give us 100 counts.  We will want to store the count for each trial.
 
-To do this, we make a[n]{.python} {{< var array_name >}} called `z` to hold the
-100 counts.  We have called the {{< var array_name >}} `z`, but we could have
+To do this, we make a[n]{.python} {{< var array >}} called `z` to hold the
+100 counts.  We have called the {{< var array >}} `z`, but we could have
 called it anything we liked, such as `counts` or `results` or `cecilia`.
 
 ```{python, opts.label="py_ed"}
@@ -794,17 +794,17 @@ The code `s == 17` has a completely different meaning.
 
 The *double equals* `==` above is a *comparison* in R.
 :::
-It means "give {{< var true_val >}} if the value in `s` is equal to 17, and {{<
-var false_val >}} otherwise".  The `==` is a *comparison* operator — it is for
+It means "give {{< var true >}} if the value in `s` is equal to 17, and {{<
+var false >}} otherwise".  The `==` is a *comparison* operator — it is for
 comparing two values — here the value in `s`
 and the value 17.  This comparison, like all comparisons, returns an answer
-that is either {{< var true_val >}} or {{< var false_val >}}.  In our case `s`
+that is either {{< var true >}} or {{< var false >}}.  In our case `s`
 has the value 17, so the comparison becomes `17 == 17`, meaning "is 17 equal to
-17", to which the answer is Yes, and {lang sends back {{< var true_val >}}.
+17", to which the answer is Yes, and {lang sends back {{< var true >}}.
 ::::::
 
 We can ask this question of *all 100 counts* by asking the question: is the {{<
-var array_name >}} `z` equal to 17, like this:
+var array >}} `z` equal to 17, like this:
 
 ```{python, opts.label="py_ed"}
 # Is the value of z equal to 17?
@@ -820,7 +820,7 @@ were_cured <- z == 17
 were_cured
 ```
 
-Finally we use `sum` to count the number of {{< var true_val >}} values in the `were_cured` {{< var array_name >}}, to give the number of trials where all 17 patients were cured.
+Finally we use `sum` to count the number of {{< var true >}} values in the `were_cured` {{< var array >}}, to give the number of trials where all 17 patients were cured.
 
 ```{python, opts.label="py_ed"}
 # Count the number of True values in "were_cured"
