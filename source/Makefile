@@ -1,6 +1,13 @@
 .PHONY: python-html-book python-pdf-book r-html-book r-pdf-book \
 	clean
 
+python-all: python-html-book python-pdf-book
+
+r-all: r-html-book r-pdf-book
+
+Rmd_sources := $(shell python -c "import yaml; print(' '.join(yaml.load(open('_quarto.yml.template'),Loader=yaml.FullLoader)['book']['chapters']))")
+config_templates := _quarto.yml.template _variables.yml.template
+
 vector_images := $(wildcard diagrams/*.svg)
 
 diagrams := $(vector_images:.svg=.png)
@@ -8,33 +15,25 @@ diagrams := $(vector_images:.svg=.png)
 %.png : %.svg
 	inkscape --export-area-drawing --export-png=$@ --export-dpi=300 $<
 
-set-version-%:
-	../scripts/set_version.py $*
+set-version-%: $(config_templates)
+	@../scripts/set_version.py $*
 
-html-book-%:
-	$(MAKE) set-version-$*
+../%-book/index.html: $(Rmd_sources) $(diagrams) | set-version-%
 	quarto render . --to html
 
-pdf-book-%:
-	$(MAKE) set-version-$*
+../python-book/resampling-with-python.pdf: $(Rmd_sources) $(diagrams) $(config_templates) | set-version-python
 	quarto render . --to pdf
 
-all-book-%:
-	# Since 0.2.260, quarto renders all formats by default.
-	$(MAKE) set-version-$*
-	quarto render .
+../r-book/resampling-with-r.pdf: $(Rmd_sources) $(diagrams) $(config_templates) | set-version-r
+	quarto render . --to pdf
 
-python-html-book: $(diagrams) html-book-python
+python-html-book: ../python-book/index.html
 
-python-pdf-book: $(diagrams) pdf-book-python
+python-pdf-book: ../python-book/resampling-with-python.pdf
 
-python-all: $(diagrams) all-book-python
+r-html-book: ../r-book/index.html
 
-r-html-book: $(diagrams) html-book-r
-
-r-pdf-book: $(diagrams) pdf-book-r
-
-r-all: $(diagrams) all-book-r
+r-pdf-book: ../r-book/resampling-with-r.pdf
 
 clean:
 	rm -rf *_cache/ .quarto/
