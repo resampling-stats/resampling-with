@@ -6,7 +6,7 @@ python-all: python-html-book python-pdf-book
 r-all: r-html-book r-pdf-book
 
 Rmd_sources := $(shell python -c "import yaml; print(' '.join(yaml.load(open('_quarto.yml.template'),Loader=yaml.FullLoader)['book']['chapters']))")
-config_templates := _quarto.yml.template _variables.yml.template
+config_templates := _quarto.yml.template variables.yml
 
 vector_images := $(wildcard diagrams/*.svg)
 

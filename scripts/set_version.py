@@ -3,9 +3,27 @@
 """
 
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+import yaml
+
 
 QUARTO_TEMPLATE = '_quarto.yml.template'
-VARS_TEMPLATE = '_variables.yml.template'
+
+LANG_VARS_SOURCE = 'variables.yml'
+LANG_VARS_TARGET = '_variables.yml'
+
+QUARTO_VARS = {
+    'r': {
+        'filter_divspans': "['python']",
+        'nb_flatten_divspans': "['+', 'r']",
+        'nb_format': 'Rmd'
+    },
+    'python': {
+        'filter_divspans': "['r']",
+        'nb_flatten_divspans': "['+', 'python']",
+        'nb_format': 'ipynb'
+    }
+}
+
 
 def get_parser():
     parser = ArgumentParser(description=__doc__,  # Usage from docstring
@@ -15,50 +33,25 @@ def get_parser():
     return parser
 
 
-def set_version(version):
+def fill_template(fn, version):
     version = version.lower()
-    if version == 'r':
-        filter_divspans = "['python']"
-        nb_flatten_divspans = "['+', 'r']"
-        nb_format = 'Rmd'
-        language = 'R'
-        np_or_r = 'R'
-        other_language = 'Python'
-        cell = 'chunk'
-        nb_app = 'RStudio'
-        nb_fmt = 'RMarkdown'
-        run_key = 'Ctl/Cmd-Shift-Enter'
-        array_name = 'vector'
-        a_array_name = 'a vector'
-        true_val = 'TRUE'
-        false_val = 'FALSE'
-    else:
-        filter_divspans = "['r']"
-        nb_flatten_divspans = "['+', 'python']"
-        nb_format ='ipynb'
-        language = 'Python'
-        np_or_r = 'NumPy'
-        other_language = 'R'
-        cell = 'cell'
-        nb_app = 'Jupyter'
-        nb_fmt = 'Jupyter'
-        run_key = 'Shift-Enter'
-        array_name = 'array'
-        a_array_name = 'an array'
-        true_val = 'True'
-        false_val = 'False'
-    for fname in (QUARTO_TEMPLATE, VARS_TEMPLATE):
-        with open(fname, 'rt') as fobj:
-            fmt_str = fobj.read()
-        out_fname = fname.replace('.template', '')
-        with open(out_fname, 'wt') as fobj:
-            fobj.write(fmt_str.format(**locals()))
+    variables = QUARTO_VARS[version] | {'version': version}
+
+    with open(fn, 'rt') as fobj:
+        fmt_str = fobj.read()
+    out_fname = fn.replace('.template', '')
+    with open(out_fname, 'wt') as fobj:
+        fobj.write(fmt_str.format(**variables))
 
 
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    set_version(args.version)
+    fill_template(QUARTO_TEMPLATE, args.version)
+
+    vars = yaml.load(open(LANG_VARS_SOURCE, 'r'), Loader=yaml.FullLoader)
+    with open(LANG_VARS_TARGET, 'w') as f:
+        yaml.dump(vars[args.version], f)
 
 
 if __name__ == '__main__':
