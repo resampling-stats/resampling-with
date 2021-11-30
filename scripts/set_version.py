@@ -8,7 +8,7 @@ import yaml
 
 QUARTO_TEMPLATE = '_quarto.yml.template'
 
-LANG_VARS_SOURCE = 'variables.yml'
+LANG_VARS_SOURCE = 'text_variables.yml'
 LANG_VARS_TARGET = '_variables.yml'
 
 QUARTO_VARS = {
