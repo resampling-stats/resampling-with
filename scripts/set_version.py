@@ -35,7 +35,8 @@ def get_parser():
 
 def fill_template(fn, version):
     version = version.lower()
-    variables = QUARTO_VARS[version] | {'version': version}
+    variables = QUARTO_VARS[version]
+    variables['version'] = version
 
     with open(fn, 'rt') as fobj:
         fmt_str = fobj.read()
