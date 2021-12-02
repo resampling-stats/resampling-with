@@ -261,8 +261,8 @@ some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 some_numbers
 ```
 
-Notice that the value for `some_numbers` is a[n]{.python} {{< var array
->}}, and that this value *contains* 10 numbers.
+Notice that the value for `some_numbers` is {{< var an_array >}},
+and that this value *contains* 10 numbers.
 
 Put another way, `some_numbers` is now the name we can use for this collection
 of 10 values.
@@ -438,8 +438,8 @@ a
 ```
 
 As you can see, the function sent back (returned) 17 numbers.  Because it is
-sending back more than one number, the thing it sends back is a[n]{.python} {{<
-var array >}}, where the {{< var array >}} has 17 elements.
+sending back more than one number, the thing it sends back is
+{{< var an_array >}}, where the {{< var array >}} has 17 elements.
 
 ## Counting results
 
@@ -498,9 +498,9 @@ p > 0
 ```
 
 So far you have seen the results of comparison on a single number.  Now say we
-do the same comparison on a[n]{.python} {{< var array >}}.  For example,
+do the same comparison on {{< var an_array >}}.  For example,
 say we ask the question "is the value of `a` greater than 0"?  Remember, `a` is
-a[n]{.python} {{< var array >}} containing 17 values.  We are comparing 17
+{{< var an_array >}} containing 17 values.  We are comparing 17
 values to one value (0). What answer do you think {{< var np_or_r >}} will
 give?  You may want to think a little about this before you read on.
 
@@ -532,7 +532,7 @@ a > 0
 
 There are 17 values in `a`, so the comparison to 0 means there are 17
 comparisons, and 17 answers. {{< var np_or_r >}} therefore returns
-a[n]{.python} *{{< var array >}}* of 17 elements, containing these 17
+ *{{< var an_array >}}* of 17 elements, containing these 17
 answers.  The first answer is the answer to the question "is the value of the
 *first* element of `a` greater than 0", and the second is the answer to "is the
 value of the *second* element of `a` greater than 0".
@@ -568,8 +568,8 @@ As you can imagine,
 [`sum`]{.r}[`np.sum`]{.python}
 adds up all the elements in {{< var an_array >}}, to give a single
 number. This will work as we want for the `q` {{< var array >}}, because
-{{< var lang >}} counts {{< var false >}} as equal to 0 and {{< var
-true_val >}} as equal to 1:
+{{< var lang >}} counts {{< var false >}} as equal to 0 and {{< var true >}}
+as equal to 1:
 
 ```{python, opts.label="py_ed"}
 # Question: is False equal to 0?
@@ -688,7 +688,7 @@ not explain the counts {{< var array >}} of the `for` loop in any detail, becaus
 
 Let us now imagine that we want to do 100 simulated trials at Saint Hypothetical General.  This will give us 100 counts.  We will want to store the count for each trial.
 
-To do this, we make a[n]{.python} {{< var array >}} called `z` to hold the
+To do this, we make {{< var an_array >}} called `z` to hold the
 100 counts.  We have called the {{< var array >}} `z`, but we could have
 called it anything we liked, such as `counts` or `results` or `cecilia`.
 
@@ -800,7 +800,7 @@ comparing two values — here the value in `s`
 and the value 17.  This comparison, like all comparisons, returns an answer
 that is either {{< var true >}} or {{< var false >}}.  In our case `s`
 has the value 17, so the comparison becomes `17 == 17`, meaning "is 17 equal to
-17", to which the answer is Yes, and {lang sends back {{< var true >}}.
+17?", to which the answer is "Yes", and {{< var lang >}} sends back {{< var true >}}.
 ::::::
 
 We can ask this question of *all 100 counts* by asking the question: is the {{<

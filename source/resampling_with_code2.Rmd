@@ -289,7 +289,7 @@ knowing more about them.
 
 A [NumPy array]{.python}[vector]{.r} is a *container* that stores many
 elements of the same type.  You have already seen, in @sec-resampling-method,
-how we can create a[n]{.python} {{< var array >}} from a sequence of
+how we can create {{< var an_array >}} from a sequence of
 numbers using the [`np.array`]{.python}[`c()`]{.r} function.
 
 ```{python, opts.label="py_ed"}
@@ -331,7 +331,7 @@ that the function will return.
 
 The are various useful things we can do with this {{< var array >}} container.
 One is to ask how many elements there are in the {{< var array >}} container.
-We can use the [`len`]{.python}[`length`]{.r} function to calculate the number of elements in a[n]{.python} {{< var array >}}:
+We can use the [`len`]{.python}[`length`]{.r} function to calculate the number of elements in {{< var an_array >}}:
 
 ```{python, opts.label="py_ed"}
 # Show the number of elements in "z"
@@ -567,7 +567,7 @@ for (i in numbers) {
 ```
 
 When we want to count to a hundred, it becomes laborious to type out the
-numbers. For that, {{< var lang> }} has a shorthand [called `range`]{.python}—very similar to NumPy's `arange`]{.python}:
+numbers. For that, {{< var lang> }} has a shorthand [called `range`—very similar to NumPy's `arange`]{.python}:
 
 ```{python, opts.label="py_ed"}
 for i in range(5):
@@ -654,7 +654,25 @@ z
 
 Finally, we need to count how many of the trials in `z` ended up with all-White juries.  These are the trials with a `z` value of 0.
 
-We can ask this question of *all 100 counts* by asking the question: is the {{< var array >}} `z` equal to 0, like this:
+To do this, we can ask {{< var an_array >}} which elements match a certain condition.  E.g.:
+
+```{python}
+x = np.array([0, 1, 2, 3])
+mask = (x < 2)
+print(mask)
+
+# Select elements that match True values in mask
+print(x[mask])
+```
+
+```{r}
+x <- c(0, 1, 2, 3)
+mask = (x < 2)
+print(mask)
+print(x[mask])
+```
+
+We now use that same technique to ask, of *each of the 100 counts*, whether the {{< var array >}} `z` is equal to 0, like this:
 
 ```{python, opts.label="py_ed"}
 # Is the value of z equal to 0?
