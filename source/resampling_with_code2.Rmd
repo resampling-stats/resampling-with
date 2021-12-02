@@ -658,7 +658,7 @@ To do this, we can ask {{< var an_array >}} which elements match a certain condi
 
 ```{python}
 x = np.array([0, 1, 2, 3])
-mask = (x < 2)
+mask = x < 2
 print(mask)
 
 # Select elements that match True values in mask
@@ -667,7 +667,7 @@ print(x[mask])
 
 ```{r}
 x <- c(0, 1, 2, 3)
-mask = (x < 2)
+mask = x < 2
 print(mask)
 print(x[mask])
 ```
@@ -676,14 +676,14 @@ We now use that same technique to ask, of *each of the 100 counts*, whether the 
 
 ```{python, opts.label="py_ed"}
 # Is the value of z equal to 0?
-all_white = (z == 0)
+all_white = z == 0
 # Show the result of the comparison.
 all_white
 ```
 
 ```{r, opts.label="r_ed"}
 # Is the value of z equal to 0?
-all_white <- (z == 0)
+all_white <- z == 0
 # Show the result of the comparison.
 all_white
 ```
