@@ -27,7 +27,7 @@ source("_common.R")
 
 @sec-resampling-code introduced a problem in probability, that was also a problem in statistics.  We asked how surprised we should be at the results of a trial of a new cancer treatment regime.
 
-Here we study another urgent problem in the real world—racial bias and the
+Here we study another urgent problem in the real world - racial bias and the
 death penalty.
 
 ## A question of life and death
@@ -41,7 +41,7 @@ the eligible jurors in that county were Black, but every member of Swain's
 jury was White.  Swain and his legal team appealed to the Alabama Supreme
 Court, and then to the [US Supreme
 Court](https://en.wikipedia.org/wiki/Swain_v._Alabama), arguing
-that Black jurors were very rarely selected for juries in Talladegna county, even though they made up about a quarter of the eligible pool of jurors.
+that Black jurors were very rarely selected for juries in Talladega county, even though they made up about a quarter of the eligible pool of jurors.
 The US Supreme Court rejected this argument, in a 6 to 3 opinion, writing that
 "The overall percentage disparity has been small and reflects no studied
 attempt to include or exclude a specified number of Negros.".
@@ -58,7 +58,7 @@ person had an equal chance of being selected for the jury.  Call this world Hypo
 
 Just as in 1960's Talladega County, 26% of eligible jurors in Hypothetical
 County are Black.  Hypothetical County jury selection has no bias against
-Black men, so we expect around 26% of the jury to be Black. 0.26 * 12 =
+Black people, so we expect around 26% of the jury to be Black. 0.26 * 12 =
 3.12, so we expect that, on average, just over 3 out of 12 jurors in
 a Hypothetical County jury will be Black.  But, if we select each juror at
 random from the population, that means that, sometimes, by chance, we will have
@@ -99,7 +99,7 @@ Now comes the harder part.  How do we simulate one trial?
 ### One trial
 
 One trial requires 12 jurors, and we are interested only in the race of each juror.
-In our hypothesized world, where selection by race is entirely random, each juror
+In Hypothetical County, where selection by race is entirely random, each juror
 has a 26% chance of being Black.
 
 We need a way of simulating a 26% chance.
