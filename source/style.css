@@ -61,3 +61,16 @@ table caption {
 .lightable-paper {
   width: auto;
 }
+
+.question::before {
+  content: "Question:";
+  font-weight: bold;
+}
+
+.question {
+  border: 1px solid black;
+  background: #F5E1FD;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+}

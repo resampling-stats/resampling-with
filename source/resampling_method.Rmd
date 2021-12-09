@@ -292,25 +292,29 @@ rnd = np.random.default_rng()
 Here are some examples of the random operations we can perform with
 NumPy:
 
-1.  Make a random choice between three words:
+1. Make a random choice between three words:
 
-    ```{python}
-    rnd.choice(['apple', 'orange', 'banana'])
-    ```
+   ```{python}
+   rnd.choice(['apple', 'orange', 'banana'])
+   ```
 
-2.  Make five random choices of three words, using the "size=" argument:
+2. Make five random choices of three words, using the "size=" argument:
 
-    ```{python}
-    rnd.choice(['apple', 'orange', 'banana'], size=5)
-    ```
+   ```{python}
+   rnd.choice(['apple', 'orange', 'banana'], size=5)
+   ```
 
-3.  Shuffle a list of numbers:
+3. Shuffle a list of numbers:
 
-    ```{python}
-    rnd.permutation([1, 2, 3, 4, 5])
-    ```
-:::
+   ```{python}
+   rnd.permutation([1, 2, 3, 4, 5])
+   ```
 
+4. Generate five random numbers between 1 and 10:
+
+   ```{python}
+   rnd.integers(1, 11, size=5)
+   ```
 :::
 
 Recall that we want twenty 10-sided dice — one per ambulance.  Our dice should
@@ -388,14 +392,14 @@ sum(a == 9)
 
 What exactly happens here under the hood?  First `a == 9` creates an sequence
 of values that only contains
-{{< var true_val >}} or {{< var false_val >}}
+{{< var true >}} or {{< var false >}}
 values, depending on whether each element is equal to 9 or not.
 
-Then, we ask {{< var lang >}} to add up (`sum`) only the {{< var true_val >}}
+Then, we ask {{< var lang >}} to add up (`sum`) only the {{< var true >}}
 elements in that sequence.
 
-{{< var lang >}} counts {{< var true_val >}} as 1, and {{< var false_val >}}
-as 0; thus we can use `sum` to count the number of {{< var false_val >}}
+{{< var lang >}} counts {{< var true >}} as 1, and {{< var false >}}
+as 0; thus we can use `sum` to count the number of {{< var false >}}
 values.
 
 This comes down to asking "how many elements in `a` are equal to 9".
