@@ -42,14 +42,27 @@ Robert Swain was a young Black man who was sentenced to death in the early
 the eligible jurors in that county were Black, but every member of Swain's
 jury was White.  Swain and his legal team appealed to the Alabama Supreme
 Court, and then to the [US Supreme
-Court](https://en.wikipedia.org/wiki/Swain_v._Alabama), arguing
-that Black jurors were very rarely selected for juries in Talladega county, even though they made up about a quarter of the eligible pool of jurors.
-The US Supreme Court rejected this argument, in a 6 to 3 opinion, writing that
-"The overall percentage disparity has been small and reflects no studied
-attempt to include or exclude a specified number of Negros.".
+Court](https://en.wikipedia.org/wiki/Swain_v._Alabama), arguing that there was
+racial bias in the jury selection.  They noted that there had been no Black
+jurors in Talladega county since 1950, even though they made up about a
+quarter of the eligible pool of jurors. The US Supreme Court rejected this
+argument, in a 6 to 3 opinion, writing that "The overall percentage disparity
+has been small and reflects no studied attempt to include or exclude a
+specified number of Negros.".
 
-Swain's team presented a lot of evidence on bias in jury selection, but here we will look at the obvious and apparently surprising fact that Swain's jury was entirely White.
-The Supreme Court decided that the "disparity" between selection of White and Black jurors "has been small" — but how would they, and how would we, make a rational decision about whether this disparity *really* was "small"?
+Swain's team presented a variety of evidence on bias in jury selection, but
+here we will look at the obvious and apparently surprising fact that Swain's
+jury was entirely White. The Supreme Court decided that the "disparity"
+between selection of White and Black jurors "has been small" — but how would
+they, and how would we, make a rational decision about whether this disparity
+*really* was "small"?
+
+You might reasonably be worried about the result of this decision for Robert
+Swain.  In fact his death sentence was invalidated by a [later, unrelated
+decision](https://en.wikipedia.org/wiki/Furman_v._Georgia) and he served a
+long prison sentence instead. In 1986, the Supreme Court overturned the
+precedent set by Swain's case, in [Batson v. Kentucky, 476 U.S.
+79](https://supreme.justia.com/cases/federal/us/476/79).
 
 ## A small disparity and a hypothetical world
 
@@ -632,7 +645,7 @@ author_birth_years <- c(1932, 1964, 1980, 1944)
 # For each birth year
 for (birth_year in author_birth_years) {
     # Repeat this procedure ...
-    message('Author birth year is', birth_year)
+    message('Author birth year is ', birth_year)
 }
 ```
 
@@ -709,13 +722,13 @@ print('Author birth year is', birth_year)
 
 ```{r, opts.label="r_ed"}
 birth_year <- 1932  # Set the loop variable to contain the first value.
-message('Author birth year is', birth_year)  # Use the first value.
+message('Author birth year is ', birth_year)  # Use the first value.
 birth_year <- 1964  # Set the loop variable to contain the next value.
-message('Author birth year is', birth_year)  # Use the second value.
+message('Author birth year is ', birth_year)  # Use the second value.
 birth_year <- 1980
-message('Author birth year is', birth_year)
+message('Author birth year is ', birth_year)
 birth_year <- 1944
-message('Author birth year is', birth_year)
+message('Author birth year is ', birth_year)
 ```
 
 Writing the steps in the `for` loop out like this is called *unrolling* the
@@ -734,7 +747,7 @@ for n in np.arange(0, 4):
 
 ```{r, opts.label="r_ed"}
 for (n in 1:4) {
-    message('The loop variable n is', n)
+    message('The loop variable n is ', n)
 }
 ```
 
@@ -787,7 +800,7 @@ Again, remember Python considers 0 as the first position.
 ```{r, opts.label="r_ed"}
 for (n in 1:4) {
     year <- author_birth_years[n]
-    message('Birth year of author position', n, 'is', year)
+    message('Birth year of author position ', n, ' is ', year)
 }
 ```
 
@@ -809,10 +822,10 @@ print('Birth year of author position', n, 'is', year)
 # Unrolling the for loop.
 n <- 1
 year <- author_birth_years[n]  # Will be 1932
-message('Birth year of author position', n, 'is', year)
+message('Birth year of author position ', n, ' is ', year)
 n <- 2
 year <- author_birth_years[n]  # Will be 1964
-message('Birth year of author position', n, 'is', year)
+message('Birth year of author position ', n, ' is ', year)
 # And so on.
 ```
 
@@ -897,14 +910,14 @@ juries.  These are the trials with a `z` (count) value of 0.
 To do this, we can ask {{< var an_array >}} which elements match a certain
 condition.  E.g.:
 
-```{python}
+```{python, opts.label="py_ed"}
 x = np.array([2, 1, 3, 0])
 y = x < 2
 # Show the result
 y
 ```
 
-```{r}
+```{r, opts.label="r_ed"}
 x <- c(2, 1, 3, 0)
 y = x < 2
 # Show the result
@@ -965,6 +978,78 @@ p <- n_all_white / 50
 p
 ```
 
-From this simulation experiment, we see that there is roughly a 2% chance that
-a jury selected randomly from the population, which was 26% Black, would have
-no Black jurors.
+From this initial simulation, it seems there is around a
+`r round(get_var('p') * 100, 1)`% chance that a jury selected randomly from
+the population, which was 26% Black, would have no Black jurors.
+
+## Many many trials
+
+Our experiment above is only 50 simulated trials.  The higher the number of
+trials, the more confident we can be of our estimate for `p` — the proportion of trials where we get an all-White jury.
+
+It is no extra trouble for us to tell the computer to do a very large number
+of trials.  For example, we might want to run 10,000 trials instead of 50.
+All we have to do is to run the loop 10,000 times instead of 50 times. The
+computer has to do more work, but it is more than up to the job.
+
+Here is exactly the same code we ran above, but collected into one {{< var
+cell >}}, and using 10,000 trials instead of 50.  We have left out the
+comments, to make the code more compact.
+
+```{python, opts.label="py_ed"}
+# Full simulation procedure, with 10,000 trials.
+rnd = np.random.default_rng()
+zero_through_99 = np.arange(0, 100)
+# 10,000 trials.
+z = np.zeros(10000)
+for i in np.arange(0, 10000):
+    a = rnd.choice(zero_through_99, 12)
+    b = np.sum(a > 74)
+    z[i] = b
+all_white = z == 0
+n_all_white = sum(all_white)
+p = n_all_white / 10000
+p
+```
+
+```{r, opts.label="r_ed"}
+# Full simulation procedure, with 10,000 trials.
+z <- numeric(10000)
+for (i in 1:10000) {
+    a <- sample(0:99, 12, replace=TRUE)
+    b <- sum(a > 74)
+    z[i] = b
+}
+all_white <- z == 0
+n_all_white <- sum(all_white)
+p <- n_all_white / 10000
+p
+```
+
+We now have a new, more accurate estimate of the proportion of Hypothetical County juries with all-White juries. The proportion is
+`r round(get_var('p'), 3)`, and so
+`r round(get_var('p') * 100, 1)`%.
+
+This proportion means that, for any one jury from Hypothetical County, there
+is a less than one in 20 chance that the jury would be all White.
+
+As we will see in more detail later, we might consider using the results from
+this experiment in Hypothetical County, to reflect on the result we saw in the
+real Talladega County.  We might conclude, for example, that there was likely
+some systematic difference between Hypothetical County and Talledega County.
+Maybe the difference was that there was, in fact, some bias in the jury
+selection in Talledega county, and that the Supreme Court was wrong to reject
+this.  You will hear more of this line of reasoning later in the book.
+
+## Conclusion
+
+In this chapter we studied a real life-and-death question, on racial bias and
+the death penalty.   We continued our exploration of the ways we can use
+probability, and resampling, to draw conclusions about real events.  Along the
+way, we went into more detail on {{< var array >}}s in {{< var lang >}}, and
+`for` loops; two basic tools in resampling.
+
+In the next chapter, we will work through some more problems in probability,
+to show how we can use resampling, to answer questions about chance.   We will
+add some more tools for writing code in {{< var lang >}}, to make your
+programs easier to write, read, and understand.

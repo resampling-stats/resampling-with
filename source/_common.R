@@ -3,8 +3,7 @@
 # Quarto variables for later use.
 ._spec <- yaml::yaml.load_file(input = '_quarto.yml')
 
-# Code execution and outputs
-set.seed(1014)
+# Code outputs
 options(digits = 3)
 
 knitr::opts_chunk$set(
@@ -29,6 +28,11 @@ knitr::opts_template$set(r_ed = list(eval=is_r_ed, echo=is_r_ed),
 # For Python code.
 library(reticulate)
 
+# Make code output more predictable.
+._seed <- 1014
+set.seed(._seed)
+py_set_seed(._seed)
+
 # Nice-looking table.
 ketable <- function(df, caption) {
   rt <- kableExtra::kable(df, caption = caption, booktabs = T)
@@ -43,6 +47,7 @@ ketable <- function(df, caption) {
     position = "center"
   )
 }
+
 
 # Including SVG
 # https://stackoverflow.com/a/56044642/1939576

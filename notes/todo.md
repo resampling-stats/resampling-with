@@ -49,4 +49,12 @@ Conditional chunks depending on output format:
 
 Chase up Hollander and Wolfe reference from end of chapter 18, p295.
 
+## Swain jury
 
+https://supreme.justia.com/cases/federal/us/380/202/
+
+> Purposeful racial discrimination is not satisfactorily established by
+showing only that an identifiable group has been underrepresented by as much
+as 10%. P. 380 U. S. 208.
+
+Redo simulation with proportion 0.26 * 0.9 = 0.234
