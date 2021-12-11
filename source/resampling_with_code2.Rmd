@@ -201,8 +201,9 @@ the integers starting at 0 and including 5.
 
 #### Random numbers from 0 through 99
 
-We can now use {{< var np_or_r >}} and the random number functions from the
-last chapter to get 12 random numbers from 0 through 99.
+We can now use {{< var np_or_r >}} and
+[the random number functions]{.python}[`sample`]{.r}
+from the last chapter to get 12 random numbers from 0 through 99.
 
 ```{python, opts.label="py_ed"}
 # Ask NumPy for a random number generator.
@@ -559,10 +560,10 @@ does for the items in your shopping basket.  You might say that they do this:
 > For each item of shopping in your basket, they take the item off the conveyor
 > belt, scan it, and put it on the other side of the till.
 
-You could also break this description up into bullet points, to say the same
-thing:
+You could also break this description up into bullet points with indentation,
+to say the same thing:
 
-* For each item from your shopping basket:
+* For each item from your shopping basket, they:
   * Take the item off the conveyor belt.
   * Scan the item.
   * Put it on the other side of the till.
@@ -572,7 +573,7 @@ of a series of items.
 
 This is the logic of the `for` loop in {{< var lang >}}.  The procedure that
 {{< var lang >}} repeats is called the *body of the for loop*.  In the example
-of the checkout person above, the body of the for loop is:
+of the checkout person above, the repeating procedure is:
 
   * Take the item off the conveyor belt.
   * Scan the item.
@@ -660,14 +661,14 @@ for (birth_year in author_birth_years) {
 ```
 
 This *initial line* of the `for` loop ends with an *opening curly brace* `{`.
-The opening curly brace tells R that what follows is the procedure R should
-follow for each item.  The procedure of the `for` loop is the lines of code
-between the opening curly brace (`{`), and the closing curly brace (`}`).  The
-lines *between the curly braces* are the *body of the for loop*.
+The opening curly brace tells R that what follows, up until the matching
+closing curly brace `}`, is the procedure R should follow for each item.   The
+lines between the opening `{` and closing `}` curly braces* are the *body of
+the for loop*.
 :::
 
-The initial line of the `for` loop about tells {{< var lang >}} that it should
-take *each item* in `author_birth_years`, one by one, first 1932, then 1964,
+The initial line of the `for` loop above tells {{< var lang >}} that it should
+take *each item* in `author_birth_years`, one by one — first 1932, then 1964,
 then 1980, then 1944.  For each of these numbers it will:
 
 * Put the number into the variable `birth_year`, then
@@ -675,16 +676,16 @@ then 1980, then 1944.  For each of these numbers it will:
 
 Just as the person at the supermarket checkout takes each item in turn, for
 each iteration (repeat) of the `for` loop, `birth_year` gets a new value from
-the sequence in `author_birth_years`.  `birth_year` is called the
-*loop variable*, because it is the variable that gets a new value each time we
-go through the `for` loop procedure.  As for any variable in {{< var lang >}},
-we can call our loop variable anything we like.  We used `birth_year` here, but
-we could have used `y` or `year` or some other name.
+the sequence in `author_birth_years`. `birth_year` is called the *loop
+variable*, because it is the variable that gets a new value each time we begin
+a new iteration of the `for` loop procedure.  As for any variable in {{< var
+lang >}}, we can call our loop variable anything we like. We used `birth_year`
+here, but we could have used `y` or `year` or some other name.
 
 ::: r
 
-Notice that R insists we put parentheses (round brackets) around the loop
-variable, `in` and the sequence that will fill the loop variable — like this:
+Notice that R insists we put parentheses (round brackets) around: the loop
+variable; `in`; and the sequence that will fill the loop variable — like this:
 
 ```
 for (birth_year in author_birth_years) {
@@ -719,11 +720,10 @@ message('Author birth year is', birth_year)
 ```
 
 Writing the steps in the `for` loop out like this is called *unrolling* the
-`for` loop.  It can be a useful exercise to do this when you come across a
-`for` loop, in order to work through the logic of the loop. For example, you
-may want to write out the unrolled equivalent of the first couple of iterations,
-to see what the loop variable will be, and what will happen in the body of the
-loop.
+loop.  It can be a useful exercise to do this when you come across a `for`
+loop, in order to work through the logic of the loop. For example, you may want
+to write out the unrolled equivalent of the first couple of iterations, to see
+what the loop variable will be, and what will happen in the body of the loop.
 
 We often use `for` loops with ranges.  Here we use a loop to print out the
 numbers [0 through 3]{.python}[1 through 4]{.r}:
@@ -738,9 +738,10 @@ for (n in 1:4) {
     message('The loop variable n is', n)
 ```
 
-Notice that we repeated the loop body 4 times.  We can also use the value from
-the range as an *index*, to get or set the first, second, etc values from {{<
-var an_array >}}.
+Notice that the range ended at
+[(the number before)]{.python} 4, and that means we repeat the loop body 4
+times.  We can also use the loop variable value from the range as an *index*,
+to get or set the first, second, etc values from {{< var an_array >}}.
 
 For example, maybe we would like to show the author position *and* the author
 year of birth.
@@ -774,9 +775,9 @@ Using the combination of looping over a range, and {{< var array >}} indexing,
 we can print out the author position *and* the author birth year:
 
 ```{python, opts.label="py_ed"}
-for position in np.arange(0, 4):
-    year = author_birth_year[position]
-    print('Birth year of author position', position, 'is', year)
+for n in np.arange(0, 4):
+    year = author_birth_year[n]
+    print('Birth year of author position', n, 'is', year)
 ```
 
 ::: python
@@ -784,9 +785,9 @@ Again, remember Python considers 0 as the first position.
 :::
 
 ```{r, opts.label="r_ed"}
-for (position in 1:4) {
-    year <- author_birth_year[position]
-    message('Birth year of author position', position, 'is', year)
+for (n in 1:4) {
+    year <- author_birth_year[n]
+    message('Birth year of author position', n, 'is', year)
 }
 ```
 
@@ -795,23 +796,23 @@ loop, to remind ourselves what the code is doing:
 
 ```{python, opts.label="py_ed"}
 # Unrolling the for loop.
-position = 0
-year = author_birth_year[position]  # Will be 1932
-print('Birth year of author position', position, 'is', year)
-position = 1
-year = author_birth_year[position]  # Will be 1964
-print('Birth year of author position', position, 'is', year)
+n = 0
+year = author_birth_year[n]  # Will be 1932
+print('Birth year of author position', n, 'is', year)
+n = 1
+year = author_birth_year[n]  # Will be 1964
+print('Birth year of author position', n, 'is', year)
 # And so on.
 ```
 
 ```{r, opts.label="r_ed"}
 # Unrolling the for loop.
-position <- 1
-year <- author_birth_year[position]  # Will be 1932
-message('Birth year of author position', position, 'is', year)
-position <- 2
-year <- author_birth_year[position]  # Will be 1964
-message('Birth year of author position', position, 'is', year)
+n <- 1
+year <- author_birth_year[n]  # Will be 1932
+message('Birth year of author position', n, 'is', year)
+n <- 2
+year <- author_birth_year[n]  # Will be 1964
+message('Birth year of author position', n, 'is', year)
 # And so on.
 ```
 
@@ -842,8 +843,8 @@ b
 ```
 
 We found that we could use {{< var array >}}s to store the results of these
-trials, and that we could use `for` loops to do many repeats of steps like
-those for a single trial.
+trials, and that we could use `for` loops to repeat the same procedure many
+times.
 
 Now we can put these parts together to do 50 simulated trials:
 
@@ -893,7 +894,7 @@ z
 ```
 
 Finally, we need to count how many of the trials in `z` ended up with all-White
-juries.  These are the trials with a `z` value of 0.
+juries.  These are the trials with a `z` (count) value of 0.
 
 To do this, we can ask {{< var an_array >}} which elements match a certain
 condition.  E.g.:
