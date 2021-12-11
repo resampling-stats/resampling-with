@@ -13,11 +13,11 @@ python-book:
 r-book:
 	cd $(SOURCE_DIR) && make r-html-book
 
-python-all: source-clean
-	cd $(SOURCE_DIR) && make python-all
+python-all:
+	cd $(SOURCE_DIR) && make clean && make python-all
 
-r-all: source-clean
-	cd $(SOURCE_DIR) && make r-all
+r-all:
+	cd $(SOURCE_DIR) && make clean && make r-all
 
 landing-page:
 	cd website && make landing-page
