@@ -722,7 +722,7 @@ We will go into more detail on how this works in the next chapter.
 z = np.zeros(100)
 
 # Repeat the trial procedure 100 times.
-for i in np.range(100):
+for i in np.arange(100):
     # Get 17 values from the *some_numbers* array.
     # Store the 17 numbers with the name "a".
     a = rnd.choice(some_numbers, 17)
