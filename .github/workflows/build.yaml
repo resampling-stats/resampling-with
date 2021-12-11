@@ -38,8 +38,8 @@ jobs:
       - name: Install quarto
         run: |
           sudo apt install -y curl
-          curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v0.2.347/quarto-0.2.62-amd64.deb
-          sudo dpkg --install quarto-0.2.347-amd64.deb
+          curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v0.2.347/quarto-0.2.347-linux-amd64.deb
+          sudo dpkg --install quarto-0.2.347-linux-amd64.deb
 
       - uses: actions/setup-python@v1
         with:
