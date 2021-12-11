@@ -174,9 +174,11 @@ Here we stop to emphasize the steps in the process of a random simulation.
    from one simulation trial.
 4. We *repeat* the simulated trial procedure many times, and collect the
    results from each trial.  Say we repeat the trial procedure 100 times; we
-   will this a *run* of 100 trials.
+   will call this a *run* of 100 trials.
 5. We *count* the number of trials with an outcome that matches the outcome we
-   are interested in. In this case we are interested in the outcome 17 out of 17 cured, so we count the number of trials with a score of 17.  Say 15 out of the run of 100 trials had an outcome of 17 cured. That is our *count*.
+   are interested in. In this case we are interested in the outcome 17 out of
+   17 cured, so we count the number of trials with a score of 17.  Say 15 out
+   of the run of 100 trials had an outcome of 17 cured. That is our *count*.
 6. Finally we divide the count by the number of trials to get the *proportion*.
    From the example above, we divide 15 by 100 to 0.15 (15%).  This is our
    estimate of the chance of seeing 17 out of 17 patients cured in any one
@@ -789,6 +791,7 @@ value 17 to the variable `s`.
 
 The code `s == 17` has a completely different meaning.
 :::
+
 ::: r
 ## Double equals
 
@@ -800,7 +803,8 @@ comparing two values — here the value in `s`
 and the value 17.  This comparison, like all comparisons, returns an answer
 that is either {{< var true >}} or {{< var false >}}.  In our case `s`
 has the value 17, so the comparison becomes `17 == 17`, meaning "is 17 equal to
-17?", to which the answer is "Yes", and {{< var lang >}} sends back {{< var true >}}.
+17?", to which the answer is "Yes", and {{< var lang >}} sends back {{< var
+true >}}.
 ::::::
 
 We can ask this question of *all 100 counts* by asking the question: is the {{<
@@ -820,7 +824,9 @@ were_cured <- z == 17
 were_cured
 ```
 
-Finally we use `sum` to count the number of {{< var true >}} values in the `were_cured` {{< var array >}}, to give the number of trials where all 17 patients were cured.
+Finally we use `sum` to count the number of {{< var true >}} values in the
+`were_cured` {{< var array >}}, to give the number of trials where all 17
+patients were cured.
 
 ```{python, opts.label="py_ed"}
 # Count the number of True values in "were_cured"

@@ -438,7 +438,10 @@ Of course {{< var lang >}} is very good at repeating things, but the instruction
 spend some time going over it in more detail.  For now though, we show you how
 what it looks like, and ask you to take our word for it.
 
-The standard way to repeat steps in {{< var lang >}} is a `for` loop.  For example, let us say we wanted to display (`print`) "Hello" five times.  Here is how we would do that with a `for` loop:
+The standard way to repeat steps in {{< var lang >}} is a `for` loop.  For
+example, let us say we wanted to display
+[(`print`)]{.python})
+"Hello" five times.  Here is how we would do that with a `for` loop:
 
 ```{python, opts.label="py_ed"}
 # Read the next line as "repeat the following steps five times".
@@ -454,7 +457,7 @@ for (i in 1:5) {
     # The stuff between the curly brackets is the code we
     # repeat five times.
     # Print "Hello" to the screen.
-    print("Hello")
+    message("Hello")
 }
 ```
 
@@ -583,7 +586,7 @@ where 4 or more defective ambulances are seen to occur. Then we divide the
 number in `k` by 1000, the number of trials. Thus we obtain an estimate of the
 chance, expressed as a probability between 0 and 1, that 4 or more ambulances
 will be defective on a given day. And we store that result in a location that
-we call `kk`, which is subsequently printed to screen.
+we call `kk`, which {{< var lang >}} subsequently prints to the screen.
 
 ```{python, opts.label="py_ed"}
 # How many trials resulted in more than 3 ambulances out of order?
@@ -603,8 +606,8 @@ k <- sum(z > 3)
 # Convert to a proportion.
 kk <- k / 1000
 
-# Print the result.
-print(kk)
+# Show the result.
+message(kk)
 ```
 
 This is the estimate we wanted; the proportion of days where more than three
@@ -642,7 +645,7 @@ for (i in 1:1000) {
 
 k <- sum(z > 3)
 kk <- k / 1000
-print(kk)
+message(kk)
 ```
 
 ::::::

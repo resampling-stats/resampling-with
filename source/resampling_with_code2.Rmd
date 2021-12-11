@@ -478,13 +478,58 @@ z
 
 Of course we could just keep doing this: run the {{< var cell >}} corresponding
 to a trial, above, to get a new count, and then store it at the next position
-in the `z` {{< var array >}} with:
-[`z[1] = count`]{.python}[`z[2] <- count`]{.r},
-and so on, but that also looks like a task that the computer is well-suited
-for.  And indeed it is, because {{< var lang >}} has an excellent way of
-repeating the same set of steps many times — the `for` loop.  You have already seen a
-preview of the `for` loop in @sec-resampling-method. Here we dive into them in
-more depth.
+in the `z` {{< var array >}}. For example, we could simulate the first three
+trials with:
+
+```{python, opts.label="py_ed"}
+# First trial
+a = rnd.integers(0, 100, 12)
+b = np.sum(a > 74)
+# Store the result at the first position in z
+# Remember, the first position is offset 0.
+z[0] = b
+# Second trial
+a = rnd.integers(0, 100, 12)
+b = np.sum(a > 74)
+# Store the result at the second position in z
+z[1] = b
+# Third trial
+a = rnd.integers(0, 100, 12)
+b = np.sum(a > 74)
+# Store the result at the third position in z
+z[2] = b
+
+# And so on ...
+```
+
+
+```{r, opts.label="r_ed"}
+# First trial
+a <- sample(0:99, 12, replace=TRUE)
+b <- sum(a == 9)
+# Store the result at the first position in z
+z[1] <- b
+
+# Second trial
+a <- sample(0:99, 12, replace=TRUE)
+b <- sum(a == 9)
+# Store the result at the second position in z
+z[2] <- b
+
+# Third trial
+a <- sample(0:99, 12, replace=TRUE)
+b <- sum(a == 9)
+# Store the result at the third position in z
+z[3] <- b
+
+# And so on ...
+```
+
+This would get terribly long and boring to type for 100 trials.  One task that
+computer code is very good at, is repeating the same procedure many times.
+For example, {{< var lang >}} can do this using a `for` loop. You have already
+seen a preview of the `for` loop in @sec-resampling-method. Here we dive into
+`for` loops in more depth.
 
 :::{.callout-box}
 ### For-loops in {{< var lang >}}
@@ -510,8 +555,10 @@ for (item in items) {
 
 Here, the robot is working its way through three items: a shoe, a saddle, and a jacket.
 Every time that a new object arrives in front of it, that object is assigned the label `item`.
-The [indented block of code under]{.python}[block of code inside]{.r} the `for` is executed for each one, and in this code block `label` can be accessed.
-You will also notice us using a new function: [`print`]{.python}[`message`]{.r}. This function receives several arguments, and then prints them out to screen.
+The [indented block of code under]{.python}[block of code inside]{.r} the `for`
+is executed for each one, and in this code block `label` can be accessed. You
+will also notice us using a new function: [`print`]{.python}[`message`]{.r}.
+This function receives several arguments, and then prints them out to screen.
 
 The code above can be unpacked into the following equivalent program:
 
