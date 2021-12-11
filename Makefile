@@ -13,16 +13,16 @@ python-book:
 r-book:
 	cd $(SOURCE_DIR) && make r-html-book
 
-python-all:
+python-all: source-clean
 	cd $(SOURCE_DIR) && make python-all
 
-r-all:
+r-all: source-clean
 	cd $(SOURCE_DIR) && make r-all
 
 landing-page:
 	cd website && make landing-page
 
-website: clean python-all source-clean r-all landing-page
+website: clean python-all r-all landing-page
 	mkdir -p $(WEB_DIR)
 	cp website/*.html $(WEB_DIR)
 	cp requirements.txt $(WEB_DIR)
