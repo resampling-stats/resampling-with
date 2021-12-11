@@ -1,5 +1,12 @@
 # To do
 
+## Check Boolean array exposition
+
+We have some in resampling_with_code2, and some before, but this is a hard
+topic, and we should put more exposition time into it.
+
+## Strings
+
 ## Gently work up to using `choice` with `p`
 
 We want to get to using `choice(['foo', 'bar'], p=[0.7, 0.3])`

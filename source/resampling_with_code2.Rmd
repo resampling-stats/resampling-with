@@ -458,7 +458,7 @@ give different counts.
 rnd = np.random.default_rng()
 zero_thru_99 = np.arange(0, 100)
 # Get 12 random numbers from 0 through 99
-a = rnd.integers(zero_thru_99, 12)
+a = rnd.choice(zero_thru_99, 12)
 # How many numbers are greater than 74?
 b = np.sum(a > 74)
 # Show the result
@@ -545,7 +545,6 @@ example, {{< var lang >}} can do this using a `for` loop. You have already seen
 a preview of the `for` loop in @sec-resampling-method. Here we dive into `for`
 loops in more depth.
 
-:::{.callout-box}
 ### For-loops in {{< var lang >}}
 
 A for-loop is a way of asking {{< var lang >}} to:
@@ -628,7 +627,7 @@ for birth_year in author_birth_years:
 ```
 
 ```{r, opts.label="r_ed"}
-author_birth_years = c(1932, 1964, 1980, 1944)
+author_birth_years <- c(1932, 1964, 1980, 1944)
 
 # For each birth year
 for (birth_year in author_birth_years) {
@@ -736,6 +735,7 @@ for n in np.arange(0, 4):
 ```{r, opts.label="r_ed"}
 for (n in 1:4) {
     message('The loop variable n is', n)
+}
 ```
 
 Notice that the range ended at
@@ -752,14 +752,14 @@ Remember our author birth years:
 author_birth_years
 ```
 
-```{r, opts.label="e_ed"}
+```{r, opts.label="r_ed"}
 author_birth_years
 ```
 
 We can get (for example) the second author birth year with:
 
 ```{python, opts.label="py_ed"}
-author_birth_year[1]
+author_birth_years[1]
 ```
 
 ::: python
@@ -768,7 +768,7 @@ position 1.
 :::
 
 ```{r, opts.label="r_ed"}
-author_birth_year[2]
+author_birth_years[2]
 ```
 
 Using the combination of looping over a range, and {{< var array >}} indexing,
@@ -776,7 +776,7 @@ we can print out the author position *and* the author birth year:
 
 ```{python, opts.label="py_ed"}
 for n in np.arange(0, 4):
-    year = author_birth_year[n]
+    year = author_birth_years[n]
     print('Birth year of author position', n, 'is', year)
 ```
 
@@ -786,7 +786,7 @@ Again, remember Python considers 0 as the first position.
 
 ```{r, opts.label="r_ed"}
 for (n in 1:4) {
-    year <- author_birth_year[n]
+    year <- author_birth_years[n]
     message('Birth year of author position', n, 'is', year)
 }
 ```
@@ -797,10 +797,10 @@ loop, to remind ourselves what the code is doing:
 ```{python, opts.label="py_ed"}
 # Unrolling the for loop.
 n = 0
-year = author_birth_year[n]  # Will be 1932
+year = author_birth_years[n]  # Will be 1932
 print('Birth year of author position', n, 'is', year)
 n = 1
-year = author_birth_year[n]  # Will be 1964
+year = author_birth_years[n]  # Will be 1964
 print('Birth year of author position', n, 'is', year)
 # And so on.
 ```
@@ -808,15 +808,13 @@ print('Birth year of author position', n, 'is', year)
 ```{r, opts.label="r_ed"}
 # Unrolling the for loop.
 n <- 1
-year <- author_birth_year[n]  # Will be 1932
+year <- author_birth_years[n]  # Will be 1932
 message('Birth year of author position', n, 'is', year)
 n <- 2
-year <- author_birth_year[n]  # Will be 1964
+year <- author_birth_years[n]  # Will be 1964
 message('Birth year of author position', n, 'is', year)
 # And so on.
 ```
-
-:::
 
 ### Putting it all together
 
