@@ -8,15 +8,14 @@ grep ed2_fname *.Rmd | grep -v _main | sed 's/:.*ed2_fname//' | sort -t ':' -k 2
 
 preface_third.Rmd: ""
 preface_second.Rmd: 01-Preface
-intro.Rmd: 02-Intro
+intro.Rmd: 02-Intro, 04-Afternote-2
 monty_hall.Rmd: ""
 dramatizing_resampling.Rmd: 03-Afternote-1
 resampling_method.Rmd: 05-Chap-1
 about_technology.Rmd: null
 resampling_with_code.Rmd: null
 resampling_with_code2.Rmd: null
-basic_probability_1.Rmd: 06-Chap-2
-basic_probability_2.Rmd: 07-Chap-3
+what_is_probability.Rmd: 06-Chap-2, 07-Chap-3
 probability_theory_1a.Rmd: 08-Chap-4
 probability_theory_1b.Rmd: 09-Chap-5
 probability_theory_2_compound.Rmd: 10-Chap-6
