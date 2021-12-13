@@ -22,7 +22,7 @@ resampling_with:
 # Point Estimation
 
 One of the great questions in statistical inference is: How big is it?
-This can mean---How long? How deep? How much time? At what angle?
+This can mean — How long? How deep? How much time? At what angle?
 
 This question about size may pertain to a single object, of which there
 are many measurements; an example is the location of a star in the
@@ -102,11 +102,11 @@ will vote for the Democrat in the general election?
 
 Your intuitive best guess is that the proportion of the
 "universe"---which is composed of voters in the general election, in
-this case---will be the same as the proportion of the sample. That is,
+this case — will be the same as the proportion of the sample. That is,
 58 percent = 29/50 is likely to be your guess about the proportion that
 will vote Democratic. Of course, your estimate may be too high or too
-low in this particular case, but in the long run---that is, if you take
-many samples like this one---on the average the sample mean will equal
+low in this particular case, but in the long run — that is, if you take
+many samples like this one — on the average the sample mean will equal
 the universe (population) proportion, for reasons to be discussed later.
 
 The sample mean seems to be the "natural" estimator of the population
@@ -124,7 +124,7 @@ Another way of saying much the same thing: If a sample has been drawn
 randomly, each single observation is a representative estimator of the
 mean; if you only have one observation, that observation is your best
 guess about the center of the distribution (if you have no reason to
-believe that the distribution of the population is peculiar---such as
+believe that the distribution of the population is peculiar — such as
 not being symmetrical). And therefore the sum of 2, 3...n of such
 observations (divided by their number) should have that same property,
 based on basic principles.
@@ -164,8 +164,8 @@ frequently produces the same answer as the method of moments, but in
 some situations the estimates differ. Furthermore, the logic of the
 maximum-likelihood principle is important.
 
-Consider that you draw without replacement six balls---2 black and 4
-white---from a bucket that contains twenty balls. What would you guess is
+Consider that you draw without replacement six balls — 2 black and 4
+white — from a bucket that contains twenty balls. What would you guess is
 the composition of the bucket from which they were drawn? Is it likely that
 those balls came from a bucket with 4 white and 16 black balls? Rather
 obviously not, because it would be most unusual to get all the 4 white
@@ -173,7 +173,7 @@ balls in your draw. Indeed, we can estimate the probability of that
 happening with simulation or formula to be about .003.
 
 How about a bucket with 2 black and 18 whites? The probability is much
-higher than with the previous bucket, but it still is low---about .075.
+higher than with the previous bucket, but it still is low — about .075.
 
 Let us now estimate the probabilities for all buckets across the range of
 probabilities. In Figure 13-1 we see that the bucket with the highest
@@ -181,7 +181,7 @@ probability of producing the observed sample has the same proportions of
 black and white balls as does the sample. This is called the "maximum
 likelihood universe." Nor should this be very surprising, because that
 universe obviously has an equal chance of producing samples with
-proportions below and above that observed proportion---as was discussed
+proportions below and above that observed proportion — as was discussed
 in connection with the method of moments.
 
 We should note, however, that the probability that even such a
@@ -240,8 +240,8 @@ Concerning representativeness: We want a procedure that will not be
 systematically in error in one direction or another. In technical terms,
 we want an "unbiased estimate," if possible. "Unbiased" in this case
 does not mean "friendly" or "unprejudiced," but rather implies that on
-the average---that is, in the long run, after taking repeated
-samples---estimates that are too high will about balance (in percentage
+the average — that is, in the long run, after taking repeated
+samples — estimates that are too high will about balance (in percentage
 terms) those that are too low. The mean of the universe (or the
 proportion, if we are speaking of two-valued "binomial situations") is a
 frequent object of our interest. And the sample mean is (in most cases)
@@ -257,7 +257,7 @@ of a sample proportion is largest when the population proportion is near
 
 The statement that the sample mean is an unbiased estimate of the
 population mean holds for *many but not all kinds* of
-samples---proportions of two-outcome (Democrat-Republican) events (as in
+samples — proportions of two-outcome (Democrat-Republican) events (as in
 this case) and also the means of many measured-data universes (heights,
 speeds, and so on) that we will come to later.
 
@@ -267,8 +267,8 @@ won't reach the level of formal proof. This discussion applies to
 conventional analytic statistical theory as well as to the resampling
 approach.
 
-We want to know why the mean of a repeated sample---or the proportion,
-in the case of a binomial universe---tends to equal the mean of the
+We want to know why the mean of a repeated sample — or the proportion,
+in the case of a binomial universe — tends to equal the mean of the
 universe (or the proportion of a binomial sample). Consider a population
 of one thousand voters. Split the population into random sub-populations
 of 500 voters each; let's call these sub-populations by the name
@@ -287,7 +287,7 @@ would choose each of these two samples about half the time (as you would
 if you selected between the two samples randomly) the average of the
 sample proportions would be (68 percent + 52 percent)/2 = 60 percent.
 This shows that on the average the sample proportion is a fair and
-unbiased estimate of the population proportion---if the sample is half
+unbiased estimate of the population proportion — if the sample is half
 the size of the population.
 
 If we now sub-divide each of our two samples of 500 (each of which was
@@ -301,7 +301,7 @@ proportion of a 250-voter sample is an unbiased estimate of the
 500-voter sample is an unbiased estimate of the 1000-voter population,
 then the proportion of a 250-voter sample should be an unbiased estimate
 of the population proportion. And if so, this argument should hold for
-samples of 1/2 x 250 = 125, and so on---in fact for *any* size sample.
+samples of 1/2 x 250 = 125, and so on — in fact for *any* size sample.
 
 The argument given above is not a rigorous formal proof. But I doubt
 that the non-mathematician needs, or will benefit from, a more formal
@@ -355,7 +355,7 @@ will be the same no matter what consequences are considered.
 
 So far we have discussed how to make a point estimate, and criteria of
 good estimators. We also are interested in estimating the accuracy of
-that estimate. That subject---which is harder to grapple with---is
+that estimate. That subject — which is harder to grapple with — is
 discussed in Chapters 20 and 21 on confidence intervals.
 
 Most important: One cannot sensibly talk about the accuracy of
@@ -484,11 +484,11 @@ fraught with complications. Still, maybe it is no more complicated than
 deciding what describer to use for a population. This entire matter is
 much more complex than it appears at first glance.
 
-When the sample size approaches in size the entire population---when the
+When the sample size approaches in size the entire population — when the
 sample becomes closer and closer to being the *same* as the
-population---the two issues blend. What does that tell us? Anything?
+population — the two issues blend. What does that tell us? Anything?
 What is the relationship between a baseball player's average for two
-weeks, and his/her lifetime average? This is subtle stuff---rivaling the
+weeks, and his/her lifetime average? This is subtle stuff — rivaling the
 subtleness of arguments about inference versus probability, and about
 the nature of confidence limits (see Chapters 20 and 21). Maybe the only
 solid answer is to try to stay super-clear on what you are doing for
@@ -505,7 +505,7 @@ cannot put confidence intervals around your estimate of the proportion
 of black balls, except to say that the proportion is somewhere between 1
 and 0. No one would proceed without bringing in more information. That
 is, when there is almost no information, you simply cannot make much of
-an estimate---and the resampling method breaks down, too. It does not
+an estimate — and the resampling method breaks down, too. It does not
 help much to shift the discussion to the models of the buckets, because
 then the issue is the unknown population of the buckets, in which case we
 need to bring in our general knowledge. b) When the sample size equals
@@ -520,7 +520,7 @@ pute the amount for all twelve family members. In such a case, the
 interpretation of the mean becomes complex.
 
 Underlying all estimation is the assumption of continuation, which
-follows from random sampling---that there is no reason to expect the
+follows from random sampling — that there is no reason to expect the
 next sample to be different from the present one in any *particular*
 fashion, mean or variation. But we do expect it to be different in
 *some* fashion because of sampling variability.
@@ -532,7 +532,7 @@ Bride's magazine, the average blowout \[wedding\] will set you back
 about \$16,000" (Feb 15, 1993, p. 67). That use of the mean (I assume)
 for the average, rather than the median, could cost the parents of some
 brides a pretty penny. It could be that the cost for the average
-*person* ---that is, the median expenditure---might be a lot less than
+*person* ---that is, the median expenditure — might be a lot less than
 \$16,000. (A few million dollar weddings could have a huge effect on a
 survey mean.) An inappropriate standard of comparison might enter into
 some family discussions as a result of this article, and cause higher

@@ -58,7 +58,7 @@ statistical inference represented by confidence limits addresses what
 seems to be a secondary question in most sciences (though not in
 astronomy or perhaps physics): "How reliable is the estimate?" Still,
 confidence intervals are very important in some applied sciences such as
-geology---estimating the variation in grades of ores, for example---and
+geology — estimating the variation in grades of ores, for example — and
 in some parts of business and industry.
 
 Confidence intervals and hypothesis tests are not disjoint ideas.
@@ -83,20 +83,20 @@ us here.
 
 ## Estimating the accuracy of a sample mean
 
-If one draws a sample that is very, very large---large enough so that
+If one draws a sample that is very, very large — large enough so that
 one need not worry about sample size and dispersion in the case at
-hand---from a universe whose characteristics one *knows* , one then can
+hand — from a universe whose characteristics one *knows* , one then can
 *deduce* the probability that the sample mean will fall within a given
 distance of the population mean. Intuitively, it *seems* as if one
-should also be able to reverse the process---to infer something about
+should also be able to reverse the process — to infer something about
 the location of the population mean *from the sample mean* . But this
 inverse inference turns out to be a slippery business indeed.
 
-Let's put it differently: It is all very well to say---as one logically
-may---that *on average* the sample mean (or other point estimator)
+Let's put it differently: It is all very well to say — as one logically
+may — that *on average* the sample mean (or other point estimator)
 equals a population parameter in most situations.
 
-Chapter 20---Confidence Intervals, Par t 1: Assessing the Accuracy of
+Chapter 20 — Confidence Intervals, Par t 1: Assessing the Accuracy of
 Samples
 
 **309**
@@ -116,7 +116,7 @@ only viable option for passing exams.
 
 With the resampling method, however, the estimation of confidence
 intervals is easy. The topic then is manageable though subtle and
-challenging---sometimes pleasurably so. Even beginning undergraduates
+challenging — sometimes pleasurably so. Even beginning undergraduates
 can enjoy the subtlety and find that it feels good to stretch the brain
 and get down to fundamentals.
 
@@ -148,17 +148,17 @@ through a sensible interpretation of the
 
 probability, involves a great many choices about the appropriate model
 based on analysis of the problem at hand; a wrong choice at any point
-dooms the procedure. The actual computation of the probability---whether
+dooms the procedure. The actual computation of the probability — whether
 done with formulaic probability theory or with resampling
-simulation---is only a very small part of the procedure, and it is the
+simulation — is only a very small part of the procedure, and it is the
 least difficult part if one proceeds with resampling. The difficulties
 in the statistical process are not mathematical but rather stem from the
 hard clear thinking needed to understand the nature of the situation and
 to ascertain the appropriate way to model it.
 
 Again, the purpose of a confidence interval is to help us assess the
-reliability of a statistic of the sample---for example, its mean or
-median---as an estimator of the parameter of the universe. The line of
+reliability of a statistic of the sample — for example, its mean or
+median — as an estimator of the parameter of the universe. The line of
 thought runs as follows: It is possible to map the distribution of the
 means (or other such parameter) of samples of any given size (the size
 of interest in any investigation usually being the size of the observed
@@ -185,7 +185,7 @@ was drawn from any given universe in the absence of knowledge of the
 other possible sources of the sample. That is a subtle difference, I
 know, but I hope that the following discussion makes it understandable.
 
-Chapter 20---Confidence Intervals, Par t 1: Assessing the Accuracy of
+Chapter 20 — Confidence Intervals, Par t 1: Assessing the Accuracy of
 Samples
 
 **311**
@@ -193,19 +193,19 @@ Samples
 ## Computing confidence intervals
 
 In the first part of the discussion we shall leave aside the issue of
-estimating the extent of the dispersion---a troublesome matter, but one
+estimating the extent of the dispersion — a troublesome matter, but one
 which seldom will result in unsound conclusions even if handled crudely.
 To start from scratch again: The first--- and seemingly
-straightforward---step is to estimate the mean of the population based
+straightforward — step is to estimate the mean of the population based
 on the sample data. The next and more complex step is to ask about the
 range of values (and their probabilities) that the estimate of the mean
-might take---that is, the construction of confidence intervals. It seems
+might take — that is, the construction of confidence intervals. It seems
 natural to assume that if our best guess about the population mean is
 the value of the sample mean, our best guesses about the various values
 that the population mean might take if unbiased sampling error causes
 discrepancies between population parameters and sample statistics,
 should be values clustering around the sample mean in a symmetrical
-fashion (assuming that asymmetry is not forced by the distribution---as
+fashion (assuming that asymmetry is not forced by the distribution — as
 for example, the binomial is close to symmetric near its middle values).
 But *how far away* from the sample mean might the population mean be?
 
@@ -257,7 +257,7 @@ probabilities on *one tree or the other* being the source. (Note to the
 advanced student: This is like the Neyman-Pearson procedure, and it is
 easily reconciled with the Bayesian point of view to be explored later.
 One can also connect this concept of relative probability to the
-Fisherian concept of maximum likelihood---which is a probability
+Fisherian concept of maximum likelihood — which is a probability
 relative to all others). And you could list from high to low the
 probabilities for each unit of area in the neighborhood of your apple
 sample. But this procedure is quite different from making any single
@@ -275,7 +275,7 @@ To simplify, we consider variation along only one dimension--- that is,
 on (say) a north-south line rather than on two dimensions (the entire
 surface).
 
-Chapter 20---Confidence Intervals, Par t 1: Assessing the Accuracy of
+Chapter 20 — Confidence Intervals, Par t 1: Assessing the Accuracy of
 Samples
 
 **313**
@@ -294,7 +294,7 @@ measure spread by (say) the diameter of the circle that holds the inner
 half of the apples for each tree, or by the standard deviation. It makes
 sense that if the two patterns have the same center point (mean), you
 would put higher odds on the tree with the smaller spread being within
-some given distance---say, a foot---of the estimated mean. But what odds
+some given distance — say, a foot — of the estimated mean. But what odds
 would you give on that bet?
 
 ## Procedure for estimating confidence intervals
@@ -377,7 +377,7 @@ Mean, median, or whatever of resample
 
 **Computation of Probabilities Within Chosen Bounds**
 
-Chapter 20---Confidence Intervals, Par t 1: Assessing the Accuracy of
+Chapter 20 — Confidence Intervals, Par t 1: Assessing the Accuracy of
 Samples
 
 **315**

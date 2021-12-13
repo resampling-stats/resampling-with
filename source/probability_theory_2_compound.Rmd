@@ -80,7 +80,7 @@ the 19th century.) In the Goldberg variation:
 These are the logical steps one may distinguish in arriving at a correct
 answer with deductive logic (portrayed in Figure 6- 1):
 
-1.  Postulate three ships---Ship I with two gold chests (G-G), ship II
+1.  Postulate three ships — Ship I with two gold chests (G-G), ship II
     with one gold and one silver chest (G-S), and ship III with S-S.
     (Choosing notation might well be considered one or more additional
     steps.)
@@ -272,13 +272,13 @@ original choice to the other closed container. Should s/he do so?
 ***Answer:*** Switching doubles the chances of winning.
 
 When this problem was published in the Sunday newspapers across the
-U.S., the thousands of letters---including a good many from Ph.D.s in
-mathematics---show that logical mathematical deduction fails badly in
-this case. Most people---both laypersons and statisticians---arrive at
+U.S., the thousands of letters — including a good many from Ph.D.s in
+mathematics — show that logical mathematical deduction fails badly in
+this case. Most people — both laypersons and statisticians — arrive at
 the wrong answer.
 
-Simulation, however---and *hands-on* simulation with physical symbols,
-rather than computer simulation---is a surefire way of obtaining and
+Simulation, however — and *hands-on* simulation with physical symbols,
+rather than computer simulation — is a surefire way of obtaining and
 displaying the correct solution. Table 6-1 shows such a simple
 simulation with a random-number table. Column 1 represents the container
 you choose, column 2 where the prize is. Based on columns 1 and 2,
@@ -505,7 +505,7 @@ in the same order as a new deck of cards. If we do not shuffle the deck,
 the results will be predictable. Therefore, we write SHUFFLE a b and
 then deal a poker hand by taking the first five cards from the shuffled
 hand, using the TAKE statement. Now we must find out if there is one
-(and only one) pair; we do this with the MULTIPLES statement---the "2"
+(and only one) pair; we do this with the MULTIPLES statement — the "2"
 in that statement indicates that it is a duplicate, rather than a
 singleton or triplicate or quadruplicate that we are testing for--- and
 we put the result in location D. Next we SCORE in location z how many
@@ -573,7 +573,7 @@ In one run of the program, the result in kk was .419, so our estimate
 would be that the probability of a single pair is .419.
 
 How accurate are these resampling estimates? The accuracy depends on the
-*number of hands* we deal---the more hands, the greater the accuracy. If
+*number of hands* we deal — the more hands, the greater the accuracy. If
 we were to examine millions of hands, 42 percent would contain a pair
 each; that is, the chance of getting a pair in the long run is 42
 percent. The estimate of 44 percent based on 100 hands in Table 6-2 is
@@ -637,7 +637,7 @@ which has the higher odds.
 Again it is interesting to compare the odds with the formulaic
 mathematical computations, which are 1 in 21 (4.75 percent) for a hand
 containing two pairs and 1 in 47 (2.1 percent) for a hand containing
-three-of-a-kind---not too far from the estimates of .0375 and .02
+three-of-a-kind — not too far from the estimates of .0375 and .02
 derived from simulation.
 
 To handle the problem with the aid of the computer, we simply need to
@@ -737,7 +737,7 @@ examples in the discussion of conditional probability in Chapter 5.)
 
 If we sample with replacement, the sample drawings remain
 
-*independent* of each other---a topic addressed in Chapter 5.
+*independent* of each other — a topic addressed in Chapter 5.
 
 In many cases, a key decision in modeling the situation in which we are
 interested is whether to sample with or without replacement. The choice
@@ -764,5 +764,5 @@ number. The reason for quadrupling is that four times as many iterations
 measured by the standard deviation, the most frequent measurement of accuracy).
 That is, the error decreases with the square root of the number of iterations.
 If you see that you need *much* more accuracy, then *immediately* increase the
-number of iterations even more than four times---perhaps ten or a hundred
+number of iterations even more than four times — perhaps ten or a hundred
 times.

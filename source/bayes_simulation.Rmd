@@ -166,8 +166,8 @@ approved by a mechanic.
 Simulation forces us to model our problem clearly and concretely in code.
 Such code is most often easier to reason about than opaque statistical methods.
 Running the simulation gives a good sense of what the correct answer should be.
-Thereafter, we can still look into different---sometimes more elegant or
-accurate---ways of modeling and solving the problem.
+Thereafter, we can still look into different — sometimes more elegant or
+accurate — ways of modeling and solving the problem.
 
 Let's examine the following diagram of our car selection:
 
@@ -389,7 +389,7 @@ p 122:
 
 A mutual insurance company charges its members according to the risk
 of having an car accident. It is known that there are two classes of
-people---80 percent of the population with good driving judgment and
+people — 80 percent of the population with good driving judgment and
 with a probability of .06 of having an accident each year, and 20
 percent with poor judgment and a probability of .6 of having an
 accident each year. The company's policy is to charge \$100 for each
@@ -539,7 +539,7 @@ by a mating between two (*Bb*) mice and is black.
 What is the genetic kind of this mouse?
 
 To answer that, we look at the information in the last line of the table:
-it shows that the probabilities of a test mouse is of kind *BB* and *Bb* are precisely known, and are 1/3 and 2/3 respectively ((1/4)/(1/4 + 1/2) vs (1/2)/(1/4 + 1/2)).  We call this our "prior" estimate---in other words, our estimate before seeing data.
+it shows that the probabilities of a test mouse is of kind *BB* and *Bb* are precisely known, and are 1/3 and 2/3 respectively ((1/4)/(1/4 + 1/2) vs (1/2)/(1/4 + 1/2)).  We call this our "prior" estimate — in other words, our estimate before seeing data.
 
 Suppose the test mouse is now mated with a brown mouse (of kind *bb*)
 and produces seven black offspring.
@@ -677,12 +677,12 @@ print(f'p_Bb = {p_Bb:.3f}')
 print(f'Ratio: {p_BB/p_Bb:.1f}')
 ```
 
-This yields a similar result, but in much shorter time---which means we can increase the number of trials and get a more accurate result.
+This yields a similar result, but in much shorter time — which means we can increase the number of trials and get a more accurate result.
 
 <!-- XXX TODO: How can we show how to derive this quantity using a filter tree type approach? XXX -->
 
 Creating the correct simulation procedure is not trivial, because Bayesian
-reasoning is subtle---a reason it has been the cause of controversy
+reasoning is subtle — a reason it has been the cause of controversy
 for more than two centuries. But it certainly is not easier to create a
 correct procedure using analytic tools (except in the cookbook sense of
 plug-and-pray). And the difficult mathematics that underlie the
@@ -733,8 +733,8 @@ error, which is the reason that he takes nine samples rather than just
 one) indicates that the batch mean is greater than 2.5 gallons, the
 batch is accepted. The first question Schlaifer asks, as a
 sampling-theory waystation to the more general question, is the
-likelihood that a given batch with any given yield---say 2.3
-gallons---will produce a set of samples with a mean as great or greater
+likelihood that a given batch with any given yield — say 2.3
+gallons — will produce a set of samples with a mean as great or greater
 than 2.5 gallons.
 
 We are told that the manufacturer has in hand nine samples from a given
@@ -742,8 +742,8 @@ batch; they are 1.84, 1.75, 1.39, 1.65, 3.53, 1.03,
 
 2.73, 2.86, and 1.96, with a mean of 2.08. Because we are also told that
 the manufacturer considers the extent of sample variation to be the same
-at all yield levels, we may---if we are again working with 2.3 as our
-example of a possible universe---therefore add (2.3 minus 2.08 =) 0.22
+at all yield levels, we may — if we are again working with 2.3 as our
+example of a possible universe — therefore add (2.3 minus 2.08 =) 0.22
 to each of these nine observations, so as to constitute a bootstrap-type
 universe; we do this on the grounds that this is our best guess about
 the constitution of that distribution with a mean at (say) 2.3.
@@ -780,9 +780,9 @@ corresponding to one of the yields ranging from 2.1 to 3.0, the same
 sort of sampling operation performed for S ~m=2.3~ in the previous
 problem. But now, instead of using the manufacturer's decision criterion
 of 2.5, we construct an interval of arbitrary width around the sample
-mean of 2.08---say at
+mean of 2.08 — say at
 
-.1 intervals from 2.03 to 2.13---and then work with the weighted
+.1 intervals from 2.03 to 2.13 — and then work with the weighted
 
 proportions of sample means that fall into this interval.
 
@@ -811,14 +811,14 @@ proportions of sample means that fall into this interval.
     outcomes.
 
 5.  Compute the percentages of the means within (say) .5 on each side of
-    the sample mean, i. e. from 2.03--2.13. The resulting number---call
+    the sample mean, i. e. from 2.03--2.13. The resulting number — call
     it UP ^i^ ---is the un-standardized (un-normalized) effect of this
     sub-distribution in the posterior distribution.
 
 6.  Repeat steps 1-5 to cover each other possible batch yield from 2.0
     to 3.0 (2.3 was just done).
 
-7.  Weight each of these sub-distributions---actually, its UP ^i^ --- by
+7.  Weight each of these sub-distributions — actually, its UP ^i^ --- by
     its prior probability, and call that WP ^i^ -.
 
 8.  Standardize the WP ^i^ s to a total probability of 1.0. The result
@@ -835,17 +835,17 @@ proportions of sample means that fall into this interval.
     narrow interval surely will contain relatively few trials, which is
     a practical problem of still-unknown dimensions.
 
-    Another procedure---less theoretically justified and probably more
-    biased---intended to get around the problem of the narrowness of the
+    Another procedure — less theoretically justified and probably more
+    biased — intended to get around the problem of the narrowness of the
     interval, is as follows:
 
     **5a.** Compute the percentages of the means on each side of the
     sample mean, and note the smaller of the two (or in another possible
-    process, the difference of the two). The resulting number---call it
+    process, the difference of the two). The resulting number — call it
     UP ^i^ ---is the un-standardized (un-normalized) weight of this
     sub-distribution in the posterior distribution.
 
-    Another possible criterion---a variation on the procedure in 5a---is
+    Another possible criterion — a variation on the procedure in 5a — is
     the *difference* between the two tails; for a universe with the same
     mean as the sample, this difference would be zero.
 

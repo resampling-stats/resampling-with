@@ -90,8 +90,8 @@ respect to a given distance, we can say that the probability that the
 population and sample means will be that close together is p.
 
 That is, we start by focusing on how much the sample mean diverges from
-the known population mean. But then---and to repeat once more this key
-conceptual step---we refocus our attention to *begin with the sample
+the known population mean. But then — and to repeat once more this key
+conceptual step — we refocus our attention to *begin with the sample
 mean* and then discuss the probability that the population mean will be
 within a given distance. The resulting distance is what we call the
 "confidence interval."
@@ -128,7 +128,7 @@ estimation of confidence intervals is like all other statistical
 inference: One investigates the probabilistic behavior of one or more
 hypothesized universes, the universe(s) being implicitly suggested by
 the sample evidence but not logically implied by that evidence. And
-there are no grounds for dispute about exactly what is being done---only
+there are no grounds for dispute about exactly what is being done — only
 about how to interpret the results.
 
 One difficulty with the above approach is that the estimate of the
@@ -153,7 +153,7 @@ this difference is not likely to be crucial; this last assumption is
 all-important, of course. True, we do not know what the dispersion might
 be for the "true" universe. But elsewhere (Simon, forthcoming) I argue
 that the concept of the "true universe" is not helpful--- or maybe even
-worse than nothing---and should be foresworn. And we can postulate a
+worse than nothing — and should be foresworn. And we can postulate a
 dispersion for any *other* universe we choose to investigate. That is,
 for this postulation we unabashedly bring in any other knowledge we may
 have. The defense for such an almost-arbitrary move would be that this
@@ -173,7 +173,7 @@ justification. The key equation in this approach is formally
 unassailable, but it seems to come from nowhere.)
 
 In the examples in the following chapter may be found computations for
-two population distributions---one binomial and one quantitative---of
+two population distributions — one binomial and one quantitative — of
 the histograms of the sample means produced with this procedure.
 
 Operationally, we use the observed sample mean, together with an
@@ -281,22 +281,22 @@ The latter; we wish to infer from sample to population rather than the
 converse.
 
 ***Given that this is a statistics question: What is the form of the
-statistics question---confidence limits or hypothesis testing?***
+statistics question — confidence limits or hypothesis testing?***
 Confidence limits.
 
 ***Given that the question is about confidence limits: What is the
 description of the sample that has been observed?*** a) The raw sample
-data---the observed numbers of interviewees are
+data — the observed numbers of interviewees are
 
-840 for Bush and 660 for Dukakis---constitutes the best description of
+840 for Bush and 660 for Dukakis — constitutes the best description of
 the universe. The *statistics of the sample* are the given
-proportions---56 percent for Bush, 44 percent for Dukakis.
+proportions — 56 percent for Bush, 44 percent for Dukakis.
 
 ***Which universe?*** (Assuming that the observed sample is
 representative of the universe from which it is drawn, what is your
 *best guess about the properties* of the universe about whose parameter
 you wish to make statements? The best guess is that the population
-proportion is the sample proportion---that is, the population contains
+proportion is the sample proportion — that is, the population contains
 56 percent Bush votes, 44 percent Dukakis votes.
 
 ***Possibilities for Bayesian analysis*** **?** Not in this case, unless
@@ -314,7 +314,7 @@ yellow balls, if a bucket is used, or "0" and "1" if the computer is used.
 
 ***What values or ranges of values?*** "0" or "1."
 
-***Finite or infinite?*** Infinite---the sample is small relative to the
+***Finite or infinite?*** Infinite — the sample is small relative to the
 population.
 
 ***If the universe is what you guess it to be, for which samples do you
@@ -362,11 +362,11 @@ the results in a standardized table so that we can read them quickly
 without having to recreate the curve each time we use it. More about the
 nature of the Normal distribution may be found in Simon (forthcoming).
 
-All the work done above uses the information specified previously---the
+All the work done above uses the information specified previously — the
 sample size of 1500, the drawing with replacement, the observed
 proportion as the criterion.
 
-## Confidence Intervals Empirically---With Resampling
+## Confidence Intervals Empirically — With Resampling
 
 *Estimating the Distribution of Differences Between Sample and
 Population Means By Resampling*
@@ -422,19 +422,19 @@ resampling result is shown below.
 
 **Step 4:** In a fashion similar to what was done in steps 13, now
 compute the 95 percent confidence intervals for some *other* postulated
-universe mean---say 53% for Bush, 47% for Dukakis. This step produces a
+universe mean — say 53% for Bush, 47% for Dukakis. This step produces a
 confidence interval that is not centered on the sample mean and the
 estimated universe mean, and hence it shows the independence of the
 procedure from that magnitude. And we now compare the breadth of the
 estimated confidence interval generated with the 53-47 percent universe
 against the confidence interval derived from the corresponding
 distribution of sample means generated by the "true" Bush-Dukakis
-population of 56 percent---44 percent. If the procedure works well, the
+population of 56 percent — 44 percent. If the procedure works well, the
 results of the two procedures should be similar.
 
 Now we interpret the results using this first approach. The histogram
 shows the probability that the difference between the sample mean and
-the population mean---the error in the sample result---will be about 2.5
+the population mean — the error in the sample result — will be about 2.5
 percentage points too low. It follows that about 47.5 percent (half of
 95 percent) of the time, a sample like this one will be between the
 population mean and 2.5 percent too low. We do not know the actual
@@ -451,12 +451,12 @@ and its mean. We estimate the error by experimenting with one or more
 universes in that neighborhood, and we then give the probability that
 the population mean is within that margin of error from the sample mean.
 
-**Example 21-2: Measured Data Example---the Bootstrap: A Feed Merchant
+**Example 21-2: Measured Data Example — the Bootstrap: A Feed Merchant
 Experiences Varied Pig Weight Gains With a New Ration and Wants to be
 Safe in Advertising an Average Weight Gain**
 
 A feed merchant decides to experiment with a new pig ration--- ration
-A---on twelve pigs. To obtain a random sample, he provides twelve
+A — on twelve pigs. To obtain a random sample, he provides twelve
 customers (selected at random) with sufficient food for one pig. After 4
 weeks, the 12 pigs experience an average gain of 508 ounces. The weight
 gain of the individual pigs are as follows: 496, 544, 464, 416, 512,
@@ -482,8 +482,8 @@ real universe. We can then draw additional samples from this
 pseudo-universe and see how they behave.
 
 More specifically, we replicate each observed weight gain millions of
-times---we can imagine writing each result that many times on separate
-pieces of paper---then shuffle those weight gains and pick out a sample
+times — we can imagine writing each result that many times on separate
+pieces of paper — then shuffle those weight gains and pick out a sample
 of 12. Average the weight gain for that sample, and record the result.
 Take repeated samples, and record the result for each. We can then make
 a histogram of the results; it might look something like this:
@@ -708,7 +708,7 @@ which will in any case demonstrate the technique for determining a
 confidence interval for a difference between two samples.
 
 Our starting point is our estimate for the difference in mean survival
-times between the two samples---30.63 days. We ask "How much might this
+times between the two samples — 30.63 days. We ask "How much might this
 estimate be in error? If we drew additional samples from the control
 universe and additional samples from the treatment universe, how much
 might they differ from this result?"
@@ -810,9 +810,9 @@ Framingham Cholesterol Data**
 
 The Framingham cholesterol data were used in Chapter 15, exercise 15-7,
 to illustrate the first classic question in statistical
-inference---interpretation of sample data for testing hypotheses. Now we
+inference — interpretation of sample data for testing hypotheses. Now we
 use the same data for the other main theme in statistical
-inference---the estimation of confidence intervals. Indeed, the
+inference — the estimation of confidence intervals. Indeed, the
 bootstrap method discussed above was originally devised for estimation
 of confidence intervals. The bootstrap method may also be used to
 calculate the appropriate sample size for experiments and surveys,
@@ -828,7 +828,7 @@ the proportion 10/135
 us first carry out a resampling procedure to answer the questions,
 waiting until afterwards to discuss the logic of the inference.
 
-1.  Construct a bucket containing 135 balls---10 red (infarction) and 125
+1.  Construct a bucket containing 135 balls — 10 red (infarction) and 125
     green (no infarction) to simulate the universe as we guess it to be.
 
 2.  Mix, choose a ball, record its color, replace it, and repeat 135
@@ -895,7 +895,7 @@ resample results)
 
 The variation in the histogram above highlights the fact that a sample
 containing only 10 cases of infarction is very small, and the number of
-observed cases---or the proportion of cases--- necessarily varies
+observed cases — or the proportion of cases--- necessarily varies
 greatly from sample to sample. Perhaps the most important implication of
 this statistical analysis, then, is that we badly need to collect
 additional data.
@@ -914,13 +914,13 @@ sample mean, the probability is P that the universe mean is within
 distance D of it. This inversion is more slippery than it may seem. But
 the logic is exactly the same for the formulaic method and for
 resampling. The only difference is how one estimates the
-probabilities---either with a numerical resampling simulation (as here),
+probabilities — either with a numerical resampling simulation (as here),
 or with a formula or other deductive mathematical device (such as
 counting and partitioning all the possibilities, as Galileo did when he
 answered a gambler's question about three dice). And when one uses the
 resampling method, the probabilistic calculations are the least
 demanding part of the work. One then has mental capacity available to
-focus on the crucial part of the job---framing the original question
+focus on the crucial part of the job — framing the original question
 soundly, choosing a model for the facts so as to properly resemble the
 actual situation, and drawing appropriate inferences from the
 simulation.
@@ -1020,7 +1020,7 @@ We seek to state, for universes that we select on the basis that their
 results will interest us, the probability that they (or it, for a
 particular universe) would produce a sample as far or farther away from
 the mean of the universe in question as the mean of the observed
-sample---56 percent for Bush. The most interesting universe is that
+sample — 56 percent for Bush. The most interesting universe is that
 which produces such a sample only about 5 percent of the time, simply
 because of the correspondence of this value to a conventional breakpoint
 in statistical inference. So we could experiment with various universes
@@ -1046,9 +1046,9 @@ mu = xbar. Results of these simulations are shown in Figure 21-1.
 
 **Figure 21-1**
 
-About these distributions centered at .535 and .585---or more
+About these distributions centered at .535 and .585 — or more
 importantly for understanding an election situation, the universe
-centered at .535---one can say: Even if the "true" value is as low as
+centered at .535 — one can say: Even if the "true" value is as low as
 53.5 percent for Bush, there is only a 2 ½ percent chance that a sample
 as high as 56 percent pro-Bush would be observed. (The values of a 2 ½
 percent probability and a 2 ½ percent difference between 56 percent and
@@ -1090,7 +1090,7 @@ produce the observed sample only 5 percent of the time or less* .
 The result of the second approach is more in the spirit of a hypothesis
 test than of the usual interpretation of confidence intervals. Another
 statement of the result of the second approach is: We postulate a given
-universe---say, a universe at (say) the two-tailed 95 percent boundary
+universe — say, a universe at (say) the two-tailed 95 percent boundary
 line. We then say: The probability that the observed sample would be
 produced by a universe with a mean as far (or further) from the observed
 sample's mean as the universe under investigation is only 2.5 percent.
@@ -1111,8 +1111,8 @@ meaning should not be controversial.
 Here again the tactic for interpreting the statistical procedure is to
 restate the facts of the behavior of the universe that we are
 manipulating and examining at that moment. We use a heuristic device to
-find a particular distribution---the one that is at (say) the 97 ½ --2 ½
-percent boundary---and simply state explicitly what the distribution
+find a particular distribution — the one that is at (say) the 97 ½ --2 ½
+percent boundary — and simply state explicitly what the distribution
 tells us implicitly: The probability of this distribution generating the
 observed sample (or a sample even further removed) is 2 ½ percent. We
 could go on to say (if it were of interest to us at the moment) that

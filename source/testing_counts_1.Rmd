@@ -25,7 +25,7 @@ resampling_with:
 
 The first task in inferential statistics is to make one or more *point
 estimates* ---that is, to make one or more statements about *how much*
-there is of something we are interested in---including especially the
+there is of something we are interested in — including especially the
 mean and the dispersion. (That work goes under the label "estimation"
 and is discussed in chapter 13.) Frequently the next step, after making
 such quantitative estimation of the universe from which a sample has
@@ -58,8 +58,8 @@ of our resampling experiment based on the benchmark universe, do we
 examine both ends of the frequency distribution, or just one? If there
 is strong reason to believe *a priori* that the difference between the
 benchmark (null) universe and the sample will be in a given
-direction---for example if you hypothesize that the sample mean will be
-*smaller* than the mean of the benchmark universe---you should then
+direction — for example if you hypothesize that the sample mean will be
+*smaller* than the mean of the benchmark universe — you should then
 employ a *one-tailed test* . If you do *not* have strong basis for such
 a prediction, use the *two-tailed* test. As an example, when a scientist
 tests a new medication, his/her hypothesis would be that the number of
@@ -97,8 +97,8 @@ males and half females. In the first twenty cases you treat, there are
 fourteen males and six females. Does this experimental result confirm
 that the irradiation does work?
 
-First convert the scientific question---whether or not the treatment
-affects the sex distribution---into a probability-statistical question:
+First convert the scientific question — whether or not the treatment
+affects the sex distribution — into a probability-statistical question:
 Is the observed sample likely to have come from a benchmark universe in
 which the sex ratio is one male to one female? The benchmark (null)
 hypothesis, then, is that the treatment makes no difference and the
@@ -170,7 +170,7 @@ Now let us obtain larger and more accurate simulation samples with the
 computer. The key step in the RESAMPLING STATS program "Fruitfly" is to
 GENERATE 20 numbers with two equally-likely outcomes: "1" to stand for a
 male, and "2" to stand for a female. This simulates randomly choosing 20
-fruit flies on the benchmark assumption---the "null hypothesis"---
+fruit flies on the benchmark assumption — the "null hypothesis"---
 
 that each fruit fly has an equal chance of being a male or female. Now
 we want to discover the chances of getting more than 13 (i.e., 14 or
@@ -578,7 +578,7 @@ Win?**
 
 What is the probability that a sample outcome such as actually observed
 (840 Bush, 660 Dukakis) would occur by chance if Dukakis is "really"
-ahead---that is, if Dukakis has 50 percent (or more) of the support? To
+ahead — that is, if Dukakis has 50 percent (or more) of the support? To
 restate in sharper statistical language: What is the probability that
 the observed sample or one even more favorable to Bush would occur if
 the universe has a mean of 50 percent or below?
@@ -705,7 +705,7 @@ Here is a procedure that responds to that question:
     to test the benchmark (null) hypothesis that the flies came from a
     universe with a one-to-one sex ratio, and the poll data problem also
     compared results to a 50-50 hypothesis. The calves problem also
-    compared the results to a single benchmark universe---a proportion
+    compared the results to a single benchmark universe — a proportion
     of 100/206 females. Now we want to compare *two samples with each
     other* , rather than comparing one sample with a hypothesized
     universe. That is, in this example we are not comparing one sample
@@ -766,7 +766,7 @@ Here is a procedure that responds to that question:
     better by three or more cases. In the trials shown in Table 15-3, in
     three cases (12 percent) the difference between the randomly-drawn
     groups is three cases or greater. Apparently it is *somewhat*
-    unusual---it happens 12 percent of the time---for this universe to
+    unusual — it happens 12 percent of the time — for this universe to
     generate "pill" samples in which the number of recoveries exceeds
     the number in the "placebo" samples by three or more. Therefore the
     answer to the scientific question, based on these samples, is that
@@ -817,7 +817,7 @@ Here is a procedure that responds to that question:
     benchmark hypothesis assumes 7/12 to be the chances of any random
     patient being cured. We GENERATE two similar samples of 6 patients,
     both taken from the same universe composed of the combined
-    samples---the bootstrap procedure. Letting the numbers "1" through
+    samples — the bootstrap procedure. Letting the numbers "1" through
     "7" denote patients who got well and "8-12" denote persons not
     getting well, we COUNT the number who got well in each sample. Then
     we SUBTRACT the number who got well in the "pill" sample from the
@@ -850,8 +850,8 @@ Here is a procedure that responds to that question:
 
     Count the number of cures in the trial "medicine" group. ("Medicine"
     is in quotes because the vector a is an arbitrary random selection
-    of our experiment---one we know has no medicinal value because the
-    cure rate---7/12---is the same as for the "placebo" experimental
+    of our experiment — one we know has no medicinal value because the
+    cure rate — 7/12 — is the same as for the "placebo" experimental
     group.)
 
     `               COUNT b between 1 7 bb             `
@@ -887,7 +887,7 @@ Here is a procedure that responds to that question:
     more patients were cured than in the placebo group. From the
     histogram, we see that in only 8 percent of the simulated trials did
     the "medicine" group do as well or better. The results seem to
-    suggest---but by no means conclusively---that the medicine's
+    suggest — but by no means conclusively — that the medicine's
     performance is not due to chance. Further study would probably be
     warranted. The following commands added to the above program will
     calculate this proportion directly:
@@ -940,15 +940,15 @@ Here is a procedure that responds to that question:
     people with a mean of 46 percent would come from it? Indeed, on
     first thought that procedure seems reasonable.
 
-    Upon reflection---and it takes considerable thought on these matters
-    to get them right---that would *not* be an appropriate procedure.
+    Upon reflection — and it takes considerable thought on these matters
+    to get them right — that would *not* be an appropriate procedure.
     The student's suggested procedure would be the same as assuming that
     we had long-run solid knowledge of the universe, as if based on
     millions of observations, and then asking about the probability of a
     particular sample drawn from it. That does not correspond to the
     facts.
 
-    The only way to find the approach you eventually consider best---and
+    The only way to find the approach you eventually consider best — and
     there is no guarantee that it is indeed *correct* ---is by close
     reference to the particular facts of the case.
 
@@ -1003,7 +1003,7 @@ Here is a procedure that responds to that question:
     Therefore, we compose a hypothetical "benchmark" universe containing
     (135 + 470 =) 605 men at risk, and designate (10 + 21 =) 31 of them
     as infarction cases. We want to determine how likely it is that a
-    universe like this one would produce---just by chance---two groups
+    universe like this one would produce — just by chance — two groups
     that differ as much as do the actually observed groups. That is, how
     often would random sampling from this universe produce one
     sub-sample of 135 men containing a large enough number of
@@ -1015,7 +1015,7 @@ Here is a procedure that responds to that question:
     So far, everything that has been said applies both to the
     conventional formulaic method and to the "new statistics" resampling
     method. But the logic is seldom explained to the reader of a piece
-    of research---if indeed the researcher her/ himself grasps what the
+    of research — if indeed the researcher her/ himself grasps what the
     formula is doing. And if one just grabs for a formula with a prayer
     that it is the right one, one need never analyze the statistical
     logic of the problem at hand.
@@ -1026,7 +1026,7 @@ Here is a procedure that responds to that question:
     steps will do the job:
 
     **Step 1:** Fill a bucket with 605 balls, 31 red (infarction) and the
-    rest (605---31 = 574) green (no infarction).
+    rest (605 — 31 = 574) green (no infarction).
 
     **Step 2:** Draw a sample of 135 (simulating the high
     serum-cholesterol group), one ball at a time and throwing it back
@@ -1114,7 +1114,7 @@ Here is a procedure that responds to that question:
     difference \>= .029)
 
     The results of the test using this program may be seen in the
-    histogram. We find---perhaps surprisingly---that a difference as
+    histogram. We find — perhaps surprisingly — that a difference as
     large as observed would occur by chance fully 10 percent of the
     time. (If we were not guided by the theoretical expectation that
     high serum cholesterol produces heart disease, we might include the
@@ -1139,7 +1139,7 @@ Here is a procedure that responds to that question:
     could apply a z test (conceptually similar to the t test, but
     applicable to yes-no data; it is the Normal-distribution
     approximation to the large binomial distribution). Do so, we find
-    that the results are much the same as the resampling result---an
+    that the results are much the same as the resampling result — an
     eleven percent probability.
 
     Someone may ask: Why do a resampling test when you can use a
@@ -1179,8 +1179,8 @@ Here is a procedure that responds to that question:
     weight gainers?
 
     One approach to the problem is to divide the pigs into two
-    groups---the twelve with the highest weight gains, and the twelve
-    with the lowest weight gains---and examine whether an unusually
+    groups — the twelve with the highest weight gains, and the twelve
+    with the lowest weight gains — and examine whether an unusually
     large number of high-weight-gain pigs were fed on one or the other
     of the rations.
 
@@ -1263,7 +1263,7 @@ Here is a procedure that responds to that question:
     12 elements of B and place them in C; this represents the rankings
     of a randomly-selected group of 12 pigs. We next COUNT in C the
     number of pigs whose rankings for weight gain were in the top
-    half---that is, a rank of less than 13. We SCORE that number and END
+    half — that is, a rank of less than 13. We SCORE that number and END
     the loop.
 
     Since we did not know beforehand the direction of the effect of
@@ -1282,7 +1282,7 @@ Here is a procedure that responds to that question:
     `               NUMBERS 1,24 a             `
 
     Constitute the set of the weight gain rank orders. A is now a vector
-    consisting of the numbers 1---24, in that order.
+    consisting of the numbers 1 — 24, in that order.
 
     `               REPEAT 1000             `
 
@@ -1402,8 +1402,8 @@ Here is a procedure that responds to that question:
     of two samples of trees. If sample A has the five tallest trees, and
     sample B has the five shortest trees, the difference in mean ranks
     will be (6+7+8+9+10=) 40---(1+2+3+4+5=) 15, the largest possible
-    difference. If the groups are less sharply differentiated---for
-    example, if sample A has \#3 and sample B has \#8---the difference
+    difference. If the groups are less sharply differentiated — for
+    example, if sample A has \#3 and sample B has \#8 — the difference
     in ranks will be less than the maximum of 40, as you can quickly
     verify.
 
@@ -1424,7 +1424,7 @@ Here is a procedure that responds to that question:
     4.  Since we are working with the ranked data, we must draw without
         replacement, because there can only be one \#3, one \#7, and so
         on. So draw the number of observations corresponding to the
-        number of observations---2 "Closer" and 3 "Further."
+        number of observations — 2 "Closer" and 3 "Further."
 
     5.  Compute the mean ranks of the two simulated groups of planets.
 
@@ -1494,7 +1494,7 @@ planets and the closer planets.
 
 This chapter has begun the actual work of testing hypotheses. The next
 chapter continues with discussion of somewhat more complex problems with
-counted data---more complex to think about, but no more difficult to
+counted data — more complex to think about, but no more difficult to
 actually treat mathematically with resampling simulation. If you have
 understood the general logic of the procedures used up until this point,
 you are in command of all the necessary conceptual knowledge to

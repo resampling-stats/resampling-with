@@ -140,7 +140,7 @@ groups of four flips, and count how often three of the flips produce
 girls or three boys.) It is as simple as that.
 
 In resampling estimation it is of the highest importance to work in a
-careful, step-by-step fashion---to write down the steps in the
+careful, step-by-step fashion — to write down the steps in the
 estimation, and then to do the experiments just as described in the
 steps. Here are a set of steps that will lead to a correct answer about
 the probability of getting three daughters among four children:
@@ -263,15 +263,15 @@ replacement* .
 
 In later chapters we will frequently refer to a problem which is
 identical in basic structure to the problem of three girls in four
-children---the probability of getting 9 females in ten calf births if
-the probability of a female birth is (say) .5---when we set this problem
+children — the probability of getting 9 females in ten calf births if
+the probability of a female birth is (say) .5 — when we set this problem
 in the context of the possibility that a genetic engineering practice is
 effective in increasing the proportion of females (desirable for the
 production of milk).
 
 Another variation: What if we feel the need to get a bit more precise,
 and to consider the biological fact that more males are born than
-females---perhaps 52 to 48. This variation would make a solution using
+females — perhaps 52 to 48. This variation would make a solution using
 coins more tedious. But with the RESAMPLING STATS program it is not at
 all more difficult. The only commands in the above program that need to
 be changed are
@@ -339,7 +339,7 @@ girl, heads or tails), "binomial" meaning "two names" in Latin \[1\].
 A fundamental property of binomial processes is that the individual
 trials are *independent* , a concept discussed earlier. A binomial
 sampling process is a *series* of binomial events about which one may
-ask many sorts of questions---the probability of exactly X heads
+ask many sorts of questions — the probability of exactly X heads
 ("successes") in N trials, or the probability of X or more "successes"
 in N trials, and so on.
 
@@ -435,8 +435,8 @@ then be done as follows:
         If you understand the earlier "girls" program, then the program
         "bball" should be easy: To create 1000 samples, we start with a
         REPEAT statement. We then GENERATE 5 numbers between "1" and "4"
-        to simulate the 5 shots, each with a 25 percent---or 1 in
-        4---chance of scoring. We decide that "1" will stand for a
+        to simulate the 5 shots, each with a 25 percent — or 1 in
+        4 — chance of scoring. We decide that "1" will stand for a
         successful shot, and "2" through "4" will stand for a missed
         shot, and therefore we COUNT the number of "1"'s in a to
         determine the number of shots resulting in baskets in the
@@ -520,7 +520,7 @@ what is known as the Multinomial Distribution.
 This problem may be quickly solved on the computer with RESAMPLING STATS
 with the program labeled "bullseye" below. Bullseye has a complication
 not found in previous problems: It tests whether two different sorts of
-events *both* happen---a bullseye plus two shots in the white.
+events *both* happen — a bullseye plus two shots in the white.
 
 After GENERATing three randomly-drawn numbers between 1 and 10, we check
 with the COUNT command to see if there is a bullseye. If there is, the
@@ -561,7 +561,7 @@ for i in range(1000):
         # Keep track of the results of this second count.
         white_counts[i] = c
 
-        # End the "IF" sequence---we will do the following steps without regard
+        # End the "IF" sequence — we will do the following steps without regard
         # to the "IF" condition.
 
     # End the above experiment and repeat it until 1000 repetitions are
@@ -648,8 +648,8 @@ We must also take into account the possibility of a similar eye-catching
 will be a tough decision how to do so, but a reasonable option is to
 simply double the probability computed in step 4a or 4b.
 
-Deciding which of these two approaches---the "permutation" (without
-replacement) and "bootstrap" (with replacement) methods---is the more
+Deciding which of these two approaches — the "permutation" (without
+replacement) and "bootstrap" (with replacement) methods — is the more
 appropriate is often a thorny matter; it will be discussed latter in
 Chapter 18. In many cases, however, the two approaches will lead to
 similar results.
@@ -657,7 +657,7 @@ similar results.
 Later, we will actually carry out these procedures with the aid of
 RESAMPLING STATS, and estimate the probabilities we seek.
 
-## Example 7-6: Dispersion of a Sum of Random Variables---Hammer Lengths---Heads and Handles
+## Example 7-6: Dispersion of a Sum of Random Variables — Hammer Lengths — Heads and Handles
 
 The distribution of lengths for hammer *handles* is as follows: 20
 percent are 10 inches long, 30 percent are 10.1 inches, 30 percent are
@@ -693,10 +693,10 @@ will have lengths equal to or greater than
 
 You may also want to forego learning the standard "rule," and simply
 estimate the mean this way, also. As an exercise, compute the
-interquartile range---the difference between the 25th and the 75th
+interquartile range — the difference between the 25th and the 75th
 percentiles.
 
-## Example 7-7: The Product of Random Variables---Theft by Employees
+## Example 7-7: The Product of Random Variables — Theft by Employees
 
 The distribution of the number of thefts per month you can expect in
 your business is as follows:
@@ -721,7 +721,7 @@ The amounts that may be stolen on any theft are as follows:
   ------------ -----------------
 
 The same procedure as used above to estimate the mean length of
-hammers---add the lengths of handles and heads---can be used for this
+hammers — add the lengths of handles and heads — can be used for this
 problem except that the results of the drawings from each bucket are
 multiplied rather than added.
 
@@ -1049,7 +1049,7 @@ plt.title(
 
 ```
 
-The results shown above---not even one "success" in 1,000 trials---imply
+The results shown above — not even one "success" in 1,000 trials — imply
 that there is only a very small probability that two groups with mean
 prices as different as were observed would happen by chance if drawn
 with replacement from the universe of 42 observed prices.
@@ -1078,5 +1078,5 @@ general procedure for all of resampling.
 2.  This assumption is slightly contrary to scientific fact. A better
     example would be: What is the probability that four mothers
     delivering successively in a hospital will all have daughters? But
-    that example has other difficulties---which is the way science
+    that example has other difficulties — which is the way science
     always is.

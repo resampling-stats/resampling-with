@@ -69,7 +69,7 @@ If two events are independent, the multiplication rule simplifies to
 simply a mathematical shortcut, and one can make the desired estimate by
 simulation.**
 
-Also again, if two events are *not* independent---that is, if P(A\|B) is
+Also again, if two events are *not* independent — that is, if P(A\|B) is
 not equal to P(A) because P(A) is dependent upon the occurrence of B,
 then the formula to be used now is, **p(A and B) = p(A\|B) \* p(B)** ,
 which is sufficiently confusing that you are probably better off with a
@@ -106,7 +106,7 @@ conducted *with replacement* .
 Let's now re-consider the multiplication rule with the special but
 important case of independence.
 
-**Example 5-1: Four Events in a Row---The Multiplication Rule**
+**Example 5-1: Four Events in a Row — The Multiplication Rule**
 
 Assume that we want to know the probability of four successful archery
 shots in a row, where the probability of a success on a given shot is
@@ -116,7 +116,7 @@ Instead of simulating the process with resampling trials we can, if we
 wish, arrive at the answer with the "multiplication rule." This rule
 says that the probability that *all* of a given number of *independent
 events* (the successful shots) will occur (four out of four in this
-case) is the *product* of their individual probabilities---in this case,
+case) is the *product* of their individual probabilities — in this case,
 1/4 x 1/4 x 1/4 x 1/4 = 1/256. If in doubt about whether the
 multiplication rule holds in any given case, however, you may check by
 resampling simulation. For the case of four daughters in a row, assuming
@@ -126,12 +126,12 @@ x 1/2 = 1/16.
 Better yet, we'd use the more exact probability of getting a girl:
 100/206, and multiply (100/206) ^4^ . An important point here, however:
 We have estimated the probability of a *particular* family having four
-daughters as 1 in 16---that is, odds of 15 to 1. But note well: This is
+daughters as 1 in 16 — that is, odds of 15 to 1. But note well: This is
 a very different idea from stating that the odds are 15 to 1 against
 *some* family's having four daughters in a row. In fact, as many
 families will have four girls in a row as will have boy-girl-boy-girl in
 that order or girl-boy-girl-boy or *any other series* of four children.
-The chances against any particular series is the same---1 in 16---and
+The chances against any particular series is the same — 1 in 16 — and
 one-sixteenth of all four-children families will have each of these
 series, on average. This means that if your next-door neighbor has four
 daughters, you cannot say how much "out of the ordinary" the event is.
@@ -222,7 +222,7 @@ deductive probability theory is called the *addition rule* .
 
 ## The addition rule
 
-The addition rule applies to *mutually exclusive* outcomes---that is,
+The addition rule applies to *mutually exclusive* outcomes — that is,
 the case where if one outcome occurs, the other(s) cannot occur; one
 event implies the absence of the other when events are mutually
 exclusive. Green and red coats are mutually exclusive if you never wear
@@ -257,7 +257,7 @@ chance that it will be either nice or snowy? The procedure is just as
 before, except that some rainy days are included because they are also
 snowy.
 
-When A and B are *not* mutually exclusive---when it is possible that the
+When A and B are *not* mutually exclusive — when it is possible that the
 day might be both rainy and snowy, or you might wear both red and green
 coats on the same day, we write (in the latter case) P(red and green
 coats) \> 0, and the appropriate formula is
@@ -327,7 +327,7 @@ Bulmer, M.G., *Principles of Statistics* (New York: Dover Publications, Inc.,
 Galileo wrote down all the possibilities in a tree form, a refinement
 for mapping out the sample space.
 
-Galileo simply displayed the events themselves---such as "2," "4," and
+Galileo simply displayed the events themselves — such as "2," "4," and
 "4," making up a total of 10, a specific event arrived at in a specific
 way. Several different events can lead to a 10 with three dice. If we
 now consider each of these events, we arrive at the concept of the
@@ -337,11 +337,11 @@ both operationally and linguistically to the *paths* in (say) the quincunx
 device or Pascal's Triangle which we shall discuss shortly.
 
 A *tree* is the most basic display of the paths in a given situation.
-Each branch of the tree---a unique path from the start on the left-hand
-side to the endpoint on the right-hand side---contains the *sequence of
+Each branch of the tree — a unique path from the start on the left-hand
+side to the endpoint on the right-hand side — contains the *sequence of
 all the elements* that make up that event, in the order in which they
 occur. The right-hand ends of the branches constitute a list of the
-outcomes. That list includes all possible permutations---that is, it
+outcomes. That list includes all possible permutations — that is, it
 distinguishes among outcomes by the orders in which the particular die
 outcomes occur.
 
@@ -363,7 +363,7 @@ sample space (S) = 1.
 
 Early on, people came up with the idea of estimating probabilities by
 arraying the possibilities for, and those against, the event occurring.
-For example, the coin could fall in three ways---head, tail, or on its
+For example, the coin could fall in three ways — head, tail, or on its
 side. They then speedily added the qualification that the possibilities
 in the list must have an equal chance, to distinguish the coin falling
 on its side from the other possibilities (so ignore it). Or, if it is
@@ -383,7 +383,7 @@ medicine, sports, and so on. We therefore must wrestle with the issue of
 what probabilities we should include in our theoretical sample space, or
 in our experiments. Often we proceed by choosing as an analogy a
 physical "model" whose properties we know and which we consider to be
-appropriate---such as a gambling game with coins, dice, cards. This
+appropriate — such as a gambling game with coins, dice, cards. This
 model becomes our idealized setup. But this step makes crystal-clear
 that judgment is heavily involved in the process, because choosing the
 analogy requires judgment.

@@ -28,12 +28,12 @@ produces the uncertain events in which we are interested. That is, the
 probability of the relevant independent *simple* events is assumed to be
 known, the way we assume we know the probability of a single "6" with a
 given die. The task is to determine the probability of various sequences
-or combinations of the simple events---say, three "6's" in a row with
+or combinations of the simple events — say, three "6's" in a row with
 the die. These are the sorts of probability problems dealt with in this
 chapter.
 
-The resampling method---or just call it simulation or Monte Carlo
-method, if you prefer---will be illustrated with classic examples.
+The resampling method — or just call it simulation or Monte Carlo
+method, if you prefer — will be illustrated with classic examples.
 Typically, a single trial of the system is simulated with cards, dice,
 random numbers, or a computer program. Then trials are repeated again
 and again to estimate the frequency of occurrence of the event in which
@@ -45,7 +45,7 @@ interested* .
 
 This chapter begins the Monte Carlo simulation work that culminates in
 the resampling method in statistics proper. The chapter deals with
-problems in probability theory---that is, situations where one wants to
+problems in probability theory — that is, situations where one wants to
 estimate the probability of one or more particular events when the basic
 structure and parameters of the system are known. In later chapters we
 move on to inferential statistics, where similar simulation work is
@@ -111,9 +111,9 @@ the two games). If so, two drawings from the bucket should represent two
 games. And we can then estimate the compound probability we seek with a
 series of two-ball trial experiments.
 
-More specifically, our procedure in this case---the prototype of all
+More specifically, our procedure in this case — the prototype of all
 procedures in the resampling simulation approach to probability and
-statistics---is as follows:
+statistics — is as follows:
 
 1.  Put six green ("Win") and four red ("Lose") balls in a bucket.
 
@@ -186,8 +186,8 @@ most situations, and should be used as a shortcut only when a person
 understands exactly which first principles are embodied in the formulas.
 But most of the time, students and practitioners resort to the formulaic
 approach without understanding the first principles that lie behind
-them---indeed, their own teachers often do not understand these first
-principles---and therefore they have almost no way to verify that the
+them — indeed, their own teachers often do not understand these first
+principles — and therefore they have almost no way to verify that the
 formula is right. Instead they use canned checklists of qualifying
 conditions.
 
@@ -247,10 +247,10 @@ probability:
 2.  The probabilities of all the possible alternative outcomes in a
     single "trial" must add to unity. If you are prepared to say that it
     must either rain or not rain, with no other outcome being
-    possible---that is, if you consider the outcomes to be *mutually
+    possible — that is, if you consider the outcomes to be *mutually
     exclusive* (a term that will be discussed below), then one of those
     probabilities implies the other. That is, if you estimate that the
-    probability of rain is .2---written P(rain) = .2---that implies that
+    probability of rain is .2 — written P(rain) = .2 — that implies that
     you estimate that P (no rain) = .8.
 
     Mutually exclusive events -- the addition rule
@@ -308,7 +308,7 @@ probability:
     objective "frequency series." And 2) the data come to us as the
     records of 50 days, of which 35 were nice. We would do best to stick
     with exactly those numbers rather than convert them into a single
-    number---70 percent. Percentages have a way of being confusing.
+    number — 70 percent. Percentages have a way of being confusing.
     (When his point score goes up from 2 to 3, my racquetball partner is
     fond of saying that he has made a "fifty percent increase"; that's
     just one of the confusions with percentages.) And converting to a
@@ -316,7 +316,7 @@ probability:
     the percent is based upon, whereas 35/50 keeps that information.
 
     Now, what about the estimate that the Skins have a .65 chance of
-    winning on a nice day---where does that come from? Unlike the
+    winning on a nice day — where does that come from? Unlike the
     weather situation, there is no long series of stable data to provide
     that information about the probability of winning. Instead, we
     *construct* an estimate using whatever information or "hunch" we
@@ -328,11 +328,11 @@ probability:
     .7 estimate of a nice day. In the case of winning, however, we
     produce an estimate expressed directly as a percent.
 
-    If we are shaky about the estimate of winning---as indeed we ought
+    If we are shaky about the estimate of winning — as indeed we ought
     to be, because so much judgment and guesswork inevitably goes into
-    it---we might proceed as follows: Take hold of a bucket and two bags
+    it — we might proceed as follows: Take hold of a bucket and two bags
     of balls, green and red. Put into the bucket some number of green
-    balls---say 10. Now add enough red balls to express your judgment
+    balls — say 10. Now add enough red balls to express your judgment
     that the *ratio* is the ratio of expected wins to losses on a nice
     day, adding or subtracting green balls as necessary to get the ratio
     you want. If you end up with 13 green and 7 red balls, then you are
@@ -454,10 +454,10 @@ print(number_of_fine_wins / 1000)
 ```
 
 The above procedure gives us the probability that it will be a nice day
-and the Skins will win---about 45.5 percent.
+and the Skins will win — about 45.5 percent.
 
-With the aid of a bucket with a different composition---one made by
-substituting 55 blue and 45 yellow balls in Step 4---a similar procedure
+With the aid of a bucket with a different composition — one made by
+substituting 55 blue and 45 yellow balls in Step 4 — a similar procedure
 yields the chance that it will be a *nasty* day and the Skins will win.
 With a similar substitution and procedure we could also estimate the
 probabilities that it will be a nasty day and the Skins will lose, and a
@@ -523,7 +523,7 @@ nevertheless ask what chance the team has of winning the post season
 game at the bowl to which only the best team in the University of
 Maryland's league is sent. One may say that *if* by some miracle the
 University of Maryland does get to the bowl, its chance would be a bit
-less than 50- 50---say, .40. That is, the probability of its winning,
+less than 50- 50 — say, .40. That is, the probability of its winning,
 *conditional* on getting to the bowl is .40. But the chance of its
 getting to the bowl at all is very low, perhaps .01. If so, the
 unconditional probability of winning at the bowl is the probability of
@@ -531,7 +531,7 @@ its getting there multiplied by the probability of winning *if* it gets
 there; that is, .01 x .40 = .004. (It would be even better to say that
 .004 is the probability of winning conditional only on having a team,
 there being a league, and so on, all of which seem almost sure things.)
-Every probability is conditional on many things---that war does not
+Every probability is conditional on many things — that war does not
 break out, that the sun continues to rise, and so on. But if all those
 unspecified conditions are very sure, and can be taken for granted, we
 talk of the probability as unconditional.
@@ -576,7 +576,7 @@ formula, you are more likely to come up with a sound answer with the
 simulation method.
 
 Let's illustrate the concept of conditional probability with four
-cards---two aces and two 3's (or two black and two red). What is the
+cards — two aces and two 3's (or two black and two red). What is the
 probability of an ace? Obviously, .5. If you first draw an ace, what is
 the probability of an ace now? That is, what is the probability of an
 ace *conditional on* having drawn one already? Obviously not .5.
@@ -594,7 +594,7 @@ the other at our convenience.
 
 Let's further illustrate the concept of conditional probability with a
 puzzle (from Gardner, 1983, p. 42). "Shuffle a packet of four
-cards---two red, two black---and deal them face down in a row. Two cards
+cards — two red, two black — and deal them face down in a row. Two cards
 are picked at random, say by placing a penny on each. What is the
 probability that those two cards are the same color?"
 
@@ -609,7 +609,7 @@ OR
 2.  Shuffle the slips or the array
 
 3.  Take the first number in the hat or array and store it
-    someplace---perhaps in a location called A.
+    someplace — perhaps in a location called A.
 
 4.  Take the second number and store it in B.
 
@@ -670,8 +670,8 @@ estimated with three buckets instead of two. Or it can be computed with the
 multiplication rule as .65 \* .7 \* .3 = .1365 (about .14)---the
 probability of a nice day and a win and you leave early.
 
-The book shows you the formal method---the multiplication rule, in this
-case---for several reasons: 1) Simulation is weak with very low
+The book shows you the formal method — the multiplication rule, in this
+case — for several reasons: 1) Simulation is weak with very low
 probabilities, e.g. P(50 heads in 50 throws). But--- a big but---
 *statistics* and probability is seldom concerned with very small
 probabilities. Even for games like poker, the orders of magnitude of 5
@@ -697,7 +697,7 @@ possibility of confusion. Usually that means using it only when the
 events under consideration are independent.
 
 Notice that the same multiplication rule gives us the probability of
-*any particular sequence* of hits and misses---say, a miss, then a hit,
+*any particular sequence* of hits and misses — say, a miss, then a hit,
 then a hit if the probability of a single miss is 2/3. Among the 2/3 of
 the trials with misses on the first shot, 1/3 will next have a hit, so
 2/3 x 1/3 equals the probability of a miss then a hit. Of those 2/9 of
