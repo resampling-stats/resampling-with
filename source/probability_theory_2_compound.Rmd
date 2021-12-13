@@ -507,7 +507,7 @@ then deal a poker hand by taking the first five cards from the shuffled
 hand, using the TAKE statement. Now we must find out if there is one
 (and only one) pair; we do this with the MULTIPLES statement — the "2"
 in that statement indicates that it is a duplicate, rather than a
-singleton or triplicate or quadruplicate that we are testing for--- and
+singleton or triplicate or quadruplicate that we are testing for — and
 we put the result in location D. Next we SCORE in location z how many
 pairs there are, the number in each trial being either zero, one, or
 two. (The reason we cannot put the result of the MULTIPLES operation

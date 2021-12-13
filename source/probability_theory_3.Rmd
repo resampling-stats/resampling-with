@@ -550,7 +550,7 @@ for i in range(1000):
     b = np.count_nonzero(a == 1)
 
     # If there is exactly one bullseye, we will continue with counting the
-    # other shots. (If there are no bullseyes, we need not bother--- the
+    # other shots. (If there are no bullseyes, we need not bother — the
     # outcome we are interested in has not occurred.)
     if b == 1:
 
