@@ -834,7 +834,9 @@ prediction of 50% for TV (or sofa) end on the next flip.
 
 We are not saying the result *is* random in any deep, non-deterministic sense — we are only saying we can treat the result as random, because we cannot predict it.
 
-Now consider getting *random* numbers from the computer, where the numbers can either be 0 or 1.  This is rather like tossing a coin, where the results are 0 and 1 rather than "heads" and "tails".
+Now consider getting *random* numbers from the computer, where the numbers can
+either be 0 or 1.  This is rather like tossing a fair coin, where the results
+are 0 and 1 rather than "heads" and "tails".
 
 When we ask the computer for a random choice between 0 and 1, we accept
 it is random-enough, or random-like, if we can't do anything to predict which
@@ -842,13 +844,12 @@ of 0 or 1 we will get on any one trial.  We can't do better than guessing that
 the next value will be — say — 0 — and whichever number we guess, we will only
 ever have a 50% chance of being correct.  We are not saying the computer is
 giving *truly* random numbers in some deep sense, only numbers we cannot
-distinguish them from random numbers, because we cannot do anything to predict
-them.  The technical term for the computer random numbers is therefore
-*pseudo-random* — meaning, random enough to be effectively unpredictable.
-
-The computer uses lots of tricks to give us these pseudo-random numbers. The
-numbers are random, in the sense that there is no *practical* way for you, or
-even a very powerful computer, to do anything to improve the prediction for
+*distinguish* from truly random numbers, because we cannot do anything to
+predict them.  The technical term for random numbers from the computer is
+therefore *pseudo-random* — meaning, like random numbers, in the sense they
+are effectively unpredictable. Effectively unpredictable means there is no
+*practical* way for you, or even a very powerful computer, to do anything to
+improve your prediction of the next number in the series.
 
 ## The philosophers' dispute about the concept of probability
 
