@@ -22,8 +22,8 @@ resampling_with:
 # What is probability?
 
 > Uncertainty, in the presence of vivid hopes and fears, is painful, but must
-be endured if we wish to live without the support of comforting fairy tales."
-— Bertrand Russell [-@russell1945history p. *xiv*].
+> be endured if we wish to live without the support of comforting fairy
+> tales." — Bertrand Russell [-@russell1945history p. *xiv*].
 
 ## Introduction
 
@@ -59,11 +59,10 @@ statistical inferences.
 
 ## The "Meaning" of "Probability"
 
-Probability is difficult to define [@feller1991introduction], but let us start
-with this definition:
+Probability is difficult to define [@feller1991introduction], but here is a useful informal starting point:
 
-    A probability is a number from 0 through 1 that reflects how likely it is
-    that a particular event will happen.
+> A probability is a number from 0 through 1 that reflects how likely it is
+> that a particular event will happen.
 
 Any particular stated probability is an assertion that indicates how likely
 you believe it is that an event will occur.
@@ -84,12 +83,12 @@ This is the rock-bottom interpretation of the term "probability," and the
 heart of the concept.
 
 The idea of probability arises when you are not sure about what will happen in
-an uncertain situation — that is, when you lack information and therefore can
-only make an estimate. For example, if someone asks you your name, you do not
-use the concept of probability to answer; you know the answer to a very high
-degree of surety. To be sure, there is some chance that you do not know your
-own name, but for all practical purposes you can be quite sure of the answer.
-If someone asks you who will win tomorrow's ball game, however, there is a
+an uncertain situation. For example, you may lack information and therefore
+can only make an estimate. If someone asks you your name, you do not use the
+concept of probability to answer; you know the answer to a very high degree of
+surety. To be sure, there is some chance that you do not know your own name,
+but for all practical purposes you can be quite sure of the answer. If someone
+asks you who will win tomorrow's baseball game, however, there is a
 considerable chance that you will be wrong no matter what you say. Whenever
 there is a reasonable chance that your prediction will be wrong, the concept
 of probability can help you.
@@ -103,61 +102,54 @@ data — a "universe" — and you want to know the probability of various
 degrees of likeness between the sample and the universe. (The universe
 of events you are sampling from is also called the "population," a
 concept to be discussed below.) Perhaps the universe of your study is
-all high school seniors in 1997. You might then want to know, for
-example, the probability that the universe's average SAT score will not
-differ from your sample's average SAT by more than some arbitrary number
-of SAT points — say, ten points.
+all high school graduates in 2018. You might then want to know, for example,
+the probability that the universe's average SAT (university entrance) score
+will not differ from your sample's average SAT by more than some arbitrary
+number of SAT points — say, ten points.
 
-We have said that a probability statement is about the future. Well,
-usually. Occasionally you might state a probability about your future
-knowledge of past events — that is, "I think I'll find out
-that..." — or even about the unknown past. (Historians use
-probabilities to measure their uncertainty about whether events occurred
-in the past, and the courts do, too, though the courts hesitate to say
-so explicitly.)
+We have said that a probability statement is about the future. Well, usually.
+Occasionally you might state a probability about your future knowledge of past
+events — that is, "I think I'll find out that..." — or even about the unknown
+past. (Historians use probabilities to measure their uncertainty about whether
+events occurred in the past, and the courts do, too, though the courts
+hesitate to say so explicitly.)
 
-Sometimes one knows a probability, such as in the case of a gambler
-playing black on an honest roulette wheel, or an insurance company
-issuing a policy on an event with which it has had a lot of experience,
-such as a life insurance policy. But often one does not *know* the
-probability of a future event. Therefore, our concept of probability
-must include situations where extensive data are not available.
+Sometimes one knows a probability, such as in the case of a gambler playing
+black on an honest roulette wheel, or an insurance company issuing a policy on
+an event with which it has had a lot of experience, such as a life insurance
+policy. But often one does not *know* the probability of a future event.
+Therefore, our concept of probability must include situations where extensive
+data are not available.
 
 All of the many techniques used to estimate probabilities should be thought of
 as *proxies* for the actual probability. For example, if Mission Control at
 Space Central simulates what should and probably will happen in space if a
 valve is turned aboard a space craft just now being built, the test result on
 the ground is a proxy for the real probability of what will happen when the
-crew turn the valve in planned mission.
+crew turn the valve in the planned mission.
 
-In some cases, it is difficult to conceive of *any* data that can serve
-as a proxy. For example, the director of the CIA, Robert Gates, said in
-1993 "that in May 1989, the CIA reported that the problems in the Soviet
-Union were so serious and the situation so volatile that Gorbachev had
-only a 50-50 chance of surviving the next three to four years unless he
-retreated from his reform policies" (*The Washington Post* , January
-17, 1993, p. A42). Can such a statement be based on solid enough data to
-be more than a crude guess?
+In some cases, it is difficult to conceive of *any* data that can serve as a
+proxy. For example, the director of the CIA, Robert Gates, said in 1993 "that
+in May 1989, the CIA reported that the problems in the Soviet Union were so
+serious and the situation so volatile that Gorbachev had only a 50-50 chance
+of surviving the next three to four years unless he retreated from his reform
+policies" (*The Washington Post* , January 17, 1993, p. A42). Can such a
+statement be based on solid enough data to be more than a crude guess?
 
-The conceptual probability in any specific situation is *an
-interpretation of all the evidence that is then available* . For
-example, a wise biomedical worker's estimate of the chance that a given
-therapy will have a positive effect on a sick patient should be an
-interpretation of the results of not just one study in isolation, but of
-the results of that study plus everything else that is known about the
-disease and the therapy. A wise policymaker in business, government, or
-the military will base a probability estimate on a wide variety of
-information and knowledge. The same is even true of an insurance
-underwriter who bases a life-insurance or shipping-insurance rate not
-only on extensive tables of long-time experience but also on recent
+The conceptual probability in any specific situation is *an interpretation of
+all the evidence that is then available* . For example, a wise biomedical
+worker's estimate of the chance that a given therapy will have a positive
+effect on a sick patient should be an interpretation of the results of not
+just one study in isolation, but of the results of that study plus everything
+else that is known about the disease and the therapy. A wise policymaker in
+business, government, or the military will base a probability estimate on a
+wide variety of information and knowledge. The same is even true of an
+insurance underwriter who bases a life-insurance or shipping-insurance rate
+not only on extensive tables of long-time experience but also on recent
 knowledge of other kinds. Each situation asks us to make a choice of the best
 method of estimating a probability — whether that estimate is *objective* —
-from a frequency series — or subjective, from the distillation of other
-experience.  But again, note — the objectivity of the frequency series may be
-more apparent than real — does a particular frequency series really apply?
-Were the previous series of patients similar?  Has some treatment or lifestyle
-change rendered the older data obsolete?  These decisions too are often a
-matter of judgment.
+from a frequency series — or *subjective*, from the distillation of other
+experience.
 
 ## The nature and meaning of the concept of probability
 
@@ -170,8 +162,8 @@ term — are useful in particular contexts.  This book contains many examples of
 the use of probability. Work with them will gradually develop a sound
 understanding of the concept.
 
-There are two major concepts and points of view about
-probability — frequency and belief. Each is useful in some situations but not
+There are two major concepts and points of view about probability —
+*frequency* and *degrees of belief*. Each is useful in some situations but not
 in others. Though they may seem incompatible in principle, there almost never
 is confusion about which is appropriate in a given situation.
 
@@ -179,18 +171,21 @@ is confusion about which is appropriate in a given situation.
     proportion of times that the event has taken place in the past,
     usually based on a long series of trials. Insurance companies use
     this when they estimate the probability that a thirty-five-year-old
-    postman will die during a period for which he wants to buy an
+    teacher will die during a period for which he wants to buy an
     insurance policy. (Notice this shortcoming: Sometimes you must bet
     upon events that have never or only infrequently taken place before,
     and so you cannot reasonably reckon the proportion of times they
     occurred one way or the other in the past.)
 
-2.  *Belief* . The probability that an event will take place or that a
-    statement is true can be said to correspond to the odds at which you
-    would bet that the event will take place. (Notice a shortcoming of
-    this concept: You might be willing to accept a five-dollar bet at
-    2-1 odds that your team will win the game, but you might be
-    unwilling to bet a hundred dollars at the same odds.)
+2.  *Degree of belief* . The probability that an event will take place or that
+   a statement is true can be said to correspond to the odds at which you
+   would bet that the event will take place. (Notice a shortcoming of this
+   concept: You might be willing to accept a five-dollar bet at 2-1 odds that
+   your team will win the game, but you might be unwilling to bet a hundred
+   dollars at the same odds.)
+
+See [@barnett1982comparative, chapter 3] for an in-depth
+discussion of different approaches to probability.
 
 The connection between gambling and immorality or vice troubles some people
 about gambling examples. On the other hand, the immediacy and consequences of
@@ -205,14 +200,12 @@ especially tossing coins, throwing dice, and playing cards:
     of life, and therefore they can be generalized to applications in
     any walk of life. Students in any field — business, medicine,
     science — can feel equally at home with gambling examples.
-
 3.  *Sharpness* . These examples are particularly stark, and
     unencumbered by the baggage of particular walks of life or special
     uses.
-
-4.  *Universality* . Every other text uses these same examples, and
-    therefore the use of them connects up this book with the main body
-    of writing about probability and statistics.
+4.  *Universality* . Many other texts use these same examples, and therefore
+   the use of them connects up this book with the main body of writing about
+   probability and statistics.
 
 Often we'll begin with a gambling example and then consider an example
 in one of the professional fields — such as business and other
@@ -234,11 +227,11 @@ possible, of course. A PRA can cost a nuclear facility \$5 million.
 
 Another example: If a manager of a high-street store looks at the sales of a
 particular brand of smart watches in the last two Decembers, and on that basis
-guesses how likely it is that he will run out of stock if he orders 200 smart
+guesses how likely it is that she will run out of stock if she orders 200 smart
 watches, then the last two years' experience is serving as a proxy for future
 experience. If a sales manager just "intuits" that the odds are 3 to 1 (a
 probability of .75) that the main local competitor will not meet a price cut,
-then all his past experience summed into his intuition is a proxy for the
+then all her past experience summed into her intuition is a proxy for the
 probability that it will really happen. Whether any proxy is a good or bad one
 depends on the wisdom of the person choosing the proxy and making the
 probability estimates.
@@ -275,10 +268,8 @@ odd). Here are several general methods of estimation, where we define each metho
     watch this December will be between 200 and 250, based on sales the last
     two Decembers; that your team will win the football game tomorrow; that
     war will break out next year; or that a United States astronaut will reach
-    Mars before a Russian astronaut. You sim-
-
-    ply put together all your relevant prior experience and knowledge,
-    and then make an educated guess.
+    Mars before a Russian astronaut. You simply put together all your relevant
+    prior experience and knowledge, and then make an educated guess.
 
     Observation of repeated events can help you estimate the probability
     that a machine will turn out a defective part or that a child can
@@ -304,12 +295,11 @@ odd). Here are several general methods of estimation, where we define each metho
     are *practically* the same, and science is only interested in such
     "practical" considerations.)
 
-    In view of the necessarily judgmental aspects of probability
-    estimates, the reader may prefer to talk about "degrees of belief"
-    instead of probabilities. That's fine, just as long as it is
-    understood that we operate with degrees of belief in exactly the
-    same way as we operate with probabilities; the two terms are working
-    synonyms.
+    Given that we have to use judgment in probability estimates, the reader
+    may prefer to talk about "degrees of belief" instead of probabilities.
+    That's fine, just as long as it is understood that we operate with degrees
+    of belief in exactly the same way as we operate with probabilities; the
+    two terms are working synonyms.
 
     There is no *logical* difference between the sort of probability
     that the life insurance company estimates on the basis of its
@@ -318,19 +308,18 @@ odd). Here are several general methods of estimation, where we define each metho
     the past two years.
 
     The concept of a probability based on a frequency series can be
-    rendered meaningless when all the observations are repetitions of a
+    rendered almost useless when all the observations are repetitions of a
     single magnitude — for example, the case of all successes and zero
-    failures of space-shuttle launches prior to the Challenger shuttle
-    tragedy in the 1980s; in those data alone there was no basis to
-    estimate the probability of a shuttle failure. (Probabilists have
-    made some rather peculiar attempts over the centuries to estimate
-    probabilities from the length of a zero-defect time series — such as
-    the fact that the sun has never failed to rise (foggy days
-    aside! — based on the undeniable fact that the longer such a series
-    is, the smaller the probability of a failure; see e.g., Whitworth,
-    1897/1965, pp. xix-xli. However, one surely has more information on
-    which to act when one has a long series of observations of the same
-    magnitude rather than a short series).
+    failures of space-shuttle launches prior to the Challenger shuttle tragedy
+    in the 1980s; in those data alone there was almost no basis to estimate
+    the probability of a shuttle failure. (Probabilists have made some rather
+    peculiar attempts over the centuries to estimate probabilities from the
+    length of a zero-defect time series — such as the fact that the sun has
+    never failed to rise (foggy days aside! — based on the undeniable fact
+    that the longer such a series is, the smaller the probability of a
+    failure; see e.g., [@whitworth1897dcc, pp. xix-xli]. However, one surely
+    has more information on which to act when one has a long series of
+    observations of the same magnitude rather than a short series).
 
 2.  **Simulated experience.**
 
@@ -339,10 +328,10 @@ odd). Here are several general methods of estimation, where we define each metho
     This is an empirical method even when the empirical trials are
     simulations. In the case of the even-numbered spades, the empirical
     scientific procedure is to shuffle the cards, deal one card, record
-    whether or not the card is an even-number spade, replace the card,
-    and repeat the steps a good many times. The proportions of times you
-    observe an even-numbered spade come up is a probability estimate
-    based on a frequency series.
+    whether or not the card is an even-number spade, replace the card, and
+    repeat the steps a good many times. The proportions of times you observe
+    an even-numbered spade come up is a probability estimate based on a
+    frequency series.
 
     You might reasonably ask why we do not just *count* the number of
     even-numbered spades in the deck of fifty-two cards. No reason at
@@ -371,26 +360,25 @@ odd). Here are several general methods of estimation, where we define each metho
     probability estimate of 2/36 = 1/18.
 
     Estimating probabilities by counting the possibilities has two
-    requirements: 1) that the possibilities all be known (and there-
-
-    fore limited), and few enough to be studied easily; and 2) that the
-    probability of each particular possibility be known, for example,
-    that the probabilities of all sides of the dice coming up are equal,
-    that is, equal to 1/6.
+    requirements: 1) that the possibilities all be known (and therefore
+    limited), and few enough to be studied easily; and 2) that the probability
+    of each particular possibility be known, for example, that the
+    probabilities of all sides of the dice coming up are equal, that is, equal
+    to 1/6.
 
 4.  **Mathematical shortcuts to sample-space analysis.**
 
     A fourth source of probability estimates is *mathematical
     calculations* . If one knows by other means that the probability of
     a spade is 1/4 and the probability of an even-numbered card is 6/13,
-    one can then calculate that the probability of turning up an
-    even-numbered spade is 6/52 (that is, 1/4 x 6/13). If one knows that
-    the probability of a spade is 1/4 and the probability of a heart is
-    1/4, one can then calculate that the probability of getting a heart
-    *or* a spade is 1/2 (that is 1/4 + 1/4). The point here is not the
-    particular calculation procedures, but rather that one can often
-    calculate the desired probability on the basis of already-known
-    probabilities.
+    one can use probability calculation rules to calculate that the
+    probability of turning up an even-numbered spade is 6/52 (that is, 1/4 x
+    6/13). If one knows that the probability of a spade is 1/4 and the
+    probability of a heart is 1/4, one can then calculate that the probability
+    of getting a heart *or* a spade is 1/2 (that is 1/4 + 1/4). The point here
+    is not the particular calculation procedures, which we will touch on
+    later, but rather that one can often calculate the desired probability on
+    the basis of already-known probabilities.
 
     It is possible to estimate probabilities with mathematical
     calculation only if one knows *by other means* the probabilities of
@@ -401,131 +389,129 @@ odd). Here are several general methods of estimation, where we define each metho
 
 5.  **Kitchen-sink methods.**
 
-In addition to the above four categories of estimation procedures, the
-statistical imagination may produce estimates in still other ways such
-as a) the salesman's seat-of-the-pants estimate of what the
-competition's price will be next quarter, based on who-knows-what
-gossip, long-time acquaintance with the competitors, and so on, and b)
-the probability risk assessments (PRAs) that are made for the chances of
-failures of nuclear power plants based, not on long experience or even
-on laboratory experiment, but rather on theorizing of various kinds —
-using pieces of prior experience wherever possible, of course. Any of
-these methods may be a combination of theoretical and empirical methods.
+    In addition to the above four categories of estimation procedures, the
+    statistical imagination may produce estimates in still other ways such
+    as a) the salesman's seat-of-the-pants estimate of what the
+    competition's price will be next quarter, based on who-knows-what
+    gossip, long-time acquaintance with the competitors, and so on, and b)
+    the probability risk assessments (PRAs) that are made for the chances of
+    failures of nuclear power plants based, not on long experience or even
+    on laboratory experiment, but rather on theorizing of various kinds —
+    using pieces of prior experience wherever possible, of course. Any of
+    these methods may be a combination of theoretical and empirical methods.
 
-Consider the estimation of the probability of failure for the tragic
-flight of the Challenger shuttle, as described by the famous physicist
-Nobelist Richard Feynman. This is a very real case that includes just
-about every sort of complication that enters into estimating
-probabilities.
+As an example of an organization struggling with kitchen-sink methods,
+consider the estimation of the probability of failure for the tragic flight of
+the Challenger shuttle, as described by the famous physicist Nobelist Richard
+Feynman. This is a very real case that includes just about every sort of
+complication that enters into estimating probabilities.
 
-...Mr. Ullian told us that 5 out of 127 rockets that he had looked at
-had failed — a rate of about 4 percent. He took that 4 percent and
-divided it by 4, because he assumed a manned flight would be safer than
-an unmanned one. He came out with about a 1 percent chance of failure,
-and that was enough to warrant the destruct charges.
+> ...Mr. Ullian told us that 5 out of 127 rockets that he had looked at had
+> failed — a rate of about 4 percent. He took that 4 percent and divided it by
+> 4, because he assumed a manned flight would be safer than an unmanned one.
+> He came out with about a 1 percent chance of failure, and that was enough to
+> warrant the destruct charges.
+>
+> But NASA \[the space agency in charge\] told Mr. Ullian that the probability
+> of failure was more like 1 in $10^5$.
+>
+> I tried to make sense out of that number. "Did you say 1 in $10^5$?"
+>
+> "That's right; 1 in 100,000."
+>
+> "That means you could fly the shuttle *every day* for an average of *300
+> years* between accidents — every day, one flight, for 300 years — which
+> is obviously crazy!"
+>
+> "Yes, I know," said Mr. Ullian. "I moved my number up to 1 in 1000 to answer
+> all of NASA's claims — that they were much more careful with manned flights,
+> that the typical rocket isn't a valid comparison, etcetera. "
+>
+> But then a new problem came up: the Jupiter probe, *Galileo* , was going to
+> use a power supply that runs on heat generated by radioactivity. If the
+> shuttle carrying *Galileo* failed, radioactivity could be spread over a
+> large area. So the argument continued: NASA kept saying 1 in 100,000 and Mr.
+> Ullian kept saying 1 in 1000, at best.
+>
+> Mr. Ullian also told us about the problems he had in trying to talk to the
+> man in charge, Mr. Kingsbury: he could get appointments with underlings, but
+> he never could get through to Kingsbury and find out how NASA got its figure
+> of 1 in 100,000 [@feynman1988what, pp. 179--180].
 
-But NASA \[the space agency in charge\] told Mr. Ullian that the
-probability of failure was more like 1 of 10 ^5^ .
-
-I tried to make sense out of that number. "Did you say 1 in 10 ^5^ ?"
-
-"That's right; 1 in 100,000."
-
-"That means you could fly the shuttle *every day* for an average of *300
-years* between accidents — every day, one flight, for 300 years — which
-is obviously crazy!"
-
-"Yes, I know," said Mr. Ullian. "I moved my number up to 1 in 1000 to
-answer all of NASA's claims — that they were much more careful with
-manned flights, that the typical rocket isn't a valid comparison,
-etcetera. "
-
-But then a new problem came up: the Jupiter probe, *Galileo* , was going
-to use a power supply that runs on heat generated by radioactivity. If
-the shuttle carrying *Galileo* failed, radioactivity could be spread
-over a large area. So the argument continued: NASA kept saying 1 in
-100,000 and Mr. Ullian kept saying 1 in 1000, at best.
-
-Mr. Ullian also told us about the problems he had in trying to talk to
-the man in charge, Mr. Kingsbury: he could get appointments with
-underlings, but he never could get through to Kingsbury and find out how
-NASA got its figure of 1 in 100,000 (Feynman, 1989, pp. 179--180).
 Feynman tried to ascertain more about the origins of the figure of 1 in
-100,000 that entered into NASA's calculations. He performed an
-experiment with the engineers:
+100,000 that entered into NASA's calculations. He performed an  experiment
+with the engineers:
 
-..."Here's a piece of paper each. Please write on your paper the answer
-to this question: what do you think is the probability that a flight
-would be uncompleted due to a failure in this engine?"
+> ..."Here's a piece of paper each. Please write on your paper the answer to
+> this question: what do you think is the probability that a flight would be
+> uncompleted due to a failure in this engine?"
+>
+> They write down their answers and hand in their papers. One guy wrote
+> "99-44/100% pure" (copying the Ivory soap slogan), meaning about 1 in
+> 200. Another guy wrote something very technical and highly quantitative in
+> the standard statistical way, carefully defining everything, that I had to
+> translate — which also meant about 1 in 200. The third guy wrote, simply, "1
+> in 300."
+>
+> Mr. Lovingood's paper, however, said:
+>
+> "Cannot quantify. Reliability is judged from:
+>
+> * past experience
+> * quality control in manufacturing
+> * engineering judgment"
+>
+> "Well," I said, "I've got four answers, and one of them weaseled." I turned
+> to Mr. Lovingood: "I think you weaseled."
+>
+> "I don't think I weaseled."
+>
+> "You didn't tell me *what* your confidence was, sir; you told me *how* you
+> determined it. What I want to know is: after you determined it, what *was*
+> it?"
+>
+> He says, "100 percent" — the engineers' jaws drop, my jaw drops; I look at
+> him, everybody looks at him — "uh, uh, minus epsilon!"
+>
+> So I say, "Well, yes; that's fine. Now, the only problem is, WHAT IS
+> EPSILON?"
+>
+> He says, "$10^-5$." It was the same number that Mr. Ullian had told us
+> about: 1 in 100,000.
+>
+> I showed Mr. Lovingood the other answers and said, "You'll be interested to
+> know that there *is* a difference between engineers and management here — a
+> factor of more than 300."
+>
+> He says, "Sir, I'll be glad to send you the document that contains this
+> estimate, so you can understand it."
+>
+> Later, Mr. Lovingood sent me that report. It said things like "The
+> probability of mission success is necessarily very close to 1.0" — does that
+> mean it *is* close to 1.0, or it *ought to be* close to 1.0? — and
+> "Historically, this high degree of mission success has given rise to a
+> difference in philosophy between unmanned and manned space flight programs;
+> i.e., numerical probability versus engineering judgment." As far as I can
+> tell, "engineering judgment" means they're just going to make up numbers!
+> The probability of an engine-blade failure was given as a universal
+> constant, as if all the blades were exactly the same, under the same
+> conditions. The whole paper was quantifying everything. Just about every nut
+> and bolt was in there: "The chance that a HPHTP pipe will burst is $10^-7$."
+> You can't estimate things like that; a probability of 1 in 10,000,000 is
+> almost impossible to estimate. It was clear that the numbers for each part
+> of the engine were chosen so that when you add everything together you get 1
+> in 100,000. [@feynman1988what, pp. 182-183].
 
-They write down their answers and hand in their papers. One guy wrote
-"99-44/100% pure" (copying the Ivory soap slogan), meaning about 1 in
-200. Another guy wrote something very technical and highly quantitative
-in the standard statistical way, carefully defining everything, that I had to translate — which also meant about 1 in
-\200. The third guy wrote, simply, "1 in 300."
-
-Mr. Lovingood's paper, however, said, Cannot quantify. Reliability is
-judged from:
-
--   past experience
-
--   quality control in manufacturing
-
--   engineering judgment
-
-"Well," I said, "I've got four answers, and one of them weaseled." I
-turned to Mr. Lovingood: "I think you weaseled."
-
-"I don't think I weaseled."
-
-"You didn't tell me *what* your confidence was, sir; you told me *how*
-you determined it. What I want to know is: after you determined it, what
-*was* it?"
-
-He says, "100 percent" — the engineers' jaws drop, my jaw drops; I look
-at him, everybody looks at him — "uh, uh, minus epsilon!"
-
-So I say, "Well, yes; that's fine. Now, the only problem is, WHAT IS
-EPSILON?"
-
-He says, "10 ^-5^ ." It was the same number that Mr. Ullian had told us
-about: 1 in 100,000.
-
-I showed Mr. Lovingood the other answers and said, "You'll be interested
-to know that there *is* a difference between engineers and management
-here — a factor of more than 300."
-
-He says, "Sir, I'll be glad to send you the document that contains this
-estimate, so you can understand it."
-
-^\*^ Later, Mr. Lovingood sent me that report. It said things like "The
-probability of mission success is necessarily very close to 1.0" — does
-that mean it *is* close to 1.0, or it *ought to be* close to 1.0? — and
-"Historically, this high degree of mission success has given rise to a
-difference in philosophy between unmanned and manned space flight
-programs; i.e., numerical probability versus engineering judgment." As
-far as I can tell, "engineering judgment" means they're just going to
-make up numbers! The probability of an engine-blade failure was given as
-a universal constant, as if all the blades were exactly the same, under
-the same conditions. The whole paper was quantifying everything. Just
-about every nut and bolt was in there: "The chance that a HPHTP pipe
-will burst is 10 ^-7^ ." You can't estimate things like that; a
-probability of 1 in 10,000,000 is almost impossible to estimate. It was
-clear that the numbers for each part of the engine were chosen so that
-when you add everything together you get 1 in 100,000. (Feynman, 1989,
-
-pp. 182-183).
-
-We see in the Challenger shuttle case very mixed kinds of inputs to
-actual estimates of probabilities. They include frequency series of past
-flights of other rockets, judgments about the relevance of experience
-with that different sort of rocket, adjustments for special temperature
-conditions (cold), and much much more. There also were complex
-computational processes in arriving at the probabilities that were made
-the basis for the launch decision. And most impressive of all, of
-course, are the extraordinary differences in estimates made by various
-persons (or perhaps we should talk of various statuses and roles) which
-make a mockery of the notion of objective estimation in this case.
+We see in the Challenger shuttle case very mixed kinds of inputs to actual
+estimates of probabilities. They include frequency series of past flights of
+other rockets, judgments about the relevance of experience with that different
+sort of rocket, adjustments for special temperature conditions (cold), and
+much much more. There also were complex computational processes in arriving at
+the probabilities that were made the basis for the launch decision. And most
+impressive of all, of course, are the extraordinary differences in estimates
+made by various persons (or perhaps we should talk of various statuses and
+roles) which make a mockery of the notion of objective estimation in this
+case.
 
 Working with different sorts of estimation methods in different sorts of
 situations is not new; practical statisticians do so all the time. We argue
@@ -544,7 +530,12 @@ decision-making situations nor in scientific work — nor in classes — do
 people experience difficulties estimating probabilities because of
 philosophical confusions. Only philosophers and mathematicians
 worry — and even they really do not *need* to worry — about the
-"meaning" of probability.
+"meaning" of probability[^on-work].
+
+[^on-work]: This does not mean that I think that people should confine their
+  learning to what they need in their daily work. Having a deeper
+  philosophical knowledge than you ordinarily need can help you deal with
+  extraordinary problems when they arise.
 
 ## The relationship of probability to other magnitudes
 
@@ -726,7 +717,18 @@ determinacy-indeterminacy and predictable-unpredictable. What matters for
 *decision purposes* is whether you can predict. Whether the process is
 "really" determinate is largely a matter of definition and labeling, an
 unnecessary philosophical controversy for our purposes (and
-perhaps for any other purpose).
+perhaps for any other purpose) [^quanta-decisions].
+
+[^quanta-decisions]: The idea that our aim is to advance our work in improving
+  our knowledge and our decisions, rather than to answer "ultimate" questions
+  about what is "really" true is in the same spirit as some writing about
+  quantum theory. In 1930
+  [Ruarck](https://en.wikipedia.org/wiki/Arthur_Edward_Ruark) and
+  [Urey](https://en.wikipedia.org/wiki/Harold_Urey) wrote: "The reader who
+  feels disappointed that the information sought in solving a dynamical
+  problem on the quantum theory is \[only\] statistical ... should console
+  himself with the thought that we seldom need any information other than that
+  which is given by the quantum theory." [-@ruark1930atoms, p. 622].
 
 The remote control in the previous demonstration *becomes* unpredictable —
 that is, random — even though it still is subject to similar physical
@@ -884,7 +886,8 @@ throws of a red die and 20,000 throws of a white die, the proportions of
 3's and 4's were, respectively, .159 and .146, .145 and .142 — all far below
 the expected proportions of .167. That is, 3's and 4's occurred about 11
 percent less often that if the dice had been perfectly formed, a difference
-that could make a big difference in a gambling game (Bulmer, 1979, p. 18).
+that could make a big difference in a gambling game [@bulmer1979principles, p.
+18].
 
 It is reasonable to think of both the *engineering* method (the
 theoretical approach) and the *empirical* method (experimentation and
@@ -963,13 +966,12 @@ One could easily produce examples like (1) and (2) for cases that are
 similar except that the drawing is without replacement, as in the
 sampling version of Fisher's permutation test — for example, a tea
 taster. And one could adduce the example of prices in different state
-liquor control systems (see Chapter 8) which is similar to cases (3) and (4) except that sampling without
-replacement seems appropriate. Again, the analogs to cases (2) and (4)
-would generally be called "resampling."
+liquor control systems (see TKTK) which is similar to cases (3) and (4) except
+that sampling without replacement seems appropriate. Again, the analogs to
+cases (2) and (4) would generally be called "resampling."
 
 The concept of resampling is defined in a more precise way in Chapter
-10. Fuller discussion may be found in my *The Philosophy and Practice of
-Statistics and Resampling* Conclusion.
+TKTK.
 
 ## Conclusion
 
@@ -994,19 +996,3 @@ mechanism is "really" something one wants to say is influenced by
 (not determined) in a smooth way even though the physical mechanism that
 produces the revolutions remains much the same over the traverse.
 
-## Endnote
-
-1.  The idea that our aim is to advance our work in improving our
-    knowledge and our decisions, rather than to answer "ultimate"
-    questions about what is "really" true is in the same spirit as some
-    writing about quantum theory. In 1930 Ruarck and Urey wrote: "The
-    reader who feels disappointed that the information sought in solving
-    a dynamic problem on the quantum theory is \[only\]
-    statistical...should console himself with the thought that we seldom
-    need any information other than that which is given by the quantum
-    theory" (quoted by Cartright, 1987, p. 420).
-
-2.  This does not mean that I think that people should confine their
-    learning to what they need in their daily work. Having a deeper
-    philosophical knowledge than you ordinarily need can help you deal
-    with extraordinary problems when they arise.
