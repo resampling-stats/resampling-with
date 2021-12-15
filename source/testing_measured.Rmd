@@ -21,6 +21,13 @@ resampling_with:
 
 # The Statistics of Hypothesis-Testing With Measured Data
 
+<!---
+Discussion here of dispersion - have we discussed this before?
+
+Methods of estimating dispersion.
+-->
+
+
 Chapters 15 and 17 discussed testing a hypothesis with data that either
 arrive in dichotomized (yes-no) form, or come as data in situations
 where it is convenient to dichotomize. We next consider hypothesis
@@ -387,6 +394,11 @@ observations), the standard deviation (the square root of the variance),
 the range (the difference between the smallest and largest
 observations), or some other device.)
 
+<!---
+Lots about dispersion here.  Needs better introduction?
+-->
+
+
 1 This short comment is the tip of the iceberg of an argument that has
 been going on for 200 years among statisticians. It needs much more
 discussion to be understandable or persuasive; for such discussion, see
@@ -404,6 +416,11 @@ the means. The only operational difference is to substitute the word
 "median" for the word "mean" in the steps listed above. You may need a
 somewhat larger number of trials when working with medians, however, for
 they tend to be less precise than means.
+
+<!---
+Discussion of bootstrap and median?
+-->
+
 
 The RESAMPLING STATS program compares the difference in the sums of the
 weight gains for the actual pigs against the difference resulting from
@@ -565,6 +582,11 @@ beri-beri — that no test was necessary. The separate displays, and then
 the two combined together, are shown in Figure 7-2; the answer is not
 clear-cut and hence a formal test is necessary.
 
+<!---
+Refer back to chapter 11 tables 11.3 and 11.4.
+-->
+
+
 ![](images/22-Chap-18_003.png)
 
 GOVERNMENT
@@ -650,6 +672,11 @@ dispersions in the two samples, an appropriate t-test is far from
 obvious, whereas resampling is not made more difficult by such realistic
 complications.
 
+<!---
+Discussion of t-test?  Have we introduced the t-test?
+-->
+
+
 A program to handle the liquor problem with an infinite-universe
 bootstrap distribution simply substitutes the random sampling command
 SAMPLE for the SHUFFLE/TAKE commands. The results of the new test are
@@ -664,9 +691,9 @@ rather than being a sample taken from some larger universe as with a
 biological experiment or a small survey sample. But this objection
 pertains to a conventional test as well as to resampling methods. And a
 similar question arises throughout medical and social science — to the
-two wells between which John Snow detected vast differences in cholera
-rates, to rates of lung cancer in human smokers, to analyses of changes
-in speeding laws, and so on.
+two water suppliers between which John Snow detected vast differences in
+cholera rates, to rates of lung cancer in human smokers, to analyses of
+changes in speeding laws, and so on.
 
 The appropriate question is not whether the units were assigned
 randomly, however, but whether there is strong reason to believe that
@@ -683,6 +710,11 @@ show ( *The Empire of Chance* ). Again, because with resampling one does
 not become immersed in the difficult mathematical techniques that
 underlie conventional methods, one is quicker to see these difficult
 questions, which apply equally to conventional methods and resampling.
+
+<!---
+Discussion of fogginess that arises from uncertainty about maths.
+-->
+
 
 **Example 18-3: Is There a Difference Between Treatments to Prevent Low
 Birthweights?**
@@ -813,7 +845,11 @@ prolong survival, or might chance variation be responsible for the
 observed difference in mean survival times?
 
 We start by supposing the treatment did NOT prolong survival and that
-chance was responsible. If that is so, then we consider that the two
+chance was responsible.
+<!---
+Clarify - sampling variation was responsible.
+-->
+If that is so, then we consider that the two
 groups came from the same universe. Now we'd like to know how likely it
 is that two groups drawn from this common universe would differ as much
 as the two observed groups differ.

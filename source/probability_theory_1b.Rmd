@@ -55,6 +55,11 @@ Independence means that the elements are drawn from 2 or more *separate
 sets of possibilities* . That is, **P(A\|B) = P(A\|\^B) = P(A) and vice
 versa** .
 
+<!---
+Work on explosition here.  Maybe note that independence means that chances of A following B are same as chances of A following not B.[
+-->
+
+
 In other words, if the occurrence of the first event does not change
 this probability that the second event will occur, then the events are
 independent.
@@ -103,6 +108,11 @@ of each other if the *conditional probabilities of A and B remain the
 same* . And the conditional probabilities remain the same if sampling is
 conducted *with replacement* .
 
+<!---
+Needs more explanation.
+-->
+
+
 Let's now re-consider the multiplication rule with the special but
 important case of independence.
 
@@ -136,6 +146,11 @@ one-sixteenth of all four-children families will have each of these
 series, on average. This means that if your next-door neighbor has four
 daughters, you cannot say how much "out of the ordinary" the event is.
 It is easy to slip into unsound thinking about this matter.
+
+<!---
+Needs more explanation
+-->
+
 
 Why do we *multiply* the probabilities of the independent simple events
 to learn the probability that they will occur jointly (the composite
@@ -264,6 +279,11 @@ coats) \> 0, and the appropriate formula is
 
 `           P(red or green) = P(red) + p(green)—P(red and green)         `
 
+<!---
+Venn diagram?  Do we need this exposition though?
+-->
+
+
 In this case as in much of probability theory, the simulation for the
 case in which the events are not mutually exclusive is no more complex
 than when they are mutually exclusive; indeed, if you simulate you never
@@ -274,6 +294,11 @@ inquire into the characteristics of the situation and decide which
 formula to apply depending upon the classification; if you classify
 wrongly and therefore apply the wrong formula, the result is a wrong
 answer.
+
+<!---
+Maybe implement here to show the above.
+-->
+
 
 To repeat, the addition rule only works when the probabilities you are
 adding are *mutually exclusive* — that is, when the two cannot occur
