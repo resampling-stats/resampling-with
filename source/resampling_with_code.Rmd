@@ -25,7 +25,7 @@ source("_common.R")
 
 # Resampling with code {#sec-resampling-code}
 
-Chapter @sec-resampling-method used simulation and resampling from
+@sec-resampling-method used simulation and resampling from
 tables of random numbers, dice, and coins.  Making random choices in this way
 can make it easier to understand the process, but of course, physical methods
 of making random outcomes can be slow and boring.
@@ -42,8 +42,11 @@ in probability and statistics.
 In this chapter, we will model another problem using
 {{< var lang >}}, but this chapter will add three new things.
 
-* The problem we will work on is a little different from the ambulances from
-  problem from @sec-resampling-method.  It is a real problem about deciding whether a new cancer treatment is better than the alternatives, and it introduces the idea of making a model of the world, to ask questions about chances and probabilities.
+* The problem we will work on is a little different from the ambulances problem
+  from @sec-resampling-method.  It is a real problem about deciding whether a
+  new cancer treatment is better than the alternatives, and it introduces the
+  idea of making a model of the world, to ask questions about chances and
+  probabilities.
 * We will slow down a little to emphasize the steps in solving this kind of
   problem.  First we work out how to simulate a single *trial*.  Then we work
   out how to run many simulated trials.
@@ -269,8 +272,8 @@ and that this value *contains* 10 numbers.
 Put another way, `some_numbers` is now the name we can use for this collection
 of 10 values.
 
-{{< var array >}}s are very useful for simulations and data analysis, and
-we will be using these for nearly every example in this book.
+[Arrays]{.python}[Vectors]{.r} are very useful for simulations and data
+analysis, and we will be using these for nearly every example in this book.
 
 ## Functions {#sec-functions-production}
 
@@ -867,55 +870,58 @@ all 17 patients are cured when using a 90% effective treatment.
 
 ## What have we learned from Saint Hypothetical?
 
-We started with a question about the results of the NIH trial on the new drug.
+We started with a question about the results of the NCI trial on the new drug.
 The question was — was the result of their trial — 17 out of 17 patients cured
 — surprising.
 
-Then, for some reason, we changed tack, and asked the same question about a
-hypothetical set of 17 patients getting the standard treatment in Saint
-Hypothetical General.
+Then, for reasons we did not explain in detail, we changed tack, and asked the
+same question about a hypothetical set of 17 patients getting the *standard*
+treatment in Saint Hypothetical General.
 
-That question turns out to be fairly easy to answer, because we can use simulation to estimate the chances that 17 out of 17 patients would be cured in such a hypothetical trial, on the assumption that each patient has a 90% chance of being cured with the standard treatment.
+That Hypothetical question turns out to be fairly easy to answer, because we
+can use simulation to estimate the chances that 17 out of 17 patients would be
+cured in such a hypothetical trial, on the assumption that each patient has a
+90% chance of being cured with the standard treatment.
 
 The answer for Saint Hypothetical General was — we would be somewhat surprised,
 but not astonished.  We only get 17 out of 17 patients cured about one time in
 six.
 
-Now let us return to the NIH trial.  Should the trial authors be surprised by
-their results?  We know know that they can say — assuming that our new
-treatment is exactly as effective as the standard treatment, and no more
-effective, the result of the trial is a bit unusual, just by chance.  It is up
-us to decide whether the result is unusual enough, to make us think that the
-actual NIH treatment might have been more effective than the standard
-treatment.
+Now let us return to the NCI trial.  Should the trial authors be surprised by
+their results?  If they assumed that their new treatment was *exactly as
+effective* as the standard treatment, the result of the trial is a bit unusual,
+just by chance.  It is up us to decide whether the result is unusual enough to
+make us think that the actual NCI treatment might in fact have been *more
+effective* than the standard treatment.
 
-You will see this move again and again as we go through the book.  We take
-something that really happened — in this case the 17 out of 17 patients cured.
-Then we imagine a hypothetical world in which the results only depend on
-chance.  We do simulations in that hypothetical world to see how often we get a
-result like the one that happened in the real world.  If the real world result
-(17 out of 17) is an unusual, surprising result in the simulated world, we take
-that as evidence that the real world result might not be due to chance alone.
+You will see this move again and again as we go through the book.
+
+* We take something that really happened — in this case the 17 out of 17 patients cured.
+* Then we imagine a hypothetical world in which the results only depend on
+  chance.
+* We do simulations in that hypothetical world to see how often we get a result
+  like the one that happened in the real world.
+* If the real world result (17 out of 17) is an unusual, surprising result in
+  the simulations from the hypothetical world, we take that as evidence that
+  the real world result might not be due to chance alone.
 
 We have just described the main idea in statistical inference.  If that all
 seems strange and backwards to you, do not worry, we will go over that idea
 many times in this book.  It is not a simple idea to grasp in one go.  We hope
 you will find that, as you do more simulations, and think of more hypothetical
-worlds, the idea will start to make more sense.  But later, we will start to
-think about asking other questions about probability and chance in the real
-world.
+worlds, the idea will start to make more sense.  Later, we will start to think
+about asking *other questions* about probability and chance in the real world.
 
 ## Conclusions
-
 
 Can you see how each of the operations that the computer carries out are
 analogous to the operations that you yourself executed when you solved this
 problem using 10-sided dice? This is exactly the procedure that we will use to
 solve every problem in probability and statistics that we must deal with.
 Either we will use a device such as coins or dice, or a random number table as
-an analogy for the physical process we are interested in (patients being
-cured, in this case), or we will simulate the analogy on the computer using the
-{{< var lang >}} program above.
+an analogy for the physical process we are interested in (patients being cured,
+in this case), or we will simulate the analogy on the computer using the {{<
+var lang >}} program above.
 
 The program above may not seem simple at first glance, but we think you will
 find, over the course of this book, that these programs become much simpler to
