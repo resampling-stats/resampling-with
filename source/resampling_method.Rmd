@@ -395,12 +395,9 @@ of values that only contains
 {{< var true >}} or {{< var false >}}
 values, depending on whether each element is equal to 9 or not.
 
-Then, we ask {{< var lang >}} to add up (`sum`) only the {{< var true >}}
-elements in that sequence.
-
-{{< var lang >}} counts {{< var true >}} as 1, and {{< var false >}}
-as 0; thus we can use `sum` to count the number of {{< var false >}}
-values.
+Then, we ask {{< var lang >}} to add up (`sum`). {{< var lang >}} counts {{<
+var true >}} as 1, and {{< var false >}} as 0; thus we can use `sum` to count
+the number of {{< var true >}} values.
 
 This comes down to asking "how many elements in `a` are equal to 9".
 
@@ -439,9 +436,8 @@ spend some time going over it in more detail.  For now though, we show you how
 what it looks like, and ask you to take our word for it.
 
 The standard way to repeat steps in {{< var lang >}} is a `for` loop.  For
-example, let us say we wanted to display
-[(`print`)]{.python})
-"Hello" five times.  Here is how we would do that with a `for` loop:
+example, let us say we wanted to display [(`print`)]{.python} "Hello" five
+times.  Here is how we would do that with a `for` loop:
 
 ```{python, opts.label="py_ed"}
 # Read the next line as "repeat the following steps five times".
