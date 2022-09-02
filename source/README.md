@@ -1,5 +1,11 @@
 ## Chapter mapping
 
+These are the mappings between the files in this (source) directory, and the
+original chapters from the [second edition
+website](https://resample.com/intro-text-online).  You can find basic Markdown
+ports of the original second edition PDF chapters in the `unported` directory
+of the repository.
+
 | Third edition file | Second edition file(s) |
 | ------------------ | ------------------- |
 | preface_third.Rmd | N/A |
