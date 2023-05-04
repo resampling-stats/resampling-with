@@ -34,7 +34,7 @@ raise an error on book build - see [RMarkdown release
 notes](https://github.com/rstudio/rmarkdown/releases).  Upgrade with
 `install.packages('rmarkdown')`.
 
-## Quarto
+### Quarto
 
 We use [Quarto](https://quarto.org) as the build machinery for the website and for PDF.
 
@@ -44,7 +44,23 @@ See [the Quarto installation instructions](https://quarto.org/docs/getting-start
 Rscript -e 'install.packages("quarto")'
 ```
 
-Then check the installation:
+If it complains about the CRAN mirror not set, add the following to `~/.Rprofile` and try again:
+
+```
+local({r <- getOption("repos")
+       r["CRAN"] <- "http://cran.r-project.org"
+       options(repos=r)})
+```
+
+The process may fail if it cannot find curl and openssl development headers.
+The error message explains how to install those headers on the various systems.
+For example, on Fedora it'd be:
+
+```
+sudo dnf install libcurl-devel openssl-devel
+```
+
+Finally, check the installation:
 
 ```
 quarto check install
@@ -55,7 +71,7 @@ Quarto uses various [Pandoc markdown
 extensions](https://linux.die.net/man/5/pandoc_markdown), as do we (Div and
 Span elements for custom inline elements and blocks).
 
-## A build
+### A build
 
 For Python (*mutatis mutandis* for R):
 
