@@ -7,7 +7,7 @@
 options(digits = 3)
 
 knitr::opts_chunk$set(
-  comment = ._spec$knitr$`out-comment`,
+  comment = ._spec$knitr_settings$`out_comment`,
   cache = TRUE,
   out.width = "70%",
   fig.align = 'center',
