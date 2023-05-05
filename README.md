@@ -82,7 +82,7 @@ make python-all
 Then, to rebuild an individual chapter:
 
 ```
-quarto render bayes_simulation.Rmd
+quarto render bayes_simulation.qmd
 ```
 
 If you get errors you weren't expecting, try:
