@@ -42,8 +42,8 @@ we will be using notebooks through the rest of the book.
 ::: python
 ## Python and packages
 
-This version of the book uses the *Python* [^python] programming language to
-implement resampling algorithms.
+This version of the book uses the *Python* [^python-lang] programming language
+to implement resampling algorithms.
 
 Python is a programming language that can be used for many tasks.  It is a
 popular language for teaching, but is also used widely in industry and
@@ -72,13 +72,12 @@ results of our own resampling algorithms to those in SciPy and Statsmodels.
 This version of the book uses the *R* programming language to implement
 resampling algorithms.
 
-The current title of the main website for R [^r] is "The R Project for
-Statistical Computing", and this is a good summary of how R started, and what
-R is particularly good at.  The people who designed R designed it for
-themselves, and you and I — those of us who are working to find and understand
-the patterns in data.  Over the last 20 years, it has gained wide use for data
-analysis across many fields, especially in life sciences, data science and
-statistics.
+The current title of the main website for R [^R-lang] is "The R Project for
+Statistical Computing", and this is a good summary of how R started, and what R
+is particularly good at.  The people who designed R designed it for themselves,
+and you and I — those of us who are working to find and understand the patterns
+in data.  Over the last 20 years, it has gained wide use for data analysis
+across many fields, especially in life sciences, data science and statistics.
 
 Although many people use R as a simple way of exploring data and doing standard statistical tests, it is a full-fledged programming language.
 :::
@@ -503,7 +502,8 @@ use the *Anaconda Python distribution* [^anaconda_distro].  Anaconda provides
 a single installer that will install Python and all the packages above, by
 default.
 
-Another method is to install Python from the Python website [^python].  Then use the *Pip* [^pip] installer to install the packages you need.
+Another method is to install Python from the Python website [^python-lang].
+Then use the *Pip* [^pip] installer to install the packages you need.
 
 To use Pip, start a terminal (Start key, "cmd" in Windows, Command key and space then "Terminal" on Mac), and then, at the prompt, type:
 
@@ -546,18 +546,3 @@ all the features you will need.  The free version is the only version that we,
 your humble authors, have used for this book, and for all our own work and
 teaching.
 :::
-
-<!---
-Links
--->
-
-[^python]: <https://python.org>
-[^r]: <https://www.r-project.org>
-[^numpy]: <https://numpy.org>
-[^matplotlib]: <https://matplotlib.org>
-[^scipy]: <https://scipy.org>
-[^pandas]: <https://pandas.pydata.org>
-[^statsmodels]: <https://www.statsmodels.org>
-[^jupyter-nb]: <https://jupyter.org>
-[^anaconda_distro]: <https://www.anaconda.com/distribution>
-[^pip]: <https://pip.pypa.io>
