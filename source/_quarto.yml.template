@@ -39,11 +39,11 @@ format:
     documentclass: scrreport
 
 filters:
-  - noteout/noteout/filter_pre.py
-  - noteout/noteout/filter_divspans.py
+  - filters/filter_pre.py
+  - filters/filter_divspans.py
   - quarto
-  - noteout/noteout/write_notebooks.py
-  - noteout/noteout/filter_nb_only.py
+  - filters/write_notebooks.py
+  - filters/filter_nb_only.py
 
 knitr_settings:
   # Comment preceding code output.
