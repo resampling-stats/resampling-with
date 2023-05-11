@@ -40,7 +40,7 @@ before, the example notebook will get you started.  The example also shows how
 we will be using notebooks through the rest of the book.
 
 ::: python
-## Python and packages
+## Python and its packages
 
 This version of the book uses the *Python* [^python] programming language to
 implement resampling algorithms.
@@ -80,14 +80,15 @@ the patterns in data.  Over the last 20 years, it has gained wide use for data
 analysis across many fields, especially in life sciences, data science and
 statistics.
 
-Although many people use R as a simple way of exploring data and doing standard statistical tests, it is a full-fledged programming language.
+Although many people use R as a simple way of exploring data and doing standard
+statistical tests, it is a full-fledged programming language.
 :::
 
 It is very important that {{< var lang >}} is a *programming language* and not
-a set of canned routines for "doing statistics".  For us it means that we can
+a set of canned routines for "doing statistics".  It means that we can
 explore the *ideas* of probability and statistics using the *language* of {{<
-var lang >}} to express those ideas.  It also means that you, and I, and
-anyone in the world, can write new code to share with others, so they can
+var lang >}} to express those ideas.  It also means that you, and we, and
+anyone else in the world, can write new code to share with others, so they can
 benefit from our work, understand it, and improve it.  This book is one
 example; we have written the {{< var lang >}} code in this book as clearly as
 we can to make it easy to follow, and to explain the underlying ideas.  We hope
@@ -98,20 +99,22 @@ do that.
 ## The environment
 
 Many of the chapters have sections with code for you to run, and experiment
-with. These sections contain *{{< var nb_fmt >}} notebooks*.  We mark the
-start of each notebook in the text with a note and link heading like the one
-you see below. In the web edition of this book, you can click on the
-*Download* link in this header to download the section as a notebook. You can
-also click on the *Interact* link in this header to open the notebook on a
-cloud computer.  This allows you to interact with the notebook on the cloud
-computer.  You can run the code, and experiment by making changes.
+with. These sections contain *Jupyter notebooks* ^[jupyter-nb]].  Jupyter
+notebooks are interactive web pages that allow you to read, write and run {{<
+var lang >}} code. We mark the start of each notebook in the text with a note
+and link heading like the one you see below. In the web edition of this book,
+you can click on the *Download* link in this header to download the section as
+a notebook. You can also click on the *Interact* link in this header to open
+the notebook on a cloud computer.  This allows you to interact with the
+notebook on the cloud computer.  You can run the code, and experiment by making
+changes.
 
 In the print version of the book, we point you to the web version, to get the
 links.
 
-At the end of this chapter, we give explain how to run these notebooks on your
-own computer.  We start with an example notebook; you might want to run this in
-the cloud to get started.
+At the end of this chapter, we explain how to run these notebooks on your own
+computer.  In the next section you will see an example notebook; you might want
+to run this in the cloud to get started.
 
 ## Getting started with the notebook
 
