@@ -18,7 +18,7 @@ if (getOption('repos')["CRAN"] == "@CRAN@") {
 to_install <- c("optparse", "fs", "kableExtra", 'quarto', 'reticulate')
 to_install <- to_install[!(to_install %in% installed.packages()[,"Package"])]
 if (length(to_install)) {
-    install.packages(to_install)
+    install.packages(to_install, dependencies=TRUE)
 }
 
 # https://www.r-project.org/nosvn/pandoc/devtools.html
