@@ -8,10 +8,11 @@ on:
 
 jobs:
   build-book:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       R_LIBS_USER: ~/R_libs:~/R:~/R-dev
       QUARTO_VER: "1.4.51"
+      PANDOC_VER: "3.1.2"
 
     if: github.repository_owner == 'resampling-stats'
 
@@ -36,15 +37,17 @@ jobs:
       - name: PDF build packages
         run: sudo apt install texlive-base texlive-fonts-extra
 
-      - name: Install quarto
+      - name: Install quarto and matching pandoc
         run: |
           sudo apt install -y curl
-          curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v$QUARTO_VER/quarto-$QUARTO_VER-linux-amd64.deb
-          sudo dpkg --install quarto-$QUARTO_VER-linux-amd64.deb
+          curl -L https://github.com/quarto-dev/quarto-cli/releases/download/v$QUARTO_VER/quarto-$QUARTO_VER-linux-amd64.deb -o quarto.deb
+          # PANDOC appends -1 to the archive root name for .deb packages.
+          curl -L https://github.com/jgm/pandoc/releases/download/$PANDOC_VER/pandoc-$PANDOC_VER-1-amd64.deb -o pandoc.deb
+          sudo dpkg --install quarto.deb pandoc.deb
 
       - uses: actions/setup-python@v1
         with:
-          python-version: '3.8'
+          python-version: '3.10'
 
       - uses: actions/checkout@v2
         with:
@@ -52,7 +55,7 @@ jobs:
 
       - name: Install R
         run: |
-          sh scripts/ubuntu_2004_r_init.sh
+          sudo apt install -y r-base libcurl4-openssl-dev libssl-dev libxml2-dev
           R --version | grep 'version '
 
       - name: Install R and Python libraries
