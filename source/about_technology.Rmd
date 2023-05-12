@@ -306,10 +306,10 @@ The obvious next step is to calculate the bill *including the tip*.
 10.50 + 9.25 + (10.50 + 9.25) * 0.15
 ```
 
-At this stage we start to feel that we are doing to much typing.  Notice that
-we had to type out `10.50 + 9.25` twice there.  That is a little boring, but
-it also makes it easier to make mistakes. The more we have to type, the more
-chance we have to make a mistake.
+At this stage we start to feel that we are doing too much typing.  Notice that
+we had to type out `10.50 + 9.25` twice there.  That is a little boring, but it
+also makes it easier to make mistakes. The more we have to type, the greater
+the chance we have to make a mistake.
 
 To make things simpler, we would like to be able to *store* the result of the
 calculation `10.50 + 9.25`, and then re-use this value, to calculate the tip.
