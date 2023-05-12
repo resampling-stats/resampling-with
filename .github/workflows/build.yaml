@@ -60,7 +60,9 @@ jobs:
           R --version | grep 'version '
 
       - name: Install R and Python libraries
-        run: make build-init
+        run: |
+          sudo apt install -y libfontconfig1-dev libmagick++-dev
+          make build-init
 
       - name: Build book
         run: make website
