@@ -1,9 +1,14 @@
-.PHONY: python-html-book python-pdf-book r-html-book r-pdf-book \
+.PHONY: python-book python-book python-html-book r-html-book r-pdf-book \
 	clean
+
+python-book: python-html-book
 
 python-all: python-html-book python-pdf-book
 
+r-book: r-html-book
+
 r-all: r-html-book r-pdf-book
+
 
 Rmd_sources := $(shell python -c "import yaml; print(' '.join(yaml.load(open('_quarto.yml.template'),Loader=yaml.FullLoader)['book']['chapters']))")
 config_templates := _quarto.yml.template text_variables.yml

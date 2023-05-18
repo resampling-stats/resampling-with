@@ -71,25 +71,6 @@ Quarto uses various [Pandoc markdown
 extensions](https://linux.die.net/man/5/pandoc_markdown), as do we (Div and
 Span elements for custom inline elements and blocks).
 
-### A build
+## Building the book
 
-For Python (*mutatis mutandis* for R):
-
-```
-make python-all
-```
-
-Then, to rebuild an individual chapter:
-
-```
-quarto render bayes_simulation.Rmd
-```
-
-If you get errors you weren't expecting, try:
-
-```
-make clean
-make python-all
-```
-
-It seems that caching can trip up the build.
+See `source/README.md`.
