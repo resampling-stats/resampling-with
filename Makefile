@@ -30,8 +30,10 @@ r-build-requirements:
 python-build-requirements:
 	$(PIP_INSTALL_CMD) -r build-requirements.txt
 
-build-init: r-build-requirements python-build-requirements
+submodule-update:
 	git submodule update --init --recursive
+
+build-init: submodule-update r-build-requirements python-build-requirements
 
 clean: source-clean
 	rm -rf $(PYTHON_BOOK_DIR) $(R_BOOK_DIR)

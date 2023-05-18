@@ -284,6 +284,20 @@ In the case above the rules tell {{< var lang >}} to first calculate `9.25 *
 We need to tell {{< var lang >}} we want it to do the *addition* and *then*
 the multiplication.  We do this with round brackets (parentheses):
 
+:::{.callout-note}
+
+There are three types of brackets in {{< var lang >}}.
+
+These are:
+
+* *round brackets* or *parentheses*: `()`;
+* *square brackets*: `[]`;
+* *curly brackets*: `{}`.
+
+Each type of bracket has a different meaning in {{< var lang >}}.  In the
+examples, play close to attention to the type of brackets we are using.
+:::
+
 ```{python, opts.label="py_ed"}
 # The bill plus tip - mistake fixed.
 (10.50 + 9.25) * 0.15
