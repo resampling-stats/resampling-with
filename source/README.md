@@ -1,3 +1,27 @@
+## Build
+
+For Python (*mutatis mutandis* for R):
+
+```
+make python-book
+```
+
+Then, to rebuild an individual chapter:
+
+```
+quarto render bayes_simulation.Rmd
+```
+
+If you get errors you weren't expecting, try:
+
+```
+make clean
+make python-book
+```
+
+It seems that caching can trip up the build.
+
+
 ## Chapter mapping
 
 These are the mappings between the files in this (source) directory, and the

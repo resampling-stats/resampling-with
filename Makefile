@@ -5,20 +5,6 @@ R_BOOK_DIR=r-book
 PYTHON ?= python
 PIP_INSTALL_CMD ?= $(PYTHON) -m pip install
 
-.PHONY: python-book r-book
-
-python-book:
-	cd $(SOURCE_DIR) && make python-html-book
-
-r-book:
-	cd $(SOURCE_DIR) && make r-html-book
-
-python-all:
-	cd $(SOURCE_DIR) && make clean && make python-all
-
-r-all:
-	cd $(SOURCE_DIR) && make clean && make r-all
-
 landing-page:
 	cd website && make landing-page
 
@@ -56,3 +42,6 @@ source-clean:
 bibcheck: source/simon_refs.bib
 	# Obviously needs biber installed, which is not so on Travis-CI by default.
 	biber --tool source/simon_refs.bib
+
+%:
+	@$(MAKE) -C source $@
