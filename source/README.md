@@ -20,7 +20,7 @@ built book.
 | about_technology.Rmd | N/A | Introducing Python ... |
 | resampling_with_code.Rmd | N/A | Resampling with code |
 | resampling_with_code2.Rmd | N/A | More resampling with code |
-| what_is_probability.Rmd | 06-Chap-2, 07-Chap-3 | NA |
+| what_is_probability.Rmd | 06-Chap-2, 07-Chap-3 | What is probability? |
 | probability_theory_1a.Rmd | 08-Chap-4 | NA |
 | probability_theory_1b.Rmd | 09-Chap-5 | NA |
 | probability_theory_2_compound.Rmd | 10-Chap-6 | NA |
