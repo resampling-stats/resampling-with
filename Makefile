@@ -35,6 +35,8 @@ submodule-update:
 
 build-init: submodule-update r-build-requirements python-build-requirements
 
+.PHONY: build-init
+
 clean: source-clean
 	rm -rf $(PYTHON_BOOK_DIR) $(R_BOOK_DIR)
 
