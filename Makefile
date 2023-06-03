@@ -8,7 +8,7 @@ PIP_INSTALL_CMD ?= $(PYTHON) -m pip install
 landing-page:
 	cd website && make landing-page
 
-website: clean python-all r-all landing-page
+website: python-all r-all landing-page
 	mkdir -p $(WEB_DIR)
 	cp website/*.html $(WEB_DIR)
 	cp requirements.txt $(WEB_DIR)

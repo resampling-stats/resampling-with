@@ -3,11 +3,11 @@
 
 python-book: python-html-book
 
-python-all: python-html-book python-pdf-book
+python-all: clean python-html-book python-pdf-book
 
 r-book: r-html-book
 
-r-all: r-html-book r-pdf-book
+r-all: clean r-html-book r-pdf-book
 
 
 Rmd_sources := $(shell python -c "import yaml; print(' '.join(yaml.load(open('_quarto.yml.template'),Loader=yaml.FullLoader)['book']['chapters']))")
