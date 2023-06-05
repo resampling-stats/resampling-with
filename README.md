@@ -73,4 +73,4 @@ Span elements for custom inline elements and blocks).
 
 ## Building the book
 
-See `source/README.md`.
+See `source/README.md` and `notes/writing.md`.
