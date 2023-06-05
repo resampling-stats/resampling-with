@@ -5,7 +5,7 @@ jupyter:
       notebook:
         additional: all
         excluded:
-        — language_info
+        - language_info
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
@@ -18,6 +18,10 @@ jupyter:
 resampling_with:
     ed2_fname: 08-Chap-4
 ---
+
+```{r setup, include=FALSE}
+source("_common.R")
+```
 
 # Probability Theory, Part 1
 
