@@ -53,6 +53,11 @@ Before you start:
 Editing:
 
 * Edit the matching file - here `source/reliability_average.Rmd`.
+* You might find it useful to have the original PDF chapter open; see [the
+original book in PDF](https://resample.com/intro-text-online).  To see which
+original chapter corresponds to your current `.Rmd` file, have a look at the
+YaML fragment at the file, it should have something like: `ed2_fname:
+26-Chap-22`.
 * Rebuild the file you're working on from time to time with e.g. `quarto render
 reliability_average.Rmd --to html` from the `source` directory (note the `--to
 html` _after_ the chapter filename).  Check the contents by opening e.g.
