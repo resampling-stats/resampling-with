@@ -81,6 +81,24 @@ so, following reference name standard in that file (e.g.
 or `There are many good ways to do this [see @knuth1984, pp. 33-35; also
 @wickham2015, chap. 1]`.  See Quarto link above for other examples.
 
+## Footnotes
+
+See [Quarto footnotes](https://quarto.org/docs/authoring/footnotes-and-citations.html#footnotes))
+
+Examples (from that page):
+
+```
+Here is a footnote reference,[^1] and another.[^longnote]
+
+[^1]: Here is the footnote.
+
+[^longnote]: Here's one with multiple blocks.
+
+Here is an inline note.^[Inlines notes are easier to write,
+since you don't have to pick an identifier and move down to
+type the note.]
+```
+
 ## Cross-references
 
 See [Cross-references in
