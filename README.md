@@ -144,6 +144,28 @@ Editing:
   your commits with the changes, and do a pull-request to the main repository,
   for us to look at.
 
+## Notebooks
+
+Make a notebook section with e.g.
+
+~~~
+::: {.notebook name="ambulances" title="Ambulances"}
+
+Stuff
+
+```{python, opts.label="py_ed"}
+# A Python cell.
+k = 1
+```
+
+```{r, opts.label="r_ed"}
+# An R cell
+k <- 1
+```
+
+:::
+~~~
+
 ## Citations
 
 Citations are in [Pandoc format](https://pandoc.org/MANUAL.html#citations), as
