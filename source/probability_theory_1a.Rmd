@@ -5,7 +5,7 @@ jupyter:
       notebook:
         additional: all
         excluded:
-        - language_info
+        — language_info
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
@@ -37,7 +37,6 @@ Define or rephrase "independent*.  This discussed in 1b, maybe move discussion
 here or duck here, and defer.
 -->
 
-
 The resampling method — or just call it simulation or Monte Carlo
 method, if you prefer — will be illustrated with classic examples.
 Typically, a single trial of the system is simulated with cards, dice,
@@ -61,15 +60,14 @@ known as resampling.
 
 A few definitions first:
 
-*Simple Event* : An event such as a single flip of a coin, or one draw
-of a single card. A simple event cannot be broken down into simpler
-events of a similar sort.
+- *Simple Event* : An event such as a single flip of a coin, or one draw of a
+  single card. A simple event cannot be broken down into simpler events of a
+  similar sort.
+- *Simple Probability* (also called "primitive probability"): The probability
+  that a simple event will occur; for example, that my favorite football team,
+  the Washington Commanders, will win on Sunday.
 
-*Simple Probability* (also called "primitive probability"): The
-probability that a simple event will occur; for example, that my
-favorite football team, the Skins, will win on Sunday.
-
-During a recent season, the "experts" said that the Skins had a 60
+During a recent season, the "experts" said that the Commanders had a 60
 percent chance of winning on Opening Day; that estimate is a simple
 probability. We can *model* that probability by putting into a bucket six
 green balls to stand for wins, and four red balls to stand for losses.
@@ -91,16 +89,16 @@ other subjects of measurement and judgment.
 *Composite Event* : A composite event is the combination of two or more
 simple events. Examples include all heads in three throws of a single
 coin; all heads in one throw of three coins at once; Sunday being a nice
-day *and* the Skins winning; and the birth of nine females out of the
+day *and* the Commanders winning; and the birth of nine females out of the
 next ten calves born if the chance of a female in a single birth is .48.
 
 *Compound Probability* : The probability that a composite event will
 occur.
 
 The difficulty in estimating *simple* probabilities such as the chance
-of the Skins winning Sunday arises from our lack of understanding of the
+of the Commanders winning Sunday arises from our lack of understanding of the
 world around us. The difficulty of estimating *compound* probabilities
-such as the probability of it being a nice day Sunday *and* the Skins
+such as the probability of it being a nice day Sunday *and* the Commanders
 winning is the weakness in our mathematical intuition interacting with
 our lack of understanding of the world around us. Our task in the study
 of probability and statistics is to overcome the weakness of our
@@ -108,7 +106,7 @@ mathematical intuition by using a systematic process of simulation (or
 the devices of formulaic deductive theory).
 
 Consider now a question about a compound probability: What are the
-chances of the Skins winning their first *two* games if we think that
+chances of the Commanders winning their first *two* games if we think that
 *each* of those games can be modeled by our bucket containing six red and
 four green balls? If one drawing from the bucket represents one game, a
 second drawing should represent the second game (assuming we replace the
@@ -137,7 +135,7 @@ statistics — is as follows:
     "N"'s; the result is the probability we seek.
 
 Much the same procedure could be used to estimate the probability of the
-Skins winning (say) 3 of their next 4 games. We will return to this
+Commanders winning (say) 3 of their next 4 games. We will return to this
 illustration again and we will see how it enables us to estimate many
 other sorts of probabilities.
 
@@ -310,15 +308,15 @@ probability:
     Joint probabilities
     -------------------
 
-    Let's return now to the Skins. We said earlier that our best guess
-    of the probability that the Skins will win the first game is .6.
+    Let's return now to the Commanders. We said earlier that our best guess
+    of the probability that the Commanders will win the first game is .6.
     Let's complicate the matter a bit and say that the probability of
-    the Skins winning depends upon the weather; on a nice day we
+    the Commanders winning depends upon the weather; on a nice day we
     estimate a .65 chance of winning, on a nasty (rainy or snowy) day a
     chance of .55. It is obvious that we then want to know the chance of
     a nice day, and we estimate a probability of .7. Let's now ask the
     probability that both will happen — *it will be a nice day and the
-    Skins will win* .
+    Commanders will win* .
 
     Before getting on with the process of estimation itself, let's tarry
     a moment to discuss the probability estimates. Where do we get the
@@ -341,12 +339,12 @@ probability:
     percent loses information: We no longer know how many observations
     the percent is based upon, whereas 35/50 keeps that information.
 
-    Now, what about the estimate that the Skins have a .65 chance of
+    Now, what about the estimate that the Commanders have a .65 chance of
     winning on a nice day — where does that come from? Unlike the
     weather situation, there is no long series of stable data to provide
     that information about the probability of winning. Instead, we
     *construct* an estimate using whatever information or "hunch" we
-    have. The information might include the Skins' record earlier in
+    have. The information might include the Commanders' record earlier in
     this season, injuries that have occurred, what the "experts" in the
     newspapers say, the gambling odds, and so on. The result certainly
     is not "objective," or the result of a stable frequency series. But
@@ -383,15 +381,15 @@ probability:
 
     nice day (P = .7)
 
-    Skins win (P = .65)
+    Commanders win (P = .65)
 
-    = .455 (Probability of nice day *and* Skins win)
+    = .455 (Probability of nice day *and* Commanders win)
 
-    Skins lose (P = .35)
+    Commanders lose (P = .35)
 
-    Skins win (P = .55)
+    Commanders win (P = .55)
 
-    Skins lose (P = .45)
+    Commanders lose (P = .45)
 
     ![](images/08-Chap-4_002.png)
 
@@ -409,7 +407,7 @@ probability:
         ("not nice") into a bucket labeled A.
 
     2.  Put 65 green balls (for "win") and 35 red balls ("lose") into a bucket
-        labeled B.  This bucket represents the chance that the Skins will when it
+        labeled B.  This bucket represents the chance that the Commanders will when it
         is a nice day.
 
     3.  Draw one ball from bucket A. If it is blue, carry on to the next step;
@@ -446,7 +444,7 @@ weather[:7] = 1
 print(weather)
 ```
 
-The "Skins win when there is no rain" bucket:
+The "Commanders win when there is no rain" bucket:
 
 ```{python, opts.label="py_ed"}
 # 0 = lose, 1 = win
@@ -480,14 +478,14 @@ print(number_of_fine_wins / 1000)
 ```
 
 The above procedure gives us the probability that it will be a nice day
-and the Skins will win — about 45.5 percent.
+and the Commanders will win — about 45.5 percent.
 
 With the aid of a bucket with a different composition — one made by
 substituting 55 blue and 45 yellow balls in Step 4 — a similar procedure
-yields the chance that it will be a *nasty* day and the Skins will win.
+yields the chance that it will be a *nasty* day and the Commanders will win.
 With a similar substitution and procedure we could also estimate the
-probabilities that it will be a nasty day and the Skins will lose, and a
-nice day and the Skins will lose. The sum of these probabilities should
+probabilities that it will be a nasty day and the Commanders will lose, and a
+nice day and the Commanders will lose. The sum of these probabilities should
 come close to unity, because the sum includes all the possible outcomes.
 But it will not *exactly* equal unity because of what we call "sampling
 variation" or "sampling error."
@@ -501,8 +499,8 @@ the general concept of replacement versus non-replacement more fully.
 ## The deductive formulaic method
 
 It also is possible to get an answer with formulaic methods to the
-question about a nice day and the Skins winning. The following
-discussion of nice-day-Skins-win handled by formula is a prototype of
+question about a nice day and the Commanders winning. The following
+discussion of nice-day-Commanders-win handled by formula is a prototype of
 the formulaic deductive method for handling other problems.
 
 Return now to the tree diagram (Figure 4-1) above. We can read from the
@@ -536,9 +534,9 @@ It is the appropriate concept when many factors, all small relative to
 each other rather than one force having an overwhelming influence,
 affect the outcome.
 
-A *conditional* probability is formally written P(Skins win\|rain)
+A *conditional* probability is formally written P(Commanders win\|rain)
 
-= .65, and it is read "The probability that the Skins will win if (given
+= .65, and it is read "The probability that the Commanders will win if (given
 that) it rains is .65." It is the appropriate concept when there is one
 (or more) major event of interest in decision contexts.
 
@@ -689,8 +687,8 @@ reduce the probability of an explosion.
 ## The skins again, plus leaving the game early
 
 Let's carry exactly the same process one tiny step further. Assume that
-if the Skins win, there is a .3 chance you will leave the game early.
-Now let us ask the probability of a nice day, the Skins winning, and you
+if the Commanders win, there is a .3 chance you will leave the game early.
+Now let us ask the probability of a nice day, the Commanders winning, and you
 leaving early. You should be able to see that this probability can be
 estimated with three buckets instead of two. Or it can be computed with the
 multiplication rule as .65 \* .7 \* .3 = .1365 (about .14) — the
@@ -716,7 +714,7 @@ statistics.
 The multiplication rule also has the drawback of sometimes being
 confusing, however. If you are in the slightest doubt about whether the
 circumstances are correct for applying it, you will be safer to perform
-a simulation as we did earlier with the Skins, though in practice you
+a simulation as we did earlier with the Commanders, though in practice you
 are likely to simulate with the aid of a computer program, as we shall
 see shortly. So use the multiplication rule only when there is no
 possibility of confusion. Usually that means using it only when the
