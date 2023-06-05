@@ -454,22 +454,16 @@ question are as follows:
 
 1.  Put seven blue balls (for "nice day") and three yellow balls
     ("not nice") into a bucket labeled A.
-
 2.  Put 65 green balls (for "win") and 35 red balls ("lose") into a bucket
     labeled B.  This bucket represents the chance that the Commanders will when it
     is a nice day.
-
 3.  Draw one ball from bucket A. If it is blue, carry on to the next step;
     otherwise record "no" and stop.
-
 4.  If you have drawn a blue ball from bucket A, now draw a ball from
     bucket B, and if it is green, record "yes" on a score sheet;
     otherwise write "no."
-
 5.  Repeat steps 3-4 perhaps 1000 times.
-
 6.  Count the number of "yes" trials.
-
 7.  Compute the probability you seek as (number of "yeses"/ 1000).
     (This is the same as (number of "yeses"/ (number of "yeses" +
     number of "noes")
@@ -497,10 +491,10 @@ The "Commanders win when there is no rain" bucket:
 
 ```{python, opts.label="py_ed"}
 # 0 = lose, 1 = win
-skins_win_when_no_rain = np.zeros(100)
+cmdrs_win_when_no_rain = np.zeros(100)
 # Set the first 65 of 100 to have value 1.
-skins_win_when_no_rain[:65] = 1
-print(skins_win_when_no_rain)
+cmdrs_win_when_no_rain[:65] = 1
+print(cmdrs_win_when_no_rain)
 ```
 
 Now do the simulation:
@@ -518,8 +512,8 @@ for i in range(1000):
         continue  # Go back to the beginning of the loop
     # if no rain, check on game outcome
     # 0 = lose, 1 = win
-    b = np.random.choice(skins_win_when_no_rain)
-    if b == 1:  # skins win
+    b = np.random.choice(cmdrs_win_when_no_rain)
+    if b == 1:  # Commanders win
         number_of_fine_wins = number_of_fine_wins + 1
     # End of trial, go back to the beginning until done.
 
@@ -666,10 +660,10 @@ the same in practice, so we can substitute one for the other at our
 convenience.
 
 Let's further illustrate the concept of conditional probability with a puzzle
-(from Gardner, 1983, p. 42). "Shuffle a packet of four cards — two red, two
-black — and deal them face down in a row. Two cards are picked at random, say
-by placing a penny on each. What is the probability that those two cards are
-the same color?"
+[from @gardner2001colossal, p. 288]. "... shuffle a packet of four cards — two
+red, two black — and deal them face down in a row. Two cards are picked at
+random, say by placing a penny on each. What is the probability that those two
+cards are the same color?"
 
 **1.** Play the game with the cards 100 times, and estimate the
 probability sought.
@@ -677,42 +671,35 @@ probability sought.
 OR
 
 1.  Put slips with the numbers "1," "1," "2," and "2" in a hat, or in an
-    array on a computer named N.
-
+    array on a computer named `N`.
 2.  Shuffle the slips or the array
-
 3.  Take the first number in the hat or array and store it
-    someplace — perhaps in a location called A.
-
-4.  Take the second number and store it in B.
-
-5.  Subtract the numbers in A and B. If the result is 0, record "Y,"
+    someplace — perhaps in a location called `A`.
+4.  Take the second number and store it in `B`.
+5.  Subtract the numbers in `A` and `B`. If the result is 0, record "Y,"
     otherwise "N."
-
-6.  Repeat (1-5) 1000 times, and count the proportion of "Y's." That
+6.  Repeat (1-5) 10000 times, and count the proportion of "Y's." That
     proportion equals the probability we seek to estimate.
 
-Now let's play the game differently, first picking one card and *putting
-it back and shuffling* before picking a second card. What are the
-results now? You can try it with the cards, or with a computer program
-similar to the above.
+Now let's play the game differently, first picking one card and *putting it
+back and shuffling* before picking a second card. What are the results now? You
+can try it with the cards, or with a computer program similar to the above.
 
-Why do you get different results in the two cases? Let's ask the
-question differently: What is the probability of first picking a black
-card? Clearly, it is 50-50, or 0.5. Now, if you first pick a black card,
-what is the probability in the first game above of getting a second
-black card? There are two red and one black cards left, so now p = 1/3.
+Why do you get different results in the two cases? Let's ask the question
+differently: What is the probability of first picking a black card? Clearly, it
+is 50-50, or 0.5. Now, if you first pick a black card, what is the probability
+in the first game above of getting a second black card? There are two red and
+one black cards left, so now p = 1/3.
 
-But in the second game, what is the probability of picking a second
-black card if the first one you pick is black? It is still 0.5 because we
-are *sampling with replacement.*
+But in the second game, what is the probability of picking a second black card
+if the first one you pick is black? It is still 0.5 because we are *sampling
+with replacement.*
 
-The probability of picking a second black card *conditional on picking a
-first black card* in the first game is 1/3, and it is different from the
-unconditional probability of picking a black card first. But in the
-second game the probability of the second black card conditional on
-first picking a black card is the same as the probability of the first
-black card.
+The probability of picking a second black card *conditional on picking a first
+black card* in the first game is 1/3, and it is different from the
+unconditional probability of picking a black card first. But in the second game
+the probability of the second black card conditional on first picking a black
+card is the same as the probability of the first black card.
 
 So the reason you lose money if you play the first game at even odds
 against a carnival game operator is because the conditional probability
@@ -733,7 +720,7 @@ the same as the conditional probability if you do *not* bring a bomb
 aboard. Hence you change nothing by bringing a bomb aboard, and do not
 reduce the probability of an explosion.
 
-## The skins again, plus leaving the game early
+## The Commanders again, plus leaving the game early
 
 Let's carry exactly the same process one tiny step further. Assume that
 if the Commanders win, there is a 0.3 chance you will leave the game early.
