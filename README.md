@@ -116,7 +116,7 @@ book.
 Let's say you want to start work on one of the chapters, and you've see this in the `_quarto.yml.template` file:
 
 ```
-#   - reliability_average.Rmd
+    - reliability_average.Rmd
 ```
 
 The procedure is:
@@ -136,14 +136,13 @@ Editing:
   YAML fragment at the file, it should have something like: `ed2_fname:
   26-Chap-22`. See also the chapter mappings at the end of this page.
 * Rebuild the file you're working on from time to time with e.g.
-`../scripts/rebuild_chapter reliability_average.Rmd` from the `source`
-directory. Check the contents by opening e.g.
-`../python-book/reliability_average.Rmd` (Quarto will show the correct filename
-after the rebuild step).
-* When in some kind of shape that is ready for other people to look at,
-uncomment the filename in `_quarto.yml.template`.
-* Make your commits with the changes, and do a pull-request to the main
-repository, for us to look at.
+  `../scripts/rebuild_chapter reliability_average.Rmd` from the `source`
+  directory. Check the contents by opening e.g.
+  `../python-book/reliability_average.Rmd` (Quarto will show the correct
+  filename after the rebuild step).
+* When in some kind of shape that is ready for other people to look at, make
+  your commits with the changes, and do a pull-request to the main repository,
+  for us to look at.
 
 ## Citations
 
@@ -198,6 +197,8 @@ HTML comments:
 More here on something and something else
 -->
 ```
+
+Note the triple dash in the first line, as in `<!---`.
 
 ## Cross-references
 
