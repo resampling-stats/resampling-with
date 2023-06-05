@@ -58,9 +58,9 @@ original book in PDF](https://resample.com/intro-text-online).  To see which
 original chapter corresponds to your current `.Rmd` file, have a look at the
 YaML fragment at the file, it should have something like: `ed2_fname:
 26-Chap-22`.
-* Rebuild the file you're working on from time to time with e.g. `quarto render
-reliability_average.Rmd --to html` from the `source` directory (note the `--to
-html` _after_ the chapter filename).  Check the contents by opening e.g.
+* Rebuild the file you're working on from time to time with e.g.
+`../scripts/rebuild_chapter reliability_average.Rmd` from the `source`
+directory. Check the contents by opening e.g.
 `../python-book/reliability_average.Rmd` (Quarto will show the correct filename
 after the `quarto render` step).
 * When in some kind of shape that is ready for other people to look at,
@@ -93,6 +93,9 @@ Here is a footnote reference,[^1] and another.[^longnote]
 [^1]: Here is the footnote.
 
 [^longnote]: Here's one with multiple blocks.
+
+  Subsequent paragraphs are indented to show that they
+  belong to the previous footnote.
 
 Here is an inline note.^[Inlines notes are easier to write,
 since you don't have to pick an identifier and move down to
