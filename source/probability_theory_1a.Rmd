@@ -50,7 +50,7 @@ we are interested; this is the probability we seek. We can obtain as
 accurate an estimate of the probability as we wish by increasing the
 number of trials. The key task in each situation is *designing an
 experiment that accurately simulates the system in which we are
-interested* .
+interested*.
 
 This chapter begins the Monte Carlo simulation work that culminates in
 the resampling method in statistics proper. The chapter deals with
@@ -74,8 +74,8 @@ A few definitions first:
 During a recent season, the "experts" said that the Commanders had a 60
 percent chance of winning on Opening Day; that estimate is a simple
 probability. We can *model* that probability by putting into a bucket six
-green balls to stand for wins, and four red balls to stand for losses.
-(Or we could use 60 and 40 balls, or 600 and 400). For the outcome on
+green balls to stand for wins, and four red balls to stand for losses
+(or we could use 60 and 40 balls, or 600 and 400). For the outcome on
 any given day, we draw one ball from the bucket, and record a simulated win
 if the ball is green, a loss if the ball is red.
 
@@ -85,29 +85,29 @@ think clearly about the process of interest to us. It can also give us
 information that is not yet in our thoughts.
 
 Estimating simple probabilities wisely depends largely upon gathering
-evidence well. It also helps to skillfully adjust one's probability
-estimates to make them internally consistent. Estimating probabilities
-has much in common with estimating lengths, weights, skills, costs, and
-other subjects of measurement and judgment.
+evidence well. It also helps to adjust one's probability
+estimates skillfully to make them internally consistent. Estimating
+probabilities has much in common with estimating lengths, weights, skills,
+costs, and other subjects of measurement and judgment.
 
-*Composite Event* : A composite event is the combination of two or more
-simple events. Examples include all heads in three throws of a single
-coin; all heads in one throw of three coins at once; Sunday being a nice
-day *and* the Commanders winning; and the birth of nine females out of the
-next ten calves born if the chance of a female in a single birth is .48.
+Some more definitions:
 
-*Compound Probability* : The probability that a composite event will
-occur.
+- *Composite Event* : A composite event is the combination of two or more
+  simple events. Examples include all heads in three throws of a single coin;
+  all heads in one throw of three coins at once; Sunday being a nice day *and*
+  the Commanders winning; and the birth of nine females out of the next ten
+  calves born if the chance of a female in a single birth is 0.48.
+- *Compound Probability* : The probability that a composite event will occur.
 
 The difficulty in estimating *simple* probabilities such as the chance
-of the Commanders winning Sunday arises from our lack of understanding of the
-world around us. The difficulty of estimating *compound* probabilities
+of the Commanders winning on Sunday arises from our lack of understanding of
+the world around us. The difficulty of estimating *compound* probabilities
 such as the probability of it being a nice day Sunday *and* the Commanders
-winning is the weakness in our mathematical intuition interacting with
-our lack of understanding of the world around us. Our task in the study
-of probability and statistics is to overcome the weakness of our
-mathematical intuition by using a systematic process of simulation (or
-the devices of formulaic deductive theory).
+winning is the weakness in our mathematical intuition interacting with our
+lack of understanding of the world around us. Our task in the study of
+probability and statistics is to overcome the weakness of our mathematical
+intuition by using a systematic process of simulation (or the devices of
+formulaic deductive theory).
 
 Consider now a question about a compound probability: What are the
 chances of the Commanders winning their first *two* games if we think that
@@ -124,70 +124,58 @@ procedures in the resampling simulation approach to probability and
 statistics — is as follows:
 
 1.  Put six green ("Win") and four red ("Lose") balls in a bucket.
-
 2.  Draw a ball, record its color, and replace it (so that the
     probability of winning the second simulated game is the same as the
     first).
-
 3.  Draw another ball and record its color.
-
 4.  If both balls drawn were green record "Yes"; otherwise record "No."
-
 5.  Repeat steps 2-4 a thousand times.
-
-6.  Count the proportion of "Y"'s to the total number of "Y"'s and
-    "N"'s; the result is the probability we seek.
+6.  Count the proportion of "Y"s to the total number of "Y"s and
+    "N"s; the result is the probability we seek.
 
 Much the same procedure could be used to estimate the probability of the
 Commanders winning (say) 3 of their next 4 games. We will return to this
-illustration again and we will see how it enables us to estimate many
-other sorts of probabilities.
+illustration again and we will see how it enables us to estimate many other
+sorts of probabilities.
 
-*Experiment or Experimental Trial, or Trial, or Resampling Experiment* :
-A simulation experiment or trial is a randomly-generated composite event
-which has the same characteristics as the actual composite event in
-which we are interested (except that in inferential statistics the
-resampling experiment is generated with the "benchmark" or "null"
-universe rather than with the "alternative" universe).
-
-<!---
-Explain the above better.
--->
-
-
-*Parameter* : A numerical property of a universe. For example, the
-"true" mean (don't worry about the meaning of "true"), and the range
-between largest and smallest members, are two of its parameters.
-
-Please see the glossary at the end of the book for a complete list of
-terms used in the book.
+- *Experiment or Experimental Trial, or Trial, or Resampling Experiment* : A
+  simulation experiment or trial is a randomly-generated composite event which
+  has the same characteristics as the actual composite event in which we are
+  interested (except that in inferential statistics the resampling experiment
+  is generated with the "benchmark" or "null" universe rather than with the
+  "alternative" universe).
+  <!---
+  Explain the above better.
+  -->
+- *Parameter* : A numerical property of a universe. For example, the "true"
+  mean (don't worry about the meaning of "true"), and the range between
+  largest and smallest members, are two of its parameters.
 
 ## Theoretical and historical methods of estimation
 
-As introduced in Chapter 3, there are two general ways to tackle any
-probability problem: *theoretical-deductive* and *empirical* , each of
+As introduced in @sec-probability-ways, there are two general ways to tackle
+any probability problem: *theoretical-deductive* and *empirical* , each of
 which has two sub-types. These concepts have complicated links with the
 concept of "frequency series" discussed earlier.
 
-*Empirical Methods* . One empirical method is to look at *actual cases
-in nature* — for example, examine all (or a sample of) the families in
-Brazil that have four children and count the proportion that have three
-girls among them. (This is the most fundamental process in science and
-in information-getting generally. But in general we do not discuss it in
-this book and leave it to courses called "research methods." I regard
-that as a mistake and a shame, but so be it.) In some cases, of course,
-we cannot get data in such fashion because it does not exist.
+- *Empirical Methods* . One empirical method is to look at *actual cases in
+  nature* — for example, examine all (or a sample of) the families in Brazil
+  that have four children and count the proportion that have three girls among
+  them. (This is the most fundamental process in science and in
+  information-getting generally. But in general we do not discuss it in this
+  book and leave it to courses called "research methods." I regard that as a
+  mistake and a shame, but so be it.) In some cases, of course, we cannot get
+  data in such fashion because it does not exist.
 
-Another empirical method is to manipulate the simple elements in such
-fashion as to produce hypothetical experience with how the simple
-elements behave. This is the heart of the resampling method, as well as
-of physical simulations such as wind tunnels.
-
-*Theoretical Methods* . The most fundamental theoretical approach is to
-resort to first principles, working with the elements in their full
-deductive simplicity, and examining all possibilities. This is what we
-do when we use a tree diagram to calculate the probability of three
-girls in families of four children.
+  Another empirical method is to manipulate the simple elements in such
+  fashion as to produce hypothetical experience with how the simple elements
+  behave. This is the heart of the resampling method, as well as of physical
+  simulations such as wind tunnels.
+- *Theoretical Methods* . The most fundamental theoretical approach is to
+  resort to first principles, working with the elements in their full
+  deductive simplicity, and examining all possibilities. This is what we do
+  when we use a tree diagram to calculate the probability of three girls in
+  families of four children.
 
 <!---
 Check we have in fact introduced tree diagram.
@@ -195,8 +183,8 @@ Check we have in fact introduced tree diagram.
 
 
 The formulaic approach is a theoretical method that aims to avoid the
-inconvenience of resorting to first principles, and instead uses
-calculational shortcuts that have been worked out in the past.
+inconvenience of resorting to first principles, and instead uses calculation
+shortcuts that have been worked out in the past.
 
 *What the Book Teaches* . This book teaches you the empirical method
 using hypothetical cases. Formulas can be misleading for most people in
@@ -211,22 +199,25 @@ conditions.
 
 ## Samples and universes
 
-The terms "sample" and "universe" (or "population") \[5\] were used
-earlier without definition. But now these terms must be defined.
+The terms "sample" and "universe" (or "population") [^universe-population]
+were used earlier without definition. But now these terms must be defined.
 
-**The concept of a sample**
+[^universe-population]: "Universe" and "population" are perfect synonyms in
+  scientific research. We choose to use "universe" because it seems to have
+  fewer confusing associations.
 
-For our purposes, a "sample" is a collection of observations for which
-you obtain the data to be used in the problem. Almost any set of
-observations for which you have data constitutes a sample. (You might,
-or might not, choose to call a complete census a sample.)
+### The concept of a sample
+
+For our purposes, a "sample" is a collection of observations for which you
+obtain the data to be used in the problem. Almost any set of observations for
+which you have data constitutes a sample. (You might, or might not, choose to
+call a complete census a sample.)
 
 <!---
 The idea of a census and a population and a sample above?
 -->
 
-
-**The concept of a universe or population**
+## The concept of a universe or population
 
 For every sample there must also be a universe "behind" it. But
 "universe" is harder to define, partly because it is often an
@@ -238,17 +229,18 @@ billion-dollar corporations in the United States." Of course, these
 finite universes may not be easy to pin down; for instance, what is a
 "major university"? And these universes may contain some elements that
 are difficult to find; for instance, some Congressional Medal winners
-may have left the country, and there may not be any public records on
+may have left the country, and there may not be adequate public records on
 some billion-dollar corporations.
 
-Universes that are called "infinite" are harder to understand, and it is
-often difficult to decide which universe is appropriate for a given purpose. For example, if you are studying a sample of
-patients with schizophrenia, what is the universe from which the sample comes?
-Depending on your purposes, the appropriate universe might be all
-patients with schizophrenia now alive, or it might be all patients who might
-*ever* live. The latter concept of the universe of patients with schizophrenia is
-*imaginary* because some of the universe does not exist. And it is
-*infinite* because it goes on forever.
+Universes that are called "infinite" are harder to understand, and it is often
+difficult to decide which universe is appropriate for a given purpose. For
+example, if you are studying a sample of patients suffering from
+schizophrenia, what is the universe from which the sample comes? Depending on
+your purposes, the appropriate universe might be all patients with
+schizophrenia now alive, or it might be all patients who might *ever* live.
+The latter concept of the universe of patients with schizophrenia is
+*imaginary* because some of the universe does not exist. And it is *infinite*
+because it goes on forever.
 
 Not everyone likes this definition of "universe." Others prefer to think
 of a universe, not as the collection of people or things that you *want*
@@ -256,7 +248,7 @@ to say your sample was taken from, but as the collection that the sample
 was *actually* taken from. This latter view equates the universe to the
 "sampling frame" (the actual list or set of elements you sample from)
 which is always finite and existent. The definition of universe offered
-here is simply the most practical, in my opinion.
+here is simply the most practical, in our opinion.
 
 <!---
 More here on hypothetical world / universe.  Refer back to previous chapters?
@@ -270,164 +262,217 @@ probability:
 
 1.  Probabilities are expressed as decimals between 0 and 1, like
     percentages. The weather forecaster might say that the probability
-    of rain tomorrow is .2, or .97.
-
+    of rain tomorrow is 0.2, or 0.97.
 2.  The probabilities of all the possible alternative outcomes in a
     single "trial" must add to unity. If you are prepared to say that it
     must either rain or not rain, with no other outcome being
     possible — that is, if you consider the outcomes to be *mutually
-    exclusive* (a term that will be discussed below), then one of those
+    exclusive* (a term that we discuss below), then one of those
     probabilities implies the other. That is, if you estimate that the
-    probability of rain is .2 — written P(rain) = .2 — that implies that
-    you estimate that P (no rain) = .8.
+    probability of rain is 0.2 — written $P(\text{rain}) = 0.2$ — that implies
+    that you estimate that $P(\text{no rain}) = 0.8$.
 
-    Mutually exclusive events -- the addition rule
-    ----------------------------------------------
+:::{.callout-note}
+## Writing probabilities
 
-    **Definition:** If there are just two events a and b and they are
-    "mutually exclusive" or "disjoint," each implies the absence of the
-    other. Green and red coats are mutually exclusive for you if (but
-    only if) you never wear more than one coat at a time.
+We will now be writing some simple formulae using probability.  Above we write
+the *probability of rain tomorrow* as $P(\text{rain})$.  This probability
+might be 0.2, and we could write this as:
 
-    To state this idea formally,
+$$
+P(\text{rain}) = 0.2
+$$
 
-    `               If P(a and b) = 0             `
+We can term "rain tomorrow" an *event* — the event may occur: $\text{rain}$, or
+it may _not_ occur: $\text{no rain}$.
 
-    then outcomes a and b, and hence outcome a and its own absence
-    (written P(\^a)), are necessarily mutually exclusive, and hence the
-    two probabilities add to unity:
+We often shorten the *name* of our event — here $\text{rain}$ — to a single
+letter, such as $R$.  So, in this case, we could write $P(\text{rain}) = 0.2$
+as $P(R) = 0.2$ — meaning the same thing.  We tend to prefer single letters —
+as in $P(R)$ — to longer names — as in $P(\text{rain})$.  This is because the
+single letters can be easier to read in these compact formulae.
 
-    `               P(A) + P(^A) = 1.             `
+Above we have written the probability of "rain tomorrow" event _not_ occurring
+as $P(\text{no rain})$. Another way of referring to an event _not_ occurring is
+to suffix the event name with a *caret* (^) character like this: $\ \hat{} R$.
+So read $P(\ \hat{} R)$ as "the probability that it will not rain", and it is
+just another way of writing $P(\text{no rain})$.  We sometimes call $\ \hat{}
+R$ the *complement* of $R$.
 
-    The sales of your store in a given year cannot be both above and
-    below \$1 million. Therefore if P(sales \> \$1 mil) = .2, P(sales=\<
-    \$1 mil) = .8.
+We use $\text{and}$ between two events to mean _both_ events occur.
 
-    This "complements" rule is useful as a consistency check on your
-    estimates of probabilities. If you say that the probability of rain
-    is .2, then you should check that you think that the probability of
-    no rain is .8; if not, reconsider both the estimates. The same for
-    the probabilities of your team winning and losing its next game.
+For example, say we call the event "Commanders win the game" as $W$.  One
+example of a *compound event* (see above) would be the event $W \text{and} R$,
+meaning, the event where the Commanders won the game _and_ it rained.
+:::
 
-    Joint probabilities
-    -------------------
+## Mutually exclusive events — the addition rule
 
-    Let's return now to the Commanders. We said earlier that our best guess
-    of the probability that the Commanders will win the first game is .6.
-    Let's complicate the matter a bit and say that the probability of
-    the Commanders winning depends upon the weather; on a nice day we
-    estimate a .65 chance of winning, on a nasty (rainy or snowy) day a
-    chance of .55. It is obvious that we then want to know the chance of
-    a nice day, and we estimate a probability of .7. Let's now ask the
-    probability that both will happen — *it will be a nice day and the
-    Commanders will win* .
+**Definition:** If there are just two events $A$ and $B$ and they are "mutually
+exclusive" or "disjoint," each implies the absence of the other. Green and red
+coats are mutually exclusive for you if (but only if) you never wear more than
+one coat at a time.
 
-    Before getting on with the process of estimation itself, let's tarry
-    a moment to discuss the probability estimates. Where do we get the
-    notion that the probability of a nice day next Sunday is .7? We
-    might have done so by checking the records of the past 50 years, and
-    finding 35 nice days on that date. If we assume that the weather has
-    not changed over that period (an assumption that some might not
-    think reasonable, and the wisdom of which must be the outcome of
-    some non-objective judgment), our probability estimate of a nice day
-    would then be 35/50 = .7.
+To state this idea formally, if $A$ and $B$ are mutually exclusive, then:
 
-    Two points to notice here: 1) The source of this estimate is an
-    objective "frequency series." And 2) the data come to us as the
-    records of 50 days, of which 35 were nice. We would do best to stick
-    with exactly those numbers rather than convert them into a single
-    number — 70 percent. Percentages have a way of being confusing.
-    (When his point score goes up from 2 to 3, my racquetball partner is
-    fond of saying that he has made a "fifty percent increase"; that's
-    just one of the confusions with percentages.) And converting to a
-    percent loses information: We no longer know how many observations
-    the percent is based upon, whereas 35/50 keeps that information.
+$$
+P(A \text{ and } B) = 0
+$$
 
-    Now, what about the estimate that the Commanders have a .65 chance of
-    winning on a nice day — where does that come from? Unlike the
-    weather situation, there is no long series of stable data to provide
-    that information about the probability of winning. Instead, we
-    *construct* an estimate using whatever information or "hunch" we
-    have. The information might include the Commanders' record earlier in
-    this season, injuries that have occurred, what the "experts" in the
-    newspapers say, the gambling odds, and so on. The result certainly
-    is not "objective," or the result of a stable frequency series. But
-    we treat the .65 probability in quite the same way as we treat the
-    .7 estimate of a nice day. In the case of winning, however, we
-    produce an estimate expressed directly as a percent.
+If $A$ is "wearing a green coat" and $B$ is "wearing a red coat" (and you never wear two coats at the same time), then the probability that you are wearing a green coat *and* a red coat is 0: $P(A \text{ and } B) = 0$.
 
-    If we are shaky about the estimate of winning — as indeed we ought
-    to be, because so much judgment and guesswork inevitably goes into
-    it — we might proceed as follows: Take hold of a bucket and two bags
-    of balls, green and red. Put into the bucket some number of green
-    balls — say 10. Now add enough red balls to express your judgment
-    that the *ratio* is the ratio of expected wins to losses on a nice
-    day, adding or subtracting green balls as necessary to get the ratio
-    you want. If you end up with 13 green and 7 red balls, then you are
-    "modeling" a probability of .65, as stated above. If you end up with
-    a different ratio of balls, then you have learned from this
-    experiment with your own mind processes that you think that the
-    probability of a win on a nice day is something other than .65.
+In that case, outcomes $A$ and $B$, and hence outcome $A$ and its own absence
+(written $P(\ \hat{} A)$), are necessarily mutually exclusive, and hence the
+two probabilities add to unity:
 
-    Don't put away the bucket. We will be using it again shortly. And keep
-    in mind how we have just been using it, because our use later will
-    be somewhat different though directly related.
+<!---
+This needs some serious fixing, by adding the "collectively exhaustive" condition.
 
-    One good way to begin the process of producing a compound estimate
-    is by portraying the available data in a "tree diagram" like Figure
-    4-1. The tree diagram shows the possible events in the order in
-    which they might occur. A tree diagram is extremely valuable whether
-    you will continue with either simulation or the formulaic method.
+Specifically, the addition rule, as usually put, is that, for mutually
+exclusive events:
 
-    ![](images/08-Chap-4_000.png)
+P(A or B) = P(A) + P(B)
 
-    ![](images/08-Chap-4_001.png)
+But here we have this rule in the description:
 
-    nice day (P = .7)
+P(A and B) = 0
 
-    Commanders win (P = .65)
+However, we then go onto P(A or ^A) = 1, which is the extension of the collectively exhaustive condition.
 
-    = .455 (Probability of nice day *and* Commanders win)
+What to do?  Move?  Delete?  Rewrite?
+-->
 
-    Commanders lose (P = .35)
 
-    Commanders win (P = .55)
+$$
+P(A) + P(\ \hat{} A) = 1
+$$
 
-    Commanders lose (P = .45)
+The sales of your store in a given year cannot be both above and below \$1
+million. Therefore if $P(\text{sales > \$1 million}) = 0.2$, $P(\text{sales <=
+\$1 million}) = 0.8$.
 
-    ![](images/08-Chap-4_002.png)
+This "complements" rule is useful as a consistency check on your estimates of
+probabilities. If you say that the probability of rain is 0.2, then you should
+check that you think that the probability of no rain is 0.8; if not, reconsider
+both the estimates. The same for the probabilities of your team winning and
+losing its next game.
 
-    nasty day (P = .3)
+## Joint probabilities
 
-    **Figure 4-1: Tree Diagram**
+Let's return now to the Commanders. We said earlier that our best guess of the
+probability that the Commanders will win the first game is 0.6. Let's complicate
+the matter a bit and say that the probability of the Commanders winning depends
+upon the weather; on a nice day we estimate a 0.65 chance of winning, on a nasty
+(rainy or snowy) day a chance of 0.55. It is obvious that we then want to know
+the chance of a nice day, and we estimate a probability of 0.7. Let's now ask
+the probability that both will happen — *it will be a nice day and the
+Commanders will win* .
 
-    The monte carlo simulation method (resampling)
-    ----------------------------------------------
+Before getting on with the process of estimation itself, let's tarry a moment
+to discuss the probability estimates. Where do we get the notion that the
+probability of a nice day next Sunday is 0.7? We might have done so by checking
+the records of the past 50 years, and finding 35 nice days on that date. If we
+assume that the weather has not changed over that period (an assumption that
+some might not think reasonable, and the wisdom of which must be the outcome of
+some non-objective judgment), our probability estimate of a nice day would then
+be 35/50 = 0.7.
 
-    The steps we follow to simulate an answer to the compoundprobability
-    question are as follows:
+Two points to notice here: 1) The source of this estimate is an
+objective "frequency series." And 2) the data come to us as the
+records of 50 days, of which 35 were nice. We would do best to stick
+with exactly those numbers rather than convert them into a single
+number — 70 percent. Percentages have a way of being confusing.
+(When his point score goes up from 2 to 3, my racquetball partner is
+fond of saying that he has made a "fifty percent increase"; that's
+just one of the confusions with percentages.) And converting to a
+percent loses information: We no longer know how many observations
+the percent is based upon, whereas 35/50 keeps that information.
 
-    1.  Put seven blue balls (for "nice day") and three yellow balls
-        ("not nice") into a bucket labeled A.
+Now, what about the estimate that the Commanders have a 0.65 chance of
+winning on a nice day — where does that come from? Unlike the
+weather situation, there is no long series of stable data to provide
+that information about the probability of winning. Instead, we
+*construct* an estimate using whatever information or "hunch" we
+have. The information might include the Commanders' record earlier in
+this season, injuries that have occurred, what the "experts" in the
+newspapers say, the gambling odds, and so on. The result certainly
+is not "objective," or the result of a stable frequency series. But
+we treat the 0.65 probability in quite the same way as we treat the
+.7 estimate of a nice day. In the case of winning, however, we
+produce an estimate expressed directly as a percent.
 
-    2.  Put 65 green balls (for "win") and 35 red balls ("lose") into a bucket
-        labeled B.  This bucket represents the chance that the Commanders will when it
-        is a nice day.
+If we are shaky about the estimate of winning — as indeed we ought
+to be, because so much judgment and guesswork inevitably goes into
+it — we might proceed as follows: Take hold of a bucket and two bags
+of balls, green and red. Put into the bucket some number of green
+balls — say 10. Now add enough red balls to express your judgment
+that the *ratio* is the ratio of expected wins to losses on a nice
+day, adding or subtracting green balls as necessary to get the ratio
+you want. If you end up with 13 green and 7 red balls, then you are
+"modeling" a probability of 0.65, as stated above. If you end up with
+a different ratio of balls, then you have learned from this
+experiment with your own mind processes that you think that the
+probability of a win on a nice day is something other than 0.65.
 
-    3.  Draw one ball from bucket A. If it is blue, carry on to the next step;
-        otherwise record "no" and stop.
+Don't put away the bucket. We will be using it again shortly. And keep
+in mind how we have just been using it, because our use later will
+be somewhat different though directly related.
 
-    4.  If you have drawn a blue ball from bucket A, now draw a ball from
-        bucket B, and if it is green, record "yes" on a score sheet;
-        otherwise write "no."
+One good way to begin the process of producing a compound estimate
+is by portraying the available data in a "tree diagram" like Figure
+4-1. The tree diagram shows the possible events in the order in
+which they might occur. A tree diagram is extremely valuable whether
+you will continue with either simulation or the formulaic method.
 
-    5.  Repeat steps 3-4 perhaps 1000 times.
+![](images/08-Chap-4_000.png)
 
-    6.  Count the number of "yes" trials.
+![](images/08-Chap-4_001.png)
 
-    7.  Compute the probability you seek as (number of "yeses"/ 1000).
-        (This is the same as (number of "yeses"/ (number of "yeses" +
-        number of "noes")
+nice day (P = 0.7)
+
+Commanders win (P = 0.65)
+
+= 0.455 (Probability of nice day *and* Commanders win)
+
+Commanders lose (P = 0.35)
+
+Commanders win (P = 0.55)
+
+Commanders lose (P = 0.45)
+
+![](images/08-Chap-4_002.png)
+
+nasty day (P = 0.3)
+
+**Figure 4-1: Tree Diagram**
+
+The monte carlo simulation method (resampling)
+----------------------------------------------
+
+The steps we follow to simulate an answer to the compoundprobability
+question are as follows:
+
+1.  Put seven blue balls (for "nice day") and three yellow balls
+    ("not nice") into a bucket labeled A.
+
+2.  Put 65 green balls (for "win") and 35 red balls ("lose") into a bucket
+    labeled B.  This bucket represents the chance that the Commanders will when it
+    is a nice day.
+
+3.  Draw one ball from bucket A. If it is blue, carry on to the next step;
+    otherwise record "no" and stop.
+
+4.  If you have drawn a blue ball from bucket A, now draw a ball from
+    bucket B, and if it is green, record "yes" on a score sheet;
+    otherwise write "no."
+
+5.  Repeat steps 3-4 perhaps 1000 times.
+
+6.  Count the number of "yes" trials.
+
+7.  Compute the probability you seek as (number of "yeses"/ 1000).
+    (This is the same as (number of "yeses"/ (number of "yeses" +
+    number of "noes")
 
 Actually doing the above series of steps by hand is useful to build your
 intuition about probability and simulation methods. But the procedure
@@ -509,8 +554,8 @@ the formulaic deductive method for handling other problems.
 
 Return now to the tree diagram (Figure 4-1) above. We can read from the
 tree diagram that 70 percent of the time it will be nice, and of that 70
-percent of the time, 65 percent of the games will be wins. That is, .65
-\* .7 = .455 = the probability of a nice day and a win. That is the
+percent of the time, 65 percent of the games will be wins. That is, 0.65
+\* 0.7 = 0.455 = the probability of a nice day and a win. That is the
 answer we seek. The method seems easy, but it also is easy to get
 confused and obtain the wrong answer.
 
@@ -540,8 +585,8 @@ affect the outcome.
 
 A *conditional* probability is formally written P(Commanders win\|rain)
 
-= .65, and it is read "The probability that the Commanders will win if (given
-that) it rains is .65." It is the appropriate concept when there is one
+= 0.65, and it is read "The probability that the Commanders will win if (given
+that) it rains is 0.65." It is the appropriate concept when there is one
 (or more) major event of interest in decision contexts.
 
 Let's use another football example to explain conditional and
@@ -551,12 +596,12 @@ nevertheless ask what chance the team has of winning the post season
 game at the bowl to which only the best team in the University of
 Maryland's league is sent. One may say that *if* by some miracle the
 University of Maryland does get to the bowl, its chance would be a bit
-less than 50- 50 — say, .40. That is, the probability of its winning,
-*conditional* on getting to the bowl is .40. But the chance of its
-getting to the bowl at all is very low, perhaps .01. If so, the
+less than 50- 50 — say, 0.40. That is, the probability of its winning,
+*conditional* on getting to the bowl is 0.40. But the chance of its
+getting to the bowl at all is very low, perhaps 0.01. If so, the
 unconditional probability of winning at the bowl is the probability of
 its getting there multiplied by the probability of winning *if* it gets
-there; that is, .01 x .40 = .004. (It would be even better to say that
+there; that is, 0.01 x 0.40 = 0.004. (It would be even better to say that
 .004 is the probability of winning conditional only on having a team,
 there being a league, and so on, all of which seem almost sure things.)
 Every probability is conditional on many things — that war does not
@@ -596,35 +641,35 @@ resampling (Monte Carlo simulation) method of estimating probabilities.
 Another way to obtain such conditional-probability statements is
 formulaic calculation. For example, if half the slips in the hat have
 numbers under 100 and half over 100, the probability of getting five in
-a row above 100 is .03125 — that is, .5 ^5^ , or
+a row above 100 is 0.03125 — that is, 0.5 ^5^ , or
 
-.5 x .5 x .5 x .5 x .5, using the multiplication rule introduced above.
+.5 x 0.5 x 0.5 x 0.5 x 0.5, using the multiplication rule introduced above.
 But if you are not absolutely sure you know the proper mathematical
 formula, you are more likely to come up with a sound answer with the
 simulation method.
 
 Let's illustrate the concept of conditional probability with four
 cards — two aces and two 3's (or two black and two red). What is the
-probability of an ace? Obviously, .5. If you first draw an ace, what is
+probability of an ace? Obviously, 0.5. If you first draw an ace, what is
 the probability of an ace now? That is, what is the probability of an
-ace *conditional on* having drawn one already? Obviously not .5.
+ace *conditional on* having drawn one already? Obviously not 0.5.
 
-This change in the conditional probabilities is the basis of
-mathematician Edward Thorp's famous system of card-counting to beat the
-casinos at blackjack (Twenty One).
+This change in the conditional probabilities is the basis of mathematician
+[Edward Thorp's](https://en.wikipedia.org/wiki/Edward_O._Thorp) famous system
+of card-counting to beat the casinos at blackjack (Twenty One).
 
 Casinos can defeat card counting by using many decks at once so that
-conditional probabilities change more slowly, and are not very different
-than unconditional probabilities. Looking ahead, we will see that
-sampling with replacement, and sampling without replacement from a huge
-universe, are much the same in practice, so we can substitute one for
-the other at our convenience.
+conditional probabilities change more slowly, and are not very different than
+unconditional probabilities. Looking ahead, we will see that sampling with
+replacement, and sampling without replacement from a huge universe, are much
+the same in practice, so we can substitute one for the other at our
+convenience.
 
-Let's further illustrate the concept of conditional probability with a
-puzzle (from Gardner, 1983, p. 42). "Shuffle a packet of four
-cards — two red, two black — and deal them face down in a row. Two cards
-are picked at random, say by placing a penny on each. What is the
-probability that those two cards are the same color?"
+Let's further illustrate the concept of conditional probability with a puzzle
+(from Gardner, 1983, p. 42). "Shuffle a packet of four cards — two red, two
+black — and deal them face down in a row. Two cards are picked at random, say
+by placing a penny on each. What is the probability that those two cards are
+the same color?"
 
 **1.** Play the game with the cards 100 times, and estimate the
 probability sought.
@@ -654,12 +699,12 @@ similar to the above.
 
 Why do you get different results in the two cases? Let's ask the
 question differently: What is the probability of first picking a black
-card? Clearly, it is 50-50, or .5. Now, if you first pick a black card,
+card? Clearly, it is 50-50, or 0.5. Now, if you first pick a black card,
 what is the probability in the first game above of getting a second
 black card? There are two red and one black cards left, so now p = 1/3.
 
 But in the second game, what is the probability of picking a second
-black card if the first one you pick is black? It is still .5 because we
+black card if the first one you pick is black? It is still 0.5 because we
 are *sampling with replacement.*
 
 The probability of picking a second black card *conditional on picking a
@@ -691,11 +736,11 @@ reduce the probability of an explosion.
 ## The skins again, plus leaving the game early
 
 Let's carry exactly the same process one tiny step further. Assume that
-if the Commanders win, there is a .3 chance you will leave the game early.
+if the Commanders win, there is a 0.3 chance you will leave the game early.
 Now let us ask the probability of a nice day, the Commanders winning, and you
 leaving early. You should be able to see that this probability can be
 estimated with three buckets instead of two. Or it can be computed with the
-multiplication rule as .65 \* .7 \* .3 = .1365 (about .14) — the
+multiplication rule as 0.65 \* 0.7 \* 0.3 = 0.1365 (about 0.14) — the
 probability of a nice day and a win and you leave early.
 
 The book shows you the formal method — the multiplication rule, in this
@@ -735,4 +780,4 @@ the probability of the sequence miss-hit-hit.
 The multiplication rule is very useful in everyday life. It fits closely
 to a great many situations such as "What is the chance that it will rain
 (.3) and that (if it does rain) the plane will not fly (.8)?" Hence the
-probability of your not leaving the airport today is .3 x .8 = .24.
+probability of your not leaving the airport today is 0.3 x 0.8 = 0.24.
