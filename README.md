@@ -143,6 +143,8 @@ Editing:
 * When in some kind of shape that is ready for other people to look at, make
   your commits with the changes, and do a pull-request to the main repository,
   for us to look at.
+* In due course you may want to remove the boilerplate warning text at the top
+  of the page.
 
 ## Notebooks
 
@@ -202,6 +204,8 @@ type the note.]
 
 ## Writing notes for the reader (callout)
 
+See [Quarto callouts](https://quarto.org/docs/authoring/callouts.html)
+
 ```
 :::{.callout-note}
 ## A title for the note
@@ -209,6 +213,8 @@ type the note.]
 Some text
 :::
 ```
+
+Also `.callout-warning`, `-tip`, `-important`, `-caution`.
 
 ## Comments to your fellow authors
 
