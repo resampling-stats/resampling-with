@@ -1,0 +1,13 @@
+'"sluggo" from "correlation_causation.Rmd" starting at line 1474
+
+REPEAT 1000
+    URN 3#0 1#1 a
+    SAMPLE 100 a b
+    ' Sample 100 "at-bats" from a
+    RUNS b >=1 c
+    ' How many runs (of any length \>=1) are there in the 100 at-bats?
+    SCORE c z
+END
+HISTOGRAM z
+' Note: The file "sluggo" on the Resampling Stats software disk contains
+' this set of commands.

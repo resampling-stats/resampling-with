@@ -253,42 +253,34 @@ the "viewers," then finds how much this sample diverges from the
 expected number of viewers (30% of 400 = 120). It repeats this procedure
 1000 times, and then calculates the average divergence.
 
-`           REPEAT 1000         `
 
-Do 1000 trials
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           GENERATE 400 1,100 a         `
+```matlab
 
-Generate 400 numbers between 1 and 100, let 1-30 = viewer
+' Program file: "tvviewer.rss"
 
-`           COUNT a <=30 b         `
+REPEAT 1000
+    ' Do 1000 trials
+    GENERATE 400 1,100 a
+    ' Generate 400 numbers between 1 and 100, let 1-30 = viewer
+    COUNT a <=30 b
+    ' Count the viewers
+    SUBTRACT 120 b c
+    ' How different from expected?
+    ABS c d
+    ' Absolute value of difference?
+    DIVIDE d 400 e
+    ' Express as a proportion of sample
+    SCORE e z
+    ' Keep score of the result
+END
+MEAN z k
+' Find the mean divergence
 
-Count the viewers
-
-`           SUBTRACT 120 b c         `
-
-How different from expected?
-
-`           ABS c d         `
-
-Absolute value of difference?
-
-`           DIVIDE d 400 e         `
-
-Express as a proportion of sample
-
-`           SCORE e z         `
-
-Keep score of the result
-
-`           END         `
-
-`           MEAN z k         `
-
-Find the mean divergence
-
-Note: The file "tvviewer" on the Resampling Stats software disk contains
-this set of commands.
+' Note: The file "tvviewer" on the Resampling Stats software disk contains
+' this set of commands.
+```
 
 It is a simple matter to go back and try a sample size of (say) 1600
 rather than 400, and examine the effect on the mean difference.
@@ -449,27 +441,25 @@ percentile and above the 95th percentile.
 
 Here is a program for a sample size of 12.
 
-`           DATA (12) sampsize         `
 
-`           NUMBERS (31 34 29 26 32 35 38 34 32 31 30 29) a         `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           REPEAT 1000         `
+```matlab
 
-`           SAMPLE sampsize a b    `
+' Program file: "how_big_sample_01.rss"
 
-`           MEAN b c         `
-
-`           SCORE c z         `
-
-`           END     `
-
-`           HISTOGRAM z         `
-
-`           PERCENTILE z (5 95) k      `
-
-`           PRINT k         `
-
-**Bin Center Freq Pct Cum Pct**
+DATA (12) sampsize
+NUMBERS (31 34 29 26 32 35 38 34 32 31 30 29) a
+REPEAT 1000
+    SAMPLE sampsize a b
+    MEAN b c
+    SCORE c z
+END
+HISTOGRAM z
+PERCENTILE z (5 95) k
+PRINT k
+' **Bin Center Freq Pct Cum Pct**
+```
 
 ![](images/28-Chap-24_000.png)
 
@@ -641,39 +631,33 @@ differs enough in these resamples to rule out a 50-50 universe. Recall
 that we need at least 48 males to say that the proportion of males is
 *not* 50%.
 
-`           REPEAT 1000         `
 
-Do 1000 trials
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           GENERATE 80 1,10 a         `
+```matlab
 
-Generate 80 "flies," each represented by a number between 1 and 10 where
-\<= 6 is a male
+' Program file: "how_big_sample_02.rss"
 
-`           COUNT a <=6 b         `
-
-Count the males
-
-`           SCORE b z         `
-
-Keep score
-
-`           END         `
-
-`           COUNT z >=48 k         `
-
-How many of the trials produced more than 48 males?
-
-`           DIVIDE k 1000 kk         `
-
-Convert to a proportion
-
-`           PRINT kk         `
-
-If the result "kk" is close to 1, we then know that samples of size 80
-will almost always produce samples with enough males to avoid misleading
-us into thinking that they could have come from a universe in which
-males and females are split 50-50.
+REPEAT 1000
+    ' Do 1000 trials
+    GENERATE 80 1,10 a
+    ' Generate 80 "flies," each represented by a number between 1 and 10 where
+    ' \<= 6 is a male
+    COUNT a <=6 b
+    ' Count the males
+    SCORE b z
+    ' Keep score
+END
+COUNT z >=48 k
+' How many of the trials produced more than 48 males?
+DIVIDE k 1000 kk
+' Convert to a proportion
+PRINT kk
+' If the result "kk" is close to 1, we then know that samples of size 80
+' will almost always produce samples with enough males to avoid misleading
+' us into thinking that they could have come from a universe in which
+' males and females are split 50-50.
+```
 
 **Example 24-3**
 
@@ -729,32 +713,28 @@ universe that is 70% "yes." It then observes how often such samples
 produce more than 32 "yeses" — the number we must get if we are to be
 sure that the sample is not from a 50/50 universe.
 
-`           REPEAT 1000         `
 
-Do 1000 trials
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           GENERATE 50 1,10 a         `
+```matlab
 
-Generate 50 numbers between 1 and 10, let 1-7 = yes.
+' Program file: "how_big_sample_03.rss"
 
-`           COUNT a <=7 b         `
-
-Count the "yeses"
-
-`           SCORE b z         `
-
-Keep score of the result
-
-`           END         `
-
-`           COUNT z >=32 k         `
-
-Count how often the sample result \>= our 32 cutoff (recall that samples
-with 32 or fewer "yeses" cannot be ruled out of a 50/50 universe)
-
-`           DIVIDE k 1000 kk         `
-
-Convert to a proportion
+REPEAT 1000
+    ' Do 1000 trials
+    GENERATE 50 1,10 a
+    ' Generate 50 numbers between 1 and 10, let 1-7 = yes.
+    COUNT a <=7 b
+    ' Count the "yeses"
+    SCORE b z
+    ' Keep score of the result
+END
+COUNT z >=32 k
+' Count how often the sample result \>= our 32 cutoff (recall that samples
+' with 32 or fewer "yeses" cannot be ruled out of a 50/50 universe)
+DIVIDE k 1000 kk
+' Convert to a proportion
+```
 
 If "kk" is close to 1, we can be confident that this sample will be
 large enough to avoid a result that we might mistakenly think comes from
@@ -801,29 +781,26 @@ at random, record the group averages, and find the difference.
 
 Here is the same work done with more runs on the computer:
 
-`           NUMBERS (31 34 29 26 32 35 38 34 32 31 30 29) a         `
 
-`           NUMBERS (32 32 31 30 29 29 29 28 28 26 26 24) b         `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           REPEAT 1000         `
+```matlab
 
-`           SAMPLE 12 a aa         `
+' Program file: "how_big_sample_04.rss"
 
-`           MEAN aa aaa     `
-
-`           SAMPLE 12 b bb         `
-
-`           MEAN bb bbb    `
-
-`           SUBTRACT aaa bbb c    `
-
-`           SCORE c z         `
-
-`           END   `
-
-`           HISTOGRAM z         `
-
-**Difference in mean weights between resamples**
+NUMBERS (31 34 29 26 32 35 38 34 32 31 30 29) a
+NUMBERS (32 32 31 30 29 29 29 28 28 26 26 24) b
+REPEAT 1000
+    SAMPLE 12 a aa
+    MEAN aa aaa
+    SAMPLE 12 b bb
+    MEAN bb bbb
+    SUBTRACT aaa bbb c
+    SCORE c z
+END
+HISTOGRAM z
+' **Difference in mean weights between resamples**
+```
 
 nough, and, in fact, even smaller samples might be suf
 
@@ -849,47 +826,37 @@ The following RESAMPLING STATS program first records the data from the
 two samples, and then draws from decks of infinite size by sampling with
 replacement from the original samples.
 
-`           DATA (36 35 34 33 33 32 32 31 31 30 29 28) a         `
 
-`           DATA (32 31 30 29 29 28 28 27 27 26 25 24) b         `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           REPEAT 1000         `
+```matlab
 
-`           SAMPLE 12 a aa         `
+' Program file: "how_big_sample_05.rss"
 
-Draw a sample of 12 from ration a with replacement (this is like drawing
-from a large deck made up of many replicates of the elements in a)
-
-`           SAMPLE 12 b bb         `
-
-Same for b
-
-`           MEAN aa aaa         `
-
-Find the averages of the resamples
-
-`           MEAN bb bbb         `
-
-`           SUBTRACT aaa bbb c         `
-
-Find the difference
-
-`           SCORE c z         `
-
-`           END         `
-
-`           COUNT z >=3 k         `
-
-How often did the difference exceed the cutoff point for our
-significance test of 3 pounds?
-
-`           DIVIDE k 1000 kk    `
-
-`           PRINT kk         `
-
-If kk is close to zero, we know that the sample size is large enough
-that samples drawn from the universes we have hypothesized will not
-mislead us into thinking that they could come from the same universe.
+DATA (36 35 34 33 33 32 32 31 31 30 29 28) a
+DATA (32 31 30 29 29 28 28 27 27 26 25 24) b
+REPEAT 1000
+    SAMPLE 12 a aa
+    ' Draw a sample of 12 from ration a with replacement (this is like drawing
+    ' from a large deck made up of many replicates of the elements in a)
+    SAMPLE 12 b bb
+    ' Same for b
+    MEAN aa aaa
+    ' Find the averages of the resamples
+    MEAN bb bbb
+    SUBTRACT aaa bbb c
+    ' Find the difference
+    SCORE c z
+END
+COUNT z >=3 k
+' How often did the difference exceed the cutoff point for our
+' significance test of 3 pounds?
+DIVIDE k 1000 kk
+PRINT kk
+' If kk is close to zero, we know that the sample size is large enough
+' that samples drawn from the universes we have hypothesized will not
+' mislead us into thinking that they could come from the same universe.
+```
 
 ## Step-wise sample-size determination
 

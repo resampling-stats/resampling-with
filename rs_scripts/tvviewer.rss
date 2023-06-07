@@ -1,0 +1,22 @@
+'"tvviewer" from "how_big_sample.Rmd" starting at line 255
+
+REPEAT 1000
+    ' Do 1000 trials
+    GENERATE 400 1,100 a
+    ' Generate 400 numbers between 1 and 100, let 1-30 = viewer
+    COUNT a <=30 b
+    ' Count the viewers
+    SUBTRACT 120 b c
+    ' How different from expected?
+    ABS c d
+    ' Absolute value of difference?
+    DIVIDE d 400 e
+    ' Express as a proportion of sample
+    SCORE e z
+    ' Keep score of the result
+END
+MEAN z k
+' Find the mean divergence
+
+' Note: The file "tvviewer" on the Resampling Stats software disk contains
+' this set of commands.

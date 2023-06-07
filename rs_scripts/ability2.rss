@@ -1,0 +1,25 @@
+'"ability2" from "correlation_causation.Rmd" starting at line 539
+
+REPEAT 1000
+    ' Do 1000 experiments.
+    NUMBERS 1,10 a
+    ' Constitute the set of I.Q. ranks.
+    SHUFFLE a b
+    ' Shuffle them.
+    TAKE b 1,5 c
+    ' Take the first 5 ranks.
+    COUNT c between 1 5 d
+    ' Of those 5, count how many are among the top half of the ranks (1-5).
+    SCORE d z
+    ' Keep track of that result in z
+END
+' End one experiment, go back and repeat until all 1000 are complete.
+COUNT z >= 4 k
+' Determine how many trials produced 4 or more top ranks by chance.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the result.
+
+' Note: The file "ability2" on the Resampling Stats software disk contains
+' this set of commands.

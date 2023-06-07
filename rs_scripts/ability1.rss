@@ -1,0 +1,11 @@
+'"ability1" from "correlation_causation.Rmd" starting at line 461
+
+COUNT z <= 17 k
+' Determine how many trials produced sums of ranks \<= 17 by chance.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the results.
+
+' Note: The file "ability1" on the Resampling Stats software disk contains
+' this set of commands.

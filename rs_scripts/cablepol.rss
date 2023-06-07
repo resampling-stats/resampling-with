@@ -1,0 +1,11 @@
+'"cablepol" from "testing_counts_1.Rmd" starting at line 584
+
+COUNT z >= 30 k
+' Determine how many trials had 30 or more in favor.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the result.
+
+' Note: The file "cablepol" on the Resampling Stats software disk contains
+' this set of commands.

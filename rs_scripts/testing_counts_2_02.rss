@@ -1,0 +1,30 @@
+'"testing_counts_2_02" from "testing_counts_2.Rmd" starting at line 413
+
+REPEAT 1000
+    ' Do 1000 trials
+    REPEAT 4
+        ' Repeat the following steps 4 times to constitute 4 groups of 20 and
+        ' count their rehabilitation rates.
+        GENERATE 20 1,100 a
+        ' Randomly generate 20 numbers between 1 and 100 and put them in a; let
+        ' 1-55 = rehabilitation, 56-100 no rehab.
+        COUNT a between 1 55 b
+        ' Count the number of rehabs, put the result in b.
+        SCORE b w
+        ' Keep track of the 4 rehab rates for the group of 20.
+    END
+    ' End the procedure for one group of 20, go back and repeat until all 4
+    ' are done.
+    MEAN w x
+    ' Calculate the mean
+    SUMSQRDEV w x y
+    ' Find the sum of squared deviations between group rehab rates (w) and the
+    ' overall rate (x).
+    SCORE y z
+    ' Keep track of the result for each trial.
+    CLEAR w
+    ' Erase the contents of w to prepare for the next trial.
+END
+' End one experiment, go back and repeat until all 1000 are complete.
+HISTOGRAM z
+' Produce a histogram of trial results.

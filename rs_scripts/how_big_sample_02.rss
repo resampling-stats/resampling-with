@@ -1,0 +1,21 @@
+'"how_big_sample_02" from "how_big_sample.Rmd" starting at line 643
+
+REPEAT 1000
+    ' Do 1000 trials
+    GENERATE 80 1,10 a
+    ' Generate 80 "flies," each represented by a number between 1 and 10 where
+    ' \<= 6 is a male
+    COUNT a <=6 b
+    ' Count the males
+    SCORE b z
+    ' Keep score
+END
+COUNT z >=48 k
+' How many of the trials produced more than 48 males?
+DIVIDE k 1000 kk
+' Convert to a proportion
+PRINT kk
+' If the result "kk" is close to 1, we then know that samples of size 80
+' will almost always produce samples with enough males to avoid misleading
+' us into thinking that they could have come from a universe in which
+' males and females are split 50-50.

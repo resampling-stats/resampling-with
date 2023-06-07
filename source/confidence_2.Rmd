@@ -636,28 +636,25 @@ bootstrap procedure by substituting the median for the mean in the usual
 bootstrap procedure for estimating a confidence limit around the mean,
 as follows:
 
-`           DATA (11.4 13.4 13.5 13.8 13.9 14.4 14.5 15.0 15.1 15.8 16.0         `
 
-`           16.3 16.5 16.9 17.0 17.2 17.5 19.0) c         `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           REPEAT 1000         `
+```matlab
 
-`           SAMPLE 18 c c$         `
+' Program file: "confidence_2_00.rss"
 
-`           MEDIAN c$ d$    `
-
-`           SCORE d$ z         `
-
-`           END    `
-
-`           HISTOGRAM z         `
-
-`           PERCENTILE z (2.5 97.5) k     `
-
-`           PRINT K         `
-
-This problem would be approached conventionally with a binomial
-procedure leading to quite wide confidence intervals (Deshpande, p. 32).
+DATA (11.4 13.4 13.5 13.8 13.9 14.4 14.5 15.0 15.1 15.8 16.0 16.3 16.5 16.9 17.0 17.2 17.5 19.0) c
+REPEAT 1000
+    SAMPLE 18 c c$
+    MEDIAN c$ d$
+    SCORE d$ z
+END
+HISTOGRAM z
+PERCENTILE z (2.5 97.5) k
+PRINT K
+' This problem would be approached conventionally with a binomial
+' procedure leading to quite wide confidence intervals (Deshpande, p. 32).
+```
 
 **Example 21-5: Determining a Confidence Interval for the Median Price
 Elasticity of Demand for Cigarettes**
@@ -692,30 +689,28 @@ minor complication, the reader may work this example similarly to the
 case of the Theban jars. Here is a RESAMPLING STATS program
 ("cigarett").
 
-`           READ file “cigaret.dat” elast         `
 
-Read in the data from an external file
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           MEDIAN elast med-elas    `
+```matlab
 
-`           REPEAT 1000         `
+' Program file: "confidence_2_01.rss"
 
-`           SAMPLE 73 elast elast$         `
+READ file “cigaret.dat” elast
+' Read in the data from an external file
+MEDIAN elast med-elas
+REPEAT 1000
+    SAMPLE 73 elast elast$
+    ' A bootstrap sample (note that the "\$" indicates a bootstrap counterpart
+    ' to the observed sample)
+    MEDIAN elast$ med$
+    SCORE med$ scrboard
+END
+HISTOGRAM scrboard
+PERCENTILE scrboard (2.5 97.5) interval
+PRINT med-elas interval
+```
 
-A bootstrap sample (note that the "\$" indicates a bootstrap counterpart
-to the observed sample)
-
-`           MEDIAN elast$ med$    `
-
-`           SCORE med$ scrboard         `
-
-`           END         `
-
-`           HISTOGRAM scrboard         `
-
-`           PERCENTILE scrboard (2.5 97.5) interval     `
-
-`           PRINT med-elas interval         `
 
 ![](images/25-Chap-21_001.png)
 
@@ -782,53 +777,39 @@ interval.
 
 Here is a RESAMPLING STATS program ("mice-ci"):
 
-`           NUMBERS (94 38 23 197 99 16 141) treatmt         `
 
-treatment group
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           NUMBERS (52 10 40 104 51 27 146 30 46) control         `
+```matlab
 
-control group
+' Program file: "confidence_2_02.rss"
 
-`           REPEAT 1000         `
+NUMBERS (94 38 23 197 99 16 141) treatmt
+' treatment group
+NUMBERS (52 10 40 104 51 27 146 30 46) control
+' control group
+REPEAT 1000
+    ' step 5 above
+    SAMPLE 7 treatmt treatmt$
+    ' step 2 above
+    SAMPLE 9 control control$
+    ' step 3
+    MEAN treatmt$ tmean
+    ' step 4
+    MEAN control$ cmean
+    ' step 4
+    SUBTRACT tmean cmean diff
+    ' step 4
+    SCORE diff scrboard
+    ' step 4
+END
+' step 5
+HISTOGRAM scrboard
+PERCENTILE scrboard (5 95) interval
+' step 6
+PRINT interval
+```
 
-step 5 above
-
-`           SAMPLE 7 treatmt treatmt$         `
-
-step 2 above
-
-`           SAMPLE 9 control control$         `
-
-step 3
-
-`           MEAN treatmt$ tmean         `
-
-step 4
-
-`           MEAN control$ cmean         `
-
-step 4
-
-`           SUBTRACT tmean cmean diff         `
-
-step 4
-
-`           SCORE diff scrboard         `
-
-step 4
-
-`           END         `
-
-step 5
-
-`           HISTOGRAM scrboard         `
-
-`           PERCENTILE scrboard (5 95) interval         `
-
-step 6
-
-`           PRINT interval         `
 
 ![](images/25-Chap-21_002.png)
 
@@ -878,45 +859,36 @@ waiting until afterwards to discuss the logic of the inference.
 
 Here is a RESAMPLING STATS program ("myocar3"):
 
-`           URN 10#1 125#0 men         `
 
-A bucket (called "men") with ten "1s" (infarctions) and 125 "0s" (no
-infarction)
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           REPEAT 1000         `
+```matlab
 
-Do 1000 trials
+' Program file: "confidence_2_03.rss"
 
-`           SAMPLE 135 men a         `
+URN 10#1 125#0 men
+' A bucket (called "men") with ten "1s" (infarctions) and 125 "0s" (no
+' infarction)
+REPEAT 1000
+    ' Do 1000 trials
+    SAMPLE 135 men a
+    ' Sample (with replacement) 135 numbers from the bucket, put them in a
+    COUNT a =1 b
+    ' Count the infarctions
+    DIVIDE b 135 c
+    ' Express as a proportion
+    SCORE c z
+    ' Keep score of the result
+END
+' End the trial, go back and repeat
+HISTOGRAM z
+' Produce a histogram of all trial results
+PERCENTILE z (2.5 97.5) k
+' Determine the 2.5th and 97.5th percentiles of all trial results; these
+' points enclose 95 percent of the results
+PRINT k
+```
 
-Sample (with replacement) 135 numbers from the bucket, put them in a
-
-`           COUNT a =1 b         `
-
-Count the infarctions
-
-`           DIVIDE b 135 c         `
-
-Express as a proportion
-
-`           SCORE c z         `
-
-Keep score of the result
-
-`           END         `
-
-End the trial, go back and repeat
-
-`           HISTOGRAM z         `
-
-Produce a histogram of all trial results
-
-`           PERCENTILE z (2.5 97.5) k         `
-
-Determine the 2.5th and 97.5th percentiles of all trial results; these
-points enclose 95 percent of the results
-
-`           PRINT k         `
 
 ![](images/25-Chap-21_003.png)
 

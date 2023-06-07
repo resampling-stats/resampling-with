@@ -1,0 +1,26 @@
+'"correlation_causation_05" from "correlation_causation.Rmd" starting at line 1102
+
+READ FILE “inp10” x y
+' Data
+MULTIPLY x y xy
+' Step 1 above
+SUM xy xysum
+' Note: xysum = 439,140 (4.3914e+05)
+REPEAT 1000
+    ' Do 1000 simulations (step 4 above)
+    SHUFFLE x xrandom
+    ' Step 2 above
+    MULTIPLY xrandom y xy
+    ' Step 3 above
+    SUM xy newsum
+    ' Step 3 above
+    SCORE newsum scrboard
+    ' Step 3 above
+END
+' Step 4 above
+COUNT scorboard >=439140 prob
+' Step 5 above
+PRINT xysum prob
+' Result: prob = 0. Interpretation: 1000 simulated random shufflings never
+' produced a sum-of-products as high as the observed value. Hence we rule
+' out random chance as an explanation for the observed correlation.

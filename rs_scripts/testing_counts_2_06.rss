@@ -1,0 +1,11 @@
+'"testing_counts_2_06" from "testing_counts_2.Rmd" starting at line 998
+
+REPEAT 1000
+    GENERATE 33 (1 2 3) ranks
+    MEAN ranks ranksum
+    SCORE ranksum z
+END
+HISTOGRAM z
+COUNT z <=1.45 k
+DIVIDE k 1000 kk
+PRINT kk

@@ -1,0 +1,14 @@
+'"how_big_sample_04" from "how_big_sample.Rmd" starting at line 803
+
+NUMBERS (31 34 29 26 32 35 38 34 32 31 30 29) a
+NUMBERS (32 32 31 30 29 29 29 28 28 26 26 24) b
+REPEAT 1000
+    SAMPLE 12 a aa
+    MEAN aa aaa
+    SAMPLE 12 b bb
+    MEAN bb bbb
+    SUBTRACT aaa bbb c
+    SCORE c z
+END
+HISTOGRAM z
+' **Difference in mean weights between resamples**

@@ -1,0 +1,26 @@
+'"testing_counts_1_12" from "testing_counts_1.Rmd" starting at line 1473
+
+NUMBERS 1,5 ranks
+' step 3 above
+REPEAT 1000
+    ' step 7
+END
+' step 7
+SHUFFLE ranks ranks$
+' step 3
+TAKE ranks$ 1,2 closer
+' step 4
+TAKE ranks$ 3,5 further
+' step 4
+MEAN closer m_close
+' step 5
+MEAN farther m_far
+' step 5
+SUBTRACT m_close m_far diff
+' step 6
+SCORE diff z
+' step 6
+COUNT z >=1.6 k
+' step 8
+DIVIDE k 1000 prob
+' PRINT prob

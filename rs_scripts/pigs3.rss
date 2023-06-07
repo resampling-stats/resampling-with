@@ -1,0 +1,17 @@
+'"pigs3" from "testing_measured.Rmd" starting at line 529
+
+COUNT z >= 38 k
+' Determine how many of the trials produced a difference between resamples
+
+' \>= 38.
+COUNT z <= -38 l
+' Likewise for a difference of -38.
+ADD k l m
+' Add the two together.
+DIVIDE m 1000 mm
+' Convert to a proportion.
+PRINT mm
+' Print the result.
+
+' Note: The file "pigs3" on the Resampling Stats software disk contains
+' this set of commands.

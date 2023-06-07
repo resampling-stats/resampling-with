@@ -1,0 +1,27 @@
+'"testing_measured_02" from "testing_measured.Rmd" starting at line 796
+
+NUMBERS (6.9 7.6 7.3 7.6 6.8 7.2 8.0 5.5 5.8 7.3 8.2 6.9 6.8 5.7 8.6) treat
+NUMBERS (6.4 6.7 5.4 8.2 5.3 6.6 5.8 5.7 6.2 7.1 7.0 6.9 5.6 4.2 6.8) control
+CONCAT treat control all
+' Combine all birthweight observations in same vector
+REPEAT 1000
+    ' Do 1000 simulations
+    SAMPLE 15 all treat$
+    ' Take a resample of 15 from all birth weights (the \$ indicates a
+    ' resampling counterpart to a real sample)
+    SAMPLE 15 all control$
+    ' Take a second, similar resample
+    MEAN treat$ mt
+    ' Find the means of the two resamples
+    MEAN control$ mc
+    SUBTRACT mt mc dif
+    ' Find the difference between the means of the two resamples
+    SCORE dif z
+    ' Keep score of the result
+END
+' End the simulation experiment, go back and repeat
+HISTOGRAM z
+' Produce a histogram of the resample differences
+COUNT z >= 0.82 k
+' How often did resample differences exceed the observed difference of
+' .82?

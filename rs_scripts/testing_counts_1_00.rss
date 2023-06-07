@@ -1,0 +1,14 @@
+'"testing_counts_1_00" from "testing_counts_1.Rmd" starting at line 215
+
+REPEAT 1000
+    ' Do 1000 experiments
+    GENERATE 20 1,2 a
+    ' Generate randomly 20 "1's" and "2's," put them in a.
+    COUNT a =1 b
+    ' Count the number of "1"s (males), put that result in b.
+    SCORE b z
+    ' Keep track of each trial result in z.
+END
+' End one trial, go back and repeat until all 1000 trials are complete.
+HISTOGRAM z
+' Produce a histogram of the trial results.

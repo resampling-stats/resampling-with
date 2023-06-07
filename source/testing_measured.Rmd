@@ -466,54 +466,39 @@ on a HISTOGRAM, and see how many times resample A exceeded resample B by
 at least 38 pounds, or vice versa (we are testing whether the two are
 different, not whether food A produces larger weight gains).
 
-`           NUMBERS (31 34 29 26 32 35 38 34 31 29 32 31) a         `
 
-Record group a's weight gains.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           NUMBERS (26 24 28 29 30 29 31 29 32 26 28 32) b         `
+```matlab
 
-Record group b's weight gains.
+' Program file: "testing_measured_00.rss"
 
-`           CONCAT a b c         `
-
-Combine a and b together in one long vector.
-
-`           REPEAT 1000         `
-
-Do 1000 experiments.
-
-`           SAMPLE 12 c d         `
-
-Take a "resample" of 12 with replacement from c and put it in d.
-
-`           SAMPLE 12 c e         `
-
-Take another "resample."
-
-`           SUM d dd         `
-
-Sum the first "resample."
-
-`           SUM e ee         `
-
-Sum the second "resample."
-
-`           SUBTRACT dd ee f         `
-
-Calculate the difference between the two resamples.
-
-`           SCORE f z         `
-
-Keep track of each trial result.
-
-`           END         `
-
-End one experiment, go back and repeat until all trials are complete,
-then proceed.
-
-`           HISTOGRAM z         `
-
-Produce a histogram of trial results.
+NUMBERS (31 34 29 26 32 35 38 34 31 29 32 31) a
+' Record group a's weight gains.
+NUMBERS (26 24 28 29 30 29 31 29 32 26 28 32) b
+' Record group b's weight gains.
+CONCAT a b c
+' Combine a and b together in one long vector.
+REPEAT 1000
+    ' Do 1000 experiments.
+    SAMPLE 12 c d
+    ' Take a "resample" of 12 with replacement from c and put it in d.
+    SAMPLE 12 c e
+    ' Take another "resample."
+    SUM d dd
+    ' Sum the first "resample."
+    SUM e ee
+    ' Sum the second "resample."
+    SUBTRACT dd ee f
+    ' Calculate the difference between the two resamples.
+    SCORE f z
+    ' Keep track of each trial result.
+END
+' End one experiment, go back and repeat until all trials are complete,
+' then proceed.
+HISTOGRAM z
+' Produce a histogram of trial results.
+```
 
 **PIGS3: Difference Between Two Resamples**
 
@@ -527,30 +512,29 @@ From this histogram we see that none of the trials produced a difference
 between groups as large as that observed (or larger). RESAMPLING STATS
 will calculate this for us with the following commands:
 
-`           COUNT z >= 38 k         `
 
-Determine how many of the trials produced a difference between resamples
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-\>= 38.
+```matlab
 
-`           COUNT z <= -38 l         `
+' Program file: "pigs3.rss"
 
-Likewise for a difference of -38.
+COUNT z >= 38 k
+' Determine how many of the trials produced a difference between resamples
 
-`           ADD k l m         `
+' \>= 38.
+COUNT z <= -38 l
+' Likewise for a difference of -38.
+ADD k l m
+' Add the two together.
+DIVIDE m 1000 mm
+' Convert to a proportion.
+PRINT mm
+' Print the result.
 
-Add the two together.
-
-`           DIVIDE m 1000 mm         `
-
-Convert to a proportion.
-
-`           PRINT mm         `
-
-Print the result.
-
-Note: The file "pigs3" on the Resampling Stats software disk contains
-this set of commands.
+' Note: The file "pigs3" on the Resampling Stats software disk contains
+' this set of commands.
+```
 
 **Example 18-2: Is There a Difference in Liquor Prices Between State-Run
 and Privately-Run Systems?** (Testing for Differences Between Means of
@@ -794,57 +778,39 @@ pairs of hypothetical resamples produced means that differed by as much
 as .82. We therefore conclude that the observed difference is unlikely
 to have occurred by chance.
 
-`           NUMBERS (6.9 7.6 7.3 7.6 6.8 7.2 8.0 5.5 5.8 7.3 8.2 6.9 6.8 5.7         `
 
-`           8.6) treat         `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           NUMBERS (6.4 6.7 5.4 8.2 5.3 6.6 5.8 5.7 6.2 7.1 7.0 6.9 5.6 4.2         `
+```matlab
 
-`           6.8) control         `
+' Program file: "testing_measured_02.rss"
 
-`           CONCAT treat control all         `
-
-Combine all birthweight observations in same vector
-
-`           REPEAT 1000         `
-
-Do 1000 simulations
-
-`           SAMPLE 15 all treat$         `
-
-Take a resample of 15 from all birth weights (the \$ indicates a
-resampling counterpart to a real sample)
-
-`           SAMPLE 15 all control$         `
-
-Take a second, similar resample
-
-`           MEAN treat$ mt         `
-
-Find the means of the two resamples
-
-`           MEAN control$ mc         `
-
-`           SUBTRACT mt mc dif         `
-
-Find the difference between the means of the two resamples
-
-`           SCORE dif z         `
-
-Keep score of the result
-
-`           END         `
-
-End the simulation experiment, go back and repeat
-
-`           HISTOGRAM z         `
-
-Produce a histogram of the resample differences
-
-`           COUNT z >= .82 k         `
-
-How often did resample differences exceed the observed difference of
-.82?
+NUMBERS (6.9 7.6 7.3 7.6 6.8 7.2 8.0 5.5 5.8 7.3 8.2 6.9 6.8 5.7 8.6) treat
+NUMBERS (6.4 6.7 5.4 8.2 5.3 6.6 5.8 5.7 6.2 7.1 7.0 6.9 5.6 4.2 6.8) control
+CONCAT treat control all
+' Combine all birthweight observations in same vector
+REPEAT 1000
+    ' Do 1000 simulations
+    SAMPLE 15 all treat$
+    ' Take a resample of 15 from all birth weights (the \$ indicates a
+    ' resampling counterpart to a real sample)
+    SAMPLE 15 all control$
+    ' Take a second, similar resample
+    MEAN treat$ mt
+    ' Find the means of the two resamples
+    MEAN control$ mc
+    SUBTRACT mt mc dif
+    ' Find the difference between the means of the two resamples
+    SCORE dif z
+    ' Keep score of the result
+END
+' End the simulation experiment, go back and repeat
+HISTOGRAM z
+' Produce a histogram of the resample differences
+COUNT z >= 0.82 k
+' How often did resample differences exceed the observed difference of
+' .82?
+```
 
 ![](images/22-Chap-18_006.png)
 
@@ -910,59 +876,42 @@ The following procedure will serve:
 
 The following program ("mice2smp") follows the above procedure:
 
-`           NUMBERS (94 38 23 197 99 16 141) treatmt         `
 
-treatment group
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           NUMBERS (52 10 40 104 51 27 146 30 46) control         `
+```matlab
 
-control group
+' Program file: "testing_measured_03.rss"
 
-`           CONCAT treatmt control u         `
+NUMBERS (94 38 23 197 99 16 141) treatmt
+' treatment group
+NUMBERS (52 10 40 104 51 27 146 30 46) control
+' control group
+CONCAT treatmt control u
+' U is our universe (step 2 above)
+REPEAT 1000
+    ' step 5 above
+    SAMPLE 7 u treatmt$
+    ' step 3 above
+    SAMPLE 9 u control$
+    ' step 3
+    MEAN treatmt$ tmean
+    ' step 4
+    MEAN control$ cmean
+    ' step 4
+    SUBTRACT tmean cmean diff
+    ' step 4
+    SCORE diff scrboard
+    ' step 4
+END
+' step 5
+HISTOGRAM scrboard
+COUNT scrboard >=30.63 k
+' step 6
+DIVIDE k 1000 prob
+PRINT prob
+```
 
-U is our universe (step 2 above)
-
-`           REPEAT 1000         `
-
-step 5 above
-
-`           SAMPLE 7 u treatmt$         `
-
-step 3 above
-
-`           SAMPLE 9 u control$         `
-
-step 3
-
-`           MEAN treatmt$ tmean         `
-
-step 4
-
-`           MEAN control$ cmean         `
-
-step 4
-
-`           SUBTRACT tmean cmean diff         `
-
-step 4
-
-`           SCORE diff scrboard         `
-
-step 4
-
-`           END         `
-
-step 5
-
-`           HISTOGRAM scrboard         `
-
-`           COUNT scrboard >=30.63 k         `
-
-step 6
-
-`           DIVIDE k 1000 prob    `
-
-`           PRINT prob         `
 
 ![](images/22-Chap-18_007.png)
 
@@ -1007,61 +956,43 @@ observed difference of 30.63.
 
 Here is the RESAMPLING STATS program:
 
-`           NUMBERS (94 38 23 197 99 16 141) treatmt         `
 
-treatment group
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           NUMBERS (52 10 40 104 51 27 146 30 46) control         `
+```matlab
 
-control group
+' Program file: "testing_measured_04.rss"
 
-`           CONCAT treatmt control u         `
+NUMBERS (94 38 23 197 99 16 141) treatmt
+' treatment group
+NUMBERS (52 10 40 104 51 27 146 30 46) control
+' control group
+CONCAT treatmt control u
+' U is our universe (step 2 above)
+REPEAT 1000
+    ' step 5 above
+    SHUFFLE u ushuf
+    TAKE ushuf 1,7 treatmt$
+    ' step 3 above
+    TAKE ushuf 8,16 control$
+    ' step 3
+    MEAN treatmt$ tmean
+    ' step 4
+    MEAN control$ cmean
+    ' step 4
+    SUBTRACT tmean cmean diff
+    ' step 4
+    SCORE diff scrboard
+    ' step 4
+END
+' step 5
+HISTOGRAM scrboard
+COUNT scrboard >=30.63 k
+' step 6
+DIVIDE k 1000 prob
+PRINT prob
+```
 
-U is our universe (step 2 above)
-
-`           REPEAT 1000         `
-
-step 5 above
-
-`           SHUFFLE u ushuf         `
-
-`           TAKE ushuf 1,7 treatmt$         `
-
-step 3 above
-
-`           TAKE ushuf 8,16 control$         `
-
-step 3
-
-`           MEAN treatmt$ tmean         `
-
-step 4
-
-`           MEAN control$ cmean         `
-
-step 4
-
-`           SUBTRACT tmean cmean diff         `
-
-step 4
-
-`           SCORE diff scrboard         `
-
-step 4
-
-`           END         `
-
-step 5
-
-`           HISTOGRAM scrboard         `
-
-`           COUNT scrboard >=30.63 k         `
-
-step 6
-
-`           DIVIDE k 1000 prob     `
-
-`           PRINT prob         `
 
 ![](images/22-Chap-18_008.png)
 
@@ -1228,107 +1159,67 @@ Last, we examine how often the simulated-trials data produce differences
 among the groups as large as (or larger than) the actually observed
 data — 5096.
 
-`           NUMBERS (34 29 26 32 35 38 31 34 30 29 32 31) a         `
 
-`           NUMBERS (26 24 28 29 30 29 32 26 31 29 32 28) b         `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           NUMBERS (30 30 32 31 29 27 25 30 31 32 34 33) c         `
+```matlab
 
-`           NUMBERS (32 25 31 26 32 27 28 29 29 28 23 25) d         `
+' Program file: "pigs4.rss"
 
-(Record the data for the 4 foods)
+NUMBERS (34 29 26 32 35 38 31 34 30 29 32 31) a
+NUMBERS (26 24 28 29 30 29 32 26 31 29 32 28) b
+NUMBERS (30 30 32 31 29 27 25 30 31 32 34 33) c
+NUMBERS (32 25 31 26 32 27 28 29 29 28 23 25) d
+' (Record the data for the 4 foods)
+CONCAT a b c d g
+' Combine the four vectors into g
+REPEAT 1000
+    ' Do 1000 trials
+    SHUFFLE g h
+    ' Shuffle all the weight gains.
+    SAMPLE 12 h p
+    ' Take 4 random samples, with replacement.
+    SAMPLE 12 h q
+    SAMPLE 12 h r
+    SAMPLE 12 h s
+    SUM p i
+    ' Sum the weight gains for the 4 resamples.
+    SUM q j
+    SUM r k
+    SUM s l
+    SUBTRACT i j ij
+    ' Find the differences between all the possible pairs of resamples.
+    SUBTRACT i k ik
+    SUBTRACT i l il
+    SUBTRACT j k jk
+    SUBTRACT j l jl
+    SUBTRACT k l kl
+    MULTIPLY ij ij ijsq
+    ' Find the squared differences.
+    MULTIPLY ik ik iksq
+    MULTIPLY il il ilsq
+    MULTIPLY jk jk jksq
+    MULTIPLY jl jl jlsq
+    MULTIPLY kl kl klsq
+    ADD ijsq iksq ilsq jksq jlsq klsq total
+    ' Add them together.
+    SCORE total z
+    ' Keep track of the total for each trial.
+END
+' End one trial, go back and repeat until 1000 trials are complete.
+HISTOGRAM z
+' Produce a histogram of the trial results.
+COUNT z >= 5096 k
+' Find out how many trials produced differences among groups as great as
+' or greater than those observed.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the result.
 
-`           CONCAT a b c d g         `
-
-Combine the four vectors into g
-
-`           REPEAT 1000         `
-
-Do 1000 trials
-
-`           SHUFFLE g h         `
-
-Shuffle all the weight gains.
-
-`           SAMPLE 12 h p         `
-
-Take 4 random samples, with replacement.
-
-`           SAMPLE 12 h q         `
-
-`           SAMPLE 12 h r    `
-
-`           SAMPLE 12 h s         `
-
-`           SUM p i         `
-
-Sum the weight gains for the 4 resamples.
-
-`           SUM q j         `
-
-`           SUM r k     `
-
-`           SUM s l         `
-
-`           SUBTRACT i j ij         `
-
-Find the differences between all the possible pairs of resamples.
-
-`           SUBTRACT i k ik         `
-
-`           SUBTRACT i l il      `
-
-`           SUBTRACT j k jk       `
-
-`           SUBTRACT j l jl        `
-
-`           SUBTRACT k l kl         `
-
-`           MULTIPLY ij ij ijsq         `
-
-Find the squared differences.
-
-`           MULTIPLY ik ik iksq         `
-
-`           MULTIPLY il il ilsq    `
-
-`           MULTIPLY jk jk jksq     `
-
-`           MULTIPLY jl jl jlsq      `
-
-`           MULTIPLY kl kl klsq         `
-
-`           ADD ijsq iksq ilsq jksq jlsq klsq total         `
-
-Add them together.
-
-`           SCORE total z         `
-
-Keep track of the total for each trial.
-
-`           END         `
-
-End one trial, go back and repeat until 1000 trials are complete.
-
-`           HISTOGRAM z         `
-
-Produce a histogram of the trial results.
-
-`           COUNT z >= 5096 k         `
-
-Find out how many trials produced differences among groups as great as
-or greater than those observed.
-
-`           DIVIDE k 1000 kk         `
-
-Convert to a proportion.
-
-`           PRINT kk         `
-
-Print the result.
-
-Note: The file "pigs4" on the Resampling Stats software disk contains
-this set of commands.
+' Note: The file "pigs4" on the Resampling Stats software disk contains
+' this set of commands.
+```
 
 **PIGS4: Differences Among Four Pig Rations**
 

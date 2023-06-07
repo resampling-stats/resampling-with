@@ -1,0 +1,23 @@
+'"confidence_2_03" from "confidence_2.Rmd" starting at line 880
+
+URN 10#1 125#0 men
+' A bucket (called "men") with ten "1s" (infarctions) and 125 "0s" (no
+' infarction)
+REPEAT 1000
+    ' Do 1000 trials
+    SAMPLE 135 men a
+    ' Sample (with replacement) 135 numbers from the bucket, put them in a
+    COUNT a =1 b
+    ' Count the infarctions
+    DIVIDE b 135 c
+    ' Express as a proportion
+    SCORE c z
+    ' Keep score of the result
+END
+' End the trial, go back and repeat
+HISTOGRAM z
+' Produce a histogram of all trial results
+PERCENTILE z (2.5 97.5) k
+' Determine the 2.5th and 97.5th percentiles of all trial results; these
+' points enclose 95 percent of the results
+PRINT k

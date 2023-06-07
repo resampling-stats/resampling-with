@@ -1,0 +1,30 @@
+'"testing_measured_04" from "testing_measured.Rmd" starting at line 1009
+
+NUMBERS (94 38 23 197 99 16 141) treatmt
+' treatment group
+NUMBERS (52 10 40 104 51 27 146 30 46) control
+' control group
+CONCAT treatmt control u
+' U is our universe (step 2 above)
+REPEAT 1000
+    ' step 5 above
+    SHUFFLE u ushuf
+    TAKE ushuf 1,7 treatmt$
+    ' step 3 above
+    TAKE ushuf 8,16 control$
+    ' step 3
+    MEAN treatmt$ tmean
+    ' step 4
+    MEAN control$ cmean
+    ' step 4
+    SUBTRACT tmean cmean diff
+    ' step 4
+    SCORE diff scrboard
+    ' step 4
+END
+' step 5
+HISTOGRAM scrboard
+COUNT scrboard >=30.63 k
+' step 6
+DIVIDE k 1000 prob
+PRINT prob

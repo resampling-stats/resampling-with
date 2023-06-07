@@ -1,0 +1,55 @@
+'"pigs4" from "testing_measured.Rmd" starting at line 1230
+
+NUMBERS (34 29 26 32 35 38 31 34 30 29 32 31) a
+NUMBERS (26 24 28 29 30 29 32 26 31 29 32 28) b
+NUMBERS (30 30 32 31 29 27 25 30 31 32 34 33) c
+NUMBERS (32 25 31 26 32 27 28 29 29 28 23 25) d
+' (Record the data for the 4 foods)
+CONCAT a b c d g
+' Combine the four vectors into g
+REPEAT 1000
+    ' Do 1000 trials
+    SHUFFLE g h
+    ' Shuffle all the weight gains.
+    SAMPLE 12 h p
+    ' Take 4 random samples, with replacement.
+    SAMPLE 12 h q
+    SAMPLE 12 h r
+    SAMPLE 12 h s
+    SUM p i
+    ' Sum the weight gains for the 4 resamples.
+    SUM q j
+    SUM r k
+    SUM s l
+    SUBTRACT i j ij
+    ' Find the differences between all the possible pairs of resamples.
+    SUBTRACT i k ik
+    SUBTRACT i l il
+    SUBTRACT j k jk
+    SUBTRACT j l jl
+    SUBTRACT k l kl
+    MULTIPLY ij ij ijsq
+    ' Find the squared differences.
+    MULTIPLY ik ik iksq
+    MULTIPLY il il ilsq
+    MULTIPLY jk jk jksq
+    MULTIPLY jl jl jlsq
+    MULTIPLY kl kl klsq
+    ADD ijsq iksq ilsq jksq jlsq klsq total
+    ' Add them together.
+    SCORE total z
+    ' Keep track of the total for each trial.
+END
+' End one trial, go back and repeat until 1000 trials are complete.
+HISTOGRAM z
+' Produce a histogram of the trial results.
+COUNT z >= 5096 k
+' Find out how many trials produced differences among groups as great as
+' or greater than those observed.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the result.
+
+' Note: The file "pigs4" on the Resampling Stats software disk contains
+' this set of commands.

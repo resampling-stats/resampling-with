@@ -1,0 +1,27 @@
+'"testing_measured_00" from "testing_measured.Rmd" starting at line 468
+
+NUMBERS (31 34 29 26 32 35 38 34 31 29 32 31) a
+' Record group a's weight gains.
+NUMBERS (26 24 28 29 30 29 31 29 32 26 28 32) b
+' Record group b's weight gains.
+CONCAT a b c
+' Combine a and b together in one long vector.
+REPEAT 1000
+    ' Do 1000 experiments.
+    SAMPLE 12 c d
+    ' Take a "resample" of 12 with replacement from c and put it in d.
+    SAMPLE 12 c e
+    ' Take another "resample."
+    SUM d dd
+    ' Sum the first "resample."
+    SUM e ee
+    ' Sum the second "resample."
+    SUBTRACT dd ee f
+    ' Calculate the difference between the two resamples.
+    SCORE f z
+    ' Keep track of each trial result.
+END
+' End one experiment, go back and repeat until all trials are complete,
+' then proceed.
+HISTOGRAM z
+' Produce a histogram of trial results.

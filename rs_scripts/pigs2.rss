@@ -1,0 +1,26 @@
+'"pigs2" from "testing_counts_2.Rmd" starting at line 775
+
+REPEAT 1000
+    ' Do 1000 trials
+    GENERATE 12 1,2 a
+    ' Generate randomly 12 "1"s and "2"s, put them in a. This represents 12
+    ' "pairings" where "1" = ration a "wins," "2" = ration b = "wins."
+    COUNT a =1 b
+    ' Count the number of "pairings" where ration a won, put the result in b.
+    SCORE b z
+    ' Keep track of the result in z
+END
+' End the trial, go back and repeat until all 100 trials are complete.
+COUNT z >= 9 j
+' Determine how often we got 9 or more "wins" for ration a.
+COUNT z <= 3 k
+' Determine how often we got 3 or fewer "wins" for ration a.
+ADD j k m
+' Add the two together
+DIVIDE m 100 mm
+' Convert to a proportion
+PRINT mm
+' Print the result.
+
+' Note: The file "pigs2" on the Resampling Stats software disk contains
+' this set of commands.

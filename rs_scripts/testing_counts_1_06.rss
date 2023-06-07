@@ -1,0 +1,39 @@
+'"testing_counts_1_06" from "testing_counts_1.Rmd" starting at line 640
+
+REPEAT 1000
+    GENERATE 1500 1,2 a
+    ' Generate 1500 "1's" and "2's," selected randomly, letting "1" = Bush
+    COUNT a =1 b
+    ' Count Bush votes
+    SCORE b z
+    ' Keep score
+END HISTOGRAM z
+COUNT z >=840 k
+' How often \>= 840 Bush votes in random draw?
+DIVIDE k 1000 kk
+' As a proportion of simulated resamples
+PRINT kk
+' The result was kk = 0. This implies shows a probability so small as
+' not to occur once in a thousand times that Bush's "victory" in the
+' sample would occur by chance if he really were behind. The results
+' of the various runs may be seen in the histogram and printout
+' following.
+MAXSIZE a 1500
+' Enlarge vector a's capacity to 1500 (default is 1000 in some
+' versions of Resampling Stats)
+REPEAT 1000
+    GENERATE 1500 1,2 a
+    ' Generate 50 "1's" and "2's," selected randomly, letting "1" = Bush
+    COUNT a =1 b
+    ' Count Bush votes
+    DIVIDE b 1500 c
+    ' Find proportion pro-Bush
+    SCORE b z
+    ' Keep score
+END HISTOGRAM z
+COUNT z >=.56 k
+' How often \>= .56 Bush votes in random draw?
+DIVIDE k 1000 kk
+' As a proportion of simulated resamples
+PRINT kk
+' **Samples of 1500 Voters**

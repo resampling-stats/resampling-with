@@ -1,0 +1,28 @@
+'"correlation_causation_03" from "correlation_causation.Rmd" starting at line 912
+
+NUMBERS (97 94 93 90 87 86 86 85 81 76) a
+' Record athletic scores, highest to lowest.
+NUMBERS (114 120 107 113 118 101 109 110 100 99) b
+' Record corresponding IQ scores for those students.
+MULTIPLY a b c
+' Multiply the two sets of scores together.
+SUM c d
+' Sum the results — the "observed value."
+REPEAT 1000
+    ' Do 1000 experiments.
+    SHUFFLE a e
+    ' Shuffle the athletic scores so we can pair them against IQ scores.
+    MULTIPLY e b f
+    ' Multiply the shuffled athletic scores by the I.Q. scores. (Note that we
+    ' could shuffle the I.Q. scores too but it would not achieve any greater
+    ' randomization.)
+    SUM f j
+    ' Sum the randomized multiplications.
+    SUBTRACT d j k
+    ' Subtract the sum from the sum of the "observed" multiplication.
+    SCORE k z
+    ' Keep track of the result in z.
+END
+' End one trial, go back and repeat until 1000 trials are complete.
+HISTOGRAM z
+' Obtain a histogram of the trial results.

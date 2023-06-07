@@ -1,0 +1,15 @@
+'"fruitfly" from "testing_counts_1.Rmd" starting at line 250
+
+COUNT z >=14 j
+' Determine the number of trials in which we had 14 or more males.
+COUNT z <=6 k
+' Determine the number of trials in which we had 6 or fewer males.
+ADD j k m
+' Add the two results together.
+DIVIDE m 1000 mm
+' Convert to a proportion.
+PRINT mm
+' Print the results.
+
+' Note: The file "fruitfly" on the Resampling Stats software disk contains
+' this set of commands.
