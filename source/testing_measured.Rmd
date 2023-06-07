@@ -960,7 +960,9 @@ step 5
 
 step 6
 
-`           DIVIDE k 1000 prob PRINT prob         `
+`           DIVIDE k 1000 prob    `
+
+`           PRINT prob         `
 
 ![](images/22-Chap-18_007.png)
 
@@ -1057,7 +1059,9 @@ step 5
 
 step 6
 
-`           DIVIDE k 1000 prob PRINT prob         `
+`           DIVIDE k 1000 prob     `
+
+`           PRINT prob         `
 
 ![](images/22-Chap-18_008.png)
 
@@ -1252,7 +1256,9 @@ Take 4 random samples, with replacement.
 
 `           SAMPLE 12 h q         `
 
-`           SAMPLE 12 h r SAMPLE 12 h s         `
+`           SAMPLE 12 h r    `
+
+`           SAMPLE 12 h s         `
 
 `           SUM p i         `
 
@@ -1260,7 +1266,9 @@ Sum the weight gains for the 4 resamples.
 
 `           SUM q j         `
 
-`           SUM r k SUM s l         `
+`           SUM r k     `
+
+`           SUM s l         `
 
 `           SUBTRACT i j ij         `
 
@@ -1268,7 +1276,13 @@ Find the differences between all the possible pairs of resamples.
 
 `           SUBTRACT i k ik         `
 
-`           SUBTRACT i l il SUBTRACT j k jk SUBTRACT j l jl SUBTRACT k l kl         `
+`           SUBTRACT i l il      `
+
+`           SUBTRACT j k jk       `
+
+`           SUBTRACT j l jl        `
+
+`           SUBTRACT k l kl         `
 
 `           MULTIPLY ij ij ijsq         `
 
@@ -1276,7 +1290,13 @@ Find the squared differences.
 
 `           MULTIPLY ik ik iksq         `
 
-`           MULTIPLY il il ilsq MULTIPLY jk jk jksq MULTIPLY jl jl jlsq MULTIPLY kl kl klsq         `
+`           MULTIPLY il il ilsq    `
+
+`           MULTIPLY jk jk jksq     `
+
+`           MULTIPLY jl jl jlsq      `
+
+`           MULTIPLY kl kl klsq         `
 
 `           ADD ijsq iksq ilsq jksq jlsq klsq total         `
 

@@ -1474,7 +1474,9 @@ In RESAMPLING STATS, we can do this experiment 1000 times.
 
 `           REPEAT 1000         `
 
-`           URN 3#0 1#1 a SAMPLE 100 a b         `
+`           URN 3#0 1#1 a        `
+
+`           SAMPLE 100 a b         `
 
 Sample 100 "at-bats" from a
 
@@ -1484,7 +1486,9 @@ How many runs (of any length \>=1) are there in the 100 at-bats?
 
 `           SCORE c z         `
 
-`           END HISTOGRAM z         `
+`           END           `
+
+`           HISTOGRAM z         `
 
 Note: The file "sluggo" on the Resampling Stats software disk contains
 this set of commands.

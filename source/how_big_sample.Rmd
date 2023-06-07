@@ -455,13 +455,19 @@ Here is a program for a sample size of 12.
 
 `           REPEAT 1000         `
 
-`           SAMPLE sampsize a b MEAN b c         `
+`           SAMPLE sampsize a b    `
+
+`           MEAN b c         `
 
 `           SCORE c z         `
 
-`           END HISTOGRAM z         `
+`           END     `
 
-`           PERCENTILE z (5 95) k PRINT k         `
+`           HISTOGRAM z         `
+
+`           PERCENTILE z (5 95) k      `
+
+`           PRINT k         `
 
 **Bin Center Freq Pct Cum Pct**
 
@@ -803,11 +809,19 @@ Here is the same work done with more runs on the computer:
 
 `           SAMPLE 12 a aa         `
 
-`           MEAN aa aaa SAMPLE 12 b bb         `
+`           MEAN aa aaa     `
 
-`           MEAN bb bbb SUBTRACT aaa bbb c SCORE c z         `
+`           SAMPLE 12 b bb         `
 
-`           END HISTOGRAM z         `
+`           MEAN bb bbb    `
+
+`           SUBTRACT aaa bbb c    `
+
+`           SCORE c z         `
+
+`           END   `
+
+`           HISTOGRAM z         `
 
 **Difference in mean weights between resamples**
 
@@ -869,7 +883,9 @@ Find the difference
 How often did the difference exceed the cutoff point for our
 significance test of 3 pounds?
 
-`           DIVIDE k 1000 kk PRINT kk         `
+`           DIVIDE k 1000 kk    `
+
+`           PRINT kk         `
 
 If kk is close to zero, we know that the sample size is large enough
 that samples drawn from the universes we have hypothesized will not

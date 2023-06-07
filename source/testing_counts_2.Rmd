@@ -334,7 +334,9 @@ Count the first group's successes
 
 Same for second, third & fourth groups
 
-`           COUNT c <=55 cc COUNT d <=55 dd         `
+`           COUNT c <=55 cc   `
+
+`           COUNT d <=55 dd         `
 
 `           END         `
 
@@ -342,7 +344,15 @@ Same for second, third & fourth groups
 
 Now find all the pairwise differences in successes among the groups
 
-`           SUBTRACT aa cc ac SUBTRACT aa dd ad SUBTRACT bb cc bc SUBTRACT bb dd bd SUBTRACT cc dd cd         `
+`           SUBTRACT aa cc ac    `
+
+`           SUBTRACT aa dd ad     `
+
+`           SUBTRACT bb cc bc      `
+
+`           SUBTRACT bb dd bd       `
+
+`           SUBTRACT cc dd cd         `
 
 `           CONCAT ab ac ad bc bd cd e         `
 
@@ -605,14 +615,18 @@ Find Bush's margin over 2nd
 
 `           SCORE d z         `
 
-`           END HISTOGRAM z         `
+`           END     `
+
+`           HISTOGRAM z         `
 
 `           COUNT z >=46 m         `
 
 Compare to the observed margin in the sample of 750 corresponding to a 6
 percent margin by Bush over 2nd place finisher (rounded)
 
-`           DIVIDE m 1000 mm PRINT mm         `
+`           DIVIDE m 1000 mm     `
+
+`           PRINT mm         `
 
 **Samples of 750 Voters**
 
@@ -986,11 +1000,19 @@ Here's a RESAMPLING STATS program ("merge.sta"):
 
 `           GENERATE 33 (1 2 3) ranks         `
 
-`           MEAN ranks ranksum SCORE ranksum z         `
+`           MEAN ranks ranksum           `
 
-`           END HISTOGRAM z         `
+`           SCORE ranksum z         `
 
-`           COUNT z <=1.45 k DIVIDE k 1000 kk PRINT kk         `
+`           END            `
+
+`           HISTOGRAM z         `
+
+`           COUNT z <=1.45 k       `
+
+`           DIVIDE k 1000 kk        `
+
+`           PRINT kk         `
 
 ![](images/21-Chap-17_002.png)
 
@@ -1154,7 +1176,7 @@ Step 4
 
 `           MEAN t2 tt2         `
 
-MEAN t3 tt3
+`           MEAN t3 tt3         `
 
 `           CLEAR t1         `
 
@@ -1162,7 +1184,9 @@ Clear the vectors where we've stored the ranks for this trial (must do
 this whenever we have a SCORE statement that's part of a "nested" repeat
 loop)
 
-`           CLEAR t2 CLEAR t3         `
+`           CLEAR t2    `
+
+`           CLEAR t3         `
 
 `           CONCAT tt1 tt2 tt3 b         `
 
@@ -1184,7 +1208,9 @@ Step 6
 
 Step 7
 
-`           DIVIDE k 1000 kk PRINT kk         `
+`           DIVIDE k 1000 kk          `
+
+`           PRINT kk         `
 
 Interpretation: 1000 random shufflings of 33 ranks, apportioned to three
 "treatments," never produced for the best treatment in the three an

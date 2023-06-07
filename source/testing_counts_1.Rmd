@@ -409,11 +409,19 @@ resampling solution in RESAMPLING STATS:
 
 `           GENERATE 10 1,206 a         `
 
-`           COUNT a BETWEEN 101 206 b SCORE b z         `
+`           COUNT a BETWEEN 101 206 b    `
 
-`           END HISTOGRAM z COUNT z >=9 k         `
+`           SCORE b z         `
 
-`           DIVIDE k 15000 kk PRINT kk         `
+`           END       `
+
+`           HISTOGRAM z          `
+
+`           COUNT z >=9 k         `
+
+`           DIVIDE k 15000 kk      `
+
+`           PRINT kk         `
 
 **10 Calves**
 
