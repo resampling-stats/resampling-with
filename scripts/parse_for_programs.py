@@ -129,7 +129,9 @@ class NbParser:
             n_padding = (stop - start - 1)
             code_contents = '\n'.join(
                 ['',
-                '```{resampling-stats}',
+                '<!--- Resampling stats file; Matlab syntax closeish -->',
+                '',
+                '```matlab',
                 '',
                 f'\' Program file: "{name}.rss"',
                 '',
