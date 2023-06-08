@@ -274,27 +274,41 @@ P(cars that are red and that are broken) / P(red cars)
 
 Here's one way of writing the probability that a car is broken:
 
-$$ \mathrm{ P(car is broken) } $$
+$$
+P(\text{car is broken})
+$$
 
 We can shorten "car is broken" to B, and write the same thing as:
 
-$$ \mathrm{ P(B) } $$
+$$
+P(B)
+$$
 
 Similarly, we could write the probability that a car is red as:
 
-$$ \mathrm{ P(R) } $$
+$$
+P(R)
+$$
 
-We might also want to express the conditional probability, as in the probability that the car is broken, given that we already know that the car is red:
+We might also want to express the *conditional probability*, as in the
+probability that the car is broken, *given that* we already know that the car
+is red:
 
-$$ \mathrm{ P(car is broken GIVEN THAT car is red)  } $$
+$$
+P(\text{car is broken GIVEN THAT car is red})
+$$
 
 That is getting getting pretty verbose, so we will shorten this as we did above:
 
-$$ \mathrm{ P(B GIVEN THAT R) } $$
+$$
+P(B \text{ GIVEN THAT } R)
+$$
 
 To make things even more compact, we write "GIVEN THAT" as a vertical bar `|` — so the whole thing becomes:
 
-$$ \mathrm{ P(B | R) } $$
+$$
+P(B | R)
+$$
 
 We read this as "the probability that the car is broken given that the car is red".
 Such a probability is known as a *conditional probability*.  We discuss these in more details in Ch X <!-- **TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY** -->.
@@ -302,14 +316,27 @@ Such a probability is known as a *conditional probability*.  We discuss these in
 In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
 
 $$
-P(\text{car_broken | mechanic_approved}) = P(\text{car_broken and mechanic_approved}) / P(\text{mechanic_approved})
+P(\text{car broken | mechanic approved})
+= P(\text{car broken and mechanic approved}) / P(\text{mechanic approved})
 $$
 
-More generally, conditional probabilities are expressed as:
+We have already used $B$ to mean "broken" (above), so let us use $A$ to mean "mechanic approved".  Then we can write the statement above in a more compact way:
+
+$$
+P(B | A) = P(B \text{ and } A) / P(A)
+$$
+
+As we use $|$ to mean "GIVEN THAT", we can also use the $\cap$ symbol to mean "and":
+
+$$
+P(B | A) = P(B \cap A) / P(A)
+$$
+
+To put this generally, conditional probabilities for two events $X$ and $Y$ can be written as:
 
 $P(X | Y) = P(X \cap Y) / P(Y)$
 
-Where $\cap$ means "AND", i.e. that both happen simultaneously.
+Where (again) $\cap$ means "and", i.e. that both happen simultaneously.
 
 **Example: conditional probability**
 
@@ -376,29 +403,37 @@ This gives around 0.006 or 0.6%.
 
 Now that we have a rough indication of what the answer should be, let's try and calculate it directly, based on the tree of informatiom shown earlier.
 
-We use `P+`/`P-` to indicate COVID positive or negative, and `T+`/`T-` to indicate positive or negative test results.
+We use $P^+$/$P^-$ to indicate COVID positive or negative, and
+$P(T^+)$/$P(T^-)$ to indicate positive or negative test results.
 
 You would like to know the probability of having COVID *given that* your test was negative.  Using the conditional probability relationship from above, we can write:
 
-$$ \mathrm{ P(C+ | T-) = P(C+ \cap T-) / P(T-) } $$
+$$
+P(C^+ | T^-) = P(C^+ \cap T^-) / P(T^-)
+$$
 
-We see from the tree diagram that $P(C+ \cap T-) = P(T- | C+) * P(C+) = .4 * .015 = 0.006$. <!-- **TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES** -->
+We see from the tree diagram that $P(C^+ \cap T^-) = P(T^- | C^+) * P(C^+) = .4 * .015 = 0.006$. <!-- **TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES** -->
 
-We observe that $P(T-) = P(T- \cap C-) + P(T- \cap C+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
+We observe that $P(T^-) = P(T^- \cap C^-) + P(T^- \cap C^+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
 
-$P(T- \cap C-) = P(T- | C-) * P(C-)$
+$P(T^- \cap C^-) = P(T^- | C^-) * P(C^-)$
 
 and
 
-$P(T- \cap C+) = P(T- | C+) * P(C+)$.
+$P(T^- \cap C^+) = P(T^- | C^+) * P(C^+)$.
 
 We can now calculate
 
-$ P(T-) = P(T- | C-) * P(C-) + P(T- | C+) * P(C+) = .995 * .985 + .4 * .015 = 0.986$
+$$
+\begin{align*}
+P(T^-) = P(T^- | C^-) * P(C^-) + P(T^- | C^+) * P(C^+) = \\
+.995 * .985 + .4 * .015 = 0.986
+\end{align*}
+$$
 
 The answer, then, is:
 
-$P(C+ | T-) = 0.006 / 0.986 = 0.0061 or 0.61%$.
+$P(C^+ | T^-) = 0.006 / 0.986 = 0.0061$ or 0.61%.
 
 This matches very closely our simulation result, so we have some confidence that we have done the calculation correctly.
 
