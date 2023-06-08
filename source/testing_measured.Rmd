@@ -385,13 +385,34 @@ percent.) On the average, the test described in this section yields a
 significance level as high as such mathematical-probability tests as the
 *t* test — that is, it is just as efficient — though the tests
 described in Examples 15-6 and 17-1 are likely to be less efficient
-because they convert measured data to ranked or classified data. \[1\]
+because they convert measured data to ranked or classified data.
+[^non-parametric]
+
+[^non-parametric]: Technical Note: The test described in this section is
+    nonparametric and therefore makes no assumptions about the shapes of the
+    distributions, which is good because we would be on soft ground if we
+    assumed normality in the pig-food case, given the sample sizes. This test
+    does not, however, throw away information as do the rank and median tests
+    illustrated earlier. And indeed, this test proves to be more powerful than
+    the other nonparametric tests. After developing this test, I discovered
+    that its general logic follows the tradition of the "randomization" tests,
+    based on an idea by R.A. Fisher [-@fisher1935design; -@fisher1960design,
+    chapter III, section 21] and worked out for the two-sample cases by E.J.G.
+    Pitman [-@pitman1937significance]. But the only earlier mentions of
+    sampling from the universe of possibilities are in M. Dwass
+    [-@dwass1957modified] and J.H. Chung and D. Fraser
+    [-@chung1958randomization]. I am grateful to J. Pratt for bringing the
+    latter literature to my attention.
 
 It is *not* appropriate to say that these data give us an estimate of
 the probability that the foods "do not come" from the same universe.
 This is because we can *never* state a probability that a sample came
 from a given universe unless the alternatives are fully specified in
-advance. ^1^
+advance.[^p-given]
+
+[^p-given]: This short comment is the tip of the iceberg of an argument
+    that has been going on for 200 years among statisticians. It needs much
+    more discussion to be understandable or persuasive.
 
 This example also illustrates how the *dispersion within samples*
 affects the difficulty of finding out whether the samples differ from
@@ -419,12 +440,6 @@ observations), or some other device.)
 <!---
 Lots about dispersion here.  Needs better introduction?
 -->
-
-
-1 This short comment is the tip of the iceberg of an argument that has
-been going on for 200 years among statisticians. It needs much more
-discussion to be understandable or persuasive; for such discussion, see
-Simon (forthcoming).
 
 If you are performing your tests by hand rather than using a computer (a
 good exercise even nowadays when computers are so accessible), you might
@@ -565,7 +580,11 @@ changed radically since then.) These data were introduced in the context
 of a problem in probability in Chapter 7.
 
 These were the representative 1961 prices of a fifth of Seagram 7 Crown
-whiskey in the two sets of states:
+whiskey in the two sets of states:[^liquor-data]
+
+[^liquor-data]: The data are from *The Liquor Handbook* (1962, p. 68). Eight
+  states are omitted for various reasons. For more information, see Simon and
+  Simon [-@simon1996effects].
 
 16 monopoly states: \$4.65, \$4.55, \$4.11, \$4.15, \$4.20, \$4.55,
 \$3.80,
@@ -682,7 +701,10 @@ is a very small probability that two groups with mean prices as
 different as were observed would happen by chance if drawn from the
 universe of 42 observed prices. So we "reject the null hypothesis" and
 instead find persuasive the proposition that the type of liquor
-distribution system influences the prices that consumers pay.
+distribution system influences the prices that consumers pay.[^liquor-tests]
+
+[^liquor-tests]: Various tests indicate that the difference between the groups
+    of states was highly significant. See Simon and Simon [-@simon1996effects].
 
 As I shall discuss later, the logical framework of this resampling
 version of the permutation test differs greatly from the formulaic
@@ -1153,7 +1175,19 @@ sum of the six differences in the *observed* sample. The proportion of
 the resampling trials in which the observed sample sum is exceeded by
 the sum of the differences in the trials is the probability that the
 observed samples would differ as much as they do if they come from the
-same universe.\[4\]
+same universe.[^otherwise-sos]
+
+[^otherwise-sos]: Technical Note: Computing the sum of squared differences
+    renders this test superficially more similar to the analysis of variance
+    but will not alter the results. This test has not been discussed in the
+    statistical literature, to my knowledge, except perhaps for a faint
+    suggestion at the end of Chung and Fraser [-@chung1958randomization]. This
+    and the two-sample test can easily be performed with canned computer
+    programs as well as {{< var lang >}}. In addition to their advantages of
+    nonparametricity, they are equally efficient and vastly easier to teach
+    and to understand than the t-test and the analysis of variance. Therefore,
+    we believe that these tests should be "treatments of choice," as the
+    doctors say.
 
 One naturally wonders whether this latter test statistic is better than
 the range, as discussed above. It would seem obvious that using the
@@ -1339,42 +1373,6 @@ this set of commands.
 We find that our observed sum of squares — 5096 — was exceeded by
 randomly-drawn sums of squares in only 3 percent of our trials. We
 conclude that the four treatments are likely not all similar.
-
-## Endnotes
-
-1.  Technical Note: The test described in this section is nonparametric
-    and therefore makes no assumptions about the shapes of the
-    distributions, which is good because we would be on soft ground if
-    we assumed normality in the pig-food case, given the sample sizes.
-    This test does not, however, throw away information as do the rank
-    and median tests illustrated earlier. And indeed, this test proves
-    to be more powerful than the other nonparametric tests. After
-    developing this test, I discovered that its general logic follows
-    the tradition of the "randomization" tests, based on an idea by R.A.
-    Fisher (1935, 1951) and worked out for the two-sample cases by
-    E.J.G. Pitman (1937). But the only earlier mentions of sampling from
-    the universe of possibilities are in M. Dwass (1957) and J.H. Chung
-    and D. Fraser (1958). I am grateful to J. Pratt for bringing the
-    latter literature to my attention.
-
-2.  The data are from *The Liquor Handbook* (1962, p. 68). Eight states
-    are omitted for various reasons. For more information, see Simon and
-    Simon (1987).
-
-3.  Various tests indicate that the difference between the groups of
-    states is highly significant. See J.L. Simon (1966b).
-
-4.  Technical Note: Computing the sum of squared differences renders
-    this test superficially more similar to the analysis of variance but
-    will not alter the results. This test has not been discussed in the
-    statistical literature, to my knowledge, except perhaps for a faint
-    suggestion at the end of Chung and Fraser (1958). This and the
-    two-sample test can easily be performed with canned computer
-    programs as well as RESAMPLING STATS. In addition to their
-    advantages of nonparametricity, they are equally efficient and
-    vastly easier to teach and to understand than the t-test and the
-    analysis of variance. Therefore, I believe that these tests should
-    be "treatments of choice," as the doctors say.
 
 ## Exercises
 
