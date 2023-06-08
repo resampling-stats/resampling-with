@@ -105,17 +105,17 @@ for i in range(N):
     # Decide whether the car is faulty or working, with a probability of
     # 0.3 and 0.7 respectively
     car = np.random.choice(['faulty', 'working'], p=[0.3, 0.7])
-    
+
     if car == 'faulty':
         # What the mechanic says of a faulty car
         mechanic_says = np.random.choice(['approved', 'not approved'], p=[0.1, 0.9])
     else:
         # What the mechanic says of a working car
         mechanic_says = np.random.choice(['approved', 'not approved'], p=[0.7, 0.3])
-        
+
     if mechanic_says == 'approved':
         approved += 1
-    
+
         if car == 'faulty':
             approved_and_faulty += 1
 
@@ -301,7 +301,9 @@ Such a probability is known as a *conditional probability*.  We discuss these in
 
 In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
 
-$P(car_broken | mechanic_approved) = P(car_broken \& mechanic_approved) / P(mechanic_approved)$.
+$$
+P(\text{car_broken | mechanic_approved}) = P(\text{car_broken and mechanic_approved}) / P(\text{mechanic_approved})
+$$
 
 More generally, conditional probabilities are expressed as:
 
@@ -704,8 +706,24 @@ reasoning is subtle — a reason it has been the cause of controversy
 for more than two centuries. But it certainly is not easier to create a
 correct procedure using analytic tools (except in the cookbook sense of
 plug-and-pray). And the difficult mathematics that underlie the
-analytic method (see e.g. Box and Tiao, Appendix A1.1) make it almost impossible for the statistician to fully understand the procedure from beginning to end.
-If one is interested in insight, the simulation procedure might well be preferred.
+analytic method (see e.g. Box and Tiao, Appendix A1.1) make it almost
+impossible for the statistician to fully understand the procedure from
+beginning to end. If one is interested in insight, the simulation procedure
+might well be preferred.[^sequentially]
+
+[^sequentially]: We can use a similar procedure to illustrate an aspect of the
+    Bayesian procedure that Box and Tiao emphasize, its
+    sequentially-consistent character. First let us carry out the above
+    procedure but observe only three black balls in a row. The program to be
+    used is the same except for the insertion of "3" for "7" where "7"
+    appears. We then estimate the probability for BB, which turns out to be
+    about 1/5 instead of about 1/65. We then substitute for bucket A a bucket
+    A' with appropriate numbers of black Bb's and black BB's, to represent the
+    "updated" prior probability. We may then continue by substituting "4" for
+    "3" above (to attain a total of seven observed black balls), and find that
+    the probability is about what it was when we observed 7 black balls in
+    a single sample (1/65). This shows that the Bayesian procedure accumulates
+    information without "leakage" and with consistency.
 
 ## Problems based on normal and other distributions
 
@@ -883,7 +901,7 @@ Simulation has two valuable properties for Bayesian analysis:
 
 1. It can provide an effective way to handle problems whose
    analytic solution may be difficult or impossible.
-   
+
 2. Simulation can provide insight to problems that otherwise are
    difficult to understand fully, as is peculiarly the case with
    Bayesian analysis.
@@ -902,18 +920,3 @@ computation.
     of mathematics \[probability\] is the only one, I believe, in which
     good writers frequently get results entirely erroneous." (Huff,
     1959, frontispage)
-
-2.  We can use a similar procedure to illustrate an aspect of the
-    Bayesian procedure that Box and Tiao emphasize, its
-    sequentially-consistent character. First let us carry out the above
-    procedure but observe only three black balls in a row. The program
-    to be used is the same except for the insertion of "3" for "7" where
-    "7" appears. We then estimate the probability for BB, which turns
-    out to be about 1/5 instead of about 1/65. We then substitute for
-    bucket A a bucket A' with appropriate numbers of black Bb's and black
-    BB's, to represent the "updated" prior probability. We may then
-    continue by substituting "4" for "3" above (to attain a total of
-    seven observed black balls), and find that the probability is about
-    what it was when we observed 7 black balls in a single sample
-    (1/65). This shows that the Bayesian procedure accumulates
-    information without "leakage" and with consistency.
