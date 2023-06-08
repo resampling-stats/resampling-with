@@ -222,13 +222,13 @@ collections of data, as in Semmelweiss's data on the consistent
 differences in rates of maternal deaths from childbed fever in two
 clinics with different conditions (see Table 11-1), or the similarities
 in sex ratios from year to year in Graunt's data on London births (Table
-11-2), or the stark effect in John Snow's data on the numbers of cholera
-cases associated with two London water suppliers (Table 11-3), or the reduction in
-beriberi among Japanese sailors as a result of a change in diet (Table
-11-4). These data seem so overwhelmingly clear cut that our naive
-statistical sense makes the relationships seem deterministic, and the
-conclusions seems straightforward. (But the same statistical sense
-frequently misleads us when considering sports and stock market data.)
+11-2), or the stark effect in John Snow's data on the numbers of cholera cases
+associated with two London water suppliers (Table 11-3), or the reduction in
+beriberi among Japanese sailors as a result of a change in diet (Table 11-4).
+These data seem so overwhelmingly clear cut that our naive statistical sense
+makes the relationships seem deterministic, and the conclusions seems
+straightforward. (But the same statistical sense frequently misleads us when
+considering sports and stock market data.)
 
 Table 11-1
 
@@ -410,7 +410,12 @@ inference called "hypothesis testing": We apply statistical procedures
 to help us decide whether to treat the two classes of trees as the same
 or different. If we should consider them the same, our worries about the
 tree falling are greater than if we consider them different with respect
-to the chance of damage.
+to the chance of damage.[^same-different]
+
+[^same-different]: It is because hypothesis testing focuses on this most basic
+    of inferential processes — deciding "same" or "different" — that I believe
+    it to be a more basic technique than estimating confidence intervals,
+    which focus on the accuracy of estimates.
 
 Notice that statistical inference was not necessary for accurate
 prediction when I asked the kids about the likelihood of a live tree
@@ -431,11 +436,9 @@ is it that only one of 60 oaks would fall whereas 4 of 40 elms would
 fall? Again, notice the assumption that our tree is "representative" of
 the other trees about which we have information — that it is not
 systematically different from most of them, but rather that it is
-more-or-less average. Our tree cer-
-
-tainly was not chosen randomly from the set of trees we are considering.
-But for purposes of our analysis, we proceed *as if* it had been chosen
-randomly — because we deem it "representative."
+more-or-less average. Our tree certainly was not chosen randomly from the set
+of trees we are considering. But for purposes of our analysis, we proceed *as
+if* it had been chosen randomly — because we deem it "representative."
 
 This is the first of two roles that the concept of randomness plays in
 statistical thinking. Here is an example of the second use of the
@@ -456,25 +459,30 @@ of activities.
 As discussed earlier in this chapter, the data in some (probably most)
 scientific situations are so overwhelming that one can proceed without
 probabilistic inference. Historical examples include those shown above
-of Semmelweiss and puerperal fever, and John Snow and cholera. But where
-there was lack of overwhelming evidence, the causation of many diseases
-long remained unclear for lack of statistical procedures. This led to
-superstitious beliefs and counter-productive behavior, such as
-quarantines against plague often were. Some effective practices also
-arose despite the lack of sound theory, however — the waxed costumes of
-doctors, and the burning of mattresses, despite the wrong theory about
-the causation of plague; see Cipolla, 1981)
+of Semmelweiss and puerperal fever, and John Snow and cholera.[^overwhelming]
+But where there was lack of overwhelming evidence, the causation of many
+diseases long remained unclear for lack of statistical procedures. This led to
+superstitious beliefs and counter-productive behavior, such as quarantines
+against plague often were. Some effective practices also arose despite the
+lack of sound theory, however — the waxed costumes of doctors, and the burning
+of mattresses, despite the wrong theory about the causation of plague; see
+[@cipolla1981fighting].
+
+[^overwhelming]: A peculiar perverseness associated with the new knowledge of
+    statistical inference is that very strong findings, which require little
+    or no formal inference to demonstrate and which are so powerful that they
+    can be shown with a simple graph or table, are very hard to publish in
+    social science literature because they do not meet the tests of "rigor,"
+    and "elegance." Editors view them as detracting from the "technical level"
+    of their journals. A good many of the greatest discoveries of the past
+    would nowadays fall in this category of being difficult or impossible to
+    publish.
 
 So far I have spoken only of *predictability* and not of other elements
 of statistical knowledge such as *understanding* and *control* . This is
 simply because statistical *correlation* is the bed rock of most
 scientific understanding, and predictability. Later we will expand the
 discussion beyond predictability; it holds no sacred place here.
-
-1 It is because hypothesis testing focuses on this most basic of
-inferential processes — deciding "same" or "different" — that I believe
-it to be a more basic technique than estimating confidence intervals,
-which focus on the accuracy of estimates.
 
 ## Where statistical inference becomes crucial
 
@@ -505,7 +513,10 @@ explain this apparent fact (which is just a statistical artifact) rather
 than understanding that this is almost inevitable because Romsey is so
 much smaller than London. Because we have available to us the modern
 understanding of variability, we can now reach sound conclusions on
-these matters.
+these matters.[^hald-on-graunt]
+
+[^hald-on-graunt]: I (JLS) benefited from the discussion of this matter by
+Hald [-@hald1990history, pages 93ff].
 
 Summary statistics — such as the simple mean — are devices for reducing
 a large mass of data (inevitably confusing unless they are absolutely
@@ -552,7 +563,7 @@ just by chance? No one then could say, nor did anyone inquire,
 apparently.
 
 Here's another example of great scientists falling into error because of
-a too-primitive approach to data (Feller, 3rd ed, 1968, pp. 69-70):
+a too-primitive approach to data [@feller1968introduction, pp. 69-70]:
 Charles Darwin wanted to compare two sets of measured data, each
 containing 16 observations. At Darwin's request, Francis Galton compared
 the two sets of data by ranking each, and then comparing them pairwise.
@@ -581,21 +592,3 @@ and perhaps in all practical thinking and decision-making — are a)
 continuity (or non-randomness) and the extent to which it applies in
 given situation, and b) random sampling, and the extent to which we can
 assume that our observations are indeed chosen by a random process.
-
-## Endnotes
-
-1.  These are cases of David Hume's "constant conjunction."
-
-2.  I benefited from the discussion of this matter by Hald, 1990,
-
-    p\. 93ff.
-
-3.  A peculiar perverseness associated with the new knowledge of
-    statistical inference is that very strong findings, which require
-    little or no formal inference to demonstrate and which are so
-    powerful that they can be shown with a simple graph or table, are
-    very hard to publish in social science literature because they do
-    not meet the tests of "rigor," and "elegance." Editors view them as
-    detracting from the "technical level" of their journals. A good many
-    of the greatest discoveries of the past would nowadays fall in this
-    category of being difficult or impossible to publish.
