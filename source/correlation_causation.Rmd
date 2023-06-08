@@ -236,7 +236,10 @@ apart from questions about causations. Therefore our next set of
 problems deals with the probability of there being a relationship
 between two measured variables, variables that can take on any values
 (say, the values on a test of athletic scores) rather than just two
-values (say, whether or not there has been irradiation.)
+values (say, whether or not there has been irradiation.)[^see-simon]
+
+[^see-simon]: For a much fuller discussion on causality and causation, see
+   Simon and Burstein [-@simon1985basic].
 
 Another way to think about such problems is to ask whether two variables
 are *independent* of each other — that is, whether you know anything
@@ -421,7 +424,6 @@ equal to or below 17.
 <!--- Resampling stats file; Matlab syntax closeish -->
 
 ```matlab
-
 ' Program file: "correlation_causation_00.rss"
 
 REPEAT 1000
@@ -456,7 +458,6 @@ us directly:
 <!--- Resampling stats file; Matlab syntax closeish -->
 
 ```matlab
-
 ' Program file: "ability1.rss"
 
 COUNT z <= 17 k
@@ -537,7 +538,6 @@ Observed Score: 4
 <!--- Resampling stats file; Matlab syntax closeish -->
 
 ```matlab
-
 ' Program file: "ability2.rss"
 
 REPEAT 1000
@@ -899,7 +899,6 @@ the products in the observed data.
 <!--- Resampling stats file; Matlab syntax closeish -->
 
 ```matlab
-
 ' Program file: "correlation_causation_03.rss"
 
 NUMBERS (97 94 93 90 87 86 86 85 81 76) a
@@ -945,7 +944,6 @@ was rare. RESAMPLING STATS will calculate this proportion for us:
 <!--- Resampling stats file; Matlab syntax closeish -->
 
 ```matlab
-
 ' Program file: "ability3.rss"
 
 COUNT z <= 0 k
@@ -1077,7 +1075,6 @@ The following program in RESAMPLING STATS provides the solution:
 <!--- Resampling stats file; Matlab syntax closeish -->
 
 ```matlab
-
 ' Program file: "correlation_causation_05.rss"
 
 READ FILE “inp10” x y
@@ -1248,7 +1245,6 @@ value in the observed sample.
 <!--- Resampling stats file; Matlab syntax closeish -->
 
 ```matlab
-
 ' Program file: "beerpoll.rss"
 
 URN 52#1 26#0 drink
@@ -1439,7 +1435,6 @@ In RESAMPLING STATS, we can do this experiment 1000 times.
 <!--- Resampling stats file; Matlab syntax closeish -->
 
 ```matlab
-
 ' Program file: "sluggo.rss"
 
 REPEAT 1000
@@ -1551,7 +1546,7 @@ memory."
 The year-to-year level of Lake Michigan is an example in which
 observations are *not* independent. If Lake Michigan is very high in one
 year, it is likely to be higher than average the following year because
-some of the high level carries over from one year into the next. \[3\]
+some of the high level carries over from one year into the next.[^example]
 We could test this hypothesis by writing down whether the level in each
 year from, say, 1860 to 1975 was higher or lower than the median level
 for those years. We would then count the number of runs of "higher" and
@@ -1564,6 +1559,8 @@ than 50-50 chance that the level will also go up this year? The answer
 to this question is not so obvious. One could compare the numbers of
 runs of ups and downs against an average hand of cards, just as with the
 hits and outs in baseball.)
+
+[^example]: Example from [@wallis1957statistics, p 565].
 
 Exercise for students: How could one check whether the successive
 numbers in a random-number table are independent?
@@ -1634,7 +1631,6 @@ follows, as they would appear in the first lines of the program.
 <!--- Resampling stats file; Matlab syntax closeish -->
 
 ```matlab
-
 ' Program file: "correlation_causation_08.rss"
 
 NUMBERS (14 20 0 38 9 38 22 31 33 11 40 5 15 32 3 29 5 32) homeruns
@@ -1720,10 +1716,3 @@ sum-of-products method, and expect to get the same result.
     problem.
 
 2.  Write a computer program to implement those steps.
-
-## Endnotes
-
-1.  For a much fuller discussion see Simon and Burstein (1985, Chapter
-    35), or previous editions by Simon (1960; 1979).
-
-3.  Example from @wallis1957statistics, from p 565.

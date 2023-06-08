@@ -360,18 +360,21 @@ highest possible probability, and is not the slightest bit interested in
 getting *nearly* the right horse. Maximum likelihood estimates are of
 particular interest in such situations.
 
+See [@savage1972foundations, Chapter 15], for many other criteria of
+estimators.
+
 **Criteria of the Criteria**
 
 What should we look for in choosing criteria? Logically, this question
 should precede the above list of criteria.
 
-Savage (1954, Chapter 15) has urged that we should always think in terms
-of the *consequences* of choosing criteria, in light of our purposes in
-making the estimate. I believe that he is making an important point. But
-it often is very hard work to think the matter through all the way to
-the consequences of the criteria chosen. And in most cases, such fine
-inquiry is not needed, in the sense that the estimating procedure chosen
-will be the same no matter what consequences are considered.
+Savage [-@savage1972foundations, Chapter 15] has urged that we should always
+think in terms of the *consequences* of choosing criteria, in light of our
+purposes in making the estimate. I believe that he is making an important
+point. But it often is very hard work to think the matter through all the way
+to the consequences of the criteria chosen. And in most cases, such fine
+inquiry is not needed, in the sense that the estimating procedure chosen will
+be the same no matter what consequences are considered.
 
 ## Estimation of accuracy of the point estimate
 
@@ -388,15 +391,17 @@ confusion and argument.
 ## Uses of the mean
 
 Let's consider when the use of a device such as the mean is valuable, in
-the context of the data on marksmen in Table 13-1. If we wish to compare
-marksman A versus marksman B, we can immediately see that marksman A hit
-the bullseye (80 shots for 3 points each time) as many times as marksman
-B hit *either* the bullseye or simply got in the black (30 shots for 3
-points and 50 shots for 2 points), and A hit the black (2 points) as
-many times as B just got in the white (1 point). From these two
-comparisons covering all the shots, in both of which comparisons A does
-better, it is immediately obvious that marksman A is better than
-marksman B. We can say that A's score *dominates* B's score.
+the context of the data on marksmen in Table 13-1.[^gnedenko]. If we wish to
+compare marksman A versus marksman B, we can immediately see that marksman
+A hit the bullseye (80 shots for 3 points each time) as many times as marksman
+B hit *either* the bullseye or simply got in the black (30 shots for 3 points
+and 50 shots for 2 points), and A hit the black (2 points) as many times as
+B just got in the white (1 point). From these two comparisons covering all the
+shots, in both of which comparisons A does better, it is immediately obvious
+that marksman A is better than marksman B. We can say that A's score
+*dominates* B's score.
+
+[^gnedenko]: This discussion follows [@gnedenko1962elementary, Chapter 8].
 
 Table 13-1
 
@@ -432,12 +437,11 @@ device that is useful here is the mean. For marksman C the mean score is
 than C even though D's score does not dominate C's score in the bullseye
 category.
 
-Another use of the mean (Gnedenko, 1962, p. 68) is shown in the
+Another use of the mean [@gnedenko1962elementary, p. 68] is shown in the
 estimation of the number of matches that we need to start fires for an
-operation carried out 20 times in a day (Table 13- 2). Let's say that
-the number of cases where s/he needs 1, 2 \... 5 matches to start a fire
-are as follows (along with their probabilities) based on the last 100
-fires started:
+operation carried out 20 times in a day (Table 13- 2). Let's say that the
+number of cases where s/he needs 1, 2 \... 5 matches to start a fire are as
+follows (along with their probabilities) based on the last 100 fires started:
 
 Table 13-2
 
@@ -536,10 +540,8 @@ are a description rather than an estimate, because the sample is getting
 to be much the same as the universe; that is, if there are twelve people
 in your family, and you randomly take a sample of the amount of sugar
 used by eight members of the family, the results of the sample cannot be
-very different than if you com-
-
-pute the amount for all twelve family members. In such a case, the
-interpretation of the mean becomes complex.
+very different than if you compute the amount for all twelve family members.
+In such a case, the interpretation of the mean becomes complex.
 
 Underlying all estimation is the assumption of continuation, which
 follows from random sampling — that there is no reason to expect the
@@ -560,9 +562,3 @@ survey mean.) An inappropriate standard of comparison might enter into
 some family discussions as a result of this article, and cause higher
 outlays than otherwise. This chapter helps one understand the nature of
 such estimates.
-
-## Endnotes
-
-1.  See Savage, 1954, Chapter 15, for many other criteria of estimators.
-
-2.  This discussion follows Genedenko and Khinchtin, 1962, Chapter 8.
