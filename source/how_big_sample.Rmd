@@ -65,7 +65,13 @@ money that is available or by the sample size that similar research has used in 
 The rational way to choose a sample size is by weighing the benefits you
 can expect in information against the cost of increasing the sample
 size. In principle you should continue to increase the sample size until
-the benefit and cost of an additional sampled unit are equal. ^1^
+the benefit and cost of an additional sampled unit are equal.[^on-sample-size]
+
+[^on-sample-size]: Schlaifer [-@schlaifer1961introduction] attacks the
+    sample-size problem in the wider context of decision making, costs, and
+    benefits. The statistically knowledgeable reader can find an excellent
+    discussion of sample size in M. Hansen, et al. A. Mace gives many examples
+    of the appropriate calculation in an engineering framework.
 
 The benefit of additional information is not easy to estimate even in
 applied research, and it is extraordinarily difficult to estimate in
@@ -878,7 +884,14 @@ therefore it is a mistake simply to look at the early returns when the
 split is not wide enough to justify a verdict. If you have listened to
 early radio or television reports of election returns, you know how
 misleading the reports from the first precincts can be if we regard them
-as a fair sample of the whole. ^2^
+as a fair sample of the whole.[^sequential-critic]
+
+[^sequential-critic]: See J. Lorie and H. Roberts [-@lorie1951basic, pages
+    155-157] for more discussion of the limitations of sequential sampling.
+    Hansen *et al* [-@hansen1953survey, page 78], warn against the danger of
+    increasing the sample size in this fashion:
+
+    > A fairly obvious and flagrant way of arriving at biased results is to examine the returns from an initial sample to determine whether they appear acceptable to the investigator; if they do, he uses the results as they are; if they do not, he discards the sample results and draws a new sample, perhaps by a different method, in the hope that he will obtain a result more nearly like the one he expected. Such an approach can be utilized to obtain almost any results desired, or can “prove” any point even when unbiased or consistent methods of selecting the sample and making the individual estimates are used if the initial results are subject to relatively large sampling errors.
 
 Stratified sampling is another device that helps reduce the sample size
 required, by balancing the amounts of information you obtain in the
@@ -888,37 +901,9 @@ produce a given level of accuracy.)
 
 ## Summary
 
-Sample sizes are too often determined on the basis of conven-
-
-tion or of the available budget. A more rational method of choosing the
-size of the sample is by balancing the diminution of error expected with
-a larger sample, and its value, against the cost of increasing the
-sample size. The relationship of
-
-various sample sizes to various degrees of accuracy can be estimated
-with resampling methods, which are illustrated here.
-
-## Endnotes
-
-1.  R. Schlaifer (1961) attacks the sample-size problem in the
-    tistically knowled w g i e d a e b r le c ore n a t ed x e t r o c f
-    a d n e f c i i n s d i oa n n m e a x k ce i nll g e , n c t o d s
-    i t sc , u a nss d io b n e no e f f s i a t sm . Tp h le e s s i t
-    z a e - in M. Hansen, et al. A. Mace gives many examples of the
-    appropriate calculation in an engineering framework.
-
-2.  See J. Lorie and H. Roberts (pp. 155-157) for more discus-
-
-sion of the limitations of sequential sampling. And M. Hansen, et al.,
-warn against the danger of increasing the sample size in this fashion:
-
-The investigator examines the returns from an initial sample to
-determine whether they appear acceptable to the investigator; if they
-do, he uses the results as they are; if they do not, he discards the
-sample results \[or keeps the old sample\] and draws a new sample,
-perhaps by a different method, in the hope that he will obtain a result
-more nearly like the one he expected. Such an approach can be utilized
-to obtain almost any results desired, or can "prove" any point even when
-unbiased or consistent methods of selecting the sample and making the
-individual estimates are used if the initial results are subject to
-relatively large sampling errors. (Hansen, et al., 1953: 78)
+Sample sizes are too often determined on the basis of convention or of the
+available budget. A more rational method of choosing the size of the sample is
+by balancing the diminution of error expected with a larger sample, and its
+value, against the cost of increasing the sample size. The relationship of
+various sample sizes to various degrees of accuracy can be estimated with
+resampling methods, which are illustrated here.
