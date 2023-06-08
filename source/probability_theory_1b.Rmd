@@ -65,17 +65,21 @@ buckets to estimate the probability of a *nice* day plus a win, and of a
 *nasty* day plus a win. But what if the Commanders' chances of winning are the
 same whether the day is nice or nasty? If so, we say that the chance of
 winning is *independent* of the kind of day. That is, in this special case,
+
 $$
-\begin{align*}
 P(\text{win | nice day}) = P(\text{win | nasty day}) \text{ and } P(\text{nice
-day and win}) \\
-= P(\text{nice day}) * P(\text{winning | nice day}) \\
-= P(\text{nice day}) * P(\text{winning})
-\end{align*}
+day and win})
 $$
 
-**Note:** See chapter 4's section on conditional and unconditional
-probabilities for an explanation of this notation.
+$$
+= P(\text{nice day}) * P(\text{winning | nice day})
+$$
+
+$$
+= P(\text{nice day}) * P(\text{winning})
+$$
+
+**Note:** See section @sec-cond-uncond for an explanation of this notation.
 
 In this case we need only one set of two buckets to make all the estimates.
 
@@ -274,10 +278,8 @@ be helpful to note that mutual exclusivity equals total dependence; if
 one outcome occurs, the other cannot. Hence we write formally that
 
 $$
-\text{If} P(A \text{ and } B) = 0
+\text{If} P(A \text{ and } B) = 0 \text{ then }
 $$
-
-then
 
 $$
 P(A \text{ or } B) = P(A) + P(B)
