@@ -1,0 +1,11 @@
+'"testing_procedures_00" from "testing_procedures.Rmd" starting at line 248
+
+REPEAT 1000
+    GENERATE 10 1,2 a
+    COUNT a =1 b
+    SCORE b z
+END
+HISTOGRAM z
+COUNT z >=9 k
+DIVIDE k 1000 kk
+PRINT kk

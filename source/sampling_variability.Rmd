@@ -559,14 +559,19 @@ Try generating some rookie "seasons" yourself with the following
 commands, ranging the batter's "true" performance by altering what you
 count as a hit.
 
-`           GENERATE 400 1,100 at-bats         `
 
-`           COUNT at-bats <= 30 hits      `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           DIVIDE hits 400 average         `
+```matlab
 
-Simulate a set of 10 or 20 such rookie seasons, and look at the one who
-did best. How did his rookie season compare to his "true" average?
+' Program file: "sampling_variability_00.rss"
+
+GENERATE 400 1,100 at-bats
+COUNT at-bats <= 30 hits
+DIVIDE hits 400 average
+' Simulate a set of 10 or 20 such rookie seasons, and look at the one who
+' did best. How did his rookie season compare to his "true" average?
+```
 
 The explanation is the presence of *variability* . And lack of
 recognition of the role of variability is at the heart of much

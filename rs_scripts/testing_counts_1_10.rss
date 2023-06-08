@@ -1,0 +1,21 @@
+'"testing_counts_1_10" from "testing_counts_1.Rmd" starting at line 1316
+
+NUMBERS 1,24 a
+' Constitute the set of the weight gain rank orders. A is now a vector
+' consisting of the numbers 1 — 24, in that order.
+REPEAT 1000
+    ' Do the following experiment 1000 times.
+    SHUFFLE a b
+    ' Shuffle the ranks of the weight gains, put the shuffled ranks in b.
+    TAKE b 1,12 c
+    ' Take the first 12 ranks, put them in c
+    COUNT c <= 12 d
+    ' Determine how many of these randomly selected 12 ranks are less than
+    ' 12 (i.e. 1-12), put that result in d.
+    SCORE d z
+    ' Keep track of each trial result in z.
+END
+' End one experiment, go back and repeat until 1000 trials are
+' complete.
+HISTOGRAM z
+' Produce a histogram of the trial results.

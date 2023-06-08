@@ -1,0 +1,27 @@
+'"testing_counts_2_04" from "testing_counts_2.Rmd" starting at line 583
+
+URN 35#1 35#2 30#3 univ 1= Bush, 2= Perot, 3=Clinton
+REPEAT 1000
+    SAMPLE 750 univ samp
+    ' Take a sample of 750 votes
+    COUNT samp =1 bush
+    ' Count the Bush voters, etc.
+    COUNT samp =2 pero
+    ' Perot voters
+    COUNT samp =3 clin
+    ' Clinton voters
+    CONCAT pero clin others
+    ' Join Perot & Clinton votes
+    MAX others second
+    ' Find the larger of the other two
+    SUBTRACT bush second d
+    ' Find Bush's margin over 2nd
+    SCORE d z
+END
+HISTOGRAM z
+COUNT z >=46 m
+' Compare to the observed margin in the sample of 750 corresponding to a 6
+' percent margin by Bush over 2nd place finisher (rounded)
+DIVIDE m 1000 mm
+PRINT mm
+' **Samples of 750 Voters**

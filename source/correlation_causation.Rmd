@@ -417,37 +417,30 @@ times, recording each result in a scorekeeping vector: Z. Graphing Z, we
 get a HIS- TOGRAM that shows us how often our randomly assigned sums are
 equal to or below 17.
 
-`           REPEAT 1000         `
 
-Repeat the experiment 1000 times.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           NUMBERS 1,10 a         `
+```matlab
 
-Constitute the set of I.Q. ranks.
+' Program file: "correlation_causation_00.rss"
 
-`           SHUFFLE a b         `
-
-Shuffle them.
-
-`           TAKE b 1,5 d         `
-
-Take the first 5 ranks.
-
-`           SUM d e         `
-
-Sum those ranks.
-
-`           SCORE e z         `
-
-Keep track of the result of each trial.
-
-`           END         `
-
-End the experiment, go back and repeat.
-
-`           HISTOGRAM z         `
-
-Produce a histogram of trial results.
+REPEAT 1000
+    ' Repeat the experiment 1000 times.
+    NUMBERS 1,10 a
+    ' Constitute the set of I.Q. ranks.
+    SHUFFLE a b
+    ' Shuffle them.
+    TAKE b 1,5 d
+    ' Take the first 5 ranks.
+    SUM d e
+    ' Sum those ranks.
+    SCORE e z
+    ' Keep track of the result of each trial.
+END
+' End the experiment, go back and repeat.
+HISTOGRAM z
+' Produce a histogram of trial results.
+```
 
 **ABILITY1: Random Selection of 5 Out of 10 Ranks**
 
@@ -459,20 +452,23 @@ We see that in only about 2% of the trials did random selection of ranks
 produce a total of 17 or lower. RESAMPLING STATS will calculate this for
 us directly:
 
-`           COUNT z <= 17 k         `
 
-Determine how many trials produced sums of ranks \<= 17 by chance.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           DIVIDE k 1000 kk         `
+```matlab
 
-Convert to a proportion.
+' Program file: "ability1.rss"
 
-`           PRINT kk         `
+COUNT z <= 17 k
+' Determine how many trials produced sums of ranks \<= 17 by chance.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the results.
 
-Print the results.
-
-Note: The file "ability1" on the Resampling Stats software disk contains
-this set of commands.
+' Note: The file "ability1" on the Resampling Stats software disk contains
+' this set of commands.
+```
 
 Why do we sum the ranks of the first *five* athletes and compare them
 with the second five athletes, rather than comparing the top three, say,
@@ -537,48 +533,37 @@ Observed Score: 4
   20          4           Yes
   ----------- ----------- ---------------
 
-`           REPEAT 1000         `
 
-Do 1000 experiments.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           NUMBERS 1,10 a         `
+```matlab
 
-Constitute the set of I.Q. ranks.
+' Program file: "ability2.rss"
 
-`           SHUFFLE a b         `
+REPEAT 1000
+    ' Do 1000 experiments.
+    NUMBERS 1,10 a
+    ' Constitute the set of I.Q. ranks.
+    SHUFFLE a b
+    ' Shuffle them.
+    TAKE b 1,5 c
+    ' Take the first 5 ranks.
+    COUNT c between 1 5 d
+    ' Of those 5, count how many are among the top half of the ranks (1-5).
+    SCORE d z
+    ' Keep track of that result in z
+END
+' End one experiment, go back and repeat until all 1000 are complete.
+COUNT z >= 4 k
+' Determine how many trials produced 4 or more top ranks by chance.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the result.
 
-Shuffle them.
-
-`           TAKE b 1,5 c         `
-
-Take the first 5 ranks.
-
-`           COUNT c between 1 5 d         `
-
-Of those 5, count how many are among the top half of the ranks (1-5).
-
-`           SCORE d z         `
-
-Keep track of that result in z
-
-`           END         `
-
-End one experiment, go back and repeat until all 1000 are complete.
-
-`           COUNT z >= 4 k         `
-
-Determine how many trials produced 4 or more top ranks by chance.
-
-`           DIVIDE k 1000 kk         `
-
-Convert to a proportion.
-
-`           PRINT kk         `
-
-Print the result.
-
-Note: The file "ability2" on the Resampling Stats software disk contains
-this set of commands.
+' Note: The file "ability2" on the Resampling Stats software disk contains
+' this set of commands.
+```
 
 So far we have proceeded on the theory that if there is *any*
 relationship between athletics and I.Q., then the better athletes have
@@ -910,55 +895,40 @@ Finally, we COUNT the trials in which the sum of the products of the
 randomly-paired athletic and I.Q. scores equals or exceeds the sum of
 the products in the observed data.
 
-`           NUMBERS (97 94 93 90 87 86 86 85 81 76) a         `
 
-Record athletic scores, highest to lowest.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           NUMBERS (114 120 107 113 118 101 109 110 100 99) b         `
+```matlab
 
-Record corresponding IQ scores for those students.
+' Program file: "correlation_causation_03.rss"
 
-`           MULTIPLY a b c         `
-
-Multiply the two sets of scores together.
-
-`           SUM c d         `
-
-Sum the results — the "observed value."
-
-`           REPEAT 1000         `
-
-Do 1000 experiments.
-
-`           SHUFFLE a e         `
-
-Shuffle the athletic scores so we can pair them against IQ scores.
-
-`           MULTIPLY e b f         `
-
-Multiply the shuffled athletic scores by the I.Q. scores. (Note that we
-could shuffle the I.Q. scores too but it would not achieve any greater
-randomization.)
-
-`           SUM f j         `
-
-Sum the randomized multiplications.
-
-`           SUBTRACT d j k         `
-
-Subtract the sum from the sum of the "observed" multiplication.
-
-`           SCORE k z         `
-
-Keep track of the result in z.
-
-`           END         `
-
-End one trial, go back and repeat until 1000 trials are complete.
-
-`           HISTOGRAM z         `
-
-Obtain a histogram of the trial results.
+NUMBERS (97 94 93 90 87 86 86 85 81 76) a
+' Record athletic scores, highest to lowest.
+NUMBERS (114 120 107 113 118 101 109 110 100 99) b
+' Record corresponding IQ scores for those students.
+MULTIPLY a b c
+' Multiply the two sets of scores together.
+SUM c d
+' Sum the results — the "observed value."
+REPEAT 1000
+    ' Do 1000 experiments.
+    SHUFFLE a e
+    ' Shuffle the athletic scores so we can pair them against IQ scores.
+    MULTIPLY e b f
+    ' Multiply the shuffled athletic scores by the I.Q. scores. (Note that we
+    ' could shuffle the I.Q. scores too but it would not achieve any greater
+    ' randomization.)
+    SUM f j
+    ' Sum the randomized multiplications.
+    SUBTRACT d j k
+    ' Subtract the sum from the sum of the "observed" multiplication.
+    SCORE k z
+    ' Keep track of the result in z.
+END
+' End one trial, go back and repeat until 1000 trials are complete.
+HISTOGRAM z
+' Obtain a histogram of the trial results.
+```
 
 **Random Sums of Products**
 
@@ -971,19 +941,22 @@ ATHLETES & IQ SCORES
 We see that obtaining a chance trial result as great as that observed
 was rare. RESAMPLING STATS will calculate this proportion for us:
 
-`           COUNT z <= 0 k         `
 
-Determine in how many trials the random sum of products was less than
-the observed sum of products.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           DIVIDE k 1000 kk         `
+```matlab
 
-Convert to a proportion.
+' Program file: "ability3.rss"
 
-`           PRINT kk         `
-
-Note: The file "ability3" on the Resampling Stats software disk contains
-this set of commands.
+COUNT z <= 0 k
+' Determine in how many trials the random sum of products was less than
+' the observed sum of products.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Note: The file "ability3" on the Resampling Stats software disk contains
+' this set of commands.
+```
 
 **Example 23-3: Correlation Between Adherence to Medication Regime and
 Change in Cholesterol**
@@ -1100,51 +1073,38 @@ do as follows (program "inp10"):
 
 The following program in RESAMPLING STATS provides the solution:
 
-`           READ FILE “inp10” x y         `
 
-Data
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           MULTIPLY x y xy         `
+```matlab
 
-Step 1 above
+' Program file: "correlation_causation_05.rss"
 
-`           SUM xy xysum         `
-
-Note: xysum = 439,140 (4.3914e+05)
-
-`           REPEAT 1000         `
-
-Do 1000 simulations (step 4 above)
-
-`           SHUFFLE x xrandom         `
-
-Step 2 above
-
-`           MULTIPLY xrandom y xy         `
-
-Step 3 above
-
-`           SUM xy newsum         `
-
-Step 3 above
-
-`           SCORE newsum scrboard         `
-
-Step 3 above
-
-`           END         `
-
-Step 4 above
-
-`           COUNT scorboard >=439140 prob         `
-
-Step 5 above
-
-`           PRINT xysum prob         `
-
-Result: prob = 0. Interpretation: 1000 simulated random shufflings never
-produced a sum-of-products as high as the observed value. Hence we rule
-out random chance as an explanation for the observed correlation.
+READ FILE “inp10” x y
+' Data
+MULTIPLY x y xy
+' Step 1 above
+SUM xy xysum
+' Note: xysum = 439,140 (4.3914e+05)
+REPEAT 1000
+    ' Do 1000 simulations (step 4 above)
+    SHUFFLE x xrandom
+    ' Step 2 above
+    MULTIPLY xrandom y xy
+    ' Step 3 above
+    SUM xy newsum
+    ' Step 3 above
+    SCORE newsum scrboard
+    ' Step 3 above
+END
+' Step 4 above
+COUNT scorboard >=439140 prob
+' Step 5 above
+PRINT xysum prob
+' Result: prob = 0. Interpretation: 1000 simulated random shufflings never
+' produced a sum-of-products as high as the observed value. Hence we rule
+' out random chance as an explanation for the observed correlation.
+```
 
 **Example 23-3: Is There A Relationship Between Drinking Beer And Being
 In Favor of Selling Beer?** (Testing for a Relationship Between
@@ -1269,64 +1229,52 @@ questions, we check how often the random trials had a difference
 (between consistent and inconsistent responses) as great as 24, the
 value in the observed sample.
 
-`           URN 52#1 26#0 drink         `
 
-Constitute the set of 52 beer drinkers, represented by 52 "1"s, and the
-set of 26 non-drinkers, represented by "2"s.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           URN 57#1 21#0 sale         `
+```matlab
 
-The same set of individuals classified by whether they favor ("1") or
-don't favor ("0") the sale of beer.
+' Program file: "beerpoll.rss"
 
-Note: F is now the vector {1 1 1 1 1 1 \... 0 0 0 0 0 \...} where 1 =
-people in favor, 0 = people opposed.
+URN 52#1 26#0 drink
+' Constitute the set of 52 beer drinkers, represented by 52 "1"s, and the
+' set of 26 non-drinkers, represented by "2"s.
+URN 57#1 21#0 sale
+' The same set of individuals classified by whether they favor ("1") or
+' don't favor ("0") the sale of beer.
 
-`           REPEAT 1000         `
+' Note: F is now the vector {1 1 1 1 1 1 \... 0 0 0 0 0 \...} where 1 =
+' people in favor, 0 = people opposed.
+REPEAT 1000
+    ' Repeat the experiment 1000 times.
+    SHUFFLE drink drink$
+    ' Shuffle the beer drinkers/non-drinker, call the shuffled set drink\*.
 
-Repeat the experiment 1000 times.
+    ' Note: drink\$ is now a vector like {1 1 1 0 1 0 0 1 0 1 1 0 0 \...}
+    ' where 1 = drinker, 0 = non-drinker.
+END
+SUBTRACT drink$ sale c
+' Subtract the favor/don't favor set from the drink/don't drink set.
+' Consistent responses are someone who drinks favoring the sale of beer (a
+' "1" and a "1") or someone who doesn't drink opposing the sale of beer.
+' When subtracted, consistent responses *(and only consistent responses)*
+' produce a "0."
+COUNT c =0 d
+' Count the number of consistent responses (those equal to "0").
+COUNT c <> 0 e
+' Count the "inconsistent" responses (those not equal to "0").
+SUBTRACT d e f
+' Find the difference
+SCORE f z
+' Keep track of the results of each trial.
 
-`           SHUFFLE drink drink$         `
+' End one trial, go back and repeat until all 1000 trials are complete.
+HISTOGRAM z
+' Produce a histogram of the trial result.
 
-Shuffle the beer drinkers/non-drinker, call the shuffled set drink\*.
-
-Note: drink\$ is now a vector like {1 1 1 0 1 0 0 1 0 1 1 0 0 \...}
-where 1 = drinker, 0 = non-drinker.
-
-`           END         `
-
-`           SUBTRACT drink$ sale c         `
-
-Subtract the favor/don't favor set from the drink/don't drink set.
-Consistent responses are someone who drinks favoring the sale of beer (a
-"1" and a "1") or someone who doesn't drink opposing the sale of beer.
-When subtracted, consistent responses *(and only consistent responses)*
-produce a "0."
-
-`           COUNT c =0 d         `
-
-Count the number of consistent responses (those equal to "0").
-
-`           COUNT c <> 0 e         `
-
-Count the "inconsistent" responses (those not equal to "0").
-
-`           SUBTRACT d e f         `
-
-Find the difference
-
-`           SCORE f z         `
-
-Keep track of the results of each trial.
-
-End one trial, go back and repeat until all 1000 trials are complete.
-
-`           HISTOGRAM z         `
-
-Produce a histogram of the trial result.
-
-Note: The file "beerpoll" on the Resampling Stats software disk contains
-this set of commands.
+' Note: The file "beerpoll" on the Resampling Stats software disk contains
+' this set of commands.
+```
 
 **Are Drinkers More Likely to Favor Local Option & Vice Versa**
 
@@ -1472,26 +1420,25 @@ hence fewer) "streaks" and "slumps" than would result by chance.
 
 In RESAMPLING STATS, we can do this experiment 1000 times.
 
-`           REPEAT 1000         `
 
-`           URN 3#0 1#1 a        `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           SAMPLE 100 a b         `
+```matlab
 
-Sample 100 "at-bats" from a
+' Program file: "sluggo.rss"
 
-`           RUNS b >=1 c         `
-
-How many runs (of any length \>=1) are there in the 100 at-bats?
-
-`           SCORE c z         `
-
-`           END           `
-
-`           HISTOGRAM z         `
-
-Note: The file "sluggo" on the Resampling Stats software disk contains
-this set of commands.
+REPEAT 1000
+    URN 3#0 1#1 a
+    SAMPLE 100 a b
+    ' Sample 100 "at-bats" from a
+    RUNS b >=1 c
+    ' How many runs (of any length \>=1) are there in the 100 at-bats?
+    SCORE c z
+END
+HISTOGRAM z
+' Note: The file "sluggo" on the Resampling Stats software disk contains
+' this set of commands.
+```
 
 Examining the histogram, we see that 43 runs is not at all an unusual
 occurrence:
@@ -1668,15 +1615,17 @@ a more "sophisticated" measure, the correlation coefficient.)
 The data for 18 randomly-selected players in the 1989 season are as
 follows, as they would appear in the first lines of the program.
 
-`           NUMBERS (14 20 0 38 9 38 22 31 33 11 40 5 15 32 3 29 5 32)         `
 
-`           homeruns         `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           NUMBERS (135 153 120 161 138 175 126 200 205 147 165 124         `
+```matlab
 
-`           169 156 36 98 82 131) strikeout         `
+' Program file: "correlation_causation_08.rss"
 
-Exercise: Complete this program.
+NUMBERS (14 20 0 38 9 38 22 31 33 11 40 5 15 32 3 29 5 32) homeruns
+NUMBERS (135 153 120 161 138 175 126 200 205 147 165 124 169 156 36 98 82 131) strikeout
+' Exercise: Complete this program.
+```
 
 **Exercise 23-3**
 

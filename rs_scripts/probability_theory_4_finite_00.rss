@@ -1,0 +1,6 @@
+'"probability_theory_4_finite_00" from "probability_theory_4_finite.Rmd" starting at line 675
+
+URN 10#1 10#2 a
+REPEAT 1000
+    SHUFFLE a b TAKE b 1,10 c COUNT c =1 d SCORE d z
+END HISTOGRAM z

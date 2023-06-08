@@ -1,0 +1,12 @@
+'"testing_counts_1_03" from "testing_counts_1.Rmd" starting at line 553
+
+REPEAT 1000
+    ' Do 1000 trials.
+    GENERATE 50 1,2 a
+    ' Generate randomly 50 "1"s and "2"s, put them in a. Let "1" = "yes" and
+    ' "2" = "no."
+END
+COUNT a =1 b
+' Count the number of yeses, put the result in b.
+SCORE b z
+' Keep track of each trial result in z.

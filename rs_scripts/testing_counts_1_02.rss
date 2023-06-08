@@ -1,0 +1,12 @@
+'"testing_counts_1_02" from "testing_counts_1.Rmd" starting at line 407
+
+REPEAT 15000
+    GENERATE 10 1,206 a
+    COUNT a BETWEEN 101 206 b
+    SCORE b z
+END
+HISTOGRAM z
+COUNT z >=9 k
+DIVIDE k 15000 kk
+PRINT kk
+' **10 Calves**

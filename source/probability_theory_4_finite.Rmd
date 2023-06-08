@@ -673,13 +673,19 @@ One may proceed as follows:
 
     The problem can be done with RESAMPLING STATS as follows:
 
-    `               URN 10#1 10#2 a             `
 
-    `               REPEAT 1000             `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-    `               SHUFFLE a b TAKE b 1,10 c COUNT c =1 d SCORE d z             `
+```matlab
 
-    `               END HISTOGRAM z             `
+' Program file: "probability_theory_4_finite_00.rss"
+
+URN 10#1 10#2 a
+REPEAT 1000
+    SHUFFLE a b TAKE b 1,10 c COUNT c =1 d SCORE d z
+END HISTOGRAM z
+```
+
 
     ![](images/12-Chap-8_009.png)
 
@@ -848,65 +854,56 @@ drew samples of children for those trials in which a bridge hand of 5
 spades had already been dealt, we will have in K the number of trials
 out of 1000 in which both conditions were met.
 
-`           URN 13#1 39#0 deck         `
 
-Deck with 13 spades ("1") and 39 other cards (0)
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           REPEAT 1000         `
+```matlab
 
-Do the following experiment 1000 times.
+' Program file: "probability_theory_4_finite_01.rss"
 
-`           SHUFFLE deck deck$         `
-
-Shuffle the deck.
-
-`           TAKE b deck$ 1,13 hand         `
-
-Deal out one hand of 13 cards.
-
-`           COUNT hand =1 spades         `
-
-Find out how many of the 13 cards are spades (spades are represented by
-the number 1).
-
-`           IF spades >= 5         `
-
-If we have 5 or more spades\...
-
-`           GENERATE 5 1,2 a         `
-
-Create a family of 5 children, randomly selecting among girls (1's) and
-boys (2's).
-
-`           COUNT a =1 j         `
-
-Count the number of girls.
-
-`           SCORE j z         `
-
-Keep track of the number of girls in each trial. Recall that we are only
-counting girls if we have already gotten five spades in the bridge hand.
-
-`           END         `
-
-`           END         `
-
-End the IF condition.
+URN 13#1 39#0 deck
+' Deck with 13 spades ("1") and 39 other cards (0)
+REPEAT 1000
+    ' Do the following experiment 1000 times.
+    SHUFFLE deck deck$
+    ' Shuffle the deck.
+    TAKE b deck$ 1,13 hand
+    ' Deal out one hand of 13 cards.
+    COUNT hand =1 spades
+    ' Find out how many of the 13 cards are spades (spades are represented by
+    ' the number 1).
+    IF spades >= 5
+        ' If we have 5 or more spades\...
+        GENERATE 5 1,2 a
+        ' Create a family of 5 children, randomly selecting among girls (1's) and
+        ' boys (2's).
+        COUNT a =1 j
+        ' Count the number of girls.
+        SCORE j z
+        ' Keep track of the number of girls in each trial. Recall that we are only
+        ' counting girls if we have already gotten five spades in the bridge hand.
+    END
+END
+' End the IF condition.
+```
 
 End the experiment, go back and repeat until all 1000 trials are
 complete.
 
-`           COUNT z =4 k         `
 
-Count the number of times we got 4 girls (and 5 or more spades).
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           DIVIDE k 1000 kk         `
+```matlab
 
-Convert to a proportion.
+' Program file: "probability_theory_4_finite_02.rss"
 
-`           PRINT kk         `
-
-Print the results.
+COUNT z =4 k
+' Count the number of times we got 4 girls (and 5 or more spades).
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the results.
+```
 
 ```{python, opts.label="py_ed"}
 N = 10000

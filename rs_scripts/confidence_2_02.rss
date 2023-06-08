@@ -1,0 +1,26 @@
+'"confidence_2_02" from "confidence_2.Rmd" starting at line 784
+
+NUMBERS (94 38 23 197 99 16 141) treatmt
+' treatment group
+NUMBERS (52 10 40 104 51 27 146 30 46) control
+' control group
+REPEAT 1000
+    ' step 5 above
+    SAMPLE 7 treatmt treatmt$
+    ' step 2 above
+    SAMPLE 9 control control$
+    ' step 3
+    MEAN treatmt$ tmean
+    ' step 4
+    MEAN control$ cmean
+    ' step 4
+    SUBTRACT tmean cmean diff
+    ' step 4
+    SCORE diff scrboard
+    ' step 4
+END
+' step 5
+HISTOGRAM scrboard
+PERCENTILE scrboard (5 95) interval
+' step 6
+PRINT interval

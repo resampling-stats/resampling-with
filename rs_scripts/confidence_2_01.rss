@@ -1,0 +1,15 @@
+'"confidence_2_01" from "confidence_2.Rmd" starting at line 694
+
+READ file “cigaret.dat” elast
+' Read in the data from an external file
+MEDIAN elast med-elas
+REPEAT 1000
+    SAMPLE 73 elast elast$
+    ' A bootstrap sample (note that the "\$" indicates a bootstrap counterpart
+    ' to the observed sample)
+    MEDIAN elast$ med$
+    SCORE med$ scrboard
+END
+HISTOGRAM scrboard
+PERCENTILE scrboard (2.5 97.5) interval
+PRINT med-elas interval

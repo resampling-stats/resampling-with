@@ -1,0 +1,25 @@
+'"how_big_sample_05" from "how_big_sample.Rmd" starting at line 851
+
+DATA (36 35 34 33 33 32 32 31 31 30 29 28) a
+DATA (32 31 30 29 29 28 28 27 27 26 25 24) b
+REPEAT 1000
+    SAMPLE 12 a aa
+    ' Draw a sample of 12 from ration a with replacement (this is like drawing
+    ' from a large deck made up of many replicates of the elements in a)
+    SAMPLE 12 b bb
+    ' Same for b
+    MEAN aa aaa
+    ' Find the averages of the resamples
+    MEAN bb bbb
+    SUBTRACT aaa bbb c
+    ' Find the difference
+    SCORE c z
+END
+COUNT z >=3 k
+' How often did the difference exceed the cutoff point for our
+' significance test of 3 pounds?
+DIVIDE k 1000 kk
+PRINT kk
+' If kk is close to zero, we know that the sample size is large enough
+' that samples drawn from the universes we have hypothesized will not
+' mislead us into thinking that they could come from the same universe.

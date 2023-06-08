@@ -468,23 +468,30 @@ then be done as follows:
         samples have been generated and COUNT the times that 3 or more
         baskets were made. We place the results in k, and then PRINT.
 
-        `                   REPEAT 1000                 `
 
-```{python, opts.label="py_ed"}
-n_baskets = np.zeros(1000)
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-# Do 1000 experimental trials.
-for i in range(1000):
+```matlab
 
-    # Generate 5 random numbers, each between 1 and 4, put them in "a".
-    # Let "1" represent a basket, "2" through "4" be a miss.
-    a = np.random.randint(1, 5, size=5)
+' Program file: "probability_theory_3_00.rss"
 
-    # Count the number of baskets, put that result in b.
-    b = np.count_nonzero(a == 1)
+REPEAT 1000
+    ' ```{python, opts.label="py_ed"}
+    ' n_baskets = np.zeros(1000)
 
-    # Keep track of each experiment's results in z.
-    n_baskets[i] = b
+    ' # Do 1000 experimental trials.
+    ' for i in range(1000):
+
+    ' # Generate 5 random numbers, each between 1 and 4, put them in "a".
+    ' # Let "1" represent a basket, "2" through "4" be a miss.
+    ' a = np.random.randint(1, 5, size=5)
+
+    ' # Count the number of baskets, put that result in b.
+    ' b = np.count_nonzero(a == 1)
+
+    ' # Keep track of each experiment's results in z.
+    ' n_baskets[i] = b
+```
 
     # End the experiment, go back and repeat until all 1000 are completed, then
     # proceed.

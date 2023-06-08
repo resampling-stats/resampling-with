@@ -1,0 +1,50 @@
+'"4treat" from "testing_counts_2.Rmd" starting at line 153
+
+REPEAT 1000
+    ' Do 1000 experiments.
+    COPY (0) j
+    ' j indicates whether we have obtained a trial group with 14 or more of
+    ' either sex. We start at "0" (= no).
+    REPEAT 4
+        ' Repeat the following steps 4 times to constitute 4 trial groups of 20
+        ' flies each.
+        GENERATE 20 1,2 a
+        ' Generate randomly 20 "1"s and "2"s and put them in a; let "1"
+
+        ' = male.
+        COUNT a =1 b
+        ' Count the number of males, put the result in b.
+        IF b >= 14
+            ' If the result is 14 or more males, then
+        END
+        COPY (1) j
+        ' Set the indicator to "1."
+
+        ' End the IF condition.
+        IF b <= 6
+            ' If the result is 6 or fewer males (the same as 14 or more females), then
+        END
+        COPY (1) j
+        ' Set the indicator to "1."
+
+        ' End the IF condition.
+    END
+END
+' End the procedure for one group, go back and repeat until all four
+' groups have been done.
+SCORE j z
+' j now tells us whether we got a result as extreme as that observed (j =
+' "1" if we did, j = "0" if not). We must keep track in z of this result
+' for each experiment.
+
+' End one experiment, go back and repeat until all 1000 are complete.
+COUNT z =1 k
+' Count the number of experiments in which we had results as extreme as
+' those observed.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the result.
+
+' Note: The file "4treat" on the Resampling Stats software disk contains
+' this set of commands.

@@ -1,0 +1,16 @@
+'"how_big_sample_03" from "how_big_sample.Rmd" starting at line 731
+
+REPEAT 1000
+    ' Do 1000 trials
+    GENERATE 50 1,10 a
+    ' Generate 50 numbers between 1 and 10, let 1-7 = yes.
+    COUNT a <=7 b
+    ' Count the "yeses"
+    SCORE b z
+    ' Keep score of the result
+END
+COUNT z >=32 k
+' Count how often the sample result \>= our 32 cutoff (recall that samples
+' with 32 or fewer "yeses" cannot be ruled out of a 50/50 universe)
+DIVIDE k 1000 kk
+' Convert to a proportion

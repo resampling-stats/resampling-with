@@ -1,0 +1,45 @@
+'"4treat1" from "testing_counts_2.Rmd" starting at line 308
+
+REPEAT 1000
+    ' Do 1000 trials
+    GENERATE 20 1,100 a
+    ' The first treatment group, where "1-55" = success, "56-100" = failure
+    GENERATE 20 1,100 b
+    ' The second group
+    GENERATE 20 1,100 c
+    ' The third group
+    GENERATE 20 1,100 d
+    ' The fourth group
+    COUNT a <=55 aa
+    ' Count the first group's successes
+    COUNT b <=55 bb
+    ' Same for second, third & fourth groups
+    COUNT c <=55 cc
+    COUNT d <=55 dd
+END
+SUBTRACT aa bb ab
+' Now find all the pairwise differences in successes among the groups
+SUBTRACT aa cc ac
+SUBTRACT aa dd ad
+SUBTRACT bb cc bc
+SUBTRACT bb dd bd
+SUBTRACT cc dd cd
+CONCAT ab ac ad bc bd cd e
+' Concatenate, or join, all the differences in a single vector e
+ABS e f
+' Since we are interested only in the magnitude of the difference, not its
+' direction, we take the ABSolute value of all the differences.
+MAX f g
+' Find the largest of all the differences
+SCORE g z
+' Keep score of the largest
+
+' End a trial, go back and repeat until all 1000 are complete.
+COUNT z >=10 k
+' How many of the trials yielded a maximum difference greater than the
+' observed maximum difference?
+DIVIDE k 1000 kk
+' Convert to a proportion
+PRINT kk
+' Note: The file "4treat1" on the Resampling Stats software disk contains
+' this set of commands.

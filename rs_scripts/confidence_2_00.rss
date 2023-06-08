@@ -1,0 +1,13 @@
+'"confidence_2_00" from "confidence_2.Rmd" starting at line 638
+
+DATA (11.4 13.4 13.5 13.8 13.9 14.4 14.5 15.0 15.1 15.8 16.0 16.3 16.5 16.9 17.0 17.2 17.5 19.0) c
+REPEAT 1000
+    SAMPLE 18 c c$
+    MEDIAN c$ d$
+    SCORE d$ z
+END
+HISTOGRAM z
+PERCENTILE z (2.5 97.5) k
+PRINT K
+' This problem would be approached conventionally with a binomial
+' procedure leading to quite wide confidence intervals (Deshpande, p. 32).

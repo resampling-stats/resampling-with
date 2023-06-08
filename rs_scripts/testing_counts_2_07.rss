@@ -1,0 +1,31 @@
+'"testing_counts_2_07" from "testing_counts_2.Rmd" starting at line 1146
+
+NUMBERS (1 2 3) a
+' Step 1 above
+REPEAT 1000
+    ' Step 6
+    REPEAT 33
+        ' Step 3
+        SHUFFLE a a
+        ' Step 2
+        SCORE a t1 t2 t3
+        ' Step 2
+    END
+END
+' Step 3
+MEAN t1 tt1
+' Step 4
+MEAN t2 tt2
+MEAN t3 tt3
+CLEAR t1
+' Clear the vectors where we've stored the ranks for this trial (must do
+' this whenever we have a SCORE statement that's part of a "nested" repeat
+' loop)
+CLEAR t2
+CLEAR t3
+CONCAT tt1 tt2 tt3 b
+' Part of step 5
+MIN b bb
+' Part of step 5
+SCORE bb z
+' Part of step 5

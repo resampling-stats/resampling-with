@@ -1,0 +1,29 @@
+'"testing_counts_1_09" from "testing_counts_1.Rmd" starting at line 1090
+
+URN 31#1 574#2 men
+' A bucket called "men" with 31 "1's" (=infarctions) and 574 "2's" (=no
+' infarction)
+REPEAT 1000
+    SAMPLE 135 men high
+    ' Sample (with replacement!) 135 of the numbers in this bucket, give this
+    ' group the name "high"
+    SAMPLE 470 men low
+    ' Same for a group of 470, call it "low"
+    COUNT high =1 a
+    ' Count infarctions in first group
+    DIVIDE a 135 aa
+    ' Express as a proportion
+    COUNT low =1 b
+    ' Count infarctions in second group
+    DIVIDE b 470 bb
+    ' Express as a proportion
+    SUBTRACT aa bb c
+    ' Find the difference in infarction rates
+    SCORE c z
+    ' Keep score of this difference
+END HISTOGRAM z
+COUNT z >=.029 k
+' How often was the resampled difference \>= the observed difference?
+DIVIDE k 1000 kk
+' Convert this result to a proportion
+PRINT kk

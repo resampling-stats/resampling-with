@@ -1,0 +1,26 @@
+'"testing_counts_1_07" from "testing_counts_1.Rmd" starting at line 870
+
+REPEAT 1000
+    ' Do 1000 experiments.
+    GENERATE 6 1,12 a
+    ' Randomly generate 6 numbers between "1" and "12." Let "1-7" = cure,
+    ' "8-12" = no cure. This will be the "medicine" group.
+    GENERATE 6 1,12 b
+    ' Similarly for the "placebo" group.
+    COUNT a between 1 7 aa
+    ' Count the number of cures in the trial "medicine" group. ("Medicine"
+    ' is in quotes because the vector a is an arbitrary random selection
+    ' of our experiment — one we know has no medicinal value because the
+    ' cure rate — 7/12 — is the same as for the "placebo" experimental
+    ' group.)
+    COUNT b between 1 7 bb
+    ' Count the number of cures in the trial "placebo" group.
+    SUBTRACT aa bb c
+    ' Subtract trial "placebo" cures from trial "medicine" cures.
+    SCORE c z
+    ' Keep track of each trial result in z.
+END
+' End one experiment, go back and repeat until 1000 are complete, then
+' proceed.
+HISTOGRAM z
+' Produce a histogram of the trial results.

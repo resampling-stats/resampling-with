@@ -1,0 +1,40 @@
+'"beerpoll" from "correlation_causation.Rmd" starting at line 1271
+
+URN 52#1 26#0 drink
+' Constitute the set of 52 beer drinkers, represented by 52 "1"s, and the
+' set of 26 non-drinkers, represented by "2"s.
+URN 57#1 21#0 sale
+' The same set of individuals classified by whether they favor ("1") or
+' don't favor ("0") the sale of beer.
+
+' Note: F is now the vector {1 1 1 1 1 1 \... 0 0 0 0 0 \...} where 1 =
+' people in favor, 0 = people opposed.
+REPEAT 1000
+    ' Repeat the experiment 1000 times.
+    SHUFFLE drink drink$
+    ' Shuffle the beer drinkers/non-drinker, call the shuffled set drink\*.
+
+    ' Note: drink\$ is now a vector like {1 1 1 0 1 0 0 1 0 1 1 0 0 \...}
+    ' where 1 = drinker, 0 = non-drinker.
+END
+SUBTRACT drink$ sale c
+' Subtract the favor/don't favor set from the drink/don't drink set.
+' Consistent responses are someone who drinks favoring the sale of beer (a
+' "1" and a "1") or someone who doesn't drink opposing the sale of beer.
+' When subtracted, consistent responses *(and only consistent responses)*
+' produce a "0."
+COUNT c =0 d
+' Count the number of consistent responses (those equal to "0").
+COUNT c <> 0 e
+' Count the "inconsistent" responses (those not equal to "0").
+SUBTRACT d e f
+' Find the difference
+SCORE f z
+' Keep track of the results of each trial.
+
+' End one trial, go back and repeat until all 1000 trials are complete.
+HISTOGRAM z
+' Produce a histogram of the trial result.
+
+' Note: The file "beerpoll" on the Resampling Stats software disk contains
+' this set of commands.

@@ -1,0 +1,18 @@
+'"probability_theory_3_00" from "probability_theory_3.Rmd" starting at line 470
+
+REPEAT 1000
+    ' ```{python, opts.label="py_ed"}
+    ' n_baskets = np.zeros(1000)
+
+    ' # Do 1000 experimental trials.
+    ' for i in range(1000):
+
+    ' # Generate 5 random numbers, each between 1 and 4, put them in "a".
+    ' # Let "1" represent a basket, "2" through "4" be a miss.
+    ' a = np.random.randint(1, 5, size=5)
+
+    ' # Count the number of baskets, put that result in b.
+    ' b = np.count_nonzero(a == 1)
+
+    ' # Keep track of each experiment's results in z.
+    ' n_baskets[i] = b

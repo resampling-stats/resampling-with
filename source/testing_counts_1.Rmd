@@ -213,29 +213,26 @@ have the probability that the results obtained from the sample of
 irradiated fruit flies would be obtained from a random sample of fruit
 flies.
 
-`           REPEAT 1000         `
 
-Do 1000 experiments
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           GENERATE 20 1,2 a         `
+```matlab
 
-Generate randomly 20 "1's" and "2's," put them in a.
+' Program file: "testing_counts_1_00.rss"
 
-`           COUNT a =1 b         `
-
-Count the number of "1"s (males), put that result in b.
-
-`           SCORE b z         `
-
-Keep track of each trial result in z.
-
-`           END         `
-
-End one trial, go back and repeat until all 1000 trials are complete.
-
-`           HISTOGRAM z         `
-
-Produce a histogram of the trial results.
+REPEAT 1000
+    ' Do 1000 experiments
+    GENERATE 20 1,2 a
+    ' Generate randomly 20 "1's" and "2's," put them in a.
+    COUNT a =1 b
+    ' Count the number of "1"s (males), put that result in b.
+    SCORE b z
+    ' Keep track of each trial result in z.
+END
+' End one trial, go back and repeat until all 1000 trials are complete.
+HISTOGRAM z
+' Produce a histogram of the trial results.
+```
 
 **20 Fruitflies**
 
@@ -248,28 +245,27 @@ number of males was 14 or more, or 6 or fewer. Or instead of reading the
 results from the histogram, we can calculate the result by tacking on
 the following commands to the above program:
 
-`           COUNT z >=14 j         `
 
-Determine the number of trials in which we had 14 or more males.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           COUNT z <=6 k         `
+```matlab
 
-Determine the number of trials in which we had 6 or fewer males.
+' Program file: "fruitfly.rss"
 
-`           ADD j k m         `
+COUNT z >=14 j
+' Determine the number of trials in which we had 14 or more males.
+COUNT z <=6 k
+' Determine the number of trials in which we had 6 or fewer males.
+ADD j k m
+' Add the two results together.
+DIVIDE m 1000 mm
+' Convert to a proportion.
+PRINT mm
+' Print the results.
 
-Add the two results together.
-
-`           DIVIDE m 1000 mm         `
-
-Convert to a proportion.
-
-`           PRINT mm         `
-
-Print the results.
-
-Note: The file "fruitfly" on the Resampling Stats software disk contains
-this set of commands.
+' Note: The file "fruitfly" on the Resampling Stats software disk contains
+' this set of commands.
+```
 
 Notice that the strength of the evidence for the effectiveness of the
 radiation treatment depends upon the original question: whether or not
@@ -405,25 +401,24 @@ discussed earlier for four children and for ten cows. Conventional
 methods are discussed for comparison in Chapter 19. Here is the
 resampling solution in RESAMPLING STATS:
 
-`           REPEAT 15000         `
 
-`           GENERATE 10 1,206 a         `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           COUNT a BETWEEN 101 206 b    `
+```matlab
 
-`           SCORE b z         `
+' Program file: "testing_counts_1_02.rss"
 
-`           END       `
-
-`           HISTOGRAM z          `
-
-`           COUNT z >=9 k         `
-
-`           DIVIDE k 15000 kk      `
-
-`           PRINT kk         `
-
-**10 Calves**
+REPEAT 15000
+    GENERATE 10 1,206 a
+    COUNT a BETWEEN 101 206 b
+    SCORE b z
+END
+HISTOGRAM z
+COUNT z >=9 k
+DIVIDE k 15000 kk
+PRINT kk
+' **10 Calves**
+```
 
 ![](images/19-Chap-15_001.png)
 
@@ -551,51 +546,61 @@ a "false positive," that is, 30 or more people saying they favor a
 franchise when support for the proposal is actually split evenly down
 the middle.
 
-`           REPEAT 1000         `
 
-Do 1000 trials.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           GENERATE 50 1,2 a         `
+```matlab
 
-Generate randomly 50 "1"s and "2"s, put them in a. Let "1" = "yes" and
-"2" = "no."
+' Program file: "testing_counts_1_03.rss"
 
-`           END         `
-
-`           COUNT a =1 b         `
-
-Count the number of yeses, put the result in b.
-
-`           SCORE b z         `
-
-Keep track of each trial result in z.
+REPEAT 1000
+    ' Do 1000 trials.
+    GENERATE 50 1,2 a
+    ' Generate randomly 50 "1"s and "2"s, put them in a. Let "1" = "yes" and
+    ' "2" = "no."
+END
+COUNT a =1 b
+' Count the number of yeses, put the result in b.
+SCORE b z
+' Keep track of each trial result in z.
+```
 
 End the trial, go back and repeat until all 1000 trials are complete,
 then proceed.
 
-`           HISTOGRAM z         `
 
-Produce a histogram of the trial results.
+<!--- Resampling stats file; Matlab syntax closeish -->
+
+```matlab
+
+' Program file: "testing_counts_1_04.rss"
+
+HISTOGRAM z
+' Produce a histogram of the trial results.
+```
 
 In the histogram below, we see that 11 percent of our trials had 30 or
 more voters in favor, despite the fact that they were drawn from a
 population that was split 50-50. RESAMPLING STATS will calculate this
 proportion directly if we add the following commands to the above:
 
-`           COUNT z >= 30 k         `
 
-Determine how many trials had 30 or more in favor.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           DIVIDE k 1000 kk         `
+```matlab
 
-Convert to a proportion.
+' Program file: "cablepol.rss"
 
-`           PRINT kk         `
+COUNT z >= 30 k
+' Determine how many trials had 30 or more in favor.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the result.
 
-Print the result.
-
-Note: The file "cablepol" on the Resampling Stats software disk contains
-this set of commands.
+' Note: The file "cablepol" on the Resampling Stats software disk contains
+' this set of commands.
+```
 
 **Samples of 50 Voters**
 
@@ -638,74 +643,51 @@ Here is a procedure that responds to that question:
     This procedure may be done as follows with a computer and Resampling
     Stats (program "bush-hyp"):
 
-    `               REPEAT 1000             `
 
-    `               GENERATE 1500 1,2 a             `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-    Generate 1500 "1's" and "2's," selected randomly, letting "1" = Bush
+```matlab
 
-    `               COUNT a =1 b             `
+' Program file: "testing_counts_1_06.rss"
 
-    Count Bush votes
-
-    `               SCORE b z             `
-
-    Keep score
-
-    `               END HISTOGRAM z             `
-
-    `               COUNT z >=840 k             `
-
-    How often \>= 840 Bush votes in random draw?
-
-    `               DIVIDE k 1000 kk             `
-
-    As a proportion of simulated resamples
-
-    `               PRINT kk             `
-
-    The result was kk = 0. This implies shows a probability so small as
-    not to occur once in a thousand times that Bush's "victory" in the
-    sample would occur by chance if he really were behind. The results
-    of the various runs may be seen in the histogram and printout
-    following.
-
-    `               MAXSIZE a 1500             `
-
-    Enlarge vector a's capacity to 1500 (default is 1000 in some
-    versions of Resampling Stats)
-
-    `               REPEAT 1000             `
-
-    `               GENERATE 1500 1,2 a             `
-
-    Generate 50 "1's" and "2's," selected randomly, letting "1" = Bush
-
-    `               COUNT a =1 b             `
-
-    Count Bush votes
-
-    `               DIVIDE b 1500 c             `
-
-    Find proportion pro-Bush
-
-    `               SCORE b z             `
-
-    Keep score
-
-    `               END HISTOGRAM z             `
-
-    `               COUNT z >=.56 k             `
-
-    How often \>= .56 Bush votes in random draw?
-
-    `               DIVIDE k 1000 kk             `
-
-    As a proportion of simulated resamples
-
-    `               PRINT kk             `
-
-    **Samples of 1500 Voters**
+REPEAT 1000
+    GENERATE 1500 1,2 a
+    ' Generate 1500 "1's" and "2's," selected randomly, letting "1" = Bush
+    COUNT a =1 b
+    ' Count Bush votes
+    SCORE b z
+    ' Keep score
+END HISTOGRAM z
+COUNT z >=840 k
+' How often \>= 840 Bush votes in random draw?
+DIVIDE k 1000 kk
+' As a proportion of simulated resamples
+PRINT kk
+' The result was kk = 0. This implies shows a probability so small as
+' not to occur once in a thousand times that Bush's "victory" in the
+' sample would occur by chance if he really were behind. The results
+' of the various runs may be seen in the histogram and printout
+' following.
+MAXSIZE a 1500
+' Enlarge vector a's capacity to 1500 (default is 1000 in some
+' versions of Resampling Stats)
+REPEAT 1000
+    GENERATE 1500 1,2 a
+    ' Generate 50 "1's" and "2's," selected randomly, letting "1" = Bush
+    COUNT a =1 b
+    ' Count Bush votes
+    DIVIDE b 1500 c
+    ' Find proportion pro-Bush
+    SCORE b z
+    ' Keep score
+END HISTOGRAM z
+COUNT z >=.56 k
+' How often \>= .56 Bush votes in random draw?
+DIVIDE k 1000 kk
+' As a proportion of simulated resamples
+PRINT kk
+' **Samples of 1500 Voters**
+```
 
     ![](images/19-Chap-15_003.png)
 
@@ -868,47 +850,38 @@ Here is a procedure that responds to that question:
     random samples drawn from a population which has a constant cure
     rate, pill or no pill.
 
-    `               REPEAT 1000             `
 
-    Do 1000 experiments.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-    `               GENERATE 6 1,12 a             `
+```matlab
 
-    Randomly generate 6 numbers between "1" and "12." Let "1-7" = cure,
-    "8-12" = no cure. This will be the "medicine" group.
+' Program file: "testing_counts_1_07.rss"
 
-    `               GENERATE 6 1,12 b             `
-
-    Similarly for the "placebo" group.
-
-    `               COUNT a between 1 7 aa             `
-
-    Count the number of cures in the trial "medicine" group. ("Medicine"
-    is in quotes because the vector a is an arbitrary random selection
-    of our experiment — one we know has no medicinal value because the
-    cure rate — 7/12 — is the same as for the "placebo" experimental
-    group.)
-
-    `               COUNT b between 1 7 bb             `
-
-    Count the number of cures in the trial "placebo" group.
-
-    `               SUBTRACT aa bb c             `
-
-    Subtract trial "placebo" cures from trial "medicine" cures.
-
-    `               SCORE c z             `
-
-    Keep track of each trial result in z.
-
-    `               END             `
-
-    End one experiment, go back and repeat until 1000 are complete, then
-    proceed.
-
-    `               HISTOGRAM z             `
-
-    Produce a histogram of the trial results.
+REPEAT 1000
+    ' Do 1000 experiments.
+    GENERATE 6 1,12 a
+    ' Randomly generate 6 numbers between "1" and "12." Let "1-7" = cure,
+    ' "8-12" = no cure. This will be the "medicine" group.
+    GENERATE 6 1,12 b
+    ' Similarly for the "placebo" group.
+    COUNT a between 1 7 aa
+    ' Count the number of cures in the trial "medicine" group. ("Medicine"
+    ' is in quotes because the vector a is an arbitrary random selection
+    ' of our experiment — one we know has no medicinal value because the
+    ' cure rate — 7/12 — is the same as for the "placebo" experimental
+    ' group.)
+    COUNT b between 1 7 bb
+    ' Count the number of cures in the trial "placebo" group.
+    SUBTRACT aa bb c
+    ' Subtract trial "placebo" cures from trial "medicine" cures.
+    SCORE c z
+    ' Keep track of each trial result in z.
+END
+' End one experiment, go back and repeat until 1000 are complete, then
+' proceed.
+HISTOGRAM z
+' Produce a histogram of the trial results.
+```
 
     **Cancer**
 
@@ -927,16 +900,21 @@ Here is a procedure that responds to that question:
     warranted. The following commands added to the above program will
     calculate this proportion directly:
 
-    `               COUNT z >=3 k DIVIDE k 1000 kk             `
 
-    Convert to a proportion.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-    `               PRINT kk             `
+```matlab
 
-    Print the result.
+' Program file: "cancer.rss"
 
-    Note: The file "cancer" on the Resampling Stats software disk
-    contains this set of commands.
+COUNT z >=3 k DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the result.
+
+' Note: The file "cancer" on the Resampling Stats software disk
+' contains this set of commands.
+```
 
     As I wrote when I first proposed this bootstrap method in 1969, this
     method is not the standard way of handling the problem; it is not
@@ -1088,57 +1066,42 @@ Here is a procedure that responds to that question:
     the computer to draw the samples. Here is a RESAMPLING STATS program
     ("myocar1"):
 
-    `               URN 31#1 574#2 men             `
 
-    A bucket called "men" with 31 "1's" (=infarctions) and 574 "2's" (=no
-    infarction)
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-    `               REPEAT 1000             `
+```matlab
 
-    `               SAMPLE 135 men high             `
+' Program file: "testing_counts_1_09.rss"
 
-    Sample (with replacement!) 135 of the numbers in this bucket, give this
-    group the name "high"
+URN 31#1 574#2 men
+' A bucket called "men" with 31 "1's" (=infarctions) and 574 "2's" (=no
+' infarction)
+REPEAT 1000
+    SAMPLE 135 men high
+    ' Sample (with replacement!) 135 of the numbers in this bucket, give this
+    ' group the name "high"
+    SAMPLE 470 men low
+    ' Same for a group of 470, call it "low"
+    COUNT high =1 a
+    ' Count infarctions in first group
+    DIVIDE a 135 aa
+    ' Express as a proportion
+    COUNT low =1 b
+    ' Count infarctions in second group
+    DIVIDE b 470 bb
+    ' Express as a proportion
+    SUBTRACT aa bb c
+    ' Find the difference in infarction rates
+    SCORE c z
+    ' Keep score of this difference
+END HISTOGRAM z
+COUNT z >=.029 k
+' How often was the resampled difference \>= the observed difference?
+DIVIDE k 1000 kk
+' Convert this result to a proportion
+PRINT kk
+```
 
-    `               SAMPLE 470 men low             `
-
-    Same for a group of 470, call it "low"
-
-    `               COUNT high =1 a             `
-
-    Count infarctions in first group
-
-    `               DIVIDE a 135 aa             `
-
-    Express as a proportion
-
-    `               COUNT low =1 b             `
-
-    Count infarctions in second group
-
-    `               DIVIDE b 470 bb             `
-
-    Express as a proportion
-
-    `               SUBTRACT aa bb c             `
-
-    Find the difference in infarction rates
-
-    `               SCORE c z             `
-
-    Keep score of this difference
-
-    `               END HISTOGRAM z             `
-
-    `               COUNT z >=.029 k             `
-
-    How often was the resampled difference \>= the observed difference?
-
-    `               DIVIDE k 1000 kk             `
-
-    Convert this result to a proportion
-
-    `               PRINT kk             `
 
     ![](images/19-Chap-15_005.png)
 
@@ -1314,40 +1277,33 @@ Here is a procedure that responds to that question:
     that differences in weight gains in two groups as dramatic as those
     obtained in the actual experiment would occur by chance.
 
-    `               NUMBERS 1,24 a             `
 
-    Constitute the set of the weight gain rank orders. A is now a vector
-    consisting of the numbers 1 — 24, in that order.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-    `               REPEAT 1000             `
+```matlab
 
-    Do the following experiment 1000 times.
+' Program file: "testing_counts_1_10.rss"
 
-    `               SHUFFLE a b             `
-
-    Shuffle the ranks of the weight gains, put the shuffled ranks in b.
-
-    `               TAKE b 1,12 c             `
-
-    Take the first 12 ranks, put them in c
-
-    `               COUNT c <= 12 d             `
-
-    Determine how many of these randomly selected 12 ranks are less than
-    12 (i.e. 1-12), put that result in d.
-
-    `               SCORE d z             `
-
-    Keep track of each trial result in z.
-
-    `               END             `
-
-    End one experiment, go back and repeat until 1000 trials are
-    complete.
-
-    `               HISTOGRAM z             `
-
-    Produce a histogram of the trial results.
+NUMBERS 1,24 a
+' Constitute the set of the weight gain rank orders. A is now a vector
+' consisting of the numbers 1 — 24, in that order.
+REPEAT 1000
+    ' Do the following experiment 1000 times.
+    SHUFFLE a b
+    ' Shuffle the ranks of the weight gains, put the shuffled ranks in b.
+    TAKE b 1,12 c
+    ' Take the first 12 ranks, put them in c
+    COUNT c <= 12 d
+    ' Determine how many of these randomly selected 12 ranks are less than
+    ' 12 (i.e. 1-12), put that result in d.
+    SCORE d z
+    ' Keep track of each trial result in z.
+END
+' End one experiment, go back and repeat until 1000 trials are
+' complete.
+HISTOGRAM z
+' Produce a histogram of the trial results.
+```
 
     **PIGS1: Random Selection of 12 Weight Gains (24 Pigs)**
 
@@ -1360,28 +1316,27 @@ Here is a procedure that responds to that question:
     into the random group of twelve that we selected. RESAMPLING STATS
     will calculate this for us as follows:
 
-    `               COUNT z >= 9 j             `
 
-    Determine how many of the trials yielded 9 or more top ranks.
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-    `               COUNT z <= 3 k             `
+```matlab
 
-    Determine how many trials yielded 3 or fewer of the top ranks.
+' Program file: "pigs1.rss"
 
-    `               ADD j k m             `
+COUNT z >= 9 j
+' Determine how many of the trials yielded 9 or more top ranks.
+COUNT z <= 3 k
+' Determine how many trials yielded 3 or fewer of the top ranks.
+ADD j k m
+' Add the two together.
+DIVIDE m 1000 mm
+' Convert to a proportion.
+PRINT mm
+' Print the results.
 
-    Add the two together.
-
-    `               DIVIDE m 1000 mm             `
-
-    Convert to a proportion.
-
-    `               PRINT mm             `
-
-    Print the results.
-
-    Note: The file "pigs1" on the Resampling Stats software disk
-    contains this set of commands.
+' Note: The file "pigs1" on the Resampling Stats software disk
+' contains this set of commands.
+```
 
     The decisions that are warranted on the basis of the results depend
     upon one's purpose. If writing a scientific paper on the merits of
@@ -1471,53 +1426,38 @@ Here is a procedure that responds to that question:
     8.  Count how often the shuffled difference in ranks exceeds the
         observed difference of 1.6.
 
-`           NUMBERS 1,5 ranks         `
 
-step 3 above
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           REPEAT 1000         `
+```matlab
 
-step 7
+' Program file: "testing_counts_1_12.rss"
 
-`           END         `
-
-step 7
-
-`           SHUFFLE ranks ranks$         `
-
-step 3
-
-`           TAKE ranks$ 1,2 closer         `
-
-step 4
-
-`           TAKE ranks$ 3,5 further         `
-
-step 4
-
-`           MEAN closer m_close         `
-
-step 5
-
-`           MEAN farther m_far         `
-
-step 5
-
-`           SUBTRACT m_close m_far diff         `
-
-step 6
-
-`           SCORE diff z         `
-
-step 6
-
-`           COUNT z >=1.6 k         `
-
-step 8
-
-`           DIVIDE k 1000 prob         `
-
-PRINT prob
+NUMBERS 1,5 ranks
+' step 3 above
+REPEAT 1000
+    ' step 7
+END
+' step 7
+SHUFFLE ranks ranks$
+' step 3
+TAKE ranks$ 1,2 closer
+' step 4
+TAKE ranks$ 3,5 further
+' step 4
+MEAN closer m_close
+' step 5
+MEAN farther m_far
+' step 5
+SUBTRACT m_close m_far diff
+' step 6
+SCORE diff z
+' step 6
+COUNT z >=1.6 k
+' step 8
+DIVIDE k 1000 prob
+' PRINT prob
+```
 
 Result: prob = 0.21
 

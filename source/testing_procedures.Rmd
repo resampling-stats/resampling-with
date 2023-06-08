@@ -246,23 +246,24 @@ We can do the problem by hand as follows:
 Or, we can take advantage of the speed and efficiency of the computer as
 follows:
 
-`           REPEAT 1000         `
 
-`           GENERATE 10 1,2 a        `
+<!--- Resampling stats file; Matlab syntax closeish -->
 
-`           COUNT a =1 b         `
+```matlab
 
-`           SCORE b z         `
+' Program file: "testing_procedures_00.rss"
 
-`           END  `
+REPEAT 1000
+    GENERATE 10 1,2 a
+    COUNT a =1 b
+    SCORE b z
+END
+HISTOGRAM z
+COUNT z >=9 k
+DIVIDE k 1000 kk
+PRINT kk
+```
 
-`           HISTOGRAM z         `
-
-`           COUNT z >=9 k         `
-
-`           DIVIDE k 1000 kk   `
-
-`           PRINT kk         `
 
 ![](images/23-Chap-19_000.png)
 

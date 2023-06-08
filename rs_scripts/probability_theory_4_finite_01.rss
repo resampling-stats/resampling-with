@@ -1,0 +1,26 @@
+'"probability_theory_4_finite_01" from "probability_theory_4_finite.Rmd" starting at line 850
+
+URN 13#1 39#0 deck
+' Deck with 13 spades ("1") and 39 other cards (0)
+REPEAT 1000
+    ' Do the following experiment 1000 times.
+    SHUFFLE deck deck$
+    ' Shuffle the deck.
+    TAKE b deck$ 1,13 hand
+    ' Deal out one hand of 13 cards.
+    COUNT hand =1 spades
+    ' Find out how many of the 13 cards are spades (spades are represented by
+    ' the number 1).
+    IF spades >= 5
+        ' If we have 5 or more spades\...
+        GENERATE 5 1,2 a
+        ' Create a family of 5 children, randomly selecting among girls (1's) and
+        ' boys (2's).
+        COUNT a =1 j
+        ' Count the number of girls.
+        SCORE j z
+        ' Keep track of the number of girls in each trial. Recall that we are only
+        ' counting girls if we have already gotten five spades in the bridge hand.
+    END
+END
+' End the IF condition.
