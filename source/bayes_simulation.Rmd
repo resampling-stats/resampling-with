@@ -42,6 +42,8 @@ We will remove this warning when the page has adequate formatting, and we have
 ported the code.
 :::
 
+> This branch of mathematics [probability] is the only one, I believe, in
+> which good writers frequently get results entirely erroneous. [@peirce1923chance, Doctrine of Chances, II]
 
 Bayesian analysis is a way of thinking about problems in probability and
 statistics that can help one reach otherwise-difficult decisions. It
@@ -220,7 +222,9 @@ We follow the two highlighted paths in the tree:
 
 The percentage of faulty cars, out of approved cars, becomes:
 
-$$ 3% / (56% + 3%) = 5.08%. $$
+$$
+3\% / (56\% + 3\%) = 5.08\%
+$$
 
 Notation-wise, it is a bit easier to calculate these sums using proportions rather than percentages:
 
@@ -249,7 +253,9 @@ Of course, this is not a complex or very accurate weather model; for that, we'd 
 Overall, the more observations we have, the better our probability estimates become.
 We discussed this idea previously in "The Law of Large Numbers".
 
-<!-- ** TODO: REFERENCE SECTION ON LARGE NUMBERS ** -->
+<!---
+** TODO: REFERENCE SECTION ON LARGE NUMBERS **
+-->
 
 **Ratios of proportions**
 
@@ -266,9 +272,13 @@ could just as well have written:
 
 or
 
-P(cars that are red and that are broken) / P(red cars)
+$$
+P(\text{cars that are red and that are broken}) / P(\text{red cars})
+$$
 
-<!-- ** TODO: THE ABOVE MAY BE A SUBTLE POINT THAT NEEDS TO EXPANDED, BUT THE TEXT IS GETTING LONG AS-IS ** -->
+<!---
+** TODO: THE ABOVE MAY BE A SUBTLE POINT THAT NEEDS TO EXPANDED, BUT THE TEXT IS GETTING LONG AS-IS **
+-->
 
 **Probability relationships: conditional probability**
 
@@ -311,7 +321,11 @@ P(B | R)
 $$
 
 We read this as "the probability that the car is broken given that the car is red".
-Such a probability is known as a *conditional probability*.  We discuss these in more details in Ch X <!-- **TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY** -->.
+Such a probability is known as a *conditional probability*.  We discuss these in more details in Ch X
+
+<!---
+**TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY**
+-->.
 
 In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
 
@@ -412,7 +426,11 @@ $$
 P(C^+ | T^-) = P(C^+ \cap T^-) / P(T^-)
 $$
 
-We see from the tree diagram that $P(C^+ \cap T^-) = P(T^- | C^+) * P(C^+) = .4 * .015 = 0.006$. <!-- **TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES** -->
+We see from the tree diagram that $P(C^+ \cap T^-) = P(T^- | C^+) * P(C^+) = .4 * .015 = 0.006$.
+
+<!---
+**TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES**
+-->
 
 We observe that $P(T^-) = P(T^- \cap C^-) + P(T^- \cap C^+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
 
@@ -425,10 +443,11 @@ $P(T^- \cap C^+) = P(T^- | C^+) * P(C^+)$.
 We can now calculate
 
 $$
-\begin{align*}
-P(T^-) = P(T^- | C^-) * P(C^-) + P(T^- | C^+) * P(C^+) = \\
-.995 * .985 + .4 * .015 = 0.986
-\end{align*}
+P(T^-) = P(T^- | C^-) * P(C^-) + P(T^- | C^+) * P(C^+)
+$$
+
+$$
+= .995 * .985 + .4 * .015 = 0.986
 $$
 
 The answer, then, is:
@@ -734,7 +753,9 @@ print(f'Ratio: {p_BB/p_Bb:.1f}')
 
 This yields a similar result, but in much shorter time — which means we can increase the number of trials and get a more accurate result.
 
-<!-- XXX TODO: How can we show how to derive this quantity using a filter tree type approach? XXX -->
+<!---
+XXX TODO: How can we show how to derive this quantity using a filter tree type approach? XXX
+-->
 
 Creating the correct simulation procedure is not trivial, because Bayesian
 reasoning is subtle — a reason it has been the cause of controversy
@@ -948,10 +969,3 @@ transparent. Simulation works best with the original raw data rather
 than with abstractions from them via percentages and
 distributions. This can aid the understanding as well as facilitate
 computation.
-
-## Endnotes
-
-1.  Darrell Huff provides the quote but without reference: "This branch
-    of mathematics \[probability\] is the only one, I believe, in which
-    good writers frequently get results entirely erroneous." (Huff,
-    1959, frontispage)

@@ -26,6 +26,15 @@ export PIP_INSTALL_CMD="pip install"
 make build-init
 ```
 
+For a full build, you will also need the `rsvg-convert` program.   On Mac I (MB) installed that with:
+
+```
+brew install librsvg
+```
+
+See [the Pandoc installation guide](https://pandoc.org/installing.html) for
+suggestions to install `rsvg-convert` on other platforms.
+
 Make sure that your `rmarkdown` package is sufficiently up to date to work
 with your `pandoc` version.  Versions of `pandoc` >= 2.11 use `--citeproc` and
 not `--filter pandoc-citeproc`; if your `rmarkdown` version is older than 2.5
