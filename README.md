@@ -117,10 +117,8 @@ Matthew and Peter know R reasonably well — we can help with R cleanup.
 
 ## Starting work on a new chapter
 
-See the `./source/_quarto.yml.template` file for a list of the chapters
-currently in the book build.  You may see that there are commented-out chapters
-from the original book; these do not get built to the online version of the
-book.
+See the `./source/_quarto.yml.template` file for
+a list of the chapters currently in the book build.
 
 Let's say you want to start work on one of the chapters, and you've see this in the `_quarto.yml.template` file:
 
@@ -134,16 +132,36 @@ Before you start:
 
 * Make a new Git branch, and check out the branch.
 * `cd source`
-* Do (for Python) `make clean && make python-book`.
+
+*   Choose which edition of the book you are going
+    to work on, and set the build to that edition
+    with:
+
+    ```
+    make set-version-python
+    ```
+
+    or
+
+    ```
+    make set-version-r
+    ```
+
+    from the `./source` directory.
 
 Editing:
 
 * Edit the matching file - here `source/reliability_average.Rmd`.
-* You might find it useful to have the original PDF chapter open; see [the
-  original book in PDF](https://resample.com/intro-text-online).  To see which
-  original chapter corresponds to your current `.Rmd` file, have a look at the
-  YAML fragment at the file, it should have something like: `ed2_fname:
-  26-Chap-22`. See also the chapter mappings at the end of this page.
+* You might find it useful to have the original PDF
+  chapter open; see [the
+  original book in
+  PDF](https://resample.com/intro-text-online).  The
+  PDFs are also in the `./unported` directory of the
+  repository.  To see which original chapter
+  corresponds to your current `.Rmd` file, have
+  a look at the YAML fragment at the file, it should
+  have something like: `ed2_fname: 26-Chap-22`. See
+  also the chapter mappings at the end of this page.
 * Rebuild the file you're working on from time to time with e.g.
   `../scripts/rebuild_chapter reliability_average.Rmd` from the `source`
   directory. Check the contents by opening e.g.
@@ -203,13 +221,16 @@ Here is a footnote reference,[^1] and another.[^longnote]
 
 [^longnote]: Here's one with multiple blocks.
 
-  Subsequent paragraphs are indented to show that they
-  belong to the previous footnote.
+    Subsequent paragraphs are indented to show that they
+    belong to the previous footnote.
 
 Here is an inline note.^[Inlines notes are easier to write,
 since you don't have to pick an identifier and move down to
 type the note.]
 ```
+
+**Notice that you'll need full 4-space indentation to keep the footnote
+paragraphs within the footnote**.
 
 ## Writing notes for the reader (callout)
 

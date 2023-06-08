@@ -65,8 +65,14 @@ buckets to estimate the probability of a *nice* day plus a win, and of a
 *nasty* day plus a win. But what if the Commanders' chances of winning are the
 same whether the day is nice or nasty? If so, we say that the chance of
 winning is *independent* of the kind of day. That is, in this special case,
-**P(win\|nice day) = P(win\|nasty day) and P(nice day and win) = P(nice day)
-\* P(winning\|nice day) = P(nice day) \* P(winning)**
+$$
+\begin{align*}
+P(\text{win | nice day}) = P(\text{win | nasty day}) \text{ and } P(\text{nice
+day and win}) \\
+= P(\text{nice day}) * P(\text{winning | nice day}) \\
+= P(\text{nice day}) * P(\text{winning})
+\end{align*}
+$$
 
 **Note:** See chapter 4's section on conditional and unconditional
 probabilities for an explanation of this notation.
@@ -74,11 +80,11 @@ probabilities for an explanation of this notation.
 In this case we need only one set of two buckets to make all the estimates.
 
 Independence means that the elements are drawn from 2 or more *separate
-sets of possibilities* . That is, **P(A\|B) = P(A\|\^B) = P(A) and vice
-versa** .
+sets of possibilities* . **That is, $P(A | B) = P(A | \ \hat{} B) = P(A)$ and
+vice versa** .
 
 <!---
-Work on explosition here.  Maybe note that independence means that chances of A following B are same as chances of A following not B.[
+Work on exposition here.  Maybe note that independence means that chances of A following B are same as chances of A following not B.[
 -->
 
 
@@ -92,15 +98,14 @@ probability that B will occur, and vice versa. If knowing whether A does
 occur alters the probability of B occurring, then A and B are dependent.
 
 If two events are independent, the multiplication rule simplifies to
-**p(A and B) = p(A) \* p(B)** . I'll repeat once more: **This rule is
+$P(A \text{ and } B) = P(A) * P(B)$ . I'll repeat once more: **This rule is
 simply a mathematical shortcut, and one can make the desired estimate by
 simulation.**
 
-Also again, if two events are *not* independent — that is, if P(A\|B) is
-not equal to P(A) because P(A) is dependent upon the occurrence of B,
-then the formula to be used now is, **p(A and B) = p(A\|B) \* p(B)** ,
-which is sufficiently confusing that you are probably better off with a
-simulation.
+Also again, if two events are *not* independent — that is, if $P(A | B)$ is not
+equal to $P(A)$ because $P(A)$ is dependent upon the occurrence of $B$, then the
+formula to be used now is, $P(A \text{ and } B) = P(A | B) * P(B)$ , which is
+sufficiently confusing that you are probably better off with a simulation.
 
 What about if each of the probabilities is dependent on the other
 outcome? There is no easy formulaic method to deal with such a
@@ -268,17 +273,24 @@ mutually-exclusive outcomes, the outcomes are *complementary* . It may
 be helpful to note that mutual exclusivity equals total dependence; if
 one outcome occurs, the other cannot. Hence we write formally that
 
-`           If p(A and B) = 0         `
+$$
+\text{If} P(A \text{ and } B) = 0
+$$
 
-`           P(A or B) = P(A) + P((B)         `
+then
 
-An outcome and its *absence* are mutually exclusive, and add to unity.
+$$
+P(A \text{ or } B) = P(A) + P(B)
+$$
 
-`           P(A) + P(^A) = 1.         `
+An outcome and its *absence* are mutually exclusive, and their probabilities
+add to unity.
 
-Examples include a) rain and no rain, and b) if P(sales \> \$1mil)
+$$
+P(A) + P(\ \hat{} A) = 1
+$$
 
-= .2, P(sales =\< \$1mil) = .8.
+Examples include a) rain and no rain, and b) if $P(\text{sales > \$1 million}) = 0.2$, then $P(\text{sales <= \$1 million}) = 0.8$.
 
 As with the multiplication rule, the addition rule can be a useful
 shortcut. The answer can always be obtained by simulation, too.
@@ -299,7 +311,9 @@ day might be both rainy and snowy, or you might wear both red and green
 coats on the same day, we write (in the latter case) P(red and green
 coats) \> 0, and the appropriate formula is
 
-`           P(red or green) = P(red) + p(green)—P(red and green)         `
+$$
+P(\text{red or green}) = P(\text{red}) + P(\text{green}) - P(\text{red and green})         `
+$$
 
 <!---
 Venn diagram?  Do we need this exposition though?
@@ -454,57 +468,3 @@ about the shortcuts, then you don't need the formal mathematics\--though
 it may improve your mathematical insight (or it may not). The resampling
 method dispenses not only with the shortcuts but also with the entire
 counting of points in the sample space.
-
-## Endnotes
-
-1.  The material in this chapter is largely drawn from Simon (1969; 3rd
-    edition with Paul Burstein, 1985).
-
-2.  A given probability may be expressed in terms of probability, odds,
-    or chances, and I shall use all three terms to help familiarize you
-    with them. If the chances are 1 in 10, the odds are 9 to 1, and the
-    probability is .1. If the odds are 2 to 5, the chances are 5 in 7,
-    and the probability is 5/7. If the odds are 99 to 1, the chances are
-    1 in 100, and the probability is .01. If the odds are 100 to 1, the
-    chances are 1 in 101, and the probability is 1/101. "Likelihood" is
-    a term related to "probability" but is not a complete synonym for
-    it.
-
-3.  I hope you are not offended by the references to gambling games in
-    the discussion of statistics in this and other chapters. Not only
-    was the theory of probability invented to answer questions about
-    gambling games, but gambling games still provide useful examples.
-
-4.  At one time, some writers believed there was a difference between
-    "objectively sharply defined" and "objectively vague" probabilities.
-    Raiffa gives a clear example of why this is not so:
-
-    Suppose you are confronted with two options. In option 1, you must
-    toss coin 1 (which is fair and true), guess heads or tails, and win
-    \$1.00 if you match and lose \$1.00 if you fail to match. In option
-    2, you have a 50-50 chance of getting coin 2, which has two heads,
-    or of getting coin 3, which has two tails. Not knowing whether you
-    are tossing coin 2 or 3, you must call, toss, and get the payoffs as
-    in option 1. With option 1, the probability of the toss coming out
-    heads is .5; with option 2, the same probability is either 0 or 1,
-    and since the chance of each in turn is .5, the probability of heads
-    is ultimately .5 once again. Nothing is to be gained by saying that
-    one-one-one .5 is sharply defined and that the other is fuzzy. Of
-    course, *if* , and this is a big "if," you could experiment with the
-    coin you will toss before you are obliged to declare, then the two
-    options are manifestly asymmetrical. Barring this privilege, the two
-    options are equivalent (Raiffa, 1968, p. 108).
-
-5.  "Universe" and "population" are perfect synonyms in scientific
-    research. I choose to use "universe" because it seems to have fewer
-    confusing associations.
-
-## Afternote: Useful hints about simple numbers
-
-A useful piece of shortcut knowledge: You can test whether two numbers
-are equal by subtracting one from the other; if they are equal, the
-result is zero.
-
-Another useful device: You can check whether two units are paired by
-giving one a minus and one a plus for the same number, and then adding
-them; if the pair appear together, the sum is zero.

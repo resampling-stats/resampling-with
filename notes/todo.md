@@ -58,3 +58,9 @@ showing only that an identifiable group has been underrepresented by as much
 as 10%. P. 380 U. S. 208.
 
 Redo simulation with proportion 0.26 * 0.9 = 0.234
+
+## Glossary
+
+`probability_theory_1a.Rmd` referred to a "Glossary", but in fact, the original
+book does not have one, either in PDF or in the printed text.  We should do
+one.
