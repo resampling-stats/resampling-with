@@ -47,8 +47,14 @@ buckets to estimate the probability of a *nice* day plus a win, and of a
 *nasty* day plus a win. But what if the Commanders' chances of winning are the
 same whether the day is nice or nasty? If so, we say that the chance of
 winning is *independent* of the kind of day. That is, in this special case,
-**P(win\|nice day) = P(win\|nasty day) and P(nice day and win) = P(nice day)
-\* P(winning\|nice day) = P(nice day) \* P(winning)**
+$$
+\begin{align*}
+P(\text{win | nice day}) = P(\text{win | nasty day}) \text{ and } P(\text{nice
+day and win}) \\
+= P(\text{nice day}) * P(\text{winning | nice day}) \\
+= P(\text{nice day}) * P(\text{winning})
+\end{align*}
+$$
 
 **Note:** See chapter 4's section on conditional and unconditional
 probabilities for an explanation of this notation.
@@ -56,11 +62,11 @@ probabilities for an explanation of this notation.
 In this case we need only one set of two buckets to make all the estimates.
 
 Independence means that the elements are drawn from 2 or more *separate
-sets of possibilities* . That is, **P(A\|B) = P(A\|\^B) = P(A) and vice
-versa** .
+sets of possibilities* . **That is, $P(A | B) = P(A | \ \hat{} B) = P(A)$ and
+vice versa** .
 
 <!---
-Work on explosition here.  Maybe note that independence means that chances of A following B are same as chances of A following not B.[
+Work on exposition here.  Maybe note that independence means that chances of A following B are same as chances of A following not B.[
 -->
 
 
@@ -74,15 +80,14 @@ probability that B will occur, and vice versa. If knowing whether A does
 occur alters the probability of B occurring, then A and B are dependent.
 
 If two events are independent, the multiplication rule simplifies to
-**p(A and B) = p(A) \* p(B)** . I'll repeat once more: **This rule is
+$P(A \text{ and } B) = P(A) * P(B)$ . I'll repeat once more: **This rule is
 simply a mathematical shortcut, and one can make the desired estimate by
 simulation.**
 
-Also again, if two events are *not* independent — that is, if P(A\|B) is
-not equal to P(A) because P(A) is dependent upon the occurrence of B,
-then the formula to be used now is, **p(A and B) = p(A\|B) \* p(B)** ,
-which is sufficiently confusing that you are probably better off with a
-simulation.
+Also again, if two events are *not* independent — that is, if $P(A | B)$ is not
+equal to $P(A)$ because $P(A)$ is dependent upon the occurrence of $B$, then the
+formula to be used now is, $P(A \text{ and } B) = P(A | B) * P(B)$ , which is
+sufficiently confusing that you are probably better off with a simulation.
 
 What about if each of the probabilities is dependent on the other
 outcome? There is no easy formulaic method to deal with such a
@@ -250,17 +255,24 @@ mutually-exclusive outcomes, the outcomes are *complementary* . It may
 be helpful to note that mutual exclusivity equals total dependence; if
 one outcome occurs, the other cannot. Hence we write formally that
 
-`           If p(A and B) = 0         `
+$$
+\text{If} P(A \text{ and } B) = 0
+$$
 
-`           P(A or B) = P(A) + P((B)         `
+then
 
-An outcome and its *absence* are mutually exclusive, and add to unity.
+$$
+P(A \text{ or } B) = P(A) + P(B)
+$$
 
-`           P(A) + P(^A) = 1.         `
+An outcome and its *absence* are mutually exclusive, and their probabilities
+add to unity.
 
-Examples include a) rain and no rain, and b) if P(sales \> \$1mil)
+$$
+P(A) + P(\ \hat{} A) = 1
+$$
 
-= .2, P(sales =\< \$1mil) = .8.
+Examples include a) rain and no rain, and b) if $P(\text{sales > \$1 million}) = 0.2$, then $P(\text{sales <= \$1 million}) = 0.8$.
 
 As with the multiplication rule, the addition rule can be a useful
 shortcut. The answer can always be obtained by simulation, too.
@@ -281,7 +293,9 @@ day might be both rainy and snowy, or you might wear both red and green
 coats on the same day, we write (in the latter case) P(red and green
 coats) \> 0, and the appropriate formula is
 
-`           P(red or green) = P(red) + p(green)—P(red and green)         `
+$$
+P(\text{red or green}) = P(\text{red}) + P(\text{green}) - P(\text{red and green})         `
+$$
 
 <!---
 Venn diagram?  Do we need this exposition though?
