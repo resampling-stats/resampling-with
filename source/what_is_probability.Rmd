@@ -84,7 +84,18 @@ cards.
 A probability estimate of .2 indicates that you think there is twice as great
 a chance of the event happening as if you had estimated a probability of .1.
 This is the rock-bottom interpretation of the term "probability," and the
-heart of the concept.
+heart of the concept. [^expressing-p]
+
+[^expressing-p]: A given probability may be expressed in
+  terms of probability, odds, or chances, and I shall use all
+  three terms to help familiarize you with them. If the
+  chances are 1 in 10, the odds are 9 to 1, and the
+  probability is .1. If the odds are 2 to 5, the chances are
+  5 in 7, and the probability is 5/7. If the odds are 99 to
+  1, the chances are 1 in 100, and the probability is .01. If
+  the odds are 100 to 1, the chances are 1 in 101, and the
+  probability is 1/101. "Likelihood" is a term related to
+  "probability" but is not a complete synonym for it.
 
 The idea of probability arises when you are not sure about what will happen in
 an uncertain situation. For example, you may lack information and therefore
@@ -192,10 +203,12 @@ See [@barnett1982comparative, chapter 3] for an in-depth
 discussion of different approaches to probability.
 
 The connection between gambling and immorality or vice troubles some people
-about gambling examples. On the other hand, the immediacy and consequences of
-the decisions that the gambler has to make give the subject a special tang.
-There are several reasons why statistics use so many gambling examples — and
-especially tossing coins, throwing dice, and playing cards:
+about gambling examples. On the other hand,
+the immediacy and consequences of the decisions that the
+gambler has to make give the subject a special tang. There
+are several reasons why statistics use so many gambling
+examples — and especially tossing coins, throwing dice, and
+playing cards:
 
 1.  *Historical* . The theory of probability began with gambling
     examples of dice analyzed by Cardano, Galileo, and then by Pascal
@@ -309,7 +322,7 @@ odd). Here are several general methods of estimation, where we define each metho
     that the life insurance company estimates on the basis of its
     "frequency series" of past death rates, and the manager's estimates
     of the sales of smart watches in December, based on sales in that month in
-    the past two years.
+    the past two years. [^fuzzy-probability]
 
     The concept of a probability based on a frequency series can be
     rendered almost useless when all the observations are repetitions of a
@@ -403,6 +416,26 @@ odd). Here are several general methods of estimation, where we define each metho
     on laboratory experiment, but rather on theorizing of various kinds —
     using pieces of prior experience wherever possible, of course. Any of
     these methods may be a combination of theoretical and empirical methods.
+
+[^fuzzy-probability]: At one time, some writers believed there was
+    a difference between "objectively sharply defined" and "objectively vague"
+    probabilities. Raiffa [-@raiffa1968decision] gives a clear example of why
+    this is not so:
+
+    Suppose you are confronted with two options. In option 1, you must toss
+    coin 1 (which is fair and true), guess heads or tails, and win \$1.00 if
+    you match and lose \$1.00 if you fail to match. In option 2, you have
+    a 50-50 chance of getting coin 2, which has two heads, or of getting coin
+    3, which has two tails. Not knowing whether you are tossing coin 2 or 3,
+    you must call, toss, and get the payoffs as in option 1. With option 1,
+    the probability of the toss coming out heads is .5; with option 2, the
+    same probability is either 0 or 1, and since the chance of each in turn is
+    .5, the probability of heads is ultimately .5 once again. Nothing is to be
+    gained by saying that one .5 is sharply defined and that the other is
+    fuzzy. Of course, *if* , and this is a big "if," you could experiment with
+    the coin you will toss before you are obliged to declare, then the two
+    options are manifestly asymmetrical. Barring this privilege, the two
+    options are equivalent [@raiffa1968decision, page 108].
 
 As an example of an organization struggling with kitchen-sink methods,
 consider the estimation of the probability of failure for the tragic flight of
