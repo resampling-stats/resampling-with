@@ -70,9 +70,7 @@ the benefit and cost of an additional sampled unit are equal.[^on-sample-size]
 [^on-sample-size]: Schlaifer [-@schlaifer1961introduction] attacks the
     sample-size problem in the wider context of decision making, costs, and
     benefits. The statistically knowledgeable reader can find an excellent
-    discussion of sample size in Hansen *et al.* [hansen1953sample]. A. Mace
-    gives many examples of the appropriate calculation in an engineering
-    framework.
+    discussion of sample size in Hansen *et al.* [-@hansen1953sample].
 
 The benefit of additional information is not easy to estimate even in
 applied research, and it is extraordinarily difficult to estimate in
@@ -107,12 +105,12 @@ Subject Matter**
 
 **Subject Matter National Regional**
 
-  ------------------------ -------- -------- ---------- -------- -------- -----
-  **Mode**                 **Q3**   **Q1**   **Mode**   **Q3**   **Q1**   
+  ------------------------ -------- -------- ---------- --------   -------- -----
+  Subject Matter           **Mode**  **Q3**   **Q1**     **Mode**  **Q3**    **Q1**
   Financial                1000+    ---      ---        100      400      50
   Medical                  1000+    1000+    500        1000+    1000+    250
   Other Behavior           1000+    ---      ---        700      1000     300
-  Attitudes                1000+    1000+    1500       700      1000     400
+  Attitudes                1000+    1000+    500        700      1000     400
   Laboratory Experiments   ---      ---      ---        100      200      50
   ------------------------ -------- -------- ---------- -------- -------- -----
 
@@ -122,13 +120,14 @@ Populations**
 **People or Households Institutions**
 
   ----------------------- -------------- ------------- -------------- -------------
+                          People or households         Institutions
   **Subgroup Analyses**   **National**   **Special**   **National**   **Special**
+  None or few             1000-1500      200-500       200-500        50-200
   Average                 1500-2500      500-1000      500-1000       200-500
   Many                    2500+          1000+         1000+          500+
   ----------------------- -------------- ------------- -------------- -------------
 
- SOURCE: From *Applied Sampling* , by Seymour Sudman, pp. 86-87.
-Copyright 1976 by Academic Press, reprinted by permission.
+ SOURCE: From *Applied Sampling*, by Seymour Sudman [-@sudman1976applied, pages 86 — 87] copyright Academic Press, reprinted by permission.
 
 Once again, the sample size ought to depend on the proportions of the
 sample that have the characteristics you are interested in, the extent
