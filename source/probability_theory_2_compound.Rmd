@@ -609,17 +609,25 @@ results, and "k" to denote our overall summary results. Or you could
 call it something like "scrbrd."
 
 How many trials (hands) should be made for the estimate? There is no
-easy answer [^how-many-trials]. One useful device is to run several (perhaps
-ten)
-equal sized sets of trials, and then examine whether the proportion of
+easy answer.[^how-many-trials] One useful device is to run several (perhaps
+ten) equal sized sets of trials, and then examine whether the proportion of
 pairs found in the entire group of trials is very different from the
-proportions found in the various subgroup sets. If the proportions of
-pairs in the various subgroups differ greatly from one another or from
-the overall proportion, then keep running additional larger subgroups of
-trials until the variation from one subgroup to another is sufficiently
-small for your purposes. While such a procedure would be impractical
-using a deck of cards or any other physical means, it requires little
-effort with the computer and RESAMPLING STATS.
+proportions found in the various subgroup sets. If the proportions of pairs in
+the various subgroups differ greatly from one another or from the overall
+proportion, then keep running additional larger subgroups of trials until the
+variation from one subgroup to another is sufficiently small for your
+purposes. While such a procedure would be impractical using a deck of cards or
+any other physical means, it requires little effort with the computer and
+RESAMPLING STATS.
+
+[^how-many-trials]: One simple rule-of-thumb is to quadruple the original
+    number. The reason for quadrupling is that four times as many iterations
+    (trials) of this resampling procedure give *twice* as much accuracy (as
+    measured by the standard deviation, the most frequent measurement of
+    accuracy). That is, the error decreases with the square root of the number
+    of iterations. If you see that you need *much* more accuracy, then
+    *immediately* increase the number of iterations even more than four times
+    — perhaps ten or a hundred times.
 
 **Another Introductory Poker Problem**
 
@@ -770,14 +778,3 @@ Chapter 7 discusses problems whose appropriate concept of a universe is
 finite, whereas Chapter 8 discusses problems whose appropriate concept
 of a universe is not finite. This general procedure will be discussed
 several times, with examples included.
-
-## Endnotes
-
-[^how-many-trials]: One simple rule-of-thumb is to quadruple the original
-number. The reason for quadrupling is that four times as many iterations
-(trials) of this resampling procedure give *twice* as much accuracy (as
-measured by the standard deviation, the most frequent measurement of accuracy).
-That is, the error decreases with the square root of the number of iterations.
-If you see that you need *much* more accuracy, then *immediately* increase the
-number of iterations even more than four times — perhaps ten or a hundred
-times.
