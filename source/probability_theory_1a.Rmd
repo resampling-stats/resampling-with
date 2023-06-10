@@ -25,24 +25,6 @@ source("_common.R")
 
 # Probability Theory, Part 1
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/08-Chap-4.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
-
 ## Introduction
 
 Let's assume we understand the nature of the system or mechanism that
@@ -443,7 +425,7 @@ either simulation or the formulaic method.
 include_svg('images/commanders_tree.svg')
 ```
 
-## The monte carlo simulation method (resampling)
+## The Monte Carlo simulation method (resampling)
 
 The steps we follow to simulate an answer to the compound probability
 question are as follows:
@@ -458,9 +440,9 @@ question are as follows:
 4.  If you have drawn a blue ball from bucket A, now draw a ball from
     bucket B, and if it is green, record "yes" on a score sheet;
     otherwise write "no."
-5.  Repeat steps 3-4 perhaps 1000 times.
+5.  Repeat steps 3-4 perhaps 10000 times.
 6.  Count the number of "yes" trials.
-7.  Compute the probability you seek as (number of "yeses"/ 1000).
+7.  Compute the probability you seek as (number of "yeses"/ 10000).
     (This is the same as (number of "yeses"/ (number of "yeses" +
     number of "noes")
 
@@ -469,8 +451,18 @@ intuition about probability and simulation methods. But the procedure
 can also be simulated with a computer. Using the {{< var lang >}} we produce
 an estimate as follows:
 
+:::::: {.notebook name="fine_win" title="Fine day and win"}
+
+::: nb-only
+This notebook calculates the chances that the Commanders win on a fine day.
+:::
+
 ```{python, opts.label="py_ed"}
+# Load the NumPy array library.
 import numpy as np
+
+# Make a random number generator
+rnd = np.random.default_rng()
 ```
 
 We make the weather 'bucket':
@@ -483,6 +475,27 @@ weather[:7] = 1
 print(weather)
 ```
 
+```{r, opts.label="r_ed"}
+# 0 = no rain, 1 = rain
+weather <- numeric(10)
+# Set the first 7 of 10 to have value 1.
+weather[1:7] <- 1
+print(weather)
+```
+
+:::{.r}
+:::{.callout-note}
+## `print` in R
+
+Notice that we are using the `print` function to show the values.  Previously
+we have used the `message` function for this job.  `print` shows the values in
+a slightly different way to `message`.  In particular, it displays the values
+in a vector in a more readable and less compact form than `message`.  We will
+be using both in this book, choosing one or the other depending on the value
+we want to show.
+:::
+:::
+
 The "Commanders win when there is no rain" bucket:
 
 ```{python, opts.label="py_ed"}
@@ -493,31 +506,71 @@ cmdrs_win_when_no_rain[:65] = 1
 print(cmdrs_win_when_no_rain)
 ```
 
+```{r, opts.label="r_ed"}
+# 0 = lose, 1 = win
+cmdrs_win_when_no_rain <- numeric(100)
+# Set the first 65 of 100 to have value 1.
+cmdrs_win_when_no_rain[1:65] <- 1
+print(cmdrs_win_when_no_rain)
+```
+
 Now do the simulation:
 
 ```{python, opts.label="py_ed"}
 # A counter to count the number of fine wins
 number_of_fine_wins = 0
 
-# Repeat trial procedure 1000 times
-for i in range(1000):
+# Repeat trial procedure 10000 times
+for i in range(10000):
     # draw one "ball" for the weather, store in "a"
     # 0 = rain, 1 = no rain
-    a = np.random.choice(weather)
-    if a == 0:  # rain: stop
-        continue  # Go back to the beginning of the loop
-    # if no rain, check on game outcome
-    # 0 = lose, 1 = win
-    b = np.random.choice(cmdrs_win_when_no_rain)
-    if b == 1:  # Commanders win
-        number_of_fine_wins = number_of_fine_wins + 1
+    a = rnd.choice(weather)
+    if a == 1:  # no rain
+        # if no rain, check on game outcome
+        # 0 = lose, 1 = win
+        b = rnd.choice(cmdrs_win_when_no_rain)
+        if b == 1:  # Commanders win
+            number_of_fine_wins = number_of_fine_wins + 1
     # End of trial, go back to the beginning until done.
 
-print(number_of_fine_wins / 1000)
+# Show the proportion of fine day + wins.
+prop = number_of_fine_wins / 10000
+print(prop)
 ```
 
+```{r, opts.label="r_ed"}
+# A counter to count the number of fine wins
+number_of_fine_wins <- 0
+
+# Repeat trial procedure 10000 times
+for (i in 1:10000) {
+    # draw one "ball" for the weather, store in "a"
+    # 0 = rain, 1 = no rain
+    a <- sample(weather, 1)
+    if (a == 1) {  # no rain
+        # if no rain, check on game outcome
+        # 0 = lose, 1 = win
+        b <- sample(cmdrs_win_when_no_rain, 1)
+        if (b == 1) {  # Commanders win
+            number_of_fine_wins <- number_of_fine_wins + 1
+        }
+    }
+    # End of trial, go back to the beginning until done.
+}
+
+# Show the proportion of fine day + wins.
+prop <- number_of_fine_wins / 10000
+print(prop)
+```
+
+<!---
+Have we covered if blocks at this point?
+-->
+
 The above procedure gives us the probability that it will be a nice day and
-the Commanders will win — about 45.5 percent.
+the Commanders will win — about `r round(get_var('prop'), 3) * 100`%.
+
+::::::
 
 With the aid of a bucket with a different composition — one made by
 substituting 55 blue and 45 yellow balls in Step 4 — a similar procedure
@@ -630,12 +683,10 @@ resampling (Monte Carlo simulation) method of estimating probabilities.
 Another way to obtain such conditional-probability statements is
 formulaic calculation. For example, if half the slips in the hat have
 numbers under 100 and half over 100, the probability of getting five in
-a row above 100 is 0.03125 — that is, 0.5 ^5^ , or
-
-.5 x 0.5 x 0.5 x 0.5 x 0.5, using the multiplication rule introduced above.
-But if you are not absolutely sure you know the proper mathematical
-formula, you are more likely to come up with a sound answer with the
-simulation method.
+a row above 100 is 0.03125 — that is, $0.5^5$, or 0.5 x 0.5 x 0.5 x 0.5 x 0.5,
+using the multiplication rule introduced above. But if you are not absolutely
+sure you know the proper mathematical formula, you are more likely to come up
+with a sound answer with the simulation method.
 
 Let's illustrate the concept of conditional probability with four
 cards — two aces and two 3's (or two black and two red). What is the
@@ -675,6 +726,26 @@ OR
     otherwise "N."
 6.  Repeat (1-5) 10000 times, and count the proportion of "Y's." That
     proportion equals the probability we seek to estimate.
+
+<!---
+The problem with writing code for this is that we need to introduce sampling with and without replacement.
+
+In Python:
+
+rnd.choice(cards)  # replace=True default
+rnd.choice(cards, replace=False)
+
+or, I guess, just use:
+
+rnd.permute(cards)
+
+In which case - we could introduce `permute` here, where we would still be using `sample` in the R case.
+
+In R:
+
+sample(cards, replace=TRUE)  # replace=FALSE default
+sample(cards)
+-->
 
 Now let's play the game differently, first picking one card and *putting it
 back and shuffling* before picking a second card. What are the results now? You
@@ -759,7 +830,7 @@ the trials with misses on the first shot, 1/3 will next have a hit, so
 the trials, 1/3 will then have a hit, or 2/3 x 1/3 x 1/3 = 2/27 equals
 the probability of the sequence miss-hit-hit.
 
-The multiplication rule is very useful in everyday life. It fits closely
-to a great many situations such as "What is the chance that it will rain
-(.3) and that (if it does rain) the plane will not fly (.8)?" Hence the
-probability of your not leaving the airport today is 0.3 x 0.8 = 0.24.
+The multiplication rule is very useful in everyday life. It fits closely to
+a great many situations such as "What is the chance that it will rain (.3) and
+that (if it does rain) the plane will not fly (.8)?" Hence the probability of
+your not leaving the airport today is 0.3 x 0.8 = 0.24.
