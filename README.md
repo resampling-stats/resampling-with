@@ -197,6 +197,55 @@ The value of `k` is `r get_var('k')`.
 :::
 ~~~
 
+## Content that should go only in the output notebooks
+
+The notebooks (above) get written out as separate documents.  By default, they may lack some context, if the reader can't see the preceding text in the chapter.  So, sometimes it's useful to put an introductory paragraph at the top of the notebook to give the context, but where that paragraph does not appear in the main text, like this:
+
+~~~
+::: {.notebook name="another_notebook" title="Another Notebook"}
+
+::: nb-only
+This appears only in the output notebook file, and not in the main text.
+:::
+
+```{python, opts.label="py_ed"}
+# A Python cell.
+k = 1
+```
+
+```{r, opts.label="r_ed"}
+# An R cell.
+k <- 1
+```
+:::
+~~~
+
+## Edition-specific content
+
+You have inline and block markup to put content into just the R edition, or just the Python edition:
+
+~~~
+::: r
+
+This only appears in the R edition
+:::
+
+::: python
+
+This only appears in the Python edition
+:::
+
+This content appears [only in the R edition]{.r}[just in the Python
+book]{.python}.
+~~~
+
+If you find yourself doing that often, you can define a version-dependent variable in the `text_variables.yml` file.  This gets built out into the `_variables.yml` file with your `make set-version-r` or `make set-version-python`.  Use it with e.g.
+
+~~~
+Here I have text that depends on the version of the book — {{< var my_var >}}
+— as determined by the `text_variables.yml` file.
+~~~
+
 ## Citations
 
 Citations are in [Pandoc format](https://pandoc.org/MANUAL.html#citations), as
