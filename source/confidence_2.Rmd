@@ -211,61 +211,66 @@ interpret it. There is a natural and almost irresistible tendency to
 talk about the probability that the mean of the universe lies within the
 intervals, but this has proven confusing and controversial.
 Interpretation in terms of a repeated process is not very satisfying
-intuitively ^1^ . In my view, it is not
+intuitively.[^intuitive-confidence]
 
-1 An example of this sort of interpretation is as follows: specific
-sample mean Xbar that we happen to observe is almost certain to be a bit
-high or a bit low. Accordingly, if we want to be reasonably confident
-that our inference is correct, we cannot claim that mu is precisely
-equal to the observed Xbar. Instead, we must construct an interval
-estimate or confidence interval of the form: mu = Xbar *+* sampling
-error
+[^intuitive-confidence]: An example of this sort of interpretation is as
+    follows: specific sample mean Xbar that we happen to observe is almost
+    certain to be a bit high or a bit low. Accordingly, if we want to be
+    reasonably confident that our inference is correct, we cannot claim that mu
+    is precisely equal to the observed Xbar. Instead, we must construct an
+    interval estimate or confidence interval of the form: mu = Xbar *+*
+    sampling error
 
-The crucial question is: How wide must this allowance for sampling error
-be? The answer, of course, will depend on how much Xbar fluctuates\...
+    The crucial question is: How wide must this allowance for sampling error
+    be? The answer, of course, will depend on how much Xbar fluctuates\...
 
-> Constructing 95% confidence intervals is like pitching horseshoes. In each
-> there is a fixed target, either the population mu or the stake. We are trying
-> to bracket it with some chancy device, either the random interval or the
-> horseshoe...
->
-> There are two important ways, however, that confidence intervals differ from
-> pitching horseshoes. First, only one confidence interval is customarily
-> constructed. Second, the target mu is not visible like a horseshoe stake.
-> Thus, whereas the horseshoe player always knows the score (and specifically,
-> whether or not the last toss bracketed the stake), the statistician does not.
-> He continues to "throw in the dark," without knowing whether or not a
-> specific interval estimate has bracketed mu. All he has to go on is the
-> statistical theory that assures him that, in the long run, he will succeed
-> 95% of the time. @wonnacott1990introductory, (p. 258).
+    Constructing 95% confidence intervals is like pitching horseshoes. In each
+    there is a fixed target, either the population mu or the stake. We are trying
+    to bracket it with some chancy device, either the random interval or the
+    horseshoe...
 
-Savage refers to this type of interpretation as follows: whenever its
-advocates talk of making assertions that have high probability, whether
-in connection with testing or estimation, they do not actually make such
-assertions themselves, but endlessly pass the buck, saying in effect,
-"This assertion has arisen according to a system that will seldom lead
-you to make false assertions, if you adopt it. As for myself, I assert
-nothing but the properties of the system."(1972, pp. 260261)
+    There are two important ways, however, that confidence intervals differ from
+    pitching horseshoes. First, only one confidence interval is customarily
+    constructed. Second, the target mu is not visible like a horseshoe stake.
+    Thus, whereas the horseshoe player always knows the score (and specifically,
+    whether or not the last toss bracketed the stake), the statistician does not.
+    He continues to "throw in the dark," without knowing whether or not a
+    specific interval estimate has bracketed mu. All he has to go on is the
+    statistical theory that assures him that, in the long run, he will succeed
+    95% of the time. @wonnacott1990introductory, (p. 258).
 
-Lee writes at greater length: "\[T\]he statement that a 95% confidence
-interval for an unknown parameter ran from 2 to +2 sounded as if the
-parameter lay in that interval with 95% probability and yet I was warned
-that all I could say was that if I carried out similar procedures time
-after time then the unknown parameters would lie in the confidence
-intervals I constructed 95% of the time.
+    Savage refers to this type of interpretation as follows: whenever its
+    advocates talk of making assertions that have high probability, whether in
+    connection with testing or estimation, they do not actually make such
+    assertions themselves, but endlessly pass the buck, saying in effect, "This
+    assertion has arisen according to a system that will seldom lead you to
+    make false assertions, if you adopt it. As for myself, I assert nothing but
+    the properties of the system." [@savage1972foundations, pages 260--261].
 
-"Subsequently, I discovered that the whole theory had been worked out in
-very considerable detail in such books as Lehmann (1959, 1986). But
-attempts such as those that Lehmann describes to put everything on a
-firm foundation raised even more questions." (Lee, 1989, p. vii)
+    Lee writes at greater length [@lee2012bayesian, preface to the first
+    edition]:
 
-worth arguing about any "true" interpretation of these computations. One
-could sensibly interpret the computations in terms of the odds a
-decisionmaker, given the evidence, would reasonably offer about the
-relative probabilities that the sample came from one of two specified
-universes (one of them probably being centered on the sample); this does
-provide some information on reliability, but this procedure departs from
-the concept of confidence intervals.
+    > ... the statement that a 95% confidence interval for an unknown parameter
+    ran from -2 to +2 sounded as if the parameter lay in that interval with 95%
+    probability and yet I was warned that all I could say was that if I carried
+    out similar procedures time after time then the unknown parameters would
+    lie in the confidence intervals I constructed 95% of the time. ...
+    >
+    > Subsequently, I discovered that the whole theory had been worked out in
+    very considerable detail in such books as Lehmann (1959 and 1986). But
+    attempts such as those that Lehmann describes to put everything on a firm
+    foundation raised even more questions. very considerable detail in such
+    books as Lehmann (1959, 1986). But attempts such as those that Lehmann
+    describes to put everything on a firm foundation raised even more
+    questions.
+
+In my view, it is not worth arguing about any "true" interpretation of these
+computations. One could sensibly interpret the computations in terms of the
+odds a decision maker, given the evidence, would reasonably offer about the
+relative probabilities that the sample came from one of two specified universes
+(one of them probably being centered on the sample); this does provide some
+information on reliability, but this procedure departs from the concept of
+confidence intervals.
 
 **Example 21-1: Counted Data: The Accuracy of Political Polls**
 
