@@ -221,35 +221,34 @@ population of Podunk or New York City means nothing at all, even though
 it intuitively seems to be important.
 
 The size of the sample must depend upon which population or
-subpopulations you wish to describe. For example, A. Kinsey's sample
-size would have seemed large, by customary practice, for generalizations
-about the United States population as a whole. But, as Kinsey explains:
-"The chief concern of the present study is an understanding of the
-sexual behavior of *each segment of the population* , and it is only
-secondarily concerned with generalization for the population as a whole"
-(Kinsey, et al., 1948, p. 82, italics added). Therefore Kinsey's sample
-had to include subsamples large enough to obtain the desired accuracy in
-*each* of these sub-universes. The U.S. Census offers a similar
-illustration. When the U.S. Bureau of the Census aims to estimate only a
-total or an average for the United States as a whole — as, for example,
-in the Current Population Survey estimate of unemployment — a sample of
-perhaps 50,000 is big enough. But the decennial census aims to make
+subpopulations you wish to describe. For example, Alfred Kinsey's sample size
+for the classic "Sexual Behavior in the Human Male" [-@kinsey1948sexual] would
+have seemed large, by customary practice, for generalizations about the United
+States population as a whole. But, as Kinsey explains: "... the chief concern
+of the present study is an understanding of the sexual behavior of *each
+segment of the population*, and that it is only secondarily concerned with
+generalization for the population as a whole." [-@kinsey1948sexual, page 82,
+italics added]. Therefore Kinsey's sample had to include subsamples large
+enough to obtain the desired accuracy in *each* of these sub-universes. The
+U.S. Census offers a similar illustration. When the U.S. Bureau of the Census
+aims to estimate only a total or an average for the United States as a whole —
+as, for example, in the Current Population Survey estimate of unemployment — a
+sample of perhaps 50,000 is big enough. But the decennial census aims to make
 estimates for all the various communities in the country, estimates that
 require adequate subsamples in each of these sub-universes; such is the
 justification for the decennial census' sample size of so many millions.
-Television ratings illustrate both types of purpose. Nielsen ratings,
-for example, are sold primarily to national network advertisers. These
-advertisers on national television networks usually sell their goods all
-across the country and are therefore interested primarily in the total
-United States viewership for a program, rather than in the viewership in
-various demographic subgroups. The appropriate calculations for Nielsen
-sample size will therefore refer to the total United States sample. But
-other organizations sell rating services to *local* television and radio
-stations for use in soliciting advertising over the local stations
-rather than over the network as a whole. Each local sample must then be
-large enough to provide reasonable accuracy, and, considered as a whole,
-the samples for the local stations therefore add up to a much larger
-sample than the Nielsen and other nationwide samples.
+Television ratings illustrate both types of purpose. Nielsen ratings, for
+example, are sold primarily to national network advertisers. These advertisers
+on national television networks usually sell their goods all across the
+country and are therefore interested primarily in the total United States
+viewership for a program, rather than in the viewership in various demographic
+subgroups. The appropriate calculations for Nielsen sample size will therefore
+refer to the total United States sample. But other organizations sell rating
+services to *local* television and radio stations for use in soliciting
+advertising over the local stations rather than over the network as a whole.
+Each local sample must then be large enough to provide reasonable accuracy,
+and, considered as a whole, the samples for the local stations therefore add
+up to a much larger sample than the Nielsen and other nationwide samples.
 
 The problem may be handled with the following RESAMPLING STATS program.
 This program represents viewers with random numbers between 1 and 100
