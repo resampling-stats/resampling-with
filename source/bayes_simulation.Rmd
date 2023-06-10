@@ -589,9 +589,9 @@ One may obtain an answer as follows:
 
 ## Fundamental problems in statistical practice
 
-Box and Tiao begin their classic exposition of Bayesian statistics
-with the analysis of a famous problem first published by Fisher
-(1959).
+Box and Tiao [-@box1992bayesian] begin their classic exposition of Bayesian
+statistics with the analysis of a famous problem first published by Fisher
+[-fisher1959statistical, page 18].
 
 > ...there are mice of two colors, black and brown. The black mice are
 > of two genetic kinds, homozygotes (*BB*) and heterozygotes (*Bb*),
@@ -606,7 +606,7 @@ Bb mated with bb   0           ½           ½
 Bb mated with Bb   ¼           ½           ¼
 ------------------ ----------- ----------- ----------
 
-: Probabilities for Genetic Character of Mice Offspring [@box2009bayesian, pp. 12-14] {#tbl-mice-genetics}
+: Probabilities for Genetic Character of Mice Offspring [@box1992bayesian, pp. 12-14] {#tbl-mice-genetics}
 
 Suppose we have a "test" mouse which has been produced
 by a mating between two (*Bb*) mice and is black.
@@ -622,8 +622,9 @@ But if that were true, then we would have expected to have seen some brown offsp
 Therefore, we sense that it may now be more likely that the parent was of type *BB* instead.
 How do we quantify that?
 
-One can calculate, as Fisher (1959, p.17) did, the probabilities after seeing the data (we call this the *posterior* probability).
-This is typically done using using Bayes' rule.
+One can calculate, as Fisher [-@fisher1959statistical, page 19] did, the
+probabilities after seeing the data (we call this the *posterior*
+probability). This is typically done using using Bayes' rule.
 
 But instead of doing that, let's take the easy route out and simulate
 the situation instead.
@@ -762,7 +763,7 @@ reasoning is subtle — a reason it has been the cause of controversy
 for more than two centuries. But it certainly is not easier to create a
 correct procedure using analytic tools (except in the cookbook sense of
 plug-and-pray). And the difficult mathematics that underlie the
-analytic method (see e.g. Box and Tiao, Appendix A1.1) make it almost
+analytic method (see e.g. [@box1992bayesian, Appendix A1.1] make it almost
 impossible for the statistician to fully understand the procedure from
 beginning to end. If one is interested in insight, the simulation procedure
 might well be preferred.[^sequentially]
