@@ -389,12 +389,12 @@ because they convert measured data to ranked or classified data.
 [^non-parametric]
 
 [^non-parametric]: Technical Note: The test described in this section is
-    nonparametric and therefore makes no assumptions about the shapes of the
+    non-parametric and therefore makes no assumptions about the shapes of the
     distributions, which is good because we would be on soft ground if we
     assumed normality in the pig-food case, given the sample sizes. This test
     does not, however, throw away information as do the rank and median tests
     illustrated earlier. And indeed, this test proves to be more powerful than
-    the other nonparametric tests. After developing this test, I discovered
+    the other non-parametric tests. After developing this test, I discovered
     that its general logic follows the tradition of the "randomization" tests,
     based on an idea by R.A. Fisher [-@fisher1935design; -@fisher1960design,
     chapter III, section 21] and worked out for the two-sample cases by E.J.G.
@@ -418,24 +418,21 @@ This example also illustrates how the *dispersion within samples*
 affects the difficulty of finding out whether the samples differ from
 each other. For example, the average weight gain for food A was 32
 pounds, versus 29 pounds for food B. If *all* the food A-fed pigs had
-gained weight within a range of say 29.9 and
-
-30.1 pounds, and if all the food B-fed pigs had gained weight within a
-range of 28.9 and 29.1 pounds — that is, if the highest weight gain in
-food B had been lower than the lowest weight gain in food A — then there
-would be no question that food A is better, and even fewer observations
-would have made this statistically conclusive. Variation (dispersion) is
-thus of great importance in statistics and in the social sciences. The
-larger the dispersion among the observations *within* the samples, the
-larger the *sample size* necessary to make a conclusive comparison
-between two groups or reliable estimates of summarization statistics.
-(The dispersion might be measured by the mean absolute deviation (the
-average absolute difference between the mean and the individual
-observations, treating both plus and minus differences as positive), the
-variance (the average *squared* difference between the mean and the
-observations), the standard deviation (the square root of the variance),
-the range (the difference between the smallest and largest
-observations), or some other device.)
+gained weight within a range of say 29.9 and 30.1 pounds, and if all the food
+B-fed pigs had gained weight within a range of 28.9 and 29.1 pounds — that is,
+if the highest weight gain in food B had been lower than the lowest weight gain
+in food A — then there would be no question that food A is better, and even
+fewer observations would have made this statistically conclusive. Variation
+(dispersion) is thus of great importance in statistics and in the social
+sciences. The larger the dispersion among the observations *within* the
+samples, the larger the *sample size* necessary to make a conclusive comparison
+between two groups or reliable estimates of summarization statistics. (The
+dispersion might be measured by the mean absolute deviation (the average
+absolute difference between the mean and the individual observations, treating
+both plus and minus differences as positive), the variance (the average
+*squared* difference between the mean and the observations), the standard
+deviation (the square root of the variance), the range (the difference between
+the smallest and largest observations), or some other device.)
 
 <!---
 Lots about dispersion here.  Needs better introduction?
@@ -841,15 +838,14 @@ is unlikely to have occurred by chance.
 
 **Example 18-4: Bootstrap Sampling with Replacement**
 
-Efron and Tibshirani (1993, p. 11) present this as their basic problem
-illustrating the bootstrap method: Seven mice were given a new medical
-treatment intended to improve their survival rates after surgery, and
-nine mice were not treated. The numbers of days the treated mice
-survived were 94, 38, 23, 197, 99, 16 and 14, whereas the numbers of
-days the untreated mice (the control group) survived were 52, 10, 40,
-104, 51, 27, 146, 30, and 46. The question we ask is: Did the treatment
-prolong survival, or might chance variation be responsible for the
-observed difference in mean survival times?
+Efron and Tibshirani [-@efron1993bootstrap, page 11] present this as their
+basic problem illustrating the bootstrap method: Seven mice were given a new
+medical treatment intended to improve their survival rates after surgery, and
+nine mice were not treated. The numbers of days the treated mice survived were
+94, 38, 23, 197, 99, 16 and 14, whereas the numbers of days the untreated mice
+(the control group) survived were 52, 10, 40, 104, 51, 27, 146, 30, and 46. The
+question we ask is: Did the treatment prolong survival, or might chance
+variation be responsible for the observed difference in mean survival times?
 
 We start by supposing the treatment did NOT prolong survival and that
 chance was responsible.

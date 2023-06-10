@@ -85,7 +85,7 @@ described in this book allow us to work directly with the underlying
 physical model by simulating it, rather than describing it with
 formulae. This general insight is also the heart of the specific
 technique Bradley Efron felicitously labeled 'the bootstrap'
-[-@efron1982jackknife], a device I introduced in 1969 that is now the most
+[-@efron1979bootstrap], a device I introduced in 1969 that is now the most
 commonly used, and best known, resampling method.
 
 The resampling approach was first tried with graduate students in 1966,
@@ -114,15 +114,15 @@ power and tools was an obstacle. (The advent of the personal computer in
 the 1980s changed that, of course.)
 
 Then in the late 1970s, Efron began to publish formal analyses of the
-bootstrap — an important resampling application. Interest among
-statisticians has exploded since then, in conjunction with the
-availability of easy, fast, and inexpensive computer simulations. The
-bootstrap has been the most widely used, but across-the-board
-application of computer intensive methods now seems at hand. As
-@noreen1989computer noted, "there is a computer-intensive alternative to just
-about every conventional parametric and nonparametric test." And the bootstrap
-method has now been hailed by an official *American Statistical Association*
-volume as the only "great breakthrough" in statistics since 1970 [@kotz1992breakthroughs].
+bootstrap — an important resampling application [@efron1979bootstrap]. Interest
+among statisticians has exploded since then, in conjunction with the
+availability of easy, fast, and inexpensive computer simulations. The bootstrap
+has been the most widely used, but across-the-board application of computer
+intensive methods now seems at hand. As @noreen1989computer noted, "there is a
+computer-intensive alternative to just about every conventional parametric and
+non-parametric test." And the bootstrap method has now been hailed by an
+official *American Statistical Association* volume as the only "great
+breakthrough" in statistics since 1970 [@kotz1992breakthroughs].
 
 It seems appropriate now to offer the resampling method as the technique
 of choice for beginning students as well as for the advanced
