@@ -978,20 +978,25 @@ can change the estimate radically, and therefore a large sample is
 needed for reliability). In such situations one should use additional
 outside information, or Normal distribution theory, or both.
 
-We can also create a confidence interval in the following fashion: We
-can first estimate the dispersion for a universe in the general
-neighborhood of the sample mean, using various devices to be
-"conservative," if we like ^1^ . Given the estimated dispersion, we then
-estimate the probability distribution of various amounts of error
-between observed sample means and the population mean. We can do this
-with resampling simulation as follows: a) Create other universes at
-various distances from the sample mean, but with other characteristics
-similar to the universe that we postulate for the immediate neighborhood
-of the sample, and b) experiment with those universes. One can also
-apply the same logic with a more conventional parametric approach, using
-general knowledge of the sampling distribution of the mean, based on
-Normal distribution theory or previous experience with resampling. We
-shall not discuss the latter method here.
+We can also create a confidence interval in the following fashion: We can
+first estimate the dispersion for a universe in the general neighborhood of
+the sample mean, using various devices to be "conservative," if we
+like.[^on-accuracy] Given the estimated dispersion, we then estimate the
+probability distribution of various amounts of error between observed sample
+means and the population mean. We can do this with resampling simulation as
+follows: a) Create other universes at various distances from the sample mean,
+but with other characteristics similar to the universe that we postulate for
+the immediate neighborhood of the sample, and b) experiment with those
+universes. One can also apply the same logic with a more conventional
+parametric approach, using general knowledge of the sampling distribution of
+the mean, based on Normal distribution theory or previous experience with
+resampling. We shall not discuss the latter method here.
+
+[^on-accuracy]: More about this later; it is, as I said earlier, not of
+    primary importance in estimating the accuracy of the confidence
+    intervals; note, please, that as we talk about the accuracy of statements
+    about accuracy, we are moving down the ladder of sizes of causes of
+    error.
 
 As with approach 1, we do not make any probability statements about
 where the population mean may be found. Rather, we discuss only what
@@ -1003,20 +1008,13 @@ If we are interested in (say) a 95 percent confidence interval, we want
 to find the distribution on each side of the sample mean that would
 produce a sample with a mean that far away only 2.5 percent of the time
 (2 \* .025 = 1-.95). A shortcut to find these "border distributions" is
-to plot the sampling distribu-
-
-2 More about this later; it is, as I said earlier, not of primary
-importance in estimating the accuracy of the confidence intervals; note,
-please, that as we talk about the accuracy of statements about accuracy,
-we are moving down the ladder of sizes of causes of error.
-
-tion of the mean at the *center* of the sample, as in Approach 1. Then
-find the (say) 2.5 percent cutoffs at each end of that distribution. On
-the assumption of equal dispersion at the two points along the line, we
-now reproduce the previously-plotted distribution with its centroid
-(mean) at those 2.5 percent points on the line. The new distributions
-will have 2.5 percent of their areas on the other side of the mean of
-the sample.
+to plot the sampling distribution of the mean at the *center* of the sample,
+as in Approach 1. Then find the (say) 2.5 percent cutoffs at each end of that
+distribution. On the assumption of equal dispersion at the two points along
+the line, we now reproduce the previously-plotted distribution with its
+centroid (mean) at those 2.5 percent points on the line. The new
+distributions will have 2.5 percent of their areas on the other side of the
+mean of the sample.
 
 **Example 21-8: Approach 2 for Counted Data: the Bush- Dukakis Poll**
 
