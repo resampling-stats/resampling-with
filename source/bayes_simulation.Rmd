@@ -321,11 +321,11 @@ P(B | R)
 $$
 
 We read this as "the probability that the car is broken given that the car is red".
-Such a probability is known as a *conditional probability*.  We discuss these in more details in Ch X
+Such a probability is known as a *conditional probability*.  We discuss these in more details in Ch TKTK.
 
 <!---
 **TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY**
--->.
+-->
 
 In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
 
@@ -340,17 +340,11 @@ $$
 P(B | A) = P(B \text{ and } A) / P(A)
 $$
 
-As we use $|$ to mean "GIVEN THAT", we can also use the $\cap$ symbol to mean "and":
-
-$$
-P(B | A) = P(B \cap A) / P(A)
-$$
-
 To put this generally, conditional probabilities for two events $X$ and $Y$ can be written as:
 
-$P(X | Y) = P(X \cap Y) / P(Y)$
+$P(X | Y) = P(X \text{ and } Y) / P(Y)$
 
-Where (again) $\cap$ means "and", i.e. that both happen simultaneously.
+Where (again) $\text{and}$ means that *both* events occur.
 
 **Example: conditional probability**
 
@@ -417,28 +411,36 @@ This gives around 0.006 or 0.6%.
 
 Now that we have a rough indication of what the answer should be, let's try and calculate it directly, based on the tree of informatiom shown earlier.
 
-We use $P^+$/$P^-$ to indicate COVID positive or negative, and
-$P(T^+)$/$P(T^-)$ to indicate positive or negative test results.
+We will use these abbreviations:
 
-You would like to know the probability of having COVID *given that* your test was negative.  Using the conditional probability relationship from above, we can write:
+* $C^+$ means Covid positive (you do actually have Covid).
+* $C^-$ means Covid negative (you do *not* actually have Covid).
+* $T^+)$ means the Covid *test* was positive.
+* $T^-)$ means the Covid *test* was negative.
+
+For example $P(C^+ | T^-)$ is the probability ($P$) that you do actually have Covid ($C^+$) *given that* ($|$) the test was negative ($T^-$).
+
+We would like to know the probability of having COVID *given that* your test
+was negative ($P(C^+ | T^-)$).  Using the conditional probability relationship
+from above, we can write:
 
 $$
-P(C^+ | T^-) = P(C^+ \cap T^-) / P(T^-)
+P(C^+ | T^-) = P(C^+ \text{ and } T^-) / P(T^-)
 $$
 
-We see from the tree diagram that $P(C^+ \cap T^-) = P(T^- | C^+) * P(C^+) = .4 * .015 = 0.006$.
+We see from the tree diagram that $P(C^+ \text{ and } T^-) = P(T^- | C^+) * P(C^+) = .4 * .015 = 0.006$.
 
 <!---
 **TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES**
 -->
 
-We observe that $P(T^-) = P(T^- \cap C^-) + P(T^- \cap C^+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
+We observe that $P(T^-) = P(T^- \text{ and } C^-) + P(T^- \text{ and } C^+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
 
-$P(T^- \cap C^-) = P(T^- | C^-) * P(C^-)$
+$P(T^- \text{ and } C^-) = P(T^- | C^-) * P(C^-)$
 
 and
 
-$P(T^- \cap C^+) = P(T^- | C^+) * P(C^+)$.
+$P(T^- \text{ and } C^+) = P(T^- | C^+) * P(C^+)$.
 
 We can now calculate
 
