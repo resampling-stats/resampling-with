@@ -526,20 +526,22 @@ The answer should be around 4450 USD.
 
 **Screening for Disease**
 
-<!- **TODO: SHALL WE REMOVE THIS PROBLEM, OR INTEGRATE PARTS OF ITS DESCRIPTION WITH THE COVID EXAMPLE?** -->
+<!---
+**TODO: SHALL WE REMOVE THIS PROBLEM, OR INTEGRATE PARTS OF ITS DESCRIPTION WITH THE COVID EXAMPLE?**
+-->
 
-This is a classic Bayesian problem (quoted by Tversky and Kahnemann,
-1982, pp. 153-154, from Cascells, Schoenberger, and Grayboys, 1978, p.
-999):
+This is a classic Bayesian problem (quoted by Tversky and Kahneman
+[-@tversky1982evidential, page 154], from Cascells *et al.*
+[-@cascells1978interpretation, page 999]):
 
-If a test to detect a disease whose prevalence is 1/1000 has a false
-positive rate of 5%, what is the chance that a person found to have a
-positive result actually has the disease, assuming you know nothing
-about the persons's symptoms or signs?
+> If a test to detect a disease whose prevalence is 1/1000 has a false
+positive rate of 5%, what is the chance that a person found to have a positive
+result actually has the disease, assuming you know nothing about the person's
+symptoms or signs?
 
-Tversky and Kahnemann note that among the respondents — students and
-staff at Harvard Medical School — "the most common response, given by
-almost half of the participants, was 95%," very much the wrong answer.
+Tversky and Kahneman note that among the respondents — students and staff at
+Harvard Medical School — "the most common response, given by almost half of
+the participants, was 95%" — very much the wrong answer.
 
 To obtain an answer by simulation, we may rephrase the question above
 with (hypothetical) absolute numbers as follows:
@@ -550,7 +552,7 @@ is, about 1 in a thousand) has been observed to have a false positive
 rate of 60 in 1200 observations, and never gives a negative result if a
 person really has the disease, what is the chance that a person found to
 have a positive result actually has the disease, assuming you know
-nothing about the persons's symptoms or signs?
+nothing about the person's symptoms or signs?
 
 If the raw numbers are not available, the problem can be phrased in such
 terms as "about 1 case in 1000" and "about 5 false positives in 100
@@ -579,13 +581,13 @@ One may obtain an answer as follows:
     small. And it is easy with a computer to do 10,000 trials very
     quickly.
 
-    Note that the respondents in the Cascells et al. study were not
-    naive; the medical staff members were supposed to understand
-    statistics. Yet most doctors and other personnel offered wrong
-    answers. If simulation can do better than the standard deductive
-    method, then simulation would seem to be the method of choice. And
-    only one piece of training for simulation is required: Teach the
-    habit of saying "I'll simulate it" and then actually doing so.
+    Note that the respondents in the Cascells *et al.* study were not naive;
+    the medical staff members were supposed to understand statistics. Yet most
+    doctors and other personnel offered wrong answers. If simulation can do
+    better than the standard deductive method, then simulation would seem to
+    be the method of choice. And only one piece of training for simulation is
+    required: Teach the habit of saying "I'll simulate it" and then actually
+    doing so.
 
 ## Fundamental problems in statistical practice
 
