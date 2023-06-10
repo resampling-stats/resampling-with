@@ -183,14 +183,16 @@ Make a notebook section with e.g.
 Stuff
 
 ```{python, opts.label="py_ed"}
-# A Python cell.
+# A Python cell - it only gets run in the Python edition.
 k = 1
 ```
 
 ```{r, opts.label="r_ed"}
-# An R cell
+# An R cell - it only gets run in the R edition
 k <- 1
 ```
+
+The value of `k` is `r get_var('k')`.
 
 :::
 ~~~
