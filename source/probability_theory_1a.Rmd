@@ -378,96 +378,74 @@ losing its next game.
 ## Joint probabilities
 
 Let's return now to the Commanders. We said earlier that our best guess of the
-probability that the Commanders will win the first game is 0.6. Let's complicate
-the matter a bit and say that the probability of the Commanders winning depends
-upon the weather; on a nice day we estimate a 0.65 chance of winning, on a nasty
-(rainy or snowy) day a chance of 0.55. It is obvious that we then want to know
-the chance of a nice day, and we estimate a probability of 0.7. Let's now ask
-the probability that both will happen — *it will be a nice day and the
-Commanders will win* .
+probability that the Commanders will win the first game is 0.6. Let's
+complicate the matter a bit and say that the probability of the Commanders
+winning depends upon the weather; on a nice day we estimate a 0.65 chance of
+winning, on a nasty (rainy or snowy) day a chance of 0.55. It is obvious that
+we then want to know the chance of a nice day, and we estimate a probability
+of 0.7. Let's now ask the probability that both will happen — *it will be
+a nice day and the Commanders will win* .
 
 Before getting on with the process of estimation itself, let's tarry a moment
 to discuss the probability estimates. Where do we get the notion that the
-probability of a nice day next Sunday is 0.7? We might have done so by checking
-the records of the past 50 years, and finding 35 nice days on that date. If we
-assume that the weather has not changed over that period (an assumption that
-some might not think reasonable, and the wisdom of which must be the outcome of
-some non-objective judgment), our probability estimate of a nice day would then
-be 35/50 = 0.7.
+probability of a nice day next Sunday is 0.7? We might have done so by
+checking the records of the past 50 years, and finding 35 nice days on that
+date. If we assume that the weather has not changed over that period (an
+assumption that some might not think reasonable, and the wisdom of which must
+be the outcome of some non-objective judgment), our probability estimate of
+a nice day would then be 35/50 = 0.7.
 
-Two points to notice here: 1) The source of this estimate is an
-objective "frequency series." And 2) the data come to us as the
-records of 50 days, of which 35 were nice. We would do best to stick
-with exactly those numbers rather than convert them into a single
-number — 70 percent. Percentages have a way of being confusing.
-(When his point score goes up from 2 to 3, my racquetball partner is
-fond of saying that he has made a "fifty percent increase"; that's
-just one of the confusions with percentages.) And converting to a
-percent loses information: We no longer know how many observations
+Two points to notice here: 1) The source of this estimate is an objective
+"frequency series." And 2) the data come to us as the records of 50 days, of
+which 35 were nice. We would do best to stick with exactly those numbers
+rather than convert them into a single number — 70 percent. Percentages have
+a way of being confusing. (When his point score goes up from 2 to 3, my
+racquetball partner is fond of saying that he has made a "fifty percent
+increase"; that's just one of the confusions with percentages.) And converting
+to a percent loses information: We no longer know how many observations
 the percent is based upon, whereas 35/50 keeps that information.
 
-Now, what about the estimate that the Commanders have a 0.65 chance of
-winning on a nice day — where does that come from? Unlike the
-weather situation, there is no long series of stable data to provide
-that information about the probability of winning. Instead, we
-*construct* an estimate using whatever information or "hunch" we
-have. The information might include the Commanders' record earlier in
-this season, injuries that have occurred, what the "experts" in the
-newspapers say, the gambling odds, and so on. The result certainly
-is not "objective," or the result of a stable frequency series. But
-we treat the 0.65 probability in quite the same way as we treat the
-.7 estimate of a nice day. In the case of winning, however, we
-produce an estimate expressed directly as a percent.
+Now, what about the estimate that the Commanders have a 0.65 chance of winning
+on a nice day — where does that come from? Unlike the weather situation, there
+is no long series of stable data to provide that information about the
+probability of winning. Instead, we *construct* an estimate using whatever
+information or "hunch" we have. The information might include the Commanders'
+record earlier in this season, injuries that have occurred, what the "experts"
+in the newspapers say, the gambling odds, and so on. The result certainly is
+not "objective," or the result of a stable frequency series. But we treat the
+0.65 probability in quite the same way as we treat the .7 estimate of a nice
+day. In the case of winning, however, we produce an estimate expressed
+directly as a percent.
 
-If we are shaky about the estimate of winning — as indeed we ought
-to be, because so much judgment and guesswork inevitably goes into
-it — we might proceed as follows: Take hold of a bucket and two bags
-of balls, green and red. Put into the bucket some number of green
-balls — say 10. Now add enough red balls to express your judgment
-that the *ratio* is the ratio of expected wins to losses on a nice
-day, adding or subtracting green balls as necessary to get the ratio
-you want. If you end up with 13 green and 7 red balls, then you are
-"modeling" a probability of 0.65, as stated above. If you end up with
-a different ratio of balls, then you have learned from this
-experiment with your own mind processes that you think that the
-probability of a win on a nice day is something other than 0.65.
+If we are shaky about the estimate of winning — as indeed we ought to be,
+because so much judgment and guesswork inevitably goes into it — we might
+proceed as follows: Take hold of a bucket and two bags of balls, green and
+red. Put into the bucket some number of green balls — say 10. Now add enough
+red balls to express your judgment that the *ratio* is the ratio of expected
+wins to losses on a nice day, adding or subtracting green balls as necessary
+to get the ratio you want. If you end up with 13 green and 7 red balls, then
+you are "modeling" a probability of 0.65, as stated above. If you end up with
+a different ratio of balls, then you have learned from this experiment with
+your own mind processes that you think that the probability of a win on a nice
+day is something other than 0.65.
 
-Don't put away the bucket. We will be using it again shortly. And keep
-in mind how we have just been using it, because our use later will
-be somewhat different though directly related.
+Don't put away the bucket. We will be using it again shortly. And keep in mind
+how we have just been using it, because our use later will be somewhat
+different though directly related.
 
-One good way to begin the process of producing a compound estimate
-is by portraying the available data in a "tree diagram" like Figure
-4-1. The tree diagram shows the possible events in the order in
-which they might occur. A tree diagram is extremely valuable whether
-you will continue with either simulation or the formulaic method.
+One good way to begin the process of producing a compound estimate is by
+portraying the available data in a "tree diagram" like @fig-commanders-tree.
+The tree diagram shows the possible events in the order in which they might
+occur. A tree diagram is extremely valuable whether you will continue with
+either simulation or the formulaic method.
 
-![](images/08-Chap-4_000.png)
+```{r fig-commanders-tree, echo=FALSE, fig.align='center', fig.cap="Tree diagram"}
+include_svg('images/commanders_tree.svg')
+```
 
-![](images/08-Chap-4_001.png)
+## The monte carlo simulation method (resampling)
 
-nice day (P = 0.7)
-
-Commanders win (P = 0.65)
-
-= 0.455 (Probability of nice day *and* Commanders win)
-
-Commanders lose (P = 0.35)
-
-Commanders win (P = 0.55)
-
-Commanders lose (P = 0.45)
-
-![](images/08-Chap-4_002.png)
-
-nasty day (P = 0.3)
-
-**Figure 4-1: Tree Diagram**
-
-The monte carlo simulation method (resampling)
-----------------------------------------------
-
-The steps we follow to simulate an answer to the compoundprobability
+The steps we follow to simulate an answer to the compound probability
 question are as follows:
 
 1.  Put seven blue balls (for "nice day") and three yellow balls
@@ -488,8 +466,8 @@ question are as follows:
 
 Actually doing the above series of steps by hand is useful to build your
 intuition about probability and simulation methods. But the procedure
-can also be simulated with a computer. Using the language RESAMPLING
-STATS, we produce an estimate as follows:
+can also be simulated with a computer. Using the {{< var lang >}} we produce
+an estimate as follows:
 
 ```{python, opts.label="py_ed"}
 import numpy as np
@@ -538,49 +516,51 @@ for i in range(1000):
 print(number_of_fine_wins / 1000)
 ```
 
-The above procedure gives us the probability that it will be a nice day
-and the Commanders will win — about 45.5 percent.
+The above procedure gives us the probability that it will be a nice day and
+the Commanders will win — about 45.5 percent.
 
 With the aid of a bucket with a different composition — one made by
 substituting 55 blue and 45 yellow balls in Step 4 — a similar procedure
 yields the chance that it will be a *nasty* day and the Commanders will win.
 With a similar substitution and procedure we could also estimate the
-probabilities that it will be a nasty day and the Commanders will lose, and a
-nice day and the Commanders will lose. The sum of these probabilities should
-come close to unity, because the sum includes all the possible outcomes.
-But it will not *exactly* equal unity because of what we call "sampling
-variation" or "sampling error."
+probabilities that it will be a nasty day and the Commanders will lose, and
+a nice day and the Commanders will lose. The sum of these probabilities should
+come close to unity, because the sum includes all the possible outcomes. But
+it will not *exactly* equal unity because of what we call "sampling variation"
+or "sampling error."
 
-Please notice that each trial of the procedure begins with the same
-numbers of balls in the buckets as the previous trial. That is, you must
-replace the balls you draw after each trial in order that the
-probabilities remain the same from trial to trial. Later we will discuss
-the general concept of replacement versus non-replacement more fully.
+Please notice that each trial of the procedure begins with the same numbers of
+balls in the buckets as the previous trial. That is, you must replace the
+balls you draw after each trial in order that the probabilities remain the
+same from trial to trial. Later we will discuss the general concept of
+replacement versus non-replacement more fully.
 
 ## The deductive formulaic method
 
-It also is possible to get an answer with formulaic methods to the
-question about a nice day and the Commanders winning. The following
-discussion of nice-day-Commanders-win handled by formula is a prototype of
-the formulaic deductive method for handling other problems.
+It also is possible to get an answer with formulaic methods to the question
+about a nice day and the Commanders winning. The following discussion of
+nice-day-Commanders-win handled by formula is a prototype of the formulaic
+deductive method for handling other problems.
 
-Return now to the tree diagram (Figure 4-1) above. We can read from the
-tree diagram that 70 percent of the time it will be nice, and of that 70
-percent of the time, 65 percent of the games will be wins. That is, 0.65
-\* 0.7 = 0.455 = the probability of a nice day and a win. That is the
-answer we seek. The method seems easy, but it also is easy to get
-confused and obtain the wrong answer.
+Return now to the tree diagram (@fig-commanders-tree) above. We can
+read from the tree diagram that 70 percent of the time it will be nice, and of
+that 70 percent of the time, 65 percent of the games will be wins. That is,
+0.65 \* 0.7 = 0.455 = the probability of a nice day and a win. That is the
+answer we seek. The method seems easy, but it also is easy to get confused and
+obtain the wrong answer.
 
 ## Multiplication rule
 
-We can generalize what we have just done. The foregoing formula
-exemplifies what is known as the "multiplication rule":
+We can generalize what we have just done. The foregoing formula exemplifies
+what is known as the "multiplication rule":
 
-`           P(nice day and win) = P(nice day)* P(winning|nice day)         `
+$$
+P(\text{nice day and win}) = P(\text{nice day}) * P(\text{winning | nice day})
+$$
 
 where the vertical line in P(winning\|nice day) means "conditional
-upon." That is, the vertical line indicates a "conditional probability,"
-a concept we must consider in a minute.
+upon" or "given that."  That is, the vertical line indicates a "conditional
+probability," a concept we must consider in a minute.
 
 The multiplication rule is a formula that produces the probability of
 the *combination (juncture) of two or more events* . More discussion of
@@ -595,31 +575,28 @@ It is the appropriate concept when many factors, all small relative to
 each other rather than one force having an overwhelming influence,
 affect the outcome.
 
-A *conditional* probability is formally written P(Commanders win\|rain)
+A *conditional* probability is formally written $P(\text{Commanders win
+| rain}) = 0.65$, and it is read "The probability that the Commanders will win
+if (given that) it rains is 0.65." It is the appropriate concept when there is
+one (or more) major event of interest in decision contexts.
 
-= 0.65, and it is read "The probability that the Commanders will win if (given
-that) it rains is 0.65." It is the appropriate concept when there is one
-(or more) major event of interest in decision contexts.
-
-Let's use another football example to explain conditional and
-unconditional probabilities. In the year this is being written, the
-University of Maryland has an unpromising football team. Someone may
-nevertheless ask what chance the team has of winning the post season
-game at the bowl to which only the best team in the University of
-Maryland's league is sent. One may say that *if* by some miracle the
-University of Maryland does get to the bowl, its chance would be a bit
-less than 50- 50 — say, 0.40. That is, the probability of its winning,
-*conditional* on getting to the bowl is 0.40. But the chance of its
-getting to the bowl at all is very low, perhaps 0.01. If so, the
-unconditional probability of winning at the bowl is the probability of
-its getting there multiplied by the probability of winning *if* it gets
-there; that is, 0.01 x 0.40 = 0.004. (It would be even better to say that
-.004 is the probability of winning conditional only on having a team,
-there being a league, and so on, all of which seem almost sure things.)
-Every probability is conditional on many things — that war does not
-break out, that the sun continues to rise, and so on. But if all those
-unspecified conditions are very sure, and can be taken for granted, we
-talk of the probability as unconditional.
+Let's use another football example to explain conditional and unconditional
+probabilities. In the year this was being written, the University of Maryland
+had an unpromising football team. Someone may nevertheless ask what chance the
+team had of winning the post season game at the bowl to which only the best
+team in the University of Maryland's league is sent. One may say that *if* by
+some miracle the University of Maryland does get to the bowl, its chance would
+be a bit less than 50- 50 — say, 0.40. That is, the probability of its
+winning, *conditional* on getting to the bowl is 0.40. But the chance of its
+getting to the bowl at all is very low, perhaps 0.01. If so, the unconditional
+probability of winning at the bowl is the probability of its getting there
+multiplied by the probability of winning *if* it gets there; that is, 0.01
+x 0.40 = 0.004. (It would be even better to say that .004 is the probability
+of winning conditional only on having a team, there being a league, and so on,
+all of which seem almost sure things.) Every probability is conditional on
+many things — that war does not break out, that the sun continues to rise, and
+so on. But if all those unspecified conditions are very sure, and can be taken
+for granted, we talk of the probability as unconditional.
 
 A conditional probability is a statement that the probability of an
 event is such-and-such *if* something else is so-and-so; it is the "if"
