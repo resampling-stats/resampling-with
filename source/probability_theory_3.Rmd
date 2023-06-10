@@ -140,7 +140,14 @@ and inferential statistics (Chapters 14 to 22.)
 
 ## Example 7-2: Three Daughters Among Four Children
 
-This problem illustrates a problem with two outcomes (Binomial \[1\]) and sampling with Replacement Among Equally Likely Outcomes.
+This problem illustrates a problem with two outcomes (Binomial [^binomial])
+and sampling with Replacement Among Equally Likely Outcomes.
+
+[^binomial]: Conventional labels such as "binomial" are used here for general
+    background and as guideposts to orient the student of conventional
+    statistics. You do not need to know these labels to understand the
+    resampling approach; one of the advantages of resampling is that it avoids
+    errors resulting from incorrect pigeonholing of problems.
 
 What is the probability that exactly three of the four children in a
 four-child family will be daughters?
@@ -263,12 +270,16 @@ each time so that each card is dealt from a full deck. This method is
 known as *sampling with replacement* . One samples with replacement
 whenever the successive events are *independent* ; in this case we
 assume that the chance of having a daughter remains the same (1 girl in
-2 births) no matter what sex the previous births were \[2\]. But, if the
+2 births) no matter what sex the previous births were [^what-sex]. But, if the
 first card dealt is black and would *not* be replaced, the chance of the
-second card being black would no longer be 26 in 52 (.50), but rather 25
-in 51 (.49), if the first *three* cards are black and would not be
-replaced, the chances of the fourth card's being black would sink to 23
-in 49 (.47).
+second card being black would no longer be 26 in 52 (.50), but rather 25 in 51
+(.49), if the first *three* cards are black and would not be replaced, the
+chances of the fourth card's being black would sink to 23 in 49 (.47).
+
+[^what-sex]: This assumption is slightly contrary to scientific fact. A better
+    example would be: What is the probability that four mothers delivering
+    successively in a hospital will all have daughters? But that example has
+    other difficulties — which is the way science always is.
 
 To push the illustration further, consider what would happen if we used
 a deck of only six cards, half (3 of 6) black and half (3 of 6) red,
@@ -1064,7 +1075,6 @@ for i in range(1000):
 plt.hist(fake_diffs)
 plt.title(
     'Difference in average prices (cents) (Actual difference = \$0.49)');
-
 ```
 
 The results shown above — not even one "success" in 1,000 trials — imply
@@ -1084,17 +1094,3 @@ excluded from the analysis because of data complexities).
 Chapter 19 generalizes what we have done in the probability problems
 above into a general procedure, which will in turn be a subpart of a
 general procedure for all of resampling.
-
-## Endnotes
-
-1.  Conventional labels such as "binomial" are used here for general
-    background and as guideposts to orient the student of conventional
-    statistics. You do not need to know these labels to understand the
-    resampling approach; one of the advantages of resampling is that it
-    avoids errors resulting from incorrect pigeonholing of problems.
-
-2.  This assumption is slightly contrary to scientific fact. A better
-    example would be: What is the probability that four mothers
-    delivering successively in a hospital will all have daughters? But
-    that example has other difficulties — which is the way science
-    always is.
