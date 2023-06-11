@@ -975,7 +975,7 @@ Table 15-4 (divided into "high" and "low" cholesterol by Kahn and Sempos).
 
 Table 15-4
 
-**Development of Mycardial Infarction in Framingham After 16 Years**
+**Development of Myocardial Infarction in Framingham After 16 Years**
 
 **Men Age 35-44, by Level of Serum Cholesterol**
 
@@ -1428,22 +1428,22 @@ NUMBERS 1,5 ranks
 ' step 3 above
 REPEAT 1000
     ' step 7
+    SHUFFLE ranks ranks$
+    ' step 3
+    TAKE ranks$ 1,2 closer
+    ' step 4
+    TAKE ranks$ 3,5 further
+    ' step 4
+    MEAN closer m_close
+    ' step 5
+    MEAN farther m_far
+    ' step 5
+    SUBTRACT m_close m_far diff
+    ' step 6
+    SCORE diff z
+    ' step 6
 END
 ' step 7
-SHUFFLE ranks ranks$
-' step 3
-TAKE ranks$ 1,2 closer
-' step 4
-TAKE ranks$ 3,5 further
-' step 4
-MEAN closer m_close
-' step 5
-MEAN farther m_far
-' step 5
-SUBTRACT m_close m_far diff
-' step 6
-SCORE diff z
-' step 6
 COUNT z >=1.6 k
 ' step 8
 DIVIDE k 1000 prob
