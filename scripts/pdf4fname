@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+""" Return path to PDF chapter for filename
+"""
+
+import re
+from pathlib import Path
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
+
+
+YAML_HDR = re.compile(r'^---$.*^---$', re.S | re.M)
+ED2_INFO = re.compile(r'^\s+ed2_fname\s*:\s*(.*)\s*$', re.M)
+
+
+def get_parser():
+    parser = ArgumentParser(description=__doc__,  # Usage from docstring
+                            formatter_class=RawDescriptionHelpFormatter)
+    parser.add_argument('fname',
+                        help='Filename of Rmd chapter')
+    return parser
+
+
+def main():
+    parser = get_parser()
+    args = parser.parse_args()
+    pth = Path(args.fname)
+    content = pth.read_text()
+    match = YAML_HDR.search(content)
+    if not match:
+        raise RuntimeError('Cannot find YAML header in ' + args.fname)
+    match = ED2_INFO.search(match.group())
+    if not match:
+        raise RuntimeError('Cannot find ed2 info in ' + args.fname)
+    pdf_pth = pth.parent / '..' / (match.groups()[0] + '.pdf')
+    print(pdf_pth.resolve())
+
+
+if __name__ == '__main__':
+    main()
