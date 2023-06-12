@@ -41,7 +41,7 @@ r-html-book: ../r-book/index.html
 r-pdf-book: ../r-book/resampling-with-r.pdf
 
 clean:
-	rm -rf *_cache/ .quarto/ notebooks/*
+	rm -rf *_cache/ .quarto/ notebooks/* ../*-book/index.html ../*-book/resampling-with*.pdf
 
 check-simon-refs :
 	biber --tool -V simon_refs.bib
