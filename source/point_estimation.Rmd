@@ -69,10 +69,8 @@ about the effects of a drug treatment, or the incomes of a nation, there
 are many questions that one may wish to answer. The *average* effect or
 income is a frequent and important object of our interest. But one may
 also wish to know about the amount of *dispersion* in the distribution
-of treatment effects, or of incomes, or the sym-
-
-metry of the distribution. And there are still other questions one may
-wish to answer.
+of treatment effects, or of incomes, or the symmetry of the distribution. And
+there are still other questions one may wish to answer.
 
 Even if we focus on the average, the issue often is less clear cut than
 we may think at first. If we are to choose a single number to
@@ -123,14 +121,14 @@ that people will vote exactly as they say they will. The statistical
 question then facing you is: What proportion of the voters in Maryland
 will vote for the Democrat in the general election?
 
-Your intuitive best guess is that the proportion of the
-"universe" — which is composed of voters in the general election, in
-this case — will be the same as the proportion of the sample. That is,
-58 percent = 29/50 is likely to be your guess about the proportion that
-will vote Democratic. Of course, your estimate may be too high or too
-low in this particular case, but in the long run — that is, if you take
-many samples like this one — on the average the sample mean will equal
-the universe (population) proportion, for reasons to be discussed later.
+Your intuitive best guess is that the proportion of the "universe" — which is
+composed of voters in the general election, in this case — will be the same as
+the proportion of the sample. That is, 58 percent = 29/50 is likely to be your
+guess about the proportion that will vote Democratic. Of course, your estimate
+may be too high or too low in this particular case, but in the long run — that
+is, if you take many samples like this one — on the average the sample mean
+will equal the universe (population) proportion, for reasons to be discussed
+later.
 
 The sample mean seems to be the "natural" estimator of the population
 mean in this and many other cases. That is, it seems quite natural to
@@ -163,13 +161,11 @@ We'll return to this subject when we discuss criteria of methods.
 **Expected Value and the Method of Moments**
 
 Consider this gamble: You and another person roll a die. If it falls
-with the "6" upwards you get \$4, and otherwise you pay
-
-\$1. If you play 120 times, at the end of the day you would expect to
-have (20\*\$4 - 100\*\$1 =) -\$20 dollars. We say that -\$20 is your
-"expected value," and your expected value per roll is (-\$20/120 =)
-\$.166 or the loss of 1/6 of a dollar. If you get \$5 instead of \$4,
-your expected value is \$0.
+with the "6" upwards you get \$4, and otherwise you pay \$1. If you play 120
+times, at the end of the day you would expect to have (20\*\$4 - 100\*\$1 =)
+-\$20 dollars. We say that -\$20 is your "expected value," and your expected
+value per roll is (-\$20/120 =) \$.166 or the loss of 1/6 of a dollar. If you
+get \$5 instead of \$4, your expected value is \$0.
 
 This is exactly the same idea as the method of moments, and we even use
 the same term — "expected value," or "expectation" — for the outcome of
@@ -395,7 +391,7 @@ probabilities in the abstract, without reference to some set of facts.
 In the abstract, the notion of accuracy loses any meaning, and invites
 confusion and argument.
 
-## Uses of the mean
+## Uses of the mean {#sec-uses-of-mean}
 
 Let's consider when the use of a device such as the mean is valuable, in
 the context of the data on marksmen in Table 13-1.[^gnedenko]. If we wish to
@@ -437,12 +433,9 @@ When we turn to comparing marksman C to marksman D, however, we cannot
 say that one "dominates" the other as we could with the comparison of
 marksmen A and B. Therefore, we turn to a summarizing device. One such
 device that is useful here is the mean. For marksman C the mean score is
-(40\*1)
-
-\+ (10\*2) + (50\*3) = 210, while for marksman D the mean score is
-(10\*1) + (60\*2) + (30\*3) = 220. Hence we can say that D is better
-than C even though D's score does not dominate C's score in the bullseye
-category.
+(40\*1) + (10\*2) + (50\*3) = 210, while for marksman D the mean score is
+(10\*1) + (60\*2) + (30\*3) = 220. Hence we can say that D is better than
+C even though D's score does not dominate C's score in the bullseye category.
 
 Another use of the mean [@gnedenko1962elementary, p. 68] is shown in the
 estimation of the number of matches that we need to start fires for an
@@ -464,10 +457,8 @@ Table 13-2
 If you know that the operator will be lighting twenty fires, you can
 estimate the number of matches that s/he will need by multiplying the
 mean number of matches (which turns out be 1\*.07 + 2\*0.16 + 3\* 0.55 +
-4\*0.21 + 5\*0.01 = 2.93 ) in the ob-
-
-served experience by 20. Here you are using the mean as an indication of
-a representative case.
+4\*0.21 + 5\*0.01 = 2.93 ) in the observed experience by 20. Here you are using
+the mean as an indication of a representative case.
 
 It is common for writers to immediately produce the data in the forms of
 percentages or probabilities. But I think it is important to include in
@@ -523,10 +514,10 @@ population — the two issues blend. What does that tell us? Anything?
 What is the relationship between a baseball player's average for two
 weeks, and his/her lifetime average? This is subtle stuff — rivaling the
 subtleness of arguments about inference versus probability, and about
-the nature of confidence limits (see Chapters 20 and 21). Maybe the only
-solid answer is to try to stay super-clear on what you are doing for
-what purpose, and to ask continually what job you want the statistic (or
-describer) to do for you.
+the nature of confidence limits (see @sec-confidence-accuracy and
+@sec-confidence-two-approaches ). Maybe the only solid answer is to try to stay
+super-clear on what you are doing for what purpose, and to ask continually what
+job you want the statistic (or describer) to do for you.
 
 The issue of the relationship of sample size to population size arises
 here. If the sample size equals or approaches the population size, the
@@ -542,13 +533,13 @@ an estimate — and the resampling method breaks down, too. It does not
 help much to shift the discussion to the models of the buckets, because
 then the issue is the unknown population of the buckets, in which case we
 need to bring in our general knowledge. b) When the sample size equals
-or is close to the population size, as discussed in Chapter 13, the data
-are a description rather than an estimate, because the sample is getting
-to be much the same as the universe; that is, if there are twelve people
-in your family, and you randomly take a sample of the amount of sugar
-used by eight members of the family, the results of the sample cannot be
-very different than if you compute the amount for all twelve family members.
-In such a case, the interpretation of the mean becomes complex.
+or is close to the population size, as discussed in this section, the data are
+a description rather than an estimate, because the sample is getting to be much
+the same as the universe; that is, if there are twelve people in your family,
+and you randomly take a sample of the amount of sugar used by eight members of
+the family, the results of the sample cannot be very different than if you
+compute the amount for all twelve family members. In such a case, the
+interpretation of the mean becomes complex.
 
 Underlying all estimation is the assumption of continuation, which
 follows from random sampling — that there is no reason to expect the
