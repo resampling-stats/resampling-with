@@ -23,7 +23,7 @@ resampling_with:
 source("_common.R")
 ```
 
-# Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals
+# Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals {#sec-confidence-two-approaches}
 
 :::{.callout-warning}
 ## Draft page partially ported from original PDF
@@ -201,10 +201,9 @@ the histograms of the sample means produced with this procedure.
 Operationally, we use the observed sample mean, together with an
 estimate of the dispersion from the sample, to estimate a mean and
 dispersion for the population. Then with reference to the sample mean we
-state a combination of a dis-
-
-tance (on each side) and a probability pertaining to the population
-mean. The computational examples will illustrate this procedure.
+state a combination of a distance (on each side) and a probability pertaining
+to the population mean. The computational examples will illustrate this
+procedure.
 
 Once we have obtained a numerical answer, we must decide how to
 interpret it. There is a natural and almost irresistible tendency to
@@ -290,9 +289,9 @@ population? (The proportion is the mean of a binomial population or
 sample, of course.) More broadly, within which bounds could one
 confidently believe that the population proportion was likely to lie? At
 this stage of the work, we must already have translated the conceptual
-question (in this case, a decisionmaking question from the point of view
-of the candidates) into a statistical question. (See Chapter 14 on
-translating questions into statistical form.)
+question (in this case, a decision-making question from the point of view of
+the candidates) into a statistical question. (See Chapter 14 on translating
+questions into statistical form.)
 
 ***What is the purpose*** to be served by answering this question? There
 is no sharp and clear answer in this case. The goal could be to satisfy
@@ -833,11 +832,10 @@ of confidence intervals. The bootstrap method may also be used to
 calculate the appropriate sample size for experiments and surveys,
 another important topic in statistics.
 
-Consider for now just the data for the sub-group of 135 highcholesterol
-men in Table 15-4. Our second classic statistical question is as
-follows: How much confidence should we have that if we were to take a
-much larger sample than was actually obtained, the sample mean (that is,
-the proportion 10/135
+Consider for now just the data for the sub-group of 135 high-cholesterol men in
+Table 15-4. Our second classic statistical question is as follows: How much
+confidence should we have that if we were to take a much larger sample than was
+actually obtained, the sample mean (that is, the proportion 10/135
 
 = .07) would be in some close vicinity of the observed sample mean? Let
 us first carry out a resampling procedure to answer the questions,

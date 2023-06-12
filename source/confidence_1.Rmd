@@ -118,11 +118,6 @@ Let's put it differently: It is all very well to say — as one logically
 may — that *on average* the sample mean (or other point estimator)
 equals a population parameter in most situations.
 
-Chapter 20 — Confidence Intervals, Par t 1: Assessing the Accuracy of
-Samples
-
-**309**
-
 But what about the result of any *particular* sample? How accurate or
 inaccurate an estimate of the population mean is the sample likely to
 produce?
@@ -206,11 +201,6 @@ observed sample. But we cannot infer the probability that that sample
 was drawn from any given universe in the absence of knowledge of the
 other possible sources of the sample. That is a subtle difference, I
 know, but I hope that the following discussion makes it understandable.
-
-Chapter 20 — Confidence Intervals, Par t 1: Assessing the Accuracy of
-Samples
-
-**311**
 
 ## Computing confidence intervals
 
@@ -297,11 +287,6 @@ To simplify, we consider variation along only one dimension — that is,
 on (say) a north-south line rather than on two dimensions (the entire
 surface).
 
-Chapter 20 — Confidence Intervals, Par t 1: Assessing the Accuracy of
-Samples
-
-**313**
-
 We first note that you have no reason to estimate the trunk's location
 to be outside the sample pattern, or at its edge, though it could be so
 in principle.
@@ -309,7 +294,7 @@ in principle.
 If the pattern of the 10 apples is tight, you imagine the pattern of the
 likely locations of the population mean to be tight; if not, not. That
 is, *it is intuitively clear that there is some connection between how
-spread out are the sample obervations and your confidence about the
+spread out are the sample observations and your confidence about the
 location of the population mean* . For example, consider two patterns of
 a thousand apples, one with twice the spread of another, where we
 measure spread by (say) the diameter of the circle that holds the inner
@@ -325,7 +310,7 @@ Here is a canonical list of questions that help organize one's thinking
 when constructing confidence intervals. The list is comparable to the
 lists for questions in probability and for hypothesis testing provided
 in earlier chapters. This set of questions will be applied operationally
-in Chapter 21.
+in @sec-confidence-two-approaches.
 
 **What Is The Question?**
 
@@ -393,16 +378,11 @@ Mean, median, or whatever of resample
 
 **Choice Of Confidence Bounds**
 
-*Oneor two-tailed?*
+*One or two-tailed?*
 
 *90%, 95%, etc.?*
 
 **Computation of Probabilities Within Chosen Bounds**
-
-Chapter 20 — Confidence Intervals, Par t 1: Assessing the Accuracy of
-Samples
-
-**315**
 
 ## Summary
 
