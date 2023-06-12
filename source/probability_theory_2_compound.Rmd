@@ -61,7 +61,7 @@ In this chapter we will deal with what are usually called "probability
 problems" rather than the "statistical inference problems" discussed in
 later chapters. The difference is that for probability problems we begin
 with a knowledge of the properties of the universe with which we are
-working. (See Chapter 4 on the definition of resampling.)
+working. (See @sec-what-is-resampling on the definition of resampling.)
 
 Before we get down to the business of complex probabilistic problems in
 this and the next two chapters, let's consider a couple of peculiar
@@ -684,11 +684,11 @@ before the second pick as before the first pick. That is, the
 conditional probability remains the same. *If we replace, conditions do
 not change.* But if we do not replace the item drawn, the probability
 changes from one moment to the next. (Perhaps refresh your mind with the
-examples in the discussion of conditional probability in Chapter 5.)
+examples in the discussion of conditional probability including
+@sec-example-four-events)
 
-If we sample with replacement, the sample drawings remain
-
-*independent* of each other — a topic addressed in Chapter 5.
+If we sample with replacement, the sample drawings remain *independent* of each
+other — a topic addressed in @sec-independence .
 
 In many cases, a key decision in modeling the situation in which we are
 interested is whether to sample with or without replacement. The choice
