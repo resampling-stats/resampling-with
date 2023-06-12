@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-""" Return path to PDF chapter for filename
+""" Return filename for given chapter number
 """
 
 from pathlib import Path
 import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
-sys.path.append(str(Path(__file__).parent))
+HERE = Path(__file__).parent
+sys.path.append(str(HERE))
 
 import chaputils as cu
 
@@ -14,15 +15,16 @@ import chaputils as cu
 def get_parser():
     parser = ArgumentParser(description=__doc__,  # Usage from docstring
                             formatter_class=RawDescriptionHelpFormatter)
-    parser.add_argument('fname',
-                        help='Filename of Rmd chapter')
+    parser.add_argument('chapter_number',
+                        help='Number of chapter in original book')
     return parser
 
 
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    print(cu.pdf4chap_name(cu.pth2chap_name(args.fname)))
+    chap_name = cu.chap_name4chap_no(args.chapter_number)
+    print(cu.rmd4chap_name(chap_name))
 
 
 if __name__ == '__main__':
