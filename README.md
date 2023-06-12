@@ -151,27 +151,46 @@ Before you start:
 
 Editing:
 
-* Edit the matching file - here `source/reliability_average.Rmd`.
-* You might find it useful to have the original PDF
-  chapter open; see [the
-  original book in
-  PDF](https://resample.com/intro-text-online).  The
-  PDFs are also in the `./unported` directory of the
-  repository.  To see which original chapter
-  corresponds to your current `.Rmd` file, have
-  a look at the YAML fragment at the file, it should
-  have something like: `ed2_fname: 26-Chap-22`. See
-  also the chapter mappings at the end of this page.
-* Rebuild the file you're working on from time to time with e.g.
-  `../scripts/rebuild_chapter reliability_average.Rmd` from the `source`
-  directory. Check the contents by opening e.g.
-  `../python-book/reliability_average.Rmd` (Quarto will show the correct
-  filename after the rebuild step).
-* When in some kind of shape that is ready for other people to look at, make
-  your commits with the changes, and do a pull-request to the main repository,
-  for us to look at.
-* In due course you may want to remove the boilerplate warning text at the top
-  of the page.
+*   Edit the matching file - here `source/reliability_average.Rmd`.
+*   You might find it useful to have the original PDF chapter open; see [the
+    original book in PDF](https://resample.com/intro-text-online).  The PDFs
+    are also in the `./unported` directory of the repository.  To see which
+    original chapter corresponds to your current `.Rmd` file, have a look at
+    the YAML fragment at the file, it should have something like: `ed2_fname:
+    26-Chap-22`. See also the chapter mappings at the end of this page.
+*   Rebuild the file you're working on from time to time with e.g.
+    `../scripts/rebuild_chapter reliability_average.Rmd` from the `source`
+    directory. Check the contents by opening e.g.
+    `../python-book/reliability_average.Rmd` (Quarto will show the correct
+    filename after the rebuild step).  If you get an error like this:
+
+    ```
+    Error in readLines(con, warn = readLines.warn) :
+      cannot open the connection
+    Calls: .main ... eval -> <Anonymous> -> yaml.load -> paste -> readLines
+    ```
+
+    then make sure you have run the `make set-version-python` or `make
+    set-version-r` command, to build the needed `_quarto.yml` and
+    `_variables.yml` files.
+*   When in some kind of shape that is ready for other people to look at, make
+    your commits with the changes, and do a pull-request to the main
+    repository.  See the **initial port checklist** below.
+*   In due course you may want to remove the boilerplate warning text at the
+    top of the page.
+
+## Initial port checklist
+
+* Check sections.
+* Import any broken figures from original PDF, maybe using Inkscape.  See
+  `probability_theory_1a.Rmd` for an example.
+* Fix any tables — but see below - are they auto-generated?  Search for
+  `ketable` in `intro.Rmd` for an example.
+* `git rm` any now-unused `.png` files.
+* Update any chapter or section or figure or example cross-references from e.g.
+  `see Chapter 14` to `see @sec-some-named-section`.
+* Port any Resampling-stats code to Python and R.
+* Put in notebook markers.
 
 ## Notebooks
 
