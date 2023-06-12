@@ -30,7 +30,7 @@ def main():
     match = ED2_INFO.search(match.group())
     if not match:
         raise RuntimeError('Cannot find ed2 info in ' + args.fname)
-    pdf_pth = pth.parent / '..' / (match.groups()[0] + '.pdf')
+    pdf_pth = pth.parent / '..' / 'unported' / (match.groups()[0] + '.pdf')
     print(pdf_pth.resolve())
 
 

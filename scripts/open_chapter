@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ -z "$1" ]; then
+    echo "Specify filename"
+    exit 1
+fi
+my_dir=$( dirname "${BASH_SOURCE[0]}" )
+pdf_fname=$( "$my_dir/pdf4fname" $1 )
+open $pdf_fname
