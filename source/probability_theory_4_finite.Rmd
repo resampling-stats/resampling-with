@@ -69,10 +69,8 @@ problems: You must choose a simulation procedure that produces simple
 events having the same probabilities as the simple events in the actual
 problem involving sampling without replacement. That is, you must make
 sure that your simulation does not allow duplication of events that have
-already occurred. The easiest way to sample without replace-
-
-ment with resampling techniques is by simply ignoring an outcome if it
-has already occurred.
+already occurred. The easiest way to sample without replacement with resampling
+techniques is by simply ignoring an outcome if it has already occurred.
 
 Examples 8-1 through 8-10 deal with some of the more important sorts of
 questions one may ask about drawings without replacement from such an
@@ -97,134 +95,52 @@ aid of a bucket with six balls.
 
 **Case 1.** Each of six balls is labeled with a number between "1" and
 "6." We ask: What is the probability of choosing balls 1, 2, and 3 *in
-that order* if we choose three balls without replacement? Figure 8-1
+that order* if we choose three balls without replacement? @fig-success_case1
 diagrams the events we consider "success."
 
-![](images/12-Chap-8_000.png)
-
-5
-
-1 3
-
-  ---------- --- --- ---
-             1   2   3
-                     
-  pick \#:   1   2   3
-  ---------- --- --- ---
-
- 4 2 6
-
-**Figure 8-1: The Event Classified as "Success" for Case 1**
+```{r fig-success_case1, echo=FALSE, fig.align='center', fig.cap="The Event Classified as \"Success\" for Case 1"}
+include_svg('images/success_case1.svg')
+```
 
 **Case 2.** We begin with the same bucket as in Case 1, but now ask the
 probability of choosing balls 1, 2, and 3 *in any order* if we choose
-three balls without replacement. Figure 8-2 diagrams two of the events
+three balls without replacement. @fig-success_case2 diagrams two of the events
 we consider success. These possibilities include that which is shown in
-Figure 8-1 above, plus other possibilities.
+@fig-success_case1 above, plus other possibilities.
 
-![](images/12-Chap-8_001.png)
-
-  ---------- --- --- --- --- --
-  1          2   3           
-             3   2   1       
-                             
-                 2   3   1   
-                             
-  pick \#:       1   2   3   
-  ---------- --- --- --- --- --
-
- 5
-
-1 3
-
-4 2 6
-
-**Figure 8-2: An Incomplete List of the Events Classified as "Success"
-for Case 2**
+```{r fig-success_case2, echo=FALSE, fig.align='center', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 2"}
+include_svg('images/success_case2.svg')
+```
 
 **Case 3.** The odd-numbered balls "1," "3," and "5," are painted red
 and the even-numbered balls "2," "4," and "6" are painted black. What is
 the probability of getting a red ball and then a black ball in that
-order? Some possibilities are illustrated in Figure 8-3, which includes
-the possibility shown in Figure 8-1. It also includes *some but not* all
-possibilities found in Figure 8-2; for example, Figure 8-2 includes
-choosing balls 2, 3 and 1 in that order, but Figure 8-3 does not.
+order? Some possibilities are illustrated in @fig-success_case3, which includes
+the possibility shown in @fig-success_case1. It also includes *some but not*
+all possibilities found in  @fig-success_case2; for example, @fig-success_case2
+includes choosing balls 2, 3 and 1 in that order, but @fig-success_case3 does
+not.
 
-![](images/12-Chap-8_002.png)
-
-1 2 3
-
-5
-
-3 2 1
-
-1 3
-
-4 2 6
-
-pick \#: 1 2 3
-
-**Figure 8-3: An Incomplete List of the Events Classified as "Success"
-for Case 3**
-
-![](images/12-Chap-8_003.png)
+```{r fig-success_case3, echo=FALSE, fig.align='center', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 3"}
+include_svg('images/success_case3.svg')
+```
 
 **Case 4.** What is the probability of getting two red balls and one
 black ball in any order?
 
-1 2 3
-
-5
-
-1 3 2
-
-1 3
-
-4 2 6
-
-pick \#: 1 2 3
-
-**Figure 8-4: An Incomplete List of the Events Classified as "Success"
-for Case 4**
+```{r fig-success_case4, echo=FALSE, fig.align='center', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 4"}
+include_svg('images/success_case4.svg')
+```
 
 **Case 5.** Various questions about *matching* may be asked with respect
 to the six balls. For example, what is the probability of getting ball 1
 on the first draw *or* ball 2 on the second draw *or* ball 3 on the
-third draw? (Figure 8-5) Or, what is the probability of getting all
+third draw? (@fig-success_case5) Or, what is the probability of getting all
 balls on the draws corresponding to their numbers?
 
-![](images/12-Chap-8_004.png)
-
-5
-
-1 3
-
-4 2 6
-
-1
-
-pick \#: 1 2
-
-3 4 5 6
-
-or (and)
-
-2
-
-pick \#: 1 2
-
-pick \#: 1 2
-
-3 4 5 6
-
-or (and)
-
-3
-
-3 4 5 6
-
-**Figure 8-5: An Incomplete List of the Events Classified as "Success"
-for Case 5**
+```{r fig-success_case5, echo=FALSE, fig.align='center', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 5"}
+include_svg('images/success_case5.svg')
+```
 
 ## Problems in finite universes
 
