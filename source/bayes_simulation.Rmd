@@ -632,14 +632,11 @@ probability). This is typically done using using Bayes' rule.
 But instead of doing that, let's take the easy route out and simulate
 the situation instead.
 
-1.  We begin, as do Box and Tiao, by restricting our attention
-    to the third line in Table @tbl-mice-genetics.
-    We draw a mouse with label 'BB', 'Bb', or 'bb', using those
-    probabilities.
-    We were told that the "test mouse" is black, so if we draw 'bb',
-    we try again.
-    (Alternatively, we could draw 'BB' and 'Bb' with probabilities of
-    1/3 and 2/3 respectively.)
+1.  We begin, as do Box and Tiao, by restricting our attention to the third
+    line in Table @tbl-mice-genetics. We draw a mouse with label 'BB', 'Bb', or
+    'bb', using those probabilities. We were told that the "test mouse" is
+    black, so if we draw 'bb', we try again. (Alternatively, we could draw 'BB'
+    and 'Bb' with probabilities of 1/3 and 2/3 respectively.)
 
 2.  We now want to examine the offspring of the test mouse when mated
     with a brown "bb" mouse.  Specifically, we are only interested in
@@ -876,20 +873,15 @@ corresponding to one of the yields ranging from 2.1 to 3.0, the same
 sort of sampling operation performed for S ~m=2.3~ in the previous
 problem. But now, instead of using the manufacturer's decision criterion
 of 2.5, we construct an interval of arbitrary width around the sample
-mean of 2.08 — say at
-
-.1 intervals from 2.03 to 2.13 — and then work with the weighted
-
-proportions of sample means that fall into this interval.
+mean of 2.08 — say at .1 intervals from 2.03 to 2.13 — and then work with the
+weighted proportions of sample means that fall into this interval.
 
 1.  Using a bootstrap-like approach, we presume that the sub-universe of
     observations related to each S ~m~ equals the mean of that S ~m~
     — say, 2.1) plus (minus) the mean of the x ~i~ (equals 2.05) added
-    to (subtracted from) each of the nine x ~i~ , say, 1.03 +
-
-    .05 = 1.08. For a distribution centered at 2.3, the values would
-
-    be (1.84 + .22 = 2.06, 1.75 + .22 = 1.97...).
+    to (subtracted from) each of the nine x ~i~ , say, 1.03 + .05 = 1.08. For
+    a distribution centered at 2.3, the values would be (1.84 + .22 = 2.06,
+    1.75 + .22 = 1.97...).
 
 2.  Working with the distribution centered at 2.3 as an example:
     Constitute a universe of the values (1.84+.22=2.06, 1.75 + .22 =
@@ -897,8 +889,8 @@ proportions of sample means that fall into this interval.
     enters into the analysis at this point, rather than when the sample
     evidence is combined with the prior distribution; this is in
     contrast to conventional Bayesian practice where the posterior is
-    the result of the prior and sample means weighted by the reciprocals
-    of the variances (see e.g. Box-Tiao, 1973, p. 17 and Appendix A1.1).
+    the result of the prior and sample means weighted by the reciprocals of the
+    variances (see e.g. [@box1992bayesian, page 17 and Appendix A1.1]).
 
 3.  Draw nine observations from this universe (with replacement, of
     course), compute the mean, and record.
