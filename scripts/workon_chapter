@@ -5,6 +5,6 @@ if [ -z "$1" ]; then
 fi
 my_dir=$( dirname "${BASH_SOURCE[0]}")
 pdf_fname=$( "$my_dir/pdf4fname" $1 )
-gvr $1
+${GUI_EDITOR} $1
 open $pdf_name
-open -a inkscape $pdf_fname
+inkscape $pdf_fname
