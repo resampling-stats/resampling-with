@@ -219,7 +219,7 @@ feel confident that this time will be a hit, too. And after you have hit
 a bunch of baskets from all over the court, you feel as if you can't
 miss.
 
-But notice that cardplayers get the same poignant feeling of being "hot"
+But notice that card players get the same poignant feeling of being "hot"
 or "cold," too. After a poker player "fills" several straights and
 flushes in a row, s/he feels s/he will hit the next one too. (Of course
 there are some players who feel just the opposite, that the "law of
@@ -302,151 +302,52 @@ private forecasters, and often the system of forecasting that they use
 is much more misleading than would be a random-number generating machine
 of the sort used in the baseball slump experiments.
 
-Please look at the data in Figure 9-2 for the height of the Nile River
-over about half a century. Is it not natural to think that those data
-show a decline in the height of the river? One can imagine that if our
-modern communication technology existed then, the Cairo newspapers would
-have been calling for research to be done on the fall of the Nile, and
-the television anchors would have been warning the people to change
-their ways and use less water.
+Please look at the data in @fig-nile_height for the height of the Nile River
+over about half a century. Is it not natural to think that those data show
+a decline in the height of the river? One can imagine that if our modern
+communication technology existed then, the Cairo newspapers would have been
+calling for research to be done on the fall of the Nile, and the television
+anchors would have been warning the people to change their ways and use less
+water.
 
-![](images/13-Chap-9_000.png)
+```{r fig-nile_height, echo=FALSE, fig.align='center', fig.cap="Height of the Nile River Over Half of a Century"}
+include_svg('images/nile_height.svg')
+```
 
-1250
-
-Height (cm)
-
-1200
-
-1150
-
-1100
-
-1050
-
-810 A.D. 820 830 840 850
-
-Year
-
-**Figure 9-2: Height of the Nile River Over Half of a Century**
-
-Let's look at Figure 9-3 which represents the data over an even longer
+Let's look at @fig-nile_long which represents the data over an even longer
 period. What now would you say about the height of the Nile? Clearly the
 "threat" was non-existent, and only appeared threatening because the
 time span represented by the data was too short. The point of this
 display is that looking at too-short a segment of experience frequently
 leads us into error. And "too short" may be as long as a century.
 
-![](images/13-Chap-9_001.png)
-
-**Figure 9-3: Height of the Nile River for an Extended Period of Time**
+![Height of the Nile River for an Extended Period of Time](images/13-Chap-9_001.png){#fig-nile_long}
 
 Another example is the price of mercury, which is representative of all
-metals. Figure 9-4 shows a forecast made in 1976 by natural-scientist
-Earl Cook. He combined a then-recent upturn in prices with the notion
-that there is a finite amount of mercury on the earth's surface, plus
-the mathematical charm of plotting a second-degree polynomial with the
-computer. Figures 9-5a and 9-5b show how the forecast was almost
-immediately falsified, and the price continued its long-run decline.
+metals. @fig-mercury_prediction shows a forecast made in 1976 by
+natural-scientist Earl Cook [-@cook1976limits]. He combined a then-recent
+upturn in prices with the notion that there is a finite amount of mercury on
+the earth's surface, plus the mathematical charm of plotting a second-degree
+polynomial with the computer. @fig-mercury_reserves and
+@fig-mercury_price_indexes show how the forecast was almost immediately
+falsified, and the price continued its long-run decline.
 
-![](images/13-Chap-9_002.png)
+![The Price of Mercury from
+@cook1976limits](images/13-Chap-9_002.png){#fig-mercury_prediction}
 
-**Figure 9-4: The Price of Mercury**, from @cook1976limits
+```{r fig-mercury_reserves, echo=FALSE, fig.align='center', fig.cap="Mercury Reserves, 1950-1990"}
+include_svg('images/mercury_reserves.svg')
+```
 
-![](images/13-Chap-9_003.png)
 
-250,000
-
-200,000
-
-Metric tons
-
-150,000
-
-100,000
-
-after 1979 reserve base change
-
-50,000
-
-0
-
-1950 1955 1960 1965 1970 1975 1980 1985 1990
-
-Year
-
-![](images/13-Chap-9_004.png)
-
-45
-
-40
-
-35
-
-30
-
-Years
-
-25
-
-20
-
-15
-
-10
-
-5 after 1979 reserve base change
-
-0
-
-1950 1955 1960 1965 1970 1975 1980 1985 1990
-
-Year
-
-**Figure 9-5a: Mercury Reserves, 1950-1990**
-
-120
-
-100
-
-Index for wages
-
-80
-
-Divided by wages Divided by CPI
-
-175
-
-![](images/13-Chap-9_005.png)
-
-150
-
-125
-
-Index for CPI
-
-60 100
-
-75
-
-40
-
-50
-
-20
-
-25
-
-0 0
-
-1850 1870 1890 1910 1930 1950 1970 1990
-
-**Figure 9-5b: Mercury Price Indexes, 1950-1990**
+```{r fig-mercury_price_indexes, echo=FALSE, fig.align='center', fig.cap="Mercury Price Indexes, 1950-1990"}
+include_svg('images/mercury_price_indexes.svg')
+```
 
 Lack of sound statistical intuition about variability can lead to
 manipulation of the public being by unscrupulous persons. Commodity
 funds sellers use a device of this sort to make their results look good
-( *The Washington Post* , Sep 28, 1987, p. 71). Some individual
+(*The Washington Post*, Sep 28, 1987, p. 71). Some individual
 commodity traders inevitably do well in their private trading, just by
 chance. A firm then hires one of them, builds a public fund around him,
 and claims the private record for the fund's own history. But of course
@@ -544,7 +445,7 @@ Table 9-3
   .330         .330
   ------------ ------------
 
-We see from Figure 9-3 that we have ten batters whose "true" batting
+We see from table 9-3 that we have ten batters whose "true" batting
 averages range from .270 to .330. Their rookie year performance (400 at
 bats), simulated on the basis of their "true"average is on the right.
 Which one is the rookie of the year? It's \#6, who hit .420 during the
