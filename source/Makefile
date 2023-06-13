@@ -46,10 +46,5 @@ clean:
 webclean: clean
 	rm -rf ../*-book/index.html ../*-book/resampling-with*.pdf
 
-check-simon-refs :
+check-refs :
 	biber --tool -V simon_refs.bib
-
-check-ds-refs :
-	biber --tool -V data-science-bib/data_science.bib
-
-check-refs: check-simon-refs check-ds-refs
