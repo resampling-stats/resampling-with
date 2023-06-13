@@ -814,12 +814,12 @@ compared against
       MATCH 2   0.095931
       --------- ----------
 
-    We could do a general test to determine whether there are
-    differences among the means of the three groups, as was done in the
-    "Differences Among 4 Pig Rations" problem (@sec-testing-measured). However, we
-    note that there may be considerable variation from one matched set
-    to another -- variation which can obscure the overall results if we
-    resample from a large general bucket.
+    We could do a general test to determine whether there are differences
+    among the means of the three groups, as was done in the "Differences Among
+    4 Pig Rations" problem (@sec-pig-rations-measured). However, we note that
+    there may be considerable variation from one matched set to another --
+    variation which can obscure the overall results if we resample from
+    a large general bucket.
 
     Therefore, we use the following resampling procedure that maintains
     the separation between matched sets by converting each observation
