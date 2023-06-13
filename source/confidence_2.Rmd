@@ -620,17 +620,13 @@ consideration affects conventional statistics but usually does not affect
 resampling, but it is worth keeping mind when a statistician is making a choice
 between a parametric (that is, Normal-based) and a non-parametric procedure.
 
-**Example 21-4: Determining a Confidence Interval for the Median
-Aluminum Content in Theban Jars**
+### Example: Determining a Confidence Interval for the Median Aluminum Content in Theban Jars
 
 Data for the percentages of aluminum content in a sample of 18 ancient
-Theban jars (Desphpande et. al., 1996, p. 31) are as follows, arranged
-in ascending order: 11.4, 13.4, 13.5, 13.8, 13.9,
-
-14.4, 14.5, 15.0, 15.1, 15.8, 16.0, 16.3, 16.5, 16.9, 17.0, 17.2, 17.5,
-
-19.0. Consider now putting a confidence interval around the median of
-15.45 (halfway between the middle observations 15.1 and 15.8).
+Theban jars [@catling1977theban] are as follows, arranged in ascending order:
+11.4, 13.4, 13.5, 13.8, 13.9, 14.4, 14.5, 15.0, 15.1, 15.8, 16.0, 16.3, 16.5,
+16.9, 17.0, 17.2, 17.5, 19.0. Consider now putting a confidence interval around
+the median of 15.45 (halfway between the middle observations 15.1 and 15.8).
 
 One may simply estimate a confidence interval around the median with a
 bootstrap procedure by substituting the median for the mean in the usual
