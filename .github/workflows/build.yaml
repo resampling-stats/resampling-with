@@ -13,6 +13,8 @@ jobs:
       R_LIBS_USER: ~/R_libs:~/R:~/R-dev
       QUARTO_VER: "1.4.51"
       PANDOC_VER: "3.1.2"
+      # https://github.com/r-lib/remotes/issues/641
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     if: github.repository_owner == 'resampling-stats'
 
