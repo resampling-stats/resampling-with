@@ -182,8 +182,6 @@ Editing:
 ## Initial port checklist
 
 * Check sections.
-* Import any broken figures from original PDF, maybe using Inkscape.  See
-  `probability_theory_1a.Rmd` for an example.
 * Fix any tables — but see below - are they auto-generated?  Search for
   `ketable` in `intro.Rmd` for an example.
 * `git rm` any now-unused `.png` files.
