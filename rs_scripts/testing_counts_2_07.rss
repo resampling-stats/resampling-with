@@ -11,21 +11,27 @@ REPEAT 1000
         SCORE a t1 t2 t3
         ' Step 2
     END
+    ' Step 3
+    MEAN t1 tt1
+    ' Step 4
+    MEAN t2 tt2
+    MEAN t3 tt3
+    CLEAR t1
+    ' Clear the vectors where we've stored the ranks for this trial (must do
+    ' this whenever we have a SCORE statement that's part of a "nested" repeat
+    ' loop)
+    CLEAR t2
+    CLEAR t3
+    CONCAT tt1 tt2 tt3 b
+    ' Part of step 5
+    MIN b bb
+    ' Part of step 5
+    SCORE bb z
+    ' Part of step 5
 END
-' Step 3
-MEAN t1 tt1
-' Step 4
-MEAN t2 tt2
-MEAN t3 tt3
-CLEAR t1
-' Clear the vectors where we've stored the ranks for this trial (must do
-' this whenever we have a SCORE statement that's part of a "nested" repeat
-' loop)
-CLEAR t2
-CLEAR t3
-CONCAT tt1 tt2 tt3 b
-' Part of step 5
-MIN b bb
-' Part of step 5
-SCORE bb z
-' Part of step 5
+' Step 6
+HISTOGRAM z
+COUNT z <=1.45 k
+' Step 7
+DIVIDE k 1000 kk
+PRINT kk

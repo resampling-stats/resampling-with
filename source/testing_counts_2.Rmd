@@ -542,12 +542,11 @@ COUNT z >=46 m
 ' percent margin by Bush over 2nd place finisher (rounded)
 DIVIDE m 1000 mm
 PRINT mm
-' **Samples of 750 Voters**
 ```
 
-![](images/21-Chap-17_001.png)
+![Samples of 750 Voters: ](images/21-Chap-17_001.png){#fig-bush-margin}
 
-**Bush's margin over 2** **nd** **mm = 0.018**
+The result is — Bush's margin over 2nd (`mm`) = 0.018.
 
 When we run this program with a 36-36-28 split, we also get a similar
 result — 2.6 percent. That is, the analysis shows a probability of only
@@ -1064,44 +1063,36 @@ REPEAT 1000
         SCORE a t1 t2 t3
         ' Step 2
     END
+    ' Step 3
+    MEAN t1 tt1
+    ' Step 4
+    MEAN t2 tt2
+    MEAN t3 tt3
+    CLEAR t1
+    ' Clear the vectors where we've stored the ranks for this trial (must do
+    ' this whenever we have a SCORE statement that's part of a "nested" repeat
+    ' loop)
+    CLEAR t2
+    CLEAR t3
+    CONCAT tt1 tt2 tt3 b
+    ' Part of step 5
+    MIN b bb
+    ' Part of step 5
+    SCORE bb z
+    ' Part of step 5
 END
-' Step 3
-MEAN t1 tt1
-' Step 4
-MEAN t2 tt2
-MEAN t3 tt3
-CLEAR t1
-' Clear the vectors where we've stored the ranks for this trial (must do
-' this whenever we have a SCORE statement that's part of a "nested" repeat
-' loop)
-CLEAR t2
-CLEAR t3
-CONCAT tt1 tt2 tt3 b
-' Part of step 5
-MIN b bb
-' Part of step 5
-SCORE bb z
-' Part of step 5
-```
-
-Step 6
-
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "testing_counts_2_08.rss"
-
+' Step 6
 HISTOGRAM z
 COUNT z <=1.45 k
 ' Step 7
 DIVIDE k 1000 kk
 PRINT kk
-' Interpretation: 1000 random shufflings of 33 ranks, apportioned to three
-' "treatments," never produced for the best treatment in the three an
-' average as low as the observed average, therefore we rule out chance as
-' an explanation for the success of the combined therapy.
 ```
+
+Interpretation: 1000 random shufflings of 33 ranks, apportioned to three
+"treatments," never produced for the best treatment in the three an average as
+low as the observed average, therefore we rule out chance as an explanation
+for the success of the combined therapy.
 
 An interesting feature of the mergers (or depression treatment) problem
 is that it would be hard to find a conventional test that would handle
