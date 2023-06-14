@@ -851,17 +851,9 @@ steps in the procedure.
 Next we estimate the posterior distribution. Figure 25-1 shows the prior
 distribution of batch yields, based on 100 previous batches.
 
-![](images/29-Chap-25_000.png)
-
-.2
-
-.1
-
-0
-
-0 2.0 2.2 2.4 2.6 2.8 3.0 3.2
-
-**Figure 25-1**
+```{r fig-batch_posterior, echo=FALSE, fig.align='center', fig.cap="Posterior distribution of batch yields"}
+include_svg('images/batch_posterior.svg')
+```
 
 Notation: S ~m~ = set of batches (where total S = 100) with a particular
 mean m (say, m = 2.1). x ~i~ = particular observation (say, x ~3~ =
