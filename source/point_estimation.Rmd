@@ -195,7 +195,7 @@ How about a bucket with 2 black and 18 whites? The probability is much
 higher than with the previous bucket, but it still is low — about .075.
 
 Let us now estimate the probabilities for all buckets across the range of
-probabilities. In Figure 13-1 we see that the bucket with the highest
+probabilities. In @sec-white_balls_universe we see that the bucket with the highest
 probability of producing the observed sample has the same proportions of
 black and white balls as does the sample. This is called the "maximum
 likelihood universe." Nor should this be very surprising, because that
@@ -208,35 +208,11 @@ maximum-likelihood universe would produce *exactly* the observed sample
 is very low (though it has an even lower probability of producing any
 *other* sample).
 
-.14
+```{r fig-white_balls_universe, echo=FALSE, fig.align='center', fig.cap="Number of White Balls in the Universe (N=20)"}
+include_svg('images/white_balls_universe.svg')
+```
 
-.12
-
-.10
-
-Probability
-
-.08
-
-.06
-
-.04
-
-.02
-
-0
-
-4 White and 2 Black Balls in the Sample
-
-![](images/17-Chap-13_000.png)
-
-2 4 6 8 10 12 14 16 18 20
-
-Number of White Balls in the Universe (N=20)
-
-**Figure 13-1**
-
-**Choice of Estimation Method**
+### Choice of Estimation Method
 
 When should you base your estimate on the method of moments, or of
 maximum likelihood, or still some other principle? There is no general
