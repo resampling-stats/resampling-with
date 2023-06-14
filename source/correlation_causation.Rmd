@@ -587,113 +587,38 @@ relationships are lost when we convert to ranks. Therefore let us
 consider a test of correlation that uses the original cardinal numerical
 scores.
 
-First a little background: Figures 23-1 and 23-2 show two hypothetical
-cases of very high association among the I.Q. and athletic scores used
-in previous examples. Figure 23-1 indicates that the higher the I.Q.
-score, the higher the athletic score. With a boy's athletic score you
-can thus predict quite well his I.Q. score by means of a hand-drawn
-line — or vice versa. The same is true of Figure 23-2, but in the
-opposite direction. Notice that even though athletic score is on the
-x-axis (horizontal) and I.Q. score is on the y-axis (vertical), the
-athletic score does not *cause* the I.Q. score. (It is an unfortunate
-deficiency of such diagrams that *some* variable must arbitrarily be
-placed on the x-axis, whether you intend to suggest causation or not.)
+First a little background: @fig-hypot_iq_athletic_1 and
+@fig-hypot_iq_athletic_2 show two hypothetical cases of very high association
+among the I.Q. and athletic scores used in previous examples.
+@fig-hypot_iq_athletic_1 indicates that the higher the I.Q. score, the higher
+the athletic score. With a boy's athletic score you can thus predict quite well
+his I.Q. score by means of a hand-drawn line — or vice versa. The same is true
+of @fig-hypot_iq_athletic_2, but in the opposite direction. Notice that even
+though athletic score is on the x-axis (horizontal) and I.Q. score is on the
+y-axis (vertical), the athletic score does not *cause* the I.Q. score. (It is
+an unfortunate deficiency of such diagrams that *some* variable must
+arbitrarily be placed on the x-axis, whether you intend to suggest causation or
+not.)
 
-![](images/27-Chap-23_001.png)
 
-120 x
+```{r fig-hypot_iq_athletic_1, echo=FALSE, fig.align='center', fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 1"}
+include_svg('images/hypot_iq_athletic_1.svg')
+```
 
-x
 
-I.Q. Score
+```{r fig-hypot_iq_athletic_2, echo=FALSE, fig.align='center', fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 2"}
+include_svg('images/hypot_iq_athletic_2.svg')
+```
 
-x x
-
-110 x x
-
-x
-
-100 x
-
-75 85 95
-
-Athletic Score
-
-**Figure 23-1: Hypothetical Scores for I.Q. and Athletic Ability**
-
-![](images/27-Chap-23_002.png)
-
-x
-
-120
-
-x
-
-x
-
-x
-
-I.Q. Score
-
-x
-
-110 x
-
-x x
-
-x x
-
-100
-
-x
-
-x
-
-75 85 95
-
-Athletic Score
-
-**Figure 23-2: Hypothetical Scores for I.Q. and Athletic Ability**
-
-In Figure 23-3, which plots the scores as given in table 23-1 the
-prediction of athletic score given I.Q. score, or vice versa, is less
-clear-cut than in Figure 23-2. On the basis of Figure 23-3 alone, one
-can say only that there *might* be some association between the two
+In @fig-given_iq_athletic, which plots the scores as given in table 23-1 the
+prediction of athletic score given I.Q. score, or vice versa, is less clear-cut
+than in @fig-hypot_iq_athletic_1. On the basis of @fig-given_iq_athletic alone,
+one can say only that there *might* be some association between the two
 variables.
 
-![](images/27-Chap-23_003.png)
-
-120 x
-
-x
-
-115
-
-I.Q. Score
-
-x x
-
-110 x
-
-x
-
-x
-
-105
-
-x
-
-100 x x
-
-80 85
-
-90 95
-
-100
-
-Athletic Score
-
-**Figure 23-3: Hypothetical Scores for I.Q. and Athletic Ability**
+```{r fig-given_iq_athletic, echo=FALSE, fig.align='center', fig.cap="Given Scores for I.Q. and Athletic Ability"}
+include_svg('images/given_iq_athletic.svg')
+```
 
 ## Correlation: sum of products
 
