@@ -120,18 +120,16 @@ there really is no pattern.
 
 How do statisticians ascertain that slumps and hot hands do not exist?
 In brief, in baseball we simulate a hitter with a given average — say
-.250 — and compare the results with actual hit-
-
-ters of that average, to see whether they have "slumps" longer than the
-computer. The method of investigation is roughly as follows. You program
-a computer or other machine to behave the way a player would, given the
-player's long-run average, on the assumption that each trial is a random
-drawing. For example, if a player has a .250 season-long batting
-average, the machine is programmed like a bucket containing three black
-balls and one white ball. Then for each simulated at bat, the machine
-shuffles the "balls" and draws one; it then records whether the result
-is black or white, after which the ball is replaced in the bucket. To study
-a season with four hundred at-bats, a simulated ball is drawn four
+.250 — and compare the results with actual hitters of that average, to see
+whether they have "slumps" longer than the computer. The method of
+investigation is roughly as follows. You program a computer or other machine
+to behave the way a player would, given the player's long-run average, on the
+assumption that each trial is a random drawing. For example, if a player has a
+.250 season-long batting average, the machine is programmed like a bucket
+containing three black balls and one white ball. Then for each simulated at
+bat, the machine shuffles the "balls" and draws one; it then records whether
+the result is black or white, after which the ball is replaced in the bucket.
+To study a season with four hundred at-bats, a simulated ball is drawn four
 hundred times.
 
 The records of the player's real season and the simulated season are
@@ -452,9 +450,7 @@ averages range from .270 to .330. Their rookie year performance (400 at
 bats), simulated on the basis of their "true"average is on the right.
 Which one is the rookie of the year? It's \#6, who hit .420 during the
 rookie session. Will he do as well next year? Not likely — his "true"
-average is only
-
-.300.
+average is only .300.
 
 Try generating some rookie "seasons" yourself with the following
 commands, ranging the batter's "true" performance by altering what you

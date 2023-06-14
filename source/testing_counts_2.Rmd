@@ -352,9 +352,9 @@ experiment will be, as before, to constitute four groups of 20 at random
 from a universe with a 55 percent rehabilitation rate. We then calculate
 this same measure for the random groups. If it is frequently larger than
 54, then we conclude that a uniform cure rate of 55 percent could easily
-have produced the observed results. The program that follows also GENER-
-ATES the four treatments by using a REPEAT loop, rather than spelling
-out the GENERATE command 4 times as above. In RESAMPLING STATS:
+have produced the observed results. The program that follows also GENERATES
+the four treatments by using a REPEAT loop, rather than spelling out the
+GENERATE command 4 times as above. In RESAMPLING STATS:
 
 
 <!--- Resampling stats file; Matlab syntax closeish -->
@@ -678,14 +678,12 @@ does not have an effect on weight gain (which is the "benchmark" or
 no different than if we randomly GENERATE numbers "1" and "2" and treat
 a "1" as a larger weight gain for the ration A pig, and a "2" as a
 larger weight gain for the ration B pig. Both events have a .5 chance of
-oc-
-
-curring for each pair of pigs because if the rations had no effect on
-weight gain (the null hypothesis), ration A pigs would have larger
-weight gains about half of the time. The next step is to COUNT the
-number of times that the weight gains of one group (call it the group
-fed with ration A) were larger than the weight gains of the other (call
-it the group fed with ration B). The complete program follows:
+occurring for each pair of pigs because if the rations had no effect on weight
+gain (the null hypothesis), ration A pigs would have larger weight gains about
+half of the time. The next step is to COUNT the number of times that the
+weight gains of one group (call it the group fed with ration A) were larger
+than the weight gains of the other (call it the group fed with ration B). The
+complete program follows:
 
 
 <!--- Resampling stats file; Matlab syntax closeish -->
@@ -816,9 +814,9 @@ compared against
     We could do a general test to determine whether there are differences
     among the means of the three groups, as was done in the "Differences Among
     4 Pig Rations" problem (@sec-pig-rations-measured). However, we note that
-    there may be considerable variation from one matched set to another --
-    variation which can obscure the overall results if we resample from
-    a large general bucket.
+    there may be considerable variation from one matched set to another —
+    variation which can obscure the overall results if we resample from a
+    large general bucket.
 
     Therefore, we use the following resampling procedure that maintains
     the separation between matched sets by converting each observation
