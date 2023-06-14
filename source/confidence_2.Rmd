@@ -213,30 +213,32 @@ Interpretation in terms of a repeated process is not very satisfying
 intuitively.[^intuitive-confidence]
 
 [^intuitive-confidence]: An example of this sort of interpretation is as
-    follows: specific sample mean Xbar that we happen to observe is almost
-    certain to be a bit high or a bit low. Accordingly, if we want to be
-    reasonably confident that our inference is correct, we cannot claim that mu
-    is precisely equal to the observed Xbar. Instead, we must construct an
-    interval estimate or confidence interval of the form: mu = Xbar *+*
-    sampling error
+    follows.  Let us say the actual (unknown) population mean is some number
+    we will call $\mu$. We have a specific sample, and that sample has a mean
+    we will call $\bar{x}$.  The mean $\bar{x}$ that we happen to observe is
+    almost certain to be a bit high or a bit low. Accordingly, if we want to be
+    reasonably confident that our inference is correct, we cannot claim that
+    $\mu$ is precisely equal to the observed $\bar{x}$. Instead, we must
+    construct an interval estimate or confidence interval of the form: $\mu =
+    \bar{x} \pm \text{sampling error}$.
 
     The crucial question is: How wide must this allowance for sampling error
-    be? The answer, of course, will depend on how much Xbar fluctuates\...
+    be? The answer, of course, will depend on how much $\bar{x}$ fluctuates...
 
-    Constructing 95% confidence intervals is like pitching horseshoes. In each
-    there is a fixed target, either the population mu or the stake. We are trying
-    to bracket it with some chancy device, either the random interval or the
-    horseshoe...
-
-    There are two important ways, however, that confidence intervals differ from
-    pitching horseshoes. First, only one confidence interval is customarily
-    constructed. Second, the target mu is not visible like a horseshoe stake.
-    Thus, whereas the horseshoe player always knows the score (and specifically,
-    whether or not the last toss bracketed the stake), the statistician does not.
-    He continues to "throw in the dark," without knowing whether or not a
-    specific interval estimate has bracketed mu. All he has to go on is the
-    statistical theory that assures him that, in the long run, he will succeed
-    95% of the time. @wonnacott1990introductory, (p. 258).
+    > Constructing 95% confidence intervals is like pitching horseshoes. In
+    each there is a fixed target, either the population $\mu$ or the stake. We
+    are trying to bracket it with some chancy device, either the random
+    interval or the horseshoe. ...
+    >
+    > There are two important ways, however, that confidence intervals differ
+    from pitching horseshoes. First, only one confidence interval is
+    customarily constructed. Second, the target $\mu$ is not visible like a
+    horseshoe stake. Thus, whereas the horseshoe player always knows the score
+    (and specifically, whether or not the last toss bracketed the stake), the
+    statistician does not. He continues to "throw in the dark," without knowing
+    whether or not a specific interval estimate has bracketed $\mu$. All he has
+    to go on is the statistical theory that assures him that, in the long run,
+    he will succeed 95% of the time. @wonnacott1990introductory, (p. 258).
 
     Savage refers to this type of interpretation as follows: [@savage1972foundations, pages 260--261]:
 
