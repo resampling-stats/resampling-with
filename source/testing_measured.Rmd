@@ -600,55 +600,17 @@ The first step is to examine the two sets of data graphically to see
 whether there was such a clear-cut difference between them — of the
 order of Snow's data on cholera, or the Japanese Navy data on
 beri-beri — that no test was necessary. The separate displays, and then
-the two combined together, are shown in Figure 7-2; the answer is not
-clear-cut and hence a formal test is necessary.
+the two combined together, are shown in @fig-liquor_price_plots; the answer is
+not clear-cut and hence a formal test is necessary.
 
 <!---
 Refer back to @sec-inference-ideas tables 11.3 and 11.4.
 -->
 
+```{r fig-liquor_price_plots, echo=FALSE, fig.align='center', fig.cap="Liquor prices by government and private"}
+include_svg('images/liquor_price_plots.svg')
+```
 
-![](images/22-Chap-18_003.png)
-
-GOVERNMENT
-
-5
-
-0
-
-350 400 450 500 550
-
-Cents
-
-Mean: \$4.35
-
-![](images/22-Chap-18_004.png)
-
-PRIVATE
-
-5
-
-0
-
-350 400 450 500 550
-
-Cents
-
-Mean: \$4.84
-
-![](images/22-Chap-18_005.png)
-
-PRIVATE + GOVERNMENT
-
-5
-
-0
-
-350 400 450 500 550
-
-Cents
-
-**Figure 7-2 (repeated)**
 
 At first I used a resampling permutation test as follows: Assuming that
 the entire universe of possible prices consists of the set of events
@@ -1084,9 +1046,9 @@ do the observed samples if they (in technical terms) come from the same
 universe.
 
 The problem "Pigs4," as handled by the steps given above, is quite
-similar to the way we handled Example 7-2, except that the data are
-measured (in pounds of weight gain) rather than simply counted (the
-number of rehabilitations).
+similar to the way we handled Example TKTK, except that the data are measured
+(in pounds of weight gain) rather than simply counted (the number of
+rehabilitations).
 
 Instead of working through a program for the procedure out-
 
@@ -1144,17 +1106,14 @@ experiment, without bothering to ask whether it is "really" the best;
 you can't go wrong as long as it doesn't cost more to use it. (One could
 inquire about the probability that the food yielding the best results in
 the experiment would attain those results by chance even if it was worse
-than the others by some stipulated amount, but pursu-
-
-ing that line of thought may be left to the student as an exercise.)
+than the others by some stipulated amount, but pursuing that line of thought
+may be left to the student as an exercise.)
 
 In the problem "Pigs4," we want a measure of how the groups differ. The
 obvious first step is to add up the total weight gains for each group:
 382, 344, 364, 335. The next step is to calculate the differences
 between all the possible combinations of groups: 382-344=38, 382-364=18,
-382-335=47, 344-364= -20,
-
-344-335=9, 364-335=29.
+382-335=47, 344-364= -20, 344-335=9, 364-335=29.
 
 ## Using Squared Differences
 
