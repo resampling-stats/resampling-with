@@ -109,24 +109,14 @@ Democrats. At worst a sample *could* be off by as much as 50% (if it got
 zero Republicans or zero Democrats), and at best it is unlikely to get
 exactly 50 of each. So it will almost always be off by 1% or more.
 
-It seems, therefore, intuitively reasonable (and in fact it is true)
-that the likely difference between a sample proportion and the
-population proportion is greatest with a 50%-50% universe, least with a
-0%-100% universe, and somewhere in between for probabilities, in the
-fashion of Figure 22-1.
+It seems, therefore, intuitively reasonable (and in fact it is true) that the
+likely difference between a sample proportion and the population proportion is
+greatest with a 50%-50% universe, least with a 0%-100% universe, and somewhere
+in between for probabilities, in the fashion of @fig-pop_prop_disp.
 
-![](images/26-Chap-22_000.png)
-
-Error in average sample
-
-in %
-
-.5 1.0
-
-Population Proportion
-
-**Figure 22-1: Relationship Between the Population Propor tion and the
-Likely Error In a Sample**
+```{r fig-pop_prop_disp, echo=FALSE, fig.align='center', fig.cap="Relationship Between the Population Proportion and the Likely Error In a Sample"}
+include_svg('images/pop_prop_disp.svg')
+```
 
 Perhaps it will help to clarify the issue of estimating dispersion if we
 consider this: If we compare estimates for a second sample based on a)
