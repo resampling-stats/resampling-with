@@ -154,10 +154,11 @@ Editing:
 *   Edit the matching file - here `source/reliability_average.Rmd`.
 *   You might find it useful to have the original PDF chapter open; see [the
     original book in PDF](https://resample.com/intro-text-online).  The PDFs
-    are also in the `./unported` directory of the repository.  To see which
-    original chapter corresponds to your current `.Rmd` file, have a look at
-    the YAML fragment at the file, it should have something like: `ed2_fname:
-    26-Chap-22`. See also the chapter mappings at the end of this page.
+    are also in the `./unported` directory of the repository.  The filenames in
+    the `./unported` directory begin with the original file stem followed by
+    the new file stem.  For example, the PDF corresponding to
+    `source/reliability_average.Rmd` is `26-Chap-22_reliability_average.pdf`.
+    Also see the chapter mappings at the end of this page.
 *   Rebuild the file you're working on from time to time with e.g.
     `../scripts/rebuild_chapter reliability_average.Rmd` from the `source`
     directory. Check the contents by opening e.g.
