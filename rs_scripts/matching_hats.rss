@@ -1,0 +1,24 @@
+NUMBERS 1,6 a
+' Constitute the set of six men.
+NUMBERS 1,6 b
+' Constitute the set of their six hats.
+REPEAT 1000
+' Do 1000 trials.
+SHUFFLE b c
+' Mix up the hats.
+SUBTRACT a c d
+' Subtract the shuffled hats from the set of men. A “0” will indicate that a man has received his own hat.
+COUNT d =0 e
+' Count the number of “0’s”—the number of men who received their own hats back.
+SCORE e z
+' Keep track of each trial result.
+END
+' End one experiment, go back and repeat until all 1000 are complete.
+HISTOGRAM z
+' Produce a histogram of the trial results.
+COUNT z >= 1 k
+' Determine how many trials resulted in at least one man getting his hat back.
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the result.

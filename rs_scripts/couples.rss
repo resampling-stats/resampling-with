@@ -1,0 +1,24 @@
+NUMBERS 1,10 a
+' An array of 10 males.
+NUMBERS 1,10 b
+' An identical array of 10 females—the pair for each of the males.
+REPEAT 1000
+' Do the experiment 1000 times.
+SHUFFLE b c
+' Shuffle the females.
+SUBTRACT a c d
+' This operation pairs each shuffled female with a male and sub- tracts. If it is an original pairing (1/1, 2/2, etc.), the result will be a 0. The number of 0’s indicates how many of the 10 males got paired up again with their original partner.
+COUNT d =0 e
+' Count the number of 0’s and put the result in e.
+SCORE e z
+' Keep track of each trial result.
+END
+' End the trial, go back and repeat until all 1000 are complete.
+HISTOGRAM z
+' Produce a histogram of the results.
+COUNT z >= 4 k
+' Determine how many trials had 4 or more males being matched with their partner after the shuffling. (Note that this is the same as the number of females being matched with their original partner.)
+DIVIDE k 1000 kk
+' Convert to a proportion.
+PRINT kk
+' Print the result.
