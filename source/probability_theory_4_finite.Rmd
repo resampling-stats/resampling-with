@@ -209,11 +209,13 @@ The results of a few experimental trials are shown in Table 8-1.
 
 A solution to this problem with {{< var lang >}} is presented below.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 import numpy as np
+
+rnd = np.random.default_rng()
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 N = 10000
 trial_results = np.zeros(N)
 
@@ -224,13 +226,13 @@ whole_class = np.repeat(['girl', 'boy'], [25, 25])
 for i in range(N):
 
     # Shuffle the numbers
-    np.random.shuffle(whole_class)
+    shuffled = rnd.permuted(whole_class)
 
     # Take the first 5 numbers, call them c.
-    c = whole_class[:5]
+    c = shuffled[:5]
 
     # Count how many girls there are, put the result in d.
-    d = np.count_nonzero(c == 'girl')
+    d = np.sum(c == 'girl')
 
     # Keep track of each trial result in z.
     trial_results[i] = d
@@ -239,7 +241,7 @@ for i in range(N):
     # complete.
 
 # Count the number of times we got four girls, put the result in k.
-k = np.count_nonzero(trial_results == 4)
+k = np.sum(trial_results == 4)
 
 # Convert to a proportion.
 kk = k / N
@@ -251,11 +253,10 @@ print(kk)
 We can also find the probabilities of other outcomes from a histogram of
 trial results obtained with the following command:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Import the plotting package.
 import matplotlib.pyplot as plt
-# Turn on interactive plotting
-plt.ion()
+
 # Do histogram, with one bin for each possible number.
 plt.hist(trial_results, bins=range(7), align='left', density=True, rwidth=0.75)
 plt.title('# of girls');
@@ -272,61 +273,55 @@ In analytic probability theory this problem is worked with a formula for
 "combinations."
 
 
-## Example 8-2: Nine Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)
+## Example 8-2: Five Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)
 
 This problem is similar to Example 8-1 except that now there are four
 equally-likely outcomes instead of only two.
 [A Python]{.python}[An R]{.r} solution is:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Constitute the deck of 52 cards.
-# Make a 4 element array of strings, with the suit names.
-suits = np.array(['spade', 'clubs', 'diamonds', 'hearts'])
 # Repeat the suit names 13 times each, to make a 52 card deck.
-deck = np.repeat(suits, 13)
+deck = np.repeat(['spade', 'club', 'diamond', 'heart'],
+                 [13, 13, 13, 13])
 # Show the deck
 deck
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 N = 10000
 trial_results = np.zeros(N)
 
 # Repeat the trial N times.
 for i in range(N):
 
-    # Shuffle the deck and draw 13 cards
-    hand = np.random.choice(deck, 13, replace=False)
+    # Shuffle the deck and draw 13 cards.
+    hand = rnd.choice(deck, 13, replace=False)
 
     # Count the number of spades in "hand", put the result in "n_spades".
-    n_spades = np.count_nonzero(hand == 'spade')
+    n_spades = np.sum(hand == 'spade')
 
-    # If we have nine spades, we'll continue on to count the clubs. If we don't
-    # have nine spades, the number of clubs is irrelevant — we have not gotten
+    # If we have five spades, we'll continue on to count the clubs. If we don't
+    # have five spades, the number of clubs is irrelevant — we have not gotten
     # the hand we are interested in.
-    if n_spades == 9:
-
+    if n_spades == 5:
         # Count the clubs, put the result in "n_clubs"
-        n_clubs = np.count_nonzero(hand == 'club')
+        n_clubs = np.sum(hand == 'club')
         # Keep track of the number of clubs in each trial
         trial_results[i] = n_clubs
 
     # End one experiment, go back and repeat until all N trials are done.
 
 # Count the number of trials where we got 4 clubs. This is the answer we want -
-# the number of hands out of 1000 with 9 spades and 4 clubs. (Recall that we
-# only counted the clubs if the hand already had 9 spades.)
-n_9_and_4 = np.count_nonzero(trial_results == 4)
+# the number of hands out of 1000 with 5 spades and 4 clubs. (Recall that we
+# only counted the clubs if the hand already had 5 spades.)
+n_5_and_4 = np.sum(trial_results == 4)
 
 # Convert to a proportion.
-prop_9_and_4 = n_9_and_4 / N
+prop_5_and_4 = n_5_and_4 / N
 
 # Print the result
-print(prop_9_and_4)
-```
-
-```{python, opts.label="py_ed"}
-hand
+print(prop_5_and_4)
 ```
 
 ## Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace = 4, King = 3, Queen = 2, and Jack = 1.
@@ -334,7 +329,7 @@ hand
 This problem bears the same relationship to Example 8-2 that Example 4-5
 bears to Example 4-4.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Constitute a deck with 4 jacks (point value 1), 4 queens (value 2), 4
 # kings (value 3), 4 aces (value 4), and 36 other cards with no point
 # value
@@ -342,14 +337,14 @@ whole_deck = np.repeat([1, 2, 3, 4, 0], [4, 4, 4, 4, 36])
 whole_deck
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 N = 10000
 trial_results = np.zeros(N, dtype=int)
 
 # Do N trials.
 for i in range(N):
     # Shuffle the deck of cards and draw 13
-    hand = np.random.choice(whole_deck, 13, replace=False)
+    hand = rnd.choice(whole_deck, 13, replace=False)
 
     # Total the points.
     points = np.sum(hand)
@@ -360,7 +355,7 @@ for i in range(N):
     # End one experiment, go back and repeat until all N trials are done.
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Produce a histogram of trial results.
 plt.hist(trial_results, bins=range(25), align='left', density=True, rwidth=0.75)
 plt.title('Points in bridge hands');
@@ -369,7 +364,7 @@ plt.title('Points in bridge hands');
 From this histogram, we see that in about 5 percent of our trials we obtained a
 total of exactly 15 points. We can also compute this directly:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # How many times did we have a hand with fifteen points?
 k = np.count_nonzero(trial_results == 15)
 
@@ -401,7 +396,13 @@ or 4th, whereas in Example 8-1 such outcomes are recorded as "yes"-es.
 **Step 3.** Repeat step 2, say, 10,000 times, and count the proportion
   "yes" which estimates the probability sought.
 
-```{python, opts.label="py_ed"}
+```{python}
+# The result we are looking for - four girls and then a boy.
+result_of_interest = np.repeat(['girl', 'boy'], [4, 1])
+result_of_interest
+```
+
+```{python opts.label="py_ed"}
 N = 10000
 trial_results = np.zeros(N, dtype=bool)
 
@@ -412,29 +413,24 @@ whole_class = np.repeat(['girl', 'boy'], [25, 25])
 for i in range(N):
 
     # Shuffle the numbers
-    np.random.shuffle(whole_class)
+    shuffled = rnd.permuted(whole_class)
+    # Take the first 5 class members, call them c.
+    c = shuffled[:5]
+    # Or: c = rnd.choice(whole_class, replace=False)
 
-    # Take the first 5 numbers, call them c.
-    c = whole_class[:5]
-
-    four_girls_then_one_boy = (
-        np.all(c == ['girl', 'girl', 'girl', 'girl', 'boy'])
-    )
-
+    is_four_girls_then_one_boy = np.all(c == result_of_interest)
     # Or:
-    #
-    #
-    # four_girls_then_one_boy = (
+    # is_four_girls_then_one_boy = (
     #   np.all(c[:4] == 'girl') and c[4] == 'boy'
     # )
 
-    trial_results[i] = four_girls_then_one_boy
+    trial_results[i] = is_four_girls_then_one_boy
 
     # End the experiment, go back and repeat until all N trials are
     # complete.
 
 # Count the number of times we got four girls then a boy
-k = np.count_nonzero(trial_results)
+k = np.sum(trial_results)
 
 # Convert to a proportion.
 kk = k / N
@@ -479,7 +475,7 @@ of 4 or more pairs.
 Exercise for the student: Write the steps to do this example with random
 numbers.  The solution follows below.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 N = 10000
 trial_results = np.zeros(N, dtype=int)
 
@@ -490,19 +486,19 @@ berkeley = np.arange(10)
 
 for i in range(N):
     # Randomly shuffle the students from Berkeley
-    shuffled_berkeley = np.random.permutation(berkeley)
+    shuffled_berkeley = rnd.permuted(berkeley)
 
     # Randomly shuffle the students from Birmingham
     # (This step is not really necessary — shuffling one array is enough to make the matching random.)
-    shuffled_birmingham = np.random.permutation(birmingham)
+    shuffled_birmingham = rnd.permuted(birmingham)
 
     # Count in how many cases people landed with the same person as in the
     # first round, and store in trial_results.
-    matches = np.count_nonzero(shuffled_berkeley == shuffled_birmingham)
+    matches = np.sum(shuffled_berkeley == shuffled_birmingham)
     trial_results[i] = matches
 
 # Count the number of times we got 4 or more people assigned to the same person
-k = np.count_nonzero(trial_results >= 4)
+k = np.sum(trial_results >= 4)
 
 # Convert to a proportion.
 kk = k / N
@@ -515,9 +511,9 @@ We see that in about 3 percent of the trials did 4 or more couples end
 up being re-paired with their own partners.  This can also be seen
 from the histogram:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Produce a histogram of trial results.
-plt.hist(trial_results, bins=range(10), align='left', density=True, rwidth=0.75)
+plt.hist(trial_results, bins=range(10), align='left', rwidth=0.75)
 plt.title('Same pairs in round two');
 ```
 
@@ -534,7 +530,7 @@ hats) and compare to the original. The rest of the problem is the same
 as the pairs one from before, except that we are now interested in any
 trial where at least one (\>= 1) Santa received the right hat.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 N = 10000
 trial_results = np.zeros(N, dtype=bool)
 
@@ -546,13 +542,13 @@ hats = np.arange(6)
 
 for i in range(N):
     # Randomly shuffle the hats and compare to their owners
-    shuffled_hats = np.random.permutation(hats)
+    shuffled_hats = rnd.permuted(hats)
 
     # In how many cases did at least one person get their hat back?
-    trial_results[i] = np.any(shuffled_hats == owners)
+    trial_results[i] = np.sum(shuffled_hats == owners) >= 1
 
 # How many times, over all trials, did at least one person get their hat back?
-k = np.count_nonzero(trial_results)
+k = np.sum(trial_results)
 
 # Convert to a proportion.
 kk = k / N
@@ -587,36 +583,19 @@ One may proceed as follows:
 4.  Count the number of times each split — 5 W's and 5 B's, 4 and 6,
     etc.---appears in the results.
 
-    The problem can be done with RESAMPLING STATS as follows:
-
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "probability_theory_4_finite_00.rss"
-
-URN 10#1 10#2 a
-REPEAT 1000
-    SHUFFLE a b TAKE b 1,10 c COUNT c =1 d SCORE d z
-END HISTOGRAM z
-```
-
-
-    ![](images/12-Chap-8_009.png)
-
-```{python, opts.label="py_ed"}
+The problem can be done with {{<var lang>}} as follows:
+```{python opts.label="py_ed"}
 N = 10000
-trial_results = np.zeros(N, dtype=int)
+trial_results = np.zeros(N)
 
-# 10 zeros for worst managers, 10 ones for best managers.
-managers = np.repeat([0, 1], [10, 10])
+managers = np.repeat(['Worst', 'Best'], [10, 10])
 
 for i in range(N):
-    chosen = np.random.choice(managers, 10, replace=False)
-    trial_results[i] = np.sum(chosen)
+    chosen = rnd.choice(managers, 10, replace=False)
+    trial_results[i] = np.sum(chosen == 'Best')
 
-plt.hist(trial_results, bins=range(10), align='left', density=True, rwidth=0.75)
-plt.title('Number of good managers chosen')
+plt.hist(trial_results, bins=range(10), align='left', rwidth=0.75)
+plt.title('Number of best managers chosen')
 ```
 
 ## Example 8-8: Executives Moving
@@ -768,76 +747,26 @@ drew samples of children for those trials in which a bridge hand of 5
 spades had already been dealt, we will have in K the number of trials
 out of 1000 in which both conditions were met.
 
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "probability_theory_4_finite_01.rss"
-
-URN 13#1 39#0 deck
-' Deck with 13 spades ("1") and 39 other cards (0)
-REPEAT 1000
-    ' Do the following experiment 1000 times.
-    SHUFFLE deck deck$
-    ' Shuffle the deck.
-    TAKE b deck$ 1,13 hand
-    ' Deal out one hand of 13 cards.
-    COUNT hand =1 spades
-    ' Find out how many of the 13 cards are spades (spades are represented by
-    ' the number 1).
-    IF spades >= 5
-        ' If we have 5 or more spades\...
-        GENERATE 5 1,2 a
-        ' Create a family of 5 children, randomly selecting among girls (1's) and
-        ' boys (2's).
-        COUNT a =1 j
-        ' Count the number of girls.
-        SCORE j z
-        ' Keep track of the number of girls in each trial. Recall that we are only
-        ' counting girls if we have already gotten five spades in the bridge hand.
-    END
-END
-' End the IF condition.
-```
-
-End the experiment, go back and repeat until all 1000 trials are
-complete.
-
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "probability_theory_4_finite_02.rss"
-
-COUNT z =4 k
-' Count the number of times we got 4 girls (and 5 or more spades).
-DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Print the results.
-```
-
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 N = 10000
-trial_results = np.zeros(N, dtype=bool)
+trial_results = np.zeros(N)
 
-# Deck with 13 spades (ones) and 39 other cards (zeros)
-deck = np.repeat([1, 0], [13, 39])
+# Deck with 13 spades and 39 other cards
+deck = np.repeat(['spade', 'others'], [13, 39])
 
 for i in range(N):
     # Shuffle deck and draw 13 cards
-    hand = np.random.choice(deck, 13, replace=False)
+    hand = rnd.choice(deck, 13, replace=False)
 
-    spades = np.sum(hand)
+    n_spades = np.sum(hand == 'spade')
 
-    if spades >= 5:
+    if n_spades >= 5:
         # Generate a family, zeros for boys, ones for girls
-        children = np.random.randint(0, 2, size=5)
-        girls = np.sum(children)
-        if girls == 4:
-            trial_results[i] = True
+        children = rnd.choice(['girl', 'boy'], size=5)
+        n_girls = np.sum(children == 'girl')
+        trial_results[i] = n_girls
 
-k = np.count_nonzero(trial_results)
+k = np.sum(trial_results == 4)
 
 kk = k / N
 
@@ -846,27 +775,27 @@ print(kk)
 
 Alternative:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 N = 10000
-trial_spades = np.zeros(N, dtype=int)
-trial_girls = np.zeros(N, dtype=int)
+trial_spades = np.zeros(N)
+trial_girls = np.zeros(N)
 
-# Deck with 13 spades (ones) and 39 other cards (zeros)
-deck = np.repeat([1, 0], [13, 39])
+# Deck with 13 spades and 39 other cards
+deck = np.repeat(['spade', 'other'], [13, 39])
 
 for i in range(N):
     # Shuffle deck and draw 13 cards
-    hand = np.random.choice(deck, 13, replace=False)
+    hand = rnd.choice(deck, 13, replace=False)
 
-    spades = np.sum(hand)
-    trial_spades[i] = spades
+    n_spades = np.sum(hand == 'spade')
+    trial_spades[i] = n_spades
 
     # Generate a family, zeros for boys, ones for girls
-    children = np.random.randint(0, 2, size=5)
-    girls = np.sum(children)
-    trial_girls[i] = girls
+    children = rnd.choice(['girl', 'boy'], size=5)
+    n_girls = np.sum(children == 'girl')
+    trial_girls[i] = n_girls
 
-k = np.count_nonzero((trial_spades >= 5) & (trial_girls == 4))
+k = np.sum((trial_spades >= 5) & (trial_girls == 4))
 
 kk = k / N
 
