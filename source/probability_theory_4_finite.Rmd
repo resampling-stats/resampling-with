@@ -209,6 +209,8 @@ The results of a few experimental trials are shown in Table 8-1.
 
 A solution to this problem with {{< var lang >}} is presented below.
 
+::: {.notebook name="finite_universes" title="Experiments in finite universes"}
+
 ```{python opts.label="py_ed"}
 import numpy as np
 
@@ -250,6 +252,42 @@ kk = k / N
 print(kk)
 ```
 
+```{r opts.label="r_ed"}
+N <- 10000
+trial_results <- numeric(N)
+
+# Constitute the set of 25 girls and 25 boys.
+whole_class <- rep(c('girl', 'boy'), c(25, 25))
+
+# Repeat the following steps N times.
+for (i in 1:N) {
+
+    # Shuffle the numbers
+    shuffled <- sample(whole_class)
+
+    # Take the first 5 numbers, call them c.
+    c <- shuffled[1:5]
+
+    # Count how many girls there are, put the result in d.
+    d <- sum(c == 'girl')
+
+    # Keep track of each trial result in z.
+    trial_results[i] <- d
+
+    # End the experiment, go back and repeat until all 1000 trials are
+    # complete.
+}
+
+# Count the number of times we got four girls, put the result in k.
+k <- sum(trial_results == 4)
+
+# Convert to a proportion.
+kk <- k / N
+
+# Print the result.
+message(kk)
+```
+
 We can also find the probabilities of other outcomes from a histogram of
 trial results obtained with the following command:
 
@@ -260,6 +298,11 @@ import matplotlib.pyplot as plt
 # Do histogram, with one bin for each possible number.
 plt.hist(trial_results, bins=range(7), align='left', density=True, rwidth=0.75)
 plt.title('# of girls');
+```
+
+```{r opts.label="r_ed"}
+# Do histogram, with one bin for each possible number.
+hist(trial_results, breaks=0:max(trial_results), main='# of girls')
 ```
 
 In the resulting histogram we can see that in 14 percent of the trials,
@@ -324,7 +367,53 @@ prop_5_and_4 = n_5_and_4 / N
 print(prop_5_and_4)
 ```
 
-## Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace = 4, King = 3, Queen = 2, and Jack = 1.
+```{r opts.label="r_ed"}
+# Constitute the deck of 52 cards.
+# Repeat the suit names 13 times each, to make a 52 card deck.
+deck <- rep(c('spade', 'club', 'diamond', 'heart'), c(13, 13, 13, 13))
+# Show the deck
+deck
+```
+
+```{r opts.label="r_ed"}
+N <- 10000
+trial_results <- numeric(N)
+
+# Repeat the trial N times.
+for (i in 1:N) {
+
+    # Shuffle the deck and draw 13 cards.
+    hand <- sample(deck, 13)  # replace=FALSE is the default.
+
+    # Count the number of spades in "hand", put the result in "n_spades".
+    n_spades <- sum(hand == 'spade')
+
+    # If we have five spades, we'll continue on to count the clubs. If we don't
+    # have five spades, the number of clubs is irrelevant — we have not gotten
+    # the hand we are interested in.
+    if (n_spades == 5) {
+        # Count the clubs, put the result in "n_clubs"
+        n_clubs <- sum(hand == 'club')
+        # Keep track of the number of clubs in each trial
+        trial_results[i] <- n_clubs
+    }
+
+    # End one experiment, go back and repeat until all N trials are done.
+}
+
+# Count the number of trials where we got 4 clubs. This is the answer we want -
+# the number of hands out of 1000 with 5 spades and 4 clubs. (Recall that we
+# only counted the clubs if the hand already had 5 spades.)
+n_5_and_4 <- sum(trial_results == 4)
+
+# Convert to a proportion.
+prop_5_and_4 <- n_5_and_4 / N
+
+# Print the result
+message(prop_5_and_4)
+```
+
+## Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace <- 4, King = 3, Queen = 2, and Jack = 1.
 
 This problem bears the same relationship to Example 8-2 that Example 4-5
 bears to Example 4-4.
@@ -339,7 +428,7 @@ whole_deck
 
 ```{python opts.label="py_ed"}
 N = 10000
-trial_results = np.zeros(N, dtype=int)
+trial_results = np.zeros(N)
 
 # Do N trials.
 for i in range(N):
@@ -366,13 +455,59 @@ total of exactly 15 points. We can also compute this directly:
 
 ```{python opts.label="py_ed"}
 # How many times did we have a hand with fifteen points?
-k = np.count_nonzero(trial_results == 15)
+k = np.sum(trial_results == 15)
 
 # Convert to a proportion.
 kk = k / N
 
 # Print the result.
 print(kk)
+```
+
+```{r opts.label="py_ed"}
+# Constitute a deck with 4 jacks (point value 1), 4 queens (value 2), 4
+# kings (value 3), 4 aces (value 4), and 36 other cards with no point
+# value
+whole_deck <- rep(c(1, 2, 3, 4, 0), c(4, 4, 4, 4, 36))
+whole_deck
+```
+
+```{r opts.label="py_ed"}
+N <- 10000
+trial_results <- numeric(N)
+
+# Do N trials.
+for (i in 1:N) {
+    # Shuffle the deck of cards and draw 13
+    hand <- sample(whole_deck, 13)  # replace=FALSE is default.
+
+    # Total the points.
+    points <- sum(hand)
+
+    # Keep score of the result.
+    trial_results[i] <- points
+
+    # End one experiment, go back and repeat until all N trials are done.
+}
+```
+
+```{r opts.label="py_ed"}
+# Produce a histogram of trial results.
+hist(trial_results, breaks=0:max(trial_results), main='Points in bridge hands')
+```
+
+From this histogram, we see that in about 5 percent of our trials we obtained a
+total of exactly 15 points. We can also compute this directly:
+
+```{r opts.label="py_ed"}
+# How many times did we have a hand with fifteen points?
+k <- sum(trial_results == 15)
+
+# Convert to a proportion.
+kk <- k / N
+
+# Print the result.
+message(kk)
 ```
 
 ## Example 8-4: Four Girls and Then One Boy From Twenty-five Girls and Twenty-five Boys Order Matters, Sampling Without Replacement, Two Outcomes, Several of Each Item
@@ -396,7 +531,7 @@ or 4th, whereas in Example 8-1 such outcomes are recorded as "yes"-es.
 **Step 3.** Repeat step 2, say, 10,000 times, and count the proportion
   "yes" which estimates the probability sought.
 
-```{python}
+```{python opts.label="py_ed"}
 # The result we are looking for - four girls and then a boy.
 result_of_interest = np.repeat(['girl', 'boy'], [4, 1])
 result_of_interest
@@ -404,7 +539,7 @@ result_of_interest
 
 ```{python opts.label="py_ed"}
 N = 10000
-trial_results = np.zeros(N, dtype=bool)
+trial_results = np.zeros(N)
 
 # Constitute the set of 25 girls and 25 boys.
 whole_class = np.repeat(['girl', 'boy'], [25, 25])
@@ -437,6 +572,49 @@ kk = k / N
 
 # Print the result.
 print(kk)
+```
+
+<!---
+Introduce `all`
+-->
+
+```{r opts.label="py_ed"}
+# The result we are looking for - four girls and then a boy.
+result_of_interest <- rep(c('girl', 'boy'), c(4, 1 ))
+result_of_interest
+```
+
+```{r opts.label="py_ed"}
+N <- 10000
+trial_results <- numeric(N)
+
+# Constitute the set of 25 girls and 25 boys.
+whole_class <- rep(c('girl', 'boy'), c(25, 25))
+
+# Repeat the following steps 1000 times.
+for (i in 1:N) {
+
+    # Shuffle the numbers
+    shuffled <- sample(whole_class)
+    # Take the first 5 class members, call them c.
+    c <- shuffled[1:5]
+
+    is_four_girls_then_one_boy <- all(c == result_of_interest)
+
+    trial_results[i] <- is_four_girls_then_one_boy
+
+    # End the experiment, go back and repeat until all N trials are
+    # complete.
+}
+
+# Count the number of times we got four girls then a boy
+k <- sum(trial_results)
+
+# Convert to a proportion.
+kk <- k / N
+
+# Print the result.
+message(kk)
 ```
 
 This type of problem is conventionally done with a *permutation*
@@ -671,7 +849,7 @@ for (i in 1:N) {
     trial_results[i] <- sum(chosen == 'Best')
 }
 
-hist(trial_results, breaks=0:9,
+hist(trial_results, breaks=0:max(trial_results),
      main= 'Number of best managers chosen')
 ```
 
@@ -942,6 +1120,8 @@ print(kk)
     the experiments were not completely unrelated.
 
 Result: kk = `r get_var(kk)`
+
+:::
 
 ## Summary
 
