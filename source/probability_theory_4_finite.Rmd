@@ -477,7 +477,7 @@ numbers.  The solution follows below.
 
 ```{python opts.label="py_ed"}
 N = 10000
-trial_results = np.zeros(N, dtype=int)
+trial_results = np.zeros(N)
 
 # Assign numbers to each student, according to their pair, after the first
 # icebreaker
@@ -507,8 +507,41 @@ kk = k / N
 print(kk)
 ```
 
-We see that in about 3 percent of the trials did 4 or more couples end
-up being re-paired with their own partners.  This can also be seen
+```{r opts.label="r_ed"}
+N <- 10000
+trial_results <- numeric(N)
+
+# Assign numbers to each student, according to their pair, after the first
+# icebreaker
+birmingham <- 1:10
+berkeley <- 1:10
+
+for (i in 1:N) {
+    # Randomly shuffle the students from Berkeley
+    shuffled_berkeley <- sample(berkeley)
+
+    # Randomly shuffle the students from Birmingham
+    # (This step is not really necessary — shuffling one array is enough to make the matching random.)
+    shuffled_birmingham <- sample(birmingham)
+
+    # Count in how many cases people landed with the same person as in the
+    # first round, and store in trial_results.
+    matches <- sum(shuffled_berkeley == shuffled_birmingham)
+    trial_results[i] <- matches
+}
+
+# Count the number of times we got 4 or more people assigned to the same person
+k <- sum(trial_results >= 4)
+
+# Convert to a proportion.
+kk <- k / N
+
+# Print the result.
+message(kk)
+```
+
+We see that in about `r get_var('kk')` percent of the trials did 4 or more
+couples end up being re-paired with their own partners.  This can also be seen
 from the histogram:
 
 ```{python opts.label="py_ed"}
@@ -557,6 +590,34 @@ kk = k / N
 print(kk)
 ```
 
+```{r opts.label="r_ed"}
+N <- 10000
+trial_results <- numeric(N)
+
+# Assign numbers to each owner
+owners <- 1:6
+
+# Each hat gets the number of their owner
+hats <- 1:6
+
+for (i in 1:N) {
+    # Randomly shuffle the hats and compare to their owners
+    shuffled_hats <- sample(hats)
+
+    # In how many cases did at least one person get their hat back?
+    trial_results[i] <- sum(shuffled_hats == owners) >= 1
+}
+
+# How many times, over all trials, did at least one person get their hat back?
+k <- sum(trial_results)
+
+# Convert to a proportion.
+kk <- k / N
+
+# Print the result.
+print(kk)
+```
+
 We see that in roughly 62 percent of the trials at least one
 person received their own hat back.
 
@@ -584,6 +645,7 @@ One may proceed as follows:
     etc.---appears in the results.
 
 The problem can be done with {{<var lang>}} as follows:
+
 ```{python opts.label="py_ed"}
 N = 10000
 trial_results = np.zeros(N)
@@ -591,11 +653,26 @@ trial_results = np.zeros(N)
 managers = np.repeat(['Worst', 'Best'], [10, 10])
 
 for i in range(N):
-    chosen = rnd.choice(managers, 10, replace=False)
+    chosen = rnd.choice(managers, size=10, replace=False)
     trial_results[i] = np.sum(chosen == 'Best')
 
 plt.hist(trial_results, bins=range(10), align='left', rwidth=0.75)
 plt.title('Number of best managers chosen')
+```
+
+```{r opts.label="r_ed"}
+N <- 10000
+trial_results <- numeric(N)
+
+managers <- rep(c('Worst', 'Best'), c(10, 10))
+
+for (i in 1:N) {
+    chosen <- sample(managers, 10)  # replace=FALSE is the default.
+    trial_results[i] <- sum(chosen == 'Best')
+}
+
+hist(trial_results, breaks=0:9,
+     main= 'Number of best managers chosen')
 ```
 
 ## Example 8-8: Executives Moving
@@ -773,6 +850,34 @@ kk = k / N
 print(kk)
 ```
 
+```{r opts.label="r_ed"}
+N <- 10000
+trial_results <- numeric(N)
+
+# Deck with 13 spades and 39 other cards
+deck <- rep(c('spade', 'others'), c(13, 39))
+
+for (i in 1:N) {
+    # Shuffle deck and draw 13 cards
+    hand <- sample(deck, 13)  # replace=FALSE is default
+
+    n_spades <- sum(hand == 'spade')
+
+    if (n_spades >= 5) {
+        # Generate a family, zeros for boys, ones for girls
+        children <- sample(c('girl', 'boy'), 5, replace=TRUE)
+        n_girls <- sum(children == 'girl')
+        trial_results[i] <- n_girls
+    }
+}
+
+k <- sum(trial_results == 4)
+
+kk <- k / N
+
+print(kk)
+```
+
 Alternative:
 
 ```{python opts.label="py_ed"}
@@ -798,6 +903,35 @@ for i in range(N):
 k = np.sum((trial_spades >= 5) & (trial_girls == 4))
 
 kk = k / N
+
+print(kk)
+```
+
+```{r opts.label="r_ed"}
+N <- 10000
+trial_spades <- numeric(N)
+trial_girls <- numeric(N)
+
+# Deck with 13 spades and 39 other cards
+deck <- rep(c('spade', 'other'), c(13, 39))
+
+for (i in 1:N) {
+    # Shuffle deck and draw 13 cards
+    hand <- sample(deck, 13)  # replace=FALSE is default
+    # Count and store the number of spades.
+    n_spades <- sum(hand == 'spade')
+    trial_spades[i] <- n_spades
+
+    # Generate a family, zeros for boys, ones for girls
+    children <- sample(c('girl', 'boy'), 5, replace=TRUE)
+    # Count and store the number of girls.
+    n_girls <- sum(children == 'girl')
+    trial_girls[i] <- n_girls
+}
+
+k <- sum((trial_spades >= 5) & (trial_girls == 4))
+
+kk <- k / N
 
 print(kk)
 ```
