@@ -1,7 +1,10 @@
 # Common options for all chapters
 
 # Quarto variables for later use.
-._spec <- yaml::yaml.load_file(input = '_quarto.yml')
+._variables <- yaml::yaml.load_file(input = '_variables.yml')
+._lang <- tolower(._variables$lang);
+._profile <- paste("_quarto-", ._lang, ".yml", sep="")
+._spec <- yaml::yaml.load_file(input = ._profile)
 
 # Code outputs
 options(digits = 3)
