@@ -22,7 +22,6 @@ resampling_with:
 ```{r setup, include=FALSE}
 source("_common.R")
 ```
-
 # Hypothesis-Testing with Counted Data, Part 1 {#sec-testing-counts-one}
 
 :::{.callout-warning}
@@ -1370,17 +1369,16 @@ We see that the sum of the ranks for the "closer" set is 3+5=8. We
 can then ask: If the ranks were assigned at random, how likely is it
 that a set of two planets would have a sum as large as 8? Again,
 because the sample is small, we can examine all the possible
-permutations, as Mosteller and Rourke do in Table 3-1 (p. 56)
-(Substitute "Closer" for "B," "Further" for "A"). In two of the
-ten permutations, a sum of ranks as great as 8 is observed, so the
-probability of a result as great as observed happening by chance is
-20 percent, using these data. (We could just as well consider the
-difference in mean ranks between the two groups: (8/2 - 7/3 =)
-1.6.)
+permutations, as Mosteller and Rourke do in Table 3-1 [@mosteller1973sturdy,
+page 56] (Substitute "Closer" for "B," "Further" for "A"). In two of the ten
+permutations, a sum of ranks as great as 8 is observed, so the probability of
+a result as great as observed happening by chance is 20 percent, using these
+data. (We could just as well consider the difference in mean ranks between the
+two groups: (8/2 - 7/3 =) 1.6.)
 
 <!---
-NB - I (MB) have not checked the Mosteller and Rourke reference.  Will do at
-the end of June when I get a copy of the book.
+Perhaps easier to reproduce M+R table here - no-one will have that reference to
+hand.
 -->
 
 
