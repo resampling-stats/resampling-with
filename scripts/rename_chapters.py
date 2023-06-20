@@ -9,6 +9,11 @@ in_sdir = 'unported'
 out_sdir = 'source'
 
 lines = """\
+01-Preface preface_second
+02-Intro intro
+03-Afternote-1 dramatizing_resampling
+04-Afternote-2 intro
+05-Chap-1 resampling_method
 06-Chap-2 basic_probability_1
 07-Chap-3 basic_probability_2
 08-Chap-4 probability_theory_1a
