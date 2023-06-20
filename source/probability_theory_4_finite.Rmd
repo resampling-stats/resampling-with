@@ -464,7 +464,7 @@ kk = k / N
 print(kk)
 ```
 
-```{r opts.label="py_ed"}
+```{r opts.label="r_ed"}
 # Constitute a deck with 4 jacks (point value 1), 4 queens (value 2), 4
 # kings (value 3), 4 aces (value 4), and 36 other cards with no point
 # value
@@ -472,7 +472,7 @@ whole_deck <- rep(c(1, 2, 3, 4, 0), c(4, 4, 4, 4, 36))
 whole_deck
 ```
 
-```{r opts.label="py_ed"}
+```{r opts.label="r_ed"}
 N <- 10000
 trial_results <- numeric(N)
 
@@ -491,7 +491,7 @@ for (i in 1:N) {
 }
 ```
 
-```{r opts.label="py_ed"}
+```{r opts.label="r_ed"}
 # Produce a histogram of trial results.
 hist(trial_results, breaks=0:max(trial_results), main='Points in bridge hands')
 ```
@@ -499,7 +499,7 @@ hist(trial_results, breaks=0:max(trial_results), main='Points in bridge hands')
 From this histogram, we see that in about 5 percent of our trials we obtained a
 total of exactly 15 points. We can also compute this directly:
 
-```{r opts.label="py_ed"}
+```{r opts.label="r_ed"}
 # How many times did we have a hand with fifteen points?
 k <- sum(trial_results == 15)
 
@@ -578,13 +578,13 @@ print(kk)
 Introduce `all`
 -->
 
-```{r opts.label="py_ed"}
+```{r opts.label="r_ed"}
 # The result we are looking for - four girls and then a boy.
 result_of_interest <- rep(c('girl', 'boy'), c(4, 1 ))
 result_of_interest
 ```
 
-```{r opts.label="py_ed"}
+```{r opts.label="r_ed"}
 N <- 10000
 trial_results <- numeric(N)
 
