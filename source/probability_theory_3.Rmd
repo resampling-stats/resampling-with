@@ -1,22 +1,19 @@
 ---
+resampling_with:
+    ed2_fname: 11-Chap-7
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.6
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: 11-Chap-7
 ---
 
 ```{r setup, include=FALSE}
@@ -94,11 +91,11 @@ top left of the page of numbers and ignoring numbers \>365: 021, 158,
 
 Now try the program written as follows.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 import numpy as np
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 n_with_same_birthday = np.zeros(1000)
 
 # Do 1000 trials (experiments)
@@ -223,7 +220,7 @@ daughters.
 A RESAMPLING STATS computer solution to the "3Girls" problem mimics the
 above steps:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 girl_counts = np.zeros(10000)
 
 # Do 10000 trials
@@ -310,26 +307,26 @@ coins more tedious. But with the RESAMPLING STATS program it is not at
 all more difficult. The only commands in the above program that need to
 be changed are
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Generate 4 numbers at random, either "1" or "2." This is analogous to
 # flipping a coin 4 times to generate 4 heads or tails. We keep these
 # numbers in a, letting "1" represent girls.
 children = np.random.choice([1, 2], 4)
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Count the number of girls and put the result in b.
 b = np.count_nonzero(children == 1)
 ```
 
 These commands now become
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Generate 4 numbers at random, from 1 to 100.
 children = np.random.randint(1, 101, size=4)
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Let "1" to "48" represent girls, count the number of girls, and put the
 # result in b.
 b = np.count_nonzero(children <= 48)
@@ -481,7 +478,7 @@ then be done as follows:
         baskets were made. We place the results in k, and then PRINT.
 
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 n_baskets = np.zeros(1000)
 
 # Do 1000 experimental trials.
@@ -565,7 +562,7 @@ RESAMPLING STATS, the "bullseye" program teaches you some more
 fundamentals of computer programming. The IF statement and the two
 loops, one within the other, are basic tools of programming.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 white_counts = np.zeros(1000)
 
 # Do 1000 experimental trials
@@ -807,7 +804,7 @@ coin 200 times. Finally, note how the REPEAT 1000 loop simulates 1000 games,
 each game consisting of 200 coin flips.
 
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 someone_won = np.zeros(1000)
 
 # Do 1000 trials
@@ -910,7 +907,7 @@ such as is used with a child's board game, and then keep track of each
 step on a piece of graph paper. The reader may construct a RESAMPLING
 STATS program as an exercise.
 
-```{r drunk-walk, echo=FALSE, fig.align='center', fig.cap="Drunk's random walk"}
+```{r drunk-walk, echo=FALSE, fig.align="center", fig.cap="Drunk random walk"}
 include_svg('images/drunks_walk.svg')
 ```
 
@@ -1029,13 +1026,12 @@ from the simulated state-ownership universe is less than (or equal to)
 the mean of the actual sixteen state-ownership prices. The following
 computer program performs the operations described above.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Import the plotting library
 import matplotlib.pyplot as plt
-# %matplotlib inline
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 fake_diffs = np.zeros(1000)
 
 priv = np.array([
@@ -1045,6 +1041,8 @@ priv = np.array([
 govt = np.array([
     465, 455, 411, 415, 420, 455, 380, 400, 419, 475, 474, 450, 410, 400, 505,
     420])
+
+actual_diff = np.mean(priv) - np.mean(govt)
 
 # Join the two vectors of data
 both = np.concatenate((priv, govt))
@@ -1072,8 +1070,9 @@ for i in range(1000):
 
 # Graph of simulation results to compare with the observed result.
 plt.hist(fake_diffs)
-plt.title(
-    'Difference in average prices (cents) (Actual difference = \$0.49)');
+plt.xlabel('Difference in average prices (cents)')
+plt.title('Average price difference (Actual difference = '
+          f'{actual_diff:.2f} cents)');
 ```
 
 The results shown above — not even one "success" in 1,000 trials — imply
