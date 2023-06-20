@@ -334,6 +334,33 @@ Quarto](https://quarto.org/docs/authoring/cross-references.html).  Summary for
 section reference: add `{#sec-name-for-your-ref}` to the target section title,
 reference with `Please see section @name-for-your-ref for details`.
 
+## More setup for Jupyter
+
+For the Jupyter notebook, you might want to enable the R magics, to allow you
+to run _both_ the R code _and_ the Python code, in the same notebook, without any extra cells.
+
+First, install `rpy2` into your virtualenv:
+
+```
+pip install rpy2
+```
+
+Find your IPython default configuration directory.  From Jupyter:
+
+```python
+get_ipython().profile_dir.startup_dir
+```
+
+Then make a file in that directory with name such as `03_rpy2.ipy`, with
+contents including:
+
+```python
+%load_ext rpy2.ipython
+```
+
+The `.ipy` extension is to allow the `%` magic commands.  Now you should be
+able to work with the `%%R` cell magics.
+
 ## Useful links
 
 * [The original book in PDF](https://resample.com/intro-text-online). MB has
