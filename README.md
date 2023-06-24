@@ -334,6 +334,23 @@ Quarto](https://quarto.org/docs/authoring/cross-references.html).  Summary for
 section reference: add `{#sec-name-for-your-ref}` to the target section title,
 reference with `Please see section @name-for-your-ref for details`.
 
+## Basic tables
+
+```
+| Col1 | Col2 | Col3 |
+|------|------|------|
+| A    | B    | C    |
+| E    | F    | G    |
+| A    | G    | G    |
+
+: My Caption {#tbl-letters}
+
+See @tbl-letters.
+```
+
+See [Quarto tables](https://quarto.org/docs/authoring/tables.html)
+
+
 ## More setup for Jupyter
 
 For the Jupyter notebook, you might want to enable the R magics, to allow you
@@ -355,7 +372,12 @@ Then make a file in that directory with name such as `03_rpy2.ipy`, with
 contents including:
 
 ```python
-%load_ext rpy2.ipython
+try:
+    import rpy2
+except ImportError:
+    pass
+else:
+    %load_ext rpy2.ipython
 ```
 
 The `.ipy` extension is to allow the `%` magic commands.  Now you should be

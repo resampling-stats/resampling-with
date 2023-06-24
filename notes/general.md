@@ -155,6 +155,7 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * lists
 * indentation
 * bincount / tabulate (probability_theory_2_compound)
+* up to but not including for Python.
 
 ## Data
 

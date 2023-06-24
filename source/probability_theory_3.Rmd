@@ -97,6 +97,7 @@ among a roomful of (say) twenty-five people will have the same birthday?"
 
 ```{python opts.label="py_ed"}
 import numpy as np
+rnd = np.random.default_rng()
 ```
 
 ```{python opts.label="py_ed"}
@@ -105,7 +106,7 @@ n_with_same_birthday = np.zeros(10000)
 # Do 10000 trials (experiments)
 for i in range(10000):
     # Generate 25 numbers randomly between "1" and "365" put them in a.
-    a = np.random.randint(1, 366, size=25)
+    a = rnd.integers(1, 366, size=25)
 
     # Looking in a, count the number of multiples and put the result in
     # b. We request multiples > 1 because we are interested in any multiple,
@@ -177,16 +178,10 @@ problems in probability theory (@sec-infinite-universes and
 @sec-finite-universes), and inferential statistics (@sec-framing-questions to
 @sec-reliability-average.)
 
-## Example 7-2: Three Daughters Among Four Children
+## Example: Three Daughters Among Four Children
 
 This problem illustrates a problem with two outcomes (Binomial [^binomial]) and
 sampling with Replacement Among Equally Likely Outcomes.
-
-[^binomial]: Conventional labels such as "binomial" are used here for general
-    background and as guideposts to orient the student of conventional
-    statistics. You do not need to know these labels to understand the
-    resampling approach; one of the advantages of resampling is that it avoids
-    errors resulting from incorrect pigeonholing of problems.
 
 What is the probability that exactly three of the four children in a four-child
 family will be daughters?
@@ -212,18 +207,18 @@ do the experiments just as described in the steps. Here are a set of steps that
 will lead to a correct answer about the probability of getting three daughters
 among four children:
 
-* **Step 1.** Using coins, let "heads" equal "boy" and "tails" equal "girl."
+* **Step 1.** Using coins, let "heads" equal "girl" and "tails" equal "boy."
 * **Step 2.** Throw four coins.
-* **Step 3.** Examine whether the four coins fall with exactly three tails up.
+* **Step 3.** Examine whether the four coins fall with exactly three heads up.
   If so, write "yes" on a record sheet; otherwise write "no."
 * **Step 4.** Repeat step 2 perhaps two hundred times.
 * **Step 5.** Count the proportion "yes." This proportion is an estimate of the
   probability of obtaining exactly 3 daughters in 4 children.
 
 The first few experimental trials might appear in the record sheet as
-follows:
+follows (@tbl-coins-girls):
 
-Number of Tails    Yes or No
+Number of Heads    Yes or No
 ---------------    ---------
 1                   No
 0                   No
@@ -234,6 +229,8 @@ Number of Tails    Yes or No
 ...                 ...
 ...                 ...
 ...                 ...
+
+: Example trials from the three-girls problem {#tbl-coins-girls}
 
 The probability of getting three daughters in four births could also be
 found with a deck of cards, a random number table, a die, or with
@@ -251,15 +248,20 @@ have exactly three girls.
 :::
 
 ```{python opts.label="py_ed"}
+import numpy as np
+rnd = np.random.default_rng()
+```
+
+```{python opts.label="py_ed"}
 girl_counts = np.zeros(10000)
 
 # Do 10000 trials
 for i in range(10000):
 
     # Generate 4 numbers at random, either "1" or "2." This is analogous to
-    # flipping a coin 4 times to generate 4 heads or tails. We keep these numbers
-    # in a, letting "1" represent girls.
-    children = np.random.randint(1, 3, size=4)
+    # flipping a coin 4 times to generate 4 heads or tails. We keep these 
+    # numbers in a, letting "1" represent girls.
+    children = rnd.integers(1, 3, size=4)
 
     # Count the number of girls and put the result in b.
     b = np.sum(children == 1)
@@ -365,31 +367,27 @@ production of milk).
 Another variation: What if we feel the need to get a bit more precise,
 and to consider the biological fact that more males are born than
 females — perhaps 52 to 48. This variation would make a solution using
-coins more tedious. But with the RESAMPLING STATS program it is not at
-all more difficult. The only commands in the above program that need to
-be changed are
+coins more tedious. But with {{< var lang >}} it is not at all more difficult.
+
+Remember, the original code for the 50-50 case, has the following:
 
 ```{python opts.label="py_ed"}
 # Generate 4 numbers at random, either "1" or "2." This is analogous to
-# flipping a coin 4 times to generate 4 heads or tails. We keep these
+# flipping a coin 4 times to generate 4 heads or tails. We keep these 
 # numbers in a, letting "1" represent girls.
-children = np.random.choice([1, 2], 4)
-```
+children = rnd.integers(1, 3, size=4)
 
-```{python opts.label="py_ed"}
 # Count the number of girls and put the result in b.
 b = np.sum(children == 1)
 ```
 
-These commands now become
+The only change we need to the above, for the 52 to 48 case, is:
 
 ```{python opts.label="py_ed"}
 # Generate 4 numbers at random, from 1 to 100.
-children = np.random.randint(1, 101, size=4)
-```
+children = rnd.integers(1, 101, size=4)
 
-```{python opts.label="py_ed"}
-# Let "1" to "48" represent girls, count the number of girls, and put the
+# Let "1" through "48" represent girls, count the number of girls, and put the
 # result in b.
 b = np.sum(children <= 48)
 ```
@@ -423,25 +421,29 @@ difficulty of choosing correct conventional formulaic methods.
 
 ## Binomial trials
 
-The problem of the three daughters in four births is known in the
-conventional literature as a "binomial sampling experiment with
-equally-likely outcomes." "Binomial" means that the *individual* simple
-event (a birth or a coin flip) can have only *two outcomes* (boy or
-girl, heads or tails), "binomial" meaning "two names" in Latin \[1\].
+The problem of the three daughters in four births is known in the conventional
+literature as a "binomial sampling experiment with equally-likely outcomes."
+"Binomial" means that the *individual* simple event (a birth or a coin flip)
+can have only *two outcomes* (boy or girl, heads or tails), "binomial" meaning
+"two names" in Latin.[^binomial]
 
-A fundamental property of binomial processes is that the individual
-trials are *independent* , a concept discussed earlier. A binomial
-sampling process is a *series* of binomial events about which one may
-ask many sorts of questions — the probability of exactly X heads
-("successes") in N trials, or the probability of X or more "successes"
-in N trials, and so on.
+[^binomial]: Conventional labels such as "binomial" are used here for general
+    background and as guideposts to orient the student of conventional
+    statistics. You do not need to know these labels to understand the
+    resampling approach; one of the advantages of resampling is that it avoids
+    errors resulting from incorrect pigeonholing of problems.
 
-"Equally likely outcomes" means we assume that the probability of a girl
-or boy in any one birth is the same (though this assumption is slightly
-contrary to fact); we represent this assumption with the
-equal-probability heads and tails of a coin. Shortly we will come to
-binomial sampling experiments where the probabilities of the individual
-outcomes are *not* equal.
+A fundamental property of binomial processes is that the individual trials are
+*independent* , a concept discussed earlier. A binomial sampling process is a
+*series* of binomial (one-of-two-outcome) events about which one may ask many
+sorts of questions — the probability of exactly X heads ("successes") in N
+trials, or the probability of X or more "successes" in N trials, and so on.
+
+"Equally likely outcomes" means we assume that the probability of a girl or boy
+in any one birth is the same (though this assumption is slightly contrary to
+fact); we represent this assumption with the equal-probability heads and tails
+of a coin. Shortly we will come to binomial sampling experiments where the
+probabilities of the individual outcomes are *not* equal.
 
 The term "with replacement" was explained earlier; if we were to use a
 deck of red and black cards (instead of a coin) for this resampling
@@ -454,7 +456,7 @@ This problem would be done conventionally with the binomial theorem
 using probabilities of .5, or of .48 and .52, asking about 3 successes
 in 4 trials.
 
-## Example 7-3: Three or More Successful Basketball Shots in Five Attempts
+## Example: Three or More Successful Basketball Shots in Five Attempts
 
 This is an example of two-outcome sampling with unequally-likely outcomes, with
 replacement — a binomial experiment.
@@ -576,7 +578,7 @@ This problem would be done conventionally with the binomial theorem,
 asking about the chance of getting 3 successes in 5 trials, with the
 probability of a success = .25.
 
-## Example 7-4: One in the Black, Two in the White, and No Misses in Three Archery Shots
+## Example: One in Black, Two in White, No Misses in Three Archery Shots {#sec-one-black-archery}
 
 This is an example of a multiple outcome \[Multinomial\] sampling with unequally likely outcomes; with replacement.
 
