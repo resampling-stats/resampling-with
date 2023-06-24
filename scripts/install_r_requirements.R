@@ -28,6 +28,8 @@ if (length(to_install)) {
 # tasks."
 fs::dir_create('~/R-dev')  # ?also correct for Windows
 
-# Install development version of reticulate
-# https://github.com/rstudio/reticulate/issues/1391
-remotes::install_github("rstudio/reticulate", dependencies=TRUE)
+# Install our patched version of reticulate.
+# https://github.com/rstudio/reticulate/pull/1401
+remotes::install_github("matthew-brett/reticulate",
+                        ref='mpl-figure-check',
+                        dependencies=TRUE)
