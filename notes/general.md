@@ -154,7 +154,7 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * arrays and data types
 * lists
 * indentation
-* bincount
+* bincount / tabulate (probability_theory_2_compound)
 
 ## Data
 

@@ -51,7 +51,8 @@ probabilities of a head and a tail.
 
 ## Example 7-1: The Birthday Problem
 
-This examples illustrates the probability of duplication in a multi-outcome sample from an infinite universe (File "Birthday").
+This examples illustrates the probability of duplication in a multi-outcome
+sample from an infinite universe.
 
 As an indication of the power *and* simplicity of resampling methods,
 consider this famous examination question used in probability courses:
@@ -74,33 +75,36 @@ avoiding such unfortunate occurrences?)
 More specifically, these steps answer the question for the case of
 twenty-five people in the room:
 
-**Step 1.** Let three-digit random numbers "001-365" stand for the 365
-days in the year. (Ignore leap year for simplicity.)
+* **Step 1.** Let three-digit random numbers 1-365 stand for the 365 days
+  in the year. (Ignore leap year for simplicity.)
+* **Step 2.** Examine for duplication among the first twenty-five random
+  numbers chosen "001-365." (Triplicates or higher-order repeats are counted as
+  duplicates here.) If there is one or more duplicate, record "yes." Otherwise
+  record "no."
+* **Step 3.** Repeat perhaps a thousand times, and calculate the proportion of
+  a duplicate birthday among twenty-five people.
 
-**Step 2.** Examine for duplication among the first twenty-five random
-numbers chosen "001-365." (Triplicates or higher-order repeats are
-counted as duplicates here.) If there is one or more duplicate, record
-"yes." Otherwise record "no."
-
-**Step 3.** Repeat perhaps a thousand times, and calculate the
-proportion of a duplicate birthday among twenty-five people.
-
-Here is the first experiment from a random-number table, starting at the
-top left of the page of numbers and ignoring numbers \>365: 021, 158,
-116, 066, 353, 164, 019, 080, 312, 020, 353\...
+You would probably use the computer to generate the initial random numbers.
 
 Now try the program written as follows.
+
+::: {.notebook name="birthday_problem" title="The Birthday Problem"}
+
+::: nb-only
+Here we answer the question — what is the probability that two or more people
+among a roomful of (say) twenty-five people will have the same birthday?"
+:::
 
 ```{python opts.label="py_ed"}
 import numpy as np
 ```
 
 ```{python opts.label="py_ed"}
-n_with_same_birthday = np.zeros(1000)
+n_with_same_birthday = np.zeros(10000)
 
-# Do 1000 trials (experiments)
-for i in range(1000):
-    # Generate 25 numbers randomly between "1" and "365," put them in a.
+# Do 10000 trials (experiments)
+for i in range(10000):
+    # Generate 25 numbers randomly between "1" and "365" put them in a.
     a = np.random.randint(1, 366, size=25)
 
     # Looking in a, count the number of multiples and put the result in
@@ -108,26 +112,63 @@ for i in range(1000):
     # whether it is a duplicate, triplicate, etc. Had we been interested only in
     # duplicates, we would have put in MULTIPLES a = 2 b.
     counts = np.bincount(a)
-    n_duplicates = np.count_nonzero(counts > 1)
+    n_duplicates = np.sum(counts > 1)
 
     # Score the result of each trial to our store
     n_with_same_birthday[i] = n_duplicates
 
-    # End the loop for the trial, go back and repeat the trial until all 1000
+    # End the loop for the trial, go back and repeat the trial until all 10000
     # are complete, then proceed.
 
 # Determine how many trials had at least one multiple.
-k = np.count_nonzero(n_with_same_birthday)
+k = np.sum(n_with_same_birthday)
 
 # Convert to a proportion.
-kk = k / 1000
+kk = k / 10000
 
 # Print the result.
 print(kk)
 ```
 
-Note: The file "birthday" on the Resampling Stats software disk contains
-this set of commands.
+```{r opts.label="r_ed"}
+n_with_same_birthday <- numeric(10000)
+
+# All the days of the year from "1" through "365"
+all_days <- 1:365
+
+# Do 10000 trials (experiments)
+for (i in 1:10000) {
+    # Generate 25 numbers randomly between "1" and "365," put them in a.
+    a <- sample(all_days, size=25, replace=TRUE)
+
+    # Looking in a, count the number of multiples and put the result in
+    # "counts".
+    counts <- tabulate(a)
+
+    # We request multiples > 1 because we are interested in any multiple,
+    # whether it is a duplicate, triplicate, etc. Had we been interested only
+    # in duplicates, we would have put in sum(counts > 0).
+    n_duplicates <- sum(counts > 1)
+
+    # Score the result of each trial to our store
+    n_with_same_birthday[i] <- n_duplicates
+
+    # End the loop for the trial, go back and repeat the trial until all 10000
+    # are complete, then proceed.
+}
+
+# Determine how many trials had at least one multiple.
+k <- sum(n_with_same_birthday)
+
+# Convert to a proportion.
+kk <- k / 10000
+
+# Print the result.
+message(kk)
+```
+
+:::
+
 
 We have dealt with this example in a rather intuitive and unsystematic fashion.
 From here on, we will work in a more systematic, step-by-step manner. And from
@@ -138,8 +179,8 @@ problems in probability theory (@sec-infinite-universes and
 
 ## Example 7-2: Three Daughters Among Four Children
 
-This problem illustrates a problem with two outcomes (Binomial [^binomial])
-and sampling with Replacement Among Equally Likely Outcomes.
+This problem illustrates a problem with two outcomes (Binomial [^binomial]) and
+sampling with Replacement Among Equally Likely Outcomes.
 
 [^binomial]: Conventional labels such as "binomial" are used here for general
     background and as guideposts to orient the student of conventional
@@ -147,78 +188,67 @@ and sampling with Replacement Among Equally Likely Outcomes.
     resampling approach; one of the advantages of resampling is that it avoids
     errors resulting from incorrect pigeonholing of problems.
 
-What is the probability that exactly three of the four children in a
-four-child family will be daughters?
+What is the probability that exactly three of the four children in a four-child
+family will be daughters?
 
-The first step is to state that the approximate probability that a
-single birth will produce a daughter is 50-50 (1 in 2). This estimate is
-not strictly correct, because there are roughly 106 male children born
-to each 100 female children. But the approximation is close enough for
-most purposes, and the 50-50 split simplifies the job considerably.
-(Such "false" approximations are part of the everyday work of the
-scientist. The appropriate question is not whether or not a statement is
-"only" an approximation, but whether or not it is a *good enough*
-approximation for your purposes.)
+The first step is to state that the approximate probability that a single birth
+will produce a daughter is 50-50 (1 in 2). This estimate is not strictly
+correct, because there are roughly 106 male children born to each 100 female
+children. But the approximation is close enough for most purposes, and the
+50-50 split simplifies the job considerably. (Such "false" approximations are
+part of the everyday work of the scientist. The appropriate question is not
+whether or not a statement is "only" an approximation, but whether or not it is
+a *good enough* approximation for your purposes.)
 
-The probability that a fair coin will turn up heads is .50 or 50-50,
-close to the probability of having a daughter. Therefore, flip a coin in
-groups of four flips, and count how often three of the flips produce
-*heads* . (You must decide in *advance* whether three heads means three
-girls or three boys.) It is as simple as that.
+The probability that a fair coin will turn up heads is .50 or 50-50, close to
+the probability of having a daughter. Therefore, flip a coin in groups of four
+flips, and count how often three of the flips produce *heads* . (You must
+decide in *advance* whether three heads means three girls or three boys.) It is
+as simple as that.
 
-In resampling estimation it is of the highest importance to work in a
-careful, step-by-step fashion — to write down the steps in the
-estimation, and then to do the experiments just as described in the
-steps. Here are a set of steps that will lead to a correct answer about
-the probability of getting three daughters among four children:
+In resampling estimation it is of the highest importance to work in a careful,
+step-by-step fashion — to write down the steps in the estimation, and then to
+do the experiments just as described in the steps. Here are a set of steps that
+will lead to a correct answer about the probability of getting three daughters
+among four children:
 
-**Step 1.** Using coins, let "heads" equal "boy" and "tails" equal
-"girl."
-
-**Step 2.** Throw four coins.
-
-**Step 3.** Examine whether the four coins fall with exactly three tails
-up. If so, write "yes" on a record sheet; otherwise write "no."
-
-**Step 4.** Repeat step 2 perhaps two hundred times.
-
-**Step 5.** Count the proportion "yes." This proportion is an estimate
-of the probability of obtaining exactly 3 daughters in 4 children.
+* **Step 1.** Using coins, let "heads" equal "boy" and "tails" equal "girl."
+* **Step 2.** Throw four coins.
+* **Step 3.** Examine whether the four coins fall with exactly three tails up.
+  If so, write "yes" on a record sheet; otherwise write "no."
+* **Step 4.** Repeat step 2 perhaps two hundred times.
+* **Step 5.** Count the proportion "yes." This proportion is an estimate of the
+  probability of obtaining exactly 3 daughters in 4 children.
 
 The first few experimental trials might appear in the record sheet as
 follows:
 
-**Number of Tails Yes or No**
-
-1 No
-
-0 No
-
-3 Yes
-
-2 No
-
-1.  No
-
-2.  No
-
--- --
-
--- --
-
--- --
+Number of Tails    Yes or No
+---------------    ---------
+1                   No
+0                   No
+3                   Yes
+2                   No
+1                   No
+2                   No
+...                 ...
+...                 ...
+...                 ...
 
 The probability of getting three daughters in four births could also be
 found with a deck of cards, a random number table, a die, or with
-RESAMPLING STATS. For example, half the cards in a deck are black, so
-the probability of getting a black card ("daughter") from a full deck is
-1 in 2. Therefore, deal a card, record "daughter" or "son," *replace*
-the card, shuffle, deal again, and so forth for 200 sets of four cards.
-Then count the proportion of groups of four cards in which you got four
-daughters.
+{{< var lang >}}. For example, half the cards in a deck are black, so the
+probability of getting a black card ("daughter") from a full deck is 1 in 2.
+Therefore, deal a card, record "daughter" or "son," *replace* the card,
+shuffle, deal again, and so forth for 200 sets of four cards. Then count the
+proportion of groups of four cards in which you got four daughters.
 
-A RESAMPLING STATS computer solution to the "3Girls" problem mimics the
-above steps:
+::: {.notebook name="three_girls" title="Three Girls"}
+
+::: nb-only
+This notebook estimates the probability that a family of four children will
+have exactly three girls.
+:::
 
 ```{python opts.label="py_ed"}
 girl_counts = np.zeros(10000)
@@ -232,17 +262,17 @@ for i in range(10000):
     children = np.random.randint(1, 3, size=4)
 
     # Count the number of girls and put the result in b.
-    b = np.count_nonzero(children == 1)
+    b = np.sum(children == 1)
 
     # Keep track of each trial result in z.
     girl_counts[i] = b
 
-    # End this trial, repeat the experiment until 1000 trials are complete,
+    # End this trial, repeat the experiment until 10000 trials are complete,
     # then proceed.
 
 # Count the number of experiments where we got exactly 3 girls, and put this
 # result in k.
-n_three_girls = np.count_nonzero(girl_counts == 3)
+n_three_girls = np.sum(girl_counts == 3)
 
 # Convert to a proportion.
 three_girls_prop = n_three_girls / 10000
@@ -251,28 +281,60 @@ three_girls_prop = n_three_girls / 10000
 print(three_girls_prop)
 ```
 
-Note: The file "3girls" on the Resampling Stats software disk contains
-this set of commands.
+```{r opts.label="r_ed"}
+girl_counts <- numeric(10000)
 
-Notice that the procedure outlined in the steps above would have been
-different (though almost identical) if we asked about the probability of
-*three or more* daughters rather than *exactly three* daughters among
-four children. For *three or more* daughters we would have scored "yes"
-on our scorekeeping pad for *either* three or four heads, rather than
-for just three heads. Likewise, in the computer solution we would have
-used the command "Count a \>= 3 k."
+# Do 10000 trials
+for (i in 1:10000) {
+
+    # Generate 4 numbers at random, either "1" or "2." This is analogous to
+    # flipping a coin 4 times to generate 4 heads or tails. We keep these numbers
+    # in a, letting "1" represent girls.
+    children <- sample(1:2, size=4, replace=TRUE)
+
+    # Count the number of girls and put the result in b.
+    b <- sum(children == 1)
+
+    # Keep track of each trial result in z.
+    girl_counts[i] <- b
+
+    # End this trial, repeat the experiment until 10000 trials are complete,
+    # then proceed.
+}
+
+# Count the number of experiments where we got exactly 3 girls, and put this
+# result in k.
+n_three_girls <- sum(girl_counts == 3)
+
+# Convert to a proportion.
+three_girls_prop <- n_three_girls / 10000
+
+# Print the results.
+message(three_girls_prop)
+```
+
+:::
+
+Notice that the procedure outlined in the steps above would have been different
+(though almost identical) if we asked about the probability of *three or more*
+daughters rather than *exactly three* daughters among four children. For *three
+or more* daughters we would have scored "yes" on our score-keeping pad for
+*either* three or four heads, rather than for just three heads. Likewise, in
+the computer solution we would have used the command
+[n_three_girls = np.sum(girl_counts >= 3)]{.python}
+[n_three_girls <- sum(girl_counts >= 3)]{.R}.
 
 It is important that, in this case, in contrast to what we did in
-Example 6-1 (the introductory poker example), the card is *replaced*
-each time so that each card is dealt from a full deck. This method is
-known as *sampling with replacement* . One samples with replacement
-whenever the successive events are *independent* ; in this case we
-assume that the chance of having a daughter remains the same (1 girl in
-2 births) no matter what sex the previous births were [^what-sex]. But, if the
-first card dealt is black and would *not* be replaced, the chance of the
-second card being black would no longer be 26 in 52 (.50), but rather 25 in 51
-(.49), if the first *three* cards are black and would not be replaced, the
-chances of the fourth card's being black would sink to 23 in 49 (.47).
+the example from @sec-one-pair (the introductory poker example), the card is
+*replaced* each time so that each card is dealt from a full deck. This method
+is known as *sampling with replacement* . One samples with replacement whenever
+the successive events are *independent* ; in this case we assume that the
+chance of having a daughter remains the same (1 girl in 2 births) no matter
+what sex the previous births were [^what-sex]. But, if the first card dealt is
+black and would *not* be replaced, the chance of the second card being black
+would no longer be 26 in 52 (.50), but rather 25 in 51 (.49), if the first
+*three* cards are black and would not be replaced, the chances of the fourth
+card's being black would sink to 23 in 49 (.47).
 
 [^what-sex]: This assumption is slightly contrary to scientific fact. A better
     example would be: What is the probability that four mothers delivering
@@ -316,7 +378,7 @@ children = np.random.choice([1, 2], 4)
 
 ```{python opts.label="py_ed"}
 # Count the number of girls and put the result in b.
-b = np.count_nonzero(children == 1)
+b = np.sum(children == 1)
 ```
 
 These commands now become
@@ -329,7 +391,7 @@ children = np.random.randint(1, 101, size=4)
 ```{python opts.label="py_ed"}
 # Let "1" to "48" represent girls, count the number of girls, and put the
 # result in b.
-b = np.count_nonzero(children <= 48)
+b = np.sum(children <= 48)
 ```
 
 The rest of the program remains unchanged.
@@ -464,7 +526,7 @@ then be done as follows:
     4.  Repeat step 2 four hundred times.
 
         If you understand the earlier "girls" program, then the program
-        "bball" should be easy: To create 1000 samples, we start with a
+        "bball" should be easy: To create 10000 samples, we start with a
         REPEAT statement. We then GENERATE 5 numbers between "1" and "4"
         to simulate the 5 shots, each with a 25 percent — or 1 in
         4 — chance of scoring. We decide that "1" will stand for a
@@ -473,36 +535,36 @@ then be done as follows:
         determine the number of shots resulting in baskets in the
         current sample. The next step is to transfer the results of each
         trial to vector z by way of a SCORE statement. We then END the
-        loop. The final step is to search the vector z after the 1000
+        loop. The final step is to search the vector z after the 10000
         samples have been generated and COUNT the times that 3 or more
         baskets were made. We place the results in k, and then PRINT.
 
 
 ```{python opts.label="py_ed"}
-n_baskets = np.zeros(1000)
+n_baskets = np.zeros(10000)
 
-# Do 1000 experimental trials.
-for i in range(1000):
+# Do 10000 experimental trials.
+for i in range(10000):
 
     # Generate 5 random numbers, each between 1 and 4, put them in "a".
     # Let "1" represent a basket, "2" through "4" be a miss.
     a = np.random.randint(1, 5, size=5)
 
     # Count the number of baskets, put that result in b.
-    b = np.count_nonzero(a == 1)
+    b = np.sum(a == 1)
 
     # Keep track of each experiment's results in z.
     n_baskets[i] = b
 
-    # End the experiment, go back and repeat until all 1000 are completed, then
+    # End the experiment, go back and repeat until all 10000 are completed, then
     # proceed.
 
 # Determine how many experiments produced more than two baskets, put that
 # result in k.
-n_more_than_2 = np.count_nonzero(n_baskets > 2)
+n_more_than_2 = np.sum(n_baskets > 2)
 
 # Convert to a proportion.
-prop_more_than_2 = n_more_than_2 / 1000
+prop_more_than_2 = n_more_than_2 / 10000
 
 # Print the result.
 print(prop_more_than_2)
@@ -563,10 +625,10 @@ fundamentals of computer programming. The IF statement and the two
 loops, one within the other, are basic tools of programming.
 
 ```{python opts.label="py_ed"}
-white_counts = np.zeros(1000)
+white_counts = np.zeros(10000)
 
-# Do 1000 experimental trials
-for i in range(1000):
+# Do 10000 experimental trials
+for i in range(10000):
 
     # To represent 3 shots, generate 3 numbers at random between "1" and "10"
     # and put them in a. We will let a "1" denote a bullseye, "2"-"7" a shot in
@@ -574,7 +636,7 @@ for i in range(1000):
     a = np.random.randint(1, 11, size=3)
 
     # Count the number of bullseyes, put that result in b.
-    b = np.count_nonzero(a == 1)
+    b = np.sum(a == 1)
 
     # If there is exactly one bullseye, we will continue with counting the
     # other shots. (If there are no bullseyes, we need not bother — the
@@ -583,7 +645,7 @@ for i in range(1000):
 
         # Count the number of shots in the white, put them in c. (Recall we are
         # doing this only if we got one bullseye.)
-        c = np.count_nonzero(np.logical_and(a >= 2, a <=7))
+        c = np.sum(np.logical_and(a >= 2, a <=7))
 
         # Keep track of the results of this second count.
         white_counts[i] = c
@@ -591,15 +653,15 @@ for i in range(1000):
         # End the "IF" sequence — we will do the following steps without regard
         # to the "IF" condition.
 
-    # End the above experiment and repeat it until 1000 repetitions are
+    # End the above experiment and repeat it until 10000 repetitions are
     # complete, then continue.
 
 # Count the number of occasions on which there are two in the white and a
 # bullseye.
-n_desired = np.count_nonzero(white_counts == 2)
+n_desired = np.sum(white_counts == 2)
 
 # Convert to a proportion.
-prop_desired = n_desired / 1000
+prop_desired = n_desired / 10000
 
 # Print the results.
 print(prop_desired)
@@ -651,7 +713,7 @@ whether Group A's excess "deaths" (= black balls), compared to Group B,
 is two or fewer (or what is equivalent in this case, whether there are
 11 or fewer black balls in Group A); if so, write "Yes," otherwise "No."
 
-**4a.** Repeat steps 2a and 3a perhaps 1000 times and compute the
+**4a.** Repeat steps 2a and 3a perhaps 10000 times and compute the
 proportion "Yes."
 
 A second way we shall think about this sort of problem may be handled as
@@ -667,7 +729,7 @@ the two groups and determine whether Group A's excess
 
 deaths is two or fewer; if so, write "Yes," otherwise "No."
 
-**4b.** As above, repeat steps 2a and 3a perhaps 1000 times and compute
+**4b.** As above, repeat steps 2a and 3a perhaps 10000 times and compute
 the proportion "Yes."
 
 We must also take into account the possibility of a similar eye-catching
@@ -793,22 +855,22 @@ tally of the "+1"'s and the "-1"'s. If the tally reaches "+10" or "-10"
 on or before the two-hundredth digit, record "yes"; otherwise record
 "no."
 
-**Step 3.** Repeat step 2 perhaps 400 or 1000 times, and calculate the
+**Step 3.** Repeat step 2 perhaps 400 or 10000 times, and calculate the
 proportion of "yeses." This estimates the probability sought.
 
 The following RESAMPLING STATS program also solves the problem. The
 heart of the program starts at the line where the program models a coin
 flip with the statement "GENERATE 1 1,2 C." After you study that, go
 back and notice the REPEAT 200 loop that describes the procedure for flipping a
-coin 200 times. Finally, note how the REPEAT 1000 loop simulates 1000 games,
+coin 200 times. Finally, note how the REPEAT 10000 loop simulates 10000 games,
 each game consisting of 200 coin flips.
 
 
 ```{python opts.label="py_ed"}
-someone_won = np.zeros(1000)
+someone_won = np.zeros(10000)
 
-# Do 1000 trials
-for i in range(1000):
+# Do 10000 trials
+for i in range(10000):
 
     # Record the number 10: a's stake
     a_stake = 10
@@ -821,7 +883,7 @@ for i in range(1000):
 
     # Repeat the following steps 200 times.
     # Notice we use "j" as the counter variable, to avoid overwriting
-    # "i", the counter variable for the 1000 trials.
+    # "i", the counter variable for the 10000 trials.
     for j in range(200):
         # Generate the equivalent of a coin flip, letting 1 = heads,
         # 2 = tails
@@ -867,13 +929,13 @@ for i in range(1000):
     # Keep track of whether anybody won
     someone_won[i] = flag
 
-# End the 1000 trials
+# End the 10000 trials
 
 # Find out how often somebody won
-n_wins = np.count_nonzero(someone_won)
+n_wins = np.sum(someone_won)
 
 # Convert to a proportion
-prop_wins = n_wins / 1000
+prop_wins = n_wins / 10000
 
 # Print the results
 print(prop_wins)
@@ -1032,7 +1094,7 @@ import matplotlib.pyplot as plt
 ```
 
 ```{python opts.label="py_ed"}
-fake_diffs = np.zeros(1000)
+fake_diffs = np.zeros(10000)
 
 priv = np.array([
     482, 529, 489, 495, 455, 490, 525, 530, 429, 485, 454, 475, 485, 485, 450,
@@ -1047,8 +1109,8 @@ actual_diff = np.mean(priv) - np.mean(govt)
 # Join the two vectors of data
 both = np.concatenate((priv, govt))
 
-# Repeat 1000 simulation trials
-for i in range(1000):
+# Repeat 10000 simulation trials
+for i in range(10000):
 
     # Sample 26 with replacement for private group
     fake_priv = np.random.choice(both, size=26)

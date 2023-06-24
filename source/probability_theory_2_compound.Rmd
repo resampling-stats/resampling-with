@@ -195,9 +195,9 @@ for i in range(10000):
         second_trunks[i] = trunks[1]
 
 # Number of times we found gold in the second trunk.
-n_golds = np.count_nonzero(second_trunks == 'gold')
+n_golds = np.sum(second_trunks == 'gold')
 # Number of times we found silver in the second trunk.
-n_silvers = np.count_nonzero(second_trunks == 'silver')
+n_silvers = np.sum(second_trunks == 'silver')
 # As a ratio of golds to all second trunks (where the first was gold).
 print(n_golds / (n_golds + n_silvers))
 ```
@@ -300,7 +300,7 @@ Note: Underlining indicates numbers used. Zeros are omitted; numbers 1,
 
 ## Examples of basic problems in probability
 
-**A Poker Problem: One Pair (Two of a Kind)**
+### A Poker Problem: One Pair (Two of a Kind) {#sec-one-pair}
 
 What is the chance that the first five cards chosen from a deck of 52
 (bridge/poker) cards will contain two (and only two) cards of the same
@@ -468,6 +468,10 @@ result which is found in location k. If we want the *proportion* of the
 trials in which a pair occurs, we simply divide the results of the
 thousand trials by 1000.
 
+<!---
+Introduce bincount / tabulate
+-->
+
 
 ```{python, opts.label="py_ed"}
 # Create a bucket (vector) called a with four "1's," four "2's," four "3's,"
@@ -490,12 +494,12 @@ for i in range(1000):
     np.random.shuffle(deck)
 
     # Take the first five cards.
-    hand = deck[:5]
+    hand = deck[1:5]
 
     # How many pairs?
     # Counts for each card rank.
     counts = np.bincount(hand)
-    n_pairs = np.count_nonzero(counts == 2)
+    n_pairs = np.sum(counts == 2)
 
     # Keep score of # of pairs
     pairs_per_trial[i] = n_pairs
@@ -503,7 +507,7 @@ for i in range(1000):
     # End loop, go back and repeat
 
 # How often was there 1 pair?
-n_one_pair = np.count_nonzero(pairs_per_trial == 1)
+n_one_pair = np.sum(pairs_per_trial == 1)
 
 # Convert to proportion
 print(n_one_pair / 1000)
@@ -557,7 +561,7 @@ RESAMPLING STATS.
     *immediately* increase the number of iterations even more than four times
     — perhaps ten or a hundred times.
 
-**Another Introductory Poker Problem**
+### Another Introductory Poker Problem
 
 Which is more likely, a poker hand with two pairs, or a hand with three
 of a kind? This is a *comparison* problem, rather than a problem in
@@ -612,7 +616,7 @@ for i in range(1000):
 
     # How many triples?
     counts = np.bincount(hand)
-    n_triples = np.count_nonzero(counts == 3)
+    n_triples = np.sum(counts == 3)
 
     # Keep score of # of triples
     triples_per_trial[i] = n_triples
@@ -620,7 +624,7 @@ for i in range(1000):
     # End loop, go back and repeat
 
 # How often was there 1 pair?
-n_triples = np.count_nonzero(triples_per_trial == 1)
+n_triples = np.sum(triples_per_trial == 1)
 
 # Convert to proportion
 print(n_triples / 1000)
@@ -648,7 +652,7 @@ for i in range(1000):
     # How many pairs?
     # Counts for each card rank.
     counts = np.bincount(hand)
-    n_pairs = np.count_nonzero(counts == 2)
+    n_pairs = np.sum(counts == 2)
 
     # Keep score of # of pairs
     pairs_per_trial[i] = n_pairs
@@ -656,7 +660,7 @@ for i in range(1000):
     # End loop, go back and repeat
 
 # How often were there 2 pairs?
-n_two_pairs = np.count_nonzero(pairs_per_trial == 2)
+n_two_pairs = np.sum(pairs_per_trial == 2)
 
 # Convert to proportion
 print(n_two_pairs / 1000)
