@@ -1129,7 +1129,7 @@ As of 1963, there were 26 U.S. states in whose liquor systems the retail liquor
 stores are privately owned, and 16 "monopoly" states where the state government
 owns the retail liquor stores. (Some states were omitted for technical
 reasons.) These were the representative 1961 prices of a fifth of Seagram 7
-Crown whiskey in the two sets of states:
+Crown whiskey in the two sets of states (@tbl-whiskey-prices):
 
 ```{python echo=FALSE}
 import numpy as np  # For R edition, Numpy will not have been imported.
@@ -1159,7 +1159,13 @@ with_means.loc['**Count**'] = with_means.loc['**Count**'].astype(int).astype(obj
 means_tab = with_means.to_markdown(tablefmt="grid")
 ```
 
-`r py$means_tab`
+```{r}
+#| results: asis
+#| echo: false
+#| message: false
+cat(py$means_tab)
+cat('\n\n: Whiskey prices by state category {#tbl-whiskey-prices}')
+```
 
 ```{python fig-whiskey-hist, echo=FALSE, fig.align="center", fig.cap="Whiskey prices by state category"}
 import matplotlib.pyplot as plt
