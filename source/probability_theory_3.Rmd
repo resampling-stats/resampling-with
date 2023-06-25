@@ -1148,11 +1148,14 @@ df.loc[row_labels, 'Government'] = govt
 df.index = [''] * len(df)
 blank_row = pd.DataFrame(data=[[np.nan] * 2], columns=list(df),
                          index=[''])
-means = df.mean(axis=0)
+counts = df.count().rename('**Count**')
+means = df.mean().rename('**Mean**')
 with_means = pd.concat([df,
                         blank_row,
-                        means.rename('Means').to_frame().T])
+                        counts.to_frame().T,
+                        means.to_frame().T])
 with_means = with_means.round(2).astype(object).fillna('')
+with_means.loc['**Count**'] = with_means.loc['**Count**'].astype(int).astype(object)
 means_tab = with_means.to_markdown(tablefmt="grid")
 ```
 
@@ -1340,6 +1343,3 @@ excluded from the analysis because of data complexities).
 @sec-testing-procedures generalizes what we have done in the probability
 problems above into a general procedure, which will in turn be a subpart of a
 general procedure for all of resampling.
-
-`r 'foo *bar* baz'`
-
