@@ -334,7 +334,9 @@ Quarto](https://quarto.org/docs/authoring/cross-references.html).  Summary for
 section reference: add `{#sec-name-for-your-ref}` to the target section title,
 reference with `Please see section @name-for-your-ref for details`.
 
-## Basic tables
+## Tables
+
+### Basic tables
 
 ```
 | Col1 | Col2 | Col3 |
@@ -346,6 +348,22 @@ reference with `Please see section @name-for-your-ref for details`.
 : My Caption {#tbl-letters}
 
 See @tbl-letters.
+```
+
+### Pipe tables
+
+These support per-column alignment:
+
+```
+| Default | Left | Right | Center |
+|---------|:-----|------:|:------:|
+| 12      | 12   |    12 |   12   |
+| 123     | 123  |   123 |  123   |
+| 1       | 1    |     1 |   1    |
+
+: A pipe table {#tbl-pipe}
+
+See @tbl-pipe.
 ```
 
 See [Quarto tables](https://quarto.org/docs/authoring/tables.html)
