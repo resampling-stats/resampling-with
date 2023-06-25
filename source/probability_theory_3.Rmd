@@ -1132,6 +1132,7 @@ reasons.) These were the representative 1961 prices of a fifth of Seagram 7
 Crown whiskey in the two sets of states:
 
 ```{python echo=FALSE}
+import numpy as np  # For R edition, Numpy will not have been imported.
 import pandas as pd
 priv = np.array([
     4.82, 5.29, 4.89, 4.95, 4.55, 4.90, 5.25, 5.30, 4.29, 4.85, 4.54, 4.75,
