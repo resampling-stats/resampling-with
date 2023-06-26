@@ -22,24 +22,6 @@ source("_common.R")
 
 # Probability Theory, Part 3 {#sec-infinite-universes}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/11-Chap-7.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
-
 This chapter discusses problems whose appropriate concept of a universe
 is not finite, whereas @sec-finite-universes discusses problems whose appropriate
 concept of a universe is finite.
@@ -111,7 +93,7 @@ for i in range(10000):
     # Looking in a, count the number of multiples and put the result in
     # b. We request multiples > 1 because we are interested in any multiple,
     # whether it is a duplicate, triplicate, etc. Had we been interested only in
-    # duplicates, we would have put in MULTIPLES a = 2 b.
+    # duplicates, we would have put in np.sum(counts == 2).
     counts = np.bincount(a)
     n_duplicates = np.sum(counts > 1)
 
@@ -148,7 +130,7 @@ for (i in 1:10000) {
 
     # We request multiples > 1 because we are interested in any multiple,
     # whether it is a duplicate, triplicate, etc. Had we been interested only
-    # in duplicates, we would have put in sum(counts > 0).
+    # in duplicates, we would have put in sum(counts == 2).
     n_duplicates <- sum(counts > 1)
 
     # Score the result of each trial to our store
