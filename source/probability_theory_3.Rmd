@@ -184,7 +184,13 @@ This problem illustrates a problem with two outcomes (Binomial [^binomial]) and
 sampling with Replacement Among Equally Likely Outcomes.
 
 What is the probability that exactly three of the four children in a four-child
-family will be daughters?
+family will be daughters?[^what-is-a-daughter]
+
+[^what-is-a-daughter]:  Here, by "daughter" or "girl", we just mean the
+    assigned gender of the child at birth.  If we wanted to be more
+    sophisticated, and work out the proportion of children who identify as
+    female, we would need some statistics on the current likelihood of changing
+    gender identification by age, the children's ages, and so on.
 
 The first step is to state that the approximate probability that a single birth
 will produce a daughter is 50-50 (1 in 2). This estimate is not strictly
@@ -322,9 +328,9 @@ Notice that the procedure outlined in the steps above would have been different
 daughters rather than *exactly three* daughters among four children. For *three
 or more* daughters we would have scored "yes" on our score-keeping pad for
 *either* three or four heads, rather than for just three heads. Likewise, in
-the computer solution we would have used the command
-[n_three_girls = np.sum(girl_counts >= 3)]{.python}
-[n_three_girls <- sum(girl_counts >= 3)]{.R}.
+the computer solution we would have used the statement
+[`n_three_girls = np.sum(girl_counts >= 3)`]{.python}
+[`n_three_girls <- sum(girl_counts >= 3)`]{.r}.
 
 It is important that, in this case, in contrast to what we did in
 the example from @sec-one-pair (the introductory poker example), the card is
@@ -381,6 +387,16 @@ children = rnd.integers(1, 3, size=4)
 b = np.sum(children == 1)
 ```
 
+```{r opts.label="r_ed"}
+# Generate 4 numbers at random, either "1" or "2." This is analogous to
+# flipping a coin 4 times to generate 4 heads or tails. We keep these numbers
+# in a, letting "1" represent girls.
+children <- sample(1:2, size=4, replace=TRUE)
+
+# Count the number of girls and put the result in b.
+b <- sum(children == 1)
+```
+
 The only change we need to the above, for the 52 to 48 case, is:
 
 ```{python opts.label="py_ed"}
@@ -390,6 +406,14 @@ children = rnd.integers(1, 101, size=4)
 # Let "1" through "48" represent girls, count the number of girls, and put the
 # result in b.
 b = np.sum(children <= 48)
+```
+
+```{r opts.label="r_ed"}
+# Generate 4 numbers at random, from 1 to 100.
+children <- sample(1:100, size=4, replace=TRUE)
+
+# Count the number of girls and put the result in b.
+b <- sum(children <= 40)
 ```
 
 The rest of the program remains unchanged.
@@ -478,69 +502,63 @@ then be done as follows:
 
 1.  Let "spade" stand for "successful shot," and the other suits stand
     for unsuccessful shot.
-
-2.  Draw a card, record its suit and replace. Do so five times (for five
-    shots).
-
+2.  Draw a card, record its suit ("spade" or "other") and replace. Do so five
+    times (for five shots).
 3.  Record whether the outcome of step 2 was three or more spades. If so
     indicate "yes," and otherwise "no."
-
 4.  Repeat steps 2-4 perhaps four hundred times.
-
 5.  Count the proportion "yes" out of the four hundred throws. That
     proportion estimates the probability of getting three or more
     baskets out of five shots if the probability of a single basket is
     .25.
 
-    The first three repetitions on your score sheet might look like
-    this:
+The first four repetitions on your score sheet might look like this
+(@tbl-three-shots):
 
-    +-----------------+-----------------+-----------------+-----------------+
-    |  1) No          | S (Spade)       |  2) No          | N N N N N       |
-    |                 |                 |                 |                 |
-    |                 | N (Non-spade) N |                 |                 |
-    |                 |                 |                 |                 |
-    |                 | N N             |                 |                 |
-    +-----------------+-----------------+-----------------+-----------------+
-    |                 | N               |                 | .               |
-    +-----------------+-----------------+-----------------+-----------------+
-    |                 | N               |                 | .               |
-    +-----------------+-----------------+-----------------+-----------------+
-    |  3) Yes         | S               |                 | .               |
-    +-----------------+-----------------+-----------------+-----------------+
-    |                 | S               |                 | .               |
-    +-----------------+-----------------+-----------------+-----------------+
-    |                 | S               |                 | .               |
-    +-----------------+-----------------+-----------------+-----------------+
+| Card 1 | Card 2 | Card 3 | Card 4 | Card 5 | Result |
+|--------|--------|--------|--------|--------|--------|
+| Spade  | Other  | Other  | Other  | Other  | No     |
+| Other  | Other  | Other  | Other  | Other  | No     |
+| Spade  | Spade  | Other  | Spade  | Spade  | Yes    |
+| Other  | Spade  | Other  | Other  | Spade  | No     |
 
-    Instead of cards, we could have used two-digit random numbers, with
-    (say) "1-25" standing for "success," and "26-00" ("00" in place of
-    "100") standing for failure. Then the steps would simply be:
+: First four repetitions of 3 or more shots simulation {#tbl-three-shots}
 
-    1.  Let the random numbers "1-25" stand for "successful shot,"
-        "26-00" for unsuccessful shot.
+Instead of cards, we could have used two-digit random numbers, with
+(say) "1-25" standing for "success," and "26-00" ("00" in place of
+"100") standing for failure. Then the steps would simply be:
 
-    2.  Draw five random numbers;
+1.  Let the random numbers "1-25" stand for "successful shot,"
+    "26-00" for unsuccessful shot.
+2.  Draw five random numbers;
+3.  Count how many of the numbers are between "01" and "25." If
+    three or more, score "yes."
+4.  Repeat step 2 four hundred times.
 
-    3.  Count how many of the numbers are between "01" and "25." If
-        three or more, score "yes."
+If you understand the earlier "three_girls" program, then the program below
+should be easy: To create 10000 samples, we start with a `for` statement. We
+then sample 5 numbers between "1" and "4" into our variable `a` to simulate the
+5 shots, each with a 25 percent — or 1 in 4 — chance of scoring. We decide that
+1 will stand for a successful shot, and 2 through 4 will stand for a missed
+shot, and therefore we count (`sum`) the number of 1's in `a` to determine the
+number of shots resulting in baskets in the current sample. The next step is to
+transfer the results of each trial to {{< var array >}} `n_baskets`. We then
+finish the loop [by unindenting the next line of code]{.python}[with the `}`
+close brace]{.r}. The final step is to search the {{< var array >}}
+`n_baskets`, after the 10000 samples have been generated and `sum` the times
+that 3 or more baskets were made. We place the results in `n_more_than_2`,
+calculate the proportion in `propo_more_than_2`, and then display the result.
 
-    4.  Repeat step 2 four hundred times.
+::: {.notebook name="basketball_shots" title="Three or more basketball shots"}
 
-        If you understand the earlier "girls" program, then the program
-        "bball" should be easy: To create 10000 samples, we start with a
-        REPEAT statement. We then GENERATE 5 numbers between "1" and "4"
-        to simulate the 5 shots, each with a 25 percent — or 1 in
-        4 — chance of scoring. We decide that "1" will stand for a
-        successful shot, and "2" through "4" will stand for a missed
-        shot, and therefore we COUNT the number of "1"'s in a to
-        determine the number of shots resulting in baskets in the
-        current sample. The next step is to transfer the results of each
-        trial to vector z by way of a SCORE statement. We then END the
-        loop. The final step is to search the vector z after the 10000
-        samples have been generated and COUNT the times that 3 or more
-        baskets were made. We place the results in k, and then PRINT.
+::: nb-only
+We simulate the probability of scoring three or more baskets from five shots, if each shot has a 25% probability of success.
+:::
 
+```{python opts.label="py_ed"}
+import numpy as np
+rnd = np.random.default_rng()
+```
 
 ```{python opts.label="py_ed"}
 n_baskets = np.zeros(10000)
@@ -550,7 +568,7 @@ for i in range(10000):
 
     # Generate 5 random numbers, each between 1 and 4, put them in "a".
     # Let "1" represent a basket, "2" through "4" be a miss.
-    a = np.random.randint(1, 5, size=5)
+    a = rnd.integers(1, 5, size=5)
 
     # Count the number of baskets, put that result in b.
     b = np.sum(a == 1)
@@ -571,6 +589,39 @@ prop_more_than_2 = n_more_than_2 / 10000
 # Print the result.
 print(prop_more_than_2)
 ```
+
+```{r opts.label="r_ed"}
+n_baskets <- numeric(10000)
+
+# Do 10000 experimental trials.
+for (i in 1:10000) {
+
+    # Generate 5 random numbers, each between 1 and 4, put them in "a".
+    # Let "1" represent a basket, "2" through "4" be a miss.
+    a <- sample(1:4, size=5, replace=TRUE)
+
+    # Count the number of baskets, put that result in b.
+    b <- sum(a == 1)
+
+    # Keep track of each experiment's results in z.
+    n_baskets[i] <- b
+
+    # End the experiment, go back and repeat until all 10000 are completed, then
+    # proceed.
+}
+
+# Determine how many experiments produced more than two baskets, put that
+# result in k.
+n_more_than_2 <- sum(n_baskets > 2)
+
+# Convert to a proportion.
+prop_more_than_2 <- n_more_than_2 / 10000
+
+# Print the result.
+message(prop_more_than_2)
+```
+
+:::
 
 ## Note to the student of analytic probability theory
 
@@ -639,6 +690,7 @@ rnd = np.random.default_rng()
 ```
 
 ```{python opts.label="py_ed"}
+# Make an array to store the results of each trial.
 white_counts = np.zeros(10000)
 
 # Do 10000 experimental trials
@@ -647,7 +699,7 @@ for i in range(10000):
     # To represent 3 shots, generate 3 numbers at random between "1" and "10"
     # and put them in a. We will let a "1" denote a bullseye, "2"-"7" a shot in
     # the white, and "8"-"10" a miss.
-    a = np.random.randint(1, 11, size=3)
+    a = rnd.integers(1, 11, size=3)
 
     # Count the number of bullseyes, put that result in b.
     b = np.sum(a == 1)
@@ -659,13 +711,13 @@ for i in range(10000):
 
         # Count the number of shots in the white, put them in c. (Recall we are
         # doing this only if we got one bullseye.)
-        c = np.sum(np.logical_and(a >= 2, a <=7))
+        c = np.sum((a >= 2) & (a <=7))
 
         # Keep track of the results of this second count.
         white_counts[i] = c
 
-        # End the "IF" sequence — we will do the following steps without regard
-        # to the "IF" condition.
+        # End the "if" sequence — we will do the following steps without regard
+        # to the "if" condition.
 
     # End the above experiment and repeat it until 10000 repetitions are
     # complete, then continue.
@@ -682,6 +734,7 @@ print(prop_desired)
 ```
 
 ```{r opts.label="r_ed"}
+# Make a vector to store the results of each trial.
 white_counts <- numeric(10000)
 
 # Do 10000 experimental trials
@@ -707,8 +760,8 @@ for (i in 1:10000) {
         # Keep track of the results of this second count.
         white_counts[i] <- c
 
-        # End the "IF" sequence — we will do the following steps without regard
-        # to the "IF" condition.
+        # End the "if" sequence — we will do the following steps without regard
+        # to the "if" condition.
     }
 
     # End the above experiment and repeat it until 10000 repetitions are
@@ -825,7 +878,9 @@ answer quickly and easily, as follows:
     * 2 balls marked "10" (inches),
     * 3 balls marked "10.1",
     * 3 marked "10.2", and
-    * 2 marked "10.3" for the handles.
+    * 2 marked "10.3".
+
+    This bucket represents the handles.
 
     Fill another bucket with:
 
@@ -833,9 +888,12 @@ answer quickly and easily, as follows:
     * 2 balls marked "2.1",
     * 3 balls marked "2.2",
     * 2 balls marked "2.3" and
-    * 1 balls marked "2.4", for the heads.
+    * 1 ball marked "2.4".
 
-2.  Pick a ball from each bucket, calculate the sum, and replace the balls.
+    This bucket represents the heads.
+
+2.  Pick a ball from each of the "handles" and "heads" bucket, calculate the
+    sum, and replace the balls.
 
 3.  Repeat perhaps 200 times (more when you write a computer program), and
     calculate the proportion of the sums that are greater than 12.4 inches.
@@ -851,21 +909,21 @@ business is as follows:
 
 Number       Probability
 ------------ -----------------
-0            .5
-1            .2
-2            .1
-3            .1
-4            .1
+0            0.5
+1            0.2
+2            0.1
+3            0.1
+4            0.1
 ------------ -----------------
 
 The amounts that may be stolen on any theft are as follows:
 
 Amount       Probability
 ------------ -----------------
-\$50         .4
-\$75         .4
-\$100        .1
-\$125        .1
+\$50         0.4
+\$75         0.4
+\$100        0.1
+\$125        0.1
 ------------ -----------------
 
 The same procedure as used above to estimate the mean length of hammers — add
@@ -913,10 +971,18 @@ balance before you reach 200 flips. Or with random numbers:
 
 The following {{< var lang >}} program also solves the problem. The heart of
 the program starts at the line where the program models a coin flip with the
-statement "GENERATE 1 1,2 C." After you study that, go back and notice the
-REPEAT 200 loop that describes the procedure for flipping a coin 200 times.
-Finally, note how the REPEAT 10000 loop simulates 10000 games, each game
-consisting of 200 coin flips.
+statement:
+[`c = rnd.integers(1, 3)`]{.python}
+[`c = sample(1:2, size=1)`]{.r}
+After you study that, go back and notice the inner `for` loop starting with
+[`for j in range(200):`]{.python}
+[`for (j in 1:200) {`]{.r}
+that describes the procedure for flipping a coin 200 times. Finally, note how
+the outer
+[`for i in range(10000):`]{.python}
+[`for (i in 1:10000) {`]{.r}
+loop simulates 10000 games, each game consisting of the 200 coin flips we
+generated with the inner `for` loop above.
 
 ::: {.notebook name="pennies" title="Simulating the pennies game"}
 
@@ -962,7 +1028,7 @@ for i in range(10000):
             # Subtract 1 from a's stake
             a_stake = a_stake - 1
 
-        # End the IF condition
+        # End the "if" condition
 
         # If it's a tails
         if c == 2:
@@ -973,7 +1039,7 @@ for i in range(10000):
             # Subtract 1 from b's stake
             b_stake = b_stake - 1
 
-        # End the IF condition
+        # End the "if" condition
 
         # If a has won
         if a_stake == 20:
@@ -1037,7 +1103,7 @@ for (i in 1:10000) {
             # Subtract 1 from a's stake
             a_stake <- a_stake - 1
 
-            # End the if condition
+            # End the "if" condition
         }
 
         # If it's a tails
@@ -1049,7 +1115,7 @@ for (i in 1:10000) {
             # Subtract 1 from b's stake
             b_stake <- b_stake - 1
 
-            # End the if condition
+            # End the "if" condition
         }
 
         # If a has won
