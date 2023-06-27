@@ -30,6 +30,6 @@ fs::dir_create('~/R-dev')  # ?also correct for Windows
 
 # Install our patched version of reticulate.
 # https://github.com/rstudio/reticulate/pull/1401
-remotes::install_github("matthew-brett/reticulate",
-                        ref='mpl-figure-check',
+remotes::install_github("rstudio/reticulate",
+                        ref='e8abae30',  # Matplotlib compat merge.
                         dependencies=TRUE)

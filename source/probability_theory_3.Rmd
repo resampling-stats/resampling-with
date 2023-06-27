@@ -1232,7 +1232,7 @@ def histo(ax, data, label, color, alpha=1):
 histo(axes[0], priv, 'Private', priv_col)
 histo(axes[1], govt, 'Government', gov_col)
 histo(axes[2], priv, 'Private', priv_col, alpha=0.5)
-histo(axes[2], govt, 'Private and government', gov_col, alpha=0.5);
+histo(axes[2], govt, 'Private & government', gov_col, alpha=0.5);
 ```
 
 Let us consider that all these states' prices constitute one single universe
