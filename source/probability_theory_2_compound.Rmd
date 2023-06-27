@@ -285,7 +285,7 @@ But throwing dice is a little boring; we have to find the die, then throw it
 many times, and record the results.   Instead we can ask the computer to chose
 the doors at random.
 
-```{r, echo=FALSE}
+```{r echo=FALSE}
 n_trials <- 25
 ```
 
@@ -301,7 +301,7 @@ to our original choice of door, and "No" otherwise.  The last column is
 "Switch wins". This has "Yes" if we win by switching doors, and "No"
 otherwise. See table @tbl-montyblank).
 
-```{python, echo=FALSE}
+```{python echo=FALSE}
 # Need Python for random numbers that are predictable across platforms.
 import numpy as np
 import pandas as pd
@@ -321,7 +321,7 @@ df['Stay wins'] = ''
 df['Switch wins'] = ''
 ```
 
-```{r, montyblank, echo=FALSE}
+```{r montyblank, echo=FALSE}
 blank_df <- tibble::as_tibble(py$df)
 knitr::kable(blank_df,
   booktabs = TRUE,
@@ -331,7 +331,7 @@ knitr::kable(blank_df,
 )
 ```
 
-```{r, echo=FALSE}
+```{r echo=FALSE}
 # Do the calculation
 fdf <- blank_df
 # Convert Monty opens column to integer, for car door number.
@@ -382,7 +382,7 @@ wins.
 Table @tbl-montyfull is a version of table @tbl-montyblank for
 which we have filled in the blank columns using the logic above.
 
-```{r, montyfull, echo=FALSE}
+```{r montyfull, echo=FALSE}
 knitr::kable(fdf,
   booktabs = TRUE,
   row.names = TRUE,
@@ -416,75 +416,86 @@ reflect the literature in the field for 300 years. We'll get more
 realistic in the statistics chapters.)
 
 We shall estimate the odds the way that gamblers have estimated gambling
-odds for thousands of years. First, check that the deck is not a
-pinochle deck and is not missing any cards. (Overlooking such small but
-crucial matters often leads to errors in science.) Shuffle thoroughly
-until you are satisfied that the cards are randomly distributed. (It is
-surprisingly hard to shuffle well.) Then deal five cards, and mark down
-whether the hand does or does not contain a pair of the same
-denomination. At this point, we must decide whether three of a kind,
-four of a kind or two pairs meet our criterion for a pair. Since our
-criterion is "two and only two," we decide *not* to count them.
+odds for thousands of years. First, check that the deck is a
+standard deck and is not missing any cards. (Overlooking such small but crucial
+matters often leads to errors in science.) Shuffle thoroughly until you are
+satisfied that the cards are randomly distributed. (It is surprisingly hard to
+shuffle well.) Then deal five cards, and mark down whether the hand does or
+does not contain a pair of the same denomination.
+
+At this point, we must decide whether three of a kind, four of a kind or two
+pairs meet our criterion for a pair. Since our criterion is "two and only two,"
+we decide *not* to count them.
 
 Then replace the five cards in the deck, shuffle, and deal again. Again
 mark down whether the hand contains one pair of the same denomination.
 Do this many times. Then count the number of hands with one pair, and
-figure the proportion (as a percentage) of all hands. In one series of
-100 experiments, 44 percent of the hands contained one pair, and
-therefore .44 is our estimate (for the time being) of the probability
-that one pair will turn up in a poker hand. But we must notice that this
-estimate is based on only 100 hands, and therefore might well be fairly
-far off the mark (as we shall soon see).
+figure the proportion (as a percentage) of all hands.
 
-This experimental "resampling" estimation does not require a deck of
-cards. For example, one might create a 52-sided die, one side for each
-card in the deck, and roll it five times to get a "hand." But note one
-important part of the procedure: No single "card" is allowed to come up
-twice in the same set of five spins, just as no single card can turn up
-twice or more in the same hand. If the same "card" did turn up twice or
-more in a dice experiment, one could pretend that the roll had never
-taken place; this procedure is necessary to make the dice experiment
-analogous to the actual card-dealing situation under investigation.
-Otherwise, the results will be slightly in error. This type of sampling
-is known as "sampling without replacement," because each card is *not
-replaced* in the deck prior to dealing the next card (that is, prior to
-the end of the hand).
+```{python, echo=FALSE}
+n_deals = 25
+```
 
-Table 6-2
+@tbl-one-pair has the results of `r py$n_deals` hands of this procedure.
 
-**Results of 100 Trials for the Problem "OnePair"**
+```{python, echo=FALSE}
+from itertools import product
+suit_chars = ['\N{Black Spade Suit}',
+    '\N{White Heart Suit}',
+    '\N{White Diamond Suit}',
+    '\N{Black Club Suit}']
+denom = ['Ace'] + [str(s) for s in range(2, 11)] + ['Jack', 'Queen', 'King']
+values = list(range(1, 14)) * 4
+deck = [f'{d} {s}' for s, d in product(suit_chars, denom)]
+deck_values = dict(zip(deck, values))
+```
 
-  ----------- --- --- --- --- --- --- --- --- ---- ------- ----
-  Trial 1     2   3   4   5   6   7   8   9   10   11 12   13
-  Results Y   Y   N   N   Y   Y   N   N   Y   N    N Y     Y
-  ----------- --- --- --- --- --- --- --- --- ---- ------- ----
+```{python, results='asis', echo=FALSE, message=FALSE}
+import numpy as np
+import pandas as pd
+rnd = np.random.default_rng()
+df = pd.DataFrame(columns=['Card 1',
+                           'Card 2',
+                           'Card 3',
+                           'Card 4',
+                           'Card 5',
+                           'Has pair?'],
+                  index=pd.Index(range(1, n_deals + 1), name='Hand'))
+for i in range(1, n_deals + 1):
+    cards = rnd.choice(deck, size=5, replace=False)
+    df.loc[i, 'Card 1':'Card 5'] = cards
+    values = [deck_values[c] for c in cards]
+    counts = np.bincount(values)
+    df.loc[i, 'Has pair?'] = 'Yes' if np.sum(counts == 2) == 1 else 'No'
 
- Trial 14 15 16 17 18 19 20 21 22 23 24 25 26 Results N Y Y Y Y Y N N Y
-N Y N Y
+pct = int(np.round(np.sum(df['Has pair?'] == 'Yes') / len(df) * 100))
+n_cols = len(df.columns)
+df.loc['', :] = [''] * n_cols
+df.loc['**% Yes**', :] = [''] * (n_cols - 1) + [str(pct)]
 
-  ----------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ------- ----
-  Trial 27    28   29   30   31   32   33   34   35   36   37 38   39
-  Results N   Y    N    Y    Y    N    Y    N    N    N    N Y     N
-  Trial 40    41   42   43   44   45   46   47   48   49   50      
-  Results N   N    N    N    Y    Y    Y    N    N    Y    N       
-  ----------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ------- ----
+cards_tab = df.to_markdown(tablefmt="grid")
+print(cards_tab +
+    '\n\n: Results of 25 hands for the problem "one pair" {#tbl-one-pair}')
+```
 
- Subtotal: 23 Yes, 27 No = 46%
+In this series of `r py$n_deals` experiments, `r py$pct` percent of the hands
+contained one pair, and therefore `r py$pct / 100` is our estimate (for the
+time being) of the probability that one pair will turn up in a poker hand. But
+we must notice that this estimate is based on only `r py$n_deals` hands, and
+therefore might well be fairly far off the mark (as we shall soon see).
 
-  ----------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----- ---- ----
-  Trial 51    52   53   54   55   56   57   58   59   60   61    62   63
-  Results N   Y    N    N    Y    N    Y    Y    N    N    N     Y    Y
-  Trial 64    65   66   67   68   69   70   71   72   73   74    75   76
-  Results Y   N    N    Y    N    N    N    N    Y    N    Y     N    N
-  Trial 77    78   79   80   81   82   83   84   85   86   87    88   89
-  Results N   N    N    N    Y    N    N    N    Y    Y    N     Y    N
-  Trial 90    91   92   93   94   95   96   97   98   99   100        
-  Results Y   Y    N    N    Y    Y    Y    Y    N    Y    N          
-  ----------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----- ---- ----
-
- Subtotal: 21 Yes, 29 No = 42%
-
-Total: 44 Yes, 56 No = 44%
+This experimental "resampling" estimation does not require a deck of cards. For
+example, one might create a 52-sided die, one side for each card in the deck,
+and roll it five times to get a "hand." But note one important part of the
+procedure: No single "card" is allowed to come up twice in the same set of five
+spins, just as no single card can turn up twice or more in the same hand. If
+the same "card" did turn up twice or more in a dice experiment, one could
+pretend that the roll had never taken place; this procedure is necessary to
+make the dice experiment analogous to the actual card-dealing situation under
+investigation. Otherwise, the results will be slightly in error. This type of
+sampling is known as "sampling without replacement," because each card is *not
+replaced* in the deck prior to dealing the next card (that is, prior to the end
+of the hand).
 
 Still another resampling method uses a *random number table* , such as
 that which is shown in Table 6-3. Arbitrarily designate the spades as
@@ -577,7 +588,6 @@ thousand trials by 1000.
 <!---
 Introduce bincount / tabulate / repeat
 -->
-
 
 ```{python opts.label="py_ed"}
 # Create a bucket (vector) called a with four "1's," four "2's," four "3's,"
