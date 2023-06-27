@@ -1179,7 +1179,7 @@ owns the retail liquor stores. (Some states were omitted for technical
 reasons.) These were the representative 1961 prices of a fifth of Seagram 7
 Crown whiskey in the two sets of states (@tbl-whiskey-prices):
 
-```{python echo=FALSE}
+```{python results='asis', echo=FALSE, message=FALSE}
 import numpy as np  # For R edition, Numpy will not have been imported.
 import pandas as pd
 priv = np.array([
@@ -1205,12 +1205,8 @@ with_means = pd.concat([df,
 with_means = with_means.round(2).astype(object).fillna('')
 with_means.loc['**Count**'] = with_means.loc['**Count**'].astype(int).astype(object)
 means_tab = with_means.to_markdown(tablefmt="grid")
-tab_output = (f'{means_tab}\n\n: '
-              'Whiskey prices by state category {#tbl-whiskey-prices}')
-```
-
-```{r results='asis', echo=FALSE, message=FALSE}
-cat(py$tab_output)
+print(f'{means_tab}\n\n: '
+      'Whiskey prices by state category {#tbl-whiskey-prices}')
 ```
 
 ```{python fig-whiskey-hist, echo=FALSE, fig.align="center", fig.cap="Whiskey prices by state category"}
