@@ -1205,14 +1205,12 @@ with_means = pd.concat([df,
 with_means = with_means.round(2).astype(object).fillna('')
 with_means.loc['**Count**'] = with_means.loc['**Count**'].astype(int).astype(object)
 means_tab = with_means.to_markdown(tablefmt="grid")
+tab_output = (f'{means_tab}\n\n: '
+              'Whiskey prices by state category {#tbl-whiskey-prices}')
 ```
 
-```{r}
-#| results: asis
-#| echo: false
-#| message: false
-cat(py$means_tab)
-cat('\n\n: Whiskey prices by state category {#tbl-whiskey-prices}')
+```{r results='asis', echo=FALSE, message=FALSE}
+cat(py$tab_output)
 ```
 
 ```{python fig-whiskey-hist, echo=FALSE, fig.align="center", fig.cap="Whiskey prices by state category"}
