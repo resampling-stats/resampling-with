@@ -571,10 +571,9 @@ We can use the {{< var np_or_r >}} function [`sum`]{.r}[`np.sum`]{.python} to
 count the number of {{< var true >}} elements in {{< var an_array >}}.
 As you can imagine,
 [`sum`]{.r}[`np.sum`]{.python}
-adds up all the elements in {{< var an_array >}}, to give a single
-number. This will work as we want for the `q` {{< var array >}}, because
-{{< var lang >}} counts {{< var false >}} as equal to 0 and {{< var true >}}
-as equal to 1:
+adds up all the elements in {{< var an_array >}}, to give a single number. This
+will work as we want for the `q` {{< var array >}}, because {{< var lang >}}
+counts {{< var false >}} as equal to 0 and {{< var true >}} as equal to 1:
 
 ```{python, opts.label="py_ed"}
 # Question: is False equal to 0?
@@ -600,14 +599,12 @@ FALSE == 0
 TRUE == 1
 ```
 
-Therefore, the function `sum`, when applied to {{< var an_array >}} of
-{{< var true >}} and {{< var false >}}
-values, will count the number of {{< var true >}} values in the {{< var
-array >}}.
+Therefore, the function `sum`, when applied to {{< var an_array >}} of {{< var
+true >}} and {{< var false >}} values, will count the number of {{< var true
+>}} values in the {{< var array >}}.
 
-To see this in action we can make a new {{< var array >}} of
-{{< var true >}} and {{< var false >}}
-values, and try using
+To see this in action we can make a new {{< var array >}} of {{< var true >}}
+and {{< var false >}} values, and try using
 [`sum`]{.r}[`np.sum`]{.python}
 on the new array.
 
