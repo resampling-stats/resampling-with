@@ -37,13 +37,13 @@ death penalty.
 This example comes from the excellent Berkeley introduction to data science
 [@adhikari2021data8].
 
-Robert Swain was a young Black man who was sentenced to death in the early
+Robert Swain was a young black man who was sentenced to death in the early
 60s.  Swain's trial was held in Talladega County, Alabama. At the time, 26% of
-the eligible jurors in that county were Black, but every member of Swain's
-jury was White.  Swain and his legal team appealed to the Alabama Supreme
+the eligible jurors in that county were black, but every member of Swain's
+jury was white.  Swain and his legal team appealed to the Alabama Supreme
 Court, and then to the [US Supreme
 Court](https://en.wikipedia.org/wiki/Swain_v._Alabama), arguing that there was
-racial bias in the jury selection.  They noted that there had been no Black
+racial bias in the jury selection.  They noted that there had been no black
 jurors in Talladega county since 1950, even though they made up about a
 quarter of the eligible pool of jurors. The US Supreme Court rejected this
 argument, in a 6 to 3 opinion, writing that "The overall percentage disparity
@@ -52,8 +52,8 @@ specified number of Negros.".
 
 Swain's team presented a variety of evidence on bias in jury selection, but
 here we will look at the obvious and apparently surprising fact that Swain's
-jury was entirely White. The Supreme Court decided that the "disparity"
-between selection of White and Black jurors "has been small" — but how would
+jury was entirely white. The Supreme Court decided that the "disparity"
+between selection of white and black jurors "has been small" — but how would
 they, and how would we, make a rational decision about whether this disparity
 *really* was "small"?
 
@@ -68,25 +68,25 @@ precedent set by Swain's case, in [Batson v. Kentucky, 476 U.S.
 
 To answer the question that the Supreme Court asked, we return to the method we used in the last chapter.
 
-Let us imagine a hypothetical world, in which each individual Black or White
+Let us imagine a hypothetical world, in which each individual black or white
 person had an equal chance of being selected for the jury.  Call this world Hypothetical County, Alabama.
 
 Just as in 1960's Talladega County, 26% of eligible jurors in Hypothetical
-County are Black.  Hypothetical County jury selection has no bias against
-Black people, so we expect around 26% of the jury to be Black. 0.26 * 12 =
+County are black.  Hypothetical County jury selection has no bias against
+black people, so we expect around 26% of the jury to be black. 0.26 * 12 =
 3.12, so we expect that, on average, just over 3 out of 12 jurors in
-a Hypothetical County jury will be Black.  But, if we select each juror at
+a Hypothetical County jury will be black.  But, if we select each juror at
 random from the population, that means that, sometimes, by chance, we will have
-fewer than 3 Black jurors, and sometimes will have more than 3 Black jurors.
-And, by chance, sometimes we will have no Black jurors.  But, if the jurors
+fewer than 3 black jurors, and sometimes will have more than 3 black jurors.
+And, by chance, sometimes we will have no black jurors.  But, if the jurors
 really are selected at random, how often would we expect this to happen — that
-there are no Black jurors?  We would like to estimate the *probability* that
-we will get no Black jurors.  If that probability is small, then we have some
-evidence that the disparity in selection between Black and White jurors, was
+there are no black jurors?  We would like to estimate the *probability* that
+we will get no black jurors.  If that probability is small, then we have some
+evidence that the disparity in selection between black and white jurors, was
 not "small".
 
 ::: {.question}
-What is the probability of an *all White* jury being randomly selected out of a population having 26% Black people?
+What is the probability of an *all white* jury being randomly selected out of a population having 26% black people?
 :::
 
 ## Designing the experiment
@@ -105,9 +105,9 @@ We then take **three steps** to calculate the desired probability:
 3. Calculate the *proportion*, M/N.
    This is an estimate of the probability in question.
 
-For this problem, our task is made a little easier by the fact that our *trial* (in the resampling sense) is a simulated *trial* (in the legal sense). One trial requires 12 simulated jurors, each labeled by race (White or Black).
+For this problem, our task is made a little easier by the fact that our *trial* (in the resampling sense) is a simulated *trial* (in the legal sense). One trial requires 12 simulated jurors, each labeled by race (white or black).
 
-The outcome we are interested in is the number of Black jurors.
+The outcome we are interested in is the number of black jurors.
 
 Now comes the harder part.  How do we simulate one trial?
 
@@ -115,7 +115,7 @@ Now comes the harder part.  How do we simulate one trial?
 
 One trial requires 12 jurors, and we are interested only in the race of each juror.
 In Hypothetical County, where selection by race is entirely random, each juror
-has a 26% chance of being Black.
+has a 26% chance of being black.
 
 We need a way of simulating a 26% chance.
 
@@ -138,12 +138,12 @@ example, if we say "pick a number from 1 through 5" we mean one of 1 or 2 or 3
 or 4 or 5.
 :::
 
-We will arbitrarily say that the juror is White if the random number is in the
+We will arbitrarily say that the juror is white if the random number is in the
 range from 0 through 73.  74 of the 100 numbers are in this range, so
-the juror has a 74/100 = 74% chance of getting the label "White".  We will say
-the juror is Black if the random number is in the range 74 though 99.  There
+the juror has a 74/100 = 74% chance of getting the label "white".  We will say
+the juror is black if the random number is in the range 74 though 99.  There
 are 26 such numbers, so the juror has a 26% chance of getting the label
-"Black".
+"black".
 
 Next we need a way of getting a random number in the range 0 through 99. This
 is an easy job for the computer, but if we had to do this with a physical
@@ -153,8 +153,8 @@ the green face will be the ones digit.  So, if the blue die comes up with 8 and
 the green die has 4, then the random number is 84.
 
 We could then simulate 12 jurors by repeating this process 12 times, each time
-writing down "White" if the number is from 0 through 74, and "Black"
-otherwise.  The trial outcome is the number of times we wrote "Black" for these
+writing down "white" if the number is from 0 through 74, and "black"
+otherwise.  The trial outcome is the number of times we wrote "black" for these
 12 simulated jurors.
 
 ### Using code to simulate a trial
@@ -163,7 +163,7 @@ We use the same logic to simulate a trial with the computer. A little code
 makes the job easier, because we can ask {{< var lang >}} to give us 12 random
 numbers from 0 through 99, and to count how many of these numbers are in the
 range from 75 through 99.  Numbers in the range from 75 through 99 correspond
-to Black jurors.
+to black jurors.
 
 :::: {.callout-note}
 #### Ranges in {{< var lang >}}
@@ -904,7 +904,7 @@ for (i in 1:50) {
 z
 ```
 
-Finally, we need to count how many of the trials in `z` ended up with all-White
+Finally, we need to count how many of the trials in `z` ended up with all-white
 juries.  These are the trials with a `z` (count) value of 0.
 
 To do this, we can ask {{< var an_array >}} which elements match a certain
@@ -961,18 +961,18 @@ n_all_white
 ```
 
 `n_all_white` is the number of simulated trials for which all the jury members
-were White. It only remains to get the proportion of trials for which this was
+were white. It only remains to get the proportion of trials for which this was
 true, and to do this, we divide by the number of trials.
 
 ```{python, opts.label="py_ed"}
-# Proportion of trials where all jury members were White.
+# Proportion of trials where all jury members were white.
 p = n_all_white / 50
 # Show the result
 p
 ```
 
 ```{r, opts.label="r_ed"}
-# Proportion of trials where all jury members were White.
+# Proportion of trials where all jury members were white.
 p <- n_all_white / 50
 # Show the result
 p
@@ -980,12 +980,12 @@ p
 
 From this initial simulation, it seems there is around a
 `r round(get_var('p') * 100, 1)`% chance that a jury selected randomly from
-the population, which was 26% Black, would have no Black jurors.
+the population, which was 26% black, would have no black jurors.
 
 ## Many many trials
 
 Our experiment above is only 50 simulated trials.  The higher the number of
-trials, the more confident we can be of our estimate for `p` — the proportion of trials where we get an all-White jury.
+trials, the more confident we can be of our estimate for `p` — the proportion of trials where we get an all-white jury.
 
 It is no extra trouble for us to tell the computer to do a very large number
 of trials.  For example, we might want to run 10,000 trials instead of 50.
@@ -1026,12 +1026,12 @@ p <- n_all_white / 10000
 p
 ```
 
-We now have a new, more accurate estimate of the proportion of Hypothetical County juries with all-White juries. The proportion is
+We now have a new, more accurate estimate of the proportion of Hypothetical County juries with all-white juries. The proportion is
 `r round(get_var('p'), 3)`, and so
 `r round(get_var('p') * 100, 1)`%.
 
 This proportion means that, for any one jury from Hypothetical County, there
-is a less than one in 20 chance that the jury would be all White.
+is a less than one in 20 chance that the jury would be all white.
 
 As we will see in more detail later, we might consider using the results from
 this experiment in Hypothetical County, to reflect on the result we saw in the
