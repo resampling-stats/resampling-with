@@ -633,7 +633,7 @@ for i in range(10000):
     shuffled = rnd.permuted(deck)
 
     # Take the first five cards to make a hand.
-    hand = deck[:5]
+    hand = shuffled[:5]
 
     # How many pairs?
     # Counts for each card rank.
@@ -678,7 +678,7 @@ for (i in 1:10000) {
     shuffled <- sample(deck)
 
     # Take the first five cards to make a hand.
-    hand = shufffled[1:5]
+    hand = shuffled[1:5]
 
     # How many pairs?
     # Counts for each card rank.
