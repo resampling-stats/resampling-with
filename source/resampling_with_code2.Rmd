@@ -129,8 +129,8 @@ Ranges can be confusing in normal speech because it is not always clear
 whether they include their beginning and end.  For example, if someone says
 "pick a number between 1 and 5", do they mean *all* the numbers, including the
 first and last (any of 1 or 2 or 3 or 4 or 5)?  Or do they mean only the
-numbers that are *between* 1 and 5 (so 2 or 3 or 4).  Or do they mean all the
-numbers up to, but not including 5 (so 1 or 2 or 3 or 4).
+numbers that are *between* 1 and 5 (so 2 or 3 or 4)?  Or do they mean all the
+numbers up to, but not including 5 (so 1 or 2 or 3 or 4)?
 
 To avoid this confusion, we will nearly always use "from" and "through" in
 ranges, meaning that we do include both the start and the end number.  For
@@ -392,7 +392,7 @@ Notice that the position number of the first element in the array is 0, and the
 position number of the second element is 1.  Think of the position as an
 *offset* from the beginning of the array.  The first element is at the
 beginning of the array, and so it is at offset (position) 0.  This can be a
-little difficult to get used to at first, but you fill find that thinking of
+little difficult to get used to at first, but you will find that thinking of
 the positions of offsets in this way soon starts to come naturally, and later
 you will also find that it helps you to avoid some common mistakes when using
 positions for getting and setting values.
@@ -415,6 +415,10 @@ z[3] = 99
 z
 ```
 
+Read the first code line above as as "set the value at position
+[2]{.python}[3]{.r}
+in the {{< var array >}} to have the value 99".
+
 We can also *get* the value of the element at a given position, using the same
 square-bracket notation:
 
@@ -436,7 +440,7 @@ v
 
 Read the first code line here as "v gets the value at position
 [0]{.python}[1]{.r}
-in the {{< var array >}}.
+in the {{< var array >}}".
 
 Using square brackets to get and set element values is called *indexing* into
 the {{< var array >}}.
@@ -445,8 +449,8 @@ the {{< var array >}}.
 ### Repeating trials
 
 As a preview, let us now imagine that we want to do 50 simulated trials of
-Robert Swain's jury.  We will want to store the count for each trial, to give
-50 counts.
+Robert Swain's jury in Hypothetical County.  We will want to store the count
+for each trial, to give 50 counts.
 
 In order to do this, we make {{< var an_array >}} to hold the 50 counts.
 Call this {{< var array >}} `z`.
