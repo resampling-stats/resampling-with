@@ -68,6 +68,10 @@ simulation method.
 
 ## Puzzle Problems
 
+<!---
+Are these a little too advanced?  Should we start with the poker problems?
+-->
+
 ### The treasure fleet recovered
 
 The problem is:
@@ -507,6 +511,9 @@ duplication within sets of five numbers. Then translate them back into cards,
 and see how many "hands" of five "cards" contain one pair each. Table 6-4 shows
 six such hands, of which hands numbered 2, 3 and 6 contain pairs.
 
+
+
+
 ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 48   52   78   38   11   90   41   83   43   99   51   55   57   03   83   20
 15   11   84   33   09   24   08   52   42   70   37   16   66   73   15   54
@@ -525,19 +532,19 @@ six such hands, of which hands numbered 2, 3 and 6 contain pairs.
 : Table of Random Digits {#tbl-random-digits}
 
 
- Table 6-4
 
-**Six Simulated Trials for the Problem "OnePair"**
+Aces 2 3 4 5 6 7 8 9 10 J Q K
 
-**Aces Deuces 3 4 5 6 7 8 9 10 J Q K**
-
-**What the Random Numbers Mean**
 
   ------------------------ ---- ---- ---- ---- ---- ---------- ---- ---- ---- ---- ---- ---- ----
   Spades                   01   02   03   04   05   06         07   08   09   10   11   12   13
   Diamonds                 14   15   16   17   18   19         20   21   22   23   24   25   26
   Hear ts                  27   28   29   30   31   32         33   34   35   36   37   38   39
   Clubs                    40   41   42   43   44   45         46   47   48   49   50   51   52
+
+
+: What the Random Numbers Mean {#tbl-numbers-to-cards}
+
   **Simulation Results**                                                                     
   Hand 1:                  48   52   38   11   41   no pairs                                 
   Hand 2:                  15   11   33   09   24   one pair                                 
@@ -546,6 +553,8 @@ six such hands, of which hands numbered 2, 3 and 6 contain pairs.
   Hand 5:                  37   27   38   23   39   no pairs                                 
   Hand 6:                  12   17   04   19   44   one pair                                 
   ------------------------ ---- ---- ---- ---- ---- ---------- ---- ---- ---- ---- ---- ---- ----
+
+:Six Simulated Trials for the Problem "OnePair {#tbl-six-one-pair-sims}
 
 Now let's do the same job using RESAMPLING STATS on the computer. Let's
 name "One Pair" the file which simulates a deck of playing cards and
@@ -597,6 +606,11 @@ hand of five cards.
 :::
 
 ```{python opts.label="py_ed"}
+import numpy as np
+rnd = np.random.default_rng()
+```
+
+```{python opts.label="py_ed"}
 # Create a bucket (vector) called a with four "1's," four "2's," four "3's,"
 # etc., to represent a deck of cards
 one_suit = np.arange(1, 14)
@@ -604,20 +618,22 @@ one_suit
 ```
 
 ```{python opts.label="py_ed"}
+# Repeat values for one suit four times to make a 52 card deck of values.
 deck = np.repeat(one_suit, 4)
 deck
 ```
 
 ```{python opts.label="py_ed"}
-pairs_per_trial = np.zeros(10000)
+# Array to store result of each trial.
+z = np.zeros(10000)
 
 # Repeat the following steps 10000 times
 for i in range(10000):
     # Shuffle the deck
-    np.random.shuffle(deck)
+    shuffled = rnd.permuted(deck)
 
-    # Take the first five cards.
-    hand = deck[1:5]
+    # Take the first five cards to make a hand.
+    hand = deck[:5]
 
     # How many pairs?
     # Counts for each card rank.
@@ -625,15 +641,64 @@ for i in range(10000):
     n_pairs = np.sum(counts == 2)
 
     # Keep score of # of pairs
-    pairs_per_trial[i] = n_pairs
+    z[i] = n_pairs
 
     # End loop, go back and repeat
 
 # How often was there 1 pair?
-n_one_pair = np.sum(pairs_per_trial == 1)
+k = np.sum(z == 1)
 
-# Convert to proportion
-print(n_one_pair / 10000)
+# Convert to proportion.
+kk = k / 10000
+
+# Show the result.
+print(kk)
+```
+
+```{r opts.label="r_ed"}
+# Create a bucket (vector) called a with four "1's," four "2's," four "3's,"
+# etc., to represent a deck of cards
+one_suit = 1:13
+one_suit
+```
+
+```{r opts.label="r_ed"}
+# Repeat values for one suit four times to make a 52 card deck of values.
+deck = rep(one_suit, 4)
+deck
+```
+
+```{r opts.label="r_ed"}
+# Vector to store result of each trial.
+z <- numeric(10000)
+
+# Repeat the following steps 10000 times
+for (i in 1:10000) {
+    # Shuffle the deck
+    shuffled <- sample(deck)
+
+    # Take the first five cards to make a hand.
+    hand = shufffled[1:5]
+
+    # How many pairs?
+    # Counts for each card rank.
+    counts <- tabulate(hand)
+    n_pairs <- sum(counts == 2)
+
+    # Keep score of # of pairs
+    z[i] <- n_pairs
+
+    # End loop, go back and repeat
+}
+
+# How often was there 1 pair?
+k <- sum(z == 1)
+
+# Convert to proportion.
+kk = k / 10000
+
+# Show the result.
+message(kk)
 ```
 
 :::
@@ -649,10 +714,10 @@ How accurate are these resampling estimates? The accuracy depends on the
 *number of hands* we deal — the more hands, the greater the accuracy. If
 we were to examine millions of hands, 42 percent would contain a pair
 each; that is, the chance of getting a pair in the long run is 42
-percent. It turns out the estimate of `r py$pct` percent based on `r
-py$n_deals` hands in @tbl-one-pair is fairly close to the long-run estimate,
-though whether or not it is close *enough* depends on one's needs of course. If
-you need great accuracy, deal many more hands.
+percent. It turns out the estimate of `r py$pct` percent based on 
+`r py$n_deals` hands in @tbl-one-pair is fairly close to the long-run
+estimate, though whether or not it is close *enough* depends on one's needs of
+course. If you need great accuracy, deal many more hands.
 
 A note on the `a`s, `b`s, `c`s in the above program, etc.: These "variables"
 are called "{{< var array >}}"s in {{< var lang >}}. A *{{< var array >}}* is
