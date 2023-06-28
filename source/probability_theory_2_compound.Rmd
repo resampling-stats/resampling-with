@@ -453,29 +453,30 @@ deck_values = dict(zip(deck, values))
 ```{python, results='asis', echo=FALSE, message=FALSE}
 import numpy as np
 import pandas as pd
-rnd = np.random.default_rng()
+seed = 1937
+rnd = np.random.default_rng(seed)
 df = pd.DataFrame(columns=['Card 1',
                            'Card 2',
                            'Card 3',
                            'Card 4',
                            'Card 5',
-                           'Has pair?'],
+                           'One pair?'],
                   index=pd.Index(range(1, n_deals + 1), name='Hand'))
 for i in range(1, n_deals + 1):
     cards = rnd.choice(deck, size=5, replace=False)
     df.loc[i, 'Card 1':'Card 5'] = cards
     values = [deck_values[c] for c in cards]
     counts = np.bincount(values)
-    df.loc[i, 'Has pair?'] = 'Yes' if np.sum(counts == 2) == 1 else 'No'
+    df.loc[i, 'One pair?'] = 'Yes' if np.sum(counts == 2) == 1 else 'No'
 
-pct = int(np.round(np.sum(df['Has pair?'] == 'Yes') / len(df) * 100))
+pct = int(np.round(np.sum(df['One pair?'] == 'Yes') / len(df) * 100))
 n_cols = len(df.columns)
 df.loc['', :] = [''] * n_cols
-df.loc['**% Yes**', :] = [''] * (n_cols - 1) + [str(pct)]
+df.loc['**% Yes**', :] = [''] * (n_cols - 1) + [f'{pct}%']
 
 cards_tab = df.to_markdown(tablefmt="grid")
-print(cards_tab +
-    '\n\n: Results of 25 hands for the problem "one pair" {#tbl-one-pair}')
+print(f'{cards_tab}\n\n: Results of {n_deals} hands '
+      'for the problem "one pair" {#tbl-one-pair}')
 ```
 
 In this series of `r py$n_deals` experiments, `r py$pct` percent of the hands
@@ -498,33 +499,31 @@ replaced* in the deck prior to dealing the next card (that is, prior to the end
 of the hand).
 
 Still another resampling method uses a *random number table* , such as
-that which is shown in Table 6-3. Arbitrarily designate the spades as
-numbers "01-13," the diamonds as "14-26," the hearts as "27-39," and the
-clubs as "40-52." Then proceed across a row (or down a column), writing
-down each successive pair of digits, excluding pairs outside "01-52" and
-omitting duplication within sets of five numbers. Then translate them
-back into cards, and see how many "hands" of five "cards" contain one
-pair each. Table 6-4 shows six such hands, of which hands numbered 2, 3
-and 6 contain pairs.
+that which is shown in @tbl-random-digits. Arbitrarily designate the spades as
+numbers "01-13," the diamonds as "14-26," the hearts as "27-39," and the clubs
+as "40-52." Then proceed across a row (or down a column), writing down each
+successive pair of digits, excluding pairs outside "01-52" and omitting
+duplication within sets of five numbers. Then translate them back into cards,
+and see how many "hands" of five "cards" contain one pair each. Table 6-4 shows
+six such hands, of which hands numbered 2, 3 and 6 contain pairs.
 
-Table 6-3
+---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+48   52   78   38   11   90   41   83   43   99   51   55   57   03   83   20
+15   11   84   33   09   24   08   52   42   70   37   16   66   73   15   54
+25   89   70   11   91   65   41   90   88   04   30   72   15   81   34   46
+34   24   66   55   67   79   29   18   36   56   96   95   35   06   05   10
+37   27   58   38   23   84   94   39   99   50   74   80   41   85   98   63
+12   17   04   68   19   98   53   44   16   32   91   01   71   60   19   12
+88   85   44   65   52   01   99   56   72   07   96   39   56   34   86   01
+81   92   77   83   10   58   92   33   63   48   62   66   32   61   59   74
+08   50   15   18   13   45   65   12   32   92   53   82   07   61   71   80
+84   29   90   36   05   95   20   71   17   82   83   38   01   87   74   92
+77   76   46   28   47   15   04   21   04   75   51   83   91   37   14   32
+01   33   90   94   86   10   03   99   95   98   76   97   97   26   45   62
+---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 
-**Table of Random Digits**
+: Table of Random Digits {#tbl-random-digits}
 
-  ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-  48   52   78   38   11   90   41   83   43   99   51   55   57   03   83   20
-  15   11   84   33   09   24   08   52   42   70   37   16   66   73   15   54
-  25   89   70   11   91   65   41   90   88   04   30   72   15   81   34   46
-  34   24   66   55   67   79   29   18   36   56   96   95   35   06   05   10
-  37   27   58   38   23   84   94   39   99   50   74   80   41   85   98   63
-  12   17   04   68   19   98   53   44   16   32   91   01   71   60   19   12
-  88   85   44   65   52   01   99   56   72   07   96   39   56   34   86   01
-  81   92   77   83   10   58   92   33   63   48   62   66   32   61   59   74
-  08   50   15   18   13   45   65   12   32   92   53   82   07   61   71   80
-  84   29   90   36   05   95   20   71   17   82   83   38   01   87   74   92
-  77   76   46   28   47   15   04   21   04   75   51   83   91   37   14   32
-  01   33   90   94   86   10   03   99   95   98   76   97   97   26   45   62
-  ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 
  Table 6-4
 
@@ -576,36 +575,44 @@ accumulates results from trial to trial rather than over-writing the
 result of the past trial with the current one.) And with that we end a
 single trial.
 
-With the REPEAT 1000 statement and the END statement, we command the
-program to repeat a thousand times the statements in the "loop" between
-those two lines. When those 1000 repetitions are over, the computer
-moves on to COUNT the number of "1's" in SCOREkeeping vector z, each "1"
-indicating a hand with a pair. And we then PRINT to the screen the
-result which is found in location k. If we want the *proportion* of the
-trials in which a pair occurs, we simply divide the results of the
-thousand trials by 1000.
+With the REPEAT 10000 statement and the END statement, we command the
+program to do ten thousand repeats of the statements in the "loop" between
+those two lines.
+
+When those 10000 repetitions are over, the computer moves on to
+COUNT the number of "1's" in SCOREkeeping vector z, each "1" indicating a hand
+with a pair. And we then PRINT to the screen the result which is found in
+location k. If we want the *proportion* of the trials in which a pair occurs,
+we simply divide the results of the thousand trials by 10000.
 
 <!---
 Introduce bincount / tabulate / repeat
 -->
 
+::: {.notebook name="one_pair" title="One pair"}
+
+::: nb-only
+This is a simulation to find the probability of exactly one pair in a poker
+hand of five cards.
+:::
+
 ```{python opts.label="py_ed"}
 # Create a bucket (vector) called a with four "1's," four "2's," four "3's,"
 # etc., to represent a deck of cards
 one_suit = np.arange(1, 14)
-print(one_suit)
+one_suit
 ```
 
 ```{python opts.label="py_ed"}
 deck = np.repeat(one_suit, 4)
-print(deck)
+deck
 ```
 
 ```{python opts.label="py_ed"}
-pairs_per_trial = np.zeros(1000)
+pairs_per_trial = np.zeros(10000)
 
-# Repeat the following steps 1000 times
-for i in range(1000):
+# Repeat the following steps 10000 times
+for i in range(10000):
     # Shuffle the deck
     np.random.shuffle(deck)
 
@@ -626,35 +633,38 @@ for i in range(1000):
 n_one_pair = np.sum(pairs_per_trial == 1)
 
 # Convert to proportion
-print(n_one_pair / 1000)
+print(n_one_pair / 10000)
 ```
 
-Note: The file "onepair" on the Resampling Stats software disk contains
-this set of commands.
+:::
 
-In one run of the program, the result in kk was .419, so our estimate
-would be that the probability of a single pair is .419.
+```{r, echo=FALSE}
+rkk <- round(get_var('kk'), 3)
+```
+
+In one run of the program, the result in `kk` was `r rkk`, so our estimate
+would be that the probability of a single pair is `r rkk`.
 
 How accurate are these resampling estimates? The accuracy depends on the
 *number of hands* we deal — the more hands, the greater the accuracy. If
 we were to examine millions of hands, 42 percent would contain a pair
 each; that is, the chance of getting a pair in the long run is 42
-percent. The estimate of 44 percent based on 100 hands in Table 6-2 is
-fairly close to the long-run estimate, though whether or not it is close
-*enough* depends on one's needs of course. If you need great accuracy,
-deal many more hands.
+percent. It turns out the estimate of `r py$pct` percent based on `r
+py$n_deals` hands in @tbl-one-pair is fairly close to the long-run estimate,
+though whether or not it is close *enough* depends on one's needs of course. If
+you need great accuracy, deal many more hands.
 
-A note on the "a"s, "b"s, "c"s in the above program, etc.: These
-"variables" are called "vectors" in RESAMPLING STATS. A *vector* is an
-array of elements that gets filled with numbers as RESAMPLING STATS
-conducts its operations. When RESAMPLING STATS completes a trial these
-vectors are generally wiped clean except for the "SCORE" vector (here
-labeled "z") which keeps track of the result of each trial.
+A note on the `a`s, `b`s, `c`s in the above program, etc.: These "variables"
+are called "{{< var array >}}"s in {{< var lang >}}. A *{{< var array >}}* is
+an array (sequence) of elements that gets filled with numbers as {{< var lang
+>}} conducts its operations. When {{< var lang >}} completes a single trial
+these {{< var array >}}s are generally reset except for the "score" {{< var
+array >}} (here labeled `z`) which keeps track of the result of each trial.
 
-To help keep things straight (though the program does not require it),
-we usually use "z" to name the vector that collects all the trial
-results, and "k" to denote our overall summary results. Or you could
-call it something like "scrbrd."
+To help keep things straight (though the program does not require it), we
+usually use `z` to name the {{< var array >}} that collects all the trial
+results, and `k` to denote our overall summary results. Or you could call it
+something like `scoreboard` — it's up to you.
 
 How many trials (hands) should be made for the estimate? There is no
 easy answer.[^how-many-trials] One useful device is to run several (perhaps
@@ -663,10 +673,10 @@ pairs found in the entire group of trials is very different from the
 proportions found in the various subgroup sets. If the proportions of pairs in
 the various subgroups differ greatly from one another or from the overall
 proportion, then keep running additional larger subgroups of trials until the
-variation from one subgroup to another is sufficiently small for your
-purposes. While such a procedure would be impractical using a deck of cards or
-any other physical means, it requires little effort with the computer and
-RESAMPLING STATS.
+variation from one subgroup to another is sufficiently small for your purposes.
+While such a procedure would be impractical using a deck of cards or any other
+physical means, it requires little effort with the computer and {{< var lang
+>}}.
 
 [^how-many-trials]: One simple rule-of-thumb is to quadruple the original
     number. The reason for quadrupling is that four times as many iterations
@@ -720,10 +730,10 @@ like "One Pair" earlier, except instructing the MUL- TIPLES statement to
 search for triplicates instead of duplicates. The program, then, is:
 
 ```{python opts.label="py_ed"}
-triples_per_trial = np.zeros(1000)
+triples_per_trial = np.zeros(10000)
 
-# Repeat the following steps 1000 times
-for i in range(1000):
+# Repeat the following steps 10000 times
+for i in range(10000):
     # Shuffle the deck
     np.random.shuffle(deck)
 
@@ -743,7 +753,7 @@ for i in range(1000):
 n_triples = np.sum(triples_per_trial == 1)
 
 # Convert to proportion
-print(n_triples / 1000)
+print(n_triples / 10000)
 ```
 
 Note: The file "3kind" on the Resampling Stats software disk contains
@@ -755,10 +765,10 @@ results in SCOREkeeping vector z for hands in which we had *two* pairs,
 instead of *one* .
 
 ```{python opts.label="py_ed"}
-pairs_per_trial = np.zeros(1000)
+pairs_per_trial = np.zeros(10000)
 
-# Repeat the following steps 1000 times
-for i in range(1000):
+# Repeat the following steps 10000 times
+for i in range(10000):
     # Shuffle the deck
     np.random.shuffle(deck)
 
@@ -779,7 +789,7 @@ for i in range(1000):
 n_two_pairs = np.sum(pairs_per_trial == 2)
 
 # Convert to proportion
-print(n_two_pairs / 1000)
+print(n_two_pairs / 10000)
 ```
 
 Note: The file "2pair" on the Resampling Stats software disk contains
@@ -787,7 +797,7 @@ this set of commands.
 
 For efficiency (though efficiency really is not important here because
 the computer performs its operations so cheaply) we could develop both
-estimates in a single program by simply generating 1000 hands, and count
+estimates in a single program by simply generating 10000 hands, and count
 the number with three-of-a-kind and the number with two pairs.
 
 Before we leave the poker problems, we note a difficulty with Monte
