@@ -318,8 +318,15 @@ finished *result* (in this case, the number rounded to the nearest integer.
 The components we send to a function are called *arguments*.  The finished
 result the function sends back is the *return value*.
 
-* **Function arguments** : the value or values we send to a function.
-* **Function return value** : the values the function sends back.
+* **Arguments** : the value or values we send to a function.
+* **Return value** : the values the function sends back.
+
+See @fig-round_function_pl for an illustration of `round` as a production
+line.
+
+```{r fig-round_function_pl, echo=FALSE, fig.align='center', fig.cap="The `round` function as a production line"}
+include_svg('images/round_function_pl.svg')
+```
 
 In the next few code {{< var cell >}}s, you see examples where `round` takes in
 a not-integer number, as an *argument*, and sends back the nearest integer as
@@ -444,7 +451,7 @@ Here are some more examples of [the colon syntax]{.r}[`arange`]{.python}:
 ```{python, opts.label="py_ed"}
 # All the integers starting at 10, up to, but not including 15.
 # In other words, 10 through 14.
-arange(10:15)
+arange(10, 15)
 ```
 
 ```{python, opts.label="py_ed"}
