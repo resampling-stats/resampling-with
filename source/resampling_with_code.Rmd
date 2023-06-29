@@ -307,7 +307,19 @@ We will use the term *integer* fairly often, because it is a convenient way to
 name all the positive and negative whole numbers.
 :::
 
-Think of `round` as the name of a process, that takes in a *component* (in this case, any number), and does some work, and sends back the finished *result* (in this case, the number rounded to the nearest integer.
+Think of a function as a named *production line*.  We sent the function
+(production line) raw material (components) to work on.  The production line
+does some work on the components. A finished result comes off the other end.
+
+Therefore, think of `round` as the name of a production line, that takes in a
+*component* (in this case, any number), and does some work, and sends back the
+finished *result* (in this case, the number rounded to the nearest integer.
+
+The components we send to a function are called *arguments*.  The finished
+result the function sends back is the *return value*.
+
+* **Function arguments** : the value or values we send to a function.
+* **Function return value** : the values the function sends back.
 
 In the next few code {{< var cell >}}s, you see examples where `round` takes in
 a not-integer number, as an *argument*, and sends back the nearest integer as
@@ -333,10 +345,42 @@ round(3.2)
 round(-2.7)
 ```
 
+Like many functions, `round` can take more than one argument (component).  You
+can also send `range` the number of digits you want to round to, like this:
+
+```{python, opts.label="py_ed"}
+# Put in 3.1415, and the number of digits to round to (2).
+# round sends back 3.14
+round(3.1415, 2)
+```
+
+
+```{r, opts.label="r_ed"}
+# Put in 3.1415, and the number of digits to round to (2).
+# round sends back 3.14
+round(3.1415, 2)
+```
+
 ## Ranges
 
-In fact, we often need to do what we have done above, and generate a
-sequence or *range* of integers, such as 0 through 9.
+Now let us return to the variable `some_numbers` that we created above:
+
+```{python, opts.label="py_ed"}
+# Make an array of numbers, store with the name "some_numbers".
+some_numbers = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+# Show the value of "some_numbers"
+some_numbers
+```
+
+```{r, opts.label="r_ed"}
+# Make a vector of numbers, store with the name "some_numbers".
+some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+# Show the value of "some_numbers"
+some_numbers
+```
+
+In fact, we often need to do this: generate a sequence or *range* of integers,
+such as 0 through 9.
 
 ::: {.callout-note}
 ### Pick a number from 1 through 5
@@ -355,32 +399,91 @@ or 4 or 5.
 :::
 
 Creating ranges of numbers is so common that {{< var lang >}} has a [special
-syntax]{.r}[standard function]{.python} to do that.
+syntax]{.r}[standard Numpy function `arange`]{.python} to do that.
 
 ```{python, opts.label="py_ed"}
-some_numbers = np.arange(10)
+from numpy import arange
 ```
 
-## Functions {#sec-functions-production}
+```{python, opts.label="py_ed"}
+# An array containing all the numbers from 0 through 9.
+some_numbers = np.arange(0, 10)
+some_numbers
+```
 
-We can use [`rnd.choice`]{.python}[the `sample` function]{.r} to select a single
-value *at random* from the sequence of numbers in `some_numbers`.
+::: python
+Notice that we send `arange` the *arguments* 0 and 10.  Think of the first
+argument, here 0, as the *start value*.  The second argument, here 10, is the
+*stop* value.  Numpy (in the `arange` function) understands this to mean: *start* at 0 (the start value) and go up to *but do not include* 10 (the stop value).
+
+Here we have sent `arange` two arguments, but we can also send just one argument, like this:
 
 ```{python, opts.label="py_ed"}
-# Select a number from the choices in some_numbers
-my_number = rnd.choice(some_numbers)
-# Show the value that results.
-my_number
+# An array containing all the numbers from 0 through 9.
+some_integers = np.arange(10)
+some_integers
+```
+
+When we sent `arange` a single argument, like this, `arange` understands this
+to mean we have sent just the *stop* value, and that is should assume a *start*
+value of 0.
+:::
+
+::: r
+R allows you to write a colon (`:`) between two values, to mean that you want a *vector* (sequence) that is all the integers from the first value (before the colon) *through* the second value (after the colon):
+:::
+
+```{r, opts.label="r_ed"}
+# A vector containing all the integers from 0 through 9.
+some_integers = 0:9
+some_integers
+```
+
+Here are some more examples of [the colon syntax]{.r}[`arange`]{.python}:
+
+```{python, opts.label="py_ed"}
+# All the integers starting at 10, up to, but not including 15.
+# In other words, 10 through 14.
+arange(10:15)
+```
+
+```{python, opts.label="py_ed"}
+# Here we are only sending one value (7).  arange understands this to be
+# the stop value, and assumes 0 as the start value.
+# In other words, 0 through 6
+arange(7)
 ```
 
 ```{r, opts.label="r_ed"}
-# Select a number from the choices in some_numbers
-my_number <- sample(some_numbers)
-# Show the value that results.
-my_number
+# All the integers from 10 through 14
+10:14
 ```
 
-[`rnd.choice`]{.python}[the `sample` function]{.r} is a *function*.
+```{r, opts.label="r_ed"}
+# All the integers from -1 through 5
+-1:5
+```
+
+## Choosing values at random {#sec-random-choice}
+
+We can use the [`rnd.choice`]{.python}[`sample`]{.r} function to select a
+single value *at random* from the sequence of numbers in `some_integers`.
+
+```{python, opts.label="py_ed"}
+# Select an integer from the choices in some_integers.
+my_integer = rnd.choice(some_integers)
+# Show the value that results.
+my_integer
+```
+
+```{r, opts.label="r_ed"}
+# Select an integer from the choices in some_integers.
+my_integer <- sample(some_integers)
+# Show the value that results.
+my_integer
+```
+
+Like `range` (above), [`rnd.choice`]{.python}[`sample`]{.r} is a *function*.
 
 :::python
 :::{.callout-note}
@@ -403,18 +506,11 @@ In our case, the production line has the name
 
 We sent
 [`rnd.choice`]{.python}[the `sample` function]{.r}.
-a value to work on, in this case, the value of `some_numbers`.  The
+a value to work on, in this case, the value of `some_integers`.  The
 values we send to functions are called function function *arguments*.
 
-The production line does some work on this value — in this case, selecting one
-of the numbers at random.
-
-Then the production line sends back the finished result — in this case, a
-number selected at random.  The thing that comes back from a function is called
-the function *return value*.
-
-@fig-function-factory is a diagram illustrating an example run of this
-production line.
+@fig-function-factory is a diagram illustrating an example run of the
+{{< var sample >}} function (production line).
 
 ![Example run of the
 [`rnd.choice`]{.python}[the `sample` function]{.r} production line
@@ -424,44 +520,43 @@ production line.
 Here is the same code again, with new comments.
 
 ```{python, opts.label="py_ed"}
-# Send the value of "some_numbers" to rnd.choice
-# some_numbers is the *argument*.
+# Send the value of "some_integers" to rnd.choice
+# some_integers is the *argument*.
 # Put the *return* value from the function into "my_number".
-my_number = rnd.choice(some_numbers)
+my_number = rnd.choice(some_integers)
 # Show the value that results.
 my_number
 ```
 
 ```{r, opts.label="r_ed"}
-# Send the value of "some_numbers" to sample.
-# some_numbers is the *argument*.
+# Send the value of "some_integers" to sample.
+# some_integers is the *argument*.
 # Put the *return* value from the function into "my_number".
-my_number <- sample(some_numbers)
+my_number <- sample(some_integers)
 # Show the value that results.
 my_number
 ```
 
 ## Sampling from {{< var array >}}s {#sec-sampling-arrays}
 
-In the code above, we asked [`rnd.choice`]{.python}[the `sample` function]{.r}
-to select a single number at random.
+In the code above, we asked {{< var sample >}} to select a single number at
+random.
 
-In fact, the people who wrote [`rnd.choice`]{.python}[the `sample`
-function]{.r}, wrote it to be flexible in the work that it can do.  In
-particular, we can tell [`rnd.choice`]{.python}[the `sample` function]{.r} to
-select *any number of values* at random, by adding a new *argument* to the
-function.
+In fact, the people who wrote {{< var sample >}}, wrote it to be flexible in
+the work that it can do.  In particular, we can tell
+{{< var sample >}} to select *any number of values* at random, by adding a new
+*argument* to the function.
 
 In our case, we would like
 [NumPy]{.python}[R]{.r} to select 17 numbers at random from the
-sequence of `some_numbers`.
+sequence of `some_integers`.
 
 To do this, we add an argument to the function that tells it *how many* numbers
 we want it to select.
 
 ::: r
 To get the result we want, we must also add an extra argument: `replace=TRUE`.
-`replace=TRUE` tells R to sample `some_numbers` *with replacement*.  We will
+`replace=TRUE` tells R to sample `some_integers` *with replacement*.  We will
 soon explain more about what this means, but for now, please take our word for
 it that `replace=TRUE` gives us the same effect as rolling several 10-sided
 dice.
@@ -472,17 +567,17 @@ Section on resampling with and without replacement in later chapter.
 :::
 
 ```{python, opts.label="py_ed"}
-# Get 17 values from the *some_numbers* array.
+# Get 17 values from the *some_integers* array.
 # Store the 17 numbers with the name "a"
-a = rnd.choice(some_numbers, 17)
+a = rnd.choice(some_integers, 17)
 # Show the result.
 a
 ```
 
 ```{r, opts.label="r_ed"}
-# Get 17 values from the *some_numbers* vector.
+# Get 17 values from the *some_integers* vector.
 # Store the 17 numbers with the name "a"
-a <- sample(some_numbers, 17, replace=TRUE)
+a <- sample(some_integers, 17, replace=TRUE)
 # Show the result.
 a
 ```
@@ -698,9 +793,9 @@ We now have the whole procedure for one simulated trial. We can put the whole pr
 ```{python, opts.label="py_ed"}
 # Procedure for one simulated trial
 
-# Get 17 values from the *some_numbers* array.
+# Get 17 values from the *some_integers* array.
 # Store the 17 numbers with the name "a"
-a = rnd.choice(some_numbers, 17)
+a = rnd.choice(some_integers, 17)
 # Is the value of "a" greater than 0
 q = a > 0
 # Count the number of True values in "q"
@@ -712,9 +807,9 @@ b
 ```{r, opts.label="r_ed"}
 # Procedure for one simulated trial
 
-# Get 17 values from the *some_numbers* vector.
+# Get 17 values from the *some_integers* vector.
 # Store the 17 numbers with the name "a"
-a <- sample(some_numbers, 17, replace=TRUE)
+a <- sample(some_integers, 17, replace=TRUE)
 # Is the value of "a" greater than 0?
 q <- a > 0
 # Count the number of TRUE values in "q"
@@ -768,9 +863,9 @@ z = np.zeros(100)
 
 # Repeat the trial procedure 100 times.
 for i in np.arange(100):
-    # Get 17 values from the *some_numbers* array.
+    # Get 17 values from the *some_integers* array.
     # Store the 17 numbers with the name "a".
-    a = rnd.choice(some_numbers, 17)
+    a = rnd.choice(some_integers, 17)
     # Is the value of "a" greater than 0.
     q = a > 0
     # Count the number of True values in "q".
@@ -790,9 +885,9 @@ z <- numeric(100)
 
 # Repeat the trial procedure 100 times.
 for (i in 1:100) {
-    # Get 17 values from the *some_numbers* vector.
+    # Get 17 values from the *some_integers* vector.
     # Store the 17 numbers with the name "a"
-    a <- sample(some_numbers, 17, replace=TRUE)
+    a <- sample(some_integers, 17, replace=TRUE)
     # Is the value of "a" greater than 0?
     q <- a > 0
     # Count the number of TRUE values in "q".

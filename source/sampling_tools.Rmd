@@ -34,21 +34,22 @@ programs.
 ## Samples and labels
 
 Thus far we have used numbers such as 1 and 0 and 10 to represent the elements
-we are sampling from.  For example, in @sec-resampling-code, we were simulating the chance of a particular patient being cured, given the overall standard cure rate of 90%.   We used *numbers* for that task, where 0 represented not-cured, and numbers 1 through 9 represented cured.  For example, this was the procedure for getting one simulated patient in @sec-sampling-arrays:
+we are sampling from.  For example, in @sec-resampling-code, we were simulating the chance of a particular patient being cured, given the overall standard cure rate of 90%.   We used *numbers* for that task, where 0 represented not-cured, and numbers 1 through 9 represented cured.  For example, this is the procedure for getting one simulated patient in @sec-sampling-arrays:
 
 ```{python, opts.label="py_ed"}
 # Get a single value at random from
-# numbers 0 through 16
-a = rnd.choice(range(17))
+# numbers 0 through 9
+a = rnd.choice(range(10))
 # Show the result.
 a
 ```
 
 ```{r, opts.label="r_ed"}
 # Get a single value at random from
-# numbers 0 through 16
-a <- sample(0:16)
+# numbers 0 through 9.
+a <- sample(0:9)
 # Show the result.
 a
 ```
 
+We considered the patient in `a` *not cured* if `a` was equal to 0, and cured otherwise.
