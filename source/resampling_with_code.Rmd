@@ -516,13 +516,20 @@ We sent
 a value to work on, in this case, the value of `some_integers`.  The
 values we send to functions are called function function *arguments*.
 
-@fig-function-factory is a diagram illustrating an example run of the
-{{< var sample >}} function (production line).
+[@fig-rnd_choice_pl]{.python}[@fig-sample-pl]{.r} is a diagram illustrating an
+example run of the {{< var sample >}} function (production line).
 
-![Example run of the
-[`rnd.choice`]{.python}[the `sample` function]{.r} production line
-](images/function_factory.jpg){#fig-function-factory}
+::: python
+```{r fig-rnd_choice_pl, echo=FALSE, fig.align='center', fig.cap="Example run of the `rnd.choice` function"}
+include_svg('images/rnd_choice_pl.svg')
+```
+:::
 
+::: r
+```{r fig-sample_pl, echo=FALSE, fig.align='center', fig.cap="Example run of the `sample` function"}
+include_svg('images/sample_pl.svg')
+```
+:::
 
 Here is the same code again, with new comments.
 
@@ -544,7 +551,7 @@ my_number <- sample(some_integers)
 my_number
 ```
 
-## Sampling from {{< var array >}}s {#sec-sampling-arrays}
+## Sampling into {{< var array >}}s {#sec-sampling-arrays}
 
 In the code above, we asked {{< var sample >}} to select a single number at
 random.
@@ -596,12 +603,11 @@ sending back more than one number, the thing it sends back is
 ## Counting results
 
 We now have the code to do the equivalent of throwing 17 10-sided dice. This is
-the basis for one simulated trial in our simulated world of Saint Hypothetical
-General.
+the basis for one simulated trial in the world of Saint Hypothetical General.
 
 Our next job is to get the code to count the number of numbers that are not
 zero in the {{< var array >}} `a`.  That will give us the number of
-patients who were cured in our simulated trial.
+patients who were cured in simulated trial.
 
 Another way of asking this question, is to ask how many elements in `a` are
 greater than zero.
