@@ -14,7 +14,9 @@ knitr::opts_chunk$set(
   fig.width = 6,
   fig.asp = 0.618,  # 1 / phi
   fig.show = "hold",
-  jupyter_compat = TRUE  # Reticulate plot generation mode.
+  # Do not enable Reticulate jupyter_compat mode for now, see:
+  # https://github.com/rstudio/reticulate/issues/1387
+  # jupyter_compat = TRUE  # Reticulate enable - only show repr for last expr
 )
 
 options(dplyr.print_min = 6, dplyr.print_max = 6)
