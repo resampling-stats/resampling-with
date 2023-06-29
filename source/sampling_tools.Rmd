@@ -1,0 +1,54 @@
+---
+jupyter:
+  jupytext:
+    metadata_filter:
+      notebook:
+        additional: all
+        excluded:
+        - language_info
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.6
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+resampling_with:
+    ed2_fname: null
+---
+
+```{r setup, include=FALSE}
+source("_common.R")
+```
+
+# Tools for samples and sampling
+
+## Introduction
+
+Now you have some experience with {{< var lang >}}, probabilities and
+resampling, it is time to introduce some useful tools for our experiments and
+programs.
+
+## Samples and labels
+
+Thus far we have used numbers such as 1 and 0 and 10 to represent the elements
+we are sampling from.  For example, in @sec-resampling-code, we were simulating the chance of a particular patient being cured, given the overall standard cure rate of 90%.   We used *numbers* for that task, where 0 represented not-cured, and numbers 1 through 9 represented cured.  For example, this was the procedure for getting one simulated patient in @sec-sampling-arrays:
+
+```{python, opts.label="py_ed"}
+# Get a single value at random from
+# numbers 0 through 16
+a = rnd.choice(range(17))
+# Show the result.
+a
+```
+
+```{r, opts.label="r_ed"}
+# Get a single value at random from
+# numbers 0 through 16
+a <- sample(0:16)
+# Show the result.
+a
+```
+

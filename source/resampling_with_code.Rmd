@@ -275,6 +275,92 @@ of 10 values.
 [Arrays]{.python}[Vectors]{.r} are very useful for simulations and data
 analysis, and we will be using these for nearly every example in this book.
 
+## Functions {#sec-introducing-functions}
+
+*Functions* are another tool that we will be using everywhere, and that you seen already, although we have not introduced them until now.
+
+You can think of functions as named *production lines*.
+
+For example, consider the [R]{.r}[Numpy]{.python} *function* `round`.
+
+::: python
+:::
+
+```{python, opts.label="py_ed"}
+# We fetch the `round` function from the Numpy library (module).
+from numpy import round
+```
+
+`round` is the name for a simple production line, that takes in a number, and
+sends back the number rounded to the nearest *integer*.
+
+:::{.callout-note}
+## What is an integer?
+
+An *integer* is a positive or negative *whole number*.
+
+In other words, a number is an *integer* if the number is *either* a whole
+number (0, 1, 2 ...), *or* a negative whole number (-1, -2, -3 ...). All of
+-208, -2, 0, 10, 105 are integers, but $\frac{3}{5}$, -10.3 and 0.2 are not.
+
+We will use the term *integer* fairly often, because it is a convenient way to
+name all the positive and negative whole numbers.
+:::
+
+Think of `round` as the name of a process, that takes in a *component* (in this case, any number), and does some work, and sends back the finished *result* (in this case, the number rounded to the nearest integer.
+
+In the next few code {{< var cell >}}s, you see examples where `round` takes in
+a not-integer number, as an *argument*, and sends back the nearest integer as
+the *return value*:
+
+```{python, opts.label="py_ed"}
+# Put in 3.2, round sends back 3.
+round(3.2)
+```
+
+```{python, opts.label="py_ed"}
+# Put in -2.7, round sends back -3.
+round(-2.7)
+```
+
+```{r, opts.label="r_ed"}
+# Put in 3.2, round sends back 3.
+round(3.2)
+```
+
+```{r, opts.label="r_ed"}
+# Put in -2.7, round sends back -3.
+round(-2.7)
+```
+
+## Ranges
+
+In fact, we often need to do what we have done above, and generate a
+sequence or *range* of integers, such as 0 through 9.
+
+::: {.callout-note}
+### Pick a number from 1 through 5
+
+Ranges can be confusing in normal speech because it is not always clear whether
+they include their beginning and end.  For example, if someone says "pick a
+number between 1 and 5", do they mean *all* the numbers, including the first
+and last (any of 1 or 2 or 3 or 4 or 5)?  Or do they mean only the numbers that
+are *between* 1 and 5 (so 2 or 3 or 4)?  Or do they mean all the numbers up to,
+but not including 5 (so 1 or 2 or 3 or 4)?
+
+To avoid this confusion, we will nearly always use "from" and "through" in
+ranges, meaning that we do include both the start and the end number.  For
+example, if we say "pick a number from 1 through 5" we mean one of 1 or 2 or 3
+or 4 or 5.
+:::
+
+Creating ranges of numbers is so common that {{< var lang >}} has a [special
+syntax]{.r}[standard function]{.python} to do that.
+
+```{python, opts.label="py_ed"}
+some_numbers = np.arange(10)
+```
+
 ## Functions {#sec-functions-production}
 
 We can use [`rnd.choice`]{.python}[the `sample` function]{.r} to select a single
@@ -355,48 +441,7 @@ my_number <- sample(some_numbers)
 my_number
 ```
 
-`round` is another function that we may find ourselves using. `round` is the
-name for a very simple production line, that takes in a number, and sends back
-the number rounded to the nearest *integer*.
-
-:::{.callout-note}
-## What is an integer?
-
-An *integer* is a positive or negative *whole number*.
-
-In other words, a number is an *integer* if the number is *either* a whole
-number (0, 1, 2 ...), *or* a negative whole number (-1, -2, -3 ...). All of
--208, -2, 0, 10, 105 are integers, but $\frac{3}{5}$, -10.3 and 0.2 are not.
-
-We will use the term *integer* fairly often, because it is a convenient way to
-name all the positive and negative whole numbers.
-:::
-
-In the next few code {{< var cell >}}s, you see examples where `round` takes in
-a not-integer number, as an *argument*, and sends back the nearest integer as
-the *return value*:
-
-```{python, opts.label="py_ed"}
-# Put in 3.2, round sends back 3.
-round(3.2)
-```
-
-```{python, opts.label="py_ed"}
-# Put in -2.7, round sends back -3.
-round(-2.7)
-```
-
-```{r, opts.label="r_ed"}
-# Put in 3.2, round sends back 3.
-round(3.2)
-```
-
-```{r, opts.label="r_ed"}
-# Put in -2.7, round sends back -3.
-round(-2.7)
-```
-
-## Sampling from {{< var array >}}s
+## Sampling from {{< var array >}}s {#sec-sampling-arrays}
 
 In the code above, we asked [`rnd.choice`]{.python}[the `sample` function]{.r}
 to select a single number at random.

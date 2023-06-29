@@ -122,22 +122,6 @@ We need a way of simulating a 26% chance.
 One way of doing this is by getting a random number from 0 through 99
 (inclusive).  There are 100 numbers in the range 0 through 99 (inclusive).
 
-::: {.callout-note}
-#### Pick a number from 1 through 5
-
-Ranges can be confusing in normal speech because it is not always clear
-whether they include their beginning and end.  For example, if someone says
-"pick a number between 1 and 5", do they mean *all* the numbers, including the
-first and last (any of 1 or 2 or 3 or 4 or 5)?  Or do they mean only the
-numbers that are *between* 1 and 5 (so 2 or 3 or 4)?  Or do they mean all the
-numbers up to, but not including 5 (so 1 or 2 or 3 or 4)?
-
-To avoid this confusion, we will nearly always use "from" and "through" in
-ranges, meaning that we do include both the start and the end number.  For
-example, if we say "pick a number from 1 through 5" we mean one of 1 or 2 or 3
-or 4 or 5.
-:::
-
 We will arbitrarily say that the juror is white if the random number is in the
 range from 0 through 73.  74 of the 100 numbers are in this range, so
 the juror has a 74/100 = 74% chance of getting the label "white".  We will say
