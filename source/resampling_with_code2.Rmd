@@ -149,7 +149,7 @@ numbers from 0 through 99, and to count how many of these numbers are in the
 range from 75 through 99.  Numbers in the range from 75 through 99 correspond
 to black jurors.
 
-### Random numbers from 0 through 99
+### Random numbers from 0 through 99 {#sec-random-zero-through-ninety-nine}
 
 We can now use {{< var np_or_r >}} and
 [the random number functions]{.python}[`sample`]{.r}
@@ -287,6 +287,8 @@ Notice the argument `5` to the [`np.zeros`]{.python}[`numeric`]{.r} function.
 This tells the function how many zeros we want in the {{< var array >}} that
 the function will return.
 
+## {{< var array >}} length {#sec-array-length}
+
 The are various useful things we can do with this {{< var array >}} container.
 One is to ask how many elements there are in the {{< var array >}} container.
 We can use the [`len`]{.python}[`length`]{.r} function to calculate the number
@@ -301,6 +303,8 @@ len(z)
 # Show the number of elements in "z"
 length(z)
 ```
+
+## Indexing into {{< var array >}}s {#sec-array-indexing}
 
 Another thing we can do is *set* the value for a particular element in the
 {{< var array >}}.  To do this, we use square brackets following the

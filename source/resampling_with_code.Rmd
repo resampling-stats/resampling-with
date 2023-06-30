@@ -381,7 +381,7 @@ send it a second argument — the number of decimal places we want it to round
 to.  If we don't specify the second argument, then `round` assumes we want to
 round to 0 decimal places, and therefore, to the nearest integer.
 
-## Functions and named arguments
+## Functions and named arguments {#sec-named-arguments}
 
 In the example above, we sent `round` two arguments. `round` knows that we mean
 the first argument to be the number we want to round, and the second argument
@@ -863,7 +863,7 @@ q <- a > 0
 q
 ```
 
-## Counting {{< var true >}} values with `sum`
+## Counting {{< var true >}} values with `sum` {#sec-count-with-sum}
 
 Notice above that there is one {{< var true >}} element in `q` for every
 element in `a` that was greater than 0.  It only remains to *count* the number

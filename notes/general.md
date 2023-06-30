@@ -150,12 +150,13 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 
 ## Code topics
 
-* strings
-* arrays and data types
-* lists
+* strings (sampling_tools)
+* arrays and data types (sampling_tools)
+* lists (?add to sampling_tools)
 * indentation
 * bincount / tabulate (probability_theory_2_compound).
 * (a == 1) & (b == 3) (probability_theory_3 or before).
+* Maybe more on Boolean arrays.
 
 ## Data
 
