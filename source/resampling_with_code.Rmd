@@ -476,7 +476,7 @@ notebook interface.
 
 
 
-## Ranges
+## Ranges {#sec-ranges}
 
 Now let us return to the variable `some_numbers` that we created above:
 
@@ -528,6 +528,9 @@ argument, here 0, is the *start* value.  The second argument, here 10, is the
 *stop* value.  Numpy (in the `arange` function) understands this to mean:
 *start* at 0 (the start value) and go up to *but do not include* 10 (the stop
 value).
+
+You can therefore read `np.arange(0, 10)` as "the sequence of integers starting
+at 0, up to, but not including 10".
 
 Like `np.round`, the arguments to `np.arange` also have names, so, we could also write:
 

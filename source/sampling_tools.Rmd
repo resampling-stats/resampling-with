@@ -39,7 +39,7 @@ we are sampling from.  For example, in @sec-resampling-code, we were simulating 
 ```{python, opts.label="py_ed"}
 # Get a single value at random from
 # numbers 0 through 9
-a = rnd.choice(range(10))
+a = rnd.choice(np.arange(10))
 # Show the result.
 a
 ```
@@ -47,7 +47,7 @@ a
 ```{r, opts.label="r_ed"}
 # Get a single value at random from
 # numbers 0 through 9.
-a <- sample(0:9)
+a <- sample(0:9, 1)
 # Show the result.
 a
 ```

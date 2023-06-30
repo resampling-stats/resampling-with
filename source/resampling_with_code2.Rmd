@@ -23,7 +23,7 @@ resampling_with:
 source("_common.R")
 ```
 
-# More resampling with code
+# More resampling with code {#sec-resampling-two}
 
 @sec-resampling-code introduced a problem in probability, that was also a
 problem in statistics.  We asked how surprised we should be at the results of a
@@ -149,54 +149,7 @@ numbers from 0 through 99, and to count how many of these numbers are in the
 range from 75 through 99.  Numbers in the range from 75 through 99 correspond
 to black jurors.
 
-:::: {.callout-note}
-#### Ranges in {{< var lang >}}
-
-We said above that ranges can be confusing, and we use "from 1 through 5" to
-avoid this confusion.
-
-::: {.python}
-Python and NumPy also have the concept of a range of integers (positive or
-negative whole numbers).  Here is a NumPy range:
-
-```{python, opts.label="py_ed"}
-# Load the NumPy library.
-import numpy as np
-
-# Make a range from 0 up to (not including) 6
-some_numbers = np.arange(0, 6)
-
-# Show the result
-some_numbers
-```
-
-Notice that `np.arange(0, 6)` means "from 0 through 5" — the range *does not
-include* the last value.  Another way of putting this is that `np.arange(0,
-6)` means "from 0 up to, but not including, 6".
-
-This takes a little getting used to, but we think you will find it starts to
-come naturally after a while.
-:::
-
-::: {.r}
-R also has the concept of a range of integers (positive or negative whole
-numbers).  Here is an R range:
-
-```{r, opts.label="r_ed"}
-# Make a range from 0 through 5
-some_numbers <- 0:5
-
-# Show the result
-some_numbers
-```
-
-Notice that `0:5` means exactly "from 0 through 5" — the range includes all
-the integers starting at 0 and including 5.
-:::
-
-::::
-
-#### Random numbers from 0 through 99
+### Random numbers from 0 through 99
 
 We can now use {{< var np_or_r >}} and
 [the random number functions]{.python}[`sample`]{.r}
@@ -725,8 +678,8 @@ loop, in order to work through the logic of the loop. For example, you may want
 to write out the unrolled equivalent of the first couple of iterations, to see
 what the loop variable will be, and what will happen in the body of the loop.
 
-We often use `for` loops with ranges.  Here we use a loop to print out the
-numbers [0 through 3]{.python}[1 through 4]{.r}:
+We often use `for` loops with ranges (see @sec-ranges).  Here we use a loop to
+print out the numbers [0 through 3]{.python}[1 through 4]{.r}:
 
 ```{python, opts.label="py_ed"}
 for n in np.arange(0, 4):
