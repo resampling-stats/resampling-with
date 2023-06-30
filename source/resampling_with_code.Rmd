@@ -281,18 +281,19 @@ analysis, and we will be using these for nearly every example in this book.
 
 You can think of functions as named *production lines*.
 
-For example, consider the [R]{.r}[Numpy]{.python} *function* `round`.
+For example, consider the {{< var lang >}} *function* [`round`]{.r}[`np.round`]{.python}
 
 ::: python
 :::
 
 ```{python, opts.label="py_ed"}
-# We fetch the `round` function from the Numpy library (module).
-from numpy import round
+# We load the Numpy library so we have access to the Numpy functions.
+import numpy as np
 ```
 
-`round` is the name for a simple production line, that takes in a number, and
-sends back the number rounded to the nearest *integer*.
+[`round`]{.r}[`np.round`]{.python} is the name for a simple production line,
+that takes in a number, and (by default) sends back the number rounded to the
+nearest *integer*.
 
 :::{.callout-note}
 ## What is an integer?
@@ -311,9 +312,10 @@ Think of a function as a named *production line*.  We sent the function
 (production line) raw material (components) to work on.  The production line
 does some work on the components. A finished result comes off the other end.
 
-Therefore, think of `round` as the name of a production line, that takes in a
-*component* (in this case, any number), and does some work, and sends back the
-finished *result* (in this case, the number rounded to the nearest integer.
+Therefore, think of [`round`]{.r}[`np.round`]{.python} as the name of a
+production line, that takes in a *component* (in this case, any number), and
+does some work, and sends back the finished *result* (in this case, the number
+rounded to the nearest integer.
 
 The components we send to a function are called *arguments*.  The finished
 result the function sends back is the *return value*.
@@ -321,25 +323,25 @@ result the function sends back is the *return value*.
 * **Arguments** : the value or values we send to a function.
 * **Return value** : the values the function sends back.
 
-See @fig-round_function_pl for an illustration of `round` as a production
-line.
+See @fig-round_function_pl for an illustration of
+[`round`]{.r}[`np.round`]{.python} as a production line.
 
 ```{r fig-round_function_pl, echo=FALSE, fig.align='center', fig.cap="The `round` function as a production line"}
 include_svg('images/round_function_pl.svg')
 ```
 
-In the next few code {{< var cell >}}s, you see examples where `round` takes in
-a not-integer number, as an *argument*, and sends back the nearest integer as
-the *return value*:
+In the next few code {{< var cell >}}s, you see examples where
+[`round`]{.r}[`np.round`]{.python} takes in a not-integer number, as an
+*argument*, and sends back the nearest integer as the *return value*:
 
 ```{python, opts.label="py_ed"}
 # Put in 3.2, round sends back 3.
-round(3.2)
+np.round(3.2)
 ```
 
 ```{python, opts.label="py_ed"}
 # Put in -2.7, round sends back -3.
-round(-2.7)
+np.round(-2.7)
 ```
 
 ```{r, opts.label="r_ed"}
@@ -352,21 +354,127 @@ round(3.2)
 round(-2.7)
 ```
 
-Like many functions, `round` can take more than one argument (component).  You
-can also send `range` the number of digits you want to round to, like this:
+Like many functions, [`round`]{.r}[`np.round`]{.python} can take more than one
+argument (component).  You can send `range` the number of digits you want to
+round to, after the number of you want it to work on, like this (see
+@fig-round_ndigits_pl):
 
 ```{python, opts.label="py_ed"}
+# Put in 3.1415, and the number of digits to round to (2).
+# round sends back 3.14
+np.round(3.1415, 2)
+```
+
+```{r, opts.label="r_ed"}
 # Put in 3.1415, and the number of digits to round to (2).
 # round sends back 3.14
 round(3.1415, 2)
 ```
 
+```{r fig-round_ndigits_pl, echo=FALSE, fig.align='center', fig.cap="`round` with optional arguments specifying number of digits"}
+include_svg('images/round_function_ndigits_pl.svg')
+```
+
+Notice that the second argument — here 2 — is *optional*.  We only have to send
+`round` one argument: the number we want it to round.  But we can *optionally*
+send it a second argument — the number of decimal places we want it to round
+to.  If we don't specify the second argument, then `round` assumes we want to
+round to 0 decimal places, and therefore, to the nearest integer.
+
+## Functions and named arguments
+
+In the example above, we sent `round` two arguments. `round` knows that we mean
+the first argument to be the number we want to round, and the second argument
+is the number of decimal places we want to round to.   It knows which is which
+by the *position* of the arguments — the *first* argument is the *number* it
+should round, and *second* is the number of digits.
+
+In fact, internally, the `round` function also gives these arguments *names*.
+It calls the number it should round — [`a`]{.python}[`x`]{.r} — and the number
+of digits it should round to — [`digits`]{.r}[`decimals`]{.python}.  This is
+useful, because it is often clearer and simpler to identify the argument we are
+specifying with its name, instead of just relying on its position.
+
+If we aren't using the argument names, we call the round function as we did
+above:
+
+```{python, opts.label="py_ed"}
+# Put in 3.1415, and the number of digits to round to (2).
+# round sends back 3.14
+np.round(3.1415, 2)
+```
 
 ```{r, opts.label="r_ed"}
 # Put in 3.1415, and the number of digits to round to (2).
 # round sends back 3.14
 round(3.1415, 2)
 ```
+
+In this call, we relied on the fact that we, the people writing the code, and
+you, the person reading the code, remembers that the second argument (2) means
+the number of decimal places it should round to.   But, we can also specify the
+argument using its name, like this (see
+[@fig-round_function_named]{.r}[@fig-np_round_function_named]{.python}):
+
+```{python, opts.label="py_ed"}
+# Put in 3.1415, and the number of digits to round to (2).
+# Use the name of the number-of-decimals argument for clarity:
+np.round(3.1415, decimals=2)
+```
+
+```{r, opts.label="r_ed"}
+# Put in 3.1415, and the number of digits to round to (2).
+# Use the name of the number-of-decimals argument for clarity:
+round(3.1415, digits=2)
+```
+
+```{r fig-round_function_named, echo=FALSE, fig.align='center', fig.cap="The `round` function with argument names"}
+include_svg('images/round_function_named.svg')
+```
+
+```{r fig-np_round_function_named, echo=FALSE, fig.align='center', fig.cap="The `np.round` function with argument names"}
+include_svg('images/np_round_function_named.svg')
+```
+
+Here {{< var lang >}} sees the *first* argument, as before, and assumes that it
+is the number we want to round.  Then it sees the second, named argument —
+[`digits=2`]{.r}[`decimals=2`]{.python} — and knows, *from the name*, that we mean this to be the number of decimals to round to.
+
+In fact, we could even specify *both* arguments by name, like this:
+
+```{python, opts.label="py_ed"}
+# Put in 3.1415, and the number of digits to round to (2).
+np.round(a=3.1415, decimals=2)
+```
+
+```{r, opts.label="r_ed"}
+# Put in 3.1415, and the number of digits to round to (2).
+# Name both arguments.
+round(x=3.1415, digits=2)
+```
+
+We don't usually name both arguments for `round`, as we have above, because it
+is so obvious that the first argument is the thing we want to round, and so
+naming the argument does not make it any more clear what the code is doing.
+But — as so often in programming — whether to use the names, or let {{< var
+lang >}} work out which argument is which by position, is a judgment call.
+The judgment you are making is about the way to write the code to be most clear
+for your reader, where your most important reader may be you, coming back to
+the code in a week or a year.
+
+:::{.callout-note}
+## How do you know what names to use for the function arguments?
+
+You can find the names of the function arguments in the help for the function,
+either online, or in the notebook interface.  For example, to get the help for
+[`round`]{.r}[`np.round`]{.python}, including the argument names, you could
+make a new {{< var cell >}}, and type [`?round`]{.r}[`np.round?`]{.python},
+then execute the cell [by running the chunk]{.r}[by pressing
+Shift-Enter]{.python}.  This will show the help for the function in the
+notebook interface.
+:::
+
+
 
 ## Ranges
 
@@ -406,11 +514,7 @@ or 4 or 5.
 :::
 
 Creating ranges of numbers is so common that {{< var lang >}} has a [special
-syntax]{.r}[standard Numpy function `arange`]{.python} to do that.
-
-```{python, opts.label="py_ed"}
-from numpy import arange
-```
+syntax]{.r}[standard Numpy function `np.arange`]{.python} to do that.
 
 ```{python, opts.label="py_ed"}
 # An array containing all the numbers from 0 through 9.
@@ -419,11 +523,23 @@ some_numbers
 ```
 
 ::: python
-Notice that we send `arange` the *arguments* 0 and 10.  Think of the first
-argument, here 0, as the *start value*.  The second argument, here 10, is the
-*stop* value.  Numpy (in the `arange` function) understands this to mean: *start* at 0 (the start value) and go up to *but do not include* 10 (the stop value).
+Notice that we send `np.arange` the *arguments* 0 and 10.  The first
+argument, here 0, is the *start* value.  The second argument, here 10, is the
+*stop* value.  Numpy (in the `arange` function) understands this to mean:
+*start* at 0 (the start value) and go up to *but do not include* 10 (the stop
+value).
 
-Here we have sent `arange` two arguments, but we can also send just one argument, like this:
+Like `np.round`, the arguments to `np.arange` also have names, so, we could also write:
+
+```{python, opts.label="py_ed"}
+# An array containing all the numbers from 0 through 9.
+# Now using named arguments.
+some_numbers = np.arange(start=0, stop=10)
+some_numbers
+```
+
+So far, we have sent `arange` two arguments, but we can also send just one
+argument, like this:
 
 ```{python, opts.label="py_ed"}
 # An array containing all the numbers from 0 through 9.
@@ -434,6 +550,16 @@ some_integers
 When we sent `arange` a single argument, like this, `arange` understands this
 to mean we have sent just the *stop* value, and that is should assume a *start*
 value of 0.
+
+Again, if we wanted, we could send this argument by name:
+
+```{python, opts.label="py_ed"}
+# An array containing all the numbers from 0 through 9.
+# Specify the stop value by explicit name, for clarity.
+some_integers = np.arange(stop=10)
+some_integers
+```
+
 :::
 
 ::: r
@@ -446,19 +572,19 @@ some_integers = 0:9
 some_integers
 ```
 
-Here are some more examples of [the colon syntax]{.r}[`arange`]{.python}:
+Here are some more examples of [the colon syntax]{.r}[`np.arange`]{.python}:
 
 ```{python, opts.label="py_ed"}
 # All the integers starting at 10, up to, but not including 15.
 # In other words, 10 through 14.
-arange(10, 15)
+np.arange(10, 15)
 ```
 
 ```{python, opts.label="py_ed"}
-# Here we are only sending one value (7).  arange understands this to be
+# Here we are only sending one value (7). np.arange understands this to be
 # the stop value, and assumes 0 as the start value.
 # In other words, 0 through 6
-arange(7)
+np.arange(7)
 ```
 
 ```{r, opts.label="r_ed"}
@@ -476,6 +602,12 @@ arange(7)
 We can use the [`rnd.choice`]{.python}[`sample`]{.r} function to select a
 single value *at random* from the sequence of numbers in `some_integers`.
 
+:::{.callout-note}
+## More on {{< var sample >}}
+
+The {{< var sample >}} function will be a fundamental tool for taking many kinds of samples, and we cover it in more detail in @sec-sampling-tools.
+:::
+
 ```{python, opts.label="py_ed"}
 # Select an integer from the choices in some_integers.
 my_integer = rnd.choice(some_integers)
@@ -484,13 +616,15 @@ my_integer
 ```
 
 ```{r, opts.label="r_ed"}
-# Select an integer from the choices in some_integers.
-my_integer <- sample(some_integers)
+# Select 1 integer (the second argument) from the choices in some_integers
+# (the first argument).
+my_integer <- sample(some_integers, 1)
 # Show the value that results.
 my_integer
 ```
 
-Like `range` (above), [`rnd.choice`]{.python}[`sample`]{.r} is a *function*.
+Like [`np.round`]{.python}[`round`]{.r} (above),
+[`rnd.choice`]{.python}[`sample`]{.r} is a *function*.
 
 :::python
 :::{.callout-note}
@@ -504,19 +638,19 @@ so please forgive our strategic imprecision, and let us continue to say that
 :::
 :::
 
-Think of a function as named *production line*.  We sent the function
-(production line) raw material to work on.  The production line does some work
-on the raw materials. A finished result comes off the other end.
+As you remember, a function is a named *production line*. In our case, the
+production line has the name [`rnd.choice`]{.python}[the `sample`
+function]{.r}.
 
-In our case, the production line has the name
-[`rnd.choice`]{.python}[the `sample` function]{.r}.
+We sent [`rnd.choice`]{.python}[the `sample` function]{.r}. a value to work on
+— an *argument*.  In this case, the argument was the value of `some_integers`.
 
-We sent
-[`rnd.choice`]{.python}[the `sample` function]{.r}.
-a value to work on, in this case, the value of `some_integers`.  The
-values we send to functions are called function function *arguments*.
+::: r
+`sample` also needs the number of random values we should select from the first
+argument.  We can send the number of values we want with the *second argument*.
+:::
 
-[@fig-rnd_choice_pl]{.python}[@fig-sample-pl]{.r} is a diagram illustrating an
+[@fig-rnd_choice_pl]{.python}[@fig-sample_pl]{.r} is a diagram illustrating an
 example run of the {{< var sample >}} function (production line).
 
 ::: python
@@ -544,40 +678,52 @@ my_number
 
 ```{r, opts.label="r_ed"}
 # Send the value of "some_integers" to sample.
-# some_integers is the *argument*.
+# some_integers is the *argument*.  Ask sample to return 1 of the values.
 # Put the *return* value from the function into "my_number".
-my_number <- sample(some_integers)
+my_number <- sample(some_integers, 1)
 # Show the value that results.
 my_number
 ```
 
 ## Sampling into {{< var array >}}s {#sec-sampling-arrays}
 
-In the code above, we asked {{< var sample >}} to select a single number at
-random.
+::: python
+In the code above, we asked Python to select a single number at
+random — because that is what `rnd.choice` does by default].
 
-In fact, the people who wrote {{< var sample >}}, wrote it to be flexible in
+In fact, the people who wrote `rnd.choice`, wrote it to be flexible in
 the work that it can do.  In particular, we can tell
-{{< var sample >}} to select *any number of values* at random, by adding a new
+`rnd.choice` to select *any number of values* at random, by adding a new
 *argument* to the function.
 
-In our case, we would like
-[NumPy]{.python}[R]{.r} to select 17 numbers at random from the
+In our case, we would like Numpy to select 17 numbers at random from the
 sequence of `some_integers`.
 
 To do this, we add an argument to the function that tells it *how many* numbers
 we want it to select.
-
-::: r
-To get the result we want, we must also add an extra argument: `replace=TRUE`.
-`replace=TRUE` tells R to sample `some_integers` *with replacement*.  We will
-soon explain more about what this means, but for now, please take our word for
-it that `replace=TRUE` gives us the same effect as rolling several 10-sided
-dice.
 :::
 
-::: todo
-Section on resampling with and without replacement in later chapter.
+::: r
+In the code above, we asked R to select a single number at
+random — by sending 1 as the second argument to the function.
+
+As you can imagine, we can tell `sample` to select *any number of values*
+at random, by changing the second argument to the function.
+
+In our case, we would like R to select 17 numbers at random from the sequence
+of `some_integers`.
+
+But — there is a complication here.  By default, `sample` selects numbers from
+the first argument *without replacement*, meaning that, by default, sample
+cannot select the same number twice, and in our case, where we want 17 numbers,
+that is bad, because `sample` is going to run out of numbers. To get the result
+we want, we must also add an extra argument: `replace=TRUE`. `replace=TRUE`
+tells R to sample `some_integers` *with replacement*, where `sample` can select
+the same number more than once in the same sample. Sampling with and without
+replacement is a fundamental distinction in probability and statistics.
+@sec-sampling-tools goes into much more detail about this, but for now, please
+take our word for it that using `replace=TRUE` for `sample` gives us the same
+effect as rolling several 10-sided dice.
 :::
 
 ```{python, opts.label="py_ed"}
@@ -590,6 +736,7 @@ a
 
 ```{r, opts.label="r_ed"}
 # Get 17 values from the *some_integers* vector.
+# Sample *with replacement*, so sample can select numbers more than once.
 # Store the 17 numbers with the name "a"
 a <- sample(some_integers, 17, replace=TRUE)
 # Show the result.

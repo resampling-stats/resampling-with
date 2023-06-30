@@ -210,7 +210,7 @@ rnd = np.random.default_rng()
 zero_thru_99 = np.arange(100)
 
 # Get 12 random numbers from 0 through 99
-a = rnd.choice(zero_thru_99, size=12)
+a = rnd.choice(zero_thru_99, 12)
 
 # Show the result
 a
@@ -254,7 +254,7 @@ rnd = np.random.default_rng()
 zero_thru_99 = np.arange(100)
 
 # Get 12 random numbers from 0 through 99
-a = rnd.choice(zero_thru_99, size=12)
+a = rnd.choice(zero_thru_99, 12)
 
 # How many numbers are greater than 74?
 b = np.sum(a > 74)
