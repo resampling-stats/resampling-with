@@ -1,22 +1,19 @@
 ---
+resampling_with:
+    ed2_fname: null
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.6
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: null
 ---
 
 ```{r setup, include=FALSE}
@@ -51,7 +48,7 @@ integers in the range 26 through 99).
 Here is the process of simulating a single juror, adapted from
 @sec-random-zero-through-ninety-nine:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 import numpy as np
 # Ask NumPy for a random number generator.
 rnd = np.random.default_rng()
@@ -66,7 +63,7 @@ a = rnd.choice(zero_thru_99)
 a
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # Get 1 random numbers from 0 through 99
 # replace=TRUE is redundant here, but we leave it for consistency.
 a <- sample(0:99, 1, replace=TRUE)
@@ -78,12 +75,12 @@ a
 After that, we have to unpack our labeling of 0 through 25 as being "black" and
 26 through 99 as being "white".  We might do that like this:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 this_juror_is_black = a < 26
 this_juror_is_black
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 this_juror_is_black <- a < 26
 this_juror_is_black
 ```
@@ -107,7 +104,7 @@ seen so far.
 
 You have already come across the idea that Python values can be integers (positive or negative whole numbers), like this:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 v = 10
 v
 ```
@@ -115,13 +112,13 @@ v
 Here the variable `v` holds the value.  We can see what type of value `v` holds
 by using the `type` function:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 type(v)
 ```
 
 As you may have noticed, Python can also have *floating point* values.  These are values with a decimal point — so numbers that do not have to be integers, but can be any value between the integers.  These floating points values are of type `float`:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 f = 10.1
 type(f)
 ```
@@ -134,21 +131,21 @@ You have also seen that Numpy contains another type, the *array*.  An
 array is a value that contains a sequence of values.  For example, here
 is an array of integers:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 arr = np.array([0, 10, 99, 4])
 arr
 ```
 
 Notice that this value `arr` is of type `np.ndarray`:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 type(arr)
 ```
 
 The array has its own internal record of what type of values it holds.  This is
 called the array `dtype`:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 arr.dtype
 ```
 
@@ -156,12 +153,12 @@ The array `dtype` records the type of value stored in the array.  All values in 
 
 The array above contains integers, but we can also make arrays containing floating point values:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 float_arr = np.array([0.1, 10.1, 99.0, 4.3])
 float_arr
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 float_arr.dtype
 ```
 <!---
@@ -177,12 +174,12 @@ called *strings*.
 
 Here is a single {{< var lang >}} string value:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 s = "Resampling"
 s
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 s <- "Resampling"
 s
 ```
@@ -193,7 +190,7 @@ We can see what type of value `v` holds by using the `class` function.
 For example, for a number value, you will usually find the `class` is
 `numeric`:
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 v <- 10
 class(v)
 ```
@@ -203,11 +200,11 @@ What is the
 [`class`]{.r}[`type`]{.python}
 of the new bit-of-text value `s`?
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 type(s)
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 class(s)
 ```
 
@@ -222,7 +219,7 @@ As we can find the number of elements in an {{< var array >}}
 (@sec-array-length), we can find the number of characters in a string with the
 `len` function:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Number of characters in s
 len(s)
 ```
@@ -232,7 +229,7 @@ len(s)
 To get the length of a string, use the `nchar` function (Number of Characters):
 
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # Number of characters in s
 nchar(s)
 ```
@@ -243,7 +240,7 @@ As we can *index* into {{< var array >}} values to get individual elements
 (@sec-array-indexing), we can index into string values to get individual
 characters:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Get the second character of the string
 # Remember, Python's index positions start at 0.
 second_char = s[1]
@@ -259,7 +256,7 @@ third — the index of the last character you want to select.  For example to
 select the second character in the string you would specify 2 as the starting
 index, and 2 as the ending index, like this:
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # Get the second character of the string
 second_char <- substring(s, 2, 2)
 second_char
@@ -271,12 +268,12 @@ second_char
 As we can store numbers as elements in {{< var array >}}s, we can also store
 strings as {{< var array >}} elements.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 arr_of_strings = np.array(['Julian','Lincoln', 'Simon'])
 arr_of_strings
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 vector_of_strings = c('Julian','Lincoln', 'Simon')
 vector_of_strings
 ```
@@ -284,7 +281,7 @@ vector_of_strings
 ::: python
 Notice the array `dtype`:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 arr_of_strings.dtype
 ```
 
@@ -305,13 +302,13 @@ put a longer string into the array — what do you think would happen?
 
 This happens:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # An array of small strings.
 small_strings = np.array(['six', 'one', 'two'])
 small_strings.dtype
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Set a new value for the first element (first string).
 small_strings[0] = 'seven'
 small_strings
@@ -323,7 +320,7 @@ For that reason, it is often useful to instruct Numpy that you want to use
 effectively infinite length strings, by specifying the array `dtype` as
 `object` *when you make the array*, like this:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # An array of small strings, but this time, tell Numpy
 # that the strings should be of effectively infinite length.
 small_strings_better = np.array(['six', 'one', 'two'], dtype=object)
@@ -336,7 +333,7 @@ This type can store any Python value, and so, when the array is storing
 strings, it will use Python's own string values as elements, rather than the
 more efficient but more fragile Unicode strings that Numpy uses by default.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Set a new value for the first element in the new array.
 small_strings_better[0] = 'seven'
 small_strings_better
@@ -354,14 +351,14 @@ As for any {{< var array >}}, you can select elements with *indexing*.  When
 you select an element with a given position (index), you get the *string* at
 at that position:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Julian Lincoln Simon's second name.
 # (Remember, Python's positions start at 0).
 middle_name = arr_of_strings[1]
 middle_name
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # Julian Lincoln Simon's second name
 middle_name <- vector_of_strings[2]
 middle_name
@@ -370,11 +367,11 @@ middle_name
 As for numbers, we can compare strings with, for example, the `==` operator,
 that asks whether the two strings are equal:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 middle_name == 'Lincoln'
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 middle_name == 'Lincoln'
 ```
 
@@ -395,7 +392,7 @@ Luckily, of course, we can do that, by using the
 
 Here is how that works:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # The values that we will repeat to fill up the larger array.
 juror_types = np.array(['black', 'white'])
 # The number of times we want to repeat "black" and "white".
@@ -406,7 +403,7 @@ jury_pool = np.repeat(juror_types, repeat_nos)
 jury_pool
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # The values that we will repeat to fill up the larger array.
 juror_types <- c('black', 'white')
 # The number of times we want to repeat "black" and "white".
@@ -421,13 +418,13 @@ We can use this {{< var array >}} of repeats of strings, to sample from. The
 result is easier to grasp, because we are using the string labels, instead of
 numbers:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Select one juror at random from the black / white pool.
 one_juror = rnd.choice(jury_pool)
 one_juror
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # Select one juror at random from the black / white pool.
 # replace=TRUE is redundant here, but we leave it for consistency.
 one_juror <- sample(jury_pool, 1, replace=TRUE)
@@ -437,13 +434,13 @@ one_juror
 We can select our full jury of 12 jurors, and see the results in a more obvious
 form:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Select 12 jurors at random from the black / white pool.
 one_jury = rnd.choice(jury_pool, 12)
 one_jury
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # Select one juror at random from the black / white pool.
 one_jury <- sample(jury_pool, 12, replace=TRUE)
 one_jury
@@ -452,12 +449,12 @@ one_jury
 We can use `==` on the {{< var array >}} to get {{< var true >}} values where
 the juror was "black" and {{< var false >}} values otherwise:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 are_black = one_jury == 'black'
 are_black
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 are_black <- one_jury == 'black'
 are_black
 ```
@@ -465,13 +462,13 @@ are_black
 Finally, we can [`sum`]{.r}[`np.sum`]{.python} to find the number of black
 jurors (@sec-count-with-sum):
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Number of black jurors in this simulated jury.
 n_black = np.sum(are_black)
 n_black
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # Number of black jurors in this simulated jury.
 n_black <- sum(are_black)
 n_black
@@ -480,14 +477,14 @@ n_black
 Putting that all together, this is our new procedure to select one jury and
 count the number of black jurors:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 one_jury = rnd.choice(jury_pool, 12)
 are_black = one_jury == 'black'
 n_black = np.sum(are_black)
 n_black
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 one_jury <- sample(jury_pool, 12, replace=TRUE)
 are_black <- one_jury == 'black'
 n_black <- sum(are_black)
@@ -497,13 +494,13 @@ n_black
 Or we can be even more compact by putting several statements together into one
 line:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # The same as above, but on one line.
 n_black = np.sum(rnd.choice(jury_pool, 12) == 'black')
 n_black
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # The same as above, but on one line.
 n_black = sum(sample(jury_pool, 12, replace=TRUE) == 'black')
 n_black
@@ -514,33 +511,33 @@ n_black
 Now let us return to the details of Robert Swain's case, that you first saw in
 @sec-resampling-two.
 
-We looked at the composition of Robert Swain's jury — but in fact, by law, that
-does not have to be representative of the eligible jurors.   The group that
-does have to be representative of the eligible population, by law, is the
-larger group of 100 jurors from which the 12-person jury was selected.  In fact
-the 12 person jury is also called the [petit
-jury](https://en.wikipedia.org/wiki/Petit_jury) from the French *petit*,
-meaning small.  Part of the trial procedure is *jury selection*, that involves
-selecting the 12-person *petit jury* from the much larger *jury panel*, that,
-for Robert Swain, was 100 people, of whom only 8 were black.
+We looked at the composition of Robert Swain's 12-person jury — but in fact, by
+law, that does not have to be representative of the eligible jurors.  The
+12-person jury is drawn from a jury *panel*, of 100 people, and this should, in
+turn, be drawn from the population of all eligible jurors in the county,
+consisting, at the time, of "all male citizens in the community over 21 who
+are reputed to be honest, intelligent men and are esteemed for their integrity,
+good character and sound judgment."  So, unless there was some bias against
+black jurors, we might expect the 100-person jury panel to be a plausibly
+random sample of the eligible jurors, of whom 26% were black. See [the Supreme
+Court case judgement](https://supreme.justia.com/cases/federal/us/380/202) for
+details.
 
-The jury panel is required, by law, to be a representative sample of the
-eligible jurors.
-
-We already know that, of the eligible jurors, 26% were black.  We now know that
-8 out of 100 (8%) of the jury panel were black.  We will leave it to you to
-adapt the simulation from @sec-resampling-two to ask the question — is 8%
-surprising as a random sample from a population with 26% black people?
+In fact, in Robert Swain's trial, there were 8 black members in the 100-person
+jury panel. We will leave it to you to adapt the simulation from
+@sec-resampling-two to ask the question — is 8% surprising as a random sample
+from a population with 26% black people?
 
 But we have a different question: given that 8 out of 100 of the jury panel
-were black, is it surprising that none of the 12 jurors in the petit jury were
-black?
+were black, is it surprising that none of the 12-person jury were black?  As
+usual, we can answer that question with simulation.
 
 Let's think about what a single simulated jury selection would look like.
 
-First we compile our jury panel, using the tools we have used above.  See the code above for more explanation about the individual lines.
+First we compile a representation of the actual jury panel, using the tools we
+have used above.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 juror_types = np.array(['black', 'white'])
 # in fact there were 8 black jurors and 92 white jurors.
 panel_nos = np.array([8, 92])
@@ -549,7 +546,7 @@ jury_panel = np.repeat(juror_types, panel_nos)
 jury_panel
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 juror_types <- c('black', 'white')
 # in fact there were 8 black jurors and 92 white jurors.
 panel_nos <- c(8, 92)
@@ -599,16 +596,16 @@ already seen in [`sample`]{.r}[`rnd.choice`]{.python} has simple ways for you
 to select your sampling type.   You have already seen sampling *with
 replacement*, and it looks like this:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Take a sample of 12 jurors from the panel *with replacement*
 # With replacement is the default for `rnd.choice`.
-strange_jury = rnd.choice(jury_pool, 12)
+strange_jury = rnd.choice(jury_panel, 12)
 strange_jury
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # Take a sample of 12 jurors from the panel *with replacement*
-strange_jury <- sample(jury_pool, 12, replace=TRUE)
+strange_jury <- sample(jury_panel, 12, replace=TRUE)
 strange_jury
 ```
 
@@ -617,9 +614,9 @@ than once.  Perhaps that juror would have to fill two (or more!) seats, or run
 quickly between them.   But of course, that is not how juries are selected.
 They are selected *without replacement*:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Take a sample of 12 jurors from the panel *without replacement*
-ok_jury = rnd.choice(jury_pool, 12, replace=False)
+ok_jury = rnd.choice(jury_panel, 12, replace=False)
 ok_jury
 ```
 
@@ -634,11 +631,69 @@ without replacement. Whether you omit the `replace` argument, or specify
 `replace=FALSE`, the behavior is the same.
 ::::
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # Take a sample of 12 jurors from the panel *with replacement*
-ok_jury <- sample(jury_pool, 12)  # replace=FALSE is the default.
+ok_jury <- sample(jury_panel, 12)  # replace=FALSE is the default.
 ok_jury
 ```
+
+To finish the procedure for simulating a single jury selection, we count the
+number of black jurors:
+
+```{python opts.label="py_ed"}
+n_black = np.sum(ok_jury == 'black')
+n_black
+```
+
+```{r opts.label="r_ed"}
+n_black <- sum(ok_jury == 'black')
+n_black
+```
+
+Now we have the procedure for one simulated trial, here is the procedure for
+10000 simulated trials.
+
+```{python opts.label="py_ed"}
+counts = np.zeros(10000)
+for i in np.arange(10000):
+    # Single trial procedure
+    jury = rnd.choice(jury_panel, 12, replace=False)
+    n_black = np.sum(jury == 'black')
+    # Store the result
+    counts[i] = n_black
+
+# Number of juries with 0 black jurors.
+zero_black = np.sum(counts == 0)
+# Proportion
+p_zero_black = zero_black / 10000
+print(p_zero_black)
+```
+
+```{r opts.label="r_ed"}
+counts <- numeric(10000)
+for (i in 1:10000) {
+    # Single trial procedure
+    jury <- sample(jury_panel, 12)
+    n_black <- sum(jury == 'black')
+    # Store the result
+    counts[i] <- n_black
+}
+# Number of juries with 0 black jurors.
+zero_black <- sum(counts == 0)
+# Proportion
+p_zero_black <- zero_black / 10000
+message(p_zero_black)
+```
+
+We have found that,  when there are only 8% black jurors in the jury panel,
+having no black jurors in the final jury happens about 
+`r round(get_var('p_zero_black') * 100)`%
+of the time, even in this case, where the jury is selected completely at random
+from the jury panel.
+
+We should look for the main source of bias in the initial selection of the jury
+panel, not in the selection of the jury from the panel.
+
 <!---
 End of notebook
 -->
