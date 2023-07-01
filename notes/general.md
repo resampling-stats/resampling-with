@@ -155,15 +155,14 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * lists (?add to sampling_tools)
 * indentation
 * bincount / tabulate (probability_theory_2_compound).
-* (a == 1) & (b == 3) (probability_theory_3 or before).
 * Maybe more on Boolean arrays.
+* (a == 1) & (b == 3) (probability_theory_3 or before).
+* Python `range` cf `np.arange`.
 
 ## Data
 
 Maybe from [Beer,
-mosquitoes](http://www.biology.emory.edu/research/deRoode/PDFs/lefevreetal2010.pdf).
-Email sent to main author <tlefvre@gmail.com>, but if necessary, I can extract
-data from the plots via <https://apps.automeris.io/wpd>.
+mosquitoes](https://github.com/odsti/datasets/tree/main/mosquito_beer)
 
 > If we have data, let’s look at data. If all we have are opinions, let’s go
 > with mine. – Jim Barksdale, former Netscape CEO - for example at [this book](https://www.oreilly.com/library/view/analytics-and-dynamic/9781118919774/9781118919774c05.xhtml)
