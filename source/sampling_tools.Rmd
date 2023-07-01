@@ -211,26 +211,34 @@ type(s)
 class(s)
 ```
 
-The {{< var lang >}} [`str`]{.python}[`character`]{.r} is a bit of text, and
-therefore consists of a sequence of characters.
+The {{< var lang >}} [`str`]{.python}[`character`]{.r} value is a bit of text,
+and therefore consists of a sequence of characters.
 
 As {{< var array >}}s are containers for other things, such as numbers, strings
 are containers for characters.
 
+::: python
 As we can find the number of elements in an {{< var array >}}
 (@sec-array-length), we can find the number of characters in a string with the
-[`length`]{.r}[`len`]{.python} function:
+`len` function:
 
 ```{python, opts.label="py_ed"}
 # Number of characters in s
 len(s)
 ```
+:::
+
+::: r
+To get the length of a string, use the `nchar` function (Number of Characters):
+
 
 ```{r, opts.label="r_ed"}
 # Number of characters in s
-length(s)
+nchar(s)
 ```
+:::
 
+::: python
 As we can *index* into {{< var array >}} values to get individual elements
 (@sec-array-indexing), we can index into string values to get individual
 characters:
@@ -241,12 +249,22 @@ characters:
 second_char = s[1]
 second_char
 ```
+:::
+
+::: r
+R has a `substring` function that allows you to select individual characters or
+sequences of characters from a string. The arguments to `substring` are: first
+— the string; second — the index of the first character you want to select; and
+third — the index of the last character you want to select.  For example to
+select the second character in the string you would specify 2 as the starting
+index, and 2 as the ending index, like this:
 
 ```{r, opts.label="r_ed"}
 # Get the second character of the string
-second_char <- s[2]
+second_char <- substring(s, 2, 2)
 second_char
 ```
+:::
 
 ## Strings in {{< var array >}}s
 
@@ -345,11 +363,12 @@ middle_name
 
 ```{r, opts.label="r_ed"}
 # Julian Lincoln Simon's second name
-middle_name <- arr_of_strings[2]
+middle_name <- vector_of_strings[2]
 middle_name
 ```
 
-As for numbers, we can compare strings with, for example, the `==` operator, that asks the question whether the two strings are equal:
+As for numbers, we can compare strings with, for example, the `==` operator,
+that asks whether the two strings are equal:
 
 ```{python, opts.label="py_ed"}
 middle_name == 'Lincoln'
@@ -399,7 +418,7 @@ jury_pool
 ```
 
 We can use this {{< var array >}} of repeats of strings, to sample from. The
-result is easier to see, because we are using the string labels, instead of
+result is easier to grasp, because we are using the string labels, instead of
 numbers:
 
 ```{python, opts.label="py_ed"}
@@ -410,6 +429,7 @@ one_juror
 
 ```{r, opts.label="r_ed"}
 # Select one juror at random from the black / white pool.
+# replace=TRUE is redundant here, but we leave it for consistency.
 one_juror <- sample(jury_pool, 1, replace=TRUE)
 one_juror
 ```
@@ -470,7 +490,7 @@ n_black
 ```{r, opts.label="r_ed"}
 one_jury <- sample(jury_pool, 12, replace=TRUE)
 are_black <- one_jury == 'black'
-n_black <- np.sum(are_black)
+n_black <- sum(are_black)
 n_black
 ```
 
@@ -623,6 +643,32 @@ ok_jury
 End of notebook
 -->
 
+:::
+
+::: {.callout-note}
+## With or without replacement for the original jury selection
+
+You may have noticed in @sec-resampling-two that we were sampling Robert
+Swain's jury from the eligible pool of jurors, *with replacement*.  You might
+reasonably ask whether we should have selected from the eligible jurors
+*without replacement*, given that the same juror cannot serve more than once in
+the same jury, and therefore, the same argument applies there as here.
+
+The trick there was that we were selecting from a very large pool of many
+thousand eligible jurors, of whom 26% were black.  Let's say there were 10,000
+eligible jurors, of whom 2,600 were black.  When selecting the first juror,
+there is exactly a 2,600 in 10,000 chance of getting a black juror — 26%.  And
+yes, it's true, that the chance will have changed very slightly for the second
+juror — if the first juror was black, the chance that the second juror will be
+black is 2,599 in 9,999.  But these changes are very small; even if we select
+eleven black jurors out of eleven, when we come to the twelfth juror, we still
+have a 2,589 out of 9,989 chance of getting another black juror, and that works
+out at a 25.92% chance — hardly changed from the original 26%.  So yes, you'd
+be right, we really should have compiled our population of 2,600 black jurors
+and 7,400 white jurors, and then sampled without replacement from that
+population, but as the resulting sample probabilities will be very similar to
+the simpler sampling with replacement, we're afraid we chose to slide that one
+quietly past you, in the hope you would forgive us when you realized.
 :::
 
 ## Conclusion
