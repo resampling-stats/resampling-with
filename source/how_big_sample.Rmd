@@ -259,31 +259,42 @@ expected number of viewers (30% of 400 = 120). It repeats this procedure
 1000 times, and then calculates the average divergence.
 
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+```{python}
+import numpy as np
 
-```matlab
-' Program file: "tvviewer.rss"
+# set up the random number generator
+rng = np.random.default_rng()
 
-REPEAT 1000
-    ' Do 1000 trials
-    GENERATE 400 1,100 a
-    ' Generate 400 numbers between 1 and 100, let 1-30 = viewer
-    COUNT a <=30 b
-    ' Count the viewers
-    SUBTRACT 120 b c
-    ' How different from expected?
-    ABS c d
-    ' Absolute value of difference?
-    DIVIDE d 400 e
-    ' Express as a proportion of sample
-    SCORE e z
-    ' Keep score of the result
-END
-MEAN z k
-' Find the mean divergence
+# set the number of trials
+n_trials = 1000
 
-' Note: The file "tvviewer" on the Resampling Stats software disk contains
-' this set of commands.
+# an empty array to store the scores
+scores = np.zeros(n_trials)
+
+# do 1000 trials
+for i in np.arange(n_trials):
+
+    # generate 400 numbers between 1 and 100, let 1-30 = viewer
+    a = rng.integers(1, 100, size = 400)
+
+    # count the viewers
+    b = sum(a <= 30)
+
+    # how different from expected?
+    c = 120 - b
+
+    # absolute value of the difference
+    d = abs(c)
+
+    # express as a proportion of sample
+    e = d/400
+
+    # keep score of the result
+    scores[i] = e
+
+# find the mean divergence
+
+k = np.mean(scores)
 ```
 
 It is a simple matter to go back and try a sample size of (say) 1600
