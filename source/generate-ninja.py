@@ -27,7 +27,8 @@ def replace_ext(fn, new_ext):
 
 w.rule('svg2png', 'inkscape --export-area-drawing -o $out --export-dpi=300 $in')
 w.rule('compile-config', '../scripts/set_version.py --output=_quarto-$lang.yml $lang')
-w.rule('quarto', 'quarto render $in --no-clean --to $format --profile $lang')
+w.rule('quarto-render', 'quarto render $in --no-clean --to $format --profile $lang')
+w.rule('quarto-render-project', 'quarto render --to $format --profile $lang')
 w.rule('cleanup', 'rm -rf *_cache/ .quarto/ notebooks/*')
 w.rule('print-help', 'echo -ne "$$(cat .ninja-usage)"')
 w.rule('check-bibliography', 'biber --tool $in')
@@ -46,7 +47,7 @@ for lang in languages:
         # Should contain the following, but then the r/python language rules conflict
         # See https://github.com/quarto-dev/quarto-cli/issues/5954
         # implicit_outputs=['_variables.yml'],
-        implicit=['_quarto.yml.template', 'text_variables.yml'] + built_diagrams,
+        implicit=['_quarto.yml.template', 'text_variables.yml'],
         variables={'lang': lang}
     )
 
@@ -60,17 +61,19 @@ for lang in languages:
     for (infile, outfile) in zip(Rmd_chapters, output_files):
         w.build(
             outfile,
-            'quarto',
+            'quarto-render',
             infile,
-            implicit=[f'_quarto-{lang}.yml', 'simon_refs.bib'],
+            implicit=[f'_quarto-{lang}.yml', 'simon_refs.bib'] + built_diagrams,
             variables={'lang': lang, 'format': 'html'}
         )
 
     # Book
     w.build(
         f'{lang}-book',
-        'phony',
-        output_files
+        'quarto-render-project',
+        Rmd_chapters,
+        implicit=[f'_quarto-{lang}.yml', 'simon_refs.bib'] + built_diagrams,
+        variables={'lang': lang, 'format': 'html'}
     )
 
 w.build('bibcheck', 'check-bibliography', 'simon_refs.bib')
