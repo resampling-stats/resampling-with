@@ -271,23 +271,26 @@ n_trials = 1000
 # an empty array to store the scores
 scores = np.zeros(n_trials)
 
+# What are the options to choose from?
+options = ['viewer', 'not viewer']
+
 # do 1000 trials
 for i in np.arange(n_trials):
 
-    # generate 400 numbers between 1 and 100, let 1-30 = viewer
-    a = rng.integers(1, 100, size = 400)
+    # Choose 'viewer' 30% of the time.
+    a = rng.choice(options, p=[0.3, 0.7], size = 400)
 
     # count the viewers
-    b = sum(a <= 30)
+    b = np.sum(a <= 30)
 
     # how different from expected?
     c = 120 - b
 
     # absolute value of the difference
-    d = abs(c)
+    d = np.abs(c)
 
     # express as a proportion of sample
-    e = d/400
+    e = d / 400
 
     # keep score of the result
     scores[i] = e
