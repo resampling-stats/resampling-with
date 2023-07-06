@@ -10,7 +10,7 @@ PIP_INSTALL_CMD ?= $(PYTHON) -m pip install
 _submodule-update:
 	git submodule update --init --recursive
 
-r-build-requirements:
+_r-build-requirements:
 	Rscript -e "source('scripts/install_r_requirements.R')"
 
 _python-build-requirements:
@@ -29,7 +29,7 @@ r-book:  ## Build the R version of the book
 	cd $(SOURCE_DIR) && python generate-ninja.py && ninja r-book
 
 website:  ## Build the book (R/Python) as well as the website
-website: _python-book r-book _landing-page
+website: python-book r-book _landing-page
 	mkdir -p $(WEB_DIR)
 	cp website/*.html $(WEB_DIR)
 	cp requirements.txt $(WEB_DIR)
