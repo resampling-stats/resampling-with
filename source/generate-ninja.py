@@ -29,12 +29,14 @@ w.rule('svg2png', 'inkscape --export-area-drawing -o $out --export-dpi=300 $in')
 w.rule('compile-config', '../scripts/set_version.py --output=_quarto-$lang.yml $lang')
 w.rule('quarto', 'quarto render $in --to $format --profile $lang')
 w.rule('cleanup', 'rm -rf *_cache/ .quarto/ notebooks/*')
+w.rule('print-help', 'echo -ne "$$(cat .ninja-usage)"')
+w.rule('check-bibliography', 'biber --tool $in')
 
 # --- SVG diagrams ---
-diagrams = glob('diagrams/*.svg')
-outputs = [os.path.splitext(d)[0] + '.png' for d in diagrams]
-for diagram in diagrams:
-    w.build(replace_ext(diagram, '.png'), 'svg2png', diagram)
+diagrams = glob('diagrams/*.svg') + glob('images/*.svg')
+built_diagrams = [replace_ext(d, '.png') for d in diagrams]
+for (diagram, built_diagram) in zip(diagrams, built_diagrams):
+    w.build(built_diagram, 'svg2png', diagram)
 
 # --- Configure language ---
 for lang in languages:
@@ -42,8 +44,9 @@ for lang in languages:
         f'_quarto-{lang}.yml',
         'compile-config',
         # Should contain the following, but then the r/python language rules conflict
+        # See https://github.com/quarto-dev/quarto-cli/issues/5954
         # implicit_outputs=['_variables.yml'],
-        implicit=['_quarto.yml.template', 'text_variables.yml'],
+        implicit=['_quarto.yml.template', 'text_variables.yml'] + built_diagrams,
         variables={'lang': lang}
     )
 
@@ -70,7 +73,8 @@ for lang in languages:
         output_files
     )
 
-# --- Clean ---
-w.build(
-    'clean', 'cleanup'
-)
+w.build('bibcheck', 'check-bibliography', 'simon_refs.bib')
+w.build('clean', 'cleanup')
+w.build('help', 'print-help')
+
+w.default('help')

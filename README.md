@@ -133,22 +133,6 @@ Before you start:
 * Make a new Git branch, and check out the branch.
 * `cd source`
 
-*   Choose which edition of the book you are going
-    to work on, and set the build to that edition
-    with:
-
-    ```
-    make set-version-python
-    ```
-
-    or
-
-    ```
-    make set-version-r
-    ```
-
-    from the `./source` directory.
-
 Editing:
 
 *   Edit the matching file - here `source/reliability_average.Rmd`.
@@ -159,21 +143,15 @@ Editing:
     the new file stem.  For example, the PDF corresponding to
     `source/reliability_average.Rmd` is `26-Chap-22_reliability_average.pdf`.
     Also see the chapter mappings at the end of this page.
-*   Rebuild the file you're working on from time to time with e.g.
-    `../scripts/rebuild_chapter reliability_average.Rmd` from the `source`
-    directory. Check the contents by opening e.g.
-    `../python-book/reliability_average.Rmd` (Quarto will show the correct
-    filename after the rebuild step).  If you get an error like this:
-
+*   Rebuild the file you're working on from time to time.
+    From the `source` directory:
     ```
-    Error in readLines(con, warn = readLines.warn) :
-      cannot open the connection
-    Calls: .main ... eval -> <Anonymous> -> yaml.load -> paste -> readLines
+    ninja ../python-book/reliability_average.html
     ```
-
-    then make sure you have run the `make set-version-python` or `make
-    set-version-r` command, to build the needed `_quarto.yml` and
-    `_variables.yml` files.
+    You can see the generated contents by opening e.g.
+    `../python-book/reliability_average.Rmd`
+    (Quarto will show the correct filename after the rebuild step), and the matching
+    `../python-book/reliability_average.html`.
 *   When in some kind of shape that is ready for other people to look at, make
     your commits with the changes, and do a pull-request to the main
     repository.  See the **initial port checklist** below.
@@ -257,7 +235,8 @@ This content appears [only in the R edition]{.r}[just in the Python
 book]{.python}.
 ~~~
 
-If you find yourself doing that often, you can define a version-dependent variable in the `text_variables.yml` file.  This gets built out into the `_variables.yml` file with your `make set-version-r` or `make set-version-python`.  Use it with e.g.
+If you find yourself doing that often, you can define a version-dependent variable in the `text_variables.yml` file.
+Use it with e.g.
 
 ~~~
 Here I have text that depends on the version of the book — {{< var my_var >}}
@@ -408,7 +387,7 @@ the print book.
 
 ## Notes for concepts in other discussions in the book
 
-See [the notes repository](https://github.com/resampling-stats/resampling-roam)
+See [the notes repository](https://github.com/resampling-stats/notes)
 for more discussions of various concepts in the book, and how we are thinking
 about them.
 
