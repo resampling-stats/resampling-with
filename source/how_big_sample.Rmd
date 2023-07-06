@@ -266,7 +266,7 @@ import numpy as np
 rng = np.random.default_rng()
 
 # set the number of trials
-n_trials = 1000
+n_trials = 10000
 
 # an empty array to store the scores
 scores = np.zeros(n_trials)
@@ -274,7 +274,7 @@ scores = np.zeros(n_trials)
 # What are the options to choose from?
 options = ['viewer', 'not viewer']
 
-# do 1000 trials
+# do n_trials trials
 for i in range(n_trials):
 
     # Choose 'viewer' 30% of the time.
