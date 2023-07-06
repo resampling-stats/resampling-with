@@ -1,22 +1,19 @@
 ---
+resampling_with:
+    ed2_fname: 28-Chap-24
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.5
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: 28-Chap-24
 ---
 
 ```{r setup, include=FALSE}
@@ -267,14 +264,14 @@ and then calculates the average divergence.
 The notebook calculates the expected number of viewers in a sample of 400, given that there is a 30% chance of any one person being a viewer, and then calculates how far that value is from 120.
 :::
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 import numpy as np
 
 # set up the random number generator
-rng = np.random.default_rng()
+rnd = np.random.default_rng()
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # set the number of trials
 n_trials = 10000
 
@@ -288,7 +285,7 @@ options = ['viewer', 'not viewer']
 for i in range(n_trials):
 
     # Choose 'viewer' 30% of the time.
-    a = rng.choice(options, size=400, p=[0.3, 0.7])
+    a = rnd.choice(options, size=400, p=[0.3, 0.7])
 
     # count the viewers
     b = np.sum(a == 'viewer')
@@ -312,7 +309,7 @@ k = np.mean(scores)
 k
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # set the number of trials
 n_trials <- 10000
 
