@@ -23,10 +23,10 @@ _landing-page:
 	cd website && make landing-page
 
 python-book:  ## Build the Python version of the book
-	cd $(SOURCE_DIR) && python generate-ninja.py && ninja python-book
+	cd $(SOURCE_DIR) && python generate-ninja.py && ninja clean && ninja python-book
 
 r-book:  ## Build the R version of the book
-	cd $(SOURCE_DIR) && python generate-ninja.py && ninja r-book
+	cd $(SOURCE_DIR) && python generate-ninja.py && ninja clean && ninja r-book
 
 website:  ## Build the book (R/Python) as well as the website
 website: python-book r-book _landing-page
