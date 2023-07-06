@@ -27,7 +27,7 @@ def replace_ext(fn, new_ext):
 
 w.rule('svg2png', 'inkscape --export-area-drawing -o $out --export-dpi=300 $in')
 w.rule('compile-config', '../scripts/set_version.py --output=_quarto-$lang.yml $lang')
-w.rule('quarto', 'quarto render $in --to $format --profile $lang')
+w.rule('quarto', 'quarto render $in --no-clean --to $format --profile $lang')
 w.rule('cleanup', 'rm -rf *_cache/ .quarto/ notebooks/*')
 w.rule('print-help', 'echo -ne "$$(cat .ninja-usage)"')
 w.rule('check-bibliography', 'biber --tool $in')
