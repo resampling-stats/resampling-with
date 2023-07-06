@@ -275,7 +275,7 @@ scores = np.zeros(n_trials)
 options = ['viewer', 'not viewer']
 
 # do 1000 trials
-for i in np.arange(n_trials):
+for i in range(n_trials):
 
     # Choose 'viewer' 30% of the time.
     a = rng.choice(options, p=[0.3, 0.7], size = 400)
