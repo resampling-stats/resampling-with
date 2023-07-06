@@ -144,10 +144,18 @@ Editing:
     `source/reliability_average.Rmd` is `26-Chap-22_reliability_average.pdf`.
     Also see the chapter mappings at the end of this page.
 *   Rebuild the file you're working on from time to time.
+
     From the `source` directory:
     ```
     ninja ../python-book/reliability_average.html
     ```
+
+    Or simply:
+    ```
+    ninja python-book
+    ```
+    which will rebuild chapters with changed sources.
+
     You can see the generated contents by opening e.g.
     `../python-book/reliability_average.Rmd`
     (Quarto will show the correct filename after the rebuild step), and the matching
