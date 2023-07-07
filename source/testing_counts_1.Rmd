@@ -230,6 +230,51 @@ END
 HISTOGRAM z
 ' Produce a histogram of the trial results.
 ```
+::: {.notebook name="fruit_fly" title="Fruit fly simulation"}
+
+::: nb-only
+This notebook uses simulation to test the null hypothesis that it is equally 
+likely that new fruit files are male or female. 
+:::
+
+```{python opts.label="py_ed"}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# set up the random number generator
+rnd = np.random.default_rng()
+```
+
+```{python opts.label="py_ed"}
+
+# Set the number of trials
+n_trials = 10000
+
+# set the sample size for each trial
+sample_size = 20
+
+# An empty array to store the trials
+scores = np.zeros(n_trials)
+
+# Do 1000 trials
+for i in range(n_trials):
+
+    # Generate 20 simulated fruit flies, where each has an equal chance of being
+    # male or female
+    a = rnd.choice(['male', 'female'], size = sample_size, p = [0.5, 0.5])
+
+    # count the number of males in the sample
+    b = np.sum(a == 'male')
+
+    # store the result of this trial
+    scores[i] = b
+  
+# Produce a histogram of the trial results
+plt.title(f"Number of males in {n_trials} samples of \n{sample_size} simulated fruit flies")
+plt.hist(scores)
+plt.xlabel('Number of Males')
+plt.ylabel('Frequency')
+```
 
 **20 Fruitflies**
 
