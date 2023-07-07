@@ -276,6 +276,38 @@ plt.xlabel('Number of Males')
 plt.ylabel('Frequency')
 ```
 
+```{r opts.label="r_ed"}
+
+# Set the number of trials
+n_trials <- 10000
+
+# set the sample size for each trial
+sample_size <- 20
+
+# An empty array to store the trials
+scores = numeric(n_trials)
+
+# Do 1000 trials
+for (i in 1:n_trials)
+
+    {
+    # Generate 20 simulated fruit flies, where each has an equal chance of being
+    # male or female
+    a = sample(c('male', 'female'), size = sample_size, prob = c(0.5, 0.5),
+    replace = TRUE)
+
+    # count the number of males in the sample
+    b = sum(a == 'male')
+
+    # store the result of this trial
+    scores[i] = b
+    }
+  
+# Produce a histogram of the trial results
+title_of_plot <- paste0("Number of males in", n_trials, " samples of \n", sample_size, " simulated fruit flies")
+hist(scores, xlab = 'Number of Males', main = title_of_plot)
+```
+
 **20 Fruitflies**
 
 ![](images/19-Chap-15_000.png)
