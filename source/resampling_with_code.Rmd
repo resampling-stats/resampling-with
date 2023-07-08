@@ -602,11 +602,12 @@ np.arange(7)
 
 ::: python
 
-## `range` in Python
+## `range` in Python {#sec-range
 
 So far you have seen ranges of integers using `np.arange`.  The `np.` prefix
 refers to the fact that `np.arange` is a function from the Numpy module
-(library).  The `a` in `arange` refers to the fact that the result that comes back from `np.arange` is an *array*:
+(library).  The `a` in `arange` signals that the result `np.arange` returns is
+an *array*:
 
 ```{python, opts.label="py_ed"}
 arr = np.arange(7)
@@ -620,11 +621,13 @@ type(arr)
 ```
 
 We do often use `np.arange` to get a range of integers in a convenient array
-format, but Python has another way of getting a range of integers — by using
-the Python `range` function.
+format, but Python has another way of getting a range of integers — the `range`
+function.
 
 The `range` function is very similar to `np.arange`, but it is *not* part of
-Numpy, and it does *not* return an *array* of numbers.  Here we ask for a `range` from 0 through 6 (0 up to, but not including 7):
+Numpy — it is basic function in Python — and it does *not* return an *array* of
+numbers, it returns something else.  Here we ask for a `range` from 0 through 6
+(0 up to, but not including 7):
 
 ```{python, opts.label="py_ed"}
 # Notice no `np.` before `range`.
@@ -633,7 +636,7 @@ r
 ```
 
 Notice that the thing that came back is something that *represents* or *stands
-in for* the number 0 through 6.  It is not an array, but specific type of
+in for* the number 0 through 6.  It is not an array, but a specific type of
 thing called — a `range`:
 
 ```{python, opts.label="py_ed"}
@@ -641,11 +644,10 @@ type(r)
 ```
 
 The `range` above is a container for the numbers 0 through 6.  We can get the
-number out of the container in many different ways, but one of them is to
+numbers out of the container in many different ways, but one of them is to
 convert this container to an array, using the `np.array` function.  The
-`np.array` function takes the thing we pass it, and tries to make it into an
-array.  When we apply `np.array` to `r` above, we get the numbers that `r`
-contains:
+`np.array` function takes the thing we pass it, and makes it into an array.
+When we apply `np.array` to `r` above, we get the numbers that `r` contains:
 
 ```{python, opts.label="py_ed"}
 # Get the numbers from the range `r`, convert to an array.
@@ -654,53 +656,7 @@ a_from_r = np.array(r)
 a_from_r
 ```
 
-Another way we can get the numbers from the `range` thing, is to cycle through the numbers one by one, using a `for` loop.  For example, we could ask the `for` loop to fetch each of the numbers in `r`, one by one, and then do something to them.  In this case we just print out the numbers.
-
-```{python, opts.label="py_ed"}
-# Take each of the numbers represented in r, one by one ...
-for value in r:
-    print('This number', value)
-```
-
-Of course, we could do the same `for` loop, but constructing the `range` value on the fly, like this:
-
-```{python, opts.label="py_ed"}
-# Take each of the numbers represented in range(7), one by one ...
-for value in range(7):
-    print('This number', value)
-```
-
-In fact, you will see this pattern throughout the book, where we use `for`
-statements like `for value in range(10000):` to ask Python to put each number
-in the range 0 up to (not including) 100000 into the variable `value`, and
-then do something in the body of the loop.  But just to be clear, we could just as easily have written the cell above as:
-
-```{python, opts.label="py_ed"}
-# Take each of the numbers in the array, one by one ...
-for value in np.arange(7):
-    print('This number', value)
-```
-
-But — even though we could use `np.arange` to get an array of numbers, we
-generally prefer `range` in our Python `for` loops, because it's a more common
-pattern in Python.[^range-efficiency]
-
-[^range-efficiency]: Actually, there is a reason why many Python programmers
-   prefer `range` in their `for` loops to `np.arange`. `range` is a very
-   efficient container, in that it doesn't need to have all the memory needed
-   to make the full array, it just needs to know what number to give you next.
-   For example, consider `for i in np.arange(10000000):` — in this case Python
-   has to make an array with 10,000,000 elements, and then, from that array,
-   it passes each value one by one to the for loop. `for i in
-   range(10000000):` will do the job just as well, passing the same sequence
-   of 0 through 9,999,999 to `i`, one by one, but `range(10000000)` never has
-   to make the whole 10,000,000 element array — it just needs to keep track of
-   which number to give up next.  Therefore `range` is very quick, and very
-   efficient in memory.  This doesn't have any great practical impact for the
-   arrays we are using here, typically of 10,0000 elements or so, but it is
-   worthwhile for larger arrays.
-
-Notice that `range` has the same `start` and `stop` arguments that `np.arange`
+The `range` function has the same `start` and `stop` arguments that `np.arange`
 does, and with the same meaning:
 
 ```{python, opts.label="py_ed"}
@@ -713,6 +669,16 @@ r_2
 ```{python, opts.label="py_ed"}
 np.array(r_2)
 ```
+
+You may reasonably ask — why do I need this `range` thing, if I have the very
+similar `np.arange`?  The answer is — you don't *need* `range`, and you can
+always use `np.arange` where you would use `range`, but for reasons we will go
+into later (@sec-for-range), `range` is a good option when we want to represent
+a sequence of numbers as input to a `for` loop.  We cover `for` loops in more
+detail in @sec-for-loops, but for now, the only thing to remember is that
+`range` and `np.arange` are both ways of expressing sequential ranges of
+integers.
+
 :::
 
 ## Choosing values at random {#sec-random-choice}
