@@ -39,17 +39,6 @@ We will remove this warning when the page has adequate formatting, and we have
 ported the code.
 :::
 
-
-<!---
-We need if statement here.  Introduce here or before.
--->
-
-<!---
-Machinery for one pair, two pairs, three of a kind.
--->
-
-
-
 ## Introduction
 
 In this chapter we will deal with what are usually called "probability
@@ -57,354 +46,6 @@ problems" rather than the "statistical inference problems" discussed in
 later chapters. The difference is that for probability problems we begin
 with a knowledge of the properties of the universe with which we are
 working. (See @sec-what-is-resampling on the definition of resampling.)
-
-Before we get down to the business of complex probabilistic problems in
-this and the next two chapters, let's consider a couple of peculiar
-puzzles which do not fit naturally into any chapter in this book, but
-which are extremely valuable in showing the power of the Monte Carlo
-simulation method.
-
-## Puzzle Problems
-
-<!---
-Are these a little too advanced?  Should we start with the poker problems?
--->
-
-### The treasure fleet recovered
-
-The problem is:
-
-> A Spanish treasure fleet of three ships was sunk at sea off Mexico. One ship
-> had a trunk of gold forward and another aft, another ship had a trunk of gold
-> forward and a trunk of silver aft, while a third ship had a trunk of silver
-> forward and another trunk of silver aft. Divers just found one of the ships
-> and a trunk of gold in it. They are now taking bets about whether the other
-> trunk found on the same ship will contain silver or gold. What are fair odds?
-
-(This is a restatement of [a problem that Joseph Bertrand
-posed](https://en.wikipedia.org/wiki/Bertrand%27s_box_paradox) early in the
-19th century.)  Here is a variation from [@goldberg1986probability, page 99]:
-
-> Three identical boxes each contain two coins. In one box both are pennies, in
-> the second both are nickels, and in the third there is one penny and one
-> nickel.
->
-> A man chooses a box at random and takes out a coin. If the coin is a penny,
-> what is the probability that the other coin in the box is also a penny?
-
-These are the logical steps one may distinguish in arriving at a correct
-answer with deductive logic (portrayed in @fig-ships-gold-silver).
-
-1.  Postulate three ships — Ship I with two gold chests (G-G), ship II
-    with one gold and one silver chest (G-S), and ship III with S-S.
-    (Choosing notation might well be considered one or more additional
-    steps.)
-2.  Assert equal probabilities of each ship being found.
-3.  Step 2 implies equal probabilities of being found for each of the
-    six chests.
-4.  Fact: Diver finds a chest of gold.
-5.  Step 4 implies that S-S ship III was not found; hence remove it from
-    subsequent analysis.
-6.  Three possibilities: 6a) Diver found chest I-Ga, 6b) diver found
-    I-Gb, 6c) diver found II-Gc.
-
-    From step 2, the cases a, b, and c in step 6 have equal
-    probabilities.
-7.  If possibility 6a is the case, then the other trunk is I-Gb; the
-    comparable statements for cases 6b and 6c are I-Ga and II-S.
-8.  From steps 6 and 7: From equal probabilities of the three cases, and
-    no other possible outcome, $P(6a) = 1/3$, $P(6b) = 1/3$, $P(6c) =
-    1/3$.
-9.  So $P(G) = P(6a) + P(6b)$ = 1/3 + 1/3 = 2/3.
-
-See @fig-ships-gold-silver.
-
-```{r fig-ships-gold-silver, echo=FALSE, fig.align="center", fig.cap="Ships with Gold and Silver"}
-include_svg('images/ships_gold_silver.svg')
-```
-
-The following simulation arrives at the correct answer:
-
-1.  Write "Gold" on three pieces of paper and "Silver" on three pieces of
-    paper.
-2.  Get three buckets each with two pieces of paper:  one with "Gold", "Gold",
-    one with "Gold", "Silver", and one with "Silver", "Silver".
-3.  Choose a bucket at random, and shuffle the pieces of paper in it.
-4.  Choose the first element in the chosen bucket's vector (a vector is an
-    array or list of things). If "Silver", stop trial and make no further
-    record. If "Gold", continue.
-5.  Record the second element in the chosen bucket's vector on the
-    scoreboard.
-6.  Repeat steps (3 - 5), and calculate the proportion of "Gold"'s on a
-    scoreboard. (The answer should be about $\frac{2}{3}$.)
-
-Here is a notebook simulation with {{< var lang >}}:
-
-<!---
-We need strings at this point.
--->
-
-::: {.notebook name="gold_silver_ships" title="Ships with gold and silver"}
-
-::: nb-only
-In which we solve the problem of gold and silver chests in a discovered ship.
-:::
-
-```{python opts.label="py_ed"}
-import numpy as np
-rnd = np.random.default_rng()
-```
-
-```{python opts.label="py_ed"}
-# The 3 buckets, each representing two trunks on a ship.
-bucket1 = ['Gold', 'Gold']  # First ship.
-bucket2 = ['Gold',  'Silver']  # Second ship.
-bucket3 = ['Silver', 'Silver']  # Third ship.
-```
-
-```{python opts.label="py_ed"}
-# Mark trials as not valid to start with.
-# Trials where we don't get a gold trunk first will
-# keep this 'No gold in first trunk' marker.
-second_trunks = np.repeat(['No gold in first trunk'], 10000)
-
-for i in range(10000):
-    # Select a ship at random from the three ships.
-    ship_no = rnd.choice([1, 2, 3])
-    # Get the trunks from this ship.
-    if ship_no == 1:
-        bucket = bucket1
-    elif ship_no == 2:
-        bucket = bucket2
-    else:  # ship_no == 3
-        bucket = bucket3
-
-    shuffled = rnd.permuted(bucket)
-
-    if shuffled[0] == 'Gold':  # We found a gold trunk first.
-        # Store whether the Second trunk was silver or gold.
-        second_trunks[i] = shuffled[1]
-
-# End loop, go back to beginning.
-
-# Number of times we found gold in the second trunk.
-n_golds = np.sum(second_trunks == 'Gold')
-# Number of times we found silver in the second trunk.
-n_silvers = np.sum(second_trunks == 'Silver')
-# As a ratio of golds to all second trunks (where the first was gold).
-print(n_golds / (n_golds + n_silvers))
-```
-
-```{r opts.label="r_ed"}
-# The 3 buckets, each representing two trunks on a ship.
-bucket1 <- c('Gold', 'Gold')  # First ship.
-bucket2 <- c('Gold',  'Silver')  # Second ship.
-bucket3 <- c('Silver', 'Silver')  # Third ship.
-```
-
-```{r opts.label="r_ed"}
-# Mark trials as not valid to start with.
-# Trials where we don't get a gold trunk first will
-# keep this 'No gold in first trunk' marker.
-second_trunks = rep('No gold in first trunk', 10000)
-
-for (i in 1:10000) {
-    # Select a ship at random from the three ships.
-    ship_no <- sample(1:3, 1)
-    # Get the trunks from this ship.
-    if (ship_no == 1) {
-        bucket <- bucket1
-    } else if (ship_no == 2) {
-        bucket <- bucket2
-    } else {  # ship_no == 3
-        bucket <- bucket3
-    }
-
-    shuffled <- sample(bucket)
-
-    if (shuffled[1] == 'Gold') {  # We found a gold trunk first.
-        # Store whether the Second trunk was silver or gold.
-        second_trunks[i] <- shuffled[2]
-    }
-}  # End loop, go back to beginning.
-
-# Number of times we found gold in the second trunk.
-n_golds <- sum(second_trunks == 'Gold')
-# Number of times we found silver in the second trunk.
-n_silvers <- sum(second_trunks == 'Silver')
-# As a ratio of golds to all second trunks (where the first was gold).
-message(n_golds / (n_golds + n_silvers))
-```
-
-:::
-
-
-### The Monty Hall problem
-
-The Monty Hall Problem is a puzzle in probability that is famous for its
-deceptive simplicity.  It has its own long Wikipedia page:
-<https://en.wikipedia.org/wiki/Monty_Hall_problem>.
-
-Here is the problem in its most famous form; a letter to the columnist
-[Marilyn vos Savant](https://en.wikipedia.org/wiki/Marilyn_vos_Savant),
-published in Parade Magazine [-@savant1990monty]:
-
-> Suppose you’re on a game show, and you’re given the choice of three doors.
-> Behind one door is a car, behind the others, goats. You pick a door, say #1,
-> and the host, who knows what’s behind the doors, opens another door, say #3,
-> which has a goat. He says to you, "Do you want to pick door #2?" Is it to
-> your advantage to switch your choice of doors?
-
-In fact the first person to propose (and solve) this problem was Steve Selvin,
-a professor of public health at the University of California, Berkeley
-[@slevin1975monty].
-
-Most people, including at least one of us, your humble authors, quickly come to
-the wrong conclusion.  The most common but incorrect answer is that it will
-make no difference if you switch doors or stay with your original choice.  The
-obvious intuition is that, after Monty opens his door, there are two doors that
-might have the car behind them, and therefore, there is a 50% chance it will be
-behind any one of the two. It turns out that answer is wrong; you will double
-your chances of winning by switching doors. Did you get the answer right?
-
-If you got the answer wrong, you are in excellent company.  As you can see
-from the commentary in @savant1990monty, many mathematicians wrote to Parade
-magazine to assert that the (correct) solution was wrong.  [Paul
-Erdős](https://en.wikipedia.org/wiki/Paul_Erd%C5%91s) was one of the most
-famous mathematicians of the 20th century; he could not be convinced of the
-correct solution until he had seen a computer simulation [@vazsonyi1999door],
-of the type we will do below.
-
-To simulate a trial of this problem, we need to select a door at random to
-house the car, and another door at random, to be the door the contestant
-chooses.  We number the doors 1, 2 and 3.   Now we need two random choices
-from the options 1, 2 or 3, one for the door with the car, the other for the
-contestant door.  To chose a door for the car, we could throw a die, and chose
-door 1 if the die shows 1 or 4, door 2 if the die shows 2 or 5, and door 3 for
-3 or 6.  Then we throw the die again to chose the contestant door.
-
-But throwing dice is a little boring; we have to find the die, then throw it
-many times, and record the results.   Instead we can ask the computer to chose
-the doors at random.
-
-```{r echo=FALSE}
-n_trials <- 25
-```
-
-For this simulation, let us do `r n_trials` trials.  We ask the computer to
-create two sets of `r n_trials` random numbers from 1 through 3. The first set
-is the door with the car behind it ("Car door").  The second set have the door
-that the contestant chose at random ("Our door").   We put these in a table,
-and make some new, empty columns to fill in later.  The first new column is
-"Monty opens".  In due course, we will use this column to record the door that
-Monty Hall will open on this trial.  The last two columns express the outcome.
-The first is "Stay wins".  This has "Yes" if we win on this trial by sticking
-to our original choice of door, and "No" otherwise.  The last column is
-"Switch wins". This has "Yes" if we win by switching doors, and "No"
-otherwise. See table @tbl-montyblank).
-
-```{python echo=FALSE}
-# Need Python for random numbers that are predictable across platforms.
-import numpy as np
-import pandas as pd
-
-# Seed chosen such that it generates [3, 3] then [3, 1]
-monty_rng = np.random.default_rng(2037)
-n_trials = int(r.n_trials)
-random_matrix = monty_rng.integers(1, 4, size=(n_trials, 2))
-# We need these rows for the example.
-assert np.all(random_matrix[:2] == [[3, 3], [3, 1]])
-df = pd.DataFrame(random_matrix)
-df.columns = ('Car door', 'Our door')
-# Set the columns to fill in later.
-# It would be more efficient to use `df.assign` here, but less readable.
-df['Monty opens'] = ''
-df['Stay wins'] = ''
-df['Switch wins'] = ''
-```
-
-```{r montyblank, echo=FALSE}
-blank_df <- tibble::as_tibble(py$df)
-knitr::kable(blank_df,
-  booktabs = TRUE,
-  row.names = TRUE,
-  caption = sprintf('%d simulations of the Monty Hall problem
-                    {#tbl-montyblank}', n_trials)
-)
-```
-
-```{r echo=FALSE}
-# Do the calculation
-fdf <- blank_df
-# Convert Monty opens column to integer, for car door number.
-fdf['Monty opens'] <- as.integer(NA)
-# Cycle over each row in the original data frame.
-for (i in 1:dim(fdf)[1]) {
-    car_door <- fdf[i, 'Car door']
-    our_door <- fdf[i, 'Our door']
-    # Remove our door from consideration.  There are two doors remaining.
-    remaining_doors <- setdiff(1:3, our_door)
-    if (our_door == car_door) {   # Our door does match car door.
-        fdf[i, 'Stay wins'] <- 'Yes'
-        fdf[i, 'Switch wins'] <- 'No'
-        # Choose one of the remaining (goat) doors at random.
-        fdf[i, 'Monty opens'] <- sample(remaining_doors, 1)
-    } else {  # our door did not match.
-        fdf[i, 'Stay wins'] <- 'No'
-        # Monty must open the remaining door that isn't the car door.
-        fdf[i, 'Monty opens'] <- setdiff(remaining_doors, car_door)
-        # The only one left is the car door.
-        fdf[i, 'Switch wins'] <- 'Yes'
-    }
-}
-```
-
-In the first trial in @tbl-montyblank), the computer selected door 3 for
-car, and door 3 for the contestant.  Now Monty must open a door, and he cannot
-open our door (door 3) so he has the choice of opening door 1 or door 2; he
-chooses randomly, and opens door 2.  On this trial, we win if we stay with our
-original choice, and we lose if we change to the remaining door, door 1.
-
-Now we go the second trial.  The computer chose door 3 for the car, and door 1 for our choice.  Monty cannot choose our door (door 1) or the door with the car behind it (door 3), so he must open door 2.   Now if we stay with our original choice, we lose, but if we switch, we win.
-
-You may want to print out table @tbl-montyblank, and fill out the blank
-columns, to work through the logic.
-
-After doing a few more trials, and some reflection, you may see that there are
-two different situations here: the situation when our *initial guess was
-right*, and the situation where our *initial guess was wrong*.   When our
-initial guess was right, we win by staying with our original choice, but when
-it was wrong, we always win by switching.   The chance of our *initial guess*
-being correct is 1/3 (one door out of three).  So the chances of winning by
-staying are 1/3, and the chances of winning by switching are 2/3.  But
-remember, you don't need to follow this logic to get the right answer.  As you
-will see below, the resampling simulation shows us that the Switch strategy
-wins.
-
-Table @tbl-montyfull is a version of table @tbl-montyblank for
-which we have filled in the blank columns using the logic above.
-
-```{r montyfull, echo=FALSE}
-knitr::kable(fdf,
-  booktabs = TRUE,
-  row.names = TRUE,
-  caption = sprintf('%d simulations of the Monty Hall problem, filled out
-  {#tbl-montyfull}', n_trials)
-)
-```
-
-The proportion of times "Stay" wins in these `r n_trials` trials is
-`r sum(fdf['Stay wins'] == 'Yes') / n_trials`.
-The proportion of times "Switch" wins is
-`r sum(fdf['Switch wins'] == 'Yes') / n_trials`; the Switch strategy wins about twice as often as the Stay strategy.
-
-We won't elaborate the full {{< var lang >}} simulation here, but you might
-want to think about how you would do that.
-
-Doing these simulations has two large benefits.   First, it gives us the right answer, saving us from making a mistake.  Second, the process of simulation forces us to think about how the problem works.  This can give us better understanding, and make it easier to reason about the solution.
-
-We will soon see that these same advantages also apply to reasoning about
-statistics.
 
 ## Examples of basic problems in probability
 
@@ -434,13 +75,13 @@ mark down whether the hand contains one pair of the same denomination.
 Do this many times. Then count the number of hands with one pair, and
 figure the proportion (as a percentage) of all hands.
 
-```{python, echo=FALSE}
+```{python echo=FALSE}
 n_deals = 25
 ```
 
 @tbl-one-pair has the results of `r py$n_deals` hands of this procedure.
 
-```{python, echo=FALSE}
+```{python echo=FALSE}
 from itertools import product
 suit_chars = ['\N{Black Spade Suit}',
     '\N{White Heart Suit}',
@@ -452,7 +93,7 @@ deck = [f'{d} {s}' for s, d in product(suit_chars, denom)]
 deck_values = dict(zip(deck, values))
 ```
 
-```{python, results='asis', echo=FALSE, message=FALSE}
+```{python echo=FALSE, results="asis", message=FALSE}
 import numpy as np
 import pandas as pd
 seed = 1937
@@ -471,11 +112,14 @@ for i in range(1, n_deals + 1):
     counts = np.bincount(values)
     df.loc[i, 'One pair?'] = 'Yes' if np.sum(counts == 2) == 1 else 'No'
 
-pct = int(np.round(np.sum(df['One pair?'] == 'Yes') / len(df) * 100))
-n_cols = len(df.columns)
-df.loc['', :] = [''] * n_cols
-df.loc['**% Yes**', :] = [''] * (n_cols - 1) + [f'{pct}%']
+def add_pct(df):
+    pct = int(np.round(np.sum(df['One pair?'] == 'Yes') / len(df) * 100))
+    n_cols = len(df.columns)
+    df.loc['', :] = [''] * n_cols
+    df.loc['**% Yes**', :] = [''] * (n_cols - 1) + [f'{pct}%']
+    return pct
 
+pct = add_pct(df)
 cards_tab = df.to_markdown(tablefmt="grid")
 print(f'{cards_tab}\n\n: Results of {n_deals} hands '
       'for the problem "one pair" {#tbl-one-pair}')
@@ -496,67 +140,183 @@ the same "card" did turn up twice or more in a dice experiment, one could
 pretend that the roll had never taken place; this procedure is necessary to
 make the dice experiment analogous to the actual card-dealing situation under
 investigation. Otherwise, the results will be slightly in error. This type of
-sampling is known as "sampling without replacement," because each card is *not
-replaced* in the deck prior to dealing the next card (that is, prior to the end
-of the hand).
+sampling is "sampling without replacement," because each card is *not replaced*
+in the deck prior to dealing the next card (that is, prior to the end of the
+hand).
 
-Still another resampling method uses a *random number table* , such as
-that which is shown in @tbl-random-digits. Arbitrarily designate the spades as
-numbers "01-13," the diamonds as "14-26," the hearts as "27-39," and the clubs
-as "40-52." Then proceed across a row (or down a column), writing down each
-successive pair of digits, excluding pairs outside "01-52" and omitting
-duplication within sets of five numbers. Then translate them back into cards,
-and see how many "hands" of five "cards" contain one pair each. Table 6-4 shows
-six such hands, of which hands numbered 2, 3 and 6 contain pairs.
+We could also approach this problem using random numbers from the computer to
+simulate the values.
 
+Let us first make some numbers from which to sample.  We will make the numbers
+(range) 1 through 13 stand for the numerical values of the cards in one suit —
+1 for ace, 2 through 10 for cards with 2 through 10 face value, 11 for Jack, 12
+for queen, and 13 for king.
 
+```{python opts.label="py_ed"}
+# Card values 1 through 13 (1 up to, not including 14).
+one_suit = np.arange(1, 14)
+one_suit
+```
 
+```{r opts.label="r_ed"}
+one_suit <- 1:13
+one_suit
+```
 
----- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-48   52   78   38   11   90   41   83   43   99   51   55   57   03   83   20
-15   11   84   33   09   24   08   52   42   70   37   16   66   73   15   54
-25   89   70   11   91   65   41   90   88   04   30   72   15   81   34   46
-34   24   66   55   67   79   29   18   36   56   96   95   35   06   05   10
-37   27   58   38   23   84   94   39   99   50   74   80   41   85   98   63
-12   17   04   68   19   98   53   44   16   32   91   01   71   60   19   12
-88   85   44   65   52   01   99   56   72   07   96   39   56   34   86   01
-81   92   77   83   10   58   92   33   63   48   62   66   32   61   59   74
-08   50   15   18   13   45   65   12   32   92   53   82   07   61   71   80
-84   29   90   36   05   95   20   71   17   82   83   38   01   87   74   92
-77   76   46   28   47   15   04   21   04   75   51   83   91   37   14   32
-01   33   90   94   86   10   03   99   95   98   76   97   97   26   45   62
----- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+We have one suit, but we need a whole deck of cards, so four suits.  We can do
+this by repeating `one_suit` four times:
 
-: Table of Random Digits {#tbl-random-digits}
+```{python opts.label="py_ed"}
+# Repeat the one_suit array four times
+deck = np.repeat(one_suit, 4)
+deck
+```
 
+```{r opts.label="r_ed"}
+# Repeat the one_suit vector four times
+deck = rep(one_suit, 4)
+deck
+```
 
+We now have 52 card values, but the cards in the deck are in strict order.
 
-Aces 2 3 4 5 6 7 8 9 10 J Q K
+We would like to select five of these "cards" (52 values) at random.  There are
+two ways of doing this.  The first is to use the
+[`sample`]{.r}'rnd.choice`]{.python}
+tool in the familiar way, to choose 5 values at random from this strictly
+ordered deck.  We want to draw these cards *without replacement* (of which more
+later).  *Without replacement* means that once we have drawn a particular
+value, we cannot draw that value a second time — just as you cannot get the
+same card twice in a hand when the dealer deals you a hand of five cards.
 
+::: python
+So far, each of our uses of `rnd.choice` has done sampling *with replacement*,
+where you *can* get the same item more than once in a particular sample.  Here we need *without replacement*.  `rnd.choice` has an argument you can send, called `replace`, to tell it whether to replace values when drawing the sample.  We have not used that argument so far, because the default is `True` — sampling *with replacement*.  Here we need to use the argument — `replace=False` — to get sampling *without replacement*.
+:::
 
-  ------------------------ ---- ---- ---- ---- ---- ---------- ---- ---- ---- ---- ---- ---- ----
-  Spades                   01   02   03   04   05   06         07   08   09   10   11   12   13
-  Diamonds                 14   15   16   17   18   19         20   21   22   23   24   25   26
-  Hear ts                  27   28   29   30   31   32         33   34   35   36   37   38   39
-  Clubs                    40   41   42   43   44   45         46   47   48   49   50   51   52
+```{python opts.label="py_ed"}
+# One hand, sampling from the deck without replacement.
+hand = rnd.choice(deck, size=5, replace=False)
+hand
+```
 
+::: r
+We are using `sample`, and the *default* behavior of `sample` is to sample
+*without replacement*.  Up until now we have always told R to change that
+default behavior, using the `replace=TRUE` argument to `sample`.  This tells
+`sample` to sample *with replacement*.  Now we want to sample *with
+replacement*, so we leave out the `replace=TRUE` to let sample do its default
+sampling, *without replacement*.  That is, when we do not specify `replace=`, R
+assumes `replace=FALSE` — sampling without replacement.
+:::
 
-: What the Random Numbers Mean {#tbl-numbers-to-cards}
+```{r opts.label="r_ed"}
+# One hand, sampling from the deck without replacement.
+hand <- sample(deck, size=5)
+hand
+```
 
-  **Simulation Results**                                                                     
-  Hand 1:                  48   52   38   11   41   no pairs                                 
-  Hand 2:                  15   11   33   09   24   one pair                                 
-  Hand 3:                  25   11   41   04   30   one pair                                 
-  Hand 4:                  34   24   29   18   36   no pairs                                 
-  Hand 5:                  37   27   38   23   39   no pairs                                 
-  Hand 6:                  12   17   04   19   44   one pair                                 
-  ------------------------ ---- ---- ---- ---- ---- ---------- ---- ---- ---- ---- ---- ---- ----
+The above is one way to get a random hand of five cards from the deck.  Another
+way is to use [`sample`]{.r}[the `rnd.permuted` function]{.python} to shuffle
+the whole `deck` of 52 "cards" into a random order, just as a dealer would
+shuffle the deck before dealing.  Then we could take — for example — the first
+five cards from the shuffled deck.
 
-:Six Simulated Trials for the Problem "OnePair {#tbl-six-one-pair-sims}
+::: python
+`rnd.permuted` is another function (actually, a method) of `rnd`, that takes an array as input, and produces a version of the array, where the elements are in random order.  It is exactly equivalent to fair and complete shuffling of a deck of cards, where the cards should be in a completely random order.
+:::
 
-Now let's do the same job using RESAMPLING STATS on the computer. Let's
-name "One Pair" the file which simulates a deck of playing cards and
-solves the problem.
+```{python opts.label="py_ed"}
+# Shuffle the whole 52 card deck.
+shuffled = rnd.permuted(deck)
+# The "cards" are now in random order.
+shuffled
+```
+
+::: sample
+We can use `sample` to shuffle the deck.  Remember, by default, `sample` takes
+its sample *without replacement*.   So, if we take a random sample of 52 cards,
+without replacement, this is just the same as putting the cards into a random
+order.  We could tell `sample` that we want a sample of 52 values, using
+`size=52`. But in fact, `sample` assumes, by default, if we do not specify
+`size`, that you want a sample that is the same size as the vector you pass in.
+That means that, for our case, where we are passing in a vector `deck` of 52
+values, it assumes we mean `size=52`, and sends us back the result we want, a complete sample without replacement, and therefore, a shuffled vector.
+:::
+
+```{r opts.label="r_ed"}
+# Shuffle the whole 52 card deck.
+shuffled <- sample(deck)
+# The "cards" are now in random order.
+shuffled
+```
+
+Now we can get our `hand` by taking the first five cards from the `deck`:
+
+```{python opts.label="py_ed"}
+# Select the first five "cards" from the shuffled deck.
+hand = shuffled[:5]
+hand
+```
+
+```{r opts.label="r_ed"}
+# Select the first five "cards" from the shuffled deck.
+hand <- shuffled[1:5]
+hand
+```
+
+The two procedures are completely equivalent, of taking a random sample of five
+cards from the `deck` (as we did further above), or of shuffling the entire
+`deck` and then taking the first five "cards".  Either is a valid way of
+getting five cards at random from the `deck`.  It's up to us which to choose —
+we slightly prefer to shuffle and take the first five, because it is more like
+the physical procedure of shuffling the deck and dealing, but which you prefer,
+is up to you.
+
+Choosing the shuffle deal way, the {{< var cell >}} to generate one hand is:
+
+```{python opts.label="py_ed"}
+shuffled = rnd.permuted(deck)
+hand = shuffled[:5]
+hand
+```
+
+```{r opts.label="r_ed"}
+shuffled <- sample(deck)
+hand <- shuffled[1:5]
+hand
+```
+
+Without doing anything further, we could run this {{< var cell >}} many times,
+and each time, we could note down whether the particular `hand` had exactly one pair or not.
+
+@tbl-one-pair-numbers has the result of running that procedure `r py$n_deals`
+times:
+
+```{python echo=FALSE, results="asis", message=FALSE}
+df = pd.DataFrame(columns=['Card 1',
+                           'Card 2',
+                           'Card 3',
+                           'Card 4',
+                           'Card 5',
+                           'One pair?'],
+                  index=pd.Index(range(1, n_deals + 1), name='Hand'))
+deck = np.repeat(np.arange(1, 14), 4)
+for i in range(1, n_deals + 1):
+    cards = rnd.choice(deck, size=5, replace=False)
+    df.loc[i, 'Card 1':'Card 5'] = cards
+    counts = np.bincount(cards)
+    df.loc[i, 'One pair?'] = 'Yes' if np.sum(counts == 2) == 1 else 'No'
+
+pct = add_pct(df)
+cards_tab = df.to_markdown(tablefmt="grid")
+print(f'{cards_tab}\n\n: Results of {n_deals} hands '
+      'using random numbers {#tbl-one-pair-numbers}')
+```
+
+Now let's do the same job using {{< var lang >}} on the computer. Let's name
+"One Pair" the file which simulates a deck of playing cards and solves the
+problem.
 
 Our first task is to simulate a deck of playing cards analogous to the
 real cards we used previously. We don't need to simulate all the
@@ -701,7 +461,7 @@ message(kk)
 
 :::
 
-```{r, echo=FALSE}
+```{r echo=FALSE}
 rkk <- round(get_var('kk'), 3)
 ```
 
@@ -798,10 +558,10 @@ triples_per_trial = np.zeros(10000)
 # Repeat the following steps 10000 times
 for i in range(10000):
     # Shuffle the deck
-    np.random.shuffle(deck)
+    shuffled = rnd.permuted(deck)
 
     # Take the first five cards.
-    hand = deck[:5]
+    hand = shuffled[:5]
 
     # How many triples?
     counts = np.bincount(hand)
@@ -824,7 +584,7 @@ this set of commands.
 
 To estimate the probability of getting a two-pair hand, we revert to the
 original program (counting pairs), except that we examine all the
-results in SCOREkeeping vector z for hands in which we had *two* pairs,
+results in the score-keeping vector `z` for hands in which we had *two* pairs,
 instead of *one* .
 
 ```{python opts.label="py_ed"}
@@ -833,10 +593,10 @@ pairs_per_trial = np.zeros(10000)
 # Repeat the following steps 10000 times
 for i in range(10000):
     # Shuffle the deck
-    np.random.shuffle(deck)
+    shuffled = rnd.permuted(deck)
 
     # Take the first five cards.
-    hand = deck[:5]
+    hand = shuffled[:5]
 
     # How many pairs?
     # Counts for each card rank.

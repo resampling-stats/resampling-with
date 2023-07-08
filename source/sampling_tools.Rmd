@@ -123,9 +123,7 @@ f = 10.1
 type(f)
 ```
 
-<!---
-Introduce lists here?
--->
+### Numpy arrays
 
 You have also seen that Numpy contains another type, the *array*.  An
 array is a value that contains a sequence of values.  For example, here
@@ -161,6 +159,67 @@ float_arr
 ```{python opts.label="py_ed"}
 float_arr.dtype
 ```
+
+### Lists {#sec-lists}
+
+We have elided past another Python type, the *list*.  In fact we have already used lists in making arrays.  For example, here we make an array with four values:
+
+```{python opts.label="py_ed"}
+np.array([0, 10, 99, 4])
+```
+
+We could also write the statement above in two steps:
+
+```{python opts.label="py_ed"}
+my_list = [0, 10, 99, 4]
+np.array(my_list)
+```
+
+In the first statement — `my_list = [0, 10, 99, 4]` — we construct a *list* — a
+container for the four values.  Let's look at the `my_list` value:
+
+```{python, opts.label="py_ed"}
+my_list
+```
+
+Notice that we do not see `array` in the display — this is not an array but a list:
+
+```{python}
+type(my_list)
+```
+
+A list is a basic Python type.  We can construct it by using the square
+brackets notation that you see above; we start with `[`, then we put the values
+we want to go in the list, separated by commas, followed by `]`.  Here is another list:
+
+```{python, opts.label="py_ed"}
+# Creating another list.
+list_2 = [5, 10, 20]
+```
+
+As you saw, we have been building arrays by building lists, and then passing
+the list to the `np.array` function, to create an array.
+
+```{python, opts.label="py_ed"}
+list_again = [100, 10, 0]
+np.array(list_again)
+```
+
+Of course, we can do this one line, as we have been doing up till now, by
+constructing the list inside the parentheses of the function.  So, the
+following cell has just the same output as the cell above:
+
+```{python, opts.label="py_ed"}
+# Constructing the list inside the function brackets.
+np.array([100, 10, 0])
+```
+
+Lists are like arrays in that they are values that contain values, but they are
+unlike arrays in various ways — that we will not go into now.  We often use
+lists to construct sequences into lists to turn them into arrays.  For our
+purposes, and particularly for our calculations, arrays are much more useful
+and efficient than lists.
+
 <!---
 End of Python section
 -->
@@ -263,18 +322,31 @@ second_char
 ```
 :::
 
+::: python
+
 ## Strings in {{< var array >}}s
 
 As we can store numbers as elements in {{< var array >}}s, we can also store
 strings as {{< var array >}} elements.
 
 ```{python opts.label="py_ed"}
-arr_of_strings = np.array(['Julian','Lincoln', 'Simon'])
+# Just for clarity, make the list first.
+# Lists can also contain strings.
+list_of_strings = ['Julian', 'Lincoln', 'Simon']
+# Then pass the list to np.array to make the array.
+arr_of_strings = np.array(list_of_strings)
+arr_of_strings
+```
+
+```{python opts.label="py_ed"}
+# We can also create the list and the array in one line,
+# as we have been doing up til now.
+arr_of_strings = np.array(['Julian', 'Lincoln', 'Simon'])
 arr_of_strings
 ```
 
 ```{r opts.label="r_ed"}
-vector_of_strings = c('Julian','Lincoln', 'Simon')
+vector_of_strings = c('Julian', 'Lincoln', 'Simon')
 vector_of_strings
 ```
 
@@ -394,10 +466,15 @@ Here is how that works:
 
 ```{python opts.label="py_ed"}
 # The values that we will repeat to fill up the larger array.
-juror_types = np.array(['black', 'white'])
+# Use a list to store the sequence of values.
+juror_types = ['black', 'white']
 # The number of times we want to repeat "black" and "white".
-repeat_nos = np.array([26, 74])
+# Use a list to store the sequence of values.
+repeat_nos = [26, 74]
 # Repeat "black" 26 times and "white" 74 times.
+# We have passed two lists here, but we could also have passed
+# arrays - the Numpy repeat function converts the lists to arrays
+# before it builds the repeats.
 jury_pool = np.repeat(juror_types, repeat_nos)
 # Show the result
 jury_pool
@@ -538,9 +615,9 @@ First we compile a representation of the actual jury panel, using the tools we
 have used above.
 
 ```{python opts.label="py_ed"}
-juror_types = np.array(['black', 'white'])
+juror_types = ['black', 'white']
 # in fact there were 8 black jurors and 92 white jurors.
-panel_nos = np.array([8, 92])
+panel_nos = [8, 92]
 jury_panel = np.repeat(juror_types, panel_nos)
 # Show the result
 jury_panel

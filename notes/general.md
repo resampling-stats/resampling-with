@@ -152,8 +152,8 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 
 * strings (sampling_tools)
 * arrays and data types (sampling_tools)
-* lists (?add to sampling_tools)
-* indentation
+* lists (done in sampling_tools)
+* indentation (maybe in resampling_with_code2 and for loops)
 * bincount / tabulate (probability_theory_2_compound).
 * Maybe more on Boolean arrays.
 * (a == 1) & (b == 3) (probability_theory_3 or before).
