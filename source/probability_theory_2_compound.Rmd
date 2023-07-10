@@ -324,9 +324,68 @@ print(f'{cards_tab}\n\n: Results of {n_deals} hands '
       'using random numbers {#tbl-one-pair-numbers}')
 ```
 
-<!---
-Now we must find out if there is one (and only one) pair; we do this with the
-MULTIPLES statement — the "2" in that statement indicates that it is a
+## Finding exactly one pair using code
+
+Thus far we have had to look ourselves at the set of cards, or at the numbers,
+and decide if there was exactly one pair.  We would like the computer to do
+this for us.   Let us stay with the numbers we generated above by dealing the
+random `hand` from the `deck` of numbers.  To find pairs, we will go through the following procedure:
+
+* For each possible value (1 through 13), count the number of times each value
+  has occurred in `hand`.  Call this calculation `number_of_repeats`.
+* Select `number_of_repeats` values equal to 2; 
+* Count the number of "2" values in `number_of_repeats`.  This the number of
+  pairs, and excludes three of a kind or four a kind.
+* If the number of pairs is exactly one, label the `hand` as "Yes", otherwise
+  label it as "No".
+
+## Finding number of repeats using {{< var bincount >}}
+
+Consider the following 5-card "hand" of values:
+
+```{python, opts.label="py_ed"}
+hand = np.array([5, 11, 5, 4, 11])
+```
+
+This hand represents a pair of 5s and a pair of Jacks (value 11).
+
+Want to detect the number of repeats for each possible card value, 1 through
+13.  Let's say we are looking for 5s.   We can detect which of the values are equal to 5 by making a Boolean array, where there is True for a value equal to 5, and False otherwise:
+
+```{python, opts.label="py_ed"}
+is_5 = hand == 5
+is_5
+```
+
+We can then count the number of 5s with:
+
+```{python, opts.label="py_ed"}
+np.sum(is_5)
+```
+
+In one {{< var cell >}}:
+
+```{python, opts.label="py_ed"}
+number_of_5s = np.sum(hand == 5)
+number_of_5s
+```
+
+We could do this laborious task for every possible card value (1 through 13):
+
+```{python, opts.label="py_ed"}
+number_of_1s = np.sum(hand == 1)
+number_of_2s = np.sum(hand == 2)
+number_of_3s = np.sum(hand == 3)
+# And so on...
+```
+
+how many repeats there are of the numbers we got in `hand`.  Then we will look
+for numbers that have only one repeat (a pair rather than three of a kind or
+four of a kind).
+
+Now we must find out if there is one (and only one) pair; we do this use the
+{{< var bincount >}} function.
+ statement — the "2" in that statement indicates that it is a
 duplicate, rather than a singleton or triplicate or quadruplicate that we are
 testing for — and we put the result in location D. Next we SCORE in location z
 how many pairs there are, the number in each trial being either zero, one, or
