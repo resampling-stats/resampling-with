@@ -147,10 +147,16 @@ hand).
 We could also approach this problem using random numbers from the computer to
 simulate the values.
 
-Let us first make some numbers from which to sample.  We will make the numbers
-(range) 1 through 13 stand for the numerical values of the cards in one suit —
-1 for ace, 2 through 10 for cards with 2 through 10 face value, 11 for Jack, 12
-for queen, and 13 for king.
+Let us first make some numbers from which to sample.  We want to simulate a
+deck of playing cards analogous to the real cards we used previously. We don't
+need to simulate all the features of a deck, but only the features that matter
+for the problem at hand.  In our case, the feature that matters is the face
+value.  We require a deck with four "1"s, four "2"s, etc., up to four "13"s,
+where 1 is an Ace, and 13 is a King. The suits don't matter for our present
+purposes.
+
+We first first make {{< var an_array >}} to represent the face values in one
+suit.
 
 ```{python opts.label="py_ed"}
 # Card values 1 through 13 (1 up to, not including 14).
@@ -163,8 +169,9 @@ one_suit <- 1:13
 one_suit
 ```
 
-We have one suit, but we need a whole deck of cards, so four suits.  We can do
-this by repeating `one_suit` four times:
+We have the face values for one suit, but we need the face values for whole
+deck of cards — four suits.  We do this by making a new {{< var array >}} that
+consists of four repeats of `one_suit`:
 
 ```{python opts.label="py_ed"}
 # Repeat the one_suit array four times
@@ -178,16 +185,19 @@ deck = rep(one_suit, 4)
 deck
 ```
 
-We now have 52 card values, but the cards in the deck are in strict order.
-
-We would like to select five of these "cards" (52 values) at random.  There are
+At this point we have a complete deck in the variable `deck` . But that "deck"
+is
+[in the same order as a new deck of cards]{.r}
+[ordered by value, first ones (Aces) then 2s and so on]{.python}.
+If we do not shuffle the deck, the results will be predictable.  Therefore, we
+would like to select five of these "cards" (52 values) at random.  There are
 two ways of doing this.  The first is to use the
-[`sample`]{.r}'rnd.choice`]{.python}
-tool in the familiar way, to choose 5 values at random from this strictly
-ordered deck.  We want to draw these cards *without replacement* (of which more
-later).  *Without replacement* means that once we have drawn a particular
-value, we cannot draw that value a second time — just as you cannot get the
-same card twice in a hand when the dealer deals you a hand of five cards.
+[`sample`]{.r}'rnd.choice`]{.python} tool in the familiar way, to choose 5
+values at random from this strictly ordered deck.  We want to draw these cards
+*without replacement* (of which more later).  *Without replacement* means that
+once we have drawn a particular value, we cannot draw that value a second time
+— just as you cannot get the same card twice in a hand when the dealer deals
+you a hand of five cards.
 
 ::: python
 So far, each of our uses of `rnd.choice` has done sampling *with replacement*,
@@ -314,43 +324,30 @@ print(f'{cards_tab}\n\n: Results of {n_deals} hands '
       'using random numbers {#tbl-one-pair-numbers}')
 ```
 
-Now let's do the same job using {{< var lang >}} on the computer. Let's name
-"One Pair" the file which simulates a deck of playing cards and solves the
-problem.
+<!---
+Now we must find out if there is one (and only one) pair; we do this with the
+MULTIPLES statement — the "2" in that statement indicates that it is a
+duplicate, rather than a singleton or triplicate or quadruplicate that we are
+testing for — and we put the result in location D. Next we SCORE in location z
+how many pairs there are, the number in each trial being either zero, one, or
+two. (The reason we cannot put the result of the MULTIPLES operation directly
+into the scorecard vector z is that only the SCORE command accumulates results
+from trial to trial rather than over-writing the result of the past trial with
+the current one.) And with that we end a single trial.
+-->
 
-Our first task is to simulate a deck of playing cards analogous to the
-real cards we used previously. We don't need to simulate all the
-features of a deck, but only the features that matter for the problem at
-hand. We require a deck with four "1"s, four "2"s, etc., up to four
-"13"s. The suits don't matter for our present purposes. Therefore, with
-the URN command we join together in a single array the four sets of
-thirteen numbers, to represent the 13 denominations.
+Now let's use {{< var lang >}} to do the full job of dealing many hands and
+finding pairs in each one.  To do this, we repeat the procedure above using a
+the `for` loop. This commands the program to do ten thousand repeats of the
+statements in the "loop" [between the start `{` and end `}` curly
+braces]{.r}[(indented statements)]{.python}.
 
-At this point we have a complete deck in location A. But that "deck" is
-in the same order as a new deck of cards. If we do not shuffle the deck,
-the results will be predictable. Therefore, we write SHUFFLE a b and
-then deal a poker hand by taking the first five cards from the shuffled
-hand, using the TAKE statement. Now we must find out if there is one
-(and only one) pair; we do this with the MULTIPLES statement — the "2"
-in that statement indicates that it is a duplicate, rather than a
-singleton or triplicate or quadruplicate that we are testing for — and
-we put the result in location D. Next we SCORE in location z how many
-pairs there are, the number in each trial being either zero, one, or
-two. (The reason we cannot put the result of the MULTIPLES operation
-directly into the scorecard vector z is that only the SCORE command
-accumulates results from trial to trial rather than over-writing the
-result of the past trial with the current one.) And with that we end a
-single trial.
-
-With the REPEAT 10000 statement and the END statement, we command the
-program to do ten thousand repeats of the statements in the "loop" between
-those two lines.
-
-When those 10000 repetitions are over, the computer moves on to
-COUNT the number of "1's" in SCOREkeeping vector z, each "1" indicating a hand
-with a pair. And we then PRINT to the screen the result which is found in
-location k. If we want the *proportion* of the trials in which a pair occurs,
-we simply divide the results of the thousand trials by 10000.
+When those 10000 repetitions are over, the computer moves on to count (`sum`)
+the number of "1's" in the score-keeping {{< var array >}} `z`, each "1"
+indicating a hand with a pair.  We store this count at location `k`. We divide
+`k` by 10000 to get the *proportion* of hands that had one pair, and we
+[`message`]{.r}[`print`]{.python}
+the result of `k` to the screen.
 
 <!---
 Introduce bincount / tabulate / repeat
