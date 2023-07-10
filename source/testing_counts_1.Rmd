@@ -211,25 +211,6 @@ have the probability that the results obtained from the sample of
 irradiated fruit flies would be obtained from a random sample of fruit
 flies.
 
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "testing_counts_1_00.rss"
-
-REPEAT 1000
-    ' Do 1000 experiments
-    GENERATE 20 1,2 a
-    ' Generate randomly 20 "1's" and "2's," put them in a.
-    COUNT a =1 b
-    ' Count the number of "1"s (males), put that result in b.
-    SCORE b z
-    ' Keep track of each trial result in z.
-END
-' End one trial, go back and repeat until all 1000 trials are complete.
-HISTOGRAM z
-' Produce a histogram of the trial results.
-```
 ::: {.notebook name="fruit_fly" title="Fruit fly simulation"}
 
 ::: nb-only
@@ -261,7 +242,7 @@ for i in range(n_trials):
 
     # Generate 20 simulated fruit flies, where each has an equal chance of being
     # male or female
-    a = rnd.choice(['male', 'female'], size = sample_size, p = [0.5, 0.5])
+    a = rnd.choice(['male', 'female'], size = sample_size, p = [0.5, 0.5], replace = True)
 
     # count the number of males in the sample
     b = np.sum(a == 'male')
@@ -274,6 +255,7 @@ plt.title(f"Number of males in {n_trials} samples of \n{sample_size} simulated f
 plt.hist(scores)
 plt.xlabel('Number of Males')
 plt.ylabel('Frequency')
+plt.show()
 ```
 
 ```{r opts.label="r_ed"}
@@ -285,7 +267,7 @@ n_trials <- 10000
 sample_size <- 20
 
 # An empty array to store the trials
-scores = numeric(n_trials)
+scores <- numeric(n_trials)
 
 # Do 1000 trials
 for (i in 1:n_trials)
@@ -293,14 +275,14 @@ for (i in 1:n_trials)
     {
     # Generate 20 simulated fruit flies, where each has an equal chance of being
     # male or female
-    a = sample(c('male', 'female'), size = sample_size, prob = c(0.5, 0.5),
+    a <- sample(c('male', 'female'), size = sample_size, prob = c(0.5, 0.5),
     replace = TRUE)
 
     # count the number of males in the sample
-    b = sum(a == 'male')
+    b <- sum(a == 'male')
 
     # store the result of this trial
-    scores[i] = b
+    scores[i] <- b
     }
   
 # Produce a histogram of the trial results
