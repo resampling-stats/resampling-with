@@ -473,6 +473,7 @@ value 0, so the first time through this loop, we will always get a count of 0.  
 repeat_nos <- numeric(13)
 for (i in 1:13) {  # Set i to be first 1, then 2, ... through 13.
     repeat_nos[i] <- sum(hand == i)
+}
 # Show the result
 repeat_nos
 ```
@@ -498,7 +499,7 @@ stopping our checks when we've reached the maximum value, like this:
 max_value = np.max(hand)
 # Only make an array large enough to house counts for the max value.
 repeat_nos = np.zeros(max_value + 1)
-for i in range(14):  # Set i to be first 0, then 1, ... through 13.
+for i in range(max_value + 1):  # Set i to 0, then 1 ... through max_value
     repeat_nos[i] = np.sum(hand == i)
 # Show the result
 repeat_nos
@@ -507,9 +508,10 @@ repeat_nos
 ```{r, opts.label="r_ed"}
 max_value <- max(hand)
 # Only make a vector large enough to house counts for the max value.
-repeat_nos = np.zeros(max_value + 1)
-for (i in 1:13):  # Set i to be first 1, then 2, ... through 13.
+repeat_nos <- numeric(max_value)
+for (i in 1:max_value) {  # Set i to 0, then 1 ... through max_value
     repeat_nos[i] <- sum(hand == i)
+}
 # Show the result
 repeat_nos
 ```
@@ -539,6 +541,8 @@ repeat_nos == 2
 
 ```{python, opts.label="py_ed"}
 n_pairs = np.sum(repeat_nos == 2)
+# Show the result
+n_pairs
 ```
 
 ```{r, opts.label="r_ed"}
@@ -547,6 +551,8 @@ repeat_nos == 2
 
 ```{r, opts.label="r_ed"}
 n_pairs <- sum(repeat_nos == 2)
+# Show the result
+n_pairs
 ```
 
 The hand is of interest to us only if the number of pairs is exactly 1:
@@ -653,7 +659,7 @@ one_suit
 
 ```{r opts.label="r_ed"}
 # Repeat values for one suit four times to make a 52 card deck of values.
-deck = rep(one_suit, 4)
+deck <- rep(one_suit, 4)
 deck
 ```
 
@@ -829,8 +835,8 @@ print(n_triples / 10000)
 ```
 
 ```{r, opts.label="r_ed"}
-one_suit = 1:13
-deck = rep(one_suit, 4)
+one_suit <- 1:13
+deck <- rep(one_suit, 4)
 ```
 
 ```{r opts.label="r_ed"}
@@ -852,6 +858,7 @@ for (i in 1:10000) {
     triples_per_trial[i] <- n_triples
 
     # End loop, go back and repeat
+}
 
 # How often was there 1 pair?
 n_triples <- sum(triples_per_trial == 1)
@@ -910,7 +917,7 @@ print(n_two_pairs / 10000)
 ```
 
 ```{r, opts.label="r_ed"}
-deck = np.repeat(1:13, 4)
+deck <- rep(1:13, 4)
 ```
 
 ```{r opts.label="r_ed"}
