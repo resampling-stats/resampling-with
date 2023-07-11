@@ -510,8 +510,13 @@ print(cmdrs_win_when_no_rain)
 cmdrs_win_when_no_rain <- numeric(100)
 # Set the first 65 of 100 to have value 1.
 cmdrs_win_when_no_rain[1:65] <- 1
-print(cmdrs_win_when_no_rain)
+# Show the result
+cmdrs_win_when_no_rain
 ```
+
+<!---
+We need if blocks before here.
+-->
 
 Now do the simulation:
 
@@ -545,11 +550,11 @@ number_of_fine_wins <- 0
 for (i in 1:10000) {
     # draw one "ball" for the weather, store in "a"
     # 0 = rain, 1 = no rain
-    a <- sample(weather, 1)
+    a <- sample(weather, size=1)
     if (a == 1) {  # no rain
         # if no rain, check on game outcome
         # 0 = lose, 1 = win
-        b <- sample(cmdrs_win_when_no_rain, 1)
+        b <- sample(cmdrs_win_when_no_rain, size=1)
         if (b == 1) {  # Commanders win
             number_of_fine_wins <- number_of_fine_wins + 1
         }
@@ -561,10 +566,6 @@ for (i in 1:10000) {
 prop <- number_of_fine_wins / 10000
 print(prop)
 ```
-
-<!---
-Have we covered if blocks at this point?
--->
 
 The above procedure gives us the probability that it will be a nice day and
 the Commanders will win — about `r round(get_var('prop'), 3) * 100`%.

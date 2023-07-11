@@ -180,7 +180,7 @@ second_trunks = rep('No gold in first trunk', 10000)
 
 for (i in 1:10000) {
     # Select a ship at random from the three ships.
-    ship_no <- sample(1:3, 1)
+    ship_no <- sample(1:3, size=1)
     # Get the trunks from this ship.
     if (ship_no == 1) {
         bucket <- bucket1
@@ -318,7 +318,7 @@ for (i in 1:dim(fdf)[1]) {
         fdf[i, 'Stay wins'] <- 'Yes'
         fdf[i, 'Switch wins'] <- 'No'
         # Choose one of the remaining (goat) doors at random.
-        fdf[i, 'Monty opens'] <- sample(remaining_doors, 1)
+        fdf[i, 'Monty opens'] <- sample(remaining_doors, size=1)
     } else {  # our door did not match.
         fdf[i, 'Stay wins'] <- 'No'
         # Monty must open the remaining door that isn't the car door.

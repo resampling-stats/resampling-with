@@ -73,8 +73,10 @@ Now try the program written as follows.
 ::: {.notebook name="birthday_problem" title="The Birthday Problem"}
 
 ::: nb-only
-Here we answer the question — what is the probability that two or more people
+
+Here we answer the question: "What is the probability that two or more people
 among a roomful of (say) twenty-five people will have the same birthday?"
+
 :::
 
 ```{python opts.label="py_ed"}
@@ -85,15 +87,17 @@ rnd = np.random.default_rng()
 ```{python opts.label="py_ed"}
 n_with_same_birthday = np.zeros(10000)
 
+days_of_year = np.arange(1, 366)  # 1 through 365
+
 # Do 10000 trials (experiments)
 for i in range(10000):
     # Generate 25 numbers randomly between "1" and "365" put them in a.
-    a = rnd.integers(1, 366, size=25)
+    a = rnd.choice(days_of_year, size=25)
 
     # Looking in a, count the number of multiples and put the result in
     # b. We request multiples > 1 because we are interested in any multiple,
-    # whether it is a duplicate, triplicate, etc. Had we been interested only in
-    # duplicates, we would have put in np.sum(counts == 2).
+    # whether it is a duplicate, triplicate, etc. Had we been interested only
+    # in duplicates, we would have put in np.sum(counts == 2).
     counts = np.bincount(a)
     n_duplicates = np.sum(counts > 1)
 
@@ -246,13 +250,11 @@ girl_counts = np.zeros(10000)
 # Do 10000 trials
 for i in range(10000):
 
-    # Generate 4 numbers at random, either "1" or "2." This is analogous to
-    # flipping a coin 4 times to generate 4 heads or tails. We keep these 
-    # numbers in a, letting "1" represent girls.
-    children = rnd.integers(1, 3, size=4)
+    # Select 'girl' or 'boy' at random, four times.
+    children = rnd.choice(['girl', 'boy'], size=4)
 
     # Count the number of girls and put the result in b.
-    b = np.sum(children == 1)
+    b = np.sum(children == 'girl')
 
     # Keep track of each trial result in z.
     girl_counts[i] = b
@@ -277,13 +279,11 @@ girl_counts <- numeric(10000)
 # Do 10000 trials
 for (i in 1:10000) {
 
-    # Generate 4 numbers at random, either "1" or "2." This is analogous to
-    # flipping a coin 4 times to generate 4 heads or tails. We keep these numbers
-    # in a, letting "1" represent girls.
-    children <- sample(1:2, size=4, replace=TRUE)
+    # Select 'girl' or 'boy' at random, four times.
+    children <- sample(c('girl', 'boy'), size=4, replace=TRUE)
 
     # Count the number of girls and put the result in b.
-    b <- sum(children == 1)
+    b <- sum(children == 'girl')
 
     # Keep track of each trial result in z.
     girl_counts[i] <- b
@@ -352,50 +352,239 @@ in the context of the possibility that a genetic engineering practice is
 effective in increasing the proportion of females (desirable for the
 production of milk).
 
-Another variation: What if we feel the need to get a bit more precise,
-and to consider the biological fact that more males are born than
-females — perhaps 52 to 48. This variation would make a solution using
-coins more tedious. But with {{< var lang >}} it is not at all more difficult.
+So far we have assumed the simple case where we have {{< var an_array >}} of
+values that we are sampling from, and we are
+selecting each of these values into the sample with equal probability.
+
+For example, we started with the simple assumption that a child is just as
+likely to be born a boy as a girl. Our input is:
+
+```{python, opts.label="py_ed"}
+input_values = ['girl', 'boy']
+```
+
+```{r, opts.label="r_ed"}
+input_values = c('girl', 'boy')
+```
+
+By default, {{< var sample >}} will draw the input values with equal
+probability.  Here, we draw a sample (`children`) of four values from the
+input, where *each value* in `children` has an equal chance of being "girl" or
+"boy".
+
+```{python, opts.label="py_ed"}
+children = rnd.choice(input_values, size=4)
+children
+```
+
+```{r, opts.label="r_ed"}
+children <- sample(input_values, size=4, replace=TRUE)
+children
+```
+
+That is, {{< var sample >}} gives each element in `input_values` an equal
+chance of being selected as the next element in `children`.
+
+That is fine if we have some simple probability to simulate, like 0.5.  But now
+let us imagine we want to get more precise.  We happen to know that any given
+birth is just slightly more likely to be a boy than a girl.[^arbuthnot].  For
+example, the [proportion of boys born in the
+UK](https://www.gov.uk/government/statistics/gender-ratios-at-birth-in-great-britain-2010-to-2014)
+is 0.513.  Hence the proportion of girls is 1-0.513 = 0.487.
+
+[^arbuthnot]: This fact was the origin of the very first "significance test" in
+    statistics.  In the early 1700s, John Arbuthnot
+    [-@arbuthnot1710christenings] noticed that there were more christenings of
+    boys than girls in London in every year for which he had figures.  He
+    showed that this was vanishingly unlikely if male births were in fact
+    exactly as likely as female births, and attributed this to divine
+    providence, because society tended to lose males faster than females in in
+    adulthood, due to manual labor and war.
+
+### {{< var sample >}} and the [`prob`]{.r}[`p`]{.python} argument
+
+We could replicate this probability of 0.487 for 'girl' in the output sample by
+making an input array of 1000 strings, that contains 487 'girls' and 513
+'boys':
+
+```{python, opts.label="py_ed"}
+big_girls = np.repeat(['girl', 'boy'], [487, 513])
+```
+
+```{r, opts.label="r_ed"}
+big_girls <- rep(c('girl', 'boy'), c(487, 513))
+```
+
+Now if we sample using the default in {{< var sample >}}, each *element* in the
+input `big_girls` array will have the same chance of appearing in the sample,
+but because there are 487 'girls', and 513 'boys', each with an equal chance of
+appearing in the sample, we will get a 'girl' in roughly 487 out of every 1000
+elements we draw, and a boy roughly 513 / 1000 times.  That is, our chance of
+any one element of being a 'girl' is, as we want, 0.487.
+
+```{python, opts.label="py_ed"}
+# Now each element has probability 0.487 of 'girl', 0.513 of 'boy'.
+realistic_children = rnd.choice(big_girls, size=4)
+realistic_children
+```
+
+```{r, opts.label="r_ed"}
+# Now each element has probability 0.487 of 'girl', 0.513 of 'boy'.
+realistic_children <- sample(big_girls, size=4, replace=TRUE)
+realistic_children
+```
+
+But, there is an easier way than compiling a big 1000 element array, and that
+is to use the [`prob=`]{.r}[`p=`]{.python} argument to {{< var sample >}}.
+This allows us to specify the probability with which we will draw each of the
+input elements into the output sample.   For example, to draw 'girl' with
+probability 0.487 and 'boy' with probability 0.513, we would do:
+
+```{python, opts.label="py_ed"}
+# Draw 'girl' with probability (p) 0.487 and 'boy' 0.513.
+children_again = rnd.choice(['girl', 'boy'], size=4, p=[0.487, 0.513])
+children_again
+```
+
+```{r, opts.label="r_ed"}
+# Draw 'girl' with probability (p) 0.487 and 'boy' 0.513.
+children_again <- sample(c('girl', 'boy'), size=4, prob=c(0.487, 0.513),
+                         replace=TRUE)
+children_again
+```
+
+The [`prob`]{.r}[`p`]{.python} argument allows us to specify the probability of
+each element in the input {{< var array >}} — so if we had three elements in
+the input array, we would need three probabilities in
+[`prob`]{.r}[`p`]{.python}.  For example, let's say we were looking at some
+poorly-entered hospital records, we might have 'girl' or 'boy' recorded as the
+child's gender, but the record might be missing — 'not-recorded' — with a 19%
+chance:
+
+```{python, opts.label="py_ed"}
+# Draw 'girl' with probability (p) 0.4, 'boy' with p=0.41, 'not-recorded' with
+# p=0.19.
+rnd.choice(['girl', 'boy', 'not-recorded'], size=10, p=[0.4, 0.41, 0.19])
+```
+
+```{r, opts.label="r_ed"}
+# Draw 'girl' with probability (p) 0.4, 'boy' with p=0.41, 'not-recorded' with
+# p=0.19.
+sample(c('girl', 'boy', 'not-recorded'), size=10, prob=c(0.4, 0.41, 0.19),
+       replace=TRUE)
+```
+
+::: {.callout-note}
+## How does the [`prob`]{.r}[`p`]{.python} argument to {{< var sample >}} work?
+
+You might wonder how {lang does this trick of choosing the elements with
+different probabilities.
+
+One way of doing this is to use *uniform* random numbers.  These are random
+numbers that, by default, can be any floating number from 0 through 1.
+
+```{python, opts.label="py_ed"}
+# Run this cell a few times to see random numbers anywhere from 0 through 1.
+rnd.uniform()
+```
+
+```{r, opts.label="r_ed"}
+# Run this chunk a few times to see random numbers anywhere from 0 through 1.
+# `runif` means "Random UNIForm".
+runif(1)
+```
+
+Because this random uniform number has an equal chance of being anywhere in the
+range 0 through 1, there is a 50% chance is it less then 0.5 and a 50% chance
+it is greater than 0.5 (technically of course it could be *exactly equal* to
+0.5, but this is vanishingly unlikely, so we will ignore that for now).
+
+So, if we thought girls were exactly as likely as boys, we could select from
+'girl' and 'boy' using this simple logic:
+
+```{python, opts.label="py_ed"}
+if rnd.uniform() < 0.5:
+    result = 'girl'
+else:
+    result = 'boy'
+```
+
+```{r, opts.label="r_ed"}
+if (runif(1) < 0.5) {
+    result = 'girl'
+} else {
+    result = 'boy'
+}
+```
+
+But, by the same logic, there is a 0.487 chance that the random uniform number
+will be less than 0.487 and a 0.513 chance it will be greater.  So, if we
+wanted to give ourselves a 0.487 chance of 'girl', we could do:
+
+```{python, opts.label="py_ed"}
+if rnd.uniform() < 0.487:
+    result = 'girl'
+else:
+    result = 'boy'
+```
+
+```{r, opts.label="r_ed"}
+if (runif(1) < 0.487) {
+    result = 'girl'
+} else {
+    result = 'boy'
+}
+```
+
+We can extend the same kind of logic to three options.  For example, there is a
+0.4 chance the random uniform number will be less than 0.4, a 0.41 chance it
+will be somewhere between 0.4 and 0.81, and a 0.19 chance it will be greater
+than 0.81.
+:::
+
+### More precise simulation for the daughters problem
+
+We can use the probability argument to {{< var sample >}} to do a more
+realistic simulation of the chance of a family with exactly three girls.  In
+this case it is easy to make the chance for the {{< var lang >}} simulation,
+but much more difficult using physical devices like coins to simulate the
+randomness.
 
 Remember, the original code for the 50-50 case, has the following:
 
 ```{python opts.label="py_ed"}
-# Generate 4 numbers at random, either "1" or "2." This is analogous to
-# flipping a coin 4 times to generate 4 heads or tails. We keep these
-# numbers in a, letting "1" represent girls.
-children = rnd.integers(1, 3, size=4)
+# Select 'girl' or 'boy' at random, four times.
+children = rnd.choice(['girl', 'boy'], size=4)
 
 # Count the number of girls and put the result in b.
-b = np.sum(children == 1)
+b = np.sum(children == 'girl')
 ```
 
 ```{r opts.label="r_ed"}
-# Generate 4 numbers at random, either "1" or "2." This is analogous to
-# flipping a coin 4 times to generate 4 heads or tails. We keep these numbers
-# in a, letting "1" represent girls.
-children <- sample(1:2, size=4, replace=TRUE)
+# Select 'girl' or 'boy' at random, four times.
+children <- sample(c('girl', 'boy'), size=4, replace=TRUE)
 
 # Count the number of girls and put the result in b.
-b <- sum(children == 1)
+b <- sum(children == 'girl')
 ```
 
-The only change we need to the above, for the 52 to 48 case, is:
+The only change we need to the above, for the 0.487 - 0.513 case, is the one
+you see above:
 
 ```{python opts.label="py_ed"}
-# Generate 4 numbers at random, from 1 to 100.
-children = rnd.integers(1, 101, size=4)
+# Give 'girl' 48.7% of the time, 'boy' 51.3% of the time.
+children = rnd.choice(['girl', 'boy'], size=4, p=[0.487, 0.513])
 
-# Let "1" through "48" represent girls, count the number of girls, and put the
-# result in b.
-b = np.sum(children <= 48)
+b = np.sum(children == 'girl')
 ```
 
 ```{r opts.label="r_ed"}
-# Generate 4 numbers at random, from 1 to 100.
-children <- sample(1:100, size=4, replace=TRUE)
+# Give 'girl' 48.7% of the time, 'boy' 51.3% of the time.
+children <- sample(c('girl', 'boy'), size=4, prob=c(0.487, 0.513),
+                   replace=TRUE)
 
 # Count the number of girls and put the result in b.
-b <- sum(children <= 40)
+b <- sum(children == 'girl')
 ```
 
 The rest of the program remains unchanged.
