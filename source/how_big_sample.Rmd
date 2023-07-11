@@ -1,22 +1,19 @@
 ---
+resampling_with:
+    ed2_fname: 28-Chap-24
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.5
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: 28-Chap-24
 ---
 
 ```{r setup, include=FALSE}
@@ -250,41 +247,112 @@ Each local sample must then be large enough to provide reasonable accuracy,
 and, considered as a whole, the samples for the local stations therefore add
 up to a much larger sample than the Nielsen and other nationwide samples.
 
-The problem may be handled with the following RESAMPLING STATS program.
-This program represents viewers with random numbers between 1 and 100
-and, consistent with our guess that 30% are tuned in, represents viewers
-with the numbers 1-30. It GENERATES a sample of 400 such numbers, COUNTS
-the "viewers," then finds how much this sample diverges from the
-expected number of viewers (30% of 400 = 120). It repeats this procedure
-1000 times, and then calculates the average divergence.
+The problem may be handled with the following {{< var lang >}} program.
+This program represents viewers with the string `'viewers'` and non-viewers as
+`'not viewers'`.  It then asks [`sample`]{.r}[`rnd.choice`]{.python}
+to choose randomly between `'viewer'` and `'not viewer'` with a 30% (p=0.3)
+chance of getting a `'viewer'` and a 70% chance of getting a `'not viewer'`.
+It gets a sample of 400 such numbers, counts (with
+[`sum`]{.r}[`np.sum`]{.python}
+the "viewers" then finds how much this sample diverges from the expected
+number of viewers (30% of 400 = 120). It repeats this procedure 10000 times,
+and then calculates the average divergence.
 
+::: {.notebook name="viewer_numbers" title="Number of viewers"}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: nb-only
+The notebook calculates the expected number of viewers in a sample of 400, given that there is a 30% chance of any one person being a viewer, and then calculates how far that value is from 120.
+:::
 
-```matlab
-' Program file: "tvviewer.rss"
+```{python opts.label="py_ed"}
+import numpy as np
 
-REPEAT 1000
-    ' Do 1000 trials
-    GENERATE 400 1,100 a
-    ' Generate 400 numbers between 1 and 100, let 1-30 = viewer
-    COUNT a <=30 b
-    ' Count the viewers
-    SUBTRACT 120 b c
-    ' How different from expected?
-    ABS c d
-    ' Absolute value of difference?
-    DIVIDE d 400 e
-    ' Express as a proportion of sample
-    SCORE e z
-    ' Keep score of the result
-END
-MEAN z k
-' Find the mean divergence
-
-' Note: The file "tvviewer" on the Resampling Stats software disk contains
-' this set of commands.
+# set up the random number generator
+rnd = np.random.default_rng()
 ```
+
+```{python opts.label="py_ed"}
+# set the number of trials
+n_trials = 10000
+
+# an empty array to store the scores
+scores = np.zeros(n_trials)
+
+# What are the options to choose from?
+options = ['viewer', 'not viewer']
+
+# do n_trials trials
+for i in range(n_trials):
+
+    # Choose 'viewer' 30% of the time.
+    a = rnd.choice(options, size=400, p=[0.3, 0.7])
+
+    # count the viewers
+    b = np.sum(a == 'viewer')
+
+    # how different from expected?
+    c = 120 - b
+
+    # absolute value of the difference
+    d = np.abs(c)
+
+    # express as a proportion of sample
+    e = d / 400
+
+    # keep score of the result
+    scores[i] = e
+
+# find the mean divergence
+k = np.mean(scores)
+
+# Show the result
+k
+```
+
+```{r opts.label="r_ed"}
+# set the number of trials
+n_trials <- 10000
+
+# an empty array to store the scores
+scores <- numeric(n_trials)
+
+# What are the options to choose from?
+options <- c('viewer', 'not viewer')
+
+# do n_trials trials
+for (i in 1:n_trials) {
+
+    # Choose 'viewer' 30% of the time.
+    a <- sample(options, size=400, prob=c(0.3, 0.7), replace=TRUE)
+
+    # count the viewers
+    b <- sum(a == 'viewer')
+
+    # how different from expected?
+    c <- 120 - b
+
+    # absolute value of the difference
+    d <- abs(c)
+
+    # express as a proportion of sample
+    e <- d / 400
+
+    # keep score of the result
+    scores[i] <- e
+}
+
+# find the mean divergence
+k <- mean(scores)
+
+# Show the result
+k
+```
+
+<!---
+End of notebook.
+-->
+:::
+
 
 It is a simple matter to go back and try a sample size of (say) 1600
 rather than 400, and examine the effect on the mean difference.
