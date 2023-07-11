@@ -79,7 +79,7 @@ boys_df = pd.DataFrame(trials, columns=['First', 'Second'])
 
 def classify(row):
     # Classify the row
-    n_males = np.count_nonzero(row == 'Boy')
+    n_males = np.sum(row == 'Boy')
     if n_males == 0:
         return ''
     if n_males == 1:
