@@ -1,0 +1,383 @@
+---
+resampling_with:
+    ed2_fname: null
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.6
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+```{r setup, include=FALSE}
+source("_common.R")
+```
+
+# Two puzzles and more tools {#sec-more-sampling-tools}
+
+## Introduction
+
+In the next chapter we will deal with some more involved problems in
+*probability*, as a preparation for *statistics*, where we use reasoning from
+probability to draw conclusions in a world like our own, where there appears to
+be random variation.
+
+Before we get down to the business of complex probabilistic problems in the
+next few chapters, let's consider a couple of peculiar puzzles that have uses
+for us here.  The first is, that they allow us to introduce some more of the
+key tools in {{< var lang >}} that we will use for Monte Carlo resampling. The
+second is that these problems are extremely valuable in showing the power of
+the Monte Carlo simulation method to help us solve, and then reason above,
+problems in probability.
+
+## The treasure fleet recovered
+
+This is a classic problem in probability:[^three-coins-version]
+
+> A Spanish treasure fleet of three ships was sunk at sea off Mexico. One ship
+> had a trunk of gold forward and another aft, another ship had a trunk of gold
+> forward and a trunk of silver aft, while a third ship had a trunk of silver
+> forward and another trunk of silver aft. Divers just found one of the ships
+> and a trunk of gold in it. They are now taking bets about whether the other
+> trunk found on the same ship will contain silver or gold. What are fair odds?
+
+[^three-coins-version]: The treasure fleet problem is a restatement of [a
+    problem that Joseph Bertrand
+    posed](https://en.wikipedia.org/wiki/Bertrand%27s_box_paradox) early in the
+    19th century.)  Here is a variation from [@goldberg1986probability, page
+    99]:
+
+    > Three identical boxes each contain two coins. In one box both are
+    > pennies, in the second both are nickels, and in the third there is one
+    > penny and one nickel.
+    >
+    > A man chooses a box at random and takes out a coin. If the coin is a
+    > penny, what is the probability that the other coin in the box is also a
+    > penny?
+
+These are the logical steps one may distinguish in arriving at a correct
+answer with deductive logic (portrayed in @fig-ships-gold-silver).
+
+1.  Postulate three ships — Ship I with two gold chests (G-G), ship II
+    with one gold and one silver chest (G-S), and ship III with S-S.
+    (Choosing notation might well be considered one or more additional
+    steps.)
+2.  Assert equal probabilities of each ship being found.
+3.  Step 2 implies equal probabilities of being found for each of the
+    six chests.
+4.  Fact: Diver finds a chest of gold.
+5.  Step 4 implies that S-S ship III was not found; hence remove it from
+    subsequent analysis.
+6.  Three possibilities: 6a) Diver found chest I-Ga, 6b) diver found
+    I-Gb, 6c) diver found II-Gc.
+
+    From step 2, the cases a, b, and c in step 6 have equal
+    probabilities.
+7.  If possibility 6a is the case, then the other trunk is I-Gb; the
+    comparable statements for cases 6b and 6c are I-Ga and II-S.
+8.  From steps 6 and 7: From equal probabilities of the three cases, and
+    no other possible outcome, $P(6a) = 1/3$, $P(6b) = 1/3$, $P(6c) =
+    1/3$.
+9.  So $P(G) = P(6a) + P(6b)$ = 1/3 + 1/3 = 2/3.
+
+See @fig-ships-gold-silver.
+
+```{r fig-ships-gold-silver, echo=FALSE, fig.align="center", fig.cap="Ships with Gold and Silver"}
+include_svg('diagrams/ships_gold_silver.svg')
+```
+
+The following simulation arrives at the correct answer:
+
+1.  Write "Gold" on three pieces of paper and "Silver" on three pieces of
+    paper.
+2.  Get three buckets each with two pieces of paper:  one with "Gold", "Gold",
+    one with "Gold", "Silver", and one with "Silver", "Silver".
+3.  Choose a bucket at random, and shuffle the pieces of paper in it.
+4.  Choose the first element in the chosen bucket's vector (a vector is an
+    array or list of things). If "Silver", stop trial and make no further
+    record. If "Gold", continue.
+5.  Record the second element in the chosen bucket's vector on the
+    scoreboard.
+6.  Repeat steps (3 - 5), and calculate the proportion of "Gold"'s on a
+    scoreboard. (The answer should be about $\frac{2}{3}$.)
+
+Here is a notebook simulation with {{< var lang >}}:
+
+<!---
+We need strings at this point.
+-->
+
+::: {.notebook name="gold_silver_ships" title="Ships with gold and silver"}
+
+::: nb-only
+In which we solve the problem of gold and silver chests in a discovered ship.
+:::
+
+```{python opts.label="py_ed"}
+import numpy as np
+rnd = np.random.default_rng()
+```
+
+```{python opts.label="py_ed"}
+# The 3 buckets, each representing two trunks on a ship.
+bucket1 = ['Gold', 'Gold']  # First ship.
+bucket2 = ['Gold',  'Silver']  # Second ship.
+bucket3 = ['Silver', 'Silver']  # Third ship.
+```
+
+```{python opts.label="py_ed"}
+# Mark trials as not valid to start with.
+# Trials where we don't get a gold trunk first will
+# keep this 'No gold in first trunk' marker.
+second_trunks = np.repeat(['No gold in first trunk'], 10000)
+
+for i in range(10000):
+    # Select a ship at random from the three ships.
+    ship_no = rnd.choice([1, 2, 3])
+    # Get the trunks from this ship.
+    if ship_no == 1:
+        bucket = bucket1
+    elif ship_no == 2:
+        bucket = bucket2
+    else:  # ship_no == 3
+        bucket = bucket3
+
+    shuffled = rnd.permuted(bucket)
+
+    if shuffled[0] == 'Gold':  # We found a gold trunk first.
+        # Store whether the Second trunk was silver or gold.
+        second_trunks[i] = shuffled[1]
+
+# End loop, go back to beginning.
+
+# Number of times we found gold in the second trunk.
+n_golds = np.sum(second_trunks == 'Gold')
+# Number of times we found silver in the second trunk.
+n_silvers = np.sum(second_trunks == 'Silver')
+# As a ratio of golds to all second trunks (where the first was gold).
+print(n_golds / (n_golds + n_silvers))
+```
+
+```{r opts.label="r_ed"}
+# The 3 buckets, each representing two trunks on a ship.
+bucket1 <- c('Gold', 'Gold')  # First ship.
+bucket2 <- c('Gold',  'Silver')  # Second ship.
+bucket3 <- c('Silver', 'Silver')  # Third ship.
+```
+
+```{r opts.label="r_ed"}
+# Mark trials as not valid to start with.
+# Trials where we don't get a gold trunk first will
+# keep this 'No gold in first trunk' marker.
+second_trunks = rep('No gold in first trunk', 10000)
+
+for (i in 1:10000) {
+    # Select a ship at random from the three ships.
+    ship_no <- sample(1:3, 1)
+    # Get the trunks from this ship.
+    if (ship_no == 1) {
+        bucket <- bucket1
+    } else if (ship_no == 2) {
+        bucket <- bucket2
+    } else {  # ship_no == 3
+        bucket <- bucket3
+    }
+
+    shuffled <- sample(bucket)
+
+    if (shuffled[1] == 'Gold') {  # We found a gold trunk first.
+        # Store whether the Second trunk was silver or gold.
+        second_trunks[i] <- shuffled[2]
+    }
+}  # End loop, go back to beginning.
+
+# Number of times we found gold in the second trunk.
+n_golds <- sum(second_trunks == 'Gold')
+# Number of times we found silver in the second trunk.
+n_silvers <- sum(second_trunks == 'Silver')
+# As a ratio of golds to all second trunks (where the first was gold).
+message(n_golds / (n_golds + n_silvers))
+```
+
+:::
+
+
+### The Monty Hall problem
+
+The Monty Hall Problem is a puzzle in probability that is famous for its
+deceptive simplicity.  It has its own long Wikipedia page:
+<https://en.wikipedia.org/wiki/Monty_Hall_problem>.
+
+Here is the problem in its most famous form; a letter to the columnist
+[Marilyn vos Savant](https://en.wikipedia.org/wiki/Marilyn_vos_Savant),
+published in Parade Magazine [-@savant1990monty]:
+
+> Suppose you’re on a game show, and you’re given the choice of three doors.
+> Behind one door is a car, behind the others, goats. You pick a door, say #1,
+> and the host, who knows what’s behind the doors, opens another door, say #3,
+> which has a goat. He says to you, "Do you want to pick door #2?" Is it to
+> your advantage to switch your choice of doors?
+
+In fact the first person to propose (and solve) this problem was Steve Selvin,
+a professor of public health at the University of California, Berkeley
+[@slevin1975monty].
+
+Most people, including at least one of us, your humble authors, quickly come to
+the wrong conclusion.  The most common but incorrect answer is that it will
+make no difference if you switch doors or stay with your original choice.  The
+obvious intuition is that, after Monty opens his door, there are two doors that
+might have the car behind them, and therefore, there is a 50% chance it will be
+behind any one of the two. It turns out that answer is wrong; you will double
+your chances of winning by switching doors. Did you get the answer right?
+
+If you got the answer wrong, you are in excellent company.  As you can see
+from the commentary in @savant1990monty, many mathematicians wrote to Parade
+magazine to assert that the (correct) solution was wrong.  [Paul
+Erdős](https://en.wikipedia.org/wiki/Paul_Erd%C5%91s) was one of the most
+famous mathematicians of the 20th century; he could not be convinced of the
+correct solution until he had seen a computer simulation [@vazsonyi1999door],
+of the type we will do below.
+
+To simulate a trial of this problem, we need to select a door at random to
+house the car, and another door at random, to be the door the contestant
+chooses.  We number the doors 1, 2 and 3.   Now we need two random choices
+from the options 1, 2 or 3, one for the door with the car, the other for the
+contestant door.  To chose a door for the car, we could throw a die, and chose
+door 1 if the die shows 1 or 4, door 2 if the die shows 2 or 5, and door 3 for
+3 or 6.  Then we throw the die again to chose the contestant door.
+
+But throwing dice is a little boring; we have to find the die, then throw it
+many times, and record the results.   Instead we can ask the computer to chose
+the doors at random.
+
+```{r echo=FALSE}
+n_trials <- 25
+```
+
+For this simulation, let us do `r n_trials` trials.  We ask the computer to
+create two sets of `r n_trials` random numbers from 1 through 3. The first set
+is the door with the car behind it ("Car door").  The second set have the door
+that the contestant chose at random ("Our door").   We put these in a table,
+and make some new, empty columns to fill in later.  The first new column is
+"Monty opens".  In due course, we will use this column to record the door that
+Monty Hall will open on this trial.  The last two columns express the outcome.
+The first is "Stay wins".  This has "Yes" if we win on this trial by sticking
+to our original choice of door, and "No" otherwise.  The last column is
+"Switch wins". This has "Yes" if we win by switching doors, and "No"
+otherwise. See table @tbl-montyblank).
+
+```{python echo=FALSE}
+# Need Python for random numbers that are predictable across platforms.
+import numpy as np
+import pandas as pd
+
+# Seed chosen such that it generates [3, 3] then [3, 1]
+monty_rng = np.random.default_rng(2037)
+n_trials = int(r.n_trials)
+random_matrix = monty_rng.integers(1, 4, size=(n_trials, 2))
+# We need these rows for the example.
+assert np.all(random_matrix[:2] == [[3, 3], [3, 1]])
+df = pd.DataFrame(random_matrix)
+df.columns = ('Car door', 'Our door')
+# Set the columns to fill in later.
+# It would be more efficient to use `df.assign` here, but less readable.
+df['Monty opens'] = ''
+df['Stay wins'] = ''
+df['Switch wins'] = ''
+```
+
+```{r montyblank, echo=FALSE}
+blank_df <- tibble::as_tibble(py$df)
+knitr::kable(blank_df,
+  booktabs = TRUE,
+  row.names = TRUE,
+  caption = sprintf('%d simulations of the Monty Hall problem
+                    {#tbl-montyblank}', n_trials)
+)
+```
+
+```{r echo=FALSE}
+# Do the calculation
+fdf <- blank_df
+# Convert Monty opens column to integer, for car door number.
+fdf['Monty opens'] <- as.integer(NA)
+# Cycle over each row in the original data frame.
+for (i in 1:dim(fdf)[1]) {
+    car_door <- fdf[i, 'Car door']
+    our_door <- fdf[i, 'Our door']
+    # Remove our door from consideration.  There are two doors remaining.
+    remaining_doors <- setdiff(1:3, our_door)
+    if (our_door == car_door) {   # Our door does match car door.
+        fdf[i, 'Stay wins'] <- 'Yes'
+        fdf[i, 'Switch wins'] <- 'No'
+        # Choose one of the remaining (goat) doors at random.
+        fdf[i, 'Monty opens'] <- sample(remaining_doors, 1)
+    } else {  # our door did not match.
+        fdf[i, 'Stay wins'] <- 'No'
+        # Monty must open the remaining door that isn't the car door.
+        fdf[i, 'Monty opens'] <- setdiff(remaining_doors, car_door)
+        # The only one left is the car door.
+        fdf[i, 'Switch wins'] <- 'Yes'
+    }
+}
+```
+
+In the first trial in @tbl-montyblank), the computer selected door 3 for
+car, and door 3 for the contestant.  Now Monty must open a door, and he cannot
+open our door (door 3) so he has the choice of opening door 1 or door 2; he
+chooses randomly, and opens door 2.  On this trial, we win if we stay with our
+original choice, and we lose if we change to the remaining door, door 1.
+
+Now we go the second trial.  The computer chose door 3 for the car, and door 1 for our choice.  Monty cannot choose our door (door 1) or the door with the car behind it (door 3), so he must open door 2.   Now if we stay with our original choice, we lose, but if we switch, we win.
+
+You may want to print out table @tbl-montyblank, and fill out the blank
+columns, to work through the logic.
+
+After doing a few more trials, and some reflection, you may see that there are
+two different situations here: the situation when our *initial guess was
+right*, and the situation where our *initial guess was wrong*.   When our
+initial guess was right, we win by staying with our original choice, but when
+it was wrong, we always win by switching.   The chance of our *initial guess*
+being correct is 1/3 (one door out of three).  So the chances of winning by
+staying are 1/3, and the chances of winning by switching are 2/3.  But
+remember, you don't need to follow this logic to get the right answer.  As you
+will see below, the resampling simulation shows us that the Switch strategy
+wins.
+
+Table @tbl-montyfull is a version of table @tbl-montyblank for
+which we have filled in the blank columns using the logic above.
+
+```{r montyfull, echo=FALSE}
+knitr::kable(fdf,
+  booktabs = TRUE,
+  row.names = TRUE,
+  caption = sprintf('%d simulations of the Monty Hall problem, filled out
+  {#tbl-montyfull}', n_trials)
+)
+```
+
+The proportion of times "Stay" wins in these `r n_trials` trials is
+`r sum(fdf['Stay wins'] == 'Yes') / n_trials`.
+The proportion of times "Switch" wins is
+`r sum(fdf['Switch wins'] == 'Yes') / n_trials`; the Switch strategy wins about twice as often as the Stay strategy.
+
+We won't elaborate the full {{< var lang >}} simulation here, but you might
+want to think about how you would do that.
+
+Doing these simulations has two large benefits.   First, it gives us the right answer, saving us from making a mistake.  Second, the process of simulation forces us to think about how the problem works.  This can give us better understanding, and make it easier to reason about the solution.
+
+We will soon see that these same advantages also apply to reasoning about
+statistics.
+
+<!---
+* random choice with probabilities
+* if statements
+* Boolean arrays.  Combining Boolean arrays.
+-->

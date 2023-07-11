@@ -150,20 +150,19 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 
 ## Code topics
 
-* strings
-* arrays and data types
-* lists
-* indentation
+* strings (sampling_tools)
+* arrays and data types (sampling_tools)
+* lists (done in sampling_tools)
+* indentation (maybe in resampling_with_code2 and for loops)
 * bincount / tabulate (probability_theory_2_compound).
-* up to but not including for Python.
+* Maybe more on Boolean arrays.
 * (a == 1) & (b == 3) (probability_theory_3 or before).
+* Python `range` cf `np.arange`.
 
 ## Data
 
 Maybe from [Beer,
-mosquitoes](http://www.biology.emory.edu/research/deRoode/PDFs/lefevreetal2010.pdf).
-Email sent to main author <tlefvre@gmail.com>, but if necessary, I can extract
-data from the plots via <https://apps.automeris.io/wpd>.
+mosquitoes](https://github.com/odsti/datasets/tree/main/mosquito_beer)
 
 > If we have data, let’s look at data. If all we have are opinions, let’s go
 > with mine. – Jim Barksdale, former Netscape CEO - for example at [this book](https://www.oreilly.com/library/view/analytics-and-dynamic/9781118919774/9781118919774c05.xhtml)

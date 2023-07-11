@@ -23,7 +23,7 @@ resampling_with:
 source("_common.R")
 ```
 
-# More resampling with code
+# More resampling with code {#sec-resampling-two}
 
 @sec-resampling-code introduced a problem in probability, that was also a
 problem in statistics.  We asked how surprised we should be at the results of a
@@ -122,22 +122,6 @@ We need a way of simulating a 26% chance.
 One way of doing this is by getting a random number from 0 through 99
 (inclusive).  There are 100 numbers in the range 0 through 99 (inclusive).
 
-::: {.callout-note}
-#### Pick a number from 1 through 5
-
-Ranges can be confusing in normal speech because it is not always clear
-whether they include their beginning and end.  For example, if someone says
-"pick a number between 1 and 5", do they mean *all* the numbers, including the
-first and last (any of 1 or 2 or 3 or 4 or 5)?  Or do they mean only the
-numbers that are *between* 1 and 5 (so 2 or 3 or 4)?  Or do they mean all the
-numbers up to, but not including 5 (so 1 or 2 or 3 or 4)?
-
-To avoid this confusion, we will nearly always use "from" and "through" in
-ranges, meaning that we do include both the start and the end number.  For
-example, if we say "pick a number from 1 through 5" we mean one of 1 or 2 or 3
-or 4 or 5.
-:::
-
 We will arbitrarily say that the juror is white if the random number is in the
 range from 0 through 73.  74 of the 100 numbers are in this range, so
 the juror has a 74/100 = 74% chance of getting the label "white".  We will say
@@ -165,60 +149,16 @@ numbers from 0 through 99, and to count how many of these numbers are in the
 range from 75 through 99.  Numbers in the range from 75 through 99 correspond
 to black jurors.
 
-:::: {.callout-note}
-#### Ranges in {{< var lang >}}
-
-We said above that ranges can be confusing, and we use "from 1 through 5" to
-avoid this confusion.
-
-::: {.python}
-Python and NumPy also have the concept of a range of integers (positive or
-negative whole numbers).  Here is a NumPy range:
-
-```{python, opts.label="py_ed"}
-# Load the NumPy library.
-import numpy as np
-
-# Make a range from 0 up to (not including) 6
-some_numbers = np.arange(0, 6)
-
-# Show the result
-some_numbers
-```
-
-Notice that `np.arange(0, 6)` means "from 0 through 5" — the range *does not
-include* the last value.  Another way of putting this is that `np.arange(0,
-6)` means "from 0 up to, but not including, 6".
-
-This takes a little getting used to, but we think you will find it starts to
-come naturally after a while.
-:::
-
-::: {.r}
-R also has the concept of a range of integers (positive or negative whole
-numbers).  Here is an R range:
-
-```{r, opts.label="r_ed"}
-# Make a range from 0 through 5
-some_numbers <- 0:5
-
-# Show the result
-some_numbers
-```
-
-Notice that `0:5` means exactly "from 0 through 5" — the range includes all
-the integers starting at 0 and including 5.
-:::
-
-::::
-
-#### Random numbers from 0 through 99
+### Random numbers from 0 through 99 {#sec-random-zero-through-ninety-nine}
 
 We can now use {{< var np_or_r >}} and
 [the random number functions]{.python}[`sample`]{.r}
 from the last chapter to get 12 random numbers from 0 through 99.
 
 ```{python, opts.label="py_ed"}
+# Import the Numpy library, rename as "np"
+import numpy as np
+
 # Ask NumPy for a random number generator.
 rnd = np.random.default_rng()
 
@@ -226,7 +166,7 @@ rnd = np.random.default_rng()
 zero_thru_99 = np.arange(100)
 
 # Get 12 random numbers from 0 through 99
-a = rnd.choice(zero_thru_99, size=12)
+a = rnd.choice(zero_thru_99, 12)
 
 # Show the result
 a
@@ -270,7 +210,7 @@ rnd = np.random.default_rng()
 zero_thru_99 = np.arange(100)
 
 # Get 12 random numbers from 0 through 99
-a = rnd.choice(zero_thru_99, size=12)
+a = rnd.choice(zero_thru_99, 12)
 
 # How many numbers are greater than 74?
 b = np.sum(a > 74)
@@ -350,6 +290,8 @@ Notice the argument `5` to the [`np.zeros`]{.python}[`numeric`]{.r} function.
 This tells the function how many zeros we want in the {{< var array >}} that
 the function will return.
 
+## {{< var array >}} length {#sec-array-length}
+
 The are various useful things we can do with this {{< var array >}} container.
 One is to ask how many elements there are in the {{< var array >}} container.
 We can use the [`len`]{.python}[`length`]{.r} function to calculate the number
@@ -364,6 +306,8 @@ len(z)
 # Show the number of elements in "z"
 length(z)
 ```
+
+## Indexing into {{< var array >}}s {#sec-array-indexing}
 
 Another thing we can do is *set* the value for a particular element in the
 {{< var array >}}.  To do this, we use square brackets following the
@@ -562,7 +506,7 @@ example, {{< var lang >}} can do this using a `for` loop. You have already seen
 a preview of the `for` loop in @sec-resampling-method. Here we dive into `for`
 loops in more depth.
 
-### For-loops in {{< var lang >}}
+### For-loops in {{< var lang >}} {#sec-for-loops}
 
 A for-loop is a way of asking {{< var lang >}} to:
 
@@ -741,8 +685,8 @@ loop, in order to work through the logic of the loop. For example, you may want
 to write out the unrolled equivalent of the first couple of iterations, to see
 what the loop variable will be, and what will happen in the body of the loop.
 
-We often use `for` loops with ranges.  Here we use a loop to print out the
-numbers [0 through 3]{.python}[1 through 4]{.r}:
+We often use `for` loops with ranges (see @sec-ranges).  Here we use a loop to
+print out the numbers [0 through 3]{.python}[1 through 4]{.r}:
 
 ```{python, opts.label="py_ed"}
 for n in np.arange(0, 4):
@@ -755,10 +699,10 @@ for (n in 1:4) {
 }
 ```
 
-Notice that the range ended at
-[(the number before)]{.python} 4, and that means we repeat the loop body 4
-times.  We can also use the loop variable value from the range as an *index*,
-to get or set the first, second, etc values from {{< var an_array >}}.
+Notice that the range ended at [(the number before)]{.python} 4, and that means
+we repeat the loop body 4 times.  We can also use the loop variable value from
+the range as an *index*, to get or set the first, second, etc values from {{<
+var an_array >}}.
 
 For example, maybe we would like to show the author position *and* the author
 year of birth.
@@ -832,6 +776,59 @@ year <- author_birth_years[n]  # Will be 1964
 message('Birth year of author position ', n, ' is ', year)
 # And so on.
 ```
+
+::: python
+
+### `range` in Python `for` loops
+
+So far we have used `np.arange` to give us the sequence of integers that we
+feed into the `for` loop.  But, as you saw in @sec-python-range, we can also
+get a range of numbers from Python's `range` function.  `range` is a common and
+useful alternative way to provide a range of numbers to a `for` loop.
+
+You have just seen how we would use `np.arange` to send the numbers 0, 1, 2,
+and 3 to a `for` loop, in the example above, repeated here:
+
+```{python, opts.label="py_ed"}
+for n in np.arange(0, 4):
+    year = author_birth_years[n]
+    print('Birth year of author position', n, 'is', year)
+```
+
+We could also use `range` instead of `np.arange` to do the same task:
+
+```{python, opts.label="py_ed"}
+for n in range(0, 4):
+    year = author_birth_years[n]
+    print('Birth year of author position', n, 'is', year)
+```
+
+In fact, you will see this pattern throughout the book, where we use `for`
+statements like `for value in range(10000):` to ask Python to put each number
+in the range 0 up to (not including) 100000 into the variable `value`, and then
+do something in the body of the loop.  Just to be clear, we could always, and
+almost as easily, write `for value in np.range(10000):` to do the same task.
+But — even though we could use `np.arange` to get an array of numbers, we
+generally prefer `range` in our Python `for` loops, because it is just a little
+less typing (without the `np.a` of `np.arange`, and because it is a more common
+pattern in standard Python code.[^range-efficiency]
+
+[^range-efficiency]: Actually, there is a reason why many Python programmers
+   prefer `range` in their `for` loops to `np.arange`. `range` is a very
+   efficient container, in that it doesn't need to take up all the memory
+   required to create the full array, it just needs to keep track of the number
+   to give you next. For example, consider `for i in np.arange(10000000):` — in
+   this case Python has to make an array with 10,000,000 elements, and then,
+   from that array, it passes each value one by one to the `for` loop. On the
+   other hand, `for i in range(10000000):` will do the job just as well,
+   passing the same sequence of 0 through 9,999,999 to `i`, one by one, but
+   `range(10000000)` never has to make the whole 10,000,000 element array — it
+   just needs to keep track of which number to give up next.  Therefore `range`
+   is very quick, and very efficient in memory.  This doesn't have any great
+   practical impact for the arrays we are using here, typically of 10,0000
+   elements or so, but it is worthwhile for larger arrays.
+
+:::
 
 ### Putting it all together
 
