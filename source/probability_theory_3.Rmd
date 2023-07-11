@@ -401,7 +401,7 @@ is 0.513.  Hence the proportion of girls is 1-0.513 = 0.487.
     providence, because society tended to lose males faster than females in in
     adulthood, due to manual labor and war.
 
-### {{< var sample >}} and the [`prob`]{.r}[`p`]{.python} argument
+## {{< var sample >}} and the [`prob`]{.r}[`p`]{.python} argument
 
 We could replicate this probability of 0.487 for 'girl' in the output sample by
 making an input array of 1000 strings, that contains 487 'girls' and 513
@@ -464,24 +464,25 @@ chance:
 ```{python, opts.label="py_ed"}
 # Draw 'girl' with probability (p) 0.4, 'boy' with p=0.41, 'not-recorded' with
 # p=0.19.
-rnd.choice(['girl', 'boy', 'not-recorded'], size=10, p=[0.4, 0.41, 0.19])
+rnd.choice(['girl', 'boy', 'not-recorded'], size=30, p=[0.4, 0.41, 0.19])
 ```
 
 ```{r, opts.label="r_ed"}
 # Draw 'girl' with probability (p) 0.4, 'boy' with p=0.41, 'not-recorded' with
 # p=0.19.
-sample(c('girl', 'boy', 'not-recorded'), size=10, prob=c(0.4, 0.41, 0.19),
+sample(c('girl', 'boy', 'not-recorded'), size=30, prob=c(0.4, 0.41, 0.19),
        replace=TRUE)
 ```
 
 ::: {.callout-note}
 ## How does the [`prob`]{.r}[`p`]{.python} argument to {{< var sample >}} work?
 
-You might wonder how {lang does this trick of choosing the elements with
-different probabilities.
+You might wonder how {{< var lang >}} does this trick of choosing the elements
+with different probabilities.
 
-One way of doing this is to use *uniform* random numbers.  These are random
-numbers that, by default, can be any floating number from 0 through 1.
+One way of doing this is to use *uniform* random numbers from 0 through 1.
+These are floating point numbers that can take any value, at random, from 0
+through 1.
 
 ```{python, opts.label="py_ed"}
 # Run this cell a few times to see random numbers anywhere from 0 through 1.
@@ -495,9 +496,10 @@ runif(1)
 ```
 
 Because this random uniform number has an equal chance of being anywhere in the
-range 0 through 1, there is a 50% chance is it less then 0.5 and a 50% chance
-it is greater than 0.5 (technically of course it could be *exactly equal* to
-0.5, but this is vanishingly unlikely, so we will ignore that for now).
+range 0 through 1, there is a 50% chance that any given number will be less
+then 0.5 and a 50% chance it is greater than 0.5. (Of course it could be
+*exactly equal to* 0.5, but this is vanishingly unlikely, so we will ignore
+that for now).
 
 So, if we thought girls were exactly as likely as boys, we could select from
 'girl' and 'boy' using this simple logic:
@@ -542,7 +544,7 @@ will be somewhere between 0.4 and 0.81, and a 0.19 chance it will be greater
 than 0.81.
 :::
 
-### More precise simulation for the daughters problem
+## The daughters problem with more accurate probabilities
 
 We can use the probability argument to {{< var sample >}} to do a more
 realistic simulation of the chance of a family with exactly three girls.  In
@@ -647,9 +649,8 @@ experiment, we would *replace* the card each time a card is drawn.
 The introductory poker example from @sec-one-pair, illustrated sampling without
 replacement, as will other examples to follow.
 
-This problem would be done conventionally with the binomial theorem
-using probabilities of .5, or of .48 and .52, asking about 3 successes
-in 4 trials.
+This problem would be done conventionally with the binomial theorem using
+probabilities of .5, or of .487 and .513, asking about 3 successes in 4 trials.
 
 ## Example: Three or More Successful Basketball Shots in Five Attempts
 
