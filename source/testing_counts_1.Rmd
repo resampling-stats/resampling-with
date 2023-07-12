@@ -195,8 +195,8 @@ Table 15-1
 
 Now let us obtain larger and more accurate simulation samples with the
 computer. The key step in the {{< var lang >}} program "Fruitfly" represents
-male fruit flies with the string `male` and female fruit flies with the string 
-`female`. The [`sample`]{.r}[`rnd.choice`]{.python} function is then used to 
+male fruit flies with the string `'male'` and female fruit flies with the string 
+`'female'`. The [`sample`]{.r}[`rnd.choice`]{.python} function is then used to 
 generate 20 of these strings with an equal probability that either string is 
 selected. This simulates randomly choosing 20 fruit flies on the benchmark
 assumption — the "null hypothesis" — that each fruit fly has an equal chance of
