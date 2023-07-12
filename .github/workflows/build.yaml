@@ -36,6 +36,9 @@ jobs:
             ~/R-dev
           key: ${{ hashFiles('scripts/install_r_requirements.R') }}
 
+      - name: Apt update
+        run: sudo apt update
+
       - name: Install inkscape
         run: |
           sudo apt update
