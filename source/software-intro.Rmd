@@ -73,7 +73,7 @@ rolls > 3
 This tells us, for each element in the array, whether it is greater than three or not.  In Python, False is equivalent to 0 and True is equivalent to 1.  So, we can count the number of True values as follows:
 
 ```
-np.count_nonzero(rolls > 3) 
+np.sum(rolls > 3) 
 ```
 
 Finally, we would like to look at the roll values that were greater than 3.  We extract them as follows:
@@ -178,20 +178,20 @@ roll_sums
 Now, let's count how many times the sum is seven:
 
 ```
-np.count_nonzero(roll_sums == 7)
+np.sum(roll_sums == 7)
 ```
 
 We can also express that as a percentage of all rolls:
 
 ```
-np.count_nonzero(roll_sums == 7) / 90 * 100
+np.sum(roll_sums == 7) / 90 * 100
 ```
 
 The percentage is around 16.7%, but since we only did 90 throws we may be a little bit off.  Now, let us compute how often other sums occur:
 
 ```
 for s in range(2, 13):
-    percentage_of_rolls = np.count_nonzero(roll_sums == s) / 90 * 100
+    percentage_of_rolls = np.sum(roll_sums == s) / 90 * 100
     print(f'A total of {s} occurs {percentage_of_rolls}% of the time')
 ```
 

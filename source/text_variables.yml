@@ -10,6 +10,8 @@ r:
   an_array: a vector
   "true": "TRUE"
   "false": "FALSE"
+  sample: "`sample`"
+  bincount: "`np.bincount`"
 python:
   lang: Python
   np_or_r: NumPy
@@ -22,3 +24,5 @@ python:
   an_array: an array
   "true": "True"
   "false": "False"
+  sample: "`rnd.choice`"
+  bincount: "`tabulate`"

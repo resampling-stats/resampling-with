@@ -93,7 +93,7 @@ requirement of a clearly visualized model is a strong point in favor of simulati
 
 Here is the whole thing:
 
-```{python}
+```{python, opts.label="py_ed"}
 import numpy as np
 
 N = 10000  # number of cars
@@ -130,7 +130,7 @@ The answer looks to be somewhere between 5 and 6%.  The code clearly follows the
 
 Let's use arrays to store the states of all cars in the lot simultaneously:
 
-```{python}
+```{python, opts.label="py_ed"}
 N = 1000000  # number of cars; we made this number larger by a factor of 100
 
 # Generate an array with as many entries as there are cars, each
@@ -138,7 +138,7 @@ N = 1000000  # number of cars; we made this number larger by a factor of 100
 cars = np.random.choice(['working', 'faulty'], p=[0.7, 0.3], size=N)
 
 # Count how many cars are working
-N_working = np.count_nonzero(cars == 'working')
+N_working = np.sum(cars == 'working')
 
 # All the rest are faulty
 N_faulty = N - N_working
@@ -169,8 +169,8 @@ faulty_but_approved = (cars == 'faulty') & approved
 
 # Count the number of cars that are faulty but approved, as well as
 # the total number of cars that were approved
-N_faulty_but_approved = np.count_nonzero(faulty_but_approved)
-N_approved = np.count_nonzero(approved)
+N_faulty_but_approved = np.sum(faulty_but_approved)
+N_approved = np.sum(approved)
 
 # Calculate the ratio, which is the answer we seek
 k = N_faulty_but_approved / N_approved
@@ -366,7 +366,7 @@ We have the following information:
 
 Again, we start with our simulation.
 
-```{python}
+```{python, opts.label="py_ed"}
 # The number of people
 N = 1000000
 
@@ -378,7 +378,7 @@ person_has_covid = np.random.choice(
 )
 
 # Calculate the numbers of people with and without COVID
-N_with_covid = np.count_nonzero(person_has_covid)
+N_with_covid = np.sum(person_has_covid)
 N_without_covid = N - N_with_covid
 
 # In this array, we will store, for each person, whether they
@@ -403,7 +403,7 @@ test_result[~person_has_covid] = np.random.choice(
 covid_status_negative_test = person_has_covid[~test_result]
 
 # Now, count how many with COVID had a negative test results
-N_with_covid_and_negative_test = np.count_nonzero(covid_status_negative_test)
+N_with_covid_and_negative_test = np.sum(covid_status_negative_test)
 
 # And how many people, overall, had negative test results
 N_with_negative_test = len(covid_status_negative_test)
@@ -485,7 +485,7 @@ We will proceed as follows:
 
 3. Among those, calculate what their average risk is of making an accident.  This will indicate the appropriate insurance premium.
 
-```{python}
+```{python, opts.label="py_ed"}
 N = 100000
 cost_per_percent = 100
 
@@ -501,16 +501,16 @@ poor_driver = ~good_driver
 had_accident = np.zeros(N, dtype=bool)
 had_accident[good_driver] = np.random.choice(
     [True, False], p=[0.06, 0.94],
-    size=np.count_nonzero(good_driver)
+    size=np.sum(good_driver)
 )
 had_accident[poor_driver] = np.random.choice(
     [True, False], p=[0.6, 0.4],
-    size=np.count_nonzero(poor_driver)
+    size=np.sum(poor_driver)
 )
 
 ppl_with_accidents = people[had_accident]
-N_good_driver_accidents = np.count_nonzero(ppl_with_accidents == 'good driver')
-N_poor_driver_accidents = np.count_nonzero(ppl_with_accidents == 'poor driver')
+N_good_driver_accidents = np.sum(ppl_with_accidents == 'good driver')
+N_poor_driver_accidents = np.sum(ppl_with_accidents == 'poor driver')
 N_all_with_accidents = N_good_driver_accidents + N_poor_driver_accidents
 
 avg_risk_percent = (N_good_driver_accidents * 0.06 +
@@ -657,7 +657,7 @@ the situation instead.
 
 We will do a naïve implementation that closely follows the logic described above, followed by a slightly optimized version.
 
-```{python}
+```{python, opts.label="py_ed"}
 N = 100000
 
 parents = []
@@ -690,8 +690,8 @@ parents_BB = (parents == 'BB')
 parents_Bb = (parents == 'Bb')
 N_B = len(parents)
 
-p_BB = np.count_nonzero(parents_BB) / N_B
-p_Bb = np.count_nonzero(parents_Bb) / N_B
+p_BB = np.sum(parents_BB) / N_B
+p_Bb = np.sum(parents_Bb) / N_B
 
 print(f'p_BB = {p_BB:.3f}')
 print(f'p_Bb = {p_Bb:.3f}')
@@ -707,7 +707,7 @@ favor of *BB*! (1973, pp. 12-14)
 Let's tune the code a bit to run faster.  Instead of doing the trials
 one mouse at a time, we will do the whole bunch together.
 
-```{python}
+```{python, opts.label="py_ed"}
 N = 1000000
 
 # In N trials, pair two Bb mice and generate a child
@@ -728,7 +728,7 @@ all_offspring_black[test_mice == 'BB'] = True
 # If a test mouse is 'Bb', we have to generate its offspring and
 # see whether they are all black or not
 test_mice_Bb = (test_mice == 'Bb')
-N_test_mice_Bb = np.count_nonzero(test_mice_Bb)
+N_test_mice_Bb = np.sum(test_mice_Bb)
 
 # Generate all offspring of all 'Bb' test mice
 offspring = np.random.choice(
@@ -742,10 +742,10 @@ parents = test_mice[all_offspring_black]
 # Calculate what fraction of parents were 'BB' vs 'Bb'
 parents_BB = (parents == 'BB')
 parents_Bb = (parents == 'Bb')
-N_B = np.count_nonzero(all_offspring_black)
+N_B = np.sum(all_offspring_black)
 
-p_BB = np.count_nonzero(parents_BB) / N_B
-p_Bb = np.count_nonzero(parents_Bb) / N_B
+p_BB = np.sum(parents_BB) / N_B
+p_Bb = np.sum(parents_Bb) / N_B
 
 print(f'p_BB = {p_BB:.3f}')
 print(f'p_Bb = {p_Bb:.3f}')

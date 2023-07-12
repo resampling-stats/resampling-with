@@ -272,7 +272,7 @@ from the NumPy software library.  NumPy is a Python library that has
 many important functions for creating and working with numerical data.
 We will use routines from NumPy in almost all our examples.
 
-```{python}
+```{python, opts.label="py_ed"}
 # Get the Numpy library, and call it "np" for short.
 import numpy as np
 ```
@@ -280,7 +280,7 @@ import numpy as np
 We also need to ask NumPy for an object that can generate random numbers. Such
 an object is known as a "random number generator".
 
-```{python}
+```{python, opts.label="py_ed"}
 # Ask NumPy for a random number generator.
 # Name it `rnd` — short for "random"
 rnd = np.random.default_rng()
@@ -294,25 +294,25 @@ NumPy:
 
 1. Make a random choice between three words:
 
-   ```{python}
+   ```{python, opts.label="py_ed"}
    rnd.choice(['apple', 'orange', 'banana'])
    ```
 
 2. Make five random choices of three words, using the "size=" argument:
 
-   ```{python}
+   ```{python, opts.label="py_ed"}
    rnd.choice(['apple', 'orange', 'banana'], size=5)
    ```
 
 3. Shuffle a list of numbers:
 
-   ```{python}
+   ```{python, opts.label="py_ed"}
    rnd.permutation([1, 2, 3, 4, 5])
    ```
 
 4. Generate five random numbers between 1 and 10:
 
-   ```{python}
+   ```{python, opts.label="py_ed"}
    rnd.integers(1, 11, size=5)
    ```
 :::

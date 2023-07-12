@@ -69,7 +69,7 @@ First we load up the `cos` function from a library of functions called `numpy`.
 Don't worry about the command to load the function, for now.  We will come back
 to that later.  Here is the command you need. Just run it in the notebook.
 
-```{python}
+```{python, opts.label="python_ed"}
 # Get the cos function from the numpy library.
 from numpy import cos
 ```
@@ -206,13 +206,17 @@ So far we have used the `cos` function from {{< var np_or_r >}}.  Let's try
 doing the same thing with the `sin` function:
 
 ::: python
-```{python}
+```{python, opts.label="python_ed"}
 # Get the sin function from the numpy library.
 from numpy import sin
 ```
 :::
 
-```{python}
+```{python, opts.label="python_ed"}
+sin(0)
+```
+
+```{r, opts.label="r_ed"}
 sin(0)
 ```
 
@@ -231,7 +235,8 @@ argument) to the square root of that number (the return value).
 
 ::: python
 Try importing the `sqrt` function from NumPy.
-```{python}
+
+```{python, opts.label="py_ed"}
 # Get the sqrt function from the NumPy library.
 # Your code here.
 ```
