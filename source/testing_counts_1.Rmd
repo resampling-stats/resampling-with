@@ -194,14 +194,18 @@ Table 15-1
   -------------- ----------- ----------- -------------- ----------- ----------- -------------- ----------- -----------
 
 Now let us obtain larger and more accurate simulation samples with the
-computer. The key step in the RESAMPLING STATS program "Fruitfly" is to
-GENERATE 20 numbers with two equally-likely outcomes: "1" to stand for a
-male, and "2" to stand for a female. This simulates randomly choosing 20
-fruit flies on the benchmark assumption — the "null hypothesis" — that each
-fruit fly has an equal chance of being a male or female. Now we want to
-discover the chances of getting more than 13 (i.e., 14 or more) males or more
-than 13 females under these conditions. So we COUNT the number of males in
-each random sample and then keep SCORE of this number for each sample.
+computer. The key step in the {{< var lang >}} program "Fruitfly" represents
+male fruit flies with the string `male` and female fruit flies with the string 
+`female`. The [`sample`]{.r}[`rnd.choice`]{.python} function is then used to 
+generate 20 of these strings with an equal probability that either string is 
+selected. This simulates randomly choosing 20 fruit flies on the benchmark
+assumption — the "null hypothesis" — that each fruit fly has an equal chance of
+being a male or female. Now we want to discover the chances of getting more 
+than 13 (i.e., 14 or more) males or more than 13 females under these conditions.
+ So we use [`sum`]{.r}[`np.sum`]{.python} to count the number of males in
+each random sample and then store this value in the `scores` 
+[vector]{.r}[array]{.python} of this number for each sample. We repeat these 
+process 10,000 times.
 
 After one thousand samples have been drawn, we COUNT how often there
 were more than 13 males and then count the number of times there were
