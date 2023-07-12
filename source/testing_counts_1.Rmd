@@ -205,7 +205,7 @@ than 13 (i.e., 14 or more) males or more than 13 females under these conditions.
  So we use [`sum`]{.r}[`np.sum`]{.python} to count the number of males in
 each random sample and then store this value in the `scores` 
 {{< var array >}} of this number for each sample. We repeat these 
-process 10,000 times.
+steps 10,000 times.
 
 After one thousand samples have been drawn, we COUNT how often there
 were more than 13 males and then count the number of times there were
