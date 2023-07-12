@@ -716,40 +716,243 @@ probability sought.
 
 OR
 
-1.  Put slips with the numbers "1," "1," "2," and "2" in a hat, or in an
-    array on a computer named `N`.
-2.  Shuffle the slips or the array
-3.  Take the first number in the hat or array and store it
-    someplace — perhaps in a location called `A`.
-4.  Take the second number and store it in `B`.
-5.  Subtract the numbers in `A` and `B`. If the result is 0, record "Y,"
-    otherwise "N."
-6.  Repeat (1-5) 10000 times, and count the proportion of "Y's." That
+1.  Put slips with the numbers "1," "1," "2," and "2" in a hat, or in {{< var
+    an_array >}} named `N` on a computer.
+2.  Shuffle the slips of paper by shaking the hat or shuffling the {{< var
+    array >}} (of which more below).
+3.  Take two slips of paper from the hat or from `N`, to get two numbers.
+4.  Call the first number you selected `A` and the second `B`.
+5.  Are `A` and `B` the same?  If so, record "Yes" otherwise "No".
+6.  Repeat (2-5) 10000 times, and count the proportion of "Yes" results. That
     proportion equals the probability we seek to estimate.
 
-<!---
-The problem with writing code for this is that we need to introduce sampling with and without replacement.
+Before we proceed to do this procedure in {{< var lang >}}, we need a command to *shuffle* {{< var an_array >}}.
 
-In Python:
+## Shuffling with [`sample`]{.r}[`rnd.permuted`]{.python} {#sec-shuffling}
 
-rnd.choice(cards)  # replace=True default
-rnd.choice(cards, replace=False)
+In the recipe above, the {{< var array >}} `N` has four values:
 
-or, I guess, just use:
+```{python, opts.label="py_ed"}
+# Numbers representing the slips in the hat.
+N = np.array([1, 1, 2, 2])
+```
 
-rnd.permute(cards)
+```{r, opts.label="r_ed"}
+N = c(1, 1, 2, 2)
+```
 
-In which case - we could introduce `permute` here, where we would still be using `sample` in the R case.
+For the physical simulation, we specified that we would shuffle the slips of paper with these numbers, meaning that we would jumble them up into a random order.  When we have done this, we will select two slips — say the first two — from the shuffled slips.
 
-In R:
+As we will be discussing more in various places, this shuffle-then-draw
+procedure is also called *resampling without replacement*.   The *without
+replacement* idea refers to the fact that, after shuffling, we take a first
+virtual slip of paper from the shuffled {{< var array >}}, and then a second —
+but we do not replace the first slip of paper into the
+shuffled {{< var array >}} before drawing the second.  For example, say I drew
+a "1" from `N` for the first value.  If I am sampling *without replacement*
+then, when I draw the next value, the candidates I am choosing from are now
+"1", "2" and "2", because I have removed the "1" I got as the first value.  If
+I had instead been sampling *with replacement*, then I would put back the "1"
+I had drawn, and would draw the second sample from the full set of "1", "1",
+"2", "2".
 
-sample(cards, replace=TRUE)  # replace=FALSE default
-sample(cards)
--->
+::: r
+In fact we can can use R's `sample` function to shuffle any vector.  The
+*default* behavior of `sample` is to sample *without replacement*.  Up until
+now we have always told R to change that default behavior, using the
+`replace=TRUE` argument to `sample`.  `replace=TRUE` tells `sample` to sample
+*with replacement*.  Now we want to sample *without replacement*, so we leave
+out `replace=TRUE` to let sample do its default sampling, without
+replacement. That is, when we do not specify `replace=`, R assumes
+`replace=FALSE` — sampling without replacement.
+
+```{r opts.label="r_ed"}
+# The vector N, shuffled into a random order.
+# Note that "sample" *by default*, samples without replacement.
+# When we ask for size=4, we are asking for a sample that is the same
+# size as the original vector, and so, this will be the original vector
+# with a random reordering.
+shuffled <- sample(N, size=4)
+# The "slips" are now in random order.
+shuffled
+```
+
+And in fact, if you omit the `size=` argument to `sample`, it will assume you
+mean the size to be the same size as the input array — in this case, it will
+assume `size=length(N)` and therefore `size=4`.  So we can get the same effect
+of a reordered (shuffled) vector by omitting both `size=` and `replace=`:
+
+```{r opts.label="r_ed"}
+# The vector N, shuffled into a random order (the same procedure as the chunk
+# above).
+shuffled <- sample(N)
+# The "slips" are now in random order.
+shuffled
+```
+:::
+
+::: python
+You can use `rnd.permuted` to shuffle an array into a random order.
+
+Like `rnd.choice`, `rnd.permuted` is a function (actually, a method) of `rnd`, that takes an array as input, and produces a version of the array, where the elements are in random order. 
+
+```{python opts.label="py_ed"}
+# The array N, shuffled into a random order.
+shuffled = rnd.permuted(N)
+# The "slips" are now in random order.
+shuffled
+```
+
+See @sec-shuffling-deck for some more discussion of shuffling and sampling
+without replacement.
+
+## Code answers to the cards and pennies problem
+
+::: {.notebook name="cards_pennies" title="Cards and pennies"}
+
+::: nb-only
+An answer for the following puzzle: "... shuffle a packet of four cards —
+two red, two black — and deal them face down in a row. Two cards are picked at
+random, say by placing a penny on each. What is the probability that those two
+cards are the same color?"
+:::
+
+```{python, opts.label="py_ed"}
+import numpy as np
+rnd = np.random.default_rng()
+```
+
+```{python, opts.label="py_ed"}
+# Numbers representing the slips in the hat.
+N = np.array([1, 1, 2, 2])
+
+# An array in which we will store the result of each trial.
+z = np.repeat(['No result yet'], 10000)
+
+for i in range(10000):
+    # Shuffle the numbers in N into a random order.
+    shuffled = rnd.permuted(N)
+
+    A = shuffled[0]  # The first slip from the shuffled array.
+    B = shuffled[1]  # The second slip from the shuffled array.
+
+    # Set the result of this trial.
+    if A == B:
+        z[i] = 'Yes'
+    else:
+        z[i] = 'No'
+
+# How many times did we see "Yes"?
+k = np.sum(z == 'Yes')
+
+# The proportion.
+kk = k / 10000
+
+print(kk)
+```
+
+```{r, opts.label="r_ed"}
+# Numbers representing the slips in the hat.
+N <- c(1, 1, 2, 2)
+
+# An array in which we will store the result of each trial.
+z <- rep('No result yet', 10000)
+
+for (i in 1:10000) {
+    # sample, used in this way, has the effect of shuffling the vector
+    # into a random order.  See the section linked above for an explanation.
+    shuffled <- sample(N)
+
+    A <- shuffled[1]  # The first slip from the shuffled array.
+    B <- shuffled[2]  # The second slip from the shuffled array.
+
+    # Set the result of this trial.
+    if (A == B) {
+        z[i] <- 'Yes'
+    } else {
+        z[i] <- 'No'
+    }
+}  # End of the loop.
+
+# How many times did we see "Yes"?
+k <- sum(z == 'Yes')
+
+# The proportion.
+kk <- k / 10000
+
+message(kk)
+```
 
 Now let's play the game differently, first picking one card and *putting it
 back and shuffling* before picking a second card. What are the results now? You
-can try it with the cards, or with a computer program similar to the above.
+can try it with the cards, but here is another program, similar to the last, to run that variation.
+
+```{python, opts.label="py_ed"}
+# The cards / pennies game - but replacing the slip and re-shuffling, before
+# drawing again.
+
+# An array in which we will store the result of each trial.
+z = np.repeat(['No result yet'], 10000)
+
+for i in range(10000):
+    # Shuffle the numbers in N into a random order.
+    first_shuffle = rnd.permuted(N)
+    # Draw a slip of paper.
+    A = first_shuffle[0]  # The first slip.
+
+    # Shuffle again (with all the slips).
+    second_shuffle = rnd.permuted(N)
+    # Draw a slip of paper.
+    B = second_shuffle[0]  # The second slip.
+
+    # Set the result of this trial.
+    if A == B:
+        z[i] = 'Yes'
+    else:
+        z[i] = 'No'
+
+# How many times did we see "Yes"?
+k = np.sum(z == 'Yes')
+
+# The proportion.
+kk = k / 10000
+
+print(kk)
+```
+
+```{r, opts.label="r_ed"}
+# An array in which we will store the result of each trial.
+z <- rep('No result yet', 10000)
+
+for (i in 1:10000) {
+    # Shuffle the numbers in N into a random order.
+    first_shuffle <- sample(N)
+    # Draw a slip of paper.
+    A <- first_shuffle[1]  # The first slip.
+
+    # Shuffle again (with all the slips).
+    second_shuffle <- sample(N)
+    # Draw a slip of paper.
+    B <- second_shuffle[1]  # The second slip.
+
+    # Set the result of this trial.
+    if (A == B) {
+        z[i] <- 'Yes'
+    } else {
+        z[i] <- 'No'
+    }
+}  # End of the loop.
+
+# How many times did we see "Yes"?
+k <- sum(z == 'Yes')
+
+# The proportion.
+kk <- k / 10000
+
+message(kk)
+```
+
+:::
 
 Why do you get different results in the two cases? Let's ask the question
 differently: What is the probability of first picking a black card? Clearly, it

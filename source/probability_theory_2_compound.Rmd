@@ -30,9 +30,9 @@ later chapters. The difference is that for probability problems we begin
 with a knowledge of the properties of the universe with which we are
 working. (See @sec-what-is-resampling on the definition of resampling.)
 
-## Examples of basic problems in probability
+We start with some basic problems in probability.  To make sure we do know the properties of the universe we are working with, we start with poker, and a pack of cards.  Working with some poker problems, we rediscover the fundamental distinction between sampling *with* and *without* replacement.
 
-### A Poker Problem: One Pair (Two of a Kind) {#sec-one-pair}
+## Introducing a poker problem: one pair (two of a kind) {#sec-one-pair}
 
 What is the chance that the first five cards chosen from a deck of 52
 (bridge/poker) cards will contain two (and only two) cards of the same
@@ -41,13 +41,13 @@ unrealistic problems in this and the other chapters on probability. They
 reflect the literature in the field for 300 years. We'll get more
 realistic in the statistics chapters.)
 
-We shall estimate the odds the way that gamblers have estimated gambling
-odds for thousands of years. First, check that the deck is a
-standard deck and is not missing any cards. (Overlooking such small but crucial
-matters often leads to errors in science.) Shuffle thoroughly until you are
-satisfied that the cards are randomly distributed. (It is surprisingly hard to
-shuffle well.) Then deal five cards, and mark down whether the hand does or
-does not contain a pair of the same denomination.
+We shall estimate the odds the way that gamblers have estimated gambling odds
+for thousands of years. First, check that the deck is a standard deck and is
+not missing any cards. (Overlooking such small but crucial matters often leads
+to errors in science.) Shuffle thoroughly until you are satisfied that the
+cards are randomly distributed. (It is surprisingly hard to shuffle well.) Then
+deal five cards, and mark down whether the hand does or does not contain a pair
+of the same denomination.
 
 At this point, we must decide whether three of a kind, four of a kind or two
 pairs meet our criterion for a pair. Since our criterion is "two and only
@@ -127,6 +127,8 @@ sampling is "sampling without replacement," because each card is *not replaced*
 in the deck prior to dealing the next card (that is, prior to the end of the
 hand).
 
+## A first approach to the one-pair problem with code
+
 We could also approach this problem using random numbers from the computer to
 simulate the values.
 
@@ -168,6 +170,8 @@ deck <- rep(one_suit, 4)
 deck
 ```
 
+## Shuffling the deck with {{< var lang >}} {#sec-shuffling-deck}
+
 At this point we have a complete deck in the variable `deck` . But that "deck"
 is
 [in the same order as a new deck of cards]{.r}
@@ -194,13 +198,8 @@ hand
 ```
 
 ::: r
-We are using `sample`, and the *default* behavior of `sample` is to sample
-*without replacement*.  Up until now we have always told R to change that
-default behavior, using the `replace=TRUE` argument to `sample`.  This tells
-`sample` to sample *with replacement*.  Now we want to sample *with
-replacement*, so we leave out the `replace=TRUE` to let sample do its default
-sampling, *without replacement*.  That is, when we do not specify `replace=`, R
-assumes `replace=FALSE` — sampling without replacement.
+As you saw in @sec-shuffling, the *default* behavior of `sample` is to sample
+*without replacement*, so simply omit the `replace=TRUE` argument to `sample` to get sampling without replacement:
 :::
 
 ```{r opts.label="r_ed"}
@@ -213,13 +212,8 @@ The above is one way to get a random hand of five cards from the deck.  Another
 way is to use [`sample`]{.r}[the `rnd.permuted` function]{.python} to shuffle
 the whole `deck` of 52 "cards" into a random order, just as a dealer would
 shuffle the deck before dealing.  Then we could take — for example — the first
-five cards from the shuffled deck.
-
-::: python
-
-`rnd.permuted` is another function (actually, a method) of `rnd`, that takes an array as input, and produces a version of the array, where the elements are in random order.  It is exactly equivalent to fair and complete shuffling of a deck of cards, where the cards should be in a completely random order.
-
-:::
+five cards from the shuffled deck to give a random hand.  See @sec-shuffling
+for more on [this use of `sample`]{.r}[`rnd.permuted`]{.python}.
 
 ```{python opts.label="py_ed"}
 # Shuffle the whole 52 card deck.
@@ -227,19 +221,6 @@ shuffled = rnd.permuted(deck)
 # The "cards" are now in random order.
 shuffled
 ```
-
-::: r
-
-We can use `sample` to shuffle the deck.  Remember, by default, `sample` takes
-its sample *without replacement*.   So, if we take a random sample of 52 cards,
-without replacement, this is just the same as putting the cards into a random
-order.  We could tell `sample` that we want a sample of 52 values, using
-`size=52`. But in fact, `sample` assumes, by default, if we do not specify
-`size`, that you want a sample that is the same size as the vector you pass in.
-That means that, for our case, where we are passing in a vector `deck` of 52
-values, it assumes we mean `size=52`, and sends us back the result we want, a complete sample without replacement, and therefore, a shuffled vector.
-
-:::
 
 ```{r opts.label="r_ed"}
 # Shuffle the whole 52 card deck.
@@ -262,13 +243,21 @@ hand <- shuffled[1:5]
 hand
 ```
 
-The two procedures are completely equivalent, of taking a random sample of five
-cards from the `deck` (as we did further above), or of shuffling the entire
-`deck` and then taking the first five "cards".  Either is a valid way of
-getting five cards at random from the `deck`.  It's up to us which to choose —
-we slightly prefer to shuffle and take the first five, because it is more like
-the physical procedure of shuffling the deck and dealing, but which you prefer,
-is up to you.
+You have seen that we can use one of two procedures to a get random sample of
+five cards from `deck`, drawn without replacement:
+
+1. Using [`sample` with `size=5`]{.r}[`rnd.choice` with `size=5` and
+   `replace=False`]{.python}
+   to take the random sample directly from `deck`, or
+2. shuffling the entire `deck` and then taking the first five "cards" from the
+   result of the shuffle.
+
+Either is a valid way of getting five cards at random from the `deck`.  It's up
+to us which to choose — we slightly prefer to shuffle and take the first five,
+because it is more like the physical procedure of shuffling the deck and
+dealing, but which you prefer, is up to you.
+
+### A first-pass computer solution to the one-pair problem
 
 Choosing the shuffle deal way, the {{< var cell >}} to generate one hand is:
 
