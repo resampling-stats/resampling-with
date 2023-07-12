@@ -204,7 +204,7 @@ being a male or female. Now we want to discover the chances of getting more
 than 13 (i.e., 14 or more) males or more than 13 females under these conditions.
  So we use [`sum`]{.r}[`np.sum`]{.python} to count the number of males in
 each random sample and then store this value in the `scores` 
-[vector]{.r}[array]{.python} of this number for each sample. We repeat these 
+{{< var array >}} of this number for each sample. We repeat these 
 process 10,000 times.
 
 After one thousand samples have been drawn, we COUNT how often there
