@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-book:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       R_LIBS_USER: ~/R_libs:~/R:~/R-dev
       QUARTO_VER: "1.4.51"
