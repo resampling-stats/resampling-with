@@ -31,7 +31,9 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('requirements.txt') }}-${{ hashFiles('scripts/install_r_requirements.R') }}
 
       - name: Install inkscape
-        run: sudo apt install inkscape
+        run: |
+          sudo apt update
+          sudo apt install inkscape
 
       - name: Install rsvg tools
         run: sudo apt install librsvg2-bin
