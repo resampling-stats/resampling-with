@@ -1,29 +1,29 @@
-\e[1m\e[33mUsage: \e[97mninja [\e[1;36mOPTIONS\e[97m] [\e[36mTARGETS...\e[97m]\e[0m
+\033[1m\033[33mUsage: \033[97mninja [\033[1;36mOPTIONS\033[97m] [\033[36mTARGETS...\033[97m]\033[0m
 
-\e[90mBuild the book:\e[0m
+\033[90mBuild the book:\033[0m
 
   ninja r-book
   ninja python-book
 
-\e[90mBuild an individual chapter:\e[0m
+\033[90mBuild an individual chapter:\033[0m
 
   ninja ../python-book/inference_intro.html
   ninja ../r-book/inference_intro.html
 
-\e[90mClean cache files:\e[0m
+\033[90mClean cache files:\033[0m
 
   ninja clean
 
-\e[3mBut if you want to rebuild from scratch, you'll also have to erase all
-built output:\e[0m
+\033[3mBut if you want to rebuild from scratch, you'll also have to erase all
+built output:\033[0m
 
   rm -rf ../python-book ../r-book
 
-\e[90mValidate the bibliography:\e[0m
+\033[90mValidate the bibliography:\033[0m
 
   ninja bibcheck
 
-\e[90mNinja options:\e[0m
+\033[90mNinja options:\033[0m
   --version      print ninja version ("1.11.1.git.kitware.jobserver-1")
   -v, --verbose  show all command lines while building
   --quiet        don't show progress status, just command output
