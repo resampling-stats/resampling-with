@@ -722,7 +722,7 @@ result = 'No result'
 a_ball = rnd.choice(bucket_A)
 # If you have drawn a blue ball from bucket A:
 if a_ball == 'blue':
-    # Draw a ball from bucket B
+    # Draw a ball at random from bucket B
     b_ball = rnd.choice(bucket_B)
     # if the ball is green:
     if b_ball == 'green':
@@ -745,7 +745,7 @@ result = 'No result'
 a_ball <- sample(bucket_A, size=1)
 # If you have drawn a blue ball from bucket A:
 if (a_ball == 'blue') {
-    # Draw a ball from bucket B
+    # Draw a ball at random from bucket B
     b_ball <- sample(bucket_B, size=1)
     # if the ball is green:
     if (b_ball == 'green') {
@@ -827,7 +827,7 @@ the Commanders will win — about `r round(get_var('kk'), 3) * 100`%.
 
 Let's say that we think that the Commanders have a 0.55 (55%) chance of winning
 on a not-nice day. With the aid of a bucket with a different composition — one
-made by substituting 55 blue and 45 yellow balls in Step 4 — a similar
+made by substituting 55 green and 45 yellow balls in Step 4 — a similar
 procedure yields the chance that it will be a *nasty* day and the Commanders
 will win. With a similar substitution and procedure we could also estimate the
 probabilities that it will be a nasty day and the Commanders will lose, and a
