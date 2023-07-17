@@ -159,7 +159,7 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * bincount / tabulate (probability_theory_2_compound).
 * Maybe more on Boolean arrays.
 * (a == 1) & (b == 3) (probability_theory_3 or before).
-* Python `range` cf `np.arange`.
+* Python `range` cf `np.arange` (resampling_with_code)
 
 ## Data
 
