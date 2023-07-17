@@ -633,22 +633,32 @@ bootstrap procedure for estimating a confidence limit around the mean,
 as follows:
 
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+```{python, opts.label="py_ed"}
+import numpy as np
+import matplotlib.pyplot as plt
 
-```matlab
-' Program file: "confidence_2_00.rss"
+rng = np.random.default_rng()
 
-DATA (11.4 13.4 13.5 13.8 13.9 14.4 14.5 15.0 15.1 15.8 16.0 16.3 16.5 16.9 17.0 17.2 17.5 19.0) c
-REPEAT 1000
-    SAMPLE 18 c c$
-    MEDIAN c$ d$
-    SCORE d$ z
-END
-HISTOGRAM z
-PERCENTILE z (2.5 97.5) k
-PRINT K
-' This problem would be approached conventionally with a binomial
-' procedure leading to quite wide confidence intervals (Deshpande, p. 32).
+data = np.array(
+    [11.4, 13.4, 13.5, 13.8, 13.9, 14.4, 14.5, 15.0, 15.1, 15.8, 16.0, 16.3,
+     16.5, 16.9, 17.0, 17.2, 17.5, 19.0]
+)
+
+k = 10000
+z = np.zeros(k)
+
+for i in range(k):
+    sample = rng.choice(data, 18)
+    z[i] = np.median(sample)
+
+plt.hist(z, bins='auto')
+
+pp = np.percentile(z, (2.5, 97.5))
+print(pp)
+
+# This problem would be approached conventionally with a binomial
+# procedure leading to quite wide confidence intervals (Deshpande, p. 32).
+
 ```
 
 <!---
