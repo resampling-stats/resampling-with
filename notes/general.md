@@ -150,6 +150,8 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 
 ## Code topics
 
+* Comments after code lines - as in `print(a)  # Print the result`
+  (sampling_tools).
 * strings (sampling_tools)
 * arrays and data types (sampling_tools)
 * lists (done in sampling_tools)

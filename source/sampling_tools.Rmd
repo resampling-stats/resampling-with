@@ -447,7 +447,7 @@ middle_name == 'Lincoln'
 middle_name == 'Lincoln'
 ```
 
-## Repeating elements
+## Repeating elements {#sec-repeating}
 
 Now let us go back to the problem of selecting black and white jurors.
 
@@ -736,20 +736,46 @@ without replacement. Whether you omit the `replace` argument, or specify
 
 ```{r opts.label="r_ed"}
 # Take a sample of 12 jurors from the panel *with replacement*
-ok_jury <- sample(jury_panel, size=12)  # replace=FALSE is the default.
+# replace=FALSE is the default for sample.
+ok_jury <- sample(jury_panel, size=12)
 ok_jury
 ```
+
+::: {.callout-note}
+## Comments at the end of lines
+
+You have already seen comment lines.  These are lines beginning with `#`, to signal to {{< var lang >}} that the rest of the line is text for humans to read, but {{< var lang >}} to ignore.
+
+```{python, opts.label="py_ed"}
+# This is a comment.  Python ignores this line.
+```
+
+```{r, opts.label="r_ed"}
+# This is a comment.  R ignores this line.
+```
+
+You can also put comments at the *end of code lines*, by finishing the code part of the line, and then putting a `#`, followed by more text.  Again, {{< var lang >}} will ignore everything after the `#` as a text for humans, but not for {{< var lang >}}.
+
+```{python, opts.label="py_ed"}
+print('Hello')  # This is a comment at the end of the line.
+```
+
+```{r, opts.label="r_ed"}
+message('Hello')  # This is a comment at the end of the line.
+```
+
+:::
 
 To finish the procedure for simulating a single jury selection, we count the
 number of black jurors:
 
 ```{python opts.label="py_ed"}
-n_black = np.sum(ok_jury == 'black')
+n_black = np.sum(ok_jury == 'black')  # How many black jurors?
 n_black
 ```
 
 ```{r opts.label="r_ed"}
-n_black <- sum(ok_jury == 'black')
+n_black <- sum(ok_jury == 'black')  # How many black jurors?
 n_black
 ```
 
@@ -761,7 +787,7 @@ counts = np.zeros(10000)
 for i in np.arange(10000):
     # Single trial procedure
     jury = rnd.choice(jury_panel, size=12, replace=False)
-    n_black = np.sum(jury == 'black')
+    n_black = np.sum(jury == 'black')  # How many black jurors?
     # Store the result
     counts[i] = n_black
 
@@ -776,8 +802,8 @@ print(p_zero_black)
 counts <- numeric(10000)
 for (i in 1:10000) {
     # Single trial procedure
-    jury <- sample(jury_panel, size=12)
-    n_black <- sum(jury == 'black')
+    jury <- sample(jury_panel, size=12)  # replace=FALSE is the default.
+    n_black <- sum(jury == 'black')  # How many black jurors?
     # Store the result
     counts[i] <- n_black
 }
