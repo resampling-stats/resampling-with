@@ -130,8 +130,8 @@ statistics — is as follows:
 3.  Draw another ball and record its color.
 4.  If both balls drawn were green record "Yes"; otherwise record "No."
 5.  Repeat steps 2-4 a thousand times.
-6.  Count the proportion of "Y"s to the total number of "Y"s and
-    "N"s; the result is the probability we seek.
+6.  Count the proportion of "Yes"s to the total number of "Yes"s and "No"s; the
+    result is the probability we seek.
 
 Much the same procedure could be used to estimate the probability of the
 Commanders winning (say) 3 of their next 4 games. We will return to this
@@ -447,13 +447,48 @@ question are as follows:
 
 Actually doing the above series of steps by hand is useful to build your
 intuition about probability and simulation methods. But the procedure
-can also be simulated with a computer. Using the {{< var lang >}} we produce
-an estimate as follows:
+can also be simulated with a computer. We will use {{< var lang >}} to do this in a moment.
+
+## If statements in {{< var lang >}}
+
+Before we get to the simulation, we need another feature of {{< var lang >}},
+called a *conditional* or *if* statement.
+
+Here we have rewritten step 4 above, but using indentation to emphasize the idea:
+
+```
+If you have drawn a blue ball from bucket A:
+    Draw a ball from bucket B
+    if the ball is green:
+        record "yes"
+    otherwise:
+        record "no".
+```
+
+Notice the structure.  The first line is the *header* of the `if` statement.
+It has a *condition* — this is why `if` statements are often called
+*conditional* statements.  The condition here is "you have drawn a blue ball
+from bucket A".  If this condition is met — it is True that you have drawn a
+blue ball from bucket A *then* we go on to do the stuff that is indented.
+Otherwise we do not do any of the stuff that is indented.
+
+The indented stuff above is the *body* of the `if` statement.  It is the stuff
+we do `if` the *conditional* at the top is True.
+
+Now let's see how we would write that in {{< var lang >}}.
+
+Let's make bucket A.  Remember, this is the *weather* bucket.  It has seven
+blue balls (for 70% fine days) and 3 yellow balls (for 30% rainy days).  See
+@sec-repeating for the [`rep`]{.r}[`np.repeat`]{.python} way of repeating
+elements multiple times.
 
 :::::: {.notebook name="fine_win" title="Fine day and win"}
 
 ::: nb-only
 This notebook calculates the chances that the Commanders win on a fine day.
+
+We also go through the logic of the `if` statement, and its associated `else`
+clause.
 :::
 
 ```{python, opts.label="py_ed"}
@@ -464,122 +499,342 @@ import numpy as np
 rnd = np.random.default_rng()
 ```
 
-We make the weather 'bucket':
-
 ```{python, opts.label="py_ed"}
-# 0 = no rain, 1 = rain
-weather = np.zeros(10)
-# Set the first 7 of 10 to have value 1.
-weather[:7] = 1
-print(weather)
+# blue means "nice day", yellow means "not nice".
+bucket_A = np.repeat(['blue', 'yellow'], [7, 3])
+bucket_A
 ```
 
 ```{r, opts.label="r_ed"}
-# 0 = no rain, 1 = rain
-weather <- numeric(10)
-# Set the first 7 of 10 to have value 1.
-weather[1:7] <- 1
-print(weather)
+# blue means "nice day", yellow means "not nice".
+bucket_A <- rep(c('blue', 'yellow'), c(7, 3))
+bucket_A
 ```
 
-:::{.r}
-:::{.callout-note}
-## `print` in R
-
-Notice that we are using the `print` function to show the values.  Previously
-we have used the `message` function for this job.  `print` shows the values in
-a slightly different way to `message`.  In particular, it displays the values
-in a vector in a more readable and less compact form than `message`.  We will
-be using both in this book, choosing one or the other depending on the value
-we want to show.
-:::
-:::
-
-The "Commanders win when there is no rain" bucket:
+Now let us draw a ball at random from bucket_A:
 
 ```{python, opts.label="py_ed"}
-# 0 = lose, 1 = win
-cmdrs_win_when_no_rain = np.zeros(100)
-# Set the first 65 of 100 to have value 1.
-cmdrs_win_when_no_rain[:65] = 1
-print(cmdrs_win_when_no_rain)
+a_ball = rnd.choice(bucket_A)
+a_ball
 ```
 
 ```{r, opts.label="r_ed"}
-# 0 = lose, 1 = win
-cmdrs_win_when_no_rain <- numeric(100)
-# Set the first 65 of 100 to have value 1.
-cmdrs_win_when_no_rain[1:65] <- 1
-print(cmdrs_win_when_no_rain)
+a_ball <- sample(bucket_A, size=1)
+a_ball
 ```
 
-Now do the simulation:
+How we run our first `if` statement.  Running this code will display "The ball
+was blue" if the ball was blue, otherwise it will not display anything:
 
 ```{python, opts.label="py_ed"}
-# A counter to count the number of fine wins
-number_of_fine_wins = 0
+if a_ball == 'blue':
+    print('The ball was blue')
+```
+
+::: python
+
+Notice that the header line has `if`, followed by the conditional expression
+(question) `a_ball == 'blue'`. The header line finishes with a colon `:`.  The
+*body* of the `if` statement is one or more *indented* lines.  Here there is
+only one line: `print('The ball was blue')`.  Python only runs the body of the
+if statement if the *condition* is `True`.[^conditional-true]
+:::
+
+```{r, opts.label="r_ed"}
+if (a_ball == 'blue') {
+    message('The ball was blue')
+}
+```
+
+::: r
+
+Notice that the header line has `if`, followed by an open parenthesis `(` introducing the *conditional expression* `a_ball == 'blue'`. There follows close parenthesis `)` to finish the conditional expression.   Next there is a open curly brace `{` to signal the start of the body of the `if` statement.
+The *body* of the `if` statement is one or more lines of code, followed by the
+close curly brace `}`.  Here there is only one line: `message('The ball was
+blue')`.  R only runs the body of the if statement if the *condition* is
+`TRUE`.[^conditional-true]
+
+:::
+
+[^conditional-true]: In this case, the result of the conditional expression is
+    in fact either {{< var true >}} or {{< var false >}}.
+    {{< var lang >}} is more liberal on what it allows in the conditional
+    expression; it will take whatever the result is, and then force the result
+    into either {{< var true >}} or {{< var false >}}, in fact, by wrapping the
+    result with the [`logical`]{.r}[`bool`]{.python} function, that takes
+    anything as input, and returns either {{< var true >}} or {{< var false
+    >}}. Therefore, we could refer to the result of the conditional expression
+    as something "truthy" — that is - something that comes back as {{< var true
+    >}} or {{< var false >}} from the [`logical`]{.r}[`bool`]{.python}
+    function. In the case here, that does not arise, because the result is in
+    fact either exactly {{< var true >}} or exactly {{< var false >}}.
+
+To confirm we see "The ball was blue" if `a_ball` is `'blue'` and nothing otherwise, we can set `a_ball` and re-run the code:
+
+```{python, opts.label="py_ed"}
+# Set value of a_ball so we know what it is.
+a_ball = 'blue'
+```
+
+```{python, opts.label="py_ed"}
+if a_ball == 'blue':
+    # The conditional statement is True in this case, so the body does run.
+    print('The ball was blue')
+```
+
+```{python, opts.label="py_ed"}
+a_ball = 'yellow'
+```
+
+```{python, opts.label="py_ed"}
+if a_ball == 'blue':
+    # The conditional statement is False, so the body does not run.
+    print('The ball was blue')
+```
+
+```{r, opts.label="r_ed"}
+# Set value of a_ball so we know what it is.
+a_ball <- 'blue'
+```
+
+```{r, opts.label="r_ed"}
+if (a_ball == 'blue') {
+    # The conditional statement is True in this case, so the body does run.
+    message('The ball was blue')
+}
+```
+
+```{r, opts.label="r_ed"}
+a_ball <- 'yellow'
+```
+
+```{r, opts.label="r_ed"}
+if (a_ball == 'blue') {
+    # The conditional statement is False, so the body does not run.
+    message('The ball was blue')
+}
+```
+
+We can add an `else` clause to the `if` statement.  Remember the *body* of the
+`if` statement runs if the *conditional expression* (here `a_ball == 'blue')`
+is {{< var true >}}. The `else` clause runs if the conditional statement is {{<
+var false >}}.  This may be clearer with an example:
+
+```{python, opts.label="py_ed"}
+a_ball = 'blue'
+```
+
+```{python, opts.label="py_ed"}
+if a_ball == 'blue':
+    # The conditional expression is True in this case, so the body runs.
+    print('The ball was blue')
+else:
+    # The conditional expression was True, so the else clause does not run.
+    print('The ball was not blue')
+```
+
+::: python
+
+Notice that the `else` clause of the `if` statement starts with a header line —
+`else` — followed by a colon `:`. It then has its own indented *body* of
+indented code. The body of the `else` clause only runs if the initial
+conditional expression is *not* {{< var true >}}.
+
+:::
+
+```{python, opts.label="py_ed"}
+a_ball = 'yellow'
+```
+
+```{python, opts.label="py_ed"}
+if a_ball == 'blue':
+    # The conditional expression was False, so the body does not run.
+    print('The ball was blue')
+else:
+    # but the else clause does run.
+    print('The ball was not blue')
+```
+
+```{r, opts.label="r_ed"}
+a_ball <- 'blue'
+```
+
+```{r, opts.label="r_ed"}
+if (a_ball == 'blue') {
+    # The conditional expression is True in this case, so the body runs.
+    message('The ball was blue')
+} else {
+    # The conditional expression was True, so the else clause does not run.
+    message('The ball was not blue')
+}
+```
+
+::: r
+
+Notice that the `else` clause of the `if` statement starts with the end of the `if` body with the closing curly brace `}`.  `else` follows, followed in turn by the opening curly brace `{` to start the body of the `else` clause.
+The body of the `else` clause only runs if the initial conditional expression
+is *not* {{< var true >}}.
+
+:::
+
+```{r, opts.label="r_ed"}
+a_ball <- 'yellow'
+```
+
+```{r, opts.label="r_ed"}
+if (a_ball == 'yellow') {
+    # The conditional expression was False, so the body does not run.
+    message('The ball was blue')
+} else {
+    # but the else clause does run.
+    message('The ball was not blue')
+}
+```
+
+With this machinery, we can now implement the full logic of step 4 above:
+
+```
+If you have drawn a blue ball from bucket A:
+    Draw a ball from bucket B
+    if the ball is green:
+        record "yes"
+    otherwise:
+        record "no".
+```
+
+Here is bucket B.  Remember green means "win" (65% of the time) and red means
+"lose" (35% of the time).  We could call this the "Commanders win when it is a
+nice day" bucket:
+
+```{python, opts.label="py_ed"}
+bucket_B = np.repeat(['green', 'red'], [65, 35])
+```
+
+```{r, opts.label="r_ed"}
+bucket_B <- rep(c('green', 'red'), c(65, 35))
+```
+
+The full logic for step 4 is:
+
+```{python, opts.label="py_ed"}
+# By default, say we have no result.
+result = 'No result'
+a_ball = rnd.choice(bucket_A)
+# If you have drawn a blue ball from bucket A:
+if a_ball == 'blue':
+    # Draw a ball at random from bucket B
+    b_ball = rnd.choice(bucket_B)
+    # if the ball is green:
+    if b_ball == 'green':
+        # record "yes"
+        result = 'yes'
+    # otherwise:
+    else:
+        # record "no".
+        result = 'no'
+# Show what we got in this case.
+result
+```
+
+Now we have everything we need to run many trials with the same logic.
+
+
+```{r, opts.label="r_ed"}
+# By default, say we have no result.
+result = 'No result'
+a_ball <- sample(bucket_A, size=1)
+# If you have drawn a blue ball from bucket A:
+if (a_ball == 'blue') {
+    # Draw a ball at random from bucket B
+    b_ball <- sample(bucket_B, size=1)
+    # if the ball is green:
+    if (b_ball == 'green') {
+        # record "yes"
+        result <- 'yes'
+    # otherwise:
+    } else {
+        # record "no".
+        result <- 'no'
+    }
+}
+# Show what we got in this case.
+result
+```
+
+```{python, opts.label="py_ed"}
+# The result of each trial.
+# To start with, say we have no result for all the trials.
+z = np.repeat(['No result'], 10000)
 
 # Repeat trial procedure 10000 times
 for i in range(10000):
-    # draw one "ball" for the weather, store in "a"
-    # 0 = rain, 1 = no rain
-    a = rnd.choice(weather)
-    if a == 1:  # no rain
+    # draw one "ball" for the weather, store in "a_ball"
+    # blue is "nice day", yellow is "not nice"
+    a_ball = rnd.choice(bucket_A)
+    if a_ball == 'blue':  # nice day
         # if no rain, check on game outcome
-        # 0 = lose, 1 = win
-        b = rnd.choice(cmdrs_win_when_no_rain)
-        if b == 1:  # Commanders win
-            number_of_fine_wins = number_of_fine_wins + 1
+        # green is "win" (give nice day), red is "lose" (given nice day).
+        b_ball = rnd.choice(bucket_B)
+        if b_ball == 'green':  # Commanders win
+            # Record result.
+            z[i] = 'yes'
+        else:
+            z[i] = 'no'
     # End of trial, go back to the beginning until done.
 
-# Show the proportion of fine day + wins.
-prop = number_of_fine_wins / 10000
-print(prop)
+# Count of the number of times we got "yes".
+k = np.sum(z == 'yes')
+# Show the proportion of *both* fine day *and* wins
+kk = k / 10000
+kk
 ```
 
 ```{r, opts.label="r_ed"}
-# A counter to count the number of fine wins
-number_of_fine_wins <- 0
+# The result of each trial.
+# To start with, say we have no result for all the trials.
+z <- rep('No result', 10000)
 
 # Repeat trial procedure 10000 times
 for (i in 1:10000) {
-    # draw one "ball" for the weather, store in "a"
-    # 0 = rain, 1 = no rain
-    a <- sample(weather, 1)
-    if (a == 1) {  # no rain
+    # draw one "ball" for the weather, store in "a_ball"
+    # blue is "nice day", yellow is "not nice"
+    a_ball <- sample(bucket_A, size=1)
+    if (a_ball == 'blue') {  # nice day
         # if no rain, check on game outcome
-        # 0 = lose, 1 = win
-        b <- sample(cmdrs_win_when_no_rain, 1)
-        if (b == 1) {  # Commanders win
-            number_of_fine_wins <- number_of_fine_wins + 1
+        # green is "win" (give nice day), red is "lose" (given nice day).
+        b_ball <- sample(bucket_B, size=1)
+        if (b_ball == 'green') {  # Commanders win
+            # Record result.
+            z[i] <- 'yes'
+        } else {
+            z[i] <- 'no'
         }
     }
     # End of trial, go back to the beginning until done.
 }
 
-# Show the proportion of fine day + wins.
-prop <- number_of_fine_wins / 10000
-print(prop)
+# Count of the number of times we got "yes".
+k <- sum(z == 'yes')
+# Show the proportion of *both* fine day *and* wins
+kk <- k / 10000
+kk
 ```
 
-<!---
-Have we covered if blocks at this point?
--->
-
 The above procedure gives us the probability that it will be a nice day and
-the Commanders will win — about `r round(get_var('prop'), 3) * 100`%.
+the Commanders will win — about `r round(get_var('kk'), 3) * 100`%.
 
 ::::::
 
-With the aid of a bucket with a different composition — one made by
-substituting 55 blue and 45 yellow balls in Step 4 — a similar procedure
-yields the chance that it will be a *nasty* day and the Commanders will win.
-With a similar substitution and procedure we could also estimate the
-probabilities that it will be a nasty day and the Commanders will lose, and
-a nice day and the Commanders will lose. The sum of these probabilities should
-come close to unity, because the sum includes all the possible outcomes. But
-it will not *exactly* equal unity because of what we call "sampling variation"
-or "sampling error."
+Let's say that we think that the Commanders have a 0.55 (55%) chance of winning
+on a not-nice day. With the aid of a bucket with a different composition — one
+made by substituting 55 green and 45 yellow balls in Step 4 — a similar
+procedure yields the chance that it will be a *nasty* day and the Commanders
+will win. With a similar substitution and procedure we could also estimate the
+probabilities that it will be a nasty day and the Commanders will lose, and a
+nice day and the Commanders will lose. The sum of these probabilities should
+come close to unity, because the sum includes all the possible outcomes. But it
+will not *exactly* equal unity because of what we call "sampling variation" or
+"sampling error."
 
 Please notice that each trial of the procedure begins with the same numbers of
 balls in the buckets as the previous trial. That is, you must replace the
@@ -715,40 +970,243 @@ probability sought.
 
 OR
 
-1.  Put slips with the numbers "1," "1," "2," and "2" in a hat, or in an
-    array on a computer named `N`.
-2.  Shuffle the slips or the array
-3.  Take the first number in the hat or array and store it
-    someplace — perhaps in a location called `A`.
-4.  Take the second number and store it in `B`.
-5.  Subtract the numbers in `A` and `B`. If the result is 0, record "Y,"
-    otherwise "N."
-6.  Repeat (1-5) 10000 times, and count the proportion of "Y's." That
+1.  Put slips with the numbers "1," "1," "2," and "2" in a hat, or in {{< var
+    an_array >}} named `N` on a computer.
+2.  Shuffle the slips of paper by shaking the hat or shuffling the {{< var
+    array >}} (of which more below).
+3.  Take two slips of paper from the hat or from `N`, to get two numbers.
+4.  Call the first number you selected `A` and the second `B`.
+5.  Are `A` and `B` the same?  If so, record "Yes" otherwise "No".
+6.  Repeat (2-5) 10000 times, and count the proportion of "Yes" results. That
     proportion equals the probability we seek to estimate.
 
-<!---
-The problem with writing code for this is that we need to introduce sampling with and without replacement.
+Before we proceed to do this procedure in {{< var lang >}}, we need a command to *shuffle* {{< var an_array >}}.
 
-In Python:
+## Shuffling with [`sample`]{.r}[`rnd.permuted`]{.python} {#sec-shuffling}
 
-rnd.choice(cards)  # replace=True default
-rnd.choice(cards, replace=False)
+In the recipe above, the {{< var array >}} `N` has four values:
 
-or, I guess, just use:
+```{python, opts.label="py_ed"}
+# Numbers representing the slips in the hat.
+N = np.array([1, 1, 2, 2])
+```
 
-rnd.permute(cards)
+```{r, opts.label="r_ed"}
+N = c(1, 1, 2, 2)
+```
 
-In which case - we could introduce `permute` here, where we would still be using `sample` in the R case.
+For the physical simulation, we specified that we would shuffle the slips of paper with these numbers, meaning that we would jumble them up into a random order.  When we have done this, we will select two slips — say the first two — from the shuffled slips.
 
-In R:
+As we will be discussing more in various places, this shuffle-then-draw
+procedure is also called *resampling without replacement*.   The *without
+replacement* idea refers to the fact that, after shuffling, we take a first
+virtual slip of paper from the shuffled {{< var array >}}, and then a second —
+but we do not replace the first slip of paper into the
+shuffled {{< var array >}} before drawing the second.  For example, say I drew
+a "1" from `N` for the first value.  If I am sampling *without replacement*
+then, when I draw the next value, the candidates I am choosing from are now
+"1", "2" and "2", because I have removed the "1" I got as the first value.  If
+I had instead been sampling *with replacement*, then I would put back the "1"
+I had drawn, and would draw the second sample from the full set of "1", "1",
+"2", "2".
 
-sample(cards, replace=TRUE)  # replace=FALSE default
-sample(cards)
--->
+::: r
+In fact we can can use R's `sample` function to shuffle any vector.  The
+*default* behavior of `sample` is to sample *without replacement*.  Up until
+now we have always told R to change that default behavior, using the
+`replace=TRUE` argument to `sample`.  `replace=TRUE` tells `sample` to sample
+*with replacement*.  Now we want to sample *without replacement*, so we leave
+out `replace=TRUE` to let sample do its default sampling, without
+replacement. That is, when we do not specify `replace=`, R assumes
+`replace=FALSE` — sampling without replacement.
+
+```{r opts.label="r_ed"}
+# The vector N, shuffled into a random order.
+# Note that "sample" *by default*, samples without replacement.
+# When we ask for size=4, we are asking for a sample that is the same
+# size as the original vector, and so, this will be the original vector
+# with a random reordering.
+shuffled <- sample(N, size=4)
+# The "slips" are now in random order.
+shuffled
+```
+
+And in fact, if you omit the `size=` argument to `sample`, it will assume you
+mean the size to be the same size as the input array — in this case, it will
+assume `size=length(N)` and therefore `size=4`.  So we can get the same effect
+of a reordered (shuffled) vector by omitting both `size=` and `replace=`:
+
+```{r opts.label="r_ed"}
+# The vector N, shuffled into a random order (the same procedure as the chunk
+# above).
+shuffled <- sample(N)
+# The "slips" are now in random order.
+shuffled
+```
+:::
+
+::: python
+You can use `rnd.permuted` to shuffle an array into a random order.
+
+Like `rnd.choice`, `rnd.permuted` is a function (actually, a method) of `rnd`, that takes an array as input, and produces a version of the array, where the elements are in random order. 
+
+```{python opts.label="py_ed"}
+# The array N, shuffled into a random order.
+shuffled = rnd.permuted(N)
+# The "slips" are now in random order.
+shuffled
+```
+
+See @sec-shuffling-deck for some more discussion of shuffling and sampling
+without replacement.
+
+## Code answers to the cards and pennies problem
+
+::: {.notebook name="cards_pennies" title="Cards and pennies"}
+
+::: nb-only
+An answer for the following puzzle: "... shuffle a packet of four cards —
+two red, two black — and deal them face down in a row. Two cards are picked at
+random, say by placing a penny on each. What is the probability that those two
+cards are the same color?"
+:::
+
+```{python, opts.label="py_ed"}
+import numpy as np
+rnd = np.random.default_rng()
+```
+
+```{python, opts.label="py_ed"}
+# Numbers representing the slips in the hat.
+N = np.array([1, 1, 2, 2])
+
+# An array in which we will store the result of each trial.
+z = np.repeat(['No result yet'], 10000)
+
+for i in range(10000):
+    # Shuffle the numbers in N into a random order.
+    shuffled = rnd.permuted(N)
+
+    A = shuffled[0]  # The first slip from the shuffled array.
+    B = shuffled[1]  # The second slip from the shuffled array.
+
+    # Set the result of this trial.
+    if A == B:
+        z[i] = 'Yes'
+    else:
+        z[i] = 'No'
+
+# How many times did we see "Yes"?
+k = np.sum(z == 'Yes')
+
+# The proportion.
+kk = k / 10000
+
+print(kk)
+```
+
+```{r, opts.label="r_ed"}
+# Numbers representing the slips in the hat.
+N <- c(1, 1, 2, 2)
+
+# An array in which we will store the result of each trial.
+z <- rep('No result yet', 10000)
+
+for (i in 1:10000) {
+    # sample, used in this way, has the effect of shuffling the vector
+    # into a random order.  See the section linked above for an explanation.
+    shuffled <- sample(N)
+
+    A <- shuffled[1]  # The first slip from the shuffled array.
+    B <- shuffled[2]  # The second slip from the shuffled array.
+
+    # Set the result of this trial.
+    if (A == B) {
+        z[i] <- 'Yes'
+    } else {
+        z[i] <- 'No'
+    }
+}  # End of the loop.
+
+# How many times did we see "Yes"?
+k <- sum(z == 'Yes')
+
+# The proportion.
+kk <- k / 10000
+
+message(kk)
+```
 
 Now let's play the game differently, first picking one card and *putting it
 back and shuffling* before picking a second card. What are the results now? You
-can try it with the cards, or with a computer program similar to the above.
+can try it with the cards, but here is another program, similar to the last, to run that variation.
+
+```{python, opts.label="py_ed"}
+# The cards / pennies game - but replacing the slip and re-shuffling, before
+# drawing again.
+
+# An array in which we will store the result of each trial.
+z = np.repeat(['No result yet'], 10000)
+
+for i in range(10000):
+    # Shuffle the numbers in N into a random order.
+    first_shuffle = rnd.permuted(N)
+    # Draw a slip of paper.
+    A = first_shuffle[0]  # The first slip.
+
+    # Shuffle again (with all the slips).
+    second_shuffle = rnd.permuted(N)
+    # Draw a slip of paper.
+    B = second_shuffle[0]  # The second slip.
+
+    # Set the result of this trial.
+    if A == B:
+        z[i] = 'Yes'
+    else:
+        z[i] = 'No'
+
+# How many times did we see "Yes"?
+k = np.sum(z == 'Yes')
+
+# The proportion.
+kk = k / 10000
+
+print(kk)
+```
+
+```{r, opts.label="r_ed"}
+# An array in which we will store the result of each trial.
+z <- rep('No result yet', 10000)
+
+for (i in 1:10000) {
+    # Shuffle the numbers in N into a random order.
+    first_shuffle <- sample(N)
+    # Draw a slip of paper.
+    A <- first_shuffle[1]  # The first slip.
+
+    # Shuffle again (with all the slips).
+    second_shuffle <- sample(N)
+    # Draw a slip of paper.
+    B <- second_shuffle[1]  # The second slip.
+
+    # Set the result of this trial.
+    if (A == B) {
+        z[i] <- 'Yes'
+    } else {
+        z[i] <- 'No'
+    }
+}  # End of the loop.
+
+# How many times did we see "Yes"?
+k <- sum(z == 'Yes')
+
+# The proportion.
+kk <- k / 10000
+
+message(kk)
+```
+
+:::
 
 Why do you get different results in the two cases? Let's ask the question
 differently: What is the probability of first picking a black card? Clearly, it

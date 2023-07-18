@@ -64,16 +64,16 @@ a
 ```
 
 ```{r opts.label="r_ed"}
-# Get 1 random numbers from 0 through 99
-# replace=TRUE is redundant here, but we leave it for consistency.
+# Get 1 random number from 0 through 99
+# replace=TRUE is redundant here (why?), but we leave it for consistency.
 a <- sample(0:99, 1, replace=TRUE)
 
 # Show the result
 a
 ```
 
-After that, we have to unpack our labeling of 0 through 25 as being "black" and
-26 through 99 as being "white".  We might do that like this:
+After that, we have to unpack our labeling of 0 through 25 as being "black"
+and 26 through 99 as being "white".  We might do that like this:
 
 ```{python opts.label="py_ed"}
 this_juror_is_black = a < 26
@@ -447,7 +447,7 @@ middle_name == 'Lincoln'
 middle_name == 'Lincoln'
 ```
 
-## Repeating elements
+## Repeating elements {#sec-repeating}
 
 Now let us go back to the problem of selecting black and white jurors.
 
@@ -523,6 +523,32 @@ one_jury <- sample(jury_pool, 12, replace=TRUE)
 one_jury
 ```
 
+::: {.callout-note}
+## Using the `size` argument to {{< var sample >}}
+
+In the code above, we have specified the *size* of the sample we want (12)
+with the second argument to {{< var sample >}}.  As you saw in
+@sec-named-arguments, we can also give names to the function arguments, in
+this case, to make it clearer what we mean by "12" in the code above.  In
+fact, from now on, that is what we will do; we will specify the *size* of our
+sample by using the *name* for the function argument to {{< var sample >}} —
+`size` — like this:
+
+```{python opts.label="py_ed"}
+# Select 12 jurors at random from the black / white pool.
+# Specify the sample size using the "size" named argument.
+one_jury = rnd.choice(jury_pool, size=12)
+one_jury
+```
+
+```{r opts.label="r_ed"}
+# Select one juror at random from the black / white pool.
+# Specify the sample size using the "size" named argument.
+one_jury <- sample(jury_pool, size=12, replace=TRUE)
+one_jury
+```
+:::
+
 We can use `==` on the {{< var array >}} to get {{< var true >}} values where
 the juror was "black" and {{< var false >}} values otherwise:
 
@@ -555,14 +581,14 @@ Putting that all together, this is our new procedure to select one jury and
 count the number of black jurors:
 
 ```{python opts.label="py_ed"}
-one_jury = rnd.choice(jury_pool, 12)
+one_jury = rnd.choice(jury_pool, size=12)
 are_black = one_jury == 'black'
 n_black = np.sum(are_black)
 n_black
 ```
 
 ```{r opts.label="r_ed"}
-one_jury <- sample(jury_pool, 12, replace=TRUE)
+one_jury <- sample(jury_pool, size=12, replace=TRUE)
 are_black <- one_jury == 'black'
 n_black <- sum(are_black)
 n_black
@@ -573,13 +599,13 @@ line:
 
 ```{python opts.label="py_ed"}
 # The same as above, but on one line.
-n_black = np.sum(rnd.choice(jury_pool, 12) == 'black')
+n_black = np.sum(rnd.choice(jury_pool, size=12) == 'black')
 n_black
 ```
 
 ```{r opts.label="r_ed"}
 # The same as above, but on one line.
-n_black = sum(sample(jury_pool, 12, replace=TRUE) == 'black')
+n_black = sum(sample(jury_pool, size=12, replace=TRUE) == 'black')
 n_black
 ```
 
@@ -676,13 +702,13 @@ replacement*, and it looks like this:
 ```{python opts.label="py_ed"}
 # Take a sample of 12 jurors from the panel *with replacement*
 # With replacement is the default for `rnd.choice`.
-strange_jury = rnd.choice(jury_panel, 12)
+strange_jury = rnd.choice(jury_panel, size=12)
 strange_jury
 ```
 
 ```{r opts.label="r_ed"}
 # Take a sample of 12 jurors from the panel *with replacement*
-strange_jury <- sample(jury_panel, 12, replace=TRUE)
+strange_jury <- sample(jury_panel, size=12, replace=TRUE)
 strange_jury
 ```
 
@@ -710,20 +736,46 @@ without replacement. Whether you omit the `replace` argument, or specify
 
 ```{r opts.label="r_ed"}
 # Take a sample of 12 jurors from the panel *with replacement*
-ok_jury <- sample(jury_panel, 12)  # replace=FALSE is the default.
+# replace=FALSE is the default for sample.
+ok_jury <- sample(jury_panel, size=12)
 ok_jury
 ```
+
+::: {.callout-note}
+## Comments at the end of lines
+
+You have already seen comment lines.  These are lines beginning with `#`, to signal to {{< var lang >}} that the rest of the line is text for humans to read, but {{< var lang >}} to ignore.
+
+```{python, opts.label="py_ed"}
+# This is a comment.  Python ignores this line.
+```
+
+```{r, opts.label="r_ed"}
+# This is a comment.  R ignores this line.
+```
+
+You can also put comments at the *end of code lines*, by finishing the code part of the line, and then putting a `#`, followed by more text.  Again, {{< var lang >}} will ignore everything after the `#` as a text for humans, but not for {{< var lang >}}.
+
+```{python, opts.label="py_ed"}
+print('Hello')  # This is a comment at the end of the line.
+```
+
+```{r, opts.label="r_ed"}
+message('Hello')  # This is a comment at the end of the line.
+```
+
+:::
 
 To finish the procedure for simulating a single jury selection, we count the
 number of black jurors:
 
 ```{python opts.label="py_ed"}
-n_black = np.sum(ok_jury == 'black')
+n_black = np.sum(ok_jury == 'black')  # How many black jurors?
 n_black
 ```
 
 ```{r opts.label="r_ed"}
-n_black <- sum(ok_jury == 'black')
+n_black <- sum(ok_jury == 'black')  # How many black jurors?
 n_black
 ```
 
@@ -734,8 +786,8 @@ Now we have the procedure for one simulated trial, here is the procedure for
 counts = np.zeros(10000)
 for i in np.arange(10000):
     # Single trial procedure
-    jury = rnd.choice(jury_panel, 12, replace=False)
-    n_black = np.sum(jury == 'black')
+    jury = rnd.choice(jury_panel, size=12, replace=False)
+    n_black = np.sum(jury == 'black')  # How many black jurors?
     # Store the result
     counts[i] = n_black
 
@@ -750,8 +802,8 @@ print(p_zero_black)
 counts <- numeric(10000)
 for (i in 1:10000) {
     # Single trial procedure
-    jury <- sample(jury_panel, 12)
-    n_black <- sum(jury == 'black')
+    jury <- sample(jury_panel, size=12)  # replace=FALSE is the default.
+    n_black <- sum(jury == 'black')  # How many black jurors?
     # Store the result
     counts[i] <- n_black
 }

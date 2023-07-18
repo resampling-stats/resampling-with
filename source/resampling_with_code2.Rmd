@@ -166,7 +166,7 @@ rnd = np.random.default_rng()
 zero_thru_99 = np.arange(100)
 
 # Get 12 random numbers from 0 through 99
-a = rnd.choice(zero_thru_99, 12)
+a = rnd.choice(zero_thru_99, size=12)
 
 # Show the result
 a
@@ -174,7 +174,7 @@ a
 
 ```{r, opts.label="r_ed"}
 # Get 12 random numbers from 0 through 99
-a <- sample(0:99, 12, replace=TRUE)
+a <- sample(0:99, size=12, replace=TRUE)
 
 # Show the result
 a
@@ -210,7 +210,7 @@ rnd = np.random.default_rng()
 zero_thru_99 = np.arange(100)
 
 # Get 12 random numbers from 0 through 99
-a = rnd.choice(zero_thru_99, 12)
+a = rnd.choice(zero_thru_99, size=12)
 
 # How many numbers are greater than 74?
 b = np.sum(a > 74)
@@ -221,7 +221,7 @@ b
 
 ```{r, opts.label="r_ed"}
 # Get 12 random numbers from 0 through 99
-a <- sample(0:99, 12, replace=TRUE)
+a <- sample(0:99, size=12, replace=TRUE)
 # How many are greater than 74?
 b <- sum(a > 74)
 # Show the result
@@ -419,7 +419,7 @@ give different counts.
 rnd = np.random.default_rng()
 zero_thru_99 = np.arange(0, 100)
 # Get 12 random numbers from 0 through 99
-a = rnd.choice(zero_thru_99, 12)
+a = rnd.choice(zero_thru_99, size=12)
 # How many numbers are greater than 74?
 b = np.sum(a > 74)
 # Show the result
@@ -428,7 +428,7 @@ b
 
 ```{r, opts.label="r_ed"}
 # Get 12 random numbers from 0 through 99
-a <- sample(0:99, 12, replace=TRUE)
+a <- sample(0:99, size=12, replace=TRUE)
 # How many are greater than 74?
 b <- sum(a == 9)
 # Show the result
@@ -459,18 +459,18 @@ first three trials with:
 
 ```{python, opts.label="py_ed"}
 # First trial
-a = rnd.choice(zero_thru_99, 12)
+a = rnd.choice(zero_thru_99, size=12)
 b = np.sum(a > 74)
 # Store the result at the first position in z
 # Remember, the first position is offset 0.
 z[0] = b
 # Second trial
-a = rnd.choice(zero_thru_99, 12)
+a = rnd.choice(zero_thru_99, size=12)
 b = np.sum(a > 74)
 # Store the result at the second position in z
 z[1] = b
 # Third trial
-a = rnd.choice(zero_thru_99, 12)
+a = rnd.choice(zero_thru_99, size=12)
 b = np.sum(a > 74)
 # Store the result at the third position in z
 z[2] = b
@@ -480,19 +480,19 @@ z[2] = b
 
 ```{r, opts.label="r_ed"}
 # First trial
-a <- sample(0:99, 12, replace=TRUE)
+a <- sample(0:99, size=12, replace=TRUE)
 b <- sum(a == 9)
 # Store the result at the first position in z
 z[1] <- b
 
 # Second trial
-a <- sample(0:99, 12, replace=TRUE)
+a <- sample(0:99, size=12, replace=TRUE)
 b <- sum(a == 9)
 # Store the result at the second position in z
 z[2] <- b
 
 # Third trial
-a <- sample(0:99, 12, replace=TRUE)
+a <- sample(0:99, size=12, replace=TRUE)
 b <- sum(a == 9)
 # Store the result at the third position in z
 z[3] <- b
@@ -838,7 +838,7 @@ Here is the code we worked out above, to implement a single trial:
 rnd = np.random.default_rng()
 zero_thru_99 = np.arange(0, 100)
 # Get 12 random numbers from 0 through 99
-a = rnd.choice(zero_thru_99, 12)
+a = rnd.choice(zero_thru_99, size=12)
 # How many numbers are greater than 74?
 b = np.sum(a > 74)
 # Show the result
@@ -847,7 +847,7 @@ b
 
 ```{r, opts.label="r_ed"}
 # Get 12 random numbers from 0 through 99
-a <- sample(0:99, 12, replace=TRUE)
+a <- sample(0:99, size=12, replace=TRUE)
 # How many are greater than 74?
 b <- sum(a == 9)
 # Show the result
@@ -875,7 +875,7 @@ z = np.zeros(50)
 # Repeat the trial procedure 50 times.
 for i in np.arange(0, 50):
     # Get 12 random numbers from 0 through 99
-    a = rnd.choice(zero_through_99, 12)
+    a = rnd.choice(zero_through_99, size=12)
     # How many numbers are greater than 74?
     b = np.sum(a > 74)
     # Store the result at the next position in the "z" array.
@@ -894,7 +894,7 @@ z <- numeric(50)
 # Repeat the trial procedure 50 times.
 for (i in 1:50) {
     # Get 12 random numbers from 0 through 99
-    a <- sample(0:99, 12, replace=TRUE)
+    a <- sample(0:99, size=12, replace=TRUE)
     # How many are greater than 74?
     b <- sum(a > 74)
     # Store the result at the next position in the "z" vector.
@@ -1004,7 +1004,7 @@ zero_through_99 = np.arange(0, 100)
 # 10,000 trials.
 z = np.zeros(10000)
 for i in np.arange(0, 10000):
-    a = rnd.choice(zero_through_99, 12)
+    a = rnd.choice(zero_through_99, size=12)
     b = np.sum(a > 74)
     z[i] = b
 all_white = z == 0
@@ -1017,7 +1017,7 @@ p
 # Full simulation procedure, with 10,000 trials.
 z <- numeric(10000)
 for (i in 1:10000) {
-    a <- sample(0:99, 12, replace=TRUE)
+    a <- sample(0:99, size=12, replace=TRUE)
     b <- sum(a > 74)
     z[i] = b
 }
