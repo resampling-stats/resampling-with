@@ -101,13 +101,13 @@ make clean && make python-book
 make clean && make r-book
 ```
 
+from the top-level repository directory.   If this doesn't work, make an [Issue
+on Github](https://github.com/resampling-stats/resampling-with/issues).
+
 Be careful - and note the `make clean`s above - it seems that caching can trip
 up the build.  In general, try `make clean` if you run into puzzling build
 problems with data frames not defined, that are clearly defined, or missing
 imports that are not missing.
-
-from the top-level repository directory.   If this doesn't work, make an [Issue
-on Github](https://github.com/resampling-stats/resampling-with/issues).
 
 After you've confirmed you can build both the Python and the R edition, you may
 want to work on only one of these editions — say the Python book, and clean up
