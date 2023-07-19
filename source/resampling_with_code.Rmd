@@ -327,7 +327,7 @@ See @fig-round_function_pl for an illustration of
 [`round`]{.r}[`np.round`]{.python} as a production line.
 
 ```{r fig-round_function_pl, echo=FALSE, fig.align='center', fig.cap="The `round` function as a production line"}
-include_svg('images/round_function_pl.svg')
+include_svg('diagrams/round_function_pl.svg')
 ```
 
 In the next few code {{< var cell >}}s, you see examples where
@@ -372,7 +372,7 @@ round(3.1415, 2)
 ```
 
 ```{r fig-round_ndigits_pl, echo=FALSE, fig.align='center', fig.cap="`round` with optional arguments specifying number of digits"}
-include_svg('images/round_function_ndigits_pl.svg')
+include_svg('diagrams/round_function_ndigits_pl.svg')
 ```
 
 Notice that the second argument — here 2 — is *optional*.  We only have to send
@@ -429,11 +429,11 @@ round(3.1415, digits=2)
 ```
 
 ```{r fig-round_function_named, echo=FALSE, fig.align='center', fig.cap="The `round` function with argument names"}
-include_svg('images/round_function_named.svg')
+include_svg('diagrams/round_function_named.svg')
 ```
 
 ```{r fig-np_round_function_named, echo=FALSE, fig.align='center', fig.cap="The `np.round` function with argument names"}
-include_svg('images/np_round_function_named.svg')
+include_svg('diagrams/np_round_function_named.svg')
 ```
 
 Here {{< var lang >}} sees the *first* argument, as before, and assumes that it
@@ -739,13 +739,13 @@ example run of the {{< var sample >}} function (production line).
 
 ::: python
 ```{r fig-rnd_choice_pl, echo=FALSE, fig.align='center', fig.cap="Example run of the `rnd.choice` function"}
-include_svg('images/rnd_choice_pl.svg')
+include_svg('diagrams/rnd_choice_pl.svg')
 ```
 :::
 
 ::: r
 ```{r fig-sample_pl, echo=FALSE, fig.align='center', fig.cap="Example run of the `sample` function"}
-include_svg('images/sample_pl.svg')
+include_svg('diagrams/sample_pl.svg')
 ```
 :::
 
