@@ -779,12 +779,12 @@ message('Birth year of author position ', n, ' is ', year)
 
 ::: python
 
-### `range` in Python `for` loops
+### `range` in Python `for` loops {#sec-for-range}
 
 So far we have used `np.arange` to give us the sequence of integers that we
-feed into the `for` loop.  But, as you saw in @sec-python-range, we can also
-get a range of numbers from Python's `range` function.  `range` is a common and
-useful alternative way to provide a range of numbers to a `for` loop.
+feed into the `for` loop.  But — as you saw in @sec-python-range — we can also
+get a range of numbers from Python's `range` function.  `range` is a common
+and useful alternative way to provide a range of numbers to a `for` loop.
 
 You have just seen how we would use `np.arange` to send the numbers 0, 1, 2,
 and 3 to a `for` loop, in the example above, repeated here:
