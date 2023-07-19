@@ -1,3 +1,5 @@
+.PHONY: build-init python-book r-book website github
+
 WEB_DIR=_www
 SOURCE_DIR=source
 PYTHON_BOOK_DIR=python-book
@@ -5,16 +7,36 @@ R_BOOK_DIR=r-book
 PYTHON ?= python
 PIP_INSTALL_CMD ?= $(PYTHON) -m pip install
 
-landing-page:
+_submodule-update:
+	git submodule update --init --recursive
+
+_r-build-requirements:
+	Rscript -e "source('scripts/install_r_requirements.R')"
+
+_python-build-requirements:
+	$(PIP_INSTALL_CMD) -r build-requirements.txt
+
+build-init:  ## Install build dependencies
+build-init: _submodule-update _r-build-requirements _python-build-requirements
+
+_landing-page:
 	cd website && make landing-page
 
-website: python-all r-all landing-page
+python-book:  ## Build the Python version of the book
+	cd $(SOURCE_DIR) && python generate-ninja.py && ninja clean && ninja python-book
+
+r-book:  ## Build the R version of the book
+	cd $(SOURCE_DIR) && python generate-ninja.py && ninja clean && ninja r-book
+
+website:  ## Build the book (R/Python) as well as the website
+website: python-book r-book _landing-page
 	mkdir -p $(WEB_DIR)
 	cp website/*.html $(WEB_DIR)
 	cp requirements.txt $(WEB_DIR)
 	cp -r $(PYTHON_BOOK_DIR) $(WEB_DIR)
 	cp -r $(R_BOOK_DIR) $(WEB_DIR)
 
+github:   ## Publish the website to GitHub
 github: website
 	ghp-import -n $(WEB_DIR)
 	git push origin gh-pages:gh-pages --force
@@ -24,28 +46,16 @@ github: website
 webclean:
 	rm -rf $(WEB_DIR)
 
-r-build-requirements:
-	Rscript -e "source('scripts/install_r_requirements.R')"
+_source-clean:
+	cd $(SOURCE_DIR) && ninja clean
 
-python-build-requirements:
-	$(PIP_INSTALL_CMD) -r build-requirements.txt
-
-submodule-update:
-	git submodule update --init --recursive
-
-build-init: submodule-update r-build-requirements python-build-requirements
-
-.PHONY: build-init
-
-clean: source-clean
+clean: _source-clean
 	rm -rf $(PYTHON_BOOK_DIR) $(R_BOOK_DIR)
 
-source-clean:
-	cd $(SOURCE_DIR) && make clean
-
-bibcheck: source/simon_refs.bib
-	# Obviously needs biber installed, which is not so on Travis-CI by default.
-	biber --tool source/simon_refs.bib
-
-%:
-	@$(MAKE) -C source $@
+.DEFAULT_GOAL := help
+help:
+	@sed \
+		-e '/^[a-zA-Z0-9_\-]*:.*##/!d' \
+		-e 's/:.*##\s*/:/' \
+		-e 's/^\(.\+\):\(.*\)/$(shell tput setaf 6)\1$(shell tput sgr0):\2/' \
+		$(MAKEFILE_LIST) | column -c2 -t -s :

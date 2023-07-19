@@ -1,0 +1,44 @@
+\033[1m\033[33mUsage: \033[97mninja [\033[1;36mOPTIONS\033[97m] [\033[36mTARGETS...\033[97m]\033[0m
+
+\033[90mBuild the book:\033[0m
+
+  ninja r-book
+  ninja r-book-pdf
+  ninja python-book
+  ninja python-book-pdf
+
+\033[90mBuild an individual chapter:\033[0m
+
+  ninja ../python-book/inference_intro.html
+  ninja ../r-book/inference_intro.html
+
+\033[90mClean cache files:\033[0m
+
+  ninja clean
+
+\033[3mBut if you want to rebuild from scratch, you'll also have to erase all
+built output:\033[0m
+
+  rm -rf ../python-book ../r-book
+
+\033[90mValidate the bibliography:\033[0m
+
+  ninja bibcheck
+
+\033[90mNinja options:\033[0m
+  --version      print ninja version ("1.11.1.git.kitware.jobserver-1")
+  -v, --verbose  show all command lines while building
+  --quiet        don't show progress status, just command output
+
+  -C DIR   change to DIR before doing anything else
+  -f FILE  specify input build file [default=build.ninja]
+
+  -j N     run N jobs in parallel (0 means infinity) [default=18 on this system]
+  -k N     keep going until N jobs fail (0 means infinity) [default=1]
+  -l N     do not start new jobs if the load average is greater than N
+  -n       dry run (don't run commands but act like they succeeded)
+
+  -d MODE  enable debugging (use '-d list' to list modes)
+  -t TOOL  run a subtool (use '-t list' to list subtools)
+    terminates toplevel options; further flags are passed to the tool
+  -w FLAG  adjust warnings (use '-w list' to list warnings)
