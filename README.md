@@ -21,15 +21,34 @@ into the `source` directory, and edit them there.
 
 ## Setup for editing and proofing
 
+### Create and switch to virtual environment
+
+Typically, you will want to install Python build dependencies in a [virtual environment](https://peps.python.org/pep-0405/).
+You can place such an environment anywhere you like. This is how to create it in `~/envs`:
+
+```
+mkdir ~/envs
+python -m venv ~/envs/resampling
+```
+
+### Install build dependencies
+
 ```{bash}
 export PIP_INSTALL_CMD="pip install"
 make build-init
 ```
 
-For a full build, you will also need the `rsvg-convert` program.   On Mac I (MB) installed that with:
+You will also need `rsvg-convert`, `inkscape`, and `pandoc`. On macOS,
+those can be installed with:
 
 ```
-brew install librsvg
+brew install librsvg inkscape pandoc
+```
+
+On Fedora, with:
+
+```
+sudo dnf install R-rsvg inkscape pandoc
 ```
 
 See [the Pandoc installation guide](https://pandoc.org/installing.html) for
@@ -82,17 +101,13 @@ Span elements for custom inline elements and blocks).
 
 # Writing and updating the text
 
-First follow the build instructions above.
+Follow the build instructions above.
 
-Activate your virtual environment for the book, if you are using one.  In my
-(MB's) case, I use [Virtualenvs](https://virtualenv.pypa.io) and
-[VirtualenvWrapper](https://virtualenvwrapper.readthedocs.io) to do this:
+Ensure that your virtual environment is activated:
 
 ```
-workon resampling-with
+source ~/envs/resampling-with/bin/activate
 ```
-
-This activates my installed virtualenv environment for the book.
 
 Make sure you can build the whole book in your current environment with:
 
@@ -344,6 +359,16 @@ See @tbl-pipe.
 
 See [Quarto tables](https://quarto.org/docs/authoring/tables.html)
 
+## Loading `.Rmd` files as Jupyter notebooks
+
+For this, you will need [jupytext](https://github.com/mwouts/jupytext):
+
+```
+pip install jupytext
+```
+
+Now, when you start `jupyterlab` in the source directory, you can
+right-click on an `.Rmd` file and "Open as notebook".
 
 ## More setup for Jupyter
 
