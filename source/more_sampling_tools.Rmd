@@ -257,7 +257,7 @@ But throwing dice is a little boring; we have to find the die, then throw it
 many times, and record the results.   Instead we can ask the computer to chose
 the doors at random.
 
-```{r eval=TRUE, echo=FALSE}
+```{r eval=TRUE}
 n_trials <- 25
 ```
 
@@ -273,7 +273,7 @@ to our original choice of door, and "No" otherwise.  The last column is
 "Switch wins". This has "Yes" if we win by switching doors, and "No"
 otherwise. See table @tbl-montyblank).
 
-```{python, echo=FALSE}
+```{python eval=True}
 # Need Python for random numbers that are predictable across platforms.
 import numpy as np
 import pandas as pd
@@ -354,7 +354,7 @@ wins.
 Table @tbl-montyfull is a version of table @tbl-montyblank for
 which we have filled in the blank columns using the logic above.
 
-```{r montyfull, echo=FALSE}
+```{r montyfull, eval=TRUE}
 knitr::kable(fdf,
   booktabs = TRUE,
   row.names = TRUE,
