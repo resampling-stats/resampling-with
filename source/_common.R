@@ -16,7 +16,9 @@ knitr::opts_chunk$set(
   fig.align = 'center',
   fig.width = 6,
   fig.asp = 0.618,  # 1 / phi
-  fig.show = "hold"
+  fig.show = "hold",
+  eval=NA,
+  echo=NA,
   # Do not enable Reticulate jupyter_compat mode for now, see:
   # https://github.com/rstudio/reticulate/issues/1387
   # jupyter_compat = TRUE  # Reticulate enable - only show repr for last expr
@@ -76,3 +78,21 @@ get_var = function(name) {
   }
   return (get(name))
 }
+
+# See: https://stackoverflow.com/questions/76732162/is-there-a-way-to-detect-the-chunk-language-when-setting-knitr-chunk-options
+knitr::opts_hooks$set(
+  echo = function(options) {
+    if (!(is.na(options$echo))) {
+        return (options)
+    }
+    options$echo <- (options$engine == "python" & is_py_ed) | (options$engine == "R" & is_r_ed)
+    return(options)
+  },
+  eval = function(options) {
+    if (!(is.na(options$eval))) {
+        return (options)
+    }
+    options$eval <- (options$engine == "python" & is_py_ed) | (options$engine == "R" & is_r_ed)
+    return(options)
+  }
+)
