@@ -648,7 +648,10 @@ k = 10000
 z = np.zeros(k)
 
 for i in range(k):
-    sample = rng.choice(data, 18)
+    sample = rng.choice(data, size=18, replace=True)
+    # In the line above, replace=True is the default, so we could leave it out to
+    # get the same result.  We added it just to emphasize that bootstrap samples
+    # are samples _with_ replacement.
     z[i] = np.median(sample)
 
 plt.hist(z, bins='auto')
