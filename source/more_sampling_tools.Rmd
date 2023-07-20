@@ -209,7 +209,7 @@ message(n_golds / (n_golds + n_silvers))
 :::
 
 
-### The Monty Hall problem
+## The Monty Hall problem
 
 The Monty Hall Problem is a puzzle in probability that is famous for its
 deceptive simplicity.  It has its own long Wikipedia page:
@@ -273,7 +273,7 @@ to our original choice of door, and "No" otherwise.  The last column is
 "Switch wins". This has "Yes" if we win by switching doors, and "No"
 otherwise. See table @tbl-montyblank).
 
-```{python eval=TRUE}
+```{python eval=TRUE, echo=FALSE}
 # Need Python for random numbers that are predictable across platforms.
 import numpy as np
 import pandas as pd
@@ -293,7 +293,7 @@ df['Stay wins'] = ''
 df['Switch wins'] = ''
 ```
 
-```{r montyblank, eval=TRUE}
+```{r montyblank, eval=TRUE, echo=FALSE}
 blank_df <- tibble::as_tibble(py$df)
 knitr::kable(blank_df,
   booktabs = TRUE,
@@ -303,7 +303,7 @@ knitr::kable(blank_df,
 )
 ```
 
-```{r eval=TRUE}
+```{r eval=TRUE, echo=FALSE}
 # Do the calculation
 fdf <- blank_df
 # Convert Monty opens column to integer, for car door number.
