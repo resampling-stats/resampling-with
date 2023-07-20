@@ -257,7 +257,7 @@ But throwing dice is a little boring; we have to find the die, then throw it
 many times, and record the results.   Instead we can ask the computer to chose
 the doors at random.
 
-```{r eval=TRUE}
+```{r eval=TRUE, echo=FALSE}
 n_trials <- 25
 ```
 
@@ -354,7 +354,7 @@ wins.
 Table @tbl-montyfull is a version of table @tbl-montyblank for
 which we have filled in the blank columns using the logic above.
 
-```{r montyfull, eval=TRUE}
+```{r montyfull, eval=TRUE, echo=FALSE}
 knitr::kable(fdf,
   booktabs = TRUE,
   row.names = TRUE,
