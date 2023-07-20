@@ -361,14 +361,15 @@ See [Quarto tables](https://quarto.org/docs/authoring/tables.html)
 
 ## Loading `.Rmd` files as Jupyter notebooks
 
-For this, you will need [jupytext](https://github.com/mwouts/jupytext):
+Install Jupyter:
 
 ```
-pip install jupytext
+pip install jupyter
 ```
 
-Now, when you start `jupyterlab` in the source directory, you can
-right-click on an `.Rmd` file and "Open as notebook".
+Start `jupyterlab` in the source directory, right-click on an `.Rmd`
+file, and "Open as notebook".  If this option does not appear, ensure that
+Jupytext is installed.
 
 ## More setup for Jupyter
 
