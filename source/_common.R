@@ -82,13 +82,13 @@ get_var = function(name) {
 # See: https://stackoverflow.com/questions/76732162/is-there-a-way-to-detect-the-chunk-language-when-setting-knitr-chunk-options
 knitr::opts_hooks$set(
   echo = function(options) {
-    if (!is.null(options$echo)) {
+    if (is.null(options$echo)) {
       options$echo <- (options$engine == "python" & is_py_ed) | (options$engine == "R" & is_r_ed)
     }
     return (options)
   },
   eval = function(options) {
-    if (!is.null(options$eval)) {
+    if (is.null(options$eval)) {
       options$eval <- (options$engine == "python" & is_py_ed) | (options$engine == "R" & is_r_ed)
     }
     return (options)
