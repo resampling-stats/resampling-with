@@ -211,7 +211,7 @@ We have already discussed what we mean by *random* in
 We will be asking the computer to generate many random numbers.  So, before we
 start, we again import NumPy and get its *random number generator*:
 
-```{python, opts.label="py_ed"}
+```{python}
 import numpy as np
 
 # Ask for NumPy's default random number generator and name
@@ -229,13 +229,13 @@ We have already seen the idea that {{< var lang >}} has *values* that are
 individual numbers.   Remember, a *variable* is a *named value*.  Here we
 attach the name `a` to the value 1.
 
-```{python, opts.label="py_ed"}
+```{python}
 a = 1
 # Show the value of "a"
 a
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 a <- 1
 # Show the value of "a"
 a
@@ -252,14 +252,14 @@ important idea for us is that a *vector* stores a *sequence* of numbers.
 Here we make a {{< var array >}} that contains the 10 numbers we will
 select from:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Make an array of numbers, store with the name "some_numbers".
 some_numbers = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 # Show the value of "some_numbers"
 some_numbers
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Make a vector of numbers, store with the name "some_numbers".
 some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 # Show the value of "some_numbers"
@@ -286,7 +286,7 @@ For example, consider the {{< var lang >}} *function* [`round`]{.r}[`np.round`]{
 ::: python
 :::
 
-```{python, opts.label="py_ed"}
+```{python}
 # We load the Numpy library so we have access to the Numpy functions.
 import numpy as np
 ```
@@ -334,22 +334,22 @@ In the next few code {{< var cell >}}s, you see examples where
 [`round`]{.r}[`np.round`]{.python} takes in a not-integer number, as an
 *argument*, and sends back the nearest integer as the *return value*:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Put in 3.2, round sends back 3.
 np.round(3.2)
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # Put in -2.7, round sends back -3.
 np.round(-2.7)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Put in 3.2, round sends back 3.
 round(3.2)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Put in -2.7, round sends back -3.
 round(-2.7)
 ```
@@ -359,13 +359,13 @@ argument (component).  You can send `range` the number of digits you want to
 round to, after the number of you want it to work on, like this (see
 @fig-round_ndigits_pl):
 
-```{python, opts.label="py_ed"}
+```{python}
 # Put in 3.1415, and the number of digits to round to (2).
 # round sends back 3.14
 np.round(3.1415, 2)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Put in 3.1415, and the number of digits to round to (2).
 # round sends back 3.14
 round(3.1415, 2)
@@ -398,13 +398,13 @@ specifying with its name, instead of just relying on its position.
 If we aren't using the argument names, we call the round function as we did
 above:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Put in 3.1415, and the number of digits to round to (2).
 # round sends back 3.14
 np.round(3.1415, 2)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Put in 3.1415, and the number of digits to round to (2).
 # round sends back 3.14
 round(3.1415, 2)
@@ -416,13 +416,13 @@ the number of decimal places it should round to.   But, we can also specify the
 argument using its name, like this (see
 [@fig-round_function_named]{.r}[@fig-np_round_function_named]{.python}):
 
-```{python, opts.label="py_ed"}
+```{python}
 # Put in 3.1415, and the number of digits to round to (2).
 # Use the name of the number-of-decimals argument for clarity:
 np.round(3.1415, decimals=2)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Put in 3.1415, and the number of digits to round to (2).
 # Use the name of the number-of-decimals argument for clarity:
 round(3.1415, digits=2)
@@ -442,12 +442,12 @@ is the number we want to round.  Then it sees the second, named argument —
 
 In fact, we could even specify *both* arguments by name, like this:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Put in 3.1415, and the number of digits to round to (2).
 np.round(a=3.1415, decimals=2)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Put in 3.1415, and the number of digits to round to (2).
 # Name both arguments.
 round(x=3.1415, digits=2)
@@ -480,14 +480,14 @@ notebook interface.
 
 Now let us return to the variable `some_numbers` that we created above:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Make an array of numbers, store with the name "some_numbers".
 some_numbers = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 # Show the value of "some_numbers"
 some_numbers
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Make a vector of numbers, store with the name "some_numbers".
 some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 # Show the value of "some_numbers"
@@ -516,7 +516,7 @@ or 4 or 5.
 Creating ranges of numbers is so common that {{< var lang >}} has a [special
 syntax]{.r}[standard Numpy function `np.arange`]{.python} to do that.
 
-```{python, opts.label="py_ed"}
+```{python}
 # An array containing all the numbers from 0 through 9.
 some_numbers = np.arange(0, 10)
 some_numbers
@@ -534,7 +534,7 @@ at 0, up to, but not including 10".
 
 Like `np.round`, the arguments to `np.arange` also have names, so, we could also write:
 
-```{python, opts.label="py_ed"}
+```{python}
 # An array containing all the numbers from 0 through 9.
 # Now using named arguments.
 some_numbers = np.arange(start=0, stop=10)
@@ -544,7 +544,7 @@ some_numbers
 So far, we have sent `arange` two arguments, but we can also send just one
 argument, like this:
 
-```{python, opts.label="py_ed"}
+```{python}
 # An array containing all the numbers from 0 through 9.
 some_integers = np.arange(10)
 some_integers
@@ -556,7 +556,7 @@ value of 0.
 
 Again, if we wanted, we could send this argument by name:
 
-```{python, opts.label="py_ed"}
+```{python}
 # An array containing all the numbers from 0 through 9.
 # Specify the stop value by explicit name, for clarity.
 some_integers = np.arange(stop=10)
@@ -569,7 +569,7 @@ some_integers
 R allows you to write a colon (`:`) between two values, to mean that you want a *vector* (sequence) that is all the integers from the first value (before the colon) *through* the second value (after the colon):
 :::
 
-```{r, opts.label="r_ed"}
+```{r}
 # A vector containing all the integers from 0 through 9.
 some_integers = 0:9
 some_integers
@@ -577,25 +577,25 @@ some_integers
 
 Here are some more examples of [the colon syntax]{.r}[`np.arange`]{.python}:
 
-```{python, opts.label="py_ed"}
+```{python}
 # All the integers starting at 10, up to, but not including 15.
 # In other words, 10 through 14.
 np.arange(10, 15)
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # Here we are only sending one value (7). np.arange understands this to be
 # the stop value, and assumes 0 as the start value.
 # In other words, 0 through 6
 np.arange(7)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # All the integers from 10 through 14
 10:14
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # All the integers from -1 through 5
 -1:5
 ```
@@ -609,13 +609,13 @@ refers to the fact that `np.arange` is a function from the Numpy module
 (library).  The `a` in `arange` signals that the result `np.arange` returns is
 an *array*:
 
-```{python, opts.label="py_ed"}
+```{python}
 arr = np.arange(7)
 # Show the result
 arr
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # Show what type of thing this is.
 type(arr)
 ```
@@ -629,7 +629,7 @@ Numpy — it is basic function in Python — and it does *not* return an *array*
 numbers, it returns something else.  Here we ask for a `range` from 0 through 6
 (0 up to, but not including 7):
 
-```{python, opts.label="py_ed"}
+```{python}
 # Notice no `np.` before `range`.
 r = range(7)
 r
@@ -639,7 +639,7 @@ Notice that the thing that came back is something that *represents* or *stands
 in for* the number 0 through 6.  It is not an array, but a specific type of
 thing called — a `range`:
 
-```{python, opts.label="py_ed"}
+```{python}
 type(r)
 ```
 
@@ -649,7 +649,7 @@ convert this container to an array, using the `np.array` function.  The
 `np.array` function takes the thing we pass it, and makes it into an array.
 When we apply `np.array` to `r` above, we get the numbers that `r` contains:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Get the numbers from the range `r`, convert to an array.
 a_from_r = np.array(r)
 # Show the result
@@ -659,14 +659,14 @@ a_from_r
 The `range` function has the same `start` and `stop` arguments that `np.arange`
 does, and with the same meaning:
 
-```{python, opts.label="py_ed"}
+```{python}
 # 3 up to, not including 12.
 # (3 through 11)
 r_2 = range(3, 12)
 r_2
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 np.array(r_2)
 ```
 
@@ -692,14 +692,14 @@ single value *at random* from the sequence of numbers in `some_integers`.
 The {{< var sample >}} function will be a fundamental tool for taking many kinds of samples, and we cover it in more detail in @sec-sampling-tools.
 :::
 
-```{python, opts.label="py_ed"}
+```{python}
 # Select an integer from the choices in some_integers.
 my_integer = rnd.choice(some_integers)
 # Show the value that results.
 my_integer
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Select 1 integer (the second argument) from the choices in some_integers
 # (the first argument).
 my_integer <- sample(some_integers, 1)
@@ -751,7 +751,7 @@ include_svg('diagrams/sample_pl.svg')
 
 Here is the same code again, with new comments.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Send the value of "some_integers" to rnd.choice
 # some_integers is the *argument*.
 # Put the *return* value from the function into "my_number".
@@ -760,7 +760,7 @@ my_number = rnd.choice(some_integers)
 my_number
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Send the value of "some_integers" to sample.
 # some_integers is the *argument*.  Ask sample to return 1 of the values.
 # Put the *return* value from the function into "my_number".
@@ -810,7 +810,7 @@ take our word for it that using `replace=TRUE` for `sample` gives us the same
 effect as rolling several 10-sided dice.
 :::
 
-```{python, opts.label="py_ed"}
+```{python}
 # Get 17 values from the *some_integers* array.
 # Store the 17 numbers with the name "a"
 a = rnd.choice(some_integers, 17)
@@ -818,7 +818,7 @@ a = rnd.choice(some_integers, 17)
 a
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Get 17 values from the *some_integers* vector.
 # Sample *with replacement*, so sample can select numbers more than once.
 # Store the 17 numbers with the name "a"
@@ -848,14 +848,14 @@ greater than zero.
 To ask whether a number is greater than zero, we use *comparison*.  Here is a
 *greater than zero* comparison on a single number:
 
-```{python, opts.label="py_ed"}
+```{python}
 n = 5
 # Is the value of n greater than 0?
 # Show the result of the comparison.
 n > 0
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 n <- 5
 # Is the value of n greater than 0?
 # Show the result of the comparison.
@@ -872,14 +872,14 @@ In contrast, the comparison below boils down to "is 0 greater than 0?", to
 which the answer is No, and {{< var lang >}} represents this as
 {{< var false >}}.
 
-```{python, opts.label="py_ed"}
+```{python}
 p = 0
 # Is the value of p greater than 0?
 # Show the result of the comparison.
 p > 0
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 p <- 0
 # Is the value of p greater than 0?
 # Show the result of the comparison.
@@ -895,25 +895,25 @@ give?  You may want to think a little about this before you read on.
 
 As a reminder, here is the current value for `a`:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Show the current value for "a"
 a
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Show the current value for "a"
 a
 ```
 
 Now you have had some time to think, here is what happens:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Is the value of "a" greater than 0
 # Show the result of the comparison.
 a > 0
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Is the value of "a" greater than 0?
 # Show the result of the comparison.
 a > 0
@@ -928,7 +928,7 @@ value of the *second* element of `a` greater than 0".
 
 Let us store the result of this comparison to work on:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Is the value of "a" greater than 0
 # Store as another array "q".
 q = a > 0
@@ -936,7 +936,7 @@ q = a > 0
 q
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Is the value of "a" greater than 0?
 # Store as another vector "q".
 q <- a > 0
@@ -959,25 +959,25 @@ adds up all the elements in {{< var an_array >}}, to give a single number. This
 will work as we want for the `q` {{< var array >}}, because {{< var lang >}}
 counts {{< var false >}} as equal to 0 and {{< var true >}} as equal to 1:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Question: is False equal to 0?
 # Answer - Yes! (True)
 False == 0
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # Question: is True equal to 0?
 # Answer - Yes! (True)
 True == 1
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Question: is FALSE equal to 0?
 # Answer - Yes! (TRUE)
 FALSE == 0
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Question: is TRUE equal to 1?
 # Answer - Yes! (TRUE)
 TRUE == 1
@@ -992,14 +992,14 @@ and {{< var false >}} values, and try using
 [`sum`]{.r}[`np.sum`]{.python}
 on the new array.
 
-```{python, opts.label="py_ed"}
+```{python}
 # An array containing three True values and two False values.
 trues_and_falses = np.array([True, False, True, True, False])
 # Show the new array.
 trues_and_falses
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # A vector containing three TRUE values and two FALSE values.
 trues_and_falses <- c(TRUE, FALSE, TRUE, TRUE, FALSE)
 # Show the new vector.
@@ -1014,7 +1014,7 @@ values 1 + 0 + 1 + 1 + 0, to give 3.
 We can apply the same operation on `q` to count the number of {{< var true
 >}} values.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Count the number of True values in "q"
 # This is the same as the number of values in "a" that are greater than 0.
 b = np.sum(q)
@@ -1022,7 +1022,7 @@ b = np.sum(q)
 b
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Count the number of TRUE values in "q"
 # This is the same as the number of values in "a" that are greater than 0.
 b <- sum(q)
@@ -1034,7 +1034,7 @@ b
 
 We now have the whole procedure for one simulated trial. We can put the whole procedure in one {{< var cell >}}:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Procedure for one simulated trial
 
 # Get 17 values from the *some_integers* array.
@@ -1048,7 +1048,7 @@ b = np.sum(q)
 b
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Procedure for one simulated trial
 
 # Get 17 values from the *some_integers* vector.
@@ -1078,13 +1078,13 @@ To do this, we make {{< var an_array >}} called `z` to hold the
 100 counts.  We have called the {{< var array >}} `z`, but we could have
 called it anything we liked, such as `counts` or `results` or `cecilia`.
 
-```{python, opts.label="py_ed"}
+```{python}
 # An array to hold the 100 count values.
 # Later, we will fill this in with real count values from simulated trials.
 z = np.zeros(100)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # A vector to hold the 100 count values.
 # Later, we will fill this in with real count values from simulated trials.
 z <- numeric(100)
@@ -1099,7 +1099,7 @@ Notice that the single trial procedure, inside this `for` loop, is the same as t
 
 We will go into more detail on how this works in the next chapter.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Procedure for 100 simulated trials.
 
 # An array to store the counts for each trial.
@@ -1121,7 +1121,7 @@ for i in np.arange(100):
 z
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Procedure for 100 simulated trials.
 
 # A vector to store the counts for each trial.
@@ -1149,14 +1149,14 @@ a "cured" count of 17.
 
 We can ask the question whether a single number is equal to 17 using the *double equals* comparison: `==`.
 
-```{python, opts.label="py_ed"}
+```{python}
 s = 17
 # Is the value of s equal to 17?
 # Show the result of the comparison.
 s == 17
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 s <- 17
 # Is the value of s equal to 17?
 # Show the result of the comparison.
@@ -1194,14 +1194,14 @@ true >}}.
 We can ask this question of *all 100 counts* by asking the question: is the {{<
 var array >}} `z` equal to 17, like this:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Is the value of z equal to 17?
 were_cured = z == 17
 # Show the result of the comparison.
 were_cured
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Is the value of z equal to 17?
 were_cured <- z == 17
 # Show the result of the comparison.
@@ -1212,7 +1212,7 @@ Finally we use `sum` to count the number of {{< var true >}} values in the
 `were_cured` {{< var array >}}, to give the number of trials where all 17
 patients were cured.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Count the number of True values in "were_cured"
 # This is the same as the number of values in "z" that are equal to 17.
 n_all_cured = np.sum(were_cured)
@@ -1220,7 +1220,7 @@ n_all_cured = np.sum(were_cured)
 n_all_cured
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Count the number of TRUE values in "were_cured"
 # This is the same as the number of values in "z" that are equal to 17.
 n_all_cured <- sum(were_cured)
@@ -1232,14 +1232,14 @@ n_all_cured
 cured.  It only remains to get the proportion of trials for which this was
 true, and to do this, we divide by the number of trials.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Proportion of trials where all patients were cured.
 p = n_all_cured / 100
 # Show the result
 p
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Proportion of trials where all patients were cured.
 p <- n_all_cured / 100
 # Show the result

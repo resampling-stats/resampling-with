@@ -93,7 +93,7 @@ requirement of a clearly visualized model is a strong point in favor of simulati
 
 Here is the whole thing:
 
-```{python, opts.label="py_ed"}
+```{python}
 import numpy as np
 
 N = 10000  # number of cars
@@ -130,7 +130,7 @@ The answer looks to be somewhere between 5 and 6%.  The code clearly follows the
 
 Let's use arrays to store the states of all cars in the lot simultaneously:
 
-```{python, opts.label="py_ed"}
+```{python}
 N = 1000000  # number of cars; we made this number larger by a factor of 100
 
 # Generate an array with as many entries as there are cars, each
@@ -366,7 +366,7 @@ We have the following information:
 
 Again, we start with our simulation.
 
-```{python, opts.label="py_ed"}
+```{python}
 # The number of people
 N = 1000000
 
@@ -485,7 +485,7 @@ We will proceed as follows:
 
 3. Among those, calculate what their average risk is of making an accident.  This will indicate the appropriate insurance premium.
 
-```{python, opts.label="py_ed"}
+```{python}
 N = 100000
 cost_per_percent = 100
 
@@ -657,7 +657,7 @@ the situation instead.
 
 We will do a naïve implementation that closely follows the logic described above, followed by a slightly optimized version.
 
-```{python, opts.label="py_ed"}
+```{python}
 N = 100000
 
 parents = []
@@ -707,7 +707,7 @@ favor of *BB*! (1973, pp. 12-14)
 Let's tune the code a bit to run faster.  Instead of doing the trials
 one mouse at a time, we will do the whole bunch together.
 
-```{python, opts.label="py_ed"}
+```{python}
 N = 1000000
 
 # In N trials, pair two Bb mice and generate a child

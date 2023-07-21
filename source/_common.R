@@ -30,9 +30,8 @@ options(dplyr.print_min = 6, dplyr.print_max = 6)
 is_py_ed <- ._spec$noteout$`nb-format` == 'ipynb'
 is_r_ed <- !is_py_ed
 
-knitr::opts_template$set(r_ed = list(eval=is_r_ed, echo=is_r_ed),
-                         py_ed = list(eval=is_py_ed, echo=is_py_ed),
-                         svg_fig = list(eval=TRUE, echo=FALSE, fig.align='center'))
+knitr::opts_template$set(svg_fig = list(eval=TRUE, echo=FALSE,
+                                        fig.align='center'))
 
 # For Python code.
 library(reticulate)

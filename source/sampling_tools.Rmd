@@ -48,7 +48,7 @@ integers in the range 26 through 99).
 Here is the process of simulating a single juror, adapted from
 @sec-random-zero-through-ninety-nine:
 
-```{python opts.label="py_ed"}
+```{python}
 import numpy as np
 # Ask NumPy for a random number generator.
 rnd = np.random.default_rng()
@@ -63,7 +63,7 @@ a = rnd.choice(zero_thru_99)
 a
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Get 1 random number from 0 through 99
 # replace=TRUE is redundant here (why?), but we leave it for consistency.
 a <- sample(0:99, 1, replace=TRUE)
@@ -75,12 +75,12 @@ a
 After that, we have to unpack our labeling of 0 through 25 as being "black"
 and 26 through 99 as being "white".  We might do that like this:
 
-```{python opts.label="py_ed"}
+```{python}
 this_juror_is_black = a < 26
 this_juror_is_black
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 this_juror_is_black <- a < 26
 this_juror_is_black
 ```
@@ -104,7 +104,7 @@ seen so far.
 
 You have already come across the idea that Python values can be integers (positive or negative whole numbers), like this:
 
-```{python opts.label="py_ed"}
+```{python}
 v = 10
 v
 ```
@@ -112,13 +112,13 @@ v
 Here the variable `v` holds the value.  We can see what type of value `v` holds
 by using the `type` function:
 
-```{python opts.label="py_ed"}
+```{python}
 type(v)
 ```
 
 As you may have noticed, Python can also have *floating point* values.  These are values with a decimal point — so numbers that do not have to be integers, but can be any value between the integers.  These floating points values are of type `float`:
 
-```{python opts.label="py_ed"}
+```{python}
 f = 10.1
 type(f)
 ```
@@ -129,21 +129,21 @@ You have also seen that Numpy contains another type, the *array*.  An
 array is a value that contains a sequence of values.  For example, here
 is an array of integers:
 
-```{python opts.label="py_ed"}
+```{python}
 arr = np.array([0, 10, 99, 4])
 arr
 ```
 
 Notice that this value `arr` is of type `np.ndarray`:
 
-```{python opts.label="py_ed"}
+```{python}
 type(arr)
 ```
 
 The array has its own internal record of what type of values it holds.  This is
 called the array `dtype`:
 
-```{python opts.label="py_ed"}
+```{python}
 arr.dtype
 ```
 
@@ -151,12 +151,12 @@ The array `dtype` records the type of value stored in the array.  All values in 
 
 The array above contains integers, but we can also make arrays containing floating point values:
 
-```{python opts.label="py_ed"}
+```{python}
 float_arr = np.array([0.1, 10.1, 99.0, 4.3])
 float_arr
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 float_arr.dtype
 ```
 
@@ -164,13 +164,13 @@ float_arr.dtype
 
 We have elided past another Python type, the *list*.  In fact we have already used lists in making arrays.  For example, here we make an array with four values:
 
-```{python opts.label="py_ed"}
+```{python}
 np.array([0, 10, 99, 4])
 ```
 
 We could also write the statement above in two steps:
 
-```{python opts.label="py_ed"}
+```{python}
 my_list = [0, 10, 99, 4]
 np.array(my_list)
 ```
@@ -178,13 +178,13 @@ np.array(my_list)
 In the first statement — `my_list = [0, 10, 99, 4]` — we construct a *list* — a
 container for the four values.  Let's look at the `my_list` value:
 
-```{python, opts.label="py_ed"}
+```{python}
 my_list
 ```
 
 Notice that we do not see `array` in the display — this is not an array but a list:
 
-```{python, opts.label="py_ed"}
+```{python}
 type(my_list)
 ```
 
@@ -192,7 +192,7 @@ A list is a basic Python type.  We can construct it by using the square
 brackets notation that you see above; we start with `[`, then we put the values
 we want to go in the list, separated by commas, followed by `]`.  Here is another list:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Creating another list.
 list_2 = [5, 10, 20]
 ```
@@ -200,7 +200,7 @@ list_2 = [5, 10, 20]
 As you saw, we have been building arrays by building lists, and then passing
 the list to the `np.array` function, to create an array.
 
-```{python, opts.label="py_ed"}
+```{python}
 list_again = [100, 10, 0]
 np.array(list_again)
 ```
@@ -209,7 +209,7 @@ Of course, we can do this one line, as we have been doing up till now, by
 constructing the list inside the parentheses of the function.  So, the
 following cell has just the same output as the cell above:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Constructing the list inside the function brackets.
 np.array([100, 10, 0])
 ```
@@ -233,12 +233,12 @@ called *strings*.
 
 Here is a single {{< var lang >}} string value:
 
-```{python opts.label="py_ed"}
+```{python}
 s = "Resampling"
 s
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 s <- "Resampling"
 s
 ```
@@ -249,7 +249,7 @@ We can see what type of value `v` holds by using the `class` function.
 For example, for a number value, you will usually find the `class` is
 `numeric`:
 
-```{r opts.label="r_ed"}
+```{r}
 v <- 10
 class(v)
 ```
@@ -259,11 +259,11 @@ What is the
 [`class`]{.r}[`type`]{.python}
 of the new bit-of-text value `s`?
 
-```{python opts.label="py_ed"}
+```{python}
 type(s)
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 class(s)
 ```
 
@@ -278,7 +278,7 @@ As we can find the number of elements in an {{< var array >}}
 (@sec-array-length), we can find the number of characters in a string with the
 `len` function:
 
-```{python opts.label="py_ed"}
+```{python}
 # Number of characters in s
 len(s)
 ```
@@ -288,7 +288,7 @@ len(s)
 To get the length of a string, use the `nchar` function (Number of Characters):
 
 
-```{r opts.label="r_ed"}
+```{r}
 # Number of characters in s
 nchar(s)
 ```
@@ -299,7 +299,7 @@ As we can *index* into {{< var array >}} values to get individual elements
 (@sec-array-indexing), we can index into string values to get individual
 characters:
 
-```{python opts.label="py_ed"}
+```{python}
 # Get the second character of the string
 # Remember, Python's index positions start at 0.
 second_char = s[1]
@@ -315,7 +315,7 @@ third — the index of the last character you want to select.  For example to
 select the second character in the string you would specify 2 as the starting
 index, and 2 as the ending index, like this:
 
-```{r opts.label="r_ed"}
+```{r}
 # Get the second character of the string
 second_char <- substring(s, 2, 2)
 second_char
@@ -329,7 +329,7 @@ second_char
 As we can store numbers as elements in {{< var array >}}s, we can also store
 strings as {{< var array >}} elements.
 
-```{python opts.label="py_ed"}
+```{python}
 # Just for clarity, make the list first.
 # Lists can also contain strings.
 list_of_strings = ['Julian', 'Lincoln', 'Simon']
@@ -338,14 +338,14 @@ arr_of_strings = np.array(list_of_strings)
 arr_of_strings
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 # We can also create the list and the array in one line,
 # as we have been doing up til now.
 arr_of_strings = np.array(['Julian', 'Lincoln', 'Simon'])
 arr_of_strings
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 vector_of_strings = c('Julian', 'Lincoln', 'Simon')
 vector_of_strings
 ```
@@ -353,7 +353,7 @@ vector_of_strings
 ::: python
 Notice the array `dtype`:
 
-```{python opts.label="py_ed"}
+```{python}
 arr_of_strings.dtype
 ```
 
@@ -374,13 +374,13 @@ put a longer string into the array — what do you think would happen?
 
 This happens:
 
-```{python opts.label="py_ed"}
+```{python}
 # An array of small strings.
 small_strings = np.array(['six', 'one', 'two'])
 small_strings.dtype
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 # Set a new value for the first element (first string).
 small_strings[0] = 'seven'
 small_strings
@@ -392,7 +392,7 @@ For that reason, it is often useful to instruct Numpy that you want to use
 effectively infinite length strings, by specifying the array `dtype` as
 `object` *when you make the array*, like this:
 
-```{python opts.label="py_ed"}
+```{python}
 # An array of small strings, but this time, tell Numpy
 # that the strings should be of effectively infinite length.
 small_strings_better = np.array(['six', 'one', 'two'], dtype=object)
@@ -405,7 +405,7 @@ This type can store any Python value, and so, when the array is storing
 strings, it will use Python's own string values as elements, rather than the
 more efficient but more fragile Unicode strings that Numpy uses by default.
 
-```{python opts.label="py_ed"}
+```{python}
 # Set a new value for the first element in the new array.
 small_strings_better[0] = 'seven'
 small_strings_better
@@ -423,14 +423,14 @@ As for any {{< var array >}}, you can select elements with *indexing*.  When
 you select an element with a given position (index), you get the *string* at
 at that position:
 
-```{python opts.label="py_ed"}
+```{python}
 # Julian Lincoln Simon's second name.
 # (Remember, Python's positions start at 0).
 middle_name = arr_of_strings[1]
 middle_name
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Julian Lincoln Simon's second name
 middle_name <- vector_of_strings[2]
 middle_name
@@ -439,11 +439,11 @@ middle_name
 As for numbers, we can compare strings with, for example, the `==` operator,
 that asks whether the two strings are equal:
 
-```{python opts.label="py_ed"}
+```{python}
 middle_name == 'Lincoln'
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 middle_name == 'Lincoln'
 ```
 
@@ -464,7 +464,7 @@ Luckily, of course, we can do that, by using the
 
 Here is how that works:
 
-```{python opts.label="py_ed"}
+```{python}
 # The values that we will repeat to fill up the larger array.
 # Use a list to store the sequence of values.
 juror_types = ['black', 'white']
@@ -480,7 +480,7 @@ jury_pool = np.repeat(juror_types, repeat_nos)
 jury_pool
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # The values that we will repeat to fill up the larger array.
 juror_types <- c('black', 'white')
 # The number of times we want to repeat "black" and "white".
@@ -495,13 +495,13 @@ We can use this {{< var array >}} of repeats of strings, to sample from. The
 result is easier to grasp, because we are using the string labels, instead of
 numbers:
 
-```{python opts.label="py_ed"}
+```{python}
 # Select one juror at random from the black / white pool.
 one_juror = rnd.choice(jury_pool)
 one_juror
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Select one juror at random from the black / white pool.
 # replace=TRUE is redundant here, but we leave it for consistency.
 one_juror <- sample(jury_pool, 1, replace=TRUE)
@@ -511,13 +511,13 @@ one_juror
 We can select our full jury of 12 jurors, and see the results in a more obvious
 form:
 
-```{python opts.label="py_ed"}
+```{python}
 # Select 12 jurors at random from the black / white pool.
 one_jury = rnd.choice(jury_pool, 12)
 one_jury
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Select one juror at random from the black / white pool.
 one_jury <- sample(jury_pool, 12, replace=TRUE)
 one_jury
@@ -534,14 +534,14 @@ fact, from now on, that is what we will do; we will specify the *size* of our
 sample by using the *name* for the function argument to {{< var sample >}} —
 `size` — like this:
 
-```{python opts.label="py_ed"}
+```{python}
 # Select 12 jurors at random from the black / white pool.
 # Specify the sample size using the "size" named argument.
 one_jury = rnd.choice(jury_pool, size=12)
 one_jury
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Select one juror at random from the black / white pool.
 # Specify the sample size using the "size" named argument.
 one_jury <- sample(jury_pool, size=12, replace=TRUE)
@@ -552,12 +552,12 @@ one_jury
 We can use `==` on the {{< var array >}} to get {{< var true >}} values where
 the juror was "black" and {{< var false >}} values otherwise:
 
-```{python opts.label="py_ed"}
+```{python}
 are_black = one_jury == 'black'
 are_black
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 are_black <- one_jury == 'black'
 are_black
 ```
@@ -565,13 +565,13 @@ are_black
 Finally, we can [`sum`]{.r}[`np.sum`]{.python} to find the number of black
 jurors (@sec-count-with-sum):
 
-```{python opts.label="py_ed"}
+```{python}
 # Number of black jurors in this simulated jury.
 n_black = np.sum(are_black)
 n_black
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Number of black jurors in this simulated jury.
 n_black <- sum(are_black)
 n_black
@@ -580,14 +580,14 @@ n_black
 Putting that all together, this is our new procedure to select one jury and
 count the number of black jurors:
 
-```{python opts.label="py_ed"}
+```{python}
 one_jury = rnd.choice(jury_pool, size=12)
 are_black = one_jury == 'black'
 n_black = np.sum(are_black)
 n_black
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 one_jury <- sample(jury_pool, size=12, replace=TRUE)
 are_black <- one_jury == 'black'
 n_black <- sum(are_black)
@@ -597,13 +597,13 @@ n_black
 Or we can be even more compact by putting several statements together into one
 line:
 
-```{python opts.label="py_ed"}
+```{python}
 # The same as above, but on one line.
 n_black = np.sum(rnd.choice(jury_pool, size=12) == 'black')
 n_black
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # The same as above, but on one line.
 n_black = sum(sample(jury_pool, size=12, replace=TRUE) == 'black')
 n_black
@@ -640,7 +640,7 @@ Let's think about what a single simulated jury selection would look like.
 First we compile a representation of the actual jury panel, using the tools we
 have used above.
 
-```{python opts.label="py_ed"}
+```{python}
 juror_types = ['black', 'white']
 # in fact there were 8 black jurors and 92 white jurors.
 panel_nos = [8, 92]
@@ -649,7 +649,7 @@ jury_panel = np.repeat(juror_types, panel_nos)
 jury_panel
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 juror_types <- c('black', 'white')
 # in fact there were 8 black jurors and 92 white jurors.
 panel_nos <- c(8, 92)
@@ -699,14 +699,14 @@ already seen in [`sample`]{.r}[`rnd.choice`]{.python} has simple ways for you
 to select your sampling type.   You have already seen sampling *with
 replacement*, and it looks like this:
 
-```{python opts.label="py_ed"}
+```{python}
 # Take a sample of 12 jurors from the panel *with replacement*
 # With replacement is the default for `rnd.choice`.
 strange_jury = rnd.choice(jury_panel, size=12)
 strange_jury
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Take a sample of 12 jurors from the panel *with replacement*
 strange_jury <- sample(jury_panel, size=12, replace=TRUE)
 strange_jury
@@ -717,7 +717,7 @@ than once.  Perhaps that juror would have to fill two (or more!) seats, or run
 quickly between them.   But of course, that is not how juries are selected.
 They are selected *without replacement*:
 
-```{python opts.label="py_ed"}
+```{python}
 # Take a sample of 12 jurors from the panel *without replacement*
 ok_jury = rnd.choice(jury_panel, 12, replace=False)
 ok_jury
@@ -734,7 +734,7 @@ without replacement. Whether you omit the `replace` argument, or specify
 `replace=FALSE`, the behavior is the same.
 ::::
 
-```{r opts.label="r_ed"}
+```{r}
 # Take a sample of 12 jurors from the panel *with replacement*
 # replace=FALSE is the default for sample.
 ok_jury <- sample(jury_panel, size=12)
@@ -746,21 +746,21 @@ ok_jury
 
 You have already seen comment lines.  These are lines beginning with `#`, to signal to {{< var lang >}} that the rest of the line is text for humans to read, but {{< var lang >}} to ignore.
 
-```{python, opts.label="py_ed"}
+```{python}
 # This is a comment.  Python ignores this line.
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # This is a comment.  R ignores this line.
 ```
 
 You can also put comments at the *end of code lines*, by finishing the code part of the line, and then putting a `#`, followed by more text.  Again, {{< var lang >}} will ignore everything after the `#` as a text for humans, but not for {{< var lang >}}.
 
-```{python, opts.label="py_ed"}
+```{python}
 print('Hello')  # This is a comment at the end of the line.
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 message('Hello')  # This is a comment at the end of the line.
 ```
 
@@ -769,12 +769,12 @@ message('Hello')  # This is a comment at the end of the line.
 To finish the procedure for simulating a single jury selection, we count the
 number of black jurors:
 
-```{python opts.label="py_ed"}
+```{python}
 n_black = np.sum(ok_jury == 'black')  # How many black jurors?
 n_black
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 n_black <- sum(ok_jury == 'black')  # How many black jurors?
 n_black
 ```
@@ -782,7 +782,7 @@ n_black
 Now we have the procedure for one simulated trial, here is the procedure for
 10000 simulated trials.
 
-```{python opts.label="py_ed"}
+```{python}
 counts = np.zeros(10000)
 for i in np.arange(10000):
     # Single trial procedure
@@ -798,7 +798,7 @@ p_zero_black = zero_black / 10000
 print(p_zero_black)
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 counts <- numeric(10000)
 for (i in 1:10000) {
     # Single trial procedure
