@@ -86,14 +86,10 @@ jobs:
         with:
           args: deploy --dir=_www
 
-      - name: Point GitHub status to PR preview
+      - name: Preview URL
         if: github.ref != 'refs/heads/main'
-        uses: Sibz/github-status-action@v1
-        with:
-          authToken: ${{secrets.GITHUB_TOKEN}}
-          state: success
-          context: Preview
-          target_url: ${{ steps.netlify.outputs.NETLIFY_URL }}
+        run: |
+          echo "Preview URL: ${{ steps.netlify.outputs.NETLIFY_URL }}" >> $GITHUB_STEP_SUMMARY
 
       - name: Deploy docs
         if: github.ref == 'refs/heads/main'
