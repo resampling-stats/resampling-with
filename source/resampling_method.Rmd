@@ -162,7 +162,7 @@ now, consider Table @tbl-veh-numbers.  In each row, we placed 20
 numbers, each one representing an ambulance.  We added 25 such rows,
 each representing a simulation of one day.
 
-```{python, echo=FALSE}
+```{python, eval=TRUE, echo=FALSE}
 import numpy as np
 import pandas as pd
 
@@ -179,7 +179,7 @@ df = pd.DataFrame(
 )
 ```
 
-```{r, veh-numbers, echo=FALSE}
+```{r, veh-numbers, eval=TRUE, echo=FALSE}
 kableExtra::kable_styling(
     ketable(py$df,
             caption = '25 simulations of 20 ambulances, with counts
@@ -191,13 +191,13 @@ To know how many ambulances were "out of order" on any given day, we
 count number of ones in that row.  We place the counts in the final column
 called "#9" (for "number of nines"):
 
-```{python, echo=FALSE}
+```{python, eval=TRUE, echo=FALSE}
 # Count the number of nines in each row, put in new column
 df_counts = df.copy()
 df_counts['#9'] = (df == 9).sum(axis=1)
 ```
 
-```{r, veh-numbers-counts, echo=FALSE}
+```{r, veh-numbers-counts, eval=TRUE, echo=FALSE}
 kableExtra::kable_styling(ketable(
   py$df_counts,
   caption = '25 simulations of 20 ambulances, with counts

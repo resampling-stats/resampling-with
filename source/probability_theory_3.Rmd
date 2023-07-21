@@ -1369,7 +1369,7 @@ owns the retail liquor stores. (Some states were omitted for technical
 reasons.) These were the representative 1961 prices of a fifth of Seagram 7
 Crown whiskey in the two sets of states (@tbl-whiskey-prices):
 
-```{python results='asis', echo=FALSE, message=FALSE}
+```{python results='asis', eval=TRUE, echo=FALSE, message=FALSE}
 import numpy as np  # For R edition, Numpy will not have been imported.
 import pandas as pd
 priv = np.array([

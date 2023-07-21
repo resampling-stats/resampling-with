@@ -58,13 +58,13 @@ mark down whether the hand contains one pair of the same denomination.
 Do this many times. Then count the number of hands with one pair, and
 figure the proportion (as a percentage) of all hands.
 
-```{python echo=FALSE}
+```{python eval=TRUE, echo=FALSE}
 n_deals = 25
 ```
 
 @tbl-one-pair has the results of `r py$n_deals` hands of this procedure.
 
-```{python echo=FALSE}
+```{python eval=TRUE, echo=FALSE}
 from itertools import product
 suit_chars = ['\N{Black Spade Suit}',
     '\N{White Heart Suit}',
@@ -76,7 +76,7 @@ deck = [f'{d} {s}' for s, d in product(suit_chars, denom)]
 deck_values = dict(zip(deck, values))
 ```
 
-```{python echo=FALSE, results="asis", message=FALSE}
+```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
 import numpy as np
 import pandas as pd
 seed = 1937
@@ -279,7 +279,7 @@ and each time, we could note down whether the particular `hand` had exactly one 
 @tbl-one-pair-numbers has the result of running that procedure `r py$n_deals`
 times:
 
-```{python echo=FALSE, results="asis", message=FALSE}
+```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
 df = pd.DataFrame(columns=['Card 1',
                            'Card 2',
                            'Card 3',
@@ -687,7 +687,7 @@ message(kk)
 
 :::
 
-```{r echo=FALSE}
+```{r eval=TRUE, echo=FALSE}
 rkk <- round(get_var('kk'), 3)
 ```
 
