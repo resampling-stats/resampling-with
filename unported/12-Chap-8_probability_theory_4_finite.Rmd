@@ -294,11 +294,11 @@ After the thousand samples are completed, we determine how many of the
 random samples of five children contained four girls by COUNTing the
 number of times four girls were selected. Finally, we PRINT the result.
 
-```{python, opts.label="py_ed"}
+```{python}
 import numpy as np
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 trial_results = np.zeros(10000)
 
 # Constitute the set of 25 girls and 25 boys.
@@ -340,7 +340,7 @@ this set of commands.
 We can also find the probabilities of other outcomes from a histogram of
 trial results obtained with the following command:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Import the plotting package.
 import matplotlib.pyplot as plt
 # %matplotlib inline
@@ -367,7 +367,7 @@ This problem is similar to Example 8-1 except that now there are four
 equally-likely outcomes instead of only two. The RESAMPLING STATS
 solution is straightforward in the program "9spades."
 
-```{python, opts.label="py_ed"}
+```{python}
 # Constitute the deck of 52 cards.
 # Make a 4 element array of strings, with the suit names.
 suits = np.array(['spade', 'clubs', 'diamonds', 'hearts'])
@@ -377,7 +377,7 @@ deck = np.repeat(suits, 13)
 deck
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 trial_results = np.zeros(10000)
 
 # Repeat the trial 10000 times.
@@ -419,7 +419,7 @@ prop_9_and_4 = n_9_and_4 / 10000
 print(prop_9_and_4)
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 hand
 ```
 
@@ -432,7 +432,7 @@ Example 8-3: A Total of Fifteen Points in a Bridge Hand When Ace = 4, King = 3, 
 This problem bears the same relationship to Example 8-2 that Example 4-5
 bears to Example 4-4.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Constitute a deck with 4 jacks (point value 1), 4 queens (value 2), 4
 # kings (value 3), 4 aces (value 4), and 36 other cards with no point
 # value
@@ -445,7 +445,7 @@ whole_deck = np.array(jacks + queens + kings + aces + others)
 whole_deck
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 trial_results = np.zeros(10000, dtype=int)
 
 # Do 10000 trials.
@@ -471,7 +471,7 @@ for i in range(10000):
     # End one experiment, go back and repeat until all 1000 are done.
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # Produce a histogram of trial results.
 plt.hist(trial_results, bins=range(25))
 plt.title('Points in bridge hands');
@@ -481,7 +481,7 @@ From this histogram, we see that in about 5 percent of our trials we obtained a
 total of exactly 15 points. RESAMPLING STATS will calculate this for us
 directly if we add the following commands on to the program:
 
-```{python, opts.label="py_ed"}
+```{python}
 # `           COUNT z = 15 k         `
 # 
 # How many times did we have a hand with fifteen points?
