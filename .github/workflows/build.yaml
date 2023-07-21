@@ -79,7 +79,7 @@ jobs:
       - name: Deploy PR to Netlify
         if: github.ref != 'refs/heads/main'
         id: netlify
-        uses: netlify/actions/cli@master
+        uses: South-Paw/action-netlify-cli@2f244b2581e280c8007cabd798708542484bf55a
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
@@ -89,7 +89,7 @@ jobs:
       - name: Preview URL
         if: github.ref != 'refs/heads/main'
         env:
-          PREVIEW_URL: ${{ steps.netlify.outputs.NETLIFY_URL }}
+          PREVIEW_URL: ${{ steps.netlify.outputs.NETLIFY_DRAFT_URL }}
         run: |
           echo "Preview URL: $PREVIEW_URL" >> $GITHUB_STEP_SUMMARY
 
