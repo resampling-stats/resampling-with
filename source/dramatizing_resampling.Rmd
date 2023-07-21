@@ -65,7 +65,7 @@ easily, whereas the deductive method of mathematical logic can result in much
 confusion.
 
 
-```{python, echo=FALSE}
+```{python, eval=TRUE, echo=FALSE}
 import numpy as np
 import pandas as pd
 
@@ -91,7 +91,7 @@ boys_df['Other is boy?'] = boys_df.apply(classify , axis=1)
 boys_df.insert(0, 'Trial', range(1, 51))
 ```
 
-```{r, otherboy, echo=FALSE}
+```{r, otherboy, eval=TRUE, echo=FALSE}
 t = tibble::as_tibble(py$boys_df)
 knitr::kable(list(t[1:25,],
                   t[26:50,]),

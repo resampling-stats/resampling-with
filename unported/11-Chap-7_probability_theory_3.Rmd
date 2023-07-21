@@ -70,11 +70,11 @@ top left of the page of numbers and ignoring numbers \>365: 021, 158,
 
 Now try the program written as follows.
 
-```{python, opts.label="py_ed"}
+```{python}
 import numpy as np
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 n_with_same_birthday = np.zeros(1000)
 
 # Do 1000 trials (experiments)
@@ -190,7 +190,7 @@ daughters.
 A RESAMPLING STATS computer solution to the "3Girls" problem mimics the
 above steps:
 
-```{python, opts.label="py_ed"}
+```{python}
 girl_counts = np.zeros(10000)
 
 # Do 10000 trials
@@ -274,26 +274,26 @@ coins more tedious. But with the RESAMPLING STATS program it is not at
 all more difficult. The only commands in the above program that need to
 be changed are
 
-```{python, opts.label="py_ed"}
+```{python}
 # Generate 4 numbers at random, either "1" or "2." This is analogous to
 # flipping a coin 4 times to generate 4 heads or tails. We keep these
 # numbers in a, letting "1" represent girls.
 children = np.random.choice([1, 2], 4)
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # Count the number of girls and put the result in b.
 b = np.count_nonzero(children == 1)
 ```
 
 These commands now become
 
-```{python, opts.label="py_ed"}
+```{python}
 # Generate 4 numbers at random, from 1 to 100.
 children = np.random.randint(1, 101, size=4)
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # Let "1" to "48" represent girls, count the number of girls, and put the
 # result in b.
 b = np.count_nonzero(children <= 48)
@@ -446,7 +446,7 @@ then be done as follows:
 
         `                   REPEAT 1000                 `
 
-```{python, opts.label="py_ed"}
+```{python}
 n_baskets = np.zeros(1000)
 
 # Do 1000 experimental trials.
@@ -533,7 +533,7 @@ RESAMPLING STATS, the "bullseye" program teaches you some more
 fundamentals of computer programming. The IF statement and the two
 loops, one within the other, are basic tools of programming.
 
-```{python, opts.label="py_ed"}
+```{python}
 white_counts = np.zeros(1000)
 
 # Do 1000 experimental trials
@@ -780,7 +780,7 @@ coin 200 times. Finally, note how the REPEAT 1000 loop simulates 1000 games,
 each game consisting of 200 coin flips.
 
 
-```{python, opts.label="py_ed"}
+```{python}
 someone_won = np.zeros(1000)
 
 # Do 1000 trials
@@ -1005,13 +1005,13 @@ from the simulated state-ownership universe is less than (or equal to)
 the mean of the actual sixteen state-ownership prices. The following
 computer program performs the operations described above.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Import the plotting library
 import matplotlib.pyplot as plt
 # %matplotlib inline
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 fake_diffs = np.zeros(1000)
 
 priv = np.array([

@@ -79,12 +79,12 @@ among a roomful of (say) twenty-five people will have the same birthday?"
 
 :::
 
-```{python opts.label="py_ed"}
+```{python}
 import numpy as np
 rnd = np.random.default_rng()
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 n_with_same_birthday = np.zeros(10000)
 
 days_of_year = np.arange(1, 366)  # 1 through 365
@@ -117,7 +117,7 @@ kk = k / 10000
 print(kk)
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 n_with_same_birthday <- numeric(10000)
 
 # All the days of the year from "1" through "365"
@@ -239,12 +239,12 @@ This notebook estimates the probability that a family of four children will
 have exactly three girls.
 :::
 
-```{python opts.label="py_ed"}
+```{python}
 import numpy as np
 rnd = np.random.default_rng()
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 girl_counts = np.zeros(10000)
 
 # Do 10000 trials
@@ -273,7 +273,7 @@ three_girls_prop = n_three_girls / 10000
 print(three_girls_prop)
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 girl_counts <- numeric(10000)
 
 # Do 10000 trials
@@ -359,11 +359,11 @@ selecting each of these values into the sample with equal probability.
 For example, we started with the simple assumption that a child is just as
 likely to be born a boy as a girl. Our input is:
 
-```{python, opts.label="py_ed"}
+```{python}
 input_values = ['girl', 'boy']
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 input_values = c('girl', 'boy')
 ```
 
@@ -372,12 +372,12 @@ probability.  Here, we draw a sample (`children`) of four values from the
 input, where *each value* in `children` has an equal chance of being "girl" or
 "boy".
 
-```{python, opts.label="py_ed"}
+```{python}
 children = rnd.choice(input_values, size=4)
 children
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 children <- sample(input_values, size=4, replace=TRUE)
 children
 ```
@@ -407,11 +407,11 @@ We could replicate this probability of 0.487 for 'girl' in the output sample by
 making an input array of 1000 strings, that contains 487 'girls' and 513
 'boys':
 
-```{python, opts.label="py_ed"}
+```{python}
 big_girls = np.repeat(['girl', 'boy'], [487, 513])
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 big_girls <- rep(c('girl', 'boy'), c(487, 513))
 ```
 
@@ -422,13 +422,13 @@ appearing in the sample, we will get a 'girl' in roughly 487 out of every 1000
 elements we draw, and a boy roughly 513 / 1000 times.  That is, our chance of
 any one element of being a 'girl' is, as we want, 0.487.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Now each element has probability 0.487 of 'girl', 0.513 of 'boy'.
 realistic_children = rnd.choice(big_girls, size=4)
 realistic_children
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Now each element has probability 0.487 of 'girl', 0.513 of 'boy'.
 realistic_children <- sample(big_girls, size=4, replace=TRUE)
 realistic_children
@@ -440,13 +440,13 @@ This allows us to specify the probability with which we will draw each of the
 input elements into the output sample.   For example, to draw 'girl' with
 probability 0.487 and 'boy' with probability 0.513, we would do:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Draw 'girl' with probability (p) 0.487 and 'boy' 0.513.
 children_again = rnd.choice(['girl', 'boy'], size=4, p=[0.487, 0.513])
 children_again
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Draw 'girl' with probability (p) 0.487 and 'boy' 0.513.
 children_again <- sample(c('girl', 'boy'), size=4, prob=c(0.487, 0.513),
                          replace=TRUE)
@@ -461,13 +461,13 @@ poorly-entered hospital records, we might have 'girl' or 'boy' recorded as the
 child's gender, but the record might be missing — 'not-recorded' — with a 19%
 chance:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Draw 'girl' with probability (p) 0.4, 'boy' with p=0.41, 'not-recorded' with
 # p=0.19.
 rnd.choice(['girl', 'boy', 'not-recorded'], size=30, p=[0.4, 0.41, 0.19])
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Draw 'girl' with probability (p) 0.4, 'boy' with p=0.41, 'not-recorded' with
 # p=0.19.
 sample(c('girl', 'boy', 'not-recorded'), size=30, prob=c(0.4, 0.41, 0.19),
@@ -484,12 +484,12 @@ One way of doing this is to use *uniform* random numbers from 0 through 1.
 These are floating point numbers that can take any value, at random, from 0
 through 1.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Run this cell a few times to see random numbers anywhere from 0 through 1.
 rnd.uniform()
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Run this chunk a few times to see random numbers anywhere from 0 through 1.
 # `runif` means "Random UNIForm".
 runif(1)
@@ -504,14 +504,14 @@ that for now).
 So, if we thought girls were exactly as likely as boys, we could select from
 'girl' and 'boy' using this simple logic:
 
-```{python, opts.label="py_ed"}
+```{python}
 if rnd.uniform() < 0.5:
     result = 'girl'
 else:
     result = 'boy'
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 if (runif(1) < 0.5) {
     result = 'girl'
 } else {
@@ -523,14 +523,14 @@ But, by the same logic, there is a 0.487 chance that the random uniform number
 will be less than 0.487 and a 0.513 chance it will be greater.  So, if we
 wanted to give ourselves a 0.487 chance of 'girl', we could do:
 
-```{python, opts.label="py_ed"}
+```{python}
 if rnd.uniform() < 0.487:
     result = 'girl'
 else:
     result = 'boy'
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 if (runif(1) < 0.487) {
     result = 'girl'
 } else {
@@ -554,7 +554,7 @@ randomness.
 
 Remember, the original code for the 50-50 case, has the following:
 
-```{python opts.label="py_ed"}
+```{python}
 # Select 'girl' or 'boy' at random, four times.
 children = rnd.choice(['girl', 'boy'], size=4)
 
@@ -562,7 +562,7 @@ children = rnd.choice(['girl', 'boy'], size=4)
 b = np.sum(children == 'girl')
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Select 'girl' or 'boy' at random, four times.
 children <- sample(c('girl', 'boy'), size=4, replace=TRUE)
 
@@ -573,14 +573,14 @@ b <- sum(children == 'girl')
 The only change we need to the above, for the 0.487 - 0.513 case, is the one
 you see above:
 
-```{python opts.label="py_ed"}
+```{python}
 # Give 'girl' 48.7% of the time, 'boy' 51.3% of the time.
 children = rnd.choice(['girl', 'boy'], size=4, p=[0.487, 0.513])
 
 b = np.sum(children == 'girl')
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Give 'girl' 48.7% of the time, 'boy' 51.3% of the time.
 children <- sample(c('girl', 'boy'), size=4, prob=c(0.487, 0.513),
                    replace=TRUE)
@@ -727,12 +727,12 @@ calculate the proportion in `propo_more_than_2`, and then display the result.
 We simulate the probability of scoring three or more baskets from five shots, if each shot has a 25% probability of success.
 :::
 
-```{python opts.label="py_ed"}
+```{python}
 import numpy as np
 rnd = np.random.default_rng()
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 n_baskets = np.zeros(10000)
 
 # Do 10000 experimental trials.
@@ -762,7 +762,7 @@ prop_more_than_2 = n_more_than_2 / 10000
 print(prop_more_than_2)
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 n_baskets <- numeric(10000)
 
 # Do 10000 experimental trials.
@@ -856,12 +856,12 @@ percent of his shots. How likely is it that in three shots the shooter will get
 exactly one bullseye, two in the white, and no misses?
 :::
 
-```{python opts.label="py_ed"}
+```{python}
 import numpy as np
 rnd = np.random.default_rng()
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 # Make an array to store the results of each trial.
 white_counts = np.zeros(10000)
 
@@ -905,7 +905,7 @@ prop_desired = n_desired / 10000
 print(prop_desired)
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Make a vector to store the results of each trial.
 white_counts <- numeric(10000)
 
@@ -1163,12 +1163,12 @@ This notebook calculates the probability that one player will run out of
 pennies within 200 turns of the Pennies game.
 :::
 
-```{python opts.label="py_ed"}
+```{python}
 import numpy as np
 rnd = np.random.default_rng()
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 someone_won = np.zeros(10000)
 
 # Do 10000 trials
@@ -1243,7 +1243,7 @@ prop_wins = n_wins / 10000
 print(prop_wins)
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 someone_won <- numeric(10000)
 
 # Do 10000 trials
@@ -1351,7 +1351,7 @@ as is used with a child's board game, and then keep track of each step on a
 piece of graph paper. The reader may construct a {{< var lang >}} program as an
 exercise.
 
-```{r fig-drunk-walk, echo=FALSE, fig.align="center", fig.cap="Drunk random walk"}
+```{r fig-drunk-walk, opts.label='svg_fig', fig.cap="Drunk random walk"}
 include_svg('diagrams/drunks_walk.svg')
 ```
 
@@ -1369,7 +1369,7 @@ owns the retail liquor stores. (Some states were omitted for technical
 reasons.) These were the representative 1961 prices of a fifth of Seagram 7
 Crown whiskey in the two sets of states (@tbl-whiskey-prices):
 
-```{python results='asis', echo=FALSE, message=FALSE}
+```{python results='asis', eval=TRUE, echo=FALSE, message=FALSE}
 import numpy as np  # For R edition, Numpy will not have been imported.
 import pandas as pd
 priv = np.array([
@@ -1399,7 +1399,7 @@ print(f'{means_tab}\n\n: '
       'Whiskey prices by state category {#tbl-whiskey-prices}')
 ```
 
-```{python fig-whiskey-hist, echo=FALSE, fig.align="center", fig.cap="Whiskey prices by state category"}
+```{python fig-whiskey-hist, opts.label='svg_fig', fig.cap="Whiskey prices by state category"}
 import matplotlib.pyplot as plt
 
 fix, axes = plt.subplots(1, 3)
@@ -1465,7 +1465,7 @@ and government-specified prices of a particular whiskey could plausibly have
 come about as a result of random sampling.
 :::
 
-```{python opts.label="py_ed"}
+```{python}
 import numpy as np
 rnd = np.random.default_rng()
 
@@ -1473,7 +1473,7 @@ rnd = np.random.default_rng()
 import matplotlib.pyplot as plt
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 fake_diffs = np.zeros(10000)
 
 priv = np.array([
@@ -1518,7 +1518,7 @@ plt.title('Average price difference (Actual difference = '
 f'{actual_diff * 100:.0f} cents)');
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 fake_diffs <- numeric(10000)
 
 priv <- c(4.82, 5.29, 4.89, 4.95, 4.55, 4.90, 5.25, 5.30, 4.29, 4.85, 4.54,

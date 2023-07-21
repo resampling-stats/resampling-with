@@ -201,12 +201,12 @@ The following simulation arrives at the correct answer:
 
 Here is a computer simulation with RESAMPLING STATS:
 
-```{python, opts.label="py_ed"}
+```{python}
 import random
 import numpy as np
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # The 3 boxes, where 1 means gold, 0 means silver
 ships = np.array([
     ['gold', 'gold'],
@@ -218,7 +218,7 @@ print(ships)
 ```
 
 
-```{python, opts.label="py_ed"}
+```{python}
 # Mark trials as not valid to start with.
 # Trials where we don't get a gold trunk first will
 # keep this 'invalid' marker.
@@ -509,19 +509,19 @@ trials in which a pair occurs, we simply divide the results of the
 thousand trials by 1000.
 
 
-```{python, opts.label="py_ed"}
+```{python}
 # Create a bucket (vector) called a with four "1's," four "2's," four "3's,"
 # etc., to represent a deck of cards
 one_suit = np.arange(1, 14)
 print(one_suit)
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 deck = np.repeat(one_suit, 4)
 print(deck)
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 pairs_per_trial = np.zeros(1000)
 
 # Repeat the following steps 1000 times
@@ -631,7 +631,7 @@ To estimate the hands with three-of-a-kind, we can use a program just
 like "One Pair" earlier, except instructing the MUL- TIPLES statement to
 search for triplicates instead of duplicates. The program, then, is:
 
-```{python, opts.label="py_ed"}
+```{python}
 triples_per_trial = np.zeros(1000)
 
 # Repeat the following steps 1000 times
@@ -666,7 +666,7 @@ original program (counting pairs), except that we examine all the
 results in SCOREkeeping vector z for hands in which we had *two* pairs,
 instead of *one* .
 
-```{python, opts.label="py_ed"}
+```{python}
 pairs_per_trial = np.zeros(1000)
 
 # Repeat the following steps 1000 times

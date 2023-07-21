@@ -190,12 +190,12 @@ Make a notebook section with e.g.
 
 Stuff
 
-```{python, opts.label="py_ed"}
+```{python}
 # A Python cell - it only gets run in the Python edition.
 k = 1
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # An R cell - it only gets run in the R edition
 k <- 1
 ```
@@ -216,12 +216,12 @@ The notebooks (above) get written out as separate documents.  By default, they m
 This appears only in the output notebook file, and not in the main text.
 :::
 
-```{python, opts.label="py_ed"}
+```{python}
 # A Python cell.
 k = 1
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # An R cell.
 k <- 1
 ```
@@ -370,6 +370,27 @@ pip install jupyter
 Start `jupyterlab` in the source directory, right-click on an `.Rmd`
 file, and "Open as notebook".  If this option does not appear, ensure that
 Jupytext is installed.
+
+## SVG figures
+
+SVG figures need to be converted to PNG for the HTML build and PDF for the PDF
+build.  We automate this with the build system.  To use the automation:
+
+* Create the `.svg` file and put it in the `diagrams` directory.
+* Insert a block like the one below, to include the figure.
+
+```{r fig-ships-gold-silver, opts.label='svg_fig', fig.cap="Ships with Gold and Silver"}
+include_svg('diagrams/ships_gold_silver.svg')
+```
+
+Where `ships_gold_silver.svg` is the file in `diagrams`, `fi-ships-gold-silver`
+is the reference label for the figure, `opts.label='svg_fig'` sets the correct
+display options for the figure, and `fig.cap` give the caption.
+
+You can then refer to the figure elsewhere (for this example) as
+`@fig-ships-gold-silver`.
+
+Search for `include_svg` in the `source` directory for other examples.
 
 ## More setup for Jupyter
 

@@ -89,7 +89,7 @@ answer with deductive logic (portrayed in @fig-ships-gold-silver).
 
 See @fig-ships-gold-silver.
 
-```{r fig-ships-gold-silver, echo=FALSE, fig.align="center", fig.cap="Ships with Gold and Silver"}
+```{r fig-ships-gold-silver, opts.label='svg_fig', fig.cap="Ships with Gold and Silver"}
 include_svg('diagrams/ships_gold_silver.svg')
 ```
 
@@ -120,19 +120,19 @@ We need strings at this point.
 In which we solve the problem of gold and silver chests in a discovered ship.
 :::
 
-```{python opts.label="py_ed"}
+```{python}
 import numpy as np
 rnd = np.random.default_rng()
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 # The 3 buckets, each representing two trunks on a ship.
 bucket1 = ['Gold', 'Gold']  # First ship.
 bucket2 = ['Gold',  'Silver']  # Second ship.
 bucket3 = ['Silver', 'Silver']  # Third ship.
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 # Mark trials as not valid to start with.
 # Trials where we don't get a gold trunk first will
 # keep this 'No gold in first trunk' marker.
@@ -165,14 +165,14 @@ n_silvers = np.sum(second_trunks == 'Silver')
 print(n_golds / (n_golds + n_silvers))
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # The 3 buckets, each representing two trunks on a ship.
 bucket1 <- c('Gold', 'Gold')  # First ship.
 bucket2 <- c('Gold',  'Silver')  # Second ship.
 bucket3 <- c('Silver', 'Silver')  # Third ship.
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # Mark trials as not valid to start with.
 # Trials where we don't get a gold trunk first will
 # keep this 'No gold in first trunk' marker.
@@ -209,7 +209,7 @@ message(n_golds / (n_golds + n_silvers))
 :::
 
 
-### The Monty Hall problem
+## The Monty Hall problem
 
 The Monty Hall Problem is a puzzle in probability that is famous for its
 deceptive simplicity.  It has its own long Wikipedia page:
@@ -257,7 +257,7 @@ But throwing dice is a little boring; we have to find the die, then throw it
 many times, and record the results.   Instead we can ask the computer to chose
 the doors at random.
 
-```{r echo=FALSE}
+```{r eval=TRUE, echo=FALSE}
 n_trials <- 25
 ```
 
@@ -273,7 +273,7 @@ to our original choice of door, and "No" otherwise.  The last column is
 "Switch wins". This has "Yes" if we win by switching doors, and "No"
 otherwise. See table @tbl-montyblank).
 
-```{python echo=FALSE}
+```{python eval=TRUE, echo=FALSE}
 # Need Python for random numbers that are predictable across platforms.
 import numpy as np
 import pandas as pd
@@ -293,7 +293,7 @@ df['Stay wins'] = ''
 df['Switch wins'] = ''
 ```
 
-```{r montyblank, echo=FALSE}
+```{r montyblank, eval=TRUE, echo=FALSE}
 blank_df <- tibble::as_tibble(py$df)
 knitr::kable(blank_df,
   booktabs = TRUE,
@@ -303,7 +303,7 @@ knitr::kable(blank_df,
 )
 ```
 
-```{r echo=FALSE}
+```{r eval=TRUE, echo=FALSE}
 # Do the calculation
 fdf <- blank_df
 # Convert Monty opens column to integer, for car door number.
@@ -354,7 +354,7 @@ wins.
 Table @tbl-montyfull is a version of table @tbl-montyblank for
 which we have filled in the blank columns using the logic above.
 
-```{r montyfull, echo=FALSE}
+```{r montyfull, eval=TRUE, echo=FALSE}
 knitr::kable(fdf,
   booktabs = TRUE,
   row.names = TRUE,
