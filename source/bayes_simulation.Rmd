@@ -851,7 +851,7 @@ steps in the procedure.
 Next we estimate the posterior distribution. @fig-batch_posterior shows the
 prior distribution of batch yields, based on 100 previous batches.
 
-```{r fig-batch_posterior, echo=FALSE, fig.align='center', fig.cap="Posterior distribution of batch yields"}
+```{r fig-batch_posterior, opts.label='svg_fig', fig.cap="Posterior distribution of batch yields"}
 include_svg('diagrams/batch_posterior.svg')
 ```
 

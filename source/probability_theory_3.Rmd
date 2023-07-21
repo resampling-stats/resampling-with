@@ -1351,7 +1351,7 @@ as is used with a child's board game, and then keep track of each step on a
 piece of graph paper. The reader may construct a {{< var lang >}} program as an
 exercise.
 
-```{r fig-drunk-walk, echo=FALSE, fig.align="center", fig.cap="Drunk random walk"}
+```{r fig-drunk-walk, opts.label='svg_fig', fig.cap="Drunk random walk"}
 include_svg('diagrams/drunks_walk.svg')
 ```
 
@@ -1399,7 +1399,7 @@ print(f'{means_tab}\n\n: '
       'Whiskey prices by state category {#tbl-whiskey-prices}')
 ```
 
-```{python fig-whiskey-hist, echo=FALSE, fig.align="center", fig.cap="Whiskey prices by state category"}
+```{python fig-whiskey-hist, opts.label='svg_fig', fig.cap="Whiskey prices by state category"}
 import matplotlib.pyplot as plt
 
 fix, axes = plt.subplots(1, 3)

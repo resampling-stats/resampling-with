@@ -326,7 +326,7 @@ result the function sends back is the *return value*.
 See @fig-round_function_pl for an illustration of
 [`round`]{.r}[`np.round`]{.python} as a production line.
 
-```{r fig-round_function_pl, echo=FALSE, fig.align='center', fig.cap="The `round` function as a production line"}
+```{r fig-round_function_pl, opts.label='svg_fig', fig.cap="The `round` function as a production line"}
 include_svg('diagrams/round_function_pl.svg')
 ```
 
@@ -371,7 +371,7 @@ np.round(3.1415, 2)
 round(3.1415, 2)
 ```
 
-```{r fig-round_ndigits_pl, echo=FALSE, fig.align='center', fig.cap="`round` with optional arguments specifying number of digits"}
+```{r fig-round_ndigits_pl, opts.label='svg_fig', fig.cap="`round` with optional arguments specifying number of digits"}
 include_svg('diagrams/round_function_ndigits_pl.svg')
 ```
 
@@ -428,11 +428,11 @@ np.round(3.1415, decimals=2)
 round(3.1415, digits=2)
 ```
 
-```{r fig-round_function_named, echo=FALSE, fig.align='center', fig.cap="The `round` function with argument names"}
+```{r fig-round_function_named, opts.label='svg_fig', fig.cap="The `round` function with argument names"}
 include_svg('diagrams/round_function_named.svg')
 ```
 
-```{r fig-np_round_function_named, echo=FALSE, fig.align='center', fig.cap="The `np.round` function with argument names"}
+```{r fig-np_round_function_named, opts.label='svg_fig', fig.cap="The `np.round` function with argument names"}
 include_svg('diagrams/np_round_function_named.svg')
 ```
 
@@ -738,13 +738,13 @@ argument.  We can send the number of values we want with the *second argument*.
 example run of the {{< var sample >}} function (production line).
 
 ::: python
-```{r fig-rnd_choice_pl, echo=FALSE, fig.align='center', fig.cap="Example run of the `rnd.choice` function"}
+```{r fig-rnd_choice_pl, opts.label='svg_fig', fig.cap="Example run of the `rnd.choice` function"}
 include_svg('diagrams/rnd_choice_pl.svg')
 ```
 :::
 
 ::: r
-```{r fig-sample_pl, echo=FALSE, fig.align='center', fig.cap="Example run of the `sample` function"}
+```{r fig-sample_pl, opts.label='svg_fig', fig.cap="Example run of the `sample` function"}
 include_svg('diagrams/sample_pl.svg')
 ```
 :::
