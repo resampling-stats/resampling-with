@@ -80,18 +80,17 @@ get_var = function(name) {
 }
 
 # See: https://stackoverflow.com/questions/76732162/is-there-a-way-to-detect-the-chunk-language-when-setting-knitr-chunk-options
-set_lang_default <- function(options, field) {
+set_true_for_matching_lang <- function(options, field) {
     if (is.na(options[[field]])) {
-      options[[field]] <- ((options$engine == "python" & is_py_ed) |
-                           (options$engine == "R" & is_r_ed))
+      options[[field]] <- (tolower(options$engine) == ._lang)
     }
     return (options)
 }
 
 knitr::opts_hooks$set(
   echo = function(options) {
-      return (set_lang_default(options, 'echo'))
+      return (set_true_for_matching_lang(options, 'echo'))
   },
   eval = function(options) {
-      return (set_lang_default(options, 'eval'))
+      return (set_true_for_matching_lang(options, 'eval'))
   })
