@@ -392,6 +392,50 @@ You can then refer to the figure elsewhere (for this example) as
 
 Search for `include_svg` in the `source` directory for other examples.
 
+## Support code
+
+Sometimes we generate figures and tables on the fly using code that should not
+appear in the final book.  For examples, see `more_sampling_tools.Rmd`.
+
+The code could be Python or R.
+
+By default, the build system executes Python code chunks only in the Python
+edition, and R code chunks in the R edition.  For supporting code, to be run in
+both editions, you need to tell Quarto (in fact, Knitr) to *always* execute the
+code (regardless of whether we are currently building the R or Python edition);
+use the option `eval=TRUE`.
+
+Nearly always, you will want to hide the source code for those chunks.  Use the chunk option `echo=FALSE` to do that.
+
+Sometimes (sometimes not) you will want to suppress the output.  You can add
+`results=FALSE` to the options to suppress the output, or use `include=FALSE`
+to suppress the code and output (equivalent to `echo=FALSE, results=FALSE`).
+
+Here's an example, from `intro.Rmd`:
+
+~~~
+```{python, eval=TRUE, echo=FALSE}
+import os.path as op
+import numpy as np
+import pandas as pd
+lake = pd.read_csv(op.join('data', 'lough_erne.csv'))
+yearly_srp = lake.loc[:, ['Year', 'SRP']].copy()
+```
+
+```{r, eval=TRUE, echo=FALSE}
+ketable(py$yearly_srp,
+        caption = "Soluble Reactive Phosphorus in Lough Erne {#tbl-yearly-srp}")
+```
+~~~
+
+Notice in the case above, that there is no output from the first chunk (so we
+don't need to suppress it with `results=FALSE` or `include=FALSE`).  We do want
+the output results from the second chunk.
+
+See [the Knitr chunk options
+documentation](https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html)
+for more detail.
+
 ## More setup for Jupyter
 
 For the Jupyter notebook, you might want to enable the R magics, to allow you
