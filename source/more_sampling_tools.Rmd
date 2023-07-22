@@ -9,7 +9,7 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.14.6
+      jupytext_version: 1.14.5
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -89,7 +89,7 @@ answer with deductive logic (portrayed in @fig-ships-gold-silver).
 
 See @fig-ships-gold-silver.
 
-```{r fig-ships-gold-silver, opts.label='svg_fig', fig.cap="Ships with Gold and Silver"}
+```{r fig-ships-gold-silver, opts.label="svg_fig", fig.cap="Ships with Gold and Silver"}
 include_svg('diagrams/ships_gold_silver.svg')
 ```
 
@@ -107,6 +107,10 @@ The following simulation arrives at the correct answer:
     scoreboard.
 6.  Repeat steps (3 - 5), and calculate the proportion of "Gold"'s on a
     scoreboard. (The answer should be about $\frac{2}{3}$.)
+
+<!---
+Consider introducing elif here.
+-->
 
 Here is a notebook simulation with {{< var lang >}}:
 
@@ -140,9 +144,9 @@ for i in range(10000):
     # Get the trunks from this ship.
     if ship_no == 1:
         bucket = bucket1
-    elif ship_no == 2:
+    if ship_no == 2:
         bucket = bucket2
-    else:  # ship_no == 3
+    if ship_no == 3:
         bucket = bucket3
 
     shuffled = rnd.permuted(bucket)
@@ -180,9 +184,11 @@ for (i in 1:10000) {
     # Get the trunks from this ship.
     if (ship_no == 1) {
         bucket <- bucket1
-    } else if (ship_no == 2) {
+    }
+    if (ship_no == 2) {
         bucket <- bucket2
-    } else {  # ship_no == 3
+    }
+    if (ship_no == 3) {
         bucket <- bucket3
     }
 
@@ -351,9 +357,9 @@ for i in range(10000):
     # As before.
     if ship_no == 1:
         bucket = bucket1
-    elif ship_no == 2:
+    if ship_no == 2:
         bucket = bucket2
-    else:  # ship_no == 3
+    if ship_no == 3:
         bucket = bucket3
 
     # As before.
@@ -401,9 +407,11 @@ for (i in 1:10000) {
     # As before.
     if (ship_no == 1) {
         bucket <- bucket1
-    } else if (ship_no == 2) {
+    }
+    if (ship_no == 2) {
         bucket <- bucket2
-    } else {  # ship_no == 3
+    }
+    if (ship_no == 3) {
         bucket <- bucket3
     }
 
@@ -749,7 +757,7 @@ But throwing dice is a little boring; we have to find the die, then throw it
 many times, and record the results.   Instead we can ask the computer to chose
 the doors at random.
 
-```{r eval=TRUE, echo=FALSE}
+```{r echo=FALSE, eval=TRUE}
 n_trials <- 25
 ```
 
@@ -765,7 +773,7 @@ to our original choice of door, and "No" otherwise.  The last column is
 "Switch wins". This has "Yes" if we win by switching doors, and "No"
 otherwise. See table @tbl-montyblank).
 
-```{python eval=TRUE, echo=FALSE}
+```{python echo=FALSE, eval=TRUE}
 # Need Python for random numbers that are predictable across platforms.
 import numpy as np
 import pandas as pd
@@ -785,7 +793,7 @@ df['Stay wins'] = ''
 df['Switch wins'] = ''
 ```
 
-```{r montyblank, eval=TRUE, echo=FALSE}
+```{r montyblank, echo=FALSE, eval=TRUE}
 blank_df <- tibble::as_tibble(py$df)
 knitr::kable(blank_df,
   booktabs = TRUE,
@@ -795,7 +803,7 @@ knitr::kable(blank_df,
 )
 ```
 
-```{r eval=TRUE, echo=FALSE}
+```{r echo=FALSE, eval=TRUE}
 # Do the calculation
 fdf <- blank_df
 # Convert Monty opens column to integer, for car door number.
@@ -846,7 +854,7 @@ wins.
 Table @tbl-montyfull is a version of table @tbl-montyblank for
 which we have filled in the blank columns using the logic above.
 
-```{r montyfull, eval=TRUE, echo=FALSE}
+```{r montyfull, echo=FALSE, eval=TRUE}
 knitr::kable(fdf,
   booktabs = TRUE,
   row.names = TRUE,
@@ -870,7 +878,7 @@ Now you have seen what the results might look like for a physical simulation, yo
 Here we do a {{< var lang >}} simulation of the Monty Hall problem.
 :::
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 import numpy as np
 rnd = np.random.default_rng()
 ```
@@ -878,25 +886,26 @@ rnd = np.random.default_rng()
 <!---
 Pre-reqs:
 
-Multiple clause for if (consider _and_).
+Nested if statements.
 
 List append.
 -->
 
 ```{python}
 stay_wins = np.repeat([False], 10000)
-shift_wins = np.repeat([False], 10000)
+switch_wins = np.repeat([False], 10000)
 doors = [1, 2, 3]
 
 for i in range(10000):
-    my_door = rnd.choice([1, 2, 3])
-    car_door = rnd.choice([1, 2, 3])
+    my_door = rnd.choice(doors)
+    car_door = rnd.choice(doors)
     # Which door will Monty open?
     montys_choices = []
-    for door in [1, 2, 3]:
+    for door in doors:
         # He can't open my door or the car door:
-        if (door != my_door) & (door != car_door):
-            montys_choices.append(door)
+        if door != my_door:
+            if door != car_door:
+                montys_choices.append(door)
     # Choose Monty's door from the remaining options.
     if len(montys_choices) == 1:
         # There must be at least one remaining door.
@@ -906,59 +915,73 @@ for i in range(10000):
         montys_door = rnd.choice(montys_choices)
     # Now find the door we'll open if we switch.
     # There is only one door left.
-    for door in [1, 2, 3]:
-        if (door != my_door) & (door != montys_door):
-            switch_door = door
+    for door in doors:
+        if door != my_door:
+            if door != montys_door:
+                switch_door = door
     if my_door == car_door:
         stay_wins[i] = True
-    if my_door == switch_door:
+    if switch_door == car_door:
         switch_wins[i] = True
 
 p_for_stay = np.sum(stay_wins) / 10000
 p_for_switch = np.sum(switch_wins) / 10000
 
-print('p for stay', p_for_stay)
-print('p for switch', p_for_switch)
+print('p for stay:', p_for_stay)
+print('p for switch:', p_for_switch)
 ```
 
 ```{r}
-stay_wins = rep(False, 10000)
-switch_wins = rep(False, 10000)
-doors = c(1, 2, 3)
+stay_wins <- rep(FALSE, 10000)
+switch_wins <- rep(FALSE, 10000)
+doors <- c(1, 2, 3)
 
 for (i in 1:10000) {
-    my_door = sample(doors, size=1)
-    car_door = sample(doors, size=1)
+    my_door <- sample(doors, size=1)
+    car_door <- sample(doors, size=1)
     # Which door will Monty open?
-    montys_choices = c()
+    montys_choices <- c()
     for (door in doors) {
         # He can't open my door or the car door:
-        if ((door != my_door) & (door != car_door)) {
-            montys_choices = append(montys_choices, door)
+        if (door != my_door) {
+            if (door != car_door) {
+                montys_choices <- append(montys_choices, door)
+            }
         }
+    }
     # Choose Monty's door from the remaining options.
-    if len(montys_choices) == 1:
+    if (length(montys_choices) == 1) {
         # There must be at least one remaining door.
-        montys_door = montys_choices[0]
-    else:
+        montys_door <- montys_choices[1]
+    } else {
         # Choose one of the doors at random.
-        montys_door = rnd.choice(montys_choices)
+        montys_door <- sample(montys_choices, size=1)
+    }
     # Now find the door we'll open if we switch.
     # There is only one door left.
-    for door in [1, 2, 3]:
-        if (door != my_door) & (door != montys_door):
-            switch_door = door
-    if my_door == car_door:
-        stay_wins[i] = True
-    if my_door == switch_door:
-        switch_wins[i] = True
+    for (door in doors) {
+        if (door != my_door) {
+            if (door != montys_door) {
+                switch_door <- door
+            }
+        }
+    }
+    if (my_door == car_door) {
+        stay_wins[i] <- TRUE
+    }
+    if (switch_door == car_door) {
+        switch_wins[i] <- TRUE
+    }
+}
 
-p_for_stay = np.sum(stay_wins) / 10000
-p_for_switch = np.sum(switch_wins) / 10000
+p_for_stay <- sum(stay_wins) / 10000
+p_for_switch <- sum(switch_wins) / 10000
 
-print('p for stay', p_for_stay)
-print('p for switch', p_for_switch)
+message('p for stay: ', p_for_stay)
+message('p for switch: ', p_for_switch)
 ```
+
+:::
 
 ## Why use simulation?
 
