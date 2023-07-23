@@ -14,12 +14,6 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Activate venv
-          command: |
-            python3 -m venv /tmp/venv
-            source /tmp/venv/bin/activate
-
       - restore_cache:
           keys:
             - r-deps-{{ checksum "scripts/install_r_requirements.R" }}
@@ -44,7 +38,11 @@ jobs:
 
       - run:
           name: Install R/Python dependencies
-          command: make build-init
+          command: |
+            python3 -m venv /tmp/venv
+            source /tmp/venv/bin/activate
+
+            make build-init
 
       - save_cache:
           name: "R package cache"
@@ -62,7 +60,9 @@ jobs:
 
       - run:
           name: Build book
-          command: make website
+          command: |
+            source /tmp/venv/bin/activate
+            make website
 
       - store_artifacts:
           path: _www
