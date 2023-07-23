@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
   build-book:
@@ -76,8 +75,11 @@ jobs:
       - name: Build book
         run: make website
 
-      - name: Upload book build
-        uses: actions/upload-artifact@v3
+      - name: Deploy docs
+        uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          name: draft-book
-          path: _www
+          FOLDER: _www
+          REPOSITORY_NAME: resampling-stats/resampling-with
+          BRANCH: gh-pages
+          SINGLE_COMMIT: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
