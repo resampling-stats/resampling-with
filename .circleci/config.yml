@@ -66,3 +66,8 @@ jobs:
 
       - store_artifacts:
           path: _www
+
+workflows:
+  book:
+    jobs:
+      - build-book
