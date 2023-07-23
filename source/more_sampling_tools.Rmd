@@ -884,11 +884,9 @@ rnd = np.random.default_rng()
 ```
 
 <!---
-Pre-reqs:
+setdiff / np.setdiff1d
 
-Nested if statements.
-
-List append.
+Work up single trial case slowly here.
 -->
 
 ```{python}
@@ -900,12 +898,7 @@ for i in range(10000):
     my_door = rnd.choice(doors)
     car_door = rnd.choice(doors)
     # Which door will Monty open?
-    montys_choices = []
-    for door in doors:
-        # He can't open my door or the car door:
-        if door != my_door:
-            if door != car_door:
-                montys_choices.append(door)
+    montys_choices  = np.setdiff1d(doors, [my_door, car_door])
     # Choose Monty's door from the remaining options.
     if len(montys_choices) == 1:
         # There must be at least one remaining door.
@@ -914,15 +907,44 @@ for i in range(10000):
         # Choose one of the doors at random.
         montys_door = rnd.choice(montys_choices)
     # Now find the door we'll open if we switch.
+    remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
     # There is only one door left.
-    for door in doors:
-        if door != my_door:
-            if door != montys_door:
-                switch_door = door
+    switch_door = remaining_doors[0]
     if my_door == car_door:
         stay_wins[i] = True
     if switch_door == car_door:
         switch_wins[i] = True
+
+p_for_stay = np.sum(stay_wins) / 10000
+p_for_switch = np.sum(switch_wins) / 10000
+
+print('p for stay:', p_for_stay)
+print('p for switch:', p_for_switch)
+```
+
+```{python}
+# Code more compact, array comparison at end.
+my_doors = np.zeros(10000)
+car_doors = np.zeros(10000)
+switch_doors = np.zeros(10000)
+
+doors = [1, 2, 3]
+
+for i in range(10000):
+    my_door = rnd.choice(doors)
+    car_door = rnd.choice(doors)
+    # Which door will Monty open?
+    montys_choices  = np.setdiff1d(doors, [my_door, car_door])
+    # There could be one or two doors left, rnd.choice will
+    # select the only door, or randomly from two doors.
+    montys_door = rnd.choice(montys_choices)
+    # Now find the door we'll open if we switch.
+    switch_doors[i] = np.setdiff1d(doors, [my_door, montys_door])
+    my_doors[i] = my_door
+    car_doors[i] = car_door
+
+stay_wins = my_doors == car_doors
+switch_wins = switch_doors == car_doors
 
 p_for_stay = np.sum(stay_wins) / 10000
 p_for_switch = np.sum(switch_wins) / 10000
@@ -940,15 +962,7 @@ for (i in 1:10000) {
     my_door <- sample(doors, size=1)
     car_door <- sample(doors, size=1)
     # Which door will Monty open?
-    montys_choices <- c()
-    for (door in doors) {
-        # He can't open my door or the car door:
-        if (door != my_door) {
-            if (door != car_door) {
-                montys_choices <- append(montys_choices, door)
-            }
-        }
-    }
+    montys_choices = setdiff(doors, c(my_door, car_door))
     # Choose Monty's door from the remaining options.
     if (length(montys_choices) == 1) {
         # There must be at least one remaining door.
@@ -959,13 +973,8 @@ for (i in 1:10000) {
     }
     # Now find the door we'll open if we switch.
     # There is only one door left.
-    for (door in doors) {
-        if (door != my_door) {
-            if (door != montys_door) {
-                switch_door <- door
-            }
-        }
-    }
+    remaining_doors = setdiff(doors, c(my_door, montys_door))
+    switch_door = remaining_doors[1]
     if (my_door == car_door) {
         stay_wins[i] <- TRUE
     }
