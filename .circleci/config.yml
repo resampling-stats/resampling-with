@@ -59,6 +59,13 @@ jobs:
             - ~/.cache/pip
 
       - run:
+          name: Install quarto and matching pandoc
+          command: |
+            curl -L https://github.com/quarto-dev/quarto-cli/releases/download/v$QUARTO_VER/quarto-$QUARTO_VER-linux-amd64.deb -o quarto.deb
+            curl -L https://github.com/jgm/pandoc/releases/download/$PANDOC_VER/pandoc-$PANDOC_VER-1-amd64.deb -o pandoc.deb
+            sudo dpkg --install quarto.deb pandoc.deb
+
+      - run:
           name: Build book
           command: |
             source /tmp/venv/bin/activate
