@@ -885,11 +885,270 @@ import numpy as np
 rnd = np.random.default_rng()
 ```
 
-<!---
-setdiff / np.setdiff1d
+The Monty Hall problem has a slightly complicated structure, so we will start
+by looking at the procedure for one trial.  When we have that clear, we will
+put that procedure into a `for` loop for the simulation.
 
-Work up single trial case slowly here.
--->
+Let's start with some variables.  Let's call the door I choose `my_door`.
+
+We choose that door at random from a sequence of all possible doors.  Call the
+doors 1, 2 and 3 from left to right.
+
+```{python}
+# List of doors to chose from.
+doors = [1, 2, 3]
+
+# We choose one door at random.
+my_door = rnd.choice(doors)
+
+# Show the result
+my_door
+```
+
+```{r}
+# Vector of doors to chose from.
+doors = c(1, 2, 3)
+
+# We choose one door at random.
+my_door <- sample(doors, size=1)
+
+# Show the result
+my_door
+```
+
+We choose one of the doors to be the door with the car behind it:
+
+```{python}
+# One door at random has the car behind it.
+car_door = rnd.choice(doors)
+
+# Show the result
+my_door
+```
+
+```{r}
+# One door at random has the car behind it.
+car_door <- sample(doors, size=1)
+
+# Show the result
+my_door
+```
+
+Now we need to decide which door Monty will open.
+
+By our set up, Monty cannot open our door (`my_door`).  By the set up, he has
+not opened (and cannot open) the door with the car behind it (`car_door`).
+
+`my_door` and `car_door` might be the same.
+
+So, to get Monty's choices, we want to take all doors (`doors`) and remove
+`my_door` and `car_door`.  That leaves the door or doors Monty can open.
+
+Here are the doors Monty cannot open.  Remember, a third of the time `my_door` and `car_door` will be the same, so we will include the same door twice, as doors Monty can't open.
+
+```{python}
+cant_open = [my_door, car_door]
+cant_open
+```
+
+```{r}
+cant_open = c(my_door, car_door)
+cant_open
+```
+
+We want to find the remaining doors from `doors` after removing the doors named in `cant_open`.
+
+{{< var np_or_r >}} has a good function for this, called
+[`setdiff`]{.r}[`np.setdiff1d`]{.python}.  It calculates the *set difference*
+between two sequences, such as {{< var array >}}s.
+
+The set difference between two sequences is the members that *are* in the first
+sequence, but are *not* in the second sequence.  Here are a few examples of
+this set difference function in {{< var np_or_r >}}.
+
+::: python
+
+Notice that we are using *lists* as the input (first and second) sequences
+here.  We can use lists or arrays or any other type of sequence in Python.
+Numpy functions like `np.setdiff1d` always *return* an array.
+
+:::
+
+```{python}
+# Members in [1, 2, 3] that are *not* in [1]
+# 1, 2, 3, removing 1
+np.setdiff1d([1, 2, 3], [1])
+```
+
+```{python}
+# Members in [1, 2, 3] that are *not* in [2, 3]
+# 1, 2, 3, removing 2 and 3
+np.setdiff1d([1, 2, 3], [2, 3])
+```
+
+```{python}
+# Members in [1, 2, 3] that are *not* in [2, 2]
+# 1, 2, 3, removing 2 and 2 again.
+np.setdiff1d([1, 2, 3], [2, 2])
+```
+
+```{r}
+# Members in c(1, 2, 3) that are *not* in c(1)
+# 1, 2, 3, removing 1
+setdiff(c(1, 2, 3), c(1))
+```
+
+```{r}
+# Members in c(1, 2, 3) that are *not* in c(2, 3)
+# 1, 2, 3, removing 2 and 3
+setdiff(c(1, 2, 3), c(2, 3))
+```
+
+```{r}
+# Members in c(1, 2, 3) that are *not* in c(2, 2)
+# 1, 2, 3, removing 2 and 2 again.
+setdiff(c(1, 2, 3), c(2, 2))
+```
+
+This logic allows us to choose the doors Monty can open:
+
+```{python}
+montys_choices = np.setdiff1d(doors, [my_door, car_door])
+montys_choices
+```
+
+```{r}
+montys_choices <- setdiff(doors, c(my_door, car_door))
+montys_choices
+```
+
+Notice that `montys_choices` will only have one element left when `my_door` and
+`car_door` were different, but it will have two elements if `my_door` and
+`car_door` were the same.
+
+Let's play out those two cases:
+
+```{python}
+my_door = 1  # For example.
+car_door = 2  # For example.
+# Monty can only choose door 3 now.
+montys_choices = np.setdiff1d(doors, [my_door, car_door])
+montys_choices
+```
+
+```{python}
+my_door = 1  # For example.
+car_door = 1  # For example.
+# Monty can choose either door 2 or door 3.
+montys_choices = np.setdiff1d(doors, [my_door, car_door])
+montys_choices
+```
+
+```{r}
+my_door <- 1  # For example.
+car_door <- 2  # For example.
+# Monty can only choose door 3 now.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+montys_choices
+```
+
+```{r}
+my_door <- 1  # For example.
+car_door <- 1  # For example.
+# Monty can choose either door 2 or door 3.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+montys_choices
+```
+
+If Monty can only choose one door, we'll take that.  Otherwise we'll chose a
+door at random from the two doors available.
+
+```{python}
+if len(montys_choices) == 1:  # Only one door available.
+    montys_door = montys_choices[0]  # Take the first (of 1!).
+else:  # Two doors to choose from:
+    # Choose at random
+    montys_door = rnd.choice(montys_choices)
+montys_door
+```
+
+```{r}
+if (length(montys_choices) == 1) {  # Only one door available.
+    montys_door <- montys_choices[1]  # Take the first (of 1!).
+} else {  # Two doors to choose from:
+    # Choose at random
+    montys_door <- sample(montys_choices, size=1)
+}
+montys_door
+```
+
+Now we know Monty's door, we can identify the other door, by removing our door, and Monty's door from the available options:
+
+```{python}
+remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
+# There is only one remaining door, take that.
+other_door = remaining_doors[0]
+other_door
+```
+
+```{r}
+remaining_doors <- setdiff(doors, c(my_door, montys_door))
+# There is only one remaining door, take that.
+other_door <- remaining_doors[1]
+other_door
+```
+
+Now we have the full logic for one trial.
+
+```{python}
+my_door = rnd.choice(doors)
+car_door = rnd.choice(doors)
+# Which door will Monty open?
+montys_choices  = np.setdiff1d(doors, [my_door, car_door])
+# Choose Monty's door from the remaining options.
+if len(montys_choices) == 1:  # At least one door remains.
+    montys_door = montys_choices[0]
+else:  # There must be two doors to choose from.
+    # Choose one of the doors at random.
+    montys_door = rnd.choice(montys_choices)
+# Now find the door we'll open if we switch.
+remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
+# There is only one door left.
+other_door = remaining_doors[0]
+# Calculate the result of this trial.
+if my_door == car_door:
+    stay_wins = True
+if other_door == car_door:
+    switch_wins = True
+```
+
+```{r}
+my_door <- sample(doors, size=1)
+car_door <- sample(doors, size=1)
+# Which door will Monty open?
+montys_choices <- setdiff(doors, c(my_door, car_door))
+# Choose Monty's door from the remaining options.
+if (length(montys_choices) == 1) {  # At least one door remains.
+    # There must be at least one remaining door.
+    montys_door <- montys_choices[1]
+} else {  # There must be two doors to choose from.
+    # Choose one of the doors at random.
+    montys_door <- sample(montys_choices, size=1)
+}
+# Now find the door we'll open if we switch.
+# There is only one door left.
+remaining_doors <- setdiff(doors, c(my_door, montys_door))
+other_door <- remaining_doors[1]
+# Calculate the result of this trial.
+if (my_door == car_door) {
+    stay_wins <- TRUE
+}
+if (other_door == car_door) {
+    switch_wins <- TRUE
+}
+```
+
+All that remains is to put that trial procedure into a loop, and collect the results are we repeat the procedure many times.
 
 ```{python}
 # Arrays to store the results for each trial.
