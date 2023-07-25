@@ -990,6 +990,39 @@ message('p for stay: ', p_for_stay)
 message('p for switch: ', p_for_switch)
 ```
 
+```{python}
+stay_wins = np.repeat([False], 10000)
+switch_wins = np.repeat([False], 10000)
+doors = [1, 2, 3]
+
+for i in range(10000):
+    my_door = rnd.choice(doors)
+    car_door = rnd.choice(doors)
+    # Which door will Monty open?
+    montys_choices  = np.setdiff1d(doors, [my_door, car_door])
+    # Choose Monty's door from the remaining options.
+    # He always prefers the left door.
+    montys_door = montys_choices[0]
+    # Now find the door we'll open if we switch.
+    remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
+    # There is only one door remaining - but is monty's door
+    # to the right of this one?  Then Monty had to shift.
+    switch_door = remaining_doors[0]
+    if montys_door > switch_door:
+        # We shift
+        my_door = switch_door
+    if my_door == car_door:
+        stay_wins[i] = True
+    if switch_door == car_door:
+        switch_wins[i] = True
+
+p_for_stay = np.sum(stay_wins) / 10000
+p_for_switch = np.sum(switch_wins) / 10000
+
+print('p for stay:', p_for_stay)
+print('p for switch:', p_for_switch)
+```
+
 :::
 
 ## Why use simulation?
