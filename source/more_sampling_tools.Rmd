@@ -923,7 +923,7 @@ We choose one of the doors to be the door with the car behind it:
 car_door = rnd.choice(doors)
 
 # Show the result
-my_door
+car_door
 ```
 
 ```{r}
@@ -931,7 +931,7 @@ my_door
 car_door <- sample(doors, size=1)
 
 # Show the result
-my_door
+car_door
 ```
 
 Now we need to decide which door Monty will open.
@@ -1082,7 +1082,8 @@ if (length(montys_choices) == 1) {  # Only one door available.
 montys_door
 ```
 
-Now we know Monty's door, we can identify the other door, by removing our door, and Monty's door from the available options:
+Now we know Monty's door, we can identify the other door, by removing our door,
+and Monty's door, from the available options:
 
 ```{python}
 remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
@@ -1098,7 +1099,7 @@ other_door <- remaining_doors[1]
 other_door
 ```
 
-Now we have the full logic for one trial.
+The logic above gives us the full procedure for one trial.
 
 ```{python}
 my_door = rnd.choice(doors)
