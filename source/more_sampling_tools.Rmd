@@ -265,12 +265,12 @@ second trunk contains silver or gold.  Therefore, we only set a new value in `se
 Now let us show the effect of running a comparison on `first_10_trunks`:
 
 ```{python}
-were_gold = first_10_trunks == 'Gold'
+were_gold = (first_10_trunks == 'Gold')
 were_gold
 ```
 
 ```{r}
-were_gold <- first_10_trunks == 'Gold'
+were_gold <- (first_10_trunks == 'Gold')
 were_gold
 ```
 
@@ -637,9 +637,8 @@ This is the same error you get for:
 'Gold' & ten_second_trunks
 ```
 
-The point to take away is, that when you are using `&` to combine Boolean
-arrays in Python, remember operator precedence, and, when in doubt, put
-parentheses around the expressions on either side of `&`, as here.
+The take away is, when using `&` to combine boolean arrays in Python,
+put parentheses around the expressions on either side of `&`.
 
 ```{python}
 (ten_first_trunks == 'Gold') & (ten_second_trunks == 'Gold')
@@ -664,8 +663,8 @@ n_ten_both
 We can answer the same question for *all* the trials, in the same way:
 
 ```{python}
-first_gold = first_trunks == 'Gold'
-second_gold = second_trunks == 'Gold'
+first_gold = (first_trunks == 'Gold')
+second_gold = (second_trunks == 'Gold')
 n_both_gold = np.sum(first_gold & second_gold)
 n_both_gold
 ```
@@ -680,7 +679,6 @@ n_both_gold
 We could also do the same calculation all in one line:
 
 ```{python}
-# Notice the parentheses - we need these - see above.
 n_both_gold = np.sum((first_trunks == 'Gold') & (second_trunks == 'Gold'))
 n_both_gold
 ```
