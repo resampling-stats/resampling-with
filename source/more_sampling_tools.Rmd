@@ -126,40 +126,53 @@ rnd = np.random.default_rng()
 
 ```{python}
 # The 3 buckets, each representing two trunks on a ship.
-bucket1 = ['Gold', 'Gold']  # Trunks in first ship.
-bucket2 = ['Gold',  'Silver']  # Trunks in second ship.
-bucket3 = ['Silver', 'Silver']  # Trunks in third ship.
+ship_chests = [
+  ['Gold', 'Gold'],     # ship 1
+  ['Gold', 'Silver'],   # ship 2
+  ['Silver', 'Silver']  # ship 3
+]
 ```
 
 ```{python}
-# Mark trials as not valid to start with.
-# Trials where we don't get a gold trunk first will
-# keep this 'No gold in first trunk' marker.
-second_trunks = np.repeat(['No gold in first trunk'], 10000)
+# For each trial, we will have one of three states:
+#
+# 1. When opening the first trunk, it did not contain gold.
+#    We will reject these trials, since they do not match our
+#    experiment description.
+# 2. Gold was found in the first and the second trunk.
+# 3. Gold was found in the first, but silver in the second trunk.
+#
+# We need a placeholder value for all trials, and will make that
+# "No gold in first trunk".
+
+trial_outcome = np.repeat(['No gold in first trunk'], 10000)
 
 for i in range(10000):
     # Select a ship at random from the three ships.
-    ship_no = rnd.choice([1, 2, 3])
-    # Get the trunks from this ship.
-    if ship_no == 1:
-        bucket = bucket1
-    if ship_no == 2:
-        bucket = bucket2
-    if ship_no == 3:
-        bucket = bucket3
+    ship_no = rnd.choice([0, 1, 2])
+    trunks = ship_chests[ship_no]
 
-    shuffled = rnd.permuted(bucket)
+    # We don't know which trunk is fore and aft,
+    # so we shuffle them
+    shuffled = rnd.permuted(trunks)
 
     if shuffled[0] == 'Gold':  # We found a gold trunk first.
-        # Store whether the Second trunk was silver or gold.
-        second_trunks[i] = shuffled[1]
+        second_trunk = shuffled[1]
 
-# End loop, go back to beginning.
+        # Store whether the second trunk was silver or gold.
+        if second_trunk == 'Gold':
+            trial_outcome[i] = 'Second trunk gold'
+        else:
+            trial_outcome[i] = 'Second trunk silver'
+
+    # End loop, go back to beginning.
 
 # Number of times we found gold in the second trunk.
-n_golds = np.sum(second_trunks == 'Gold')
+n_golds = np.sum(trial_outcome == 'Second trunk gold')
+
 # Number of times we found silver in the second trunk.
-n_silvers = np.sum(second_trunks == 'Silver')
+n_silvers = np.sum(trial_outcome == 'Second trunk silver')
+
 # As a ratio of golds to all second trunks (where the first was gold).
 print(n_golds / (n_golds + n_silvers))
 ```
