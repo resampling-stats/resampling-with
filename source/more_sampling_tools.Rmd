@@ -980,37 +980,37 @@ Numpy functions like `np.setdiff1d` always *return* an array.
 
 ```{python}
 # Members in [1, 2, 3] that are *not* in [1]
-# 1, 2, 3, removing 1
+# 1, 2, 3, removing 1, if present.
 np.setdiff1d([1, 2, 3], [1])
 ```
 
 ```{python}
 # Members in [1, 2, 3] that are *not* in [2, 3]
-# 1, 2, 3, removing 2 and 3
+# 1, 2, 3, removing 2 and 3, if present.
 np.setdiff1d([1, 2, 3], [2, 3])
 ```
 
 ```{python}
 # Members in [1, 2, 3] that are *not* in [2, 2]
-# 1, 2, 3, removing 2 and 2 again.
+# 1, 2, 3, removing 2 and 2 again, if present.
 np.setdiff1d([1, 2, 3], [2, 2])
 ```
 
 ```{r}
 # Members in c(1, 2, 3) that are *not* in c(1)
-# 1, 2, 3, removing 1
+# 1, 2, 3, removing 1, if present.
 setdiff(c(1, 2, 3), c(1))
 ```
 
 ```{r}
 # Members in c(1, 2, 3) that are *not* in c(2, 3)
-# 1, 2, 3, removing 2 and 3
+# 1, 2, 3, removing 2 and 3, if present.
 setdiff(c(1, 2, 3), c(2, 3))
 ```
 
 ```{r}
 # Members in c(1, 2, 3) that are *not* in c(2, 2)
-# 1, 2, 3, removing 2 and 2 again.
+# 1, 2, 3, removing 2 and 2 again, if present.
 setdiff(c(1, 2, 3), c(2, 2))
 ```
 
