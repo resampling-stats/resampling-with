@@ -599,11 +599,15 @@ False    =    False    &    True
 ## Parentheses, arrays and comparisons
 
 Notice the round brackets (parentheses) around `(ten_first_trunks == 'Gold')`
-and `(ten_second_trunks == 'Gold')`.  In fact, you need these to make Python do
-what we want here.   Remember *operator precedence*; the multiply operator `*`
-has *higher precedence* than the operator `+`, so `3 + 5 * 2` is equal to 3 +
-(5 * 2) = 13.  If we want to do addition before multiplication, we use
-parentheses to tell Python the order it should use: `(3 + 5) * 2` = 16.
+and `(ten_second_trunks == 'Gold')`.  In general, you will see that we will put
+parentheses around these expressions that generate Boolean arrays, and we
+recommend you do too, as good practice, and to make it clearer that this is an
+expression that generates a value.  But in this case, we actually *need* the
+parentheses to make Python do what we want.   Remember *operator precedence*;
+the multiply operator `*` has *higher precedence* than the operator `+`, so `3
++ 5 * 2` is equal to 3 + (5 * 2) = 13.  If we want to do addition before
+  multiplication, we use parentheses to tell Python the order it should use:
+  `(3 + 5) * 2` = 16.
 
 The same applies for the two operators `==` and `&` here.   In fact `&` has a
 higher precedence than `==` so Python will read the expression without
