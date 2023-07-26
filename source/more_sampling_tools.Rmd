@@ -510,9 +510,9 @@ var array >}}s, asks the question of every element in the {{< var array >}}.
 First make the Boolean {{< var array >}}s.
 
 ```{python}
-ten_first_gold = ten_first_trunks == 'Gold'
+ten_first_gold = (ten_first_trunks == 'Gold')
 print("Ten first == 'Gold'", ten_first_gold)
-ten_second_gold = ten_second_trunks == 'Gold'
+ten_second_gold = (ten_second_trunks == 'Gold')
 print("Ten second == 'Gold'", ten_second_gold)
 ```
 
@@ -528,12 +528,12 @@ print(ten_second_gold)
 Now let us use `&` to combine to Boolean {{< var array >}}s:
 
 ```{python}
-ten_both = ten_first_gold & ten_second_gold
+ten_both = (ten_first_gold & ten_second_gold)
 ten_both
 ```
 
 ```{r}
-ten_both <- ten_first_gold & ten_second_gold
+ten_both <- (ten_first_gold & ten_second_gold)
 ten_both
 ```
 
@@ -548,24 +548,24 @@ Here we are asking the `&` question of `ten_first_gold` and `ten_second_gold`.  
 
 ```{python}
 # First question, giving first element of result.
-ten_first_gold[0] & ten_second_gold[0]
+(ten_first_gold[0] & ten_second_gold[0])
 ```
 
 ```{r}
 # First question, giving first element of result.
-ten_first_gold[1] & ten_second_gold[1]
+(ten_first_gold[1] & ten_second_gold[1])
 ```
 
 The second question is:
 
 ```{python}
 # Second question, giving second element of result.
-ten_first_gold[1] & ten_second_gold[1]
+(ten_first_gold[1] & ten_second_gold[1])
 ```
 
 ```{python}
 # Second question, giving second element of result.
-ten_first_gold[2] & ten_second_gold[2]
+(ten_first_gold[2] & ten_second_gold[2])
 ```
 
 and so on.  We have ten elements on *each side*, and 10 answers, giving {{< var
@@ -592,53 +592,49 @@ False    =    False    &    True
 ...
 -->
 
-
-::: python
-
 :::{.callout-note}
-## Parentheses, arrays and comparisons
+## Parentheses, {{< var array >}}s and comparisons
 
 Notice the round brackets (parentheses) around `(ten_first_trunks == 'Gold')`
 and `(ten_second_trunks == 'Gold')`.  In general, you will see that we will put
-parentheses around these expressions that generate Boolean arrays, and we
-recommend you do too, as good practice, and to make it clearer that this is an
-expression that generates a value.  But in this case, we actually *need* the
-parentheses to make Python do what we want.   Remember *operator precedence*;
-the multiply operator `*` has *higher precedence* than the operator `+`, so `3
-+ 5 * 2` is equal to 3 + (5 * 2) = 13.  If we want to do addition before
-  multiplication, we use parentheses to tell Python the order it should use:
-  `(3 + 5) * 2` = 16.
+parentheses around these expressions that generate Boolean {{< var array >}}s,
+and we recommend you do too, as good practice, and to make it clearer that
+this is an expression that generates a value.
 
-The same applies for the two operators `==` and `&` here.   In fact `&` has a
-higher precedence than `==` so Python will read the expression without
-parentheses — `ten_first_trunks == 'Gold' & ten_second_trunks == 'Gold'` to
-mean (because of operator precedence) `ten_first_trunks == ('Gold' &
-ten_second_trunks) == 'Gold'`; it does not know what to do with `'Gold' &
-ten_second_trunks` and generates an error:
+::: python
+But — be careful — in this case, we actually *need* the parentheses to make
+Python do what we want; see the footnote for more
+detail.[^ampersand-precedence]
 
-```{python tags=c("raises-exception"), error=TRUE}
-# The statement without parentheses generates an error, because of the
-# "Gold' & ten_second_trunks operation, from operator precedence.
-ten_first_trunks == 'Gold' & ten_second_trunks == 'Gold'
-```
+[^ampersand-precedence]: We warned that we need parentheses around our `&`
+    expressions to get the result we want.  We would add the parentheses in
+    any case, as good practice, but here we also *need* the parentheses in
+    `(ten_first_trunks == 'Gold') & (ten_second_trunks == 'Gold')`. Remember
+    *operator precedence* the multiply operator `*` has *higher precedence*
+    than the operator `+`, so `3 + 5 * 2` is equal to 3 + (5 * 2) = 13.  If we
+    want to do addition before multiplication, we use parentheses to tell
+    Python the order it should use: `(3 + 5) * 2` = 16.
 
-This is the same error you get for:
+    The same applies for the two operators `==` and `&` here.   In fact `&`
+    has a higher precedence than `==`. This means that, if we write the
+    expression without parentheses — `ten_first_trunks == 'Gold' &
+    ten_second_trunks == 'Gold'`, because of operator precedence, Python takes
+    this to mean `ten_first_trunks == ('Gold' & ten_second_trunks) == 'Gold'`.
+    Python does not know what to do with `'Gold' & ten_second_trunks` and
+    generates an error of form `'bitwise_and' not supported for the input
+    types`.  The error tells you that Python does not know how to apply `&`
+    (`'bitwise_and'`) to the string `'Gold`' and the array
+    `ten_second_trunks`.
 
-```{python tags=c("raises-exception"), error=TRUE}
-# The expression that causes the error.
-'Gold' & ten_second_trunks
-```
+    This is the same error you would get for running the code `'Gold' &
+    ten_second_trunks` on its own.
 
-The point to take away is, that when you are using `&` to combine Boolean
-arrays in Python, remember operator precedence, and, when in doubt, put
-parentheses around the expressions on either side of `&`, as here.
-
-```{python}
-(ten_first_trunks == 'Gold') & (ten_second_trunks == 'Gold')
-```
-
+    The point to take away is, that when you are using `&` to combine Boolean
+    arrays in Python, remember operator precedence, and make sure you have put
+    parentheses around the expressions on either side of `&`, as here.
 :::
 
+:::
 
 
 Remember, we wanted the answer to the question: how many trials had "Gold" in the first trunk *and* "Gold" in the second.  We can answer that question for the first 10 trials with {{< var sum >}}:
@@ -1088,6 +1084,27 @@ if (length(montys_choices) == 1) {  # Only one door available.
 montys_door
 ```
 
+::: python
+
+In fact, we can avoid that `if len(` check for the number of doors, because
+`rnd.choice` will also work on a sequence of length 1 — in that case, it
+always returns the single element in the sequence, like this:
+
+```{python}
+# rnd.choice on sequence with single element - always returns that element.
+rnd.choice([2])
+```
+
+That means we can simplify the code above to:
+
+```{python}
+# Choose single door left to choose, or door at random if two.
+montys_door = rnd.choice(montys_choices)
+montys_door
+```
+
+:::
+
 Now we know Monty's door, we can identify the other door, by removing our door,
 and Monty's door, from the available options:
 
@@ -1112,12 +1129,8 @@ my_door = rnd.choice(doors)
 car_door = rnd.choice(doors)
 # Which door will Monty open?
 montys_choices  = np.setdiff1d(doors, [my_door, car_door])
-# Choose Monty's door from the remaining options.
-if len(montys_choices) == 1:  # At least one door remains.
-    montys_door = montys_choices[0]
-else:  # There must be two doors to choose from.
-    # Choose one of the doors at random.
-    montys_door = rnd.choice(montys_choices)
+# Choose single door left to choose, or door at random if two.
+montys_door = rnd.choice(montys_choices)
 # Now find the door we'll open if we switch.
 remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
 # There is only one door left.
@@ -1134,12 +1147,11 @@ my_door <- sample(doors, size=1)
 car_door <- sample(doors, size=1)
 # Which door will Monty open?
 montys_choices <- setdiff(doors, c(my_door, car_door))
-# Choose Monty's door from the remaining options.
-if (length(montys_choices) == 1) {  # At least one door remains.
-    # There must be at least one remaining door.
-    montys_door <- montys_choices[1]
-} else {  # There must be two doors to choose from.
-    # Choose one of the doors at random.
+# Choose single door left to choose, or door at random if two.
+if (length(montys_choices) == 1) {  # Only one door available.
+    montys_door <- montys_choices[1]  # Take the first (of 1!).
+} else {  # Two doors to choose from:
+    # Choose at random
     montys_door <- sample(montys_choices, size=1)
 }
 # Now find the door we'll open if we switch.
@@ -1170,12 +1182,8 @@ for i in range(10000):
     car_door = rnd.choice(doors)
     # Which door will Monty open?
     montys_choices  = np.setdiff1d(doors, [my_door, car_door])
-    # Choose Monty's door from the remaining options.
-    if len(montys_choices) == 1:  # At least one door remains.
-        montys_door = montys_choices[0]
-    else:  # There must be two doors to choose from.
-        # Choose one of the doors at random.
-        montys_door = rnd.choice(montys_choices)
+    # Choose single door left to choose, or door at random if two.
+    montys_door = rnd.choice(montys_choices)
     # Now find the door we'll open if we switch.
     remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
     # There is only one door left.
@@ -1206,12 +1214,11 @@ for (i in 1:10000) {
     car_door <- sample(doors, size=1)
     # Which door will Monty open?
     montys_choices <- setdiff(doors, c(my_door, car_door))
-    # Choose Monty's door from the remaining options.
-    if (length(montys_choices) == 1) {  # At least one door remains.
-        # There must be at least one remaining door.
-        montys_door <- montys_choices[1]
-    } else {  # There must be two doors to choose from.
-        # Choose one of the doors at random.
+    # Choose single door left to choose, or door at random if two.
+    if (length(montys_choices) == 1) {  # Only one door available.
+        montys_door <- montys_choices[1]  # Take the first (of 1!).
+    } else {  # Two doors to choose from:
+        # Choose at random
         montys_door <- sample(montys_choices, size=1)
     }
     # Now find the door we'll open if we switch.
@@ -1254,12 +1261,8 @@ for i in range(10000):
     car_door = rnd.choice(doors)
     # Which door will Monty open?
     montys_choices  = np.setdiff1d(doors, [my_door, car_door])
-    # Choose Monty's door from the remaining options.
-    if len(montys_choices) == 1:  # At least one door remains.
-        montys_door = montys_choices[0]
-    else:  # There must be two doors to choose from.
-        # Choose one of the doors at random.
-        montys_door = rnd.choice(montys_choices)
+    # Choose single door left to choose, or door at random if two.
+    montys_door = rnd.choice(montys_choices)
     # Now find the door we'll open if we switch.
     remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
     # There is only one door left.
@@ -1296,12 +1299,11 @@ for (i in 1:10000) {
     car_door <- sample(doors, size=1)
     # Which door will Monty open?
     montys_choices <- setdiff(doors, c(my_door, car_door))
-    # Choose Monty's door from the remaining options.
-    if (length(montys_choices) == 1) {  # At least one door remains.
-        # There must be at least one remaining door.
-        montys_door <- montys_choices[1]
-    } else {  # There must be two doors to choose from.
-        # Choose one of the doors at random.
+    # Choose single door left to choose, or door at random if two.
+    if (length(montys_choices) == 1) {  # Only one door available.
+        montys_door <- montys_choices[1]  # Take the first (of 1!).
+    } else {  # Two doors to choose from:
+        # Choose at random
         montys_door <- sample(montys_choices, size=1)
     }
     # Now find the door we'll open if we switch.
