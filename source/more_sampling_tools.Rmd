@@ -973,7 +973,9 @@ this set difference function in {{< var np_or_r >}}.
 ::: python
 
 Notice that we are using *lists* as the input (first and second) sequences
-here.  We can use lists or arrays or any other type of sequence in Python.
+here.  We can use lists or arrays or any other type of sequence in Python. (See
+@sec-lists for an introduction to lists).
+
 Numpy functions like `np.setdiff1d` always *return* an array.
 
 :::
