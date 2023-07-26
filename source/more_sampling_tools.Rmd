@@ -250,7 +250,7 @@ the value in `second_trunk`, and the value remains as "No gold in first trunk".
 Only if there was gold in the first trunk, do we go on to check whether the
 second trunk contains silver or gold.  Therefore, we only set a new value in `second_trunks` where there was gold in the first trunk.
 
-Now let us show the effect of running a comparison on `first_10_trunks`:
+Now let's show the effect of running a comparison on `first_10_trunks`:
 
 ```{python}
 were_gold = first_10_trunks == 'Gold'
