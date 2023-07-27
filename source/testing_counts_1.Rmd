@@ -306,24 +306,38 @@ results from the histogram, we can calculate the result by tacking on
 the following commands to the above program:
 
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+`{python}
+# Determine the number of trials in which we had 14 or more males.
+j = np.sum(scores >= 14)
 
-```matlab
-' Program file: "fruitfly.rss"
+# Determine the number of trials in which we had 6 or fewer males.
+k = np.sum(scores <= 6)
 
-COUNT z >=14 j
-' Determine the number of trials in which we had 14 or more males.
-COUNT z <=6 k
-' Determine the number of trials in which we had 6 or fewer males.
-ADD j k m
-' Add the two results together.
-DIVIDE m 1000 mm
-' Convert to a proportion.
-PRINT mm
-' Print the results.
+# Add the two results together.
+m = j + k
 
-' Note: The file "fruitfly" on the Resampling Stats software disk contains
-' this set of commands.
+# Convert to a proportion.
+mm = m/n_trials
+
+# Print the results.
+print(mm)
+
+
+```{r}
+# Determine the number of trials in which we had 14 or more males.
+j <- sum(scores >= 14)
+
+# Determine the number of trials in which we had 6 or fewer males.
+k <- sum(scores <= 6)
+
+# Add the two results together.
+m <- j + k
+
+# Convert to a proportion.
+mm <- m/n_trials
+
+# Print the results.
+print(mm)
 ```
 
 Notice that the strength of the evidence for the effectiveness of the
