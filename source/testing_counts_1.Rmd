@@ -478,24 +478,6 @@ discussed earlier for four children and for ten cows. Conventional
 methods are discussed for comparison in @sec-testing-procedures. Here is the
 resampling solution in RESAMPLING STATS:
 
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "testing_counts_1_02.rss"
-
-REPEAT 15000
-    GENERATE 10 1,206 a
-    COUNT a BETWEEN 101 206 b
-    SCORE b z
-END
-HISTOGRAM z
-COUNT z >=9 k
-DIVIDE k 15000 kk
-PRINT kk
-' **10 Calves**
-```
-
 ```{python}
 # set the number of trials
 n_trials = 10000
@@ -533,6 +515,43 @@ kk = k/n_trials
 
 # show the proportion
 print(f"The probability of 9 or 10 females occurring by chance is {kk}")
+```
+
+```{r}
+# set the number of trials
+n_trials <- 10000
+
+# set the size of each sample
+sample_size <- 10
+
+# an array to store the results
+scores <- numeric(n_trials)
+
+# for 10000 repeats
+for (i in 1:n_trials) {
+
+    # generate 10 numbers between 1 and 206
+    a <- sample(1:206, size = sample_size)
+
+    # count how many numbers were between 101 and 206
+    b <- sum((a >= 101) & ((a <= 206)))
+
+    # store the result of the current trial
+    scores[i] <- b
+}
+
+# plot a histogram of the scores
+title_of_plot <- paste0("Number of females in", n_trials, " samples of \n", sample_size, " simulated calves")
+hist(scores, xlab = 'Number of Females', main = title_of_plot)
+
+# count the number of scores that were greater than or equal to 9
+k <- sum(scores >= 9)
+
+# express as a proportion
+kk <- k/n_trials
+
+# show the proportion
+print(paste("The probability of 9 or 10 females occurring by chance is", kk))
 ```
 
 ![](images/19-Chap-15_001.png)
