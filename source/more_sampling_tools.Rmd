@@ -42,11 +42,11 @@ problems in probability.
 This is a classic problem in probability:[^three-coins-version]
 
 > A Spanish treasure fleet of three ships was sunk at sea off Mexico. One ship
-> had a trunk of gold forward and another aft, another ship had a trunk of gold
-> forward and a trunk of silver aft, while a third ship had a trunk of silver
-> forward and another trunk of silver aft. Divers just found one of the ships
-> and a trunk of gold in it. They are now taking bets about whether the other
-> trunk found on the same ship will contain silver or gold. What are fair odds?
+> had a chest of gold forward and another aft, another ship had a chest of gold
+> forward and a chest of silver aft, while a third ship had a chest of silver
+> forward and another chest of silver aft. Divers just found one of the ships
+> and a chest of gold in it. They are now taking bets about whether the other
+> chest found on the same ship will contain silver or gold. What are fair odds?
 
 [^three-coins-version]: The treasure fleet problem is a restatement of [a
     problem that Joseph Bertrand
@@ -80,7 +80,7 @@ answer with deductive logic (portrayed in @fig-ships-gold-silver).
 
     From step 2, the cases a, b, and c in step 6 have equal
     probabilities.
-7.  If possibility 6a is the case, then the other trunk is I-Gb; the
+7.  If possibility 6a is the case, then the other chest is I-Gb; the
     comparable statements for cases 6b and 6c are I-Ga and II-S.
 8.  From steps 6 and 7: From equal probabilities of the three cases, and
     no other possible outcome, $P(6a) = 1/3$, $P(6b) = 1/3$, $P(6c) =
@@ -93,18 +93,23 @@ See @fig-ships-gold-silver.
 include_svg('diagrams/ships_gold_silver.svg')
 ```
 
-The following simulation arrives at the correct answer:
+The following simulation arrives at the correct answer.
 
 1.  Write "Gold" on three pieces of paper and "Silver" on three pieces of
-    paper.
-2.  Get three buckets each with two pieces of paper:  one with "Gold", "Gold",
-    one with "Gold", "Silver", and one with "Silver", "Silver".
-3.  Choose a bucket at random, and shuffle the pieces of paper in it.
-4.  Choose the first element in the chosen bucket's vector (a vector is an
-    array or list of things). If "Silver", stop trial and make no further
-    record. If "Gold", continue.
-5.  Record the second element in the chosen bucket's vector on the
-    scoreboard.
+    paper.  These represent the chests.
+2.  Get three buckets each with two pieces of paper.  Each bucket represents a
+    ship, each piece of paper represents a chest in that ship.  One bucket
+    has two pieces of paper with "Gold" written on them; one has pieces of
+    paper with "Gold" and "Silver", and one has "Silver" and "Silver".
+3.  Choose a bucket at random, to represent choosing a ship at random.
+4.  Shuffle the pieces of paper in the bucket and pick one, to represent
+    choosing the first chest from that ship at random.
+4.  If the piece of paper says "Silver", the first chest we found in this ship
+    was silver, and we stop the trial and make no further record. If "Gold",
+    continue.
+5.  Get the second piece of paper from the bucket, representing the second
+    chest on the chosen ship.  Record whether this was "Silver" or "Gold" on
+    the scoreboard.
 6.  Repeat steps (3 - 5), and calculate the proportion of "Gold"'s on a
     scoreboard. (The answer should be about $\frac{2}{3}$.)
 
@@ -126,22 +131,22 @@ rnd = np.random.default_rng()
 ```
 
 ```{python}
-# The 3 buckets, each representing two trunks on a ship.
-bucket1 = ['Gold', 'Gold']  # Trunks in first ship.
-bucket2 = ['Gold',  'Silver']  # Trunks in second ship.
-bucket3 = ['Silver', 'Silver']  # Trunks in third ship.
+# The 3 buckets.  Each bucket represents a ship.  Each has two chests.
+bucket1 = ['Gold', 'Gold']  # Chests in first ship.
+bucket2 = ['Gold',  'Silver']  # Chests in second ship.
+bucket3 = ['Silver', 'Silver']  # Chests in third ship.
 ```
 
 ```{python}
 # Mark trials as not valid to start with.
-# Trials where we don't get a gold trunk first will
-# keep this 'No gold in first trunk' marker.
-second_trunks = np.repeat(['No gold in first trunk'], 10000)
+# Trials where we don't get a gold chest first will
+# keep this 'No gold in first chest' marker.
+second_chests = np.repeat(['No gold in first chest'], 10000)
 
 for i in range(10000):
     # Select a ship at random from the three ships.
     ship_no = rnd.choice([1, 2, 3])
-    # Get the trunks from this ship.
+    # Get the chests from this ship (represented by a bucket).
     if ship_no == 1:
         bucket = bucket1
     if ship_no == 2:
@@ -149,39 +154,42 @@ for i in range(10000):
     if ship_no == 3:
         bucket = bucket3
 
+    # We shuffle the order of the chests in this ship, to simulate
+    # the fact that we don't know which of the two chests we have
+    # found first.
     shuffled = rnd.permuted(bucket)
 
-    if shuffled[0] == 'Gold':  # We found a gold trunk first.
-        # Store whether the Second trunk was silver or gold.
-        second_trunks[i] = shuffled[1]
+    if shuffled[0] == 'Gold':  # We found a gold chest first.
+        # Store whether the Second chest was silver or gold.
+        second_chests[i] = shuffled[1]
 
 # End loop, go back to beginning.
 
-# Number of times we found gold in the second trunk.
-n_golds = np.sum(second_trunks == 'Gold')
-# Number of times we found silver in the second trunk.
-n_silvers = np.sum(second_trunks == 'Silver')
-# As a ratio of golds to all second trunks (where the first was gold).
+# Number of times we found gold in the second chest.
+n_golds = np.sum(second_chests == 'Gold')
+# Number of times we found silver in the second chest.
+n_silvers = np.sum(second_chests == 'Silver')
+# As a ratio of golds to all second chests (where the first was gold).
 print(n_golds / (n_golds + n_silvers))
 ```
 
 ```{r}
-# The 3 buckets, each representing two trunks on a ship.
-bucket1 <- c('Gold', 'Gold')  # Trunks in first ship.
-bucket2 <- c('Gold',  'Silver')  # Trunks in second ship.
-bucket3 <- c('Silver', 'Silver')  # Trunks in third ship.
+# The 3 buckets.  Each bucket represents a ship.  Each has two chests.
+bucket1 <- c('Gold', 'Gold')  # Chests in first ship.
+bucket2 <- c('Gold',  'Silver')  # Chests in second ship.
+bucket3 <- c('Silver', 'Silver')  # Chests in third ship.
 ```
 
 ```{r}
 # Mark trials as not valid to start with.
-# Trials where we don't get a gold trunk first will
-# keep this 'No gold in first trunk' marker.
-second_trunks <- rep('No gold in first trunk', 10000)
+# Trials where we don't get a gold chest first will
+# keep this 'No gold in first chest' marker.
+second_chests <- rep('No gold in first chest', 10000)
 
 for (i in 1:10000) {
     # Select a ship at random from the three ships.
     ship_no <- sample(1:3, size=1)
-    # Get the trunks from this ship.
+    # Get the chests from this ship (represented by a bucket).
     if (ship_no == 1) {
         bucket <- bucket1
     }
@@ -192,22 +200,34 @@ for (i in 1:10000) {
         bucket <- bucket3
     }
 
+    # We shuffle the order of the chests in this ship, to simulate
+    # the fact that we don't know which of the two chests we have
+    # found first.
     shuffled <- sample(bucket)
 
-    if (shuffled[1] == 'Gold') {  # We found a gold trunk first.
-        # Store whether the Second trunk was silver or gold.
-        second_trunks[i] <- shuffled[2]
+    if (shuffled[1] == 'Gold') {  # We found a gold chest first.
+        # Store whether the Second chest was silver or gold.
+        second_chests[i] <- shuffled[2]
     }
 }  # End loop, go back to beginning.
 
-# Number of times we found gold in the second trunk.
-n_golds <- sum(second_trunks == 'Gold')
-# Number of times we found silver in the second trunk.
-n_silvers <- sum(second_trunks == 'Silver')
-# As a ratio of golds to all second trunks (where the first was gold).
+# Number of times we found gold in the second chest.
+n_golds <- sum(second_chests == 'Gold')
+# Number of times we found silver in the second chest.
+n_silvers <- sum(second_chests == 'Silver')
+# As a ratio of golds to all second chests (where the first was gold).
 message(n_golds / (n_golds + n_silvers))
 ```
 
+::: {.callout-note}
+## A more elegant way to select the chests for a ship
+
+In the code above, we have first chosen the ship number at random, and then
+used a set of `if ...` statements to get the pair of chests corresponding to
+the given ship.  A more elegant way of doing this, that we haven't covered yet,
+is storing the definitions of ships and chests as [an R list]{.r}[a list of
+lists]{.python}. For now, please trust us that doing this would allow us to
+write neater code to select the possible chests for the given ship.
 :::
 
 
@@ -216,7 +236,7 @@ message(n_golds / (n_golds + n_silvers))
 The code above implements the procedure we might well use if we were
 simulating the problem physically.  We do a trial, and we record the result.
 We do this on a piece of paper if we are doing a physical simulation, and in
-the `second_trunks` {{< var array >}} in code.
+the `second_chests` {{< var array >}} in code.
 
 Finally we tally up the results.  If we are doing a physical simulation, we go
 back over the all the trial results and counting up the "Gold" and "Silver"
@@ -227,38 +247,38 @@ Boolean {{< var array >}}s are a fundamental tool in {{< var lang >}}, and we wi
 
 Here is a remind of how those {{< var array >}}s work.
 
-First, let's slice out the first 10 values of the `second_trunks`
+First, let's slice out the first 10 values of the `second_chests`
 trial-by-trial results tally from the simulation above:
 
 ```{python}
 # Get values at positions 0 through 9 (up to, but not including position 10)
-first_10_trunks = second_trunks[:10]
-first_10_trunks
+first_10_chests = second_chests[:10]
+first_10_chests
 ```
 
 ```{r}
 # Get values at positions 1 through 10
-first_10_trunks <- second_trunks[1:10]
-first_10_trunks
+first_10_chests <- second_chests[1:10]
+first_10_chests
 ```
 
-Before we started the simulation, we set `second_trunks` to contain 10,000
-strings, where each string was "No gold in first trunk".  In the simulation, we
-check whether there was gold in the first trunk, and, if not, we don't change
-the value in `second_trunk`, and the value remains as "No gold in first trunk".
+Before we started the simulation, we set `second_chests` to contain 10,000
+strings, where each string was "No gold in first chest".  In the simulation, we
+check whether there was gold in the first chest, and, if not, we don't change
+the value in `second_chest`, and the value remains as "No gold in first chest".
 
-Only if there was gold in the first trunk, do we go on to check whether the
-second trunk contains silver or gold.  Therefore, we only set a new value in `second_trunks` where there was gold in the first trunk.
+Only if there was gold in the first chest, do we go on to check whether the
+second chest contains silver or gold.  Therefore, we only set a new value in `second_chests` where there was gold in the first chest.
 
-Now let's show the effect of running a comparison on `first_10_trunks`:
+Now let's show the effect of running a comparison on `first_10_chests`:
 
 ```{python}
-were_gold = first_10_trunks == 'Gold'
+were_gold = first_10_chests == 'Gold'
 were_gold
 ```
 
 ```{r}
-were_gold <- first_10_trunks == 'Gold'
+were_gold <- first_10_chests == 'Gold'
 were_gold
 ```
 
@@ -278,7 +298,7 @@ We need an illustration here of form:
 
 True        "Gold"
 True        "Gold"
-False       "No gold in first trunk"
+False       "No gold in first chest"
 True        "Gold"
 False   =   "Silver"                     == 'Gold'
 ...
@@ -294,12 +314,12 @@ array >}} is just the number of {{< var true >}} values in the {{< var array
 >}} — the count that we need.
 
 ```{python}
-# The number of True values — so the number of "Gold" trunks.
+# The number of True values — so the number of "Gold" chests.
 np.sum(were_gold)
 ```
 
 ```{r}
-# The number of True values — so the number of "Gold" trunks.
+# The number of True values — so the number of "Gold" chests.
 sum(were_gold)
 ```
 
@@ -316,7 +336,7 @@ the two-ships code you saw above.
 ::: {.notebook name="gold_silver_booleans" title="Another approach to ships with gold and silver"}
 
 ::: nb-only
-This notebook is a variation on the problem with gold and silver trunks in
+This notebook is a variation on the problem with gold and silver chests in
 ships.  It shows how we can count and tally the results at the end, rather than in the trial itself.
 :::
 
@@ -330,30 +350,30 @@ rnd = np.random.default_rng()
 ```
 
 ```{python}
-# The 3 buckets, each representing two trunks on a ship.
+# The 3 buckets, each representing two chests on a ship.
 # As before.
-bucket1 = ['Gold', 'Gold']  # Trunks in first ship.
-bucket2 = ['Gold',  'Silver']  # Trunks in second ship.
-bucket3 = ['Silver', 'Silver']  # Trunks in third ship.
+bucket1 = ['Gold', 'Gold']  # Chests in first ship.
+bucket2 = ['Gold',  'Silver']  # Chests in second ship.
+bucket3 = ['Silver', 'Silver']  # Chests in third ship.
 ```
 
 ```{python}
 # Here is where the difference starts.  We are now going to fill in
-# the result for the first trunk _and_ the result for the second trunk.
+# the result for the first chest _and_ the result for the second chest.
 #
 # Later we will fill in all these values, so the string we put here
 # does not matter.
 
-# Whether the first trunk was Gold or Silver.
-first_trunks = np.repeat(['To be announced'], 10000)
-# Whether the second trunk was Gold or Silver.
-second_trunks = np.repeat(['To be announced'], 10000)
+# Whether the first chest was Gold or Silver.
+first_chests = np.repeat(['To be announced'], 10000)
+# Whether the second chest was Gold or Silver.
+second_chests = np.repeat(['To be announced'], 10000)
 
 for i in range(10000):
     # Select a ship at random from the three ships.
     # As before.
     ship_no = rnd.choice([1, 2, 3])
-    # Get the trunks from this ship.
+    # Get the chests from this ship.
     # As before.
     if ship_no == 1:
         bucket = bucket1
@@ -366,44 +386,44 @@ for i in range(10000):
     shuffled = rnd.permuted(bucket)
 
     # Here is the big difference - we store the result for the first and second
-    # trunks.
-    first_trunks[i] = shuffled[0]
-    second_trunks[i] = shuffled[1]
+    # chests.
+    first_chests[i] = shuffled[0]
+    second_chests[i] = shuffled[1]
 
 # End loop, go back to beginning.
 
 # We will do the calculation we need in the next cell.  For now
 # just display the first 10 values.
-ten_first_trunks = first_trunks[:10]
-print('The first 10 values of "first_trunks:', ten_first_trunks)
-ten_second_trunks = second_trunks[:10]
-print('The first 10 values of "second_trunks', ten_second_trunks)
+ten_first_chests = first_chests[:10]
+print('The first 10 values of "first_chests:', ten_first_chests)
+ten_second_chests = second_chests[:10]
+print('The first 10 values of "second_chests', ten_second_chests)
 ```
 
 ```{r}
-# The 3 buckets, each representing two trunks on a ship.
+# The 3 buckets, each representing two chests on a ship.
 # As before.
-bucket1 <- c('Gold', 'Gold')  # Trunks in first ship.
-bucket2 <- c('Gold',  'Silver')  # Trunks in second ship.
-bucket3 <- c('Silver', 'Silver')  # Trunks in third ship.
+bucket1 <- c('Gold', 'Gold')  # Chests in first ship.
+bucket2 <- c('Gold',  'Silver')  # Chests in second ship.
+bucket3 <- c('Silver', 'Silver')  # Chests in third ship.
 ```
 
 ```{r}
 # Here is where the difference starts.  We are now going to fill in
-# the result for the first trunk _and_ the result for the second trunk.
+# the result for the first chest _and_ the result for the second chest.
 #
 # Later we will fill in all these values, so the string we put here
 # does not matter.
 
-# Whether the first trunk was Gold or Silver.
-first_trunks <- rep('To be announced', 10000)
-second_trunks <- rep('To be announced', 10000)
+# Whether the first chest was Gold or Silver.
+first_chests <- rep('To be announced', 10000)
+second_chests <- rep('To be announced', 10000)
 
 for (i in 1:10000) {
     # Select a ship at random from the three ships.
     # As before.
     ship_no <- sample(1:3, size=1)
-    # Get the trunks from this ship.
+    # Get the chests from this ship.
     # As before.
     if (ship_no == 1) {
         bucket <- bucket1
@@ -419,27 +439,27 @@ for (i in 1:10000) {
     shuffled <- sample(bucket)
 
     # Here is the big difference - we store the result for the first and second
-    # trunks.
-    first_trunks[i] <- shuffled[1]
-    second_trunks[i] <- shuffled[2]
+    # chests.
+    first_chests[i] <- shuffled[1]
+    second_chests[i] <- shuffled[2]
 }  # End loop, go back to beginning.
 
 # We will do the calculation we need in the next cell.  For now
 # just display the first 10 values.
-ten_first_trunks <- first_trunks[1:10]
-message('The first 10 values of "first_trunks:')
-print(ten_first_trunks)
-ten_second_trunks <- second_trunks[1:10]
-message('The first 10 values of "second_trunks:')
-print(ten_second_trunks)
+ten_first_chests <- first_chests[1:10]
+message('The first 10 values of "first_chests:')
+print(ten_first_chests)
+ten_second_chests <- second_chests[1:10]
+message('The first 10 values of "second_chests:')
+print(ten_second_chests)
 ```
 
-In this variant, we recorded the type of first trunk for each trial ("Gold" or
-"Silver"), and the type of second trunk of the second trunk ("Gold" or
+In this variant, we recorded the type of first chest for each trial ("Gold" or
+"Silver"), and the type of second chest of the second chest ("Gold" or
 "Silver").
 
 **We would like to count the number of times there was "Gold" in the first
-trunk _and_ "Gold" in the second.**
+chest _and_ "Gold" in the second.**
 
 ## Combining Boolean arrays {#sec-combine-booleans}
 
@@ -510,17 +530,17 @@ var array >}}s, asks the question of every element in the {{< var array >}}.
 First make the Boolean {{< var array >}}s.
 
 ```{python}
-ten_first_gold = (ten_first_trunks == 'Gold')
+ten_first_gold = (ten_first_chests == 'Gold')
 print("Ten first == 'Gold'", ten_first_gold)
-ten_second_gold = (ten_second_trunks == 'Gold')
+ten_second_gold = (ten_second_chests == 'Gold')
 print("Ten second == 'Gold'", ten_second_gold)
 ```
 
 ```{r}
-ten_first_gold <- ten_first_trunks == 'Gold'
+ten_first_gold <- ten_first_chests == 'Gold'
 message("Ten first == 'Gold'")
 print(ten_first_gold)
-ten_second_gold <- ten_second_trunks == 'Gold'
+ten_second_gold <- ten_second_chests == 'Gold'
 message("Ten second == 'Gold'")
 print(ten_second_gold)
 ```
@@ -540,9 +560,9 @@ ten_both
 Notice that {{< var lang >}} does the comparison *elementwise* — element by
 element.
 
-You saw that when we did `second_trunks == 'Gold'` this had the effect of
+You saw that when we did `second_chests == 'Gold'` this had the effect of
 asking the `== 'Gold'` question of *each element*, so there will be one answer
-per element in `second_trunks`.  In that case there was {{< var an_array >}} to the *left* of `==` and a single value to the *right*.  We were comparing {{< var an_array >}} to a value.
+per element in `second_chests`.  In that case there was {{< var an_array >}} to the *left* of `==` and a single value to the *right*.  We were comparing {{< var an_array >}} to a value.
 
 Here we are asking the `&` question of `ten_first_gold` and `ten_second_gold`.  Here there is {{< var an_array >}} to the *left* and {{< var an_array >}} to the *right*.  We are asking the `&` question 10 times, but the first question we are asking is:
 
@@ -577,7 +597,7 @@ We could also create the Boolean {{< var array >}}s and do the `&` operation
 all in one step, like this:
 
 ```{python}
-ten_both = (ten_first_trunks == 'Gold') & (ten_second_trunks == 'Gold')
+ten_both = (ten_first_chests == 'Gold') & (ten_second_chests == 'Gold')
 ten_both
 ```
 
@@ -595,21 +615,21 @@ False    =    False    &    True
 :::{.callout-note}
 ## Parentheses, {{< var array >}}s and comparisons
 
-Notice the round brackets (parentheses) around `(ten_first_trunks == 'Gold')`
-and `(ten_second_trunks == 'Gold')`.  In general, you will see that we will put
+Notice the round brackets (parentheses) around `(ten_first_chests == 'Gold')`
+and `(ten_second_chests == 'Gold')`.  In general, you will see that we will put
 parentheses around these expressions that generate Boolean {{< var array >}}s,
-and we recommend you do too, as good practice, and to make it clearer that
-this is an expression that generates a value.
+and we recommend you do too.  It is good habit to get into, to make it clear
+that this is an expression that generates a value.
 
 ::: python
-But — be careful — in this case, we actually *need* the parentheses to make
-Python do what we want; see the footnote for more
-detail.[^ampersand-precedence]
+The parentheses make the code easier to read — but be careful — in this case,
+we actually *need* the parentheses to make Python do what we want; see the
+footnote for more detail.[^ampersand-precedence]
 
 [^ampersand-precedence]: We warned that we need parentheses around our `&`
     expressions to get the result we want.  We would add the parentheses in
     any case, as good practice, but here we also *need* the parentheses in
-    `(ten_first_trunks == 'Gold') & (ten_second_trunks == 'Gold')`. Remember
+    `(ten_first_chests == 'Gold') & (ten_second_chests == 'Gold')`. Remember
     *operator precedence* the multiply operator `*` has *higher precedence*
     than the operator `+`, so `3 + 5 * 2` is equal to 3 + (5 * 2) = 13.  If we
     want to do addition before multiplication, we use parentheses to tell
@@ -617,17 +637,17 @@ detail.[^ampersand-precedence]
 
     The same applies for the two operators `==` and `&` here.   In fact `&`
     has a higher precedence than `==`. This means that, if we write the
-    expression without parentheses — `ten_first_trunks == 'Gold' &
-    ten_second_trunks == 'Gold'`, because of operator precedence, Python takes
-    this to mean `ten_first_trunks == ('Gold' & ten_second_trunks) == 'Gold'`.
-    Python does not know what to do with `'Gold' & ten_second_trunks` and
+    expression without parentheses — `ten_first_chests == 'Gold' &
+    ten_second_chests == 'Gold'`, because of operator precedence, Python takes
+    this to mean `ten_first_chests == ('Gold' & ten_second_chests) == 'Gold'`.
+    Python does not know what to do with `'Gold' & ten_second_chests` and
     generates an error of form `'bitwise_and' not supported for the input
     types`.  The error tells you that Python does not know how to apply `&`
     (`'bitwise_and'`) to the string `'Gold`' and the array
-    `ten_second_trunks`.
+    `ten_second_chests`.
 
     This is the same error you would get for running the code `'Gold' &
-    ten_second_trunks` on its own.
+    ten_second_chests` on its own.
 
     The point to take away is, that when you are using `&` to combine Boolean
     arrays in Python, remember operator precedence, and make sure you have put
@@ -637,7 +657,7 @@ detail.[^ampersand-precedence]
 :::
 
 
-Remember, we wanted the answer to the question: how many trials had "Gold" in the first trunk *and* "Gold" in the second.  We can answer that question for the first 10 trials with {{< var sum >}}:
+Remember, we wanted the answer to the question: how many trials had "Gold" in the first chest *and* "Gold" in the second.  We can answer that question for the first 10 trials with {{< var sum >}}:
 
 ```{python}
 n_ten_both = np.sum(ten_both)
@@ -652,15 +672,15 @@ n_ten_both
 We can answer the same question for *all* the trials, in the same way:
 
 ```{python}
-first_gold = first_trunks == 'Gold'
-second_gold = second_trunks == 'Gold'
+first_gold = first_chests == 'Gold'
+second_gold = second_chests == 'Gold'
 n_both_gold = np.sum(first_gold & second_gold)
 n_both_gold
 ```
 
 ```{r}
-first_gold <- first_trunks == 'Gold'
-second_gold <- second_trunks == 'Gold'
+first_gold <- first_chests == 'Gold'
+second_gold <- second_chests == 'Gold'
 n_both_gold <- sum(first_gold & second_gold)
 n_both_gold
 ```
@@ -669,29 +689,29 @@ We could also do the same calculation all in one line:
 
 ```{python}
 # Notice the parentheses - we need these - see above.
-n_both_gold = np.sum((first_trunks == 'Gold') & (second_trunks == 'Gold'))
+n_both_gold = np.sum((first_chests == 'Gold') & (second_chests == 'Gold'))
 n_both_gold
 ```
 
 ```{r}
-n_both_gold <- sum((first_trunks == 'Gold') & (second_trunks == 'Gold'))
+n_both_gold <- sum((first_chests == 'Gold') & (second_chests == 'Gold'))
 n_both_gold
 ```
 
-We can then count all the ships where the first trunk was gold:
+We can then count all the ships where the first chest was gold:
 
 ```{python}
-n_first_gold = np.sum(first_trunks == 'Gold')
+n_first_gold = np.sum(first_chests == 'Gold')
 n_first_gold
 ```
 
 ```{r}
-n_first_gold <- sum(first_trunks == 'Gold')
+n_first_gold <- sum(first_chests == 'Gold')
 n_first_gold
 ```
 
-The final calculation is the proportion of second trunks that are gold, given
-the first trunk was also gold:
+The final calculation is the proportion of second chests that are gold, given
+the first chest was also gold:
 
 ```{python}
 p_g_given_g = n_both_gold / n_first_gold
