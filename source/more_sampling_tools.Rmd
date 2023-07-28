@@ -148,7 +148,7 @@ bucket3 = ['Silver', 'Silver']  # Chests in third ship.
 #
 # We need a placeholder value for all trials, and will make that
 # "No gold in first chest".
-trial_outcome = np.repeat(['No gold in first chest'], 10000)
+second_chests = np.repeat(['No gold in first chest'], 10000)
 
 for i in range(10000):
     # Select a ship at random from the three ships.
@@ -163,8 +163,7 @@ for i in range(10000):
 
     # We shuffle the order of the chests in this ship, to simulate
     # the fact that we don't know which of the two chests we have
-    # found first, fforward or aft.
-    # so we shuffle them
+    # found first, forward or aft.
     shuffled = rnd.permuted(bucket)
 
     if shuffled[0] == 'Gold':  # We found a gold chest first.
