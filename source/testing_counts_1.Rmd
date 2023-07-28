@@ -510,7 +510,7 @@ plt.show()
 k = np.sum(scores >= 9)
 
 # express as a proportion
-kk = k/n_trials
+kk = k / n_trials
 
 # show the proportion
 print(f"The probability of 9 or 10 females occurring by chance is {kk}")
