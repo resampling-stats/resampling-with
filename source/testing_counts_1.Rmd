@@ -306,7 +306,7 @@ results from the histogram, we can calculate the result by tacking on
 the following commands to the above program:
 
 
-`{python}
+```{python}
 # Determine the number of trials in which we had 14 or more males.
 j = np.sum(scores >= 14)
 
