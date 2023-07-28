@@ -489,7 +489,7 @@ sample_size = 10
 scores = np.zeros(n_trials)
 
 # for 10000 repeats
-for i in np.arange(n_trials):
+for i in range(n_trials):
 
     # generate 10 numbers between 1 and 206
     a = rnd.integers(low = 1, high = 206, size = sample_size)
