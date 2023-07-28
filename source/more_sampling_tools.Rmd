@@ -26,15 +26,14 @@ source("_common.R")
 
 In the next chapter we will deal with some more involved problems in
 *probability*, as a preparation for *statistics*, where we use reasoning from
-probability to draw conclusions in a world like our own, where there appears to
-be random variation.
+probability to draw conclusions about a world like our own, where variation
+often have the appearance of being random.
 
-Before we get down to the business of complex probabilistic problems in the
-next few chapters, let's consider a couple of peculiar puzzles that have uses
-for us here.  The first is, that they allow us to introduce some more of the
-key tools in {{< var lang >}} that we will use for Monte Carlo resampling. The
-second is that these problems are extremely valuable in showing the power of
-the Monte Carlo simulation method to help us solve, and then reason above,
+Before we get down to the business of complex probabilistic problems
+in the next few chapters, let's consider a couple of peculiar
+puzzles. These puzzles allow us to introduce some more of the key
+tools in {{< var lang >}} for Monte Carlo resampling, and show the
+power of such simulation to help solve, and then reason about,
 problems in probability.
 
 ## The treasure fleet recovered
@@ -139,10 +138,17 @@ bucket3 = ['Silver', 'Silver']  # Chests in third ship.
 ```
 
 ```{python}
-# Mark trials as not valid to start with.
-# Trials where we don't get a gold chest first will
-# keep this 'No gold in first chest' marker.
-second_chests = np.repeat(['No gold in first chest'], 10000)
+# For each trial, we will have one of three states:
+#
+# 1. When opening the first chest, it did not contain gold.
+#    We will reject these trials, since they do not match our
+#    experiment description.
+# 2. Gold was found in the first and the second chest.
+# 3. Gold was found in the first, but silver in the second chest.
+#
+# We need a placeholder value for all trials, and will make that
+# "No gold in first chest".
+trial_outcome = np.repeat(['No gold in first chest'], 10000)
 
 for i in range(10000):
     # Select a ship at random from the three ships.
@@ -157,14 +163,15 @@ for i in range(10000):
 
     # We shuffle the order of the chests in this ship, to simulate
     # the fact that we don't know which of the two chests we have
-    # found first.
+    # found first, fforward or aft.
+    # so we shuffle them
     shuffled = rnd.permuted(bucket)
 
     if shuffled[0] == 'Gold':  # We found a gold chest first.
         # Store whether the Second chest was silver or gold.
         second_chests[i] = shuffled[1]
 
-# End loop, go back to beginning.
+    # End loop, go back to beginning.
 
 # Number of times we found gold in the second chest.
 n_golds = np.sum(second_chests == 'Gold')
@@ -307,12 +314,12 @@ second chest contains silver or gold.  Therefore, we only set a new value in `se
 Now let's show the effect of running a comparison on `first_10_chests`:
 
 ```{python}
-were_gold = first_10_chests == 'Gold'
+were_gold = (first_10_chests == 'Gold')
 were_gold
 ```
 
 ```{r}
-were_gold <- first_10_chests == 'Gold'
+were_gold <- (first_10_chests == 'Gold')
 were_gold
 ```
 
@@ -683,8 +690,8 @@ footnote for more detail.[^ampersand-precedence]
     This is the same error you would get for running the code `'Gold' &
     ten_second_chests` on its own.
 
-    The point to take away is: when you are using `&` to combine Boolean arrays
-    in Python, remember operator precedence, and make sure you have put
+    The point to take away is, that when you are using `&` to combine Boolean
+    arrays in Python, remember operator precedence, and, when in doubt, put
     parentheses around the expressions on either side of `&`, as here.
 
 :::
@@ -705,8 +712,8 @@ n_ten_both
 We can answer the same question for *all* the trials, in the same way:
 
 ```{python}
-first_gold = first_chests == 'Gold'
-second_gold = second_chests == 'Gold'
+first_gold = (first_chests == 'Gold')
+second_gold = (second_chests == 'Gold')
 n_both_gold = np.sum(first_gold & second_gold)
 n_both_gold
 ```
