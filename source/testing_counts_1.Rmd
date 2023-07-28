@@ -491,11 +491,10 @@ scores = np.zeros(n_trials)
 # for 10000 repeats
 for i in range(n_trials):
 
-    # generate 10 numbers between 1 and 206
-    a = rnd.integers(low = 1, high = 206, size = sample_size)
-
-    # count how many numbers were between 101 and 206
-    b = np.sum((a >= 101) & ((a <= 206)))
+    a = rnd.choice(['female', 'male'], 
+        p=[p_female, 1 - p_female], 
+        size = sample_size)
+    b = np.sum(a == 'female')
 
     # store the result of the current trial
     scores[i] = b
