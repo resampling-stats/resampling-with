@@ -547,7 +547,7 @@ hist(scores, xlab = 'Number of Females', main = title_of_plot)
 k <- sum(scores >= 9)
 
 # express as a proportion
-kk <- k/n_trials
+kk <- k / n_trials
 
 # show the proportion
 print(paste("The probability of 9 or 10 females occurring by chance is", kk))
