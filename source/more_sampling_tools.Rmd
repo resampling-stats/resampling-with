@@ -220,17 +220,50 @@ n_silvers <- sum(second_chests == 'Silver')
 message(n_golds / (n_golds + n_silvers))
 ```
 
-::: {.callout-note}
-## A more elegant way to select the chests for a ship
-
 In the code above, we have first chosen the ship number at random, and then
 used a set of `if ...` statements to get the pair of chests corresponding to
-the given ship.  A more elegant way of doing this, that we haven't covered yet,
-is storing the definitions of ships and chests as [an R list]{.r}[a list of
-lists]{.python}. For now, please trust us that doing this would allow us to
-write neater code to select the possible chests for the given ship.
-:::
+the given ship.  There are simpler and more elegant ways of writing this code,
+but they would need some {{< var lang >}} features that we haven't covered
+yet.[^list-of-lists]
 
+[^list-of-lists]: Although we have used multiple `if` statements to set the
+    chests for each ship in the code for the ship problem, it would have been
+    more elegant to store the definitions of ships and chests as [an R
+    list]{.r}[a list of lists]{.python}.  We haven't covered these, but to give
+    you a taste of what that would look like, for a single trial.
+
+    ```python
+    # We define the ships and their respective chests, using a list of lists.
+    # Remember, list has elements, where the elements can be any type of value.
+    # In this case, the elements in the list are themselves - lists.
+    ship_chests = [  # Create list, with lists as elements.
+        ['Gold', 'Gold'],  # List for ship 1; element 0 of the list of lists.
+        ['Gold', 'Silver'],  # List for ship 2; element 1 of the list of lists.
+        ['Silver', 'Silver']  # Ship 3; element 2.
+    ]
+    # Choose a ship at random.
+    ship_no = rnd.choice([0, 1, 2])
+
+    # Get the corresponding chests for this ship.
+    chests = ship_chests[ship_no]
+    ```
+
+    ```r
+    # We define the ships and their respective chests, using an R list.
+    # An R list has elements, where the elements can be any type of value.
+    # In this case, the elements in the list are vectors, on vector each ship.
+    ship_chests <- list(  # Create list, with vectors as elements.
+        c('Gold', 'Gold'),  # Vector for ship 1
+        c('Gold', 'Silver'),  # Ship 2
+        c('Silver', 'Silver')  # Ship 3
+    )
+    # Choose a ship at random.
+    ship_no <- sample(1:3, size=1)
+
+    # Get the corresponding chests for this ship.
+    # Notice the double square brackets to get the list item.
+    chests <- ship_chests[[ship_no]]
+    ```
 
 ## Back to Boolean {{< var array >}}s
 
@@ -631,15 +664,15 @@ footnote for more detail.[^ampersand-precedence]
     expressions to get the result we want.  We would add the parentheses in
     any case, as good practice, but here we also *need* the parentheses in
     `(ten_first_chests == 'Gold') & (ten_second_chests == 'Gold')`. Remember
-    *operator precedence* the multiply operator `*` has *higher precedence*
-    than the operator `+`, so `3 + 5 * 2` is equal to 3 + (5 * 2) = 13.  If we
-    want to do addition before multiplication, we use parentheses to tell
-    Python the order it should use: `(3 + 5) * 2` = 16.
+    *operator precedence*; for example, the multiply operator `*` has *higher
+    precedence* than the operator `+`, so `3 + 5 * 2` is equal to `3 + (5 * 2)`
+    = 13.  If we want to do addition before multiplication, we use parentheses
+    to tell Python the order it should use: `(3 + 5) * 2` = 16.
 
     The same applies for the two operators `==` and `&` here.   In fact `&`
     has a higher precedence than `==`. This means that, if we write the
     expression without parentheses — `ten_first_chests == 'Gold' &
-    ten_second_chests == 'Gold'`, because of operator precedence, Python takes
+    ten_second_chests == 'Gold'` — because of operator precedence, Python takes
     this to mean `ten_first_chests == ('Gold' & ten_second_chests) == 'Gold'`.
     Python does not know what to do with `'Gold' & ten_second_chests` and
     generates an error of form `'bitwise_and' not supported for the input
@@ -650,10 +683,9 @@ footnote for more detail.[^ampersand-precedence]
     This is the same error you would get for running the code `'Gold' &
     ten_second_chests` on its own.
 
-    The point to take away is, that when you are using `&` to combine Boolean
-    arrays in Python, remember operator precedence, and make sure you have put
+    The point to take away is: when you are using `&` to combine Boolean arrays
+    in Python, remember operator precedence, and make sure you have put
     parentheses around the expressions on either side of `&`, as here.
-:::
 
 :::
 
