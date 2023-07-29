@@ -147,8 +147,8 @@ bucket3 = ['Silver', 'Silver']  # Chests in third ship.
 # 3. Gold was found in the first, but silver in the second chest.
 #
 # We need a placeholder value for all trials, and will make that
-# "No gold in first chest".
-second_chests = np.repeat(['No gold in first chest'], 10000)
+# "No gold in chest 1, chest 2 never opened".
+second_chests = np.repeat(['No gold in chest 1, chest 2 never opened'], 10000)
 
 for i in range(10000):
     # Select a ship at random from the three ships.
@@ -190,8 +190,8 @@ bucket3 <- c('Silver', 'Silver')  # Chests in third ship.
 ```{r}
 # Mark trials as not valid to start with.
 # Trials where we don't get a gold chest first will
-# keep this 'No gold in first chest' marker.
-second_chests <- rep('No gold in first chest', 10000)
+# keep this 'No gold in chest 1, chest 2 never opened' marker.
+second_chests <- rep('No gold in chest 1, chest 2 never opened', 10000)
 
 for (i in 1:10000) {
     # Select a ship at random from the three ships.
@@ -303,9 +303,10 @@ first_10_chests
 ```
 
 Before we started the simulation, we set `second_chests` to contain 10,000
-strings, where each string was "No gold in first chest".  In the simulation, we
-check whether there was gold in the first chest, and, if not, we don't change
-the value in `second_chest`, and the value remains as "No gold in first chest".
+strings, where each string was "No gold in chest 1, chest 2 never opened".  In
+the simulation, we check whether there was gold in the first chest, and, if
+not, we don't change the value in `second_chest`, and the value remains as "No
+gold in chest 1, chest 2 never opened".
 
 Only if there was gold in the first chest, do we go on to check whether the
 second chest contains silver or gold.  Therefore, we only set a new value in `second_chests` where there was gold in the first chest.
@@ -338,7 +339,7 @@ We need an illustration here of form:
 
 True        "Gold"
 True        "Gold"
-False       "No gold in first chest"
+False       "No gold in chest 1, chest 2 never opened"
 True        "Gold"
 False   =   "Silver"                     == 'Gold'
 ...
