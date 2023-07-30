@@ -329,16 +329,18 @@ hand <- c(5, 7, 5, 4, 7)
 
 This hand represents a pair of 5s and a pair of 7s.
 
-Want to detect the number of repeats for each possible card value, 1 through
-13.  Let's say we are looking for 5s.   We can detect which of the values are equal to 5 by making a Boolean array, where there is True for a value equal to 5, and False otherwise:
+We want to detect the number of repeats for each possible card value, 1 through
+13.  Let's say we are looking for 5s.   We can detect which of the values are
+equal to 5 by making a Boolean {{< var array >}}, where there is {{< var true
+>}} for a value equal to 5, and {{< var false >}} otherwise:
 
 ```{python}
-is_5 = hand == 5
+is_5 = (hand == 5)
 is_5
 ```
 
 ```{r}
-is_5 <- hand == 5
+is_5 <- (hand == 5)
 ```
 
 We can then count the number of 5s with:
@@ -455,7 +457,11 @@ repeat_nos
 ::: python
 Notice that we started our loop by checking for values equal to 0, and then
 values equal to 1 and so on.  By our definition of the deck, no card can have
-value 0, so the first time through this loop, we will always get a count of 0.  We could saved ourselves a tiny amount of computing time by missing out that step by using `for i in range(1, 14):` instead, but it's a little bit neater to leave in the default start at 0, at a tiny cost in wasted computer effort, in this case.
+value 0, so the first time through this loop, we will always get a count of 0.
+We could have saved ourselves a tiny amount of computing time if we had missed
+out that pointless step of checking 0, by using `for i in range(1, 14):`
+instead. In this case, we think the code is a little bit neater to read if we
+leave in the default start at 0, at a tiny cost in wasted computer effort.
 :::
 
 ```{r}
@@ -525,7 +531,7 @@ Now we have `repeat_nos`, we can proceed with the rest of the steps above.
 We can count the number of cards that have exactly two repeats:
 
 ```{python}
-repeat_nos == 2
+(repeat_nos == 2)
 ```
 
 ```{python}
@@ -535,7 +541,7 @@ n_pairs
 ```
 
 ```{r}
-repeat_nos == 2
+(repeat_nos == 2)
 ```
 
 ```{r}
@@ -547,20 +553,22 @@ n_pairs
 The hand is of interest to us only if the number of pairs is exactly 1:
 
 ```{python}
+# Check whether there is exactly one pair in this hand.
 n_pairs == 1
 ```
 
-```{python}
+```{r}
 # Check whether there is exactly one pair in this hand.
-np.sum(n_pairs == 1)
+n_pairs == 1
 ```
 
-We now have all the machinery to use {{< var lang >}} for all the logic in simulating multiple hands, and checking for exactly one pair.
+We now have the machinery to use {{< var lang >}} for all the logic in
+simulating multiple hands, and checking for exactly one pair.
 
-Now let's use {{< var lang >}} to do the full job of dealing many hands and
-finding pairs in each one.  To do this, we repeat the procedure above using
-a `for` loop. This commands the program to do ten thousand repeats of the
-statements in the "loop" [between the start `{` and end `}` curly
+Let's do that, and use {{< var lang >}} to do the full job of dealing many
+hands and finding pairs in each one.  We repeat the procedure above using a
+`for` loop. The `for` loop commands the program to do ten thousand repeats of
+the statements in the "loop" [between the start `{` and end `}` curly
 braces]{.r}[(indented statements)]{.python}.
 
 In the *body* of the loop (the part that gets repeated for each trial) we:
@@ -577,10 +585,9 @@ done this 10000 times.
 
 When those 10000 repetitions are over, the computer moves on to count (`sum`)
 the number of "1's" in the score-keeping {{< var array >}} `z`, each "1"
-indicating a hand with a pair.  We store this count at location `k`. We divide
-`k` by 10000 to get the *proportion* of hands that had one pair, and we
-[`message`]{.r}[`print`]{.python}
-the result of `k` to the screen.
+indicating a hand with exactly one pair.  We store this count at location `k`.
+We divide `k` by 10000 to get the *proportion* of hands that had one pair, and
+we [`message`]{.r}[`print`]{.python} the result of `k` to the screen.
 
 ::: {.notebook name="one_pair" title="One pair"}
 
