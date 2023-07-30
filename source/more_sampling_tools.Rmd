@@ -226,6 +226,8 @@ n_silvers <- sum(second_chests == 'Silver')
 message(n_golds / (n_golds + n_silvers))
 ```
 
+:::
+
 In the code above, we have first chosen the ship number at random, and then
 used a set of `if ...` statements to get the pair of chests corresponding to
 the given ship.  There are simpler and more elegant ways of writing this code,
@@ -257,7 +259,8 @@ yet.[^list-of-lists]
     ```r
     # We define the ships and their respective chests, using an R list.
     # An R list has elements, where the elements can be any type of value.
-    # In this case, the elements in the list are vectors, on vector each ship.
+    # In this case, the elements in the list are vectors, one vector for each
+    # ship.
     ship_chests <- list(  # Create list, with vectors as elements.
         c('Gold', 'Gold'),  # Vector for ship 1
         c('Gold', 'Silver'),  # Ship 2
@@ -323,6 +326,18 @@ were_gold <- (first_10_chests == 'Gold')
 were_gold
 ```
 
+:::{.callout-note}
+## Parentheses and Boolean comparisons
+
+Notice the round brackets (parentheses) around `(first_10_chests == 'Gold')`.
+In this particular case, we would get the same result without the parentheses,
+so the paretheses are optional[ — although see below for an example where the
+they are not optional]{.python}. In general, you will see we put parentheses
+around all expressions that generate Boolean {{< var array >}}s, and we
+recommend you do too.  It is good habit to get into, to make it clear that this
+is an expression that generates a value.
+:::
+
 The `== 'Gold'` *comparison* is asking a question.  It is asking that question
 of {{< var an_array >}}, and the {{< var array >}} contains multiple values.
 {{< var np_or_r >}} treats this comparison as asking the question *of each
@@ -349,10 +364,10 @@ Any takers?  Good techniques?   Maybe generated Markdown table with transparent 
 
 Now we have an array with {{< var true >}} for the "Gold" results and {{< var
 false >}} otherwise, we can count the number of "Gold" results by using {{< var
-sum >}} on the {{< var array >}}.  As you remember {{< var sum >}} counts {{<
-var true >}} as 1 and {{< var false >}} as 0, so the sum of the Boolean {{< var
-array >}} is just the number of {{< var true >}} values in the {{< var array
->}} — the count that we need.
+sum >}} on the {{< var array >}}.  As you remember (@sec-count-with-sum) {{<
+var sum >}} counts {{< var true >}} as 1 and {{< var false >}} as 0, so the sum
+of the Boolean {{< var array >}} is just the number of {{< var true >}} values
+in the {{< var array >}} — the count that we need.
 
 ```{python}
 # The number of True values — so the number of "Gold" chests.
@@ -624,7 +639,7 @@ The second question is:
 (ten_first_gold[1] & ten_second_gold[1])
 ```
 
-```{python}
+```{r}
 # Second question, giving second element of result.
 (ten_first_gold[2] & ten_second_gold[2])
 ```
@@ -653,19 +668,17 @@ False    =    False    &    True
 ...
 -->
 
+::: python
+
 :::{.callout-note}
 ## Parentheses, {{< var array >}}s and comparisons
 
-Notice the round brackets (parentheses) around `(ten_first_chests == 'Gold')`
-and `(ten_second_chests == 'Gold')`.  In general, you will see that we will put
-parentheses around these expressions that generate Boolean {{< var array >}}s,
-and we recommend you do too.  It is good habit to get into, to make it clear
-that this is an expression that generates a value.
-
-::: python
-The parentheses make the code easier to read — but be careful — in this case,
-we actually *need* the parentheses to make Python do what we want; see the
-footnote for more detail.[^ampersand-precedence]
+Again you will notice the round brackets (parentheses) around
+`(ten_first_chests == 'Gold')` and `(ten_second_chests == 'Gold')`.   Above,
+you saw us recommend you always use paretheses around Boolean expressions like
+this. The parentheses make the code easier to read — but be careful — in this
+case, we actually *need* the parentheses to make Python do what we want; see
+the footnote for more detail.[^ampersand-precedence]
 
 [^ampersand-precedence]: We warned that we need parentheses around our `&`
     expressions to get the result we want.  We would add the parentheses in
@@ -693,6 +706,8 @@ footnote for more detail.[^ampersand-precedence]
     The point to take away is, that when you are using `&` to combine Boolean
     arrays in Python, remember operator precedence, and, when in doubt, put
     parentheses around the expressions on either side of `&`, as here.
+
+:::
 
 :::
 
@@ -1129,7 +1144,7 @@ door at random from the two doors available.
 if len(montys_choices) == 1:  # Only one door available.
     montys_door = montys_choices[0]  # Take the first (of 1!).
 else:  # Two doors to choose from:
-    # Choose at random
+    # Choose at random.
     montys_door = rnd.choice(montys_choices)
 montys_door
 ```
@@ -1138,7 +1153,7 @@ montys_door
 if (length(montys_choices) == 1) {  # Only one door available.
     montys_door <- montys_choices[1]  # Take the first (of 1!).
 } else {  # Two doors to choose from:
-    # Choose at random
+    # Choose at random.
     montys_door <- sample(montys_choices, size=1)
 }
 montys_door
@@ -1211,7 +1226,7 @@ montys_choices <- setdiff(doors, c(my_door, car_door))
 if (length(montys_choices) == 1) {  # Only one door available.
     montys_door <- montys_choices[1]  # Take the first (of 1!).
 } else {  # Two doors to choose from:
-    # Choose at random
+    # Choose at random.
     montys_door <- sample(montys_choices, size=1)
 }
 # Now find the door we'll open if we switch.
@@ -1239,6 +1254,7 @@ switch_wins = np.repeat([False], 10000)
 doors = [1, 2, 3]
 
 for i in range(10000):
+    # You will recognize the below as the single-trial procedure above.
     my_door = rnd.choice(doors)
     car_door = rnd.choice(doors)
     # Which door will Monty open?
@@ -1271,6 +1287,7 @@ switch_wins <- rep(FALSE, 10000)
 doors <- c(1, 2, 3)
 
 for (i in 1:10000) {
+    # You will recognize the below as the single-trial procedure above.
     my_door <- sample(doors, size=1)
     car_door <- sample(doors, size=1)
     # Which door will Monty open?
@@ -1279,7 +1296,7 @@ for (i in 1:10000) {
     if (length(montys_choices) == 1) {  # Only one door available.
         montys_door <- montys_choices[1]  # Take the first (of 1!).
     } else {  # Two doors to choose from:
-        # Choose at random
+        # Choose at random.
         montys_door <- sample(montys_choices, size=1)
     }
     # Now find the door we'll open if we switch.
@@ -1302,12 +1319,13 @@ message('p for stay: ', p_for_stay)
 message('p for switch: ', p_for_switch)
 ```
 
-We can also follow the same strategy as we used for the two-ships problem in
-@sec-ships-booleans.
+We can also follow the same strategy as we used for the second implementation
+of the two-ships problem (@sec-ships-booleans).
 
-Here we do not calculate the trial results (`stay_wins`, `switch_wins`) in each
-trial.  Instead, we store the *doors* for each trial, and then use Boolean {{<
-var array >}}s to calculate the results for all trials, at the end.
+Here, as in the second two-ships implementation, we do not calculate the trial
+results (`stay_wins`, `switch_wins`) in each trial.  Instead, we store the
+*doors* for each trial, and then use Boolean {{< var array >}}s to calculate
+the results for all trials, at the end.
 
 ```{python}
 # Instead of storing the trial results, we store the doors for each trial.
@@ -1364,7 +1382,7 @@ for (i in 1:10000) {
     if (length(montys_choices) == 1) {  # Only one door available.
         montys_door <- montys_choices[1]  # Take the first (of 1!).
     } else {  # Two doors to choose from:
-        # Choose at random
+        # Choose at random.
         montys_door <- sample(montys_choices, size=1)
     }
     # Now find the door we'll open if we switch.
@@ -1445,8 +1463,7 @@ The set up to the problem has us choosing a door (`my_door` above), and then
 Monty opens one of the other two doors.
 
 Sometimes (in fact, 2/3 of the time) there is a car behind one of Monty's
-doors, and we've obliged him to open the *other* door, and his choice is
-forced.
+doors.  We've obliged Monty to open the *other* door, and his choice is forced.
 
 When his choice was not forced, we had Monty choose the door at random.
 
