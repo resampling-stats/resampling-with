@@ -9,7 +9,7 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.14.6
+      jupytext_version: 1.14.5
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -26,15 +26,14 @@ source("_common.R")
 
 In the next chapter we will deal with some more involved problems in
 *probability*, as a preparation for *statistics*, where we use reasoning from
-probability to draw conclusions in a world like our own, where there appears to
-be random variation.
+probability to draw conclusions about a world like our own, where variation
+often appears to be more or less random.
 
-Before we get down to the business of complex probabilistic problems in the
-next few chapters, let's consider a couple of peculiar puzzles that have uses
-for us here.  The first is, that they allow us to introduce some more of the
-key tools in {{< var lang >}} that we will use for Monte Carlo resampling. The
-second is that these problems are extremely valuable in showing the power of
-the Monte Carlo simulation method to help us solve, and then reason above,
+Before we get down to the business of complex probabilistic problems
+in the next few chapters, let's consider a couple of peculiar
+puzzles. These puzzles allow us to introduce some more of the key
+tools in {{< var lang >}} for Monte Carlo resampling, and show the
+power of such simulation to help solve, and then reason about,
 problems in probability.
 
 ## The treasure fleet recovered
@@ -42,11 +41,12 @@ problems in probability.
 This is a classic problem in probability:[^three-coins-version]
 
 > A Spanish treasure fleet of three ships was sunk at sea off Mexico. One ship
-> had a trunk of gold forward and another aft, another ship had a trunk of gold
-> forward and a trunk of silver aft, while a third ship had a trunk of silver
-> forward and another trunk of silver aft. Divers just found one of the ships
-> and a trunk of gold in it. They are now taking bets about whether the other
-> trunk found on the same ship will contain silver or gold. What are fair odds?
+> had a chest of gold forward and another aft, another ship had a chest of gold
+> forward and a chest of silver aft, while a third ship had a chest of silver
+> forward and another chest of silver aft. Divers just found one of the ships
+> and a chest of gold in it, but they don't know whether it was from forward or
+> aft. They are now taking bets about whether the other chest found on the same
+> ship will contain silver or gold. What are fair odds?
 
 [^three-coins-version]: The treasure fleet problem is a restatement of [a
     problem that Joseph Bertrand
@@ -80,7 +80,7 @@ answer with deductive logic (portrayed in @fig-ships-gold-silver).
 
     From step 2, the cases a, b, and c in step 6 have equal
     probabilities.
-7.  If possibility 6a is the case, then the other trunk is I-Gb; the
+7.  If possibility 6a is the case, then the other chest is I-Gb; the
     comparable statements for cases 6b and 6c are I-Ga and II-S.
 8.  From steps 6 and 7: From equal probabilities of the three cases, and
     no other possible outcome, $P(6a) = 1/3$, $P(6b) = 1/3$, $P(6c) =
@@ -89,30 +89,35 @@ answer with deductive logic (portrayed in @fig-ships-gold-silver).
 
 See @fig-ships-gold-silver.
 
-```{r fig-ships-gold-silver, opts.label='svg_fig', fig.cap="Ships with Gold and Silver"}
+```{r fig-ships-gold-silver, opts.label="svg_fig", fig.cap="Ships with Gold and Silver"}
 include_svg('diagrams/ships_gold_silver.svg')
 ```
 
-The following simulation arrives at the correct answer:
+The following simulation arrives at the correct answer.
 
 1.  Write "Gold" on three pieces of paper and "Silver" on three pieces of
-    paper.
-2.  Get three buckets each with two pieces of paper:  one with "Gold", "Gold",
-    one with "Gold", "Silver", and one with "Silver", "Silver".
-3.  Choose a bucket at random, and shuffle the pieces of paper in it.
-4.  Choose the first element in the chosen bucket's vector (a vector is an
-    array or list of things). If "Silver", stop trial and make no further
-    record. If "Gold", continue.
-5.  Record the second element in the chosen bucket's vector on the
-    scoreboard.
+    paper.  These represent the chests.
+2.  Get three buckets each with two pieces of paper.  Each bucket represents a
+    ship, each piece of paper represents a chest in that ship.  One bucket
+    has two pieces of paper with "Gold" written on them; one has pieces of
+    paper with "Gold" and "Silver", and one has "Silver" and "Silver".
+3.  Choose a bucket at random, to represent choosing a ship at random.
+4.  Shuffle the pieces of paper in the bucket and pick one, to represent
+    choosing the first chest from that ship at random.
+4.  If the piece of paper says "Silver", the first chest we found in this ship
+    was silver, and we stop the trial and make no further record. If "Gold",
+    continue.
+5.  Get the second piece of paper from the bucket, representing the second
+    chest on the chosen ship.  Record whether this was "Silver" or "Gold" on
+    the scoreboard.
 6.  Repeat steps (3 - 5), and calculate the proportion of "Gold"'s on a
     scoreboard. (The answer should be about $\frac{2}{3}$.)
 
-Here is a notebook simulation with {{< var lang >}}:
-
 <!---
-We need strings at this point.
+Consider introducing elif here.
 -->
+
+Here is a notebook simulation with {{< var lang >}}:
 
 ::: {.notebook name="gold_silver_ships" title="Ships with gold and silver"}
 
@@ -126,88 +131,645 @@ rnd = np.random.default_rng()
 ```
 
 ```{python}
-# The 3 buckets, each representing two trunks on a ship.
-bucket1 = ['Gold', 'Gold']  # First ship.
-bucket2 = ['Gold',  'Silver']  # Second ship.
-bucket3 = ['Silver', 'Silver']  # Third ship.
+# The 3 buckets.  Each bucket represents a ship.  Each has two chests.
+bucket1 = ['Gold', 'Gold']  # Chests in first ship.
+bucket2 = ['Gold',  'Silver']  # Chests in second ship.
+bucket3 = ['Silver', 'Silver']  # Chests in third ship.
 ```
 
 ```{python}
-# Mark trials as not valid to start with.
-# Trials where we don't get a gold trunk first will
-# keep this 'No gold in first trunk' marker.
-second_trunks = np.repeat(['No gold in first trunk'], 10000)
+# For each trial, we will have one of three states:
+#
+# 1. When opening the first chest, it did not contain gold.
+#    We will reject these trials, since they do not match our
+#    experiment description.
+# 2. Gold was found in the first and the second chest.
+# 3. Gold was found in the first, but silver in the second chest.
+#
+# We need a placeholder value for all trials, and will make that
+# "No gold in chest 1, chest 2 never opened".
+second_chests = np.repeat(['No gold in chest 1, chest 2 never opened'], 10000)
 
 for i in range(10000):
     # Select a ship at random from the three ships.
     ship_no = rnd.choice([1, 2, 3])
-    # Get the trunks from this ship.
+    # Get the chests from this ship (represented by a bucket).
     if ship_no == 1:
         bucket = bucket1
-    elif ship_no == 2:
+    if ship_no == 2:
         bucket = bucket2
-    else:  # ship_no == 3
+    if ship_no == 3:
         bucket = bucket3
 
+    # We shuffle the order of the chests in this ship, to simulate
+    # the fact that we don't know which of the two chests we have
+    # found first, forward or aft.
     shuffled = rnd.permuted(bucket)
 
-    if shuffled[0] == 'Gold':  # We found a gold trunk first.
-        # Store whether the Second trunk was silver or gold.
-        second_trunks[i] = shuffled[1]
+    if shuffled[0] == 'Gold':  # We found a gold chest first.
+        # Store whether the Second chest was silver or gold.
+        second_chests[i] = shuffled[1]
 
-# End loop, go back to beginning.
+    # End loop, go back to beginning.
 
-# Number of times we found gold in the second trunk.
-n_golds = np.sum(second_trunks == 'Gold')
-# Number of times we found silver in the second trunk.
-n_silvers = np.sum(second_trunks == 'Silver')
-# As a ratio of golds to all second trunks (where the first was gold).
+# Number of times we found gold in the second chest.
+n_golds = np.sum(second_chests == 'Gold')
+# Number of times we found silver in the second chest.
+n_silvers = np.sum(second_chests == 'Silver')
+# As a ratio of golds to all second chests (where the first was gold).
 print(n_golds / (n_golds + n_silvers))
 ```
 
 ```{r}
-# The 3 buckets, each representing two trunks on a ship.
-bucket1 <- c('Gold', 'Gold')  # First ship.
-bucket2 <- c('Gold',  'Silver')  # Second ship.
-bucket3 <- c('Silver', 'Silver')  # Third ship.
+# The 3 buckets.  Each bucket represents a ship.  Each has two chests.
+bucket1 <- c('Gold', 'Gold')  # Chests in first ship.
+bucket2 <- c('Gold',  'Silver')  # Chests in second ship.
+bucket3 <- c('Silver', 'Silver')  # Chests in third ship.
 ```
 
 ```{r}
 # Mark trials as not valid to start with.
-# Trials where we don't get a gold trunk first will
-# keep this 'No gold in first trunk' marker.
-second_trunks = rep('No gold in first trunk', 10000)
+# Trials where we don't get a gold chest first will
+# keep this 'No gold in chest 1, chest 2 never opened' marker.
+second_chests <- rep('No gold in chest 1, chest 2 never opened', 10000)
 
 for (i in 1:10000) {
     # Select a ship at random from the three ships.
     ship_no <- sample(1:3, size=1)
-    # Get the trunks from this ship.
+    # Get the chests from this ship (represented by a bucket).
     if (ship_no == 1) {
         bucket <- bucket1
-    } else if (ship_no == 2) {
+    }
+    if (ship_no == 2) {
         bucket <- bucket2
-    } else {  # ship_no == 3
+    }
+    if (ship_no == 3) {
         bucket <- bucket3
     }
 
+    # We shuffle the order of the chests in this ship, to simulate
+    # the fact that we don't know which of the two chests we have
+    # found first.
     shuffled <- sample(bucket)
 
-    if (shuffled[1] == 'Gold') {  # We found a gold trunk first.
-        # Store whether the Second trunk was silver or gold.
-        second_trunks[i] <- shuffled[2]
+    if (shuffled[1] == 'Gold') {  # We found a gold chest first.
+        # Store whether the Second chest was silver or gold.
+        second_chests[i] <- shuffled[2]
     }
 }  # End loop, go back to beginning.
 
-# Number of times we found gold in the second trunk.
-n_golds <- sum(second_trunks == 'Gold')
-# Number of times we found silver in the second trunk.
-n_silvers <- sum(second_trunks == 'Silver')
-# As a ratio of golds to all second trunks (where the first was gold).
+# Number of times we found gold in the second chest.
+n_golds <- sum(second_chests == 'Gold')
+# Number of times we found silver in the second chest.
+n_silvers <- sum(second_chests == 'Silver')
+# As a ratio of golds to all second chests (where the first was gold).
 message(n_golds / (n_golds + n_silvers))
 ```
 
+In the code above, we have first chosen the ship number at random, and then
+used a set of `if ...` statements to get the pair of chests corresponding to
+the given ship.  There are simpler and more elegant ways of writing this code,
+but they would need some {{< var lang >}} features that we haven't covered
+yet.[^list-of-lists]
+
+[^list-of-lists]: Although we have used multiple `if` statements to set the
+    chests for each ship in the code for the ship problem, it would have been
+    more elegant to store the definitions of ships and chests as [an R
+    list]{.r}[a list of lists]{.python}.  We haven't covered these, but to give
+    you a taste of what that would look like, for a single trial.
+
+    ```python
+    # We define the ships and their respective chests, using a list of lists.
+    # Remember, list has elements, where the elements can be any type of value.
+    # In this case, the elements in the list are themselves - lists.
+    ship_chests = [  # Create list, with lists as elements.
+        ['Gold', 'Gold'],  # List for ship 1; element 0 of the list of lists.
+        ['Gold', 'Silver'],  # List for ship 2; element 1 of the list of lists.
+        ['Silver', 'Silver']  # Ship 3; element 2.
+    ]
+    # Choose a ship at random.
+    ship_no = rnd.choice([0, 1, 2])
+
+    # Get the corresponding chests for this ship.
+    chests = ship_chests[ship_no]
+    ```
+
+    ```r
+    # We define the ships and their respective chests, using an R list.
+    # An R list has elements, where the elements can be any type of value.
+    # In this case, the elements in the list are vectors, on vector each ship.
+    ship_chests <- list(  # Create list, with vectors as elements.
+        c('Gold', 'Gold'),  # Vector for ship 1
+        c('Gold', 'Silver'),  # Ship 2
+        c('Silver', 'Silver')  # Ship 3
+    )
+    # Choose a ship at random.
+    ship_no <- sample(1:3, size=1)
+
+    # Get the corresponding chests for this ship.
+    # Notice the double square brackets to get the list item.
+    chests <- ship_chests[[ship_no]]
+    ```
+
+## Back to Boolean {{< var array >}}s
+
+The code above implements the procedure we might well use if we were
+simulating the problem physically.  We do a trial, and we record the result.
+We do this on a piece of paper if we are doing a physical simulation, and in
+the `second_chests` {{< var array >}} in code.
+
+Finally we tally up the results.  If we are doing a physical simulation, we go
+back over the all the trial results and counting up the "Gold" and "Silver"
+outcomes.  In code we use the comparisons `== 'Gold'` and `== 'Silver'` to find
+the trials of interest, and then count them up with {{< var sum >}}.
+
+Boolean {{< var array >}}s are a fundamental tool in {{< var lang >}}, and we will use them in nearly all our simulations.
+
+Here is a remind of how those {{< var array >}}s work.
+
+First, let's slice out the first 10 values of the `second_chests`
+trial-by-trial results tally from the simulation above:
+
+```{python}
+# Get values at positions 0 through 9 (up to, but not including position 10)
+first_10_chests = second_chests[:10]
+first_10_chests
+```
+
+```{r}
+# Get values at positions 1 through 10
+first_10_chests <- second_chests[1:10]
+first_10_chests
+```
+
+Before we started the simulation, we set `second_chests` to contain 10,000
+strings, where each string was "No gold in chest 1, chest 2 never opened".  In
+the simulation, we check whether there was gold in the first chest, and, if
+not, we don't change the value in `second_chest`, and the value remains as "No
+gold in chest 1, chest 2 never opened".
+
+Only if there was gold in the first chest, do we go on to check whether the
+second chest contains silver or gold.  Therefore, we only set a new value in `second_chests` where there was gold in the first chest.
+
+Now let's show the effect of running a comparison on `first_10_chests`:
+
+```{python}
+were_gold = (first_10_chests == 'Gold')
+were_gold
+```
+
+```{r}
+were_gold <- (first_10_chests == 'Gold')
+were_gold
+```
+
+The `== 'Gold'` *comparison* is asking a question.  It is asking that question
+of {{< var an_array >}}, and the {{< var array >}} contains multiple values.
+{{< var np_or_r >}} treats this comparison as asking the question *of each
+element in the {{< var array >}}*.  We get an answer for the question *for each
+element*.  The answer for position [1]{.r}[0]{.python} is {{< var true >}} if
+the element at position [1]{.r}[0]{.python} is equal to `'Gold'` and {{< var
+false >}} otherwise, and so on, for positions [2]{.r}[1]{.python},
+[3]{.r}[2]{.python} and so on.  We started with 10 strings.  After the
+comparison `== 'Gold'` we have 10 Boolean values, where a Boolean value can
+either be {{< var true >}} or {{< var false >}}.
+
+<!---
+We need an illustration here of form:
+
+True        "Gold"
+True        "Gold"
+False       "No gold in chest 1, chest 2 never opened"
+True        "Gold"
+False   =   "Silver"                     == 'Gold'
+...
+
+Any takers?  Good techniques?   Maybe generated Markdown table with transparent boerder for second and fourth column?
+-->
+
+Now we have an array with {{< var true >}} for the "Gold" results and {{< var
+false >}} otherwise, we can count the number of "Gold" results by using {{< var
+sum >}} on the {{< var array >}}.  As you remember {{< var sum >}} counts {{<
+var true >}} as 1 and {{< var false >}} as 0, so the sum of the Boolean {{< var
+array >}} is just the number of {{< var true >}} values in the {{< var array
+>}} — the count that we need.
+
+```{python}
+# The number of True values — so the number of "Gold" chests.
+np.sum(were_gold)
+```
+
+```{r}
+# The number of True values — so the number of "Gold" chests.
+sum(were_gold)
+```
+
+## Boolean {{< var array >}}s and another take on the ships problem {#sec-ships-booleans}
+
+
+If we are doing a physical simulation, we usually want to finish up all the work for the trial during the trial, so we have one outcome from the trial.  This makes it easier to tally up the results in the end.
+
+We have no such constraint when we are using code, so it is sometimes easier to
+record several results from the trial, and do the final combinations and
+tallies at the end.   We will show you what we mean with a slight variation on
+the two-ships code you saw above.
+
+::: {.notebook name="gold_silver_booleans" title="Another approach to ships with gold and silver"}
+
+::: nb-only
+This notebook is a variation on the problem with gold and silver chests in
+ships.  It shows how we can count and tally the results at the end, rather than in the trial itself.
 :::
 
+Notice that the first part of the code is identical to the first approach to
+this problem.  There are two key differences — see the comments for an
+explanation.
+
+```{python}
+import numpy as np
+rnd = np.random.default_rng()
+```
+
+```{python}
+# The 3 buckets, each representing two chests on a ship.
+# As before.
+bucket1 = ['Gold', 'Gold']  # Chests in first ship.
+bucket2 = ['Gold',  'Silver']  # Chests in second ship.
+bucket3 = ['Silver', 'Silver']  # Chests in third ship.
+```
+
+```{python}
+# Here is where the difference starts.  We are now going to fill in
+# the result for the first chest _and_ the result for the second chest.
+#
+# Later we will fill in all these values, so the string we put here
+# does not matter.
+
+# Whether the first chest was Gold or Silver.
+first_chests = np.repeat(['To be announced'], 10000)
+# Whether the second chest was Gold or Silver.
+second_chests = np.repeat(['To be announced'], 10000)
+
+for i in range(10000):
+    # Select a ship at random from the three ships.
+    # As before.
+    ship_no = rnd.choice([1, 2, 3])
+    # Get the chests from this ship.
+    # As before.
+    if ship_no == 1:
+        bucket = bucket1
+    if ship_no == 2:
+        bucket = bucket2
+    if ship_no == 3:
+        bucket = bucket3
+
+    # As before.
+    shuffled = rnd.permuted(bucket)
+
+    # Here is the big difference - we store the result for the first and second
+    # chests.
+    first_chests[i] = shuffled[0]
+    second_chests[i] = shuffled[1]
+
+# End loop, go back to beginning.
+
+# We will do the calculation we need in the next cell.  For now
+# just display the first 10 values.
+ten_first_chests = first_chests[:10]
+print('The first 10 values of "first_chests:', ten_first_chests)
+ten_second_chests = second_chests[:10]
+print('The first 10 values of "second_chests', ten_second_chests)
+```
+
+```{r}
+# The 3 buckets, each representing two chests on a ship.
+# As before.
+bucket1 <- c('Gold', 'Gold')  # Chests in first ship.
+bucket2 <- c('Gold',  'Silver')  # Chests in second ship.
+bucket3 <- c('Silver', 'Silver')  # Chests in third ship.
+```
+
+```{r}
+# Here is where the difference starts.  We are now going to fill in
+# the result for the first chest _and_ the result for the second chest.
+#
+# Later we will fill in all these values, so the string we put here
+# does not matter.
+
+# Whether the first chest was Gold or Silver.
+first_chests <- rep('To be announced', 10000)
+second_chests <- rep('To be announced', 10000)
+
+for (i in 1:10000) {
+    # Select a ship at random from the three ships.
+    # As before.
+    ship_no <- sample(1:3, size=1)
+    # Get the chests from this ship.
+    # As before.
+    if (ship_no == 1) {
+        bucket <- bucket1
+    }
+    if (ship_no == 2) {
+        bucket <- bucket2
+    }
+    if (ship_no == 3) {
+        bucket <- bucket3
+    }
+
+    # As before.
+    shuffled <- sample(bucket)
+
+    # Here is the big difference - we store the result for the first and second
+    # chests.
+    first_chests[i] <- shuffled[1]
+    second_chests[i] <- shuffled[2]
+}  # End loop, go back to beginning.
+
+# We will do the calculation we need in the next cell.  For now
+# just display the first 10 values.
+ten_first_chests <- first_chests[1:10]
+message('The first 10 values of "first_chests:')
+print(ten_first_chests)
+ten_second_chests <- second_chests[1:10]
+message('The first 10 values of "second_chests:')
+print(ten_second_chests)
+```
+
+In this variant, we recorded the type of first chest for each trial ("Gold" or
+"Silver"), and the type of second chest of the second chest ("Gold" or
+"Silver").
+
+**We would like to count the number of times there was "Gold" in the first
+chest _and_ "Gold" in the second.**
+
+## Combining Boolean arrays {#sec-combine-booleans}
+
+We can do the count we need by *combining* the Boolean {{< var array >}}s with
+the `&` operator.  `&` combines Boolean {{< var array >}}s with a *logical
+and*. *Logical and* is a rule for combining two Boolean values, where the rule
+is: the result is {{< var true >}} if the first value is {{< var true >}}
+*and* the second value if {{< var true >}}.
+
+Here we use the `&` *operator* to combine some Boolean values on the left and right of the operator:
+
+```{python}
+True & True   # Both are True, so result is True
+```
+
+```{python}
+True & False   # At least one of the values is False, so result is False
+```
+
+```{python}
+False & True   # At least one of the values is False, so result is False
+```
+
+```{python}
+False & False   # At least one (in fact both) are False, result is False.
+```
+
+::: python
+
+:::{.callout-note}
+## `&` and `and` in Python
+
+In fact Python has another operation to apply this *logical and* operation to values — the `and` operator:
+
+```{python}
+print(True and True)
+print(True and False)
+print(False and True)
+print(False and False)
+```
+
+You will see this `and` operator often in Python code, but it does not work
+well when combining Numpy *arrays*, so we will use the similar `&` operator,
+that does work on arrays.
+
+:::
+
+```{r}
+TRUE & TRUE   # Both are TRUE, so result is TRUE
+```
+
+```{r}
+TRUE & FALSE   # At least one of the values is FALSE, so result is FALSE
+```
+
+```{r}
+FALSE & TRUE   # At least one of the values is FALSE, so result is FALSE
+```
+
+```{r}
+FALSE & FALSE   # At least one (in fact both) are FALSE, result is FALSE.
+```
+:::
+
+Above you saw that the `==` operator (as in `== 'Gold'`), when applied to {{<
+var array >}}s, asks the question of every element in the {{< var array >}}.
+
+First make the Boolean {{< var array >}}s.
+
+```{python}
+ten_first_gold = (ten_first_chests == 'Gold')
+print("Ten first == 'Gold'", ten_first_gold)
+ten_second_gold = (ten_second_chests == 'Gold')
+print("Ten second == 'Gold'", ten_second_gold)
+```
+
+```{r}
+ten_first_gold <- ten_first_chests == 'Gold'
+message("Ten first == 'Gold'")
+print(ten_first_gold)
+ten_second_gold <- ten_second_chests == 'Gold'
+message("Ten second == 'Gold'")
+print(ten_second_gold)
+```
+
+Now let us use `&` to combine to Boolean {{< var array >}}s:
+
+```{python}
+ten_both = (ten_first_gold & ten_second_gold)
+ten_both
+```
+
+```{r}
+ten_both <- (ten_first_gold & ten_second_gold)
+ten_both
+```
+
+Notice that {{< var lang >}} does the comparison *elementwise* — element by
+element.
+
+You saw that when we did `second_chests == 'Gold'` this had the effect of
+asking the `== 'Gold'` question of *each element*, so there will be one answer
+per element in `second_chests`.  In that case there was {{< var an_array >}} to the *left* of `==` and a single value to the *right*.  We were comparing {{< var an_array >}} to a value.
+
+Here we are asking the `&` question of `ten_first_gold` and `ten_second_gold`.  Here there is {{< var an_array >}} to the *left* and {{< var an_array >}} to the *right*.  We are asking the `&` question 10 times, but the first question we are asking is:
+
+```{python}
+# First question, giving first element of result.
+(ten_first_gold[0] & ten_second_gold[0])
+```
+
+```{r}
+# First question, giving first element of result.
+(ten_first_gold[1] & ten_second_gold[1])
+```
+
+The second question is:
+
+```{python}
+# Second question, giving second element of result.
+(ten_first_gold[1] & ten_second_gold[1])
+```
+
+```{python}
+# Second question, giving second element of result.
+(ten_first_gold[2] & ten_second_gold[2])
+```
+
+and so on.  We have ten elements on *each side*, and 10 answers, giving {{< var
+an_array >}} (`ten_both`) of 10 elements.  Each element in `ten_both` is the
+answer to the `&` question for the elements at the corresponding positions in
+`ten_first_gold` and `ten_second_gold`.
+
+We could also create the Boolean {{< var array >}}s and do the `&` operation
+all in one step, like this:
+
+```{python}
+ten_both = (ten_first_chests == 'Gold') & (ten_second_chests == 'Gold')
+ten_both
+```
+
+<!---
+Another illustration here, of form (matching the text):
+
+True          True          True
+False         False         True
+False         False         True
+True          True          False
+False    =    False    &    True
+...
+-->
+
+:::{.callout-note}
+## Parentheses, {{< var array >}}s and comparisons
+
+Notice the round brackets (parentheses) around `(ten_first_chests == 'Gold')`
+and `(ten_second_chests == 'Gold')`.  In general, you will see that we will put
+parentheses around these expressions that generate Boolean {{< var array >}}s,
+and we recommend you do too.  It is good habit to get into, to make it clear
+that this is an expression that generates a value.
+
+::: python
+The parentheses make the code easier to read — but be careful — in this case,
+we actually *need* the parentheses to make Python do what we want; see the
+footnote for more detail.[^ampersand-precedence]
+
+[^ampersand-precedence]: We warned that we need parentheses around our `&`
+    expressions to get the result we want.  We would add the parentheses in
+    any case, as good practice, but here we also *need* the parentheses in
+    `(ten_first_chests == 'Gold') & (ten_second_chests == 'Gold')`. Remember
+    *operator precedence*; for example, the multiply operator `*` has *higher
+    precedence* than the operator `+`, so `3 + 5 * 2` is equal to `3 + (5 * 2)`
+    = 13.  If we want to do addition before multiplication, we use parentheses
+    to tell Python the order it should use: `(3 + 5) * 2` = 16.
+
+    The same applies for the two operators `==` and `&` here.   In fact `&`
+    has a higher precedence than `==`. This means that, if we write the
+    expression without parentheses — `ten_first_chests == 'Gold' &
+    ten_second_chests == 'Gold'` — because of operator precedence, Python takes
+    this to mean `ten_first_chests == ('Gold' & ten_second_chests) == 'Gold'`.
+    Python does not know what to do with `'Gold' & ten_second_chests` and
+    generates an error of form `'bitwise_and' not supported for the input
+    types`.  The error tells you that Python does not know how to apply `&`
+    (`'bitwise_and'`) to the string `'Gold`' and the array
+    `ten_second_chests`.
+
+    This is the same error you would get for running the code `'Gold' &
+    ten_second_chests` on its own.
+
+    The point to take away is, that when you are using `&` to combine Boolean
+    arrays in Python, remember operator precedence, and, when in doubt, put
+    parentheses around the expressions on either side of `&`, as here.
+
+:::
+
+
+Remember, we wanted the answer to the question: how many trials had "Gold" in the first chest *and* "Gold" in the second.  We can answer that question for the first 10 trials with {{< var sum >}}:
+
+```{python}
+n_ten_both = np.sum(ten_both)
+n_ten_both
+```
+
+```{r}
+n_ten_both <- sum(ten_both)
+n_ten_both
+```
+
+We can answer the same question for *all* the trials, in the same way:
+
+```{python}
+first_gold = (first_chests == 'Gold')
+second_gold = (second_chests == 'Gold')
+n_both_gold = np.sum(first_gold & second_gold)
+n_both_gold
+```
+
+```{r}
+first_gold <- first_chests == 'Gold'
+second_gold <- second_chests == 'Gold'
+n_both_gold <- sum(first_gold & second_gold)
+n_both_gold
+```
+
+We could also do the same calculation all in one line:
+
+```{python}
+# Notice the parentheses - we need these - see above.
+n_both_gold = np.sum((first_chests == 'Gold') & (second_chests == 'Gold'))
+n_both_gold
+```
+
+```{r}
+n_both_gold <- sum((first_chests == 'Gold') & (second_chests == 'Gold'))
+n_both_gold
+```
+
+We can then count all the ships where the first chest was gold:
+
+```{python}
+n_first_gold = np.sum(first_chests == 'Gold')
+n_first_gold
+```
+
+```{r}
+n_first_gold <- sum(first_chests == 'Gold')
+n_first_gold
+```
+
+The final calculation is the proportion of second chests that are gold, given
+the first chest was also gold:
+
+```{python}
+p_g_given_g = n_both_gold / n_first_gold
+p_g_given_g
+```
+
+```{r}
+p_g_given_g <- n_both_gold / n_first_gold
+p_g_given_g
+```
+
+Of course we won't get exactly the same results from the two simulations, in
+the same way that we won't get exactly the same results from any two runs of
+the same simulation, because of the random values we are using.  But the logic
+for the two simulations are the same, and we are doing many trials (10,000), so
+the results will be very similar.
+
+:::
 
 ## The Monty Hall problem
 
@@ -215,7 +777,7 @@ The Monty Hall Problem is a puzzle in probability that is famous for its
 deceptive simplicity.  It has its own long Wikipedia page:
 <https://en.wikipedia.org/wiki/Monty_Hall_problem>.
 
-Here is the problem in its most famous form; a letter to the columnist
+Here is the problem in the form it is best known; a letter to the columnist
 [Marilyn vos Savant](https://en.wikipedia.org/wiki/Marilyn_vos_Savant),
 published in Parade Magazine [-@savant1990monty]:
 
@@ -257,7 +819,7 @@ But throwing dice is a little boring; we have to find the die, then throw it
 many times, and record the results.   Instead we can ask the computer to chose
 the doors at random.
 
-```{r eval=TRUE, echo=FALSE}
+```{r echo=FALSE, eval=TRUE}
 n_trials <- 25
 ```
 
@@ -273,7 +835,7 @@ to our original choice of door, and "No" otherwise.  The last column is
 "Switch wins". This has "Yes" if we win by switching doors, and "No"
 otherwise. See table @tbl-montyblank).
 
-```{python eval=TRUE, echo=FALSE}
+```{python echo=FALSE, eval=TRUE}
 # Need Python for random numbers that are predictable across platforms.
 import numpy as np
 import pandas as pd
@@ -293,7 +855,7 @@ df['Stay wins'] = ''
 df['Switch wins'] = ''
 ```
 
-```{r montyblank, eval=TRUE, echo=FALSE}
+```{r montyblank, echo=FALSE, eval=TRUE}
 blank_df <- tibble::as_tibble(py$df)
 knitr::kable(blank_df,
   booktabs = TRUE,
@@ -303,7 +865,7 @@ knitr::kable(blank_df,
 )
 ```
 
-```{r eval=TRUE, echo=FALSE}
+```{r echo=FALSE, eval=TRUE}
 # Do the calculation
 fdf <- blank_df
 # Convert Monty opens column to integer, for car door number.
@@ -354,7 +916,7 @@ wins.
 Table @tbl-montyfull is a version of table @tbl-montyblank for
 which we have filled in the blank columns using the logic above.
 
-```{r montyfull, eval=TRUE, echo=FALSE}
+```{r montyfull, echo=FALSE, eval=TRUE}
 knitr::kable(fdf,
   booktabs = TRUE,
   row.names = TRUE,
@@ -368,16 +930,743 @@ The proportion of times "Stay" wins in these `r n_trials` trials is
 The proportion of times "Switch" wins is
 `r sum(fdf['Switch wins'] == 'Yes') / n_trials`; the Switch strategy wins about twice as often as the Stay strategy.
 
-We won't elaborate the full {{< var lang >}} simulation here, but you might
-want to think about how you would do that.
+## Monty Hall with {{< var lang >}}
+
+Now you have seen what the results might look like for a physical simulation, you can exercise some of your newly-strengthened {{< var lang >}} muscles to do the simulation with code.
+
+::: {.notebook name="monty_hall" title="The Monty Hall problem"}
+
+::: nb-only
+Here we do a {{< var lang >}} simulation of the Monty Hall problem.
+:::
+
+```{python opts.label="py_ed"}
+import numpy as np
+rnd = np.random.default_rng()
+```
+
+The Monty Hall problem has a slightly complicated structure, so we will start
+by looking at the procedure for one trial.  When we have that clear, we will
+put that procedure into a `for` loop for the simulation.
+
+Let's start with some variables.  Let's call the door I choose `my_door`.
+
+We choose that door at random from a sequence of all possible doors.  Call the
+doors 1, 2 and 3 from left to right.
+
+```{python}
+# List of doors to chose from.
+doors = [1, 2, 3]
+
+# We choose one door at random.
+my_door = rnd.choice(doors)
+
+# Show the result
+my_door
+```
+
+```{r}
+# Vector of doors to chose from.
+doors = c(1, 2, 3)
+
+# We choose one door at random.
+my_door <- sample(doors, size=1)
+
+# Show the result
+my_door
+```
+
+We choose one of the doors to be the door with the car behind it:
+
+```{python}
+# One door at random has the car behind it.
+car_door = rnd.choice(doors)
+
+# Show the result
+car_door
+```
+
+```{r}
+# One door at random has the car behind it.
+car_door <- sample(doors, size=1)
+
+# Show the result
+car_door
+```
+
+Now we need to decide which door Monty will open.
+
+By our set up, Monty cannot open our door (`my_door`).  By the set up, he has
+not opened (and cannot open) the door with the car behind it (`car_door`).
+
+`my_door` and `car_door` might be the same.
+
+So, to get Monty's choices, we want to take all doors (`doors`) and remove
+`my_door` and `car_door`.  That leaves the door or doors Monty can open.
+
+Here are the doors Monty cannot open.  Remember, a third of the time `my_door` and `car_door` will be the same, so we will include the same door twice, as doors Monty can't open.
+
+```{python}
+cant_open = [my_door, car_door]
+cant_open
+```
+
+```{r}
+cant_open = c(my_door, car_door)
+cant_open
+```
+
+We want to find the remaining doors from `doors` after removing the doors named in `cant_open`.
+
+{{< var np_or_r >}} has a good function for this, called
+[`setdiff`]{.r}[`np.setdiff1d`]{.python}.  It calculates the *set difference*
+between two sequences, such as {{< var array >}}s.
+
+The set difference between two sequences is the members that *are* in the first
+sequence, but are *not* in the second sequence.  Here are a few examples of
+this set difference function in {{< var np_or_r >}}.
+
+::: python
+
+Notice that we are using *lists* as the input (first and second) sequences
+here.  We can use lists or arrays or any other type of sequence in Python. (See
+@sec-lists for an introduction to lists).
+
+Numpy functions like `np.setdiff1d` always *return* an array.
+
+:::
+
+```{python}
+# Members in [1, 2, 3] that are *not* in [1]
+# 1, 2, 3, removing 1, if present.
+np.setdiff1d([1, 2, 3], [1])
+```
+
+```{python}
+# Members in [1, 2, 3] that are *not* in [2, 3]
+# 1, 2, 3, removing 2 and 3, if present.
+np.setdiff1d([1, 2, 3], [2, 3])
+```
+
+```{python}
+# Members in [1, 2, 3] that are *not* in [2, 2]
+# 1, 2, 3, removing 2 and 2 again, if present.
+np.setdiff1d([1, 2, 3], [2, 2])
+```
+
+```{r}
+# Members in c(1, 2, 3) that are *not* in c(1)
+# 1, 2, 3, removing 1, if present.
+setdiff(c(1, 2, 3), c(1))
+```
+
+```{r}
+# Members in c(1, 2, 3) that are *not* in c(2, 3)
+# 1, 2, 3, removing 2 and 3, if present.
+setdiff(c(1, 2, 3), c(2, 3))
+```
+
+```{r}
+# Members in c(1, 2, 3) that are *not* in c(2, 2)
+# 1, 2, 3, removing 2 and 2 again, if present.
+setdiff(c(1, 2, 3), c(2, 2))
+```
+
+This logic allows us to choose the doors Monty can open:
+
+```{python}
+montys_choices = np.setdiff1d(doors, [my_door, car_door])
+montys_choices
+```
+
+```{r}
+montys_choices <- setdiff(doors, c(my_door, car_door))
+montys_choices
+```
+
+Notice that `montys_choices` will only have one element left when `my_door` and
+`car_door` were different, but it will have two elements if `my_door` and
+`car_door` were the same.
+
+Let's play out those two cases:
+
+```{python}
+my_door = 1  # For example.
+car_door = 2  # For example.
+# Monty can only choose door 3 now.
+montys_choices = np.setdiff1d(doors, [my_door, car_door])
+montys_choices
+```
+
+```{python}
+my_door = 1  # For example.
+car_door = 1  # For example.
+# Monty can choose either door 2 or door 3.
+montys_choices = np.setdiff1d(doors, [my_door, car_door])
+montys_choices
+```
+
+```{r}
+my_door <- 1  # For example.
+car_door <- 2  # For example.
+# Monty can only choose door 3 now.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+montys_choices
+```
+
+```{r}
+my_door <- 1  # For example.
+car_door <- 1  # For example.
+# Monty can choose either door 2 or door 3.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+montys_choices
+```
+
+If Monty can only choose one door, we'll take that.  Otherwise we'll chose a
+door at random from the two doors available.
+
+```{python}
+if len(montys_choices) == 1:  # Only one door available.
+    montys_door = montys_choices[0]  # Take the first (of 1!).
+else:  # Two doors to choose from:
+    # Choose at random
+    montys_door = rnd.choice(montys_choices)
+montys_door
+```
+
+```{r}
+if (length(montys_choices) == 1) {  # Only one door available.
+    montys_door <- montys_choices[1]  # Take the first (of 1!).
+} else {  # Two doors to choose from:
+    # Choose at random
+    montys_door <- sample(montys_choices, size=1)
+}
+montys_door
+```
+
+::: python
+
+In fact, we can avoid that `if len(` check for the number of doors, because
+`rnd.choice` will also work on a sequence of length 1 — in that case, it
+always returns the single element in the sequence, like this:
+
+```{python}
+# rnd.choice on sequence with single element - always returns that element.
+rnd.choice([2])
+```
+
+That means we can simplify the code above to:
+
+```{python}
+# Choose single door left to choose, or door at random if two.
+montys_door = rnd.choice(montys_choices)
+montys_door
+```
+
+:::
+
+Now we know Monty's door, we can identify the other door, by removing our door,
+and Monty's door, from the available options:
+
+```{python}
+remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
+# There is only one remaining door, take that.
+other_door = remaining_doors[0]
+other_door
+```
+
+```{r}
+remaining_doors <- setdiff(doors, c(my_door, montys_door))
+# There is only one remaining door, take that.
+other_door <- remaining_doors[1]
+other_door
+```
+
+The logic above gives us the full procedure for one trial.
+
+```{python}
+my_door = rnd.choice(doors)
+car_door = rnd.choice(doors)
+# Which door will Monty open?
+montys_choices  = np.setdiff1d(doors, [my_door, car_door])
+# Choose single door left to choose, or door at random if two.
+montys_door = rnd.choice(montys_choices)
+# Now find the door we'll open if we switch.
+remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
+# There is only one door left.
+other_door = remaining_doors[0]
+# Calculate the result of this trial.
+if my_door == car_door:
+    stay_wins = True
+if other_door == car_door:
+    switch_wins = True
+```
+
+```{r}
+my_door <- sample(doors, size=1)
+car_door <- sample(doors, size=1)
+# Which door will Monty open?
+montys_choices <- setdiff(doors, c(my_door, car_door))
+# Choose single door left to choose, or door at random if two.
+if (length(montys_choices) == 1) {  # Only one door available.
+    montys_door <- montys_choices[1]  # Take the first (of 1!).
+} else {  # Two doors to choose from:
+    # Choose at random
+    montys_door <- sample(montys_choices, size=1)
+}
+# Now find the door we'll open if we switch.
+# There is only one door left.
+remaining_doors <- setdiff(doors, c(my_door, montys_door))
+other_door <- remaining_doors[1]
+# Calculate the result of this trial.
+if (my_door == car_door) {
+    stay_wins <- TRUE
+}
+if (other_door == car_door) {
+    switch_wins <- TRUE
+}
+```
+
+All that remains is to put that trial procedure into a loop, and collect the
+results as we repeat the procedure many times.
+
+```{python}
+# Arrays to store the results for each trial.
+stay_wins = np.repeat([False], 10000)
+switch_wins = np.repeat([False], 10000)
+
+# A list of doors to chose from.
+doors = [1, 2, 3]
+
+for i in range(10000):
+    my_door = rnd.choice(doors)
+    car_door = rnd.choice(doors)
+    # Which door will Monty open?
+    montys_choices  = np.setdiff1d(doors, [my_door, car_door])
+    # Choose single door left to choose, or door at random if two.
+    montys_door = rnd.choice(montys_choices)
+    # Now find the door we'll open if we switch.
+    remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
+    # There is only one door left.
+    other_door = remaining_doors[0]
+    # Calculate the result of this trial.
+    if my_door == car_door:
+        stay_wins[i] = True
+    if other_door == car_door:
+        switch_wins[i] = True
+
+p_for_stay = np.sum(stay_wins) / 10000
+p_for_switch = np.sum(switch_wins) / 10000
+
+print('p for stay:', p_for_stay)
+print('p for switch:', p_for_switch)
+```
+
+```{r}
+# Vectors to store the results for each trial.
+stay_wins <- rep(FALSE, 10000)
+switch_wins <- rep(FALSE, 10000)
+
+# Doors to chose from.
+doors <- c(1, 2, 3)
+
+for (i in 1:10000) {
+    my_door <- sample(doors, size=1)
+    car_door <- sample(doors, size=1)
+    # Which door will Monty open?
+    montys_choices <- setdiff(doors, c(my_door, car_door))
+    # Choose single door left to choose, or door at random if two.
+    if (length(montys_choices) == 1) {  # Only one door available.
+        montys_door <- montys_choices[1]  # Take the first (of 1!).
+    } else {  # Two doors to choose from:
+        # Choose at random
+        montys_door <- sample(montys_choices, size=1)
+    }
+    # Now find the door we'll open if we switch.
+    # There is only one door left.
+    remaining_doors <- setdiff(doors, c(my_door, montys_door))
+    other_door <- remaining_doors[1]
+    # Calculate the result of this trial.
+    if (my_door == car_door) {
+        stay_wins[i] <- TRUE
+    }
+    if (other_door == car_door) {
+        switch_wins[i] <- TRUE
+    }
+}
+
+p_for_stay <- sum(stay_wins) / 10000
+p_for_switch <- sum(switch_wins) / 10000
+
+message('p for stay: ', p_for_stay)
+message('p for switch: ', p_for_switch)
+```
+
+We can also follow the same strategy as we used for the two-ships problem in
+@sec-ships-booleans.
+
+Here we do not calculate the trial results (`stay_wins`, `switch_wins`) in each
+trial.  Instead, we store the *doors* for each trial, and then use Boolean {{<
+var array >}}s to calculate the results for all trials, at the end.
+
+```{python}
+# Instead of storing the trial results, we store the doors for each trial.
+my_doors = np.zeros(10000)
+car_doors = np.zeros(10000)
+other_doors = np.zeros(10000)
+
+doors = [1, 2, 3]
+
+for i in range(10000):
+    my_door = rnd.choice(doors)
+    car_door = rnd.choice(doors)
+    # Which door will Monty open?
+    montys_choices  = np.setdiff1d(doors, [my_door, car_door])
+    # Choose single door left to choose, or door at random if two.
+    montys_door = rnd.choice(montys_choices)
+    # Now find the door we'll open if we switch.
+    remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
+    # There is only one door left.
+    other_door = remaining_doors[0]
+
+    # Store the doors we chose.
+    my_doors[i] = my_door
+    car_doors[i] = car_door
+    other_doors[i] = other_door
+
+# Now - at the end of all the trials, we use Boolean arrays to calculate the
+# results.
+stay_wins = my_doors == car_doors
+switch_wins = other_doors == car_doors
+
+p_for_stay = np.sum(stay_wins) / 10000
+p_for_switch = np.sum(switch_wins) / 10000
+
+print('p for stay:', p_for_stay)
+print('p for switch:', p_for_switch)
+```
+
+```{r}
+# Instead of storing the trial results, we store the doors for each trial.
+my_doors <- numeric(10000)
+car_doors <- numeric(10000)
+other_doors <- numeric(10000)
+
+# Doors to chose from.
+doors <- c(1, 2, 3)
+
+for (i in 1:10000) {
+    my_door <- sample(doors, size=1)
+    car_door <- sample(doors, size=1)
+    # Which door will Monty open?
+    montys_choices <- setdiff(doors, c(my_door, car_door))
+    # Choose single door left to choose, or door at random if two.
+    if (length(montys_choices) == 1) {  # Only one door available.
+        montys_door <- montys_choices[1]  # Take the first (of 1!).
+    } else {  # Two doors to choose from:
+        # Choose at random
+        montys_door <- sample(montys_choices, size=1)
+    }
+    # Now find the door we'll open if we switch.
+    # There is only one door left.
+    remaining_doors <- setdiff(doors, c(my_door, montys_door))
+    other_door <- remaining_doors[1]
+
+    # Store the doors we chose.
+    my_doors[i] <- my_door
+    car_doors[i] <- car_door
+    other_doors[i] <- other_door
+}
+
+# Now - at the end of all the trials, we use Boolean vectors to calculate the
+# results.
+stay_wins <- my_doors == car_doors
+switch_wins <- other_doors == car_doors
+
+p_for_stay <- sum(stay_wins) / 10000
+p_for_switch <- sum(switch_wins) / 10000
+
+message('p for stay: ', p_for_stay)
+message('p for switch: ', p_for_switch)
+```
+
+### Insight from the Monty Hall simulation
+
+The code simulation gives us an estimate of the right answer, but it also forces us to set out the exact mechanics of the problem.   For example, by looking at the code, we see that we can calculate "stay_wins" with this code alone:
+
+```{python}
+# Just choose my door and the car door for each trial.
+my_doors = np.zeros(10000)
+car_doors = np.zeros(10000)
+doors = [1, 2, 3]
+
+for i in range(10000):
+    my_doors[i] = rnd.choice(doors)
+    car_doors[i] = rnd.choice(doors)
+
+# Calculate whether I won by staying.
+stay_wins = my_doors == car_doors
+p_for_stay = np.sum(stay_wins) / 10000
+
+print('p for stay:', p_for_stay)
+```
+
+```{r}
+# Just choose my door and the car door for each trial.
+my_doors <- numeric(10000)
+car_doors <- numeric(10000)
+doors <- c(1, 2, 3)
+
+for (i in 1:10000) {
+    my_doors[i] <- sample(doors, size=1)
+    car_doors[i] <- sample(doors, size=1)
+}
+
+# Calculate whether I won by staying.
+stay_wins <- my_doors == car_doors
+p_for_stay <- sum(stay_wins) / 10000
+
+message('p for stay: ', p_for_stay)
+```
+
+This calculation, on its own, tells us the answer, but it also points to
+another insight — whatever Monty does with the doors, it doesn't change the
+probability that our *initial guess* is right, and that must be 1 in 3 (0.333).
+If the probability of `stay_win` is 1 in 3, and we only have one other door to
+switch to, the probability of winning after switching must be 2 in 3 (0.666).
+
+### Simulation and a variant of Monty Hall
+
+You have seen that you can avoid the silly mistakes that many of us make with probability — by asking the computer to tell you the result *before* you start to reason from first principles.
+
+As an example, consider the following variant of the Monty Hall problem.
+
+The set up to the problem has us choosing a door (`my_door` above), and then
+Monty opens one of the other two doors.
+
+Sometimes (in fact, 2/3 of the time) there is a car behind one of Monty's
+doors, and we've obliged him to open the *other* door, and his choice is
+forced.
+
+When his choice was not forced, we had Monty choose the door at random.
+
+For example, let us say we chose door 1.
+
+Let us say that the car is also under door 1.
+
+Monty has the option of choosing door 2 or door 3, and he chooses randomly
+between them.
+
+```{python}
+my_door = 1  # We chose door 1 at random.
+car_door = 1  # This trial, by chance, the car door is 1.
+# Monty is left with doors 2 and 3 to choose from.
+montys_choices  = np.setdiff1d(doors, [my_door, car_door])
+# He chooses randomly.
+montys_door = rnd.choice(montys_choices)
+# Show the result
+montys_door
+```
+
+```{r}
+my_door <- 1  # We chose door 1 at random.
+car_door <- 1  # This trial, by chance, the car door is 1.
+# Monty is left with doors 2 and 3 to choose from.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+# He chooses randomly.
+montys_door <- sample(montys_choices, size=1)
+# Show the result
+montys_door
+```
+
+Now — let us say we happen to know that Monty is rather lazy, and he will
+always choose the left-most (lower-numbered) door of the two options.
+
+In the previous example, Monty had the option of choosing door 2 and 3.  In
+this new scenario, we know that he will always choose door 2 (the left-most
+door).
+
+```{python}
+my_door = 1  # We chose door 1 at random.
+car_door = 1  # This trial, by chance, the car door is 1.
+# Monty is left with doors 2 and 3 to choose from.
+montys_choices  = np.setdiff1d(doors, [my_door, car_door])
+# He chooses the left-most door, always.
+montys_door = montys_choices[0]
+# Show the result
+montys_door
+```
+
+```{r}
+my_door <- 1  # We chose door 1 at random.
+car_door <- 1  # This trial, by chance, the car door is 1.
+# Monty is left with doors 2 and 3 to choose from.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+# He chooses the left-most door, always.
+montys_door <- montys_choices[1]
+# Show the result
+montys_door
+```
+
+It feels as if we have more information about where the car is, when we know this.
+Consider the situation where we have chosen door 1, and Monty opens door 3.  We
+know that he would have preferred to open door 2, if he was allowed.  We
+therefore know he wasn't allowed to open door 2, and that means the car is
+definitely under door 2.
+
+```{python}
+my_door = 1  # We chose door 1 at random.
+car_door = 2  # This trial, by chance, the car door under door 2.
+# Monty is left with door 3 only to choose from.
+montys_choices  = np.setdiff1d(doors, [my_door, car_door])
+# He chooses the left-most door, always.  But in this case, the left-most
+# available door is 3 (he can't choose 2, it is the car_door).
+# Notice the doors were in order, so the left-most door is the first door
+# in the array.
+montys_door = montys_choices[0]
+# Show the result
+montys_door
+```
+
+```{r}
+my_door <- 1  # We chose door 1 at random.
+car_door <- 1  # This trial, by chance, the car door is 1.
+# Monty is left with door 3 only to choose from.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+# He chooses the left-most door, always.  But in this case, the left-most
+# available door is 3 (he can't choose 2, it is the car_door).
+# Notice the doors were in order, so the left-most door is the first door
+# in the vector.
+montys_door <- montys_choices[1]
+# Show the result
+montys_door
+```
+
+To take that into account, we might try a different strategy.  We will stick to
+our own choice if Monty has chosen the left-most of the two doors he had
+available to him, because he might have chosen that door because there was a
+car underneath the other door, or because there was a car under neither, but he
+preferred the left door.  But, if Monty chooses the right-most of the two-doors
+available to him, we will switch from our own choice to the other (unopened)
+door, because we can be sure that the car is under the other (unopened) door.
+
+Call this the "switch if Monty chooses right door" strategy, or "switch if
+right" for short.
+
+Can you see quickly whether this will be better than the "always stay"
+strategy?  Will it be better than the "always switch" strategy?   Take a moment
+to think it through, and write down your answers.  
+
+If you can quickly see the answer to both questions — well done — but, are you
+sure you are right?
+
+We can test by simulation.
+
+For our test of the "switch is right" strategy, we can tell if one door is
+to the right of another door by comparison; higher numbers mean further to the
+right: 2 is right of 1, and 3 is right of 2.
+
+```{python}
+# Door 3 is right of door 1.
+3 > 1
+```
+
+```{r}
+# Door 3 is right of door 1.
+3 > 1
+```
+
+```{python}
+# A test of the switch-if-right strategy.
+# The car doors.
+car_doors = np.zeros(10000)
+# The door we chose using the strategy.
+strategy_doors = np.zeros(10000)
+
+doors = [1, 2, 3]
+
+for i in range(10000):
+    my_door = rnd.choice(doors)
+    car_door = rnd.choice(doors)
+    # Which door will Monty open?
+    montys_choices  = np.setdiff1d(doors, [my_door, car_door])
+    # Choose Monty's door from the remaining options.
+    # This time, he always prefers the left door.
+    montys_door = montys_choices[0]
+    # Now find the door we'll open if we switch.
+    remaining_doors = np.setdiff1d(doors, [my_door, montys_door])
+    # There is only one door remaining - but is Monty's door
+    # to the right of this one?  Then Monty had to shift.
+    other_door = remaining_doors[0]
+    if montys_door > other_door:
+        # Monty's door was the right-hand door, the car is under the other one.
+        strategy_doors[i] = other_door
+    else:  # We stick with the door we first thought of.
+        strategy_doors[i] = my_door
+    # Store the car door for this trial.
+    car_doors[i] = car_door
+
+strategy_wins = strategy_doors == car_doors
+
+p_for_strategy = np.sum(strategy_wins) / 10000
+
+print('p for strategy:', p_for_strategy)
+```
+
+```{r}
+# A test of the switch-if-right strategy.
+# The car doors.
+car_doors <- numeric(10000)
+# The door we chose using the strategy.
+strategy_doors <- numeric(10000)
+
+doors <- c(1, 2, 3)
+
+for (i in 1:10000) {
+    my_door <- sample(doors, size=1)
+    car_door <- sample(doors, size=1)
+    # Which door will Monty open?
+    montys_choices <- setdiff(doors, c(my_door, car_door))
+    # Choose Monty's door from the remaining options.
+    # This time, he always prefers the left door.
+    montys_door <- montys_choices[1]
+    # Now find the door we'll open if we switch.
+    remaining_doors <- setdiff(doors, c(my_door, montys_door))
+    # There is only one door remaining - but is Monty's door
+    # to the right of this one?  Then Monty had to shift.
+    other_door <- remaining_doors[1]
+    if (montys_door > other_door) {
+        # Monty's door was the right-hand door, the car is under the other one.
+        strategy_doors[i] <- other_door
+    } else {  # We stick with the door we first thought of.
+        strategy_doors[i] <- my_door
+    }
+    # Store the car door for this trial.
+    car_doors[i] <- car_door
+}
+
+strategy_wins <- strategy_doors == car_doors
+
+p_for_strategy <- sum(strategy_wins) / 10000
+
+message('p for strategy: ', p_for_strategy)
+```
+
+We find that the "switch-if-right" has around the same chance of success as the
+"always-switch" strategy — of about 66.6%, or 2 in 3. Were your initial answers
+right?  Now you've seen the result, can you see why it should be so?  It may
+not be obvious — the Monty Hall problem is deceptively difficult.   But our
+case here is that the simulation first gives you an estimate of the correct
+answer, and then, gives you a good basis for thinking more about the problem.  That is:
+
+* simulation is useful for estimation and
+* simulation is useful for reflection.
+
+:::
+
+## Why use simulation?
 
 Doing these simulations has two large benefits.   First, it gives us the right answer, saving us from making a mistake.  Second, the process of simulation forces us to think about how the problem works.  This can give us better understanding, and make it easier to reason about the solution.
 
 We will soon see that these same advantages also apply to reasoning about
 statistics.
-
-<!---
-* random choice with probabilities
-* if statements
-* Boolean arrays.  Combining Boolean arrays.
--->
