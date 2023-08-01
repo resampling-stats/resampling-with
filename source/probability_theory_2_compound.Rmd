@@ -9,7 +9,7 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.14.6
+      jupytext_version: 1.14.7
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -319,11 +319,11 @@ random `hand` from the `deck` of numbers.  To find pairs, we will go through the
 
 Consider the following 5-card "hand" of values:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 hand = np.array([5, 7, 5, 4, 7])
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 hand <- c(5, 7, 5, 4, 7)
 ```
 
@@ -332,40 +332,40 @@ This hand represents a pair of 5s and a pair of 7s.
 Want to detect the number of repeats for each possible card value, 1 through
 13.  Let's say we are looking for 5s.   We can detect which of the values are equal to 5 by making a Boolean array, where there is True for a value equal to 5, and False otherwise:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 is_5 = hand == 5
 is_5
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 is_5 <- hand == 5
 ```
 
 We can then count the number of 5s with:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 np.sum(is_5)
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 sum(is_5)
 ```
 
 In one {{< var cell >}}:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 number_of_5s = np.sum(hand == 5)
 number_of_5s
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 number_of_5s <- sum(hand == 5)
 number_of_5s
 ```
 
 We could do this laborious task for every possible card value (1 through 13):
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 number_of_1s = np.sum(hand == 1)  # Number of aces in hand
 number_of_2s = np.sum(hand == 2)  # Number of 2s in hand
 number_of_3s = np.sum(hand == 3)
@@ -381,7 +381,7 @@ number_of_12s = np.sum(hand == 12)
 number_of_13s = np.sum(hand == 13)  # Number of Kings in hand.
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 number_of_1s <- sum(hand == 1)  # Number of aces in hand
 number_of_2s <- sum(hand == 2)  # Number of 2s in hand
 number_of_3s <- sum(hand == 3)
@@ -401,7 +401,7 @@ Above, we store the result for each card in a separate variable; this is
 inconvenient, because we would have to go through each variable checking for a
 pair (a value of 2).  It would be more convenient to store these results in {{< var an_array >}}.  One way to do that would be to store the result for card value 1 at position (index[, offset]{.python}) 1, the result for value 2 at position 2, and so on, like this:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Make array length 14.  We don't use position (offset) 0, and the last
 # position (offset) in this array will be 13.
 repeat_nos = np.zeros(14)
@@ -422,7 +422,7 @@ repeat_nos[13] = np.sum(hand == 13)  # Number of Kings in hand.
 repeat_nos
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 # Make vector length 13, with one element for each card value.
 repeat_nos <- numeric(13)
 repeat_nos[1] <- sum(hand == 1)  # Number of aces in hand
@@ -444,7 +444,7 @@ repeat_nos
 
 You may recognize all this repetitive typing as a good sign we could use a `for` loop to do the work — er — for us.
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 repeat_nos = np.zeros(14)
 for i in range(14):  # Set i to be first 0, then 1, ... through 13.
     repeat_nos[i] = np.sum(hand == i)
@@ -458,7 +458,7 @@ values equal to 1 and so on.  By our definition of the deck, no card can have
 value 0, so the first time through this loop, we will always get a count of 0.  We could saved ourselves a tiny amount of computing time by missing out that step by using `for i in range(1, 14):` instead, but it's a little bit neater to leave in the default start at 0, at a tiny cost in wasted computer effort, in this case.
 :::
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 repeat_nos <- numeric(13)
 for (i in 1:13) {  # Set i to be first 1, then 2, ... through 13.
     repeat_nos[i] <- sum(hand == i)
@@ -473,18 +473,18 @@ value) for our particular `hand`.  As you might expect, there is a [an
 R]{.r}[a Numpy]{.python} function [`max`]{.r}[`np.max`]{.python} that will
 quickly tell us the maximum value in the hand:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 np.max(hand)
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 max(hand)
 ```
 
 We can use [`max`]{.r}[`np.max`]{.python} to make our loop more efficient, by
 stopping our checks when we've reached the maximum value, like this:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 max_value = np.max(hand)
 # Only make an array large enough to house counts for the max value.
 repeat_nos = np.zeros(max_value + 1)
@@ -494,7 +494,7 @@ for i in range(max_value + 1):  # Set i to 0, then 1 ... through max_value
 repeat_nos
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 max_value <- max(hand)
 # Only make a vector large enough to house counts for the max value.
 repeat_nos <- numeric(max_value)
@@ -508,12 +508,12 @@ repeat_nos
 In fact, this is exactly what the function
 [`tabulate`]{.r}[`np.bincount`]{.python} does, so we can use that function instead of our loop, to do the same job:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 repeat_nos = np.bincount(hand)
 repeat_nos
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 repeat_nos <- tabulate(hand)
 repeat_nos
 ```
@@ -524,21 +524,21 @@ Now we have `repeat_nos`, we can proceed with the rest of the steps above.
 
 We can count the number of cards that have exactly two repeats:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 repeat_nos == 2
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 n_pairs = np.sum(repeat_nos == 2)
 # Show the result
 n_pairs
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 repeat_nos == 2
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 n_pairs <- sum(repeat_nos == 2)
 # Show the result
 n_pairs
@@ -546,11 +546,11 @@ n_pairs
 
 The hand is of interest to us only if the number of pairs is exactly 1:
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 n_pairs == 1
 ```
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 # Check whether there is exactly one pair in this hand.
 np.sum(n_pairs == 1)
 ```
@@ -783,7 +783,7 @@ We count the number of times we get three of a kind in a random hand of five
 cards.
 :::
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 import numpy as np
 rnd = np.random.default_rng()
 ```
@@ -823,7 +823,7 @@ n_triples = np.sum(triples_per_trial == 1)
 print(n_triples / 10000)
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 one_suit <- 1:13
 deck <- rep(one_suit, 4)
 ```
@@ -869,7 +869,7 @@ instead of *one* .
 We count the number of times we get two pairs in a random hand of five cards.
 :::
 
-```{python, opts.label="py_ed"}
+```{python opts.label="py_ed"}
 import numpy as np
 rnd = np.random.default_rng()
 
@@ -905,7 +905,7 @@ n_two_pairs = np.sum(pairs_per_trial == 2)
 print(n_two_pairs / 10000)
 ```
 
-```{r, opts.label="r_ed"}
+```{r opts.label="r_ed"}
 deck <- rep(1:13, 4)
 ```
 
