@@ -191,7 +191,12 @@ The results of a few experimental trials are shown in @tbl-four-girls-one-boy.
 
 A solution to this problem with {{< var lang >}} is presented below.
 
-::: {.notebook name="finite_universes" title="Experiments in finite universes"}
+::: {.notebook name="four_girls_one_boy" title="Four girls and one boy"}
+
+::: nb-only
+What is the probability of selecting four girls and one boy when selecting
+five students from any group of twenty-five girls and twenty-five boys?
+:::
 
 ```{python}
 import numpy as np
@@ -301,13 +306,23 @@ are several other resampling procedures that will also do the job correctly.
 In analytic probability theory this problem is worked with a formula for
 "combinations."
 
+:::
+
 ### Example: Five spades and four clubs in a bridge hand {#sec-five-spades-four-clubs}
+
+::: {.notebook name="five_spades_four_clubs" title="Five spades and four clubs"}
 
 **This is an example of multiple-outcome sampling without replacement, order does not matter**.
 
 The problem is similar to the example in @sec-four-girls-one-boy, except that
 now there are four equally-likely outcomes instead of only two. [A
 Python]{.python}[An R]{.r} solution is:
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+```
 
 ```{python}
 # Constitute the deck of 52 cards.
@@ -400,9 +415,21 @@ prop_5_and_4 <- n_5_and_4 / N
 message(prop_5_and_4)
 ```
 
+:::
+
 ### Example: a total of fifteen points in a bridge hand {#sec-fifteen-bridge}
 
+::: {.notebook name="fifteen_points_in_bridge" title="Fifteen points in a bridge hand"}
+
 Let us assume that ace counts as 4, king = 3, queen = 2, and jack = 1.
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
+import matplotlib.pyplot as plt
+```
 
 ```{python}
 # Constitute a deck with 4 jacks (point value 1), 4 queens (value 2), 4
@@ -498,7 +525,11 @@ kk <- k / N
 kk
 ```
 
+:::
+
 ### Example: Four girls then one boy from 25 girls and 25 boys
+
+::: {.notebook name="four_girls_then_one_boy_25" title="Four girls then one boy from 25/25"}
 
 **In this problem, order matters; we are sampling without replacement, with two
 outcomes, several of each item.**
@@ -520,6 +551,12 @@ We record "no" even if a single one boy is chosen but he is chosen 1st, 2nd,
   write "yes," otherwise "no."
 * **Step 3.** Repeat step 2, say, 10,000 times, and count the proportion of
   "yes" results, which estimates the probability sought.
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+```
 
 ```{python}
 # The result we are looking for - four girls and then a boy.
@@ -607,16 +644,18 @@ kk <- k / N
 message(kk)
 ```
 
-This type of problem is conventionally done with a *permutation*
-formula.
+This type of problem is conventionally done with a *permutation* formula.
+
+:::
 
 ### Example: repeat pairings from random pairing
 
-First put two groups of 10 people into 10 pairs.  Then re-randomize the
-pairings.  What is the chance that four or more pairs are the same in the
-second random pairing?
+::: {.notebook name="university_icebreaker" title="An icebreaker for two universties"}
 
-**This is a problem in the probability of matching by chance**.
+**First put two groups of 10 people into 10 pairs.  Then re-randomize the
+pairings.  What is the chance that four or more pairs are the same in the
+second random pairing? This is a problem in the probability of matching by
+chance**.
 
 Ten representatives each from two universities, Birmingham and Berkeley, attend
 a meeting.  As a social icebreaker, representatives are divided, randomly, into
@@ -642,6 +681,14 @@ is complete.  We now have to determine what happens after the second round.
 
 Exercise for the student: Write the steps to do this example with random
 numbers.  The {{< var lang >}} solution follows below.
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
+import matplotlib.pyplot as plt
+```
 
 ```{python}
 N = 10000
@@ -718,7 +765,11 @@ plt.hist(trial_results, bins=range(10), align='left', rwidth=0.75)
 plt.title('Same pairs in round two');
 ```
 
+:::
+
 ### Example: Matching Santa Hats
+
+::: {.notebook name="santas_hats" title="Santas' hats"}
 
 **The welcome staff at a restaurant mix up the hats of a party of six Christmas
 Santas. What is the probability that at least one will get their own hat?**.
@@ -733,6 +784,12 @@ array. Next, shuffle the array (this represents the mixed-up hats) and compare
 to the original. The rest of the problem is the same as the pairs one from
 before, except that we are now interested in any trial where at least one ($\ge
 1$) Santa received the right hat.
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+```
 
 ```{python}
 N = 10000
@@ -792,7 +849,11 @@ print(kk)
 We see that in roughly `r round(get_var('kk') * 100)` percent of the trials at
 least one Santa received their own hat back.
 
+:::
+
 ### Example: Twenty executives assigned to two divisions of a firm
+
+::: {.notebook name="twenty_executives" title="Twenty executives, two divisions"}
 
 The top manager wants to spread the talent reasonably evenly, but she does not
 want to label particular executives with a quality rating and therefore
@@ -812,6 +873,14 @@ One may proceed as follows:
     appears in the results.
 
 The problem can be done with {{< var lang >}} as follows:
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
+import matplotlib.pyplot as plt
+```
 
 ```{python}
 N = 10000
@@ -841,6 +910,8 @@ for (i in 1:N) {
 hist(trial_results, breaks=0:max(trial_results),
      main= 'Number of best managers chosen')
 ```
+
+:::
 
 ### Example: Executives Moving
 
@@ -946,6 +1017,8 @@ as \$.49 (the difference that was actually observed)?
 
 ### Example: Five or More Spades in One Bridge Hand; Four Girls and a Boy {#sec-five-spades-four-girls}
 
+::: {.notebook name="five_spades_four_girls" title="Five spades, four girls"}
+
 This is a compound problem: what are the chances of *both* five or more spades
 in one bridge hand, and four girls and a boy in a five-child family?
 
@@ -981,6 +1054,12 @@ the loop (by [`}`]{.r}[unindenting the next line]{.python} and then use
 result in `k`. Since we only drew samples of children for those trials in which
 a bridge hand of 5 spades had already been dealt, `k` will have the number of
 trials out of 10000 in which both conditions were met.
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+```
 
 ```{python}
 N = 10000
@@ -1097,6 +1176,8 @@ kk <- k / N
 message(kk)
 ```
 
+:::
+
 :::{.callout-note}
 ## Speed and readability
 
@@ -1104,8 +1185,6 @@ The last version is a fraction more expensive, but has the advantage that the
 condition we are testing for is summarized on one line.  However, this would
 not be a good approach to take if the experiments were not completely
 unrelated.
-:::
-
 :::
 
 ## Summary
