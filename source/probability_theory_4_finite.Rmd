@@ -45,15 +45,15 @@ ported the code.
 
 ## Introduction
 
-The examples in @sec-infinite-universes dealt with *infinite universes* , in which the
-probability of a given simple event is unaffected by the outcome of the
-previous simple event. But now we move on to finite universes,
-situations in which you begin with a *given set of objects* whose number
-is not enormous — say, a total of two, or two hundred, or two thousand.
-If we liken such a situation to a bucket containing balls of different
-colors each with a number on it, we are interested in the probability of
-drawing various sets of numbered and colored balls from the bucket on the
-condition that we *do not replace* balls after they are drawn.
+The examples in @sec-infinite-universes dealt with *infinite universes* , in
+which the probability of a given simple event is unaffected by the outcome of
+the previous simple event. But now we move on to finite universes, situations
+in which you begin with a *given set of objects* whose number is not enormous —
+say, a total of two, or two hundred, or two thousand. If we liken such a
+situation to a bucket containing balls of different colors each with a number
+on it, we are interested in the probability of drawing various sets of numbered
+and colored balls from the bucket on the condition that we *do not replace*
+balls after they are drawn.
 
 In the cases addressed in this chapter, it is important to remember that
 the single events no longer are independent of each other. A typical
@@ -72,21 +72,22 @@ sure that your simulation does not allow duplication of events that have
 already occurred. The easiest way to sample without replacement with resampling
 techniques is by simply ignoring an outcome if it has already occurred.
 
-Examples 8-1 through 8-10 deal with some of the more important sorts of
-questions one may ask about drawings without replacement from such an
-urn. To get an overview, I suggest that you read over the titles of
-Examples 8-1 to 8-10 before beginning to work through the examples
-themselves.
+Examples @sec-four-girls-one-boy through @sec-five-spades-four-girls deal with
+some of the more important sorts of questions one may ask about drawings
+without replacement from such an urn. To get an overview, I suggest that you
+read over the summaries (in **bold**) introducing examples
+@sec-four-girls-one-boy to @sec-five-spades-four-girls before beginning to work
+through the examples themselves.
 
-This chapter also revisits the general procedure used in solving
-problems in probability and statistics with simulation, here in
-connection with problems involving a finite universe. The steps that one
-follows in simulating the behavior of a universe of interest are set
-down in such fashion that one may, by random drawings, deduce the
-probability of various events. Having had by now the experience of
-working through the problems in Chapters 5 and 7, the reader should have
-a solid basis to follow the description of the general procedure which
-then helps in dealing with specific problems.
+This chapter also revisits the general procedure used in solving problems in
+probability and statistics with simulation, here in connection with problems
+involving a finite universe. The steps that one follows in simulating the
+behavior of a universe of interest are set down in such fashion that one may,
+by random drawings, deduce the probability of various events. Having had by now
+the experience of working through the problems in @sec-prob-theory-one-b and
+@sec-infinite-universes, the reader should have a solid basis to follow the
+description of the general procedure which then helps in dealing with specific
+problems.
 
 Let us begin by describing some of the major sorts of problems with the
 aid of a bucket with six balls.
@@ -144,7 +145,12 @@ include_svg('diagrams/success_case5.svg')
 
 ## Problems in finite universes
 
-## Example 8-1: What is the Probability of Selecting Four Girls and One Boy When Selecting Five Students From Any Group of Twenty-five Girls and Twenty-five Boys? (Sampling Without Replacement When There are Two Outcomes and the Order Does Not Matter)
+### Example: four girls and one boy {#sec-four-girls-one-boy}
+
+**What is the probability of selecting four girls and one boy when selecting
+five students from any group of twenty-five girls and twenty-five boys?**  This
+is an example of sampling without replacement when there are two outcomes and
+the order does not matter.
 
 The important difference between this example and the infinite-universe
 examples in the prior chapter is that the probability of obtaining a boy
@@ -169,36 +175,28 @@ We can no longer use our procedure from before.  If we designated
 draw random numbers, the probability of a girl would be the same on
 each pick.
 
-At this point, it is important to note that — for this particular
-problem — we do not need to distinguish between particular girls (or
-boys). That is, it does not matter *which* girl (or boy) is selected
-in a given trial. Nor did we pay attention to the *order* in which we
-selected girls or boys. This is an instance of Case 4 discussed
-above. Subsequent problems will deal with situations where the order
-of selection, and the particular individuals, do matter.
+At this point, it is important to note that — for this particular problem — we
+do not need to distinguish between particular girls (or boys). That is, it does
+not matter *which* girl (or boy) is selected in a given trial. Nor did we pay
+attention to the *order* in which we selected girls or boys. This is an
+instance of Case 4 discussed above. Subsequent problems will deal with
+situations where the order of selection, and the particular individuals, do
+matter.
 
-Our approach then is to mimic having the class in front of us: an
-array of 50 strings, half of the entries 'boy' and the other half
-'girl'.  We then shuffle the class (the array), and choose the first N
-students (strings).
+Our approach then is to mimic having the class in front of us: an array of 50
+strings, half of the entries 'boy' and the other half 'girl'.  We then shuffle
+the class (the array), and choose the first N students (strings).
 
-**Step 1.** Create a list with 50 labels, half 'boy' and half 'girl'.
+* **Step 1.** Create a list with 50 labels, half 'boy' and half 'girl'.
+* **Step 2.** Shuffle the class and select five students. Count whether there
+  are four labels equal 'girl'. If so, write "yes," otherwise "no".
+* **Step 3.** Repeat step 2, say, 10,000 times, and count the proportion "yes",
+  which estimates the probability sought.
 
-**Step 2.** Shuffle the class and select five students. Count whether
-  there are four labels equal 'girl'. If so, write "yes," otherwise
-  "no".
-
-**Step 3.** Repeat step 2, say, 10,000 times, and count the proportion
-  "yes", which estimates the probability sought.
-
-The results of a few experimental trials are shown in Table 8-1.
+The results of a few experimental trials are shown in @tbl-four-girls-one-boy.
 
 +----------------+---------------------------------------+---------------+
-|                | Table 8-1                             |               |
-|                |                                       |               |
-|                | **Experimental Trials**               |               |
-+----------------+---------------------------------------+---------------+
-| **Experiment** | **Strings Chosen**                    | **Success ?** |
+| **Experiment** | **Strings Chosen**                    | **Success?**  |
 +----------------+---------------------------------------+---------------+
 |              1 | 'girl', 'boy', 'boy', 'girl', 'boy'   | No            |
 +----------------+---------------------------------------+---------------+
@@ -206,6 +204,8 @@ The results of a few experimental trials are shown in Table 8-1.
 +----------------+---------------------------------------+---------------+
 |              3 | 'girl, 'girl', 'girl', 'boy', 'girl'  | Yes           |
 +----------------+---------------------------------------+---------------+
+
+: A few experimental trials of four girls and one boy {#tbl-four-girls-one-boy}
 
 A solution to this problem with {{< var lang >}} is presented below.
 
@@ -288,8 +288,8 @@ kk <- k / N
 message(kk)
 ```
 
-We can also find the probabilities of other outcomes from a histogram of
-trial results obtained with the following command:
+We can also find the probabilities of other outcomes from a histogram of trial
+results obtained with the following command:
 
 ```{python}
 # Import the plotting package.
@@ -305,22 +305,28 @@ plt.title('# of girls');
 hist(trial_results, breaks=0:max(trial_results), main='# of girls')
 ```
 
-In the resulting histogram we can see that in 14 percent of the trials,
+```{r, echo=FALSE, eval=TRUE}
+trial_results <- get_var('trial_results')  # Might by Python edition.
+pct_4 <- round(sum(trial_results == 4) / length(trial_results) * 100)
+```
+
+In the resulting histogram we can see that in `r pct_4` percent of the trials,
 4 of the 5 selected were girls.
 
-It should be noted that for this problem — as for most other
-problems — there are several other resampling procedures that will also
-do the job correctly.
+It should be noted that for this problem — as for most other problems — there
+are several other resampling procedures that will also do the job correctly.
 
 In analytic probability theory this problem is worked with a formula for
 "combinations."
 
 
-## Example 8-2: Five Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)
+### Example: Five spades and four clubs in a bridge hand {#sec-five-spades-four-clubs}
 
-This problem is similar to Example 8-1 except that now there are four
-equally-likely outcomes instead of only two.
-[A Python]{.python}[An R]{.r} solution is:
+**This is an example of multiple-outcome sampling without replacement, order does not matter**.
+
+The problem is similar to the example in @sec-four-girls-one-boy, except that
+now there are four equally-likely outcomes instead of only two. [A
+Python]{.python}[An R]{.r} solution is:
 
 ```{python}
 # Constitute the deck of 52 cards.
@@ -413,10 +419,9 @@ prop_5_and_4 <- n_5_and_4 / N
 message(prop_5_and_4)
 ```
 
-## Example: A Total of Fifteen Points in a Bridge Hand {#sec-fifteen-bridge}
+### Example: a total of fifteen points in a bridge hand {#sec-fifteen-bridge}
 
-Let us assume that ace counts as 4, king = 3,
-queen = 2, and jack = 1.
+Let us assume that ace counts as 4, king = 3, queen = 2, and jack = 1.
 
 This problem bears the same relationship to Example 8-2 that Example 4-5
 bears to Example 4-4.
@@ -967,7 +972,10 @@ that one would choose two samples at random, containing 16 and 26
 observations, that would have prices as different as \$.49 (the
 difference that was actually observed)?
 
-## Example 8-10: A Compound Problem: Five or More Spades in One Bridge Hand, and Four Girls and a Boy in a Five-Child Family
+## Example: Five or More Spades in One Bridge Hand; Four Girls and a Boy {#sec-five-spades-four-girls}
+
+This is a compound problem: what are the chances of *both* five or more spades
+in one bridge hand, and four girls and a boy in a five-child family?
 
 "Compound" does not necessarily mean "complicated". It means that the
 problem is a compound of two or more simpler problems.
