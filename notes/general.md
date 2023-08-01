@@ -162,6 +162,7 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * Python `range` cf `np.arange` (resampling_with_code)
 * Need `plt.hist`, at least by `probabality_theory_4_finite`.
 * `plt.hist(..., density=True)`, at least by `probabality_theory_4_finite`.
+* `np.all` at least by `probabality_theory_4_finite`.
 
 ## Data
 
