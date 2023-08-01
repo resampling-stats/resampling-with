@@ -906,6 +906,7 @@ where the state government owns the retail liquor stores ("Government").  See
 We found the average prices were:
 
 ```{python, echo=FALSE, eval=TRUE}
+import numpy as np
 import pandas as pd
 
 price_df = pd.read_csv('data/liquor_prices.csv')
