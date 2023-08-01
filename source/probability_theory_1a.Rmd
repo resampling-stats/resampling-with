@@ -420,7 +420,7 @@ The tree diagram shows the possible events in the order in which they might
 occur. A tree diagram is extremely valuable whether you will continue with
 either simulation or the formulaic method.
 
-```{r fig-commanders-tree, echo=FALSE, fig.align='center', fig.cap="Tree diagram"}
+```{r fig-commanders-tree, opts.label='svg_fig', fig.cap="Tree diagram"}
 include_svg('diagrams/commanders_tree.svg')
 ```
 
@@ -491,7 +491,7 @@ We also go through the logic of the `if` statement, and its associated `else`
 clause.
 :::
 
-```{python, opts.label="py_ed"}
+```{python}
 # Load the NumPy array library.
 import numpy as np
 
@@ -499,13 +499,13 @@ import numpy as np
 rnd = np.random.default_rng()
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # blue means "nice day", yellow means "not nice".
 bucket_A = np.repeat(['blue', 'yellow'], [7, 3])
 bucket_A
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # blue means "nice day", yellow means "not nice".
 bucket_A <- rep(c('blue', 'yellow'), c(7, 3))
 bucket_A
@@ -513,12 +513,12 @@ bucket_A
 
 Now let us draw a ball at random from bucket_A:
 
-```{python, opts.label="py_ed"}
+```{python}
 a_ball = rnd.choice(bucket_A)
 a_ball
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 a_ball <- sample(bucket_A, size=1)
 a_ball
 ```
@@ -526,7 +526,7 @@ a_ball
 How we run our first `if` statement.  Running this code will display "The ball
 was blue" if the ball was blue, otherwise it will not display anything:
 
-```{python, opts.label="py_ed"}
+```{python}
 if a_ball == 'blue':
     print('The ball was blue')
 ```
@@ -540,7 +540,7 @@ only one line: `print('The ball was blue')`.  Python only runs the body of the
 if statement if the *condition* is `True`.[^conditional-true]
 :::
 
-```{r, opts.label="r_ed"}
+```{r}
 if (a_ball == 'blue') {
     message('The ball was blue')
 }
@@ -571,44 +571,44 @@ blue')`.  R only runs the body of the if statement if the *condition* is
 
 To confirm we see "The ball was blue" if `a_ball` is `'blue'` and nothing otherwise, we can set `a_ball` and re-run the code:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Set value of a_ball so we know what it is.
 a_ball = 'blue'
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 if a_ball == 'blue':
     # The conditional statement is True in this case, so the body does run.
     print('The ball was blue')
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 a_ball = 'yellow'
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 if a_ball == 'blue':
     # The conditional statement is False, so the body does not run.
     print('The ball was blue')
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Set value of a_ball so we know what it is.
 a_ball <- 'blue'
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 if (a_ball == 'blue') {
     # The conditional statement is True in this case, so the body does run.
     message('The ball was blue')
 }
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 a_ball <- 'yellow'
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 if (a_ball == 'blue') {
     # The conditional statement is False, so the body does not run.
     message('The ball was blue')
@@ -620,11 +620,11 @@ We can add an `else` clause to the `if` statement.  Remember the *body* of the
 is {{< var true >}}. The `else` clause runs if the conditional statement is {{<
 var false >}}.  This may be clearer with an example:
 
-```{python, opts.label="py_ed"}
+```{python}
 a_ball = 'blue'
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 if a_ball == 'blue':
     # The conditional expression is True in this case, so the body runs.
     print('The ball was blue')
@@ -642,11 +642,11 @@ conditional expression is *not* {{< var true >}}.
 
 :::
 
-```{python, opts.label="py_ed"}
+```{python}
 a_ball = 'yellow'
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 if a_ball == 'blue':
     # The conditional expression was False, so the body does not run.
     print('The ball was blue')
@@ -655,11 +655,11 @@ else:
     print('The ball was not blue')
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 a_ball <- 'blue'
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 if (a_ball == 'blue') {
     # The conditional expression is True in this case, so the body runs.
     message('The ball was blue')
@@ -677,11 +677,11 @@ is *not* {{< var true >}}.
 
 :::
 
-```{r, opts.label="r_ed"}
+```{r}
 a_ball <- 'yellow'
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 if (a_ball == 'yellow') {
     # The conditional expression was False, so the body does not run.
     message('The ball was blue')
@@ -706,17 +706,17 @@ Here is bucket B.  Remember green means "win" (65% of the time) and red means
 "lose" (35% of the time).  We could call this the "Commanders win when it is a
 nice day" bucket:
 
-```{python, opts.label="py_ed"}
+```{python}
 bucket_B = np.repeat(['green', 'red'], [65, 35])
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 bucket_B <- rep(c('green', 'red'), c(65, 35))
 ```
 
 The full logic for step 4 is:
 
-```{python, opts.label="py_ed"}
+```{python}
 # By default, say we have no result.
 result = 'No result'
 a_ball = rnd.choice(bucket_A)
@@ -739,7 +739,7 @@ result
 Now we have everything we need to run many trials with the same logic.
 
 
-```{r, opts.label="r_ed"}
+```{r}
 # By default, say we have no result.
 result = 'No result'
 a_ball <- sample(bucket_A, size=1)
@@ -761,7 +761,7 @@ if (a_ball == 'blue') {
 result
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # The result of each trial.
 # To start with, say we have no result for all the trials.
 z = np.repeat(['No result'], 10000)
@@ -789,7 +789,7 @@ kk = k / 10000
 kk
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The result of each trial.
 # To start with, say we have no result for all the trials.
 z <- rep('No result', 10000)
@@ -986,12 +986,12 @@ Before we proceed to do this procedure in {{< var lang >}}, we need a command to
 
 In the recipe above, the {{< var array >}} `N` has four values:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Numbers representing the slips in the hat.
 N = np.array([1, 1, 2, 2])
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 N = c(1, 1, 2, 2)
 ```
 
@@ -1020,7 +1020,7 @@ out `replace=TRUE` to let sample do its default sampling, without
 replacement. That is, when we do not specify `replace=`, R assumes
 `replace=FALSE` — sampling without replacement.
 
-```{r opts.label="r_ed"}
+```{r}
 # The vector N, shuffled into a random order.
 # Note that "sample" *by default*, samples without replacement.
 # When we ask for size=4, we are asking for a sample that is the same
@@ -1036,7 +1036,7 @@ mean the size to be the same size as the input array — in this case, it will
 assume `size=length(N)` and therefore `size=4`.  So we can get the same effect
 of a reordered (shuffled) vector by omitting both `size=` and `replace=`:
 
-```{r opts.label="r_ed"}
+```{r}
 # The vector N, shuffled into a random order (the same procedure as the chunk
 # above).
 shuffled <- sample(N)
@@ -1050,7 +1050,7 @@ You can use `rnd.permuted` to shuffle an array into a random order.
 
 Like `rnd.choice`, `rnd.permuted` is a function (actually, a method) of `rnd`, that takes an array as input, and produces a version of the array, where the elements are in random order. 
 
-```{python opts.label="py_ed"}
+```{python}
 # The array N, shuffled into a random order.
 shuffled = rnd.permuted(N)
 # The "slips" are now in random order.
@@ -1071,12 +1071,12 @@ random, say by placing a penny on each. What is the probability that those two
 cards are the same color?"
 :::
 
-```{python, opts.label="py_ed"}
+```{python}
 import numpy as np
 rnd = np.random.default_rng()
 ```
 
-```{python, opts.label="py_ed"}
+```{python}
 # Numbers representing the slips in the hat.
 N = np.array([1, 1, 2, 2])
 
@@ -1105,7 +1105,7 @@ kk = k / 10000
 print(kk)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Numbers representing the slips in the hat.
 N <- c(1, 1, 2, 2)
 
@@ -1141,7 +1141,7 @@ Now let's play the game differently, first picking one card and *putting it
 back and shuffling* before picking a second card. What are the results now? You
 can try it with the cards, but here is another program, similar to the last, to run that variation.
 
-```{python, opts.label="py_ed"}
+```{python}
 # The cards / pennies game - but replacing the slip and re-shuffling, before
 # drawing again.
 
@@ -1174,7 +1174,7 @@ kk = k / 10000
 print(kk)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # An array in which we will store the result of each trial.
 z <- rep('No result yet', 10000)
 

@@ -264,14 +264,14 @@ and then calculates the average divergence.
 The notebook calculates the expected number of viewers in a sample of 400, given that there is a 30% chance of any one person being a viewer, and then calculates how far that value is from 120.
 :::
 
-```{python opts.label="py_ed"}
+```{python}
 import numpy as np
 
 # set up the random number generator
 rnd = np.random.default_rng()
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 # set the number of trials
 n_trials = 10000
 
@@ -309,7 +309,7 @@ k = np.mean(scores)
 k
 ```
 
-```{r opts.label="r_ed"}
+```{r}
 # set the number of trials
 n_trials <- 10000
 

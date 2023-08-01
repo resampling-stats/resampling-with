@@ -195,11 +195,11 @@ lang >}} code to calculate the total bill. Press
 [Control-Shift-Enter or Cmd-Shift-Enter (on Mac)]{.r}[Shift-Enter]{.python}
 in the {{< var cell >}} below, to see the total.
 
-```{python, opts.label="py_ed"}
+```{python}
 10.50 + 9.25
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 10.50 + 9.25
 ```
 
@@ -230,7 +230,7 @@ example, the next cell is a code cell, but when you run it, it does not show
 any result.  In this case, that is because the computer sees the `#` at the
 beginning of the line, and then ignores the rest.
 
-```{python, opts.label="py_ed"}
+```{python}
 # This bit of text is for me to read, and the computer to ignore.
 ```
 
@@ -260,12 +260,12 @@ In {{< var lang >}} `*` means multiplication.  This is the equivalent of the
 
 What about this, for the correct calculation?
 
-```{python, opts.label="py_ed"}
+```{python}
 # The tip - with a nasty mistake.
 10.50 + 9.25 * 0.15
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The tip - with a nasty mistake.
 10.50 + 9.25 * 0.15
 ```
@@ -298,24 +298,24 @@ Each type of bracket has a different meaning in {{< var lang >}}.  In the
 examples, play close to attention to the type of brackets we are using.
 :::
 
-```{python, opts.label="py_ed"}
+```{python}
 # The bill plus tip - mistake fixed.
 (10.50 + 9.25) * 0.15
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The bill plus tip - mistake fixed.
 (10.50 + 9.25) * 0.15
 ```
 
 The obvious next step is to calculate the bill *including the tip*.
 
-```{python, opts.label="py_ed"}
+```{python}
 # The bill, including the tip
 10.50 + 9.25 + (10.50 + 9.25) * 0.15
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The bill, including the tip
 10.50 + 9.25 + (10.50 + 9.25) * 0.15
 ```
@@ -332,12 +332,12 @@ This is the role of *variables*.  A *variable* is a value with a name.
 
 Here is a variable:
 
-```{python, opts.label="py_ed"}
+```{python}
 # The cost of Alex's meal.
 a = 10.50
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The cost of Alex's meal.
 a <- 10.50
 ```
@@ -347,25 +347,25 @@ a <- 10.50
 
 Now, when we use `a` in code, it refers to the value we gave it.  For example, we can put `a` on a line on its own, and {{< var lang >}} will show us the *value* of `a`:
 
-```{python, opts.label="py_ed"}
+```{python}
 # The value of a
 a
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The value of a
 a
 ```
 
 We did not have to use the name `a` — we can choose almost any name we like.  For example, we could have chosen `alex_meal` instead:
 
-```{python, opts.label="py_ed"}
+```{python}
 # The cost of Alex's meal.
 # alex_meal gets the value 10.50
 alex_meal = 10.50
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The cost of Alex's meal.
 # alex_meal gets the value 10.50
 alex_meal <- 10.50
@@ -378,14 +378,14 @@ line on its own, to ask {{< var lang >}} to show us the value of the variable.
 Here we set `billie_meal` to have the value 9.25, and then show the value of
 `billie_meal`, all in the same {{< var cell >}}.
 
-```{python, opts.label="py_ed"}
+```{python}
 # The cost of Billie's meal.
 billie_meal = 9.25
 # Show the value of billies_meal
 billie_meal
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The cost of Alex's meal.
 # billie_meal gets the value 10.50
 billie_meal <- 10.50
@@ -395,14 +395,14 @@ billie_meal
 
 Of course, here, we did not learn much, but we often set variable values with the results of a calculation.  For example:
 
-```{python, opts.label="py_ed"}
+```{python}
 # The cost of both meals, before tip.
 bill_before_tip = 10.50 + 9.25
 # Show the value of both meals.
 bill_before_tip
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The cost of both meals, before tip.
 bill_before_tip <- 10.50 + 9.25
 # Show the value of both meals.
@@ -411,14 +411,14 @@ bill_before_tip
 
 But wait — we can do better than typing in the calculation like this.  We can use the values of our variables, instead of typing in the values again.
 
-```{python, opts.label="py_ed"}
+```{python}
 # The cost of both meals, before tip, using variables.
 bill_before_tip = alex_meal + billie_meal
 # Show the value of both meals.
 bill_before_tip
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The cost of both meals, before tip, using variables.
 bill_before_tip <- alex_meal + billie_meal
 # Show the value of both meals.
@@ -432,7 +432,7 @@ meal — and that's what the code looks like.  But this also allows us to
 to go for the hummus plate, at £7.75.  Now we can tell {{< var lang
 >}} that we want `alex_meal` to have the value 7.75 instead of 10.50:
 
-```{python, opts.label="py_ed"}
+```{python}
 # The new cost of Alex's meal.
 # alex_meal gets the value 7.75
 alex_meal = 7.75
@@ -440,7 +440,7 @@ alex_meal = 7.75
 alex_meal
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The new cost of Alex's meal.
 # alex_meal gets the value 7.75
 alex_meal = 7.75
@@ -453,14 +453,14 @@ We have *reset* the value of `alex_meal`.   In order to use the new value for
 `alex_meal`, we must *recalculate* the bill before tip with *exactly the same
 code as before*:
 
-```{python, opts.label="py_ed"}
+```{python}
 # The new cost of both meals, before tip.
 bill_before_tip = alex_meal + billie_meal
 # Show the value of both meals.
 bill_before_tip
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The new cost of both meals, before tip.
 bill_before_tip <- alex_meal + billie_meal
 # Show the value of both meals.
@@ -472,14 +472,14 @@ Notice that, now we have rerun this calculation, we have *reset* the value for `
 All that remains is to recalculate the bill plus tip, using the new value for
 the variable:
 
-```{python, opts.label="py_ed"}
+```{python}
 # The cost of both meals, after tip.
 bill_after_tip = bill_before_tip + bill_before_tip * 0.15
 # Show the value of both meals, after tip.
 bill_after_tip
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # The cost of both meals, after tip.
 bill_after_tip = bill_before_tip + bill_before_tip * 0.15
 # Show the value of both meals, after tip.

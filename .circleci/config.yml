@@ -1,0 +1,80 @@
+# See: https://circleci.com/docs/2.0/language-python/
+
+version: 2.1
+jobs:
+  build-book:
+    docker:
+      - image: cimg/python:3.11.4
+
+    environment:
+      R_LIBS_USER: "~/R_libs:~/R:~/R-dev"
+      QUARTO_VER: "1.4.51"
+      PANDOC_VER: "3.1.2"
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - r-deps-{{ checksum "scripts/install_r_requirements.R" }}
+
+      - restore_cache:
+          keys:
+            - pip-deps-{{ checksum "build-requirements.txt" }}
+
+      - run:
+          name: Update apt-get
+          command: |
+            sudo apt-get update
+
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get install \
+                librsvg2-bin inkscape texlive-xetex \
+                texlive-fonts-extra curl r-base libcurl4-openssl-dev \
+                libssl-dev libxml2-dev libfontconfig1-dev libmagick++-dev
+            R --version | grep 'version '
+
+      - run:
+          name: Install R/Python dependencies
+          command: |
+            python3 -m venv /tmp/venv
+            source /tmp/venv/bin/activate
+
+            make build-init
+
+      - save_cache:
+          name: "R package cache"
+          key: r-deps-{{ checksum "scripts/install_r_requirements.R" }}
+          paths:
+            - ~/R
+            - ~/R_libs
+            - ~/R-dev
+
+      - save_cache:
+          name: "Python package cache"
+          key: pip-deps-{{ checksum "build-requirements.txt" }}
+          paths:
+            - ~/.cache/pip
+
+      - run:
+          name: Install quarto and matching pandoc
+          command: |
+            curl -L https://github.com/quarto-dev/quarto-cli/releases/download/v$QUARTO_VER/quarto-$QUARTO_VER-linux-amd64.deb -o quarto.deb
+            curl -L https://github.com/jgm/pandoc/releases/download/$PANDOC_VER/pandoc-$PANDOC_VER-1-amd64.deb -o pandoc.deb
+            sudo dpkg --install quarto.deb pandoc.deb
+
+      - run:
+          name: Build book
+          command: |
+            source /tmp/venv/bin/activate
+            make website
+
+      - store_artifacts:
+          path: _www
+
+workflows:
+  book:
+    jobs:
+      - build-book

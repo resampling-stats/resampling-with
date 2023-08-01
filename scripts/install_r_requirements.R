@@ -28,8 +28,8 @@ if (length(to_install)) {
 # tasks."
 fs::dir_create('~/R-dev')  # ?also correct for Windows
 
-# Install our patched version of reticulate.
-# https://github.com/rstudio/reticulate/pull/1401
+# Install more recent version of reticulate for jupyter_compat option.
+# https://github.com/rstudio/reticulate/pull/1423
 remotes::install_github("rstudio/reticulate",
-                        ref='e8abae30',  # Matplotlib compat merge.
+                        ref='a003118f',  # jupyter-compat fixes.
                         dependencies=TRUE)

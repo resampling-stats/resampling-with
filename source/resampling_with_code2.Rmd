@@ -155,7 +155,7 @@ We can now use {{< var np_or_r >}} and
 [the random number functions]{.python}[`sample`]{.r}
 from the last chapter to get 12 random numbers from 0 through 99.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Import the Numpy library, rename as "np"
 import numpy as np
 
@@ -172,7 +172,7 @@ a = rnd.choice(zero_thru_99, size=12)
 a
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Get 12 random numbers from 0 through 99
 a <- sample(0:99, size=12, replace=TRUE)
 
@@ -186,14 +186,14 @@ We use *comparison* and [`np.sum`]{.python}[`sum`]{.r} to count how
 many numbers are greater than 74, and therefore, in the range from 75 through
 99:
 
-```{python, opts.label="py_ed"}
+```{python}
 # How many numbers are greater than 74?
 b = np.sum(a > 74)
 # Show the result
 b
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # How many numbers are greater than 74?
 b <- sum(a > 74)
 # Show the result
@@ -205,7 +205,7 @@ b
 We assemble the pieces from the last few sections to make a {{< var cell >}}
 that simulates a single trial:
 
-```{python, opts.label="py_ed"}
+```{python}
 rnd = np.random.default_rng()
 zero_thru_99 = np.arange(100)
 
@@ -219,7 +219,7 @@ b = np.sum(a > 74)
 b
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Get 12 random numbers from 0 through 99
 a <- sample(0:99, size=12, replace=TRUE)
 # How many are greater than 74?
@@ -253,14 +253,14 @@ elements of the same type.  You have already seen, in @sec-resampling-method,
 how we can create {{< var an_array >}} from a sequence of
 numbers using the [`np.array`]{.python}[`c()`]{.r} function.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Make an array of numbers, store with the name "some_numbers".
 some_numbers = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 # Show the value of "some_numbers"
 some_numbers
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Make a vector of numbers, store with the name "some_numbers".
 some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 # Show the value of "some_numbers"
@@ -271,7 +271,7 @@ Another way that we can create {{< var array >}}s is to use the
 [`np.zeros`]{.python}[`numeric`]{.r} function to make a new array where all the
 elements are 0.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Make a new array containing 5 zeros.
 # store with the name "z".
 z = np.zeros(5)
@@ -279,7 +279,7 @@ z = np.zeros(5)
 z
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Make a new vector containing 5 zeros.
 z <- numeric(5)
 # Show the value of "z"
@@ -297,12 +297,12 @@ One is to ask how many elements there are in the {{< var array >}} container.
 We can use the [`len`]{.python}[`length`]{.r} function to calculate the number
 of elements in {{< var an_array >}}:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Show the number of elements in "z"
 len(z)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Show the number of elements in "z"
 length(z)
 ```
@@ -314,14 +314,14 @@ Another thing we can do is *set* the value for a particular element in the
 {{< var array >}} value, on the left hand side of the equals sign,
 like this:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Set the value of the *first* element in the array.
 z[0] = 99
 # Show the new contents of the array.
 z
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Set the value of the first element in the vector.
 z[1] = 99
 # Show the new contents of the vector.
@@ -345,14 +345,14 @@ positions for getting and setting values.
 For practice, let us also set the value of the third element in the {{< var
 array >}}:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Set the value of the *third* element in the array.
 z[2] = 99
 # Show the new contents of the array.
 z
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Set the value of the third element in the vector.
 z[3] = 99
 # Show the new contents of the vector.
@@ -366,7 +366,7 @@ in the {{< var array >}} to have the value 99".
 We can also *get* the value of the element at a given position, using the same
 square-bracket notation:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Get the value of the *first* element in the array.
 # Store the value with name "v"
 v = z[0]
@@ -374,7 +374,7 @@ v = z[0]
 v
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Get the value of the *first* element in the array.
 # Store the value with name "v"
 v = z[1]
@@ -399,12 +399,12 @@ for each trial, to give 50 counts.
 In order to do this, we make {{< var an_array >}} to hold the 50 counts.
 Call this {{< var array >}} `z`.
 
-```{python, opts.label="py_ed"}
+```{python}
 # An array to hold the 50 count values.
 z = np.zeros(50)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # A vector to hold the 50 count values.
 z <- numeric(50)
 ```
@@ -415,7 +415,7 @@ different result each time we run this code, because the numbers in `a` are
 *random* choices from the range 0 through 99, and different random numbers will
 give different counts.
 
-```{python, opts.label="py_ed"}
+```{python}
 rnd = np.random.default_rng()
 zero_thru_99 = np.arange(0, 100)
 # Get 12 random numbers from 0 through 99
@@ -426,7 +426,7 @@ b = np.sum(a > 74)
 b
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Get 12 random numbers from 0 through 99
 a <- sample(0:99, size=12, replace=TRUE)
 # How many are greater than 74?
@@ -438,14 +438,14 @@ b
 Now we have the result of a single trial, we can store it as the first number
 in the `z` {{< var array >}}:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Store the single trial count as the first value in the "z" array.
 z[0] = b
 # Show all the values in the "z" array.
 z
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Store the single trial count as the first value in the "z" vector.
 z[1] <- b
 # Show all the values in the "z" vector.
@@ -457,7 +457,7 @@ to a trial, above, to get a new count, and then store it at the next position
 in the `z` {{< var array >}}. For example, we could store the counts for the
 first three trials with:
 
-```{python, opts.label="py_ed"}
+```{python}
 # First trial
 a = rnd.choice(zero_thru_99, size=12)
 b = np.sum(a > 74)
@@ -478,7 +478,7 @@ z[2] = b
 # And so on ...
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # First trial
 a <- sample(0:99, size=12, replace=TRUE)
 b <- sum(a == 9)
@@ -561,14 +561,14 @@ Author birth year is 1944
 Of course, we could just ask {{< var lang >}} to print out these exact lines,
 like this:
 
-```{python, opts.label="py_ed"}
+```{python}
 print('Author birth year is 1932')
 print('Author birth year is 1964')
 print('Author birth year is 1980')
 print('Author birth year is 1944')
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 message('Author birth year is 1932')
 message('Author birth year is 1964')
 message('Author birth year is 1980')
@@ -578,7 +578,7 @@ message('Author birth year is 1944')
 We might instead notice that we are repeating the same procedure for each of the
 four birth years, and decide to do the same thing using a `for` loop:
 
-```{python, opts.label="py_ed"}
+```{python}
 author_birth_years = np.array([1932, 1964, 1980, 1944])
 
 # For each birth year
@@ -587,7 +587,7 @@ for birth_year in author_birth_years:
     print('Author birth year is', birth_year)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 author_birth_years <- c(1932, 1964, 1980, 1944)
 
 # For each birth year
@@ -657,7 +657,7 @@ Do not forget these round brackets — R insists on them.
 Now you know what the `for` loop is doing, you can see that the `for` loop
 above is equivalent to the following code:
 
-```{python, opts.label="py_ed"}
+```{python}
 birth_year = 1932  # Set the loop variable to contain the first value.
 print('Author birth year is', birth_year)  # Use it.
 birth_year = 1964  # Set the loop variable to contain the next value.
@@ -668,7 +668,7 @@ birth_year = 1944
 print('Author birth year is', birth_year)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 birth_year <- 1932  # Set the loop variable to contain the first value.
 message('Author birth year is ', birth_year)  # Use the first value.
 birth_year <- 1964  # Set the loop variable to contain the next value.
@@ -688,12 +688,12 @@ what the loop variable will be, and what will happen in the body of the loop.
 We often use `for` loops with ranges (see @sec-ranges).  Here we use a loop to
 print out the numbers [0 through 3]{.python}[1 through 4]{.r}:
 
-```{python, opts.label="py_ed"}
+```{python}
 for n in np.arange(0, 4):
     print('The loop variable n is', n)
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 for (n in 1:4) {
     message('The loop variable n is ', n)
 }
@@ -709,17 +709,17 @@ year of birth.
 
 Remember our author birth years:
 
-```{python, opts.label="py_ed"}
+```{python}
 author_birth_years
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 author_birth_years
 ```
 
 We can get (for example) the second author birth year with:
 
-```{python, opts.label="py_ed"}
+```{python}
 author_birth_years[1]
 ```
 
@@ -728,14 +728,14 @@ Remember, for Python, the first element is position 0, so the second element is
 position 1.
 :::
 
-```{r, opts.label="r_ed"}
+```{r}
 author_birth_years[2]
 ```
 
 Using the combination of looping over a range, and {{< var array >}} indexing,
 we can print out the author position *and* the author birth year:
 
-```{python, opts.label="py_ed"}
+```{python}
 for n in np.arange(0, 4):
     year = author_birth_years[n]
     print('Birth year of author position', n, 'is', year)
@@ -745,7 +745,7 @@ for n in np.arange(0, 4):
 Again, remember Python considers 0 as the first position.
 :::
 
-```{r, opts.label="r_ed"}
+```{r}
 for (n in 1:4) {
     year <- author_birth_years[n]
     message('Birth year of author position ', n, ' is ', year)
@@ -755,7 +755,7 @@ for (n in 1:4) {
 Just for practice, let us unroll the first two iterations through this `for`
 loop, to remind ourselves what the code is doing:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Unrolling the for loop.
 n = 0
 year = author_birth_years[n]  # Will be 1932
@@ -766,7 +766,7 @@ print('Birth year of author position', n, 'is', year)
 # And so on.
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Unrolling the for loop.
 n <- 1
 year <- author_birth_years[n]  # Will be 1932
@@ -789,7 +789,7 @@ and useful alternative way to provide a range of numbers to a `for` loop.
 You have just seen how we would use `np.arange` to send the numbers 0, 1, 2,
 and 3 to a `for` loop, in the example above, repeated here:
 
-```{python, opts.label="py_ed"}
+```{python}
 for n in np.arange(0, 4):
     year = author_birth_years[n]
     print('Birth year of author position', n, 'is', year)
@@ -797,7 +797,7 @@ for n in np.arange(0, 4):
 
 We could also use `range` instead of `np.arange` to do the same task:
 
-```{python, opts.label="py_ed"}
+```{python}
 for n in range(0, 4):
     year = author_birth_years[n]
     print('Birth year of author position', n, 'is', year)
@@ -834,7 +834,7 @@ pattern in standard Python code.[^range-efficiency]
 
 Here is the code we worked out above, to implement a single trial:
 
-```{python, opts.label="py_ed"}
+```{python}
 rnd = np.random.default_rng()
 zero_thru_99 = np.arange(0, 100)
 # Get 12 random numbers from 0 through 99
@@ -845,7 +845,7 @@ b = np.sum(a > 74)
 b
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Get 12 random numbers from 0 through 99
 a <- sample(0:99, size=12, replace=TRUE)
 # How many are greater than 74?
@@ -860,7 +860,7 @@ times.
 
 Now we can put these parts together to do 50 simulated trials:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Procedure for 50 simulated trials.
 
 # The Numpy random number generator.
@@ -885,7 +885,7 @@ for i in np.arange(0, 50):
 z
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Procedure for 50 simulated trials.
 
 # A vector to store the counts for each trial.
@@ -911,14 +911,14 @@ juries.  These are the trials with a `z` (count) value of 0.
 To do this, we can ask {{< var an_array >}} which elements match a certain
 condition.  E.g.:
 
-```{python, opts.label="py_ed"}
+```{python}
 x = np.array([2, 1, 3, 0])
 y = x < 2
 # Show the result
 y
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 x <- c(2, 1, 3, 0)
 y = x < 2
 # Show the result
@@ -928,14 +928,14 @@ y
 We now use that same technique to ask, of *each of the 50 counts*, whether the
 {{< var array >}} `z` is equal to 0, like this:
 
-```{python, opts.label="py_ed"}
+```{python}
 # Is the value of z equal to 0?
 all_white = z == 0
 # Show the result of the comparison.
 all_white
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Is the value of z equal to 0?
 all_white <- z == 0
 # Show the result of the comparison.
@@ -945,7 +945,7 @@ all_white
 We need to get the number of {{< var true >}} values in `all_white`, to find
 how many simulated trials gave all-white juries.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Count the number of True values in "all_white"
 # This is the same as the number of values in "z" that are equal to 0.
 n_all_white = np.sum(all_white)
@@ -953,7 +953,7 @@ n_all_white = np.sum(all_white)
 n_all_white
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Count the number of True values in "all_white"
 # This is the same as the number of values in "z" that are equal to 0.
 n_all_white = sum(all_white)
@@ -965,14 +965,14 @@ n_all_white
 were white. It only remains to get the proportion of trials for which this was
 true, and to do this, we divide by the number of trials.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Proportion of trials where all jury members were white.
 p = n_all_white / 50
 # Show the result
 p
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Proportion of trials where all jury members were white.
 p <- n_all_white / 50
 # Show the result
@@ -997,7 +997,7 @@ Here is exactly the same code we ran above, but collected into one {{< var
 cell >}}, and using 10,000 trials instead of 50.  We have left out the
 comments, to make the code more compact.
 
-```{python, opts.label="py_ed"}
+```{python}
 # Full simulation procedure, with 10,000 trials.
 rnd = np.random.default_rng()
 zero_through_99 = np.arange(0, 100)
@@ -1013,7 +1013,7 @@ p = n_all_white / 10000
 p
 ```
 
-```{r, opts.label="r_ed"}
+```{r}
 # Full simulation procedure, with 10,000 trials.
 z <- numeric(10000)
 for (i in 1:10000) {

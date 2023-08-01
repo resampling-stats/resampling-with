@@ -410,13 +410,13 @@ intuition about probability and simulation methods. But the procedure
 can also be simulated with a computer. Using the language RESAMPLING
 STATS, we produce an estimate as follows:
 
-```{python, opts.label="py_ed"}
+```{python}
 import numpy as np
 ```
 
 We make the weather 'urn':
 
-```{python, opts.label="py_ed"}
+```{python}
 # 0 = no rain, 1 = rain
 weather = np.zeros(10)
 # Set the first 7 of 10 to have value 1.
@@ -426,7 +426,7 @@ print(weather)
 
 The "Skins win when there is no rain" bucket:
 
-```{python, opts.label="py_ed"}
+```{python}
 # 0 = lose, 1 = win
 skins_win_when_no_rain = np.zeros(100)
 # Set the first 65 of 100 to have value 1.
@@ -436,7 +436,7 @@ print(skins_win_when_no_rain)
 
 Now do the simulation:
 
-```{python, opts.label="py_ed"}
+```{python}
 # A counter to count the number of fine wins
 number_of_fine_wins = 0
 

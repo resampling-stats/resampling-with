@@ -11,7 +11,8 @@ r:
   "true": "`TRUE`"
   "false": "`FALSE`"
   sample: "`sample`"
-  bincount: "`np.bincount`"
+  bincount: "`tabulate`"
+  sum: "`sum`"
 python:
   lang: Python
   np_or_r: NumPy
@@ -25,4 +26,5 @@ python:
   "true": "`True`"
   "false": "`False`"
   sample: "`rnd.choice`"
-  bincount: "`tabulate`"
+  bincount: "`np.bincount`"
+  sum: "`np.sum`"
