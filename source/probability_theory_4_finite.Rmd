@@ -278,7 +278,7 @@ results obtained with the following command:
 import matplotlib.pyplot as plt
 
 # Do histogram, with one bin for each possible number.
-plt.hist(trial_results, bins=range(7), align='left', density=True, rwidth=0.75)
+plt.hist(trial_results, bins=range(7), align='left', rwidth=0.75)
 plt.title('# of girls');
 ```
 
@@ -300,7 +300,6 @@ are several other resampling procedures that will also do the job correctly.
 
 In analytic probability theory this problem is worked with a formula for
 "combinations."
-
 
 ### Example: Five spades and four clubs in a bridge hand {#sec-five-spades-four-clubs}
 
@@ -327,7 +326,7 @@ trial_results = np.zeros(N)
 for i in range(N):
 
     # Shuffle the deck and draw 13 cards.
-    hand = rnd.choice(deck, 13, replace=False)
+    hand = rnd.choice(deck, size=13, replace=False)
 
     # Count the number of spades in "hand", put the result in "n_spades".
     n_spades = np.sum(hand == 'spade')
@@ -420,7 +419,7 @@ trial_results = np.zeros(N)
 # Do N trials.
 for i in range(N):
     # Shuffle the deck of cards and draw 13
-    hand = rnd.choice(whole_deck, 13, replace=False)
+    hand = rnd.choice(whole_deck, size=13, replace=False)
 
     # Total the points.
     points = np.sum(hand)
@@ -433,27 +432,8 @@ for i in range(N):
 
 ```{python}
 # Produce a histogram of trial results.
-plt.hist(trial_results, bins=range(25), align='left', density=True, rwidth=0.75)
+plt.hist(trial_results, bins=range(25), align='left', rwidth=0.75)
 plt.title('Points in bridge hands');
-```
-
-```{r, echo=FALSE, eval=TRUE}
-trial_results <- get_var('trial_results')  # Might be Python edition.
-pct_15 <- round(sum(trial_results == 15) / length(trial_results) * 100)
-```
-
-From this histogram, we see that in about `r pct_15` percent of our trials we
-obtained a total of exactly 15 points. We can also compute this directly:
-
-```{python}
-# How many times did we have a hand with fifteen points?
-k = np.sum(trial_results == 15)
-
-# Convert to a proportion.
-kk = k / N
-
-# Print the result.
-print(kk)
 ```
 
 ```{r}
@@ -471,7 +451,7 @@ trial_results <- numeric(N)
 # Do N trials.
 for (i in 1:N) {
     # Shuffle the deck of cards and draw 13
-    hand <- sample(whole_deck, 13)  # replace=FALSE is default.
+    hand <- sample(whole_deck, size=13)  # replace=FALSE is default.
 
     # Total the points.
     points <- sum(hand)
@@ -1011,7 +991,7 @@ deck = np.repeat(['spade', 'others'], [13, 52 - 13])
 
 for i in range(N):
     # Shuffle deck and draw 13 cards
-    hand = rnd.choice(deck, 13, replace=False)
+    hand = rnd.choice(deck, size=13, replace=False)
 
     n_spades = np.sum(hand == 'spade')
 
