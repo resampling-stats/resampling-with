@@ -1377,7 +1377,7 @@ import pandas as pd
 
 in_path = Path() / 'data' / 'liquor_prices.csv'
 in_data = pd.read_csv(in_path).groupby('state_type')['price']
-priv, govt = [np.array(values) for label, values in in_data]
+govt, priv = [np.array(values) for label, values in in_data]
 df = pd.DataFrame()
 df['Private'] = priv
 row_labels = df.index[:len(govt)]

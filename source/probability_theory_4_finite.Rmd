@@ -437,8 +437,13 @@ plt.hist(trial_results, bins=range(25), align='left', density=True, rwidth=0.75)
 plt.title('Points in bridge hands');
 ```
 
-From this histogram, we see that in about 5 percent of our trials we obtained a
-total of exactly 15 points. We can also compute this directly:
+```{r, echo=FALSE, eval=TRUE}
+trial_results <- get_var('trial_results')  # Might be Python edition.
+pct_15 <- round(sum(trial_results == 15) / length(trial_results) * 100)
+```
+
+From this histogram, we see that in about `r pct_15` percent of our trials we
+obtained a total of exactly 15 points. We can also compute this directly:
 
 ```{python}
 # How many times did we have a hand with fifteen points?
