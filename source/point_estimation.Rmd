@@ -25,24 +25,6 @@ source("_common.R")
 
 # Point Estimation {#sec-point-estimation}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/17-Chap-13.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
-
 One of the great questions in statistical inference is: How big is it?
 This can mean — How long? How deep? How much time? At what angle?
 
@@ -95,7 +77,7 @@ topic.)
 
 ## Ways to estimate the mean
 
-**The Method of Moments**
+### The Method of Moments
 
 Since elementary school you have been taught to estimate the mean of a
 universe (or calculate the mean of a sample) by taking a simple
@@ -109,7 +91,7 @@ point of all the one-centimeter segments of the pole.
 
 Consider this example:
 
-**Example 13-1: Twenty-nine Out of Fifty People Polled Say They Will
+**Example: Twenty-nine Out of Fifty People Polled Say They Will
 Vote For The Democrat. Who Will Win The Election? The Relationship
 Between The Sample Proportion and The Population Proportion in a
 Two-Outcome Universe.**
@@ -158,23 +140,22 @@ at sea, and birds sometimes carry leaves out to sea.
 
 We'll return to this subject when we discuss criteria of methods.
 
-**Expected Value and the Method of Moments**
+### Expected Value and the Method of Moments
 
 Consider this gamble: You and another person roll a die. If it falls
 with the "6" upwards you get \$4, and otherwise you pay \$1. If you play 120
-times, at the end of the day you would expect to have (20\*\$4 - 100\*\$1 =)
+times, at the end of the day you would expect to have (20 * \$4 - 100 * \$1 =)
 -\$20 dollars. We say that -\$20 is your "expected value," and your expected
-value per roll is (-\$20/120 =) \$.166 or the loss of 1/6 of a dollar. If you
-get \$5 instead of \$4, your expected value is \$0.
+value per roll is (-\$20 / 120 =) \$.166 or the loss of 1/6 of a dollar. If
+you get \$5 instead of \$4, your expected value is \$0.
 
-This is exactly the same idea as the method of moments, and we even use
-the same term — "expected value," or "expectation" — for the outcome of
-a calculation of the mean of a distribution. We say that the expected
-value for the success of rolling a "6" with a single cast of a die is
-1/6, and that the expected value of rolling a "6" or a "5" is (1/6 + 1/6
-= ) 2/6.
+This is exactly the same idea as the method of moments, and we even use the
+same term — "expected value," or "expectation" — for the outcome of a
+calculation of the mean of a distribution. We say that the expected value for
+the success of rolling a "6" with a single cast of a die is 1/6, and that the
+expected value of rolling a "6" or a "5" is (1/6 + 1/6 = ) 2/6.
 
-**The Maximum Likelihood Principle**
+### The Maximum Likelihood Principle
 
 Another way of thinking about estimation of the population mean asks:
 Which population(s) would, among the possible populations, have the
@@ -367,71 +348,76 @@ confusion and argument.
 ## Uses of the mean {#sec-uses-of-mean}
 
 Let's consider when the use of a device such as the mean is valuable, in
-the context of the data on marksmen in Table 13-1.[^gnedenko]. If we wish to
-compare marksman A versus marksman B, we can immediately see that marksman
-A hit the bullseye (80 shots for 3 points each time) as many times as marksman
-B hit *either* the bullseye or simply got in the black (30 shots for 3 points
-and 50 shots for 2 points), and A hit the black (2 points) as many times as
-B just got in the white (1 point). From these two comparisons covering all the
-shots, in both of which comparisons A does better, it is immediately obvious
-that marksman A is better than marksman B. We can say that A's score
-*dominates* B's score.
+the context of the data on marksmen in @tbl-marksmen-scores.[^gnedenko]. If we
+wish to compare marksman A versus marksman B, we can immediately see that
+marksman A hit the bullseye (80 shots for 3 points each time) as many times as
+marksman B hit *either* the bullseye or simply got in the black (30 shots for
+3 points and 50 shots for 2 points), and A hit the black (2 points) as many
+times as B just got in the white (1 point). From these two comparisons
+covering all the shots, in both of which comparisons A does better, it is
+immediately obvious that marksman A is better than marksman B. We can say that
+A's score *dominates* B's score.
 
 [^gnedenko]: This discussion follows [@gnedenko1962elementary, Chapter 8].
 
-Table 13-1
+::: {#tbl-marksmen-scores layout-row=2}
+| Score | # occurrences (%) | Probability |
+|------|------|------|
+| 1    | 0    | 0    |
+| 2    | 20    | .2    |
+| 3    | 80    | .8    |
 
-**Score No. of Occurrences Percent / Probability**
+: Marksman A
 
-  --- ---------------- ----
-      **Marksman A**   
-  1   0                0
-  2   20               .2
-  3   80               .8
-      **Marksman B**   
-  1   20               .2
-  2   50               .5
-  3   30               .3
-      **Marksman C**   
-  1   40               .4
-  2   10               .1
-  3   50               .5
-      **Marksman D**   
-  1   10               .1
-  2   60               .6
-  3   30               .3
-  --- ---------------- ----
+| Score | # occurrences (%) | Probability |
+|------|------|------|
+| 1    | 20    | .2    |
+| 2    | 50    | .5    |
+| 3    | 30    | .3    |
+
+: Marksman B
+
+| Score | # occurrences (%) | Probability |
+|------|------|------|
+| 1    | 10    | .1    |
+| 2    | 60    | .6    |
+| 3    | 30    | .3    |
+
+: Marksman C
+
+Score percentages by marksman
+:::
 
 When we turn to comparing marksman C to marksman D, however, we cannot say that
 one "dominates" the other as we could with the comparison of marksmen A and B.
 Therefore, we turn to a summarizing device. One such device that is useful here
-is the mean. For marksman C the mean score is (40\*1) + (10\*2) + (50\*3) =
-210, while for marksman D the mean score is (10\*1) + (60\*2) + (30\*3) = 220.
-Hence we can say that D is better than C even though D's score does not
+is the mean. For marksman C the mean score is $(40 * 1) + (10 * 2) + (50 * 3) =
+210$, while for marksman D the mean score is $(10 * 1) + (60 * 2) + (30 * 3) =
+220$. Hence we can say that D is better than C even though D's score does not
 dominate C's score in the bullseye category.
 
 Another use of the mean [@gnedenko1962elementary, p. 68] is shown in the
 estimation of the number of matches that we need to start fires for an
-operation carried out 20 times in a day (Table 13- 2). Let's say that the
-number of cases where s/he needs 1, 2 \... 5 matches to start a fire are as
-follows (along with their probabilities) based on the last 100 fires started:
+operation carried out 20 times in a day (@tbl-matches-fires). Let's say that
+the number of cases where s/he needs 1, 2 ... 5 matches to start a fire are
+as follows (along with their probabilities) based on the last 100 fires
+started:
 
-Table 13-2
+| Number of Matches    | Number of Cases     | Probabilities  |
+|----------------------|---------------------|----------------|
+|1                     | 7                   | .16            |
+|2                     | 16                  | .16            |
+|3                     | 55                  | .55            |
+|4                     | 21                  | .21            |
+|5                     | 1                   | .01            |
 
-  ----------------------- --------------------- -------------------
-  **Number of Matches**   **Number of Cases**   **Probabilities**
-  1                       7                     .16
-  2                       16                    .16
-  3                       55                    .55
-  4                       21                    .21
-  5                       1                     .01
-  ----------------------- --------------------- -------------------
+: Number of matches needed to start a fire {#tbl-matches-fires}
 
 If you know that the operator will be lighting twenty fires, you can estimate
 the number of matches that s/he will need by multiplying the mean number of
-matches (which turns out be 1\*.07 + 2\*0.16 + 3\* 0.55 + 4\*0.21 + 5\*0.01 =
-2.93 ) in the observed experience by 20. Here you are using the mean as an
-indication of a representative case.
+matches (which turns out be $1 * .07 + 2 * 0.16 + 3 * 0.55 + 4 * 0.21 + 5 *
+0.01 = 2.93$) in the observed experience by 20. Here you are using the mean as
+an indication of a representative case.
 
 It is common for writers to immediately produce the data in the forms of
 percentages or probabilities. But I think it is important to include in our
