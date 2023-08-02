@@ -1,22 +1,19 @@
 ---
+resampling_with:
+    ed2_fname: 13-Chap-9
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.5
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: 13-Chap-9
 ---
 
 ```{r setup, include=FALSE}
@@ -25,46 +22,29 @@ source("_common.R")
 
 # On Variability in Sampling {#sec-sampling-variability}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
 
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/13-Chap-9.pdf).
+> \[Debra said\]: "I've had such good luck with Japanese cars and poor
+luck with American\..."
 
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
+> The '65 Ford Mustang: "It was fun, but I had to put two new
+transmissions in it."
 
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
+> The Ford Torino: "That got two transmissions too. That finished me with
+Ford."
 
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
+> The Plymouth Horizon: "The disaster of all disasters. That should've
+been painted bright yellow. What a lemon."
 
+(From *Washington Post Magazine* , May 17, 1992, p. 19)
 
-*\[Debra said\]: "I've had such good luck with Japanese cars and poor
-luck with American\..."*
+Do the quotes above convince you that Japanese cars are better than American?
+Has Debra got enough evidence to reach the conclusion she now holds? That sort
+of question, and the reasoning we use to address it, is the subject of this
+chapter.
 
-*The '65 Ford Mustang: "It was fun, but I had to put two new
-transmissions in it."*
-
-*The Ford Torino: "That got two transmissions too. That finished me with
-Ford."*
-
-*The Plymouth Horizon: "The disaster of all disasters. That should've
-been painted bright yellow. What a lemon."*
-
-( *Washington Post Magazine* , May 17, 1992, p. 19)
-
-Does the headnote above convince you that Japanese cars are better than
-American? Has Debra got enough evidence to reach the conclusion she now
-holds? That sort of question, and the reasoning we use to address it ,
-is the subject of this chapter.
-
-More generally, how should one go about using the available data to test
-the hypothesis that Japanese cars are better? That is an example of the
-questions that are the subject of statistics.
+More generally, how should one go about using the available data to test the
+hypothesis that Japanese cars are better? That is an example of the questions
+that are the subject of statistics.
 
 ## Variability and small samples
 
@@ -101,12 +81,19 @@ when I say there is no such thing as a slump, I mean that the chances of
 getting a hit after any sequence of at-bats without a hit is *not*
 different than the long-run average.
 
-The "hot hand" in basketball is another illusion. The hot hand does not
-exist! The chance of a shooter scoring is the same after he has just
-missed a flock of shots as when he has just sunk a long string. That is,
-the chance of scoring a basket is no higher after a run of successes
-than after a run of failures. But even professional teams choose plays
-on the basis of who supposedly has a hot hand.
+The "hot hand" in basketball is another illusion. In practical terms, the hot
+hand does not exist — or rather — if it does, the effect is weak.[^hot-hand]
+The chance of a shooter scoring is more or less the same after they have just
+missed a flock of shots as when they have just sunk a long string. That is,
+the chance of scoring a basket is not appreciably higher after a run of
+successes than after a run of failures. But even professional teams choose
+plays on the basis of who supposedly has a hot hand.
+
+[^hot-hand]: We are simplifying here; the Hot-Hand is a controversial topic,
+    and it has its own Wikipedia page with information and discussion:
+    <https://en.wikipedia.org/wiki/Hot_hand>.  It may be overstating to say
+    the effect does not exist, but if it does exist, the effect is much
+    smaller than most observers believe to be the case.
 
 Managers who substitute for the "slumping" or "cold-handed" players with
 other players who, in the long run, have lower batting averages, or set
@@ -118,19 +105,19 @@ identification of slumps and hot hands is superstitious behavior,
 classic cases of the assignment of pattern to a series of events when
 there really is no pattern.
 
-How do statisticians ascertain that slumps and hot hands do not exist?
-In brief, in baseball we simulate a hitter with a given average — say
-.250 — and compare the results with actual hitters of that average, to see
-whether they have "slumps" longer than the computer. The method of
-investigation is roughly as follows. You program a computer or other machine
-to behave the way a player would, given the player's long-run average, on the
-assumption that each trial is a random drawing. For example, if a player has a
-.250 season-long batting average, the machine is programmed like a bucket
-containing three black balls and one white ball. Then for each simulated at
-bat, the machine shuffles the "balls" and draws one; it then records whether
-the result is black or white, after which the ball is replaced in the bucket.
-To study a season with four hundred at-bats, a simulated ball is drawn four
-hundred times.
+How do statisticians ascertain that slumps and hot hands are very weak
+effects, or do not exist? In brief, in baseball we simulate a hitter with a
+given average — say .250 — and compare the results with actual hitters of that
+average, to see whether they have "slumps" longer than the computer. The
+method of investigation is roughly as follows. You program a computer or other
+machine to behave the way a player would, given the player's long-run average,
+on the assumption that each trial is a random drawing. For example, if a
+player has a .250 season-long batting average, the machine is programmed like
+a bucket containing three black balls and one white ball. Then for each
+simulated at bat, the machine shuffles the "balls" and draws one; it then
+records whether the result is black or white, after which the ball is replaced
+in the bucket. To study a season with four hundred at-bats, a simulated ball
+is drawn four hundred times.
 
 The records of the player's real season and the simulated season are
 then compared. If there really is such a thing as a non-random slump or
@@ -142,50 +129,53 @@ the random simulated record. I suggested this sort of test for the
 existence of slumps in my 1969 book that first set forth the resampling
 method, a predecessor of this book.
 
-For example, Table 9-1 shows the results of one 400 at-bat season for a
-simulated .250 hitter. (1 = hit, 0 = out, sequential atbats ordered
+For example, @tbl-at-bats shows the results of one 400 at-bat season for a
+simulated .250 hitter. (H = hit, O = out, sequential at-bats ordered
 vertically) Note the "slump" — 1 for 24 — in columns 7 & 8 (in bold).
 
-Table 9-1
-
-**A Rookie Season** (400 at-bats)
-
   --- --- --- --- --- --- ------- ------- --- --- --- --- --- --- --- ---
-  0   0   0   0   0   0   1       **0**   0   0   0   1   0   1   0   0
-  0   0   0   0   0   1   0       **0**   1   1   1   0   1   1   0   0
-  0   0   0   1   0   0   0       **0**   1   0   0   0   1   1   0   0
-  0   0   0   0   0   1   1       **0**   0   0   0   1   0   0   0   1
-  1   0   1   0   0   1   0       **0**   0   1   0   0   0   0   1   0
-  1   0   0   1   0   0   1       1       0   1   0   0   1   0   1   0
-  0   0   1   0   0   0   **0**   1       0   0   0   0   0   0   1   0
-  0   0   1   0   0   0   **0**   1       1   0   0   0   0   0   0   0
-  0   1   0   0   0   0   **0**   0       1   1   0   0   0   1   0   0
-  0   1   1   0   0   0   **0**   1       0   1   0   0   1   0   1   0
-  0   0   1   1   0   1   **0**   1       0   1   1   1   0   0   0   0
-  1   0   0   0   0   0   **0**   0       0   1   0   1   1   0   0   0
-  0   1   0   0   0   1   **0**   0       0   0   0   0   0   0   1   1
-  1   0   1   0   0   0   **1**   0       0   0   0   1   1   0   0   1
-  0   0   0   0   1   1   **0**   0       0   0   0   1   1   1   1   0
-  0   0   0   0   1   1   **0**   0       0   0   0   1   0   0   0   0
-  1   0   0   0   0   0   **0**   0       0   0   0   0   0   0   0   0
-  0   1   1   1   0   0   **0**   1       0   1   0   0   0   0   0   0
-  0   1   0   1   0   0   **0**   0       1   0   0   0   0   1   0   0
-  0   0   0   1   1   0   **0**   0       0   0   1   0   1   0   0   1
-  0   1   0   0   1   0   **0**   0       0   0   1   0   0   0   0   0
-  1   1   1   0   0   0   **0**   1       0   0   0   0   1   0   0   1
-  0   0   0   1   1   0   **0**   0       0   0   0   0   0   0   1   0
-  0   1   0   0   0   0   **0**   1       1   0   0   0   0   0   0   1
-  0   0   0   0   0   1   **0**   0       0   1   0   1   0   1   0   0
+  O   O   O   O   O   O   H       **O**   O   O   O   H   O   H   O   O
+  O   O   O   O   O   H   O       **O**   H   H   H   O   H   H   O   O
+  O   O   O   H   O   O   O       **O**   H   O   O   O   H   H   O   O
+  O   O   O   O   O   H   H       **O**   O   O   O   H   O   O   O   H
+  H   O   H   O   O   H   O       **O**   O   H   O   O   O   O   H   O
+  H   O   O   H   O   O   H       H       O   H   O   O   H   O   H   O
+  O   O   H   O   O   O   **O**   H       O   O   O   O   O   O   H   O
+  O   O   H   O   O   O   **O**   H       H   O   O   O   O   O   O   O
+  O   H   O   O   O   O   **O**   O       H   H   O   O   O   H   O   O
+  O   H   H   O   O   O   **O**   H       O   H   O   O   H   O   H   O
+  O   O   H   H   O   H   **O**   H       O   H   H   H   O   O   O   O
+  H   O   O   O   O   O   **O**   O       O   H   O   H   H   O   O   O
+  O   H   O   O   O   H   **O**   O       O   O   O   O   O   O   H   H
+  H   O   H   O   O   O   **H**   O       O   O   O   H   H   O   O   H
+  O   O   O   O   H   H   **O**   O       O   O   O   H   H   H   H   O
+  O   O   O   O   H   H   **O**   O       O   O   O   H   O   O   O   O
+  H   O   O   O   O   O   **O**   O       O   O   O   O   O   O   O   O
+  O   H   H   H   O   O   **O**   H       O   H   O   O   O   O   O   O
+  O   H   O   H   O   O   **O**   O       H   O   O   O   O   H   O   O
+  O   O   O   H   H   O   **O**   O       O   O   H   O   H   O   O   H
+  O   H   O   O   H   O   **O**   O       O   O   H   O   O   O   O   O
+  H   H   H   O   O   O   **O**   H       O   O   O   O   H   O   O   H
+  O   O   O   H   H   O   **O**   O       O   O   O   O   O   O   H   O
+  O   H   O   O   O   O   **O**   H       H   O   O   O   O   O   O   H
+  O   O   O   O   O   H   **O**   O       O   H   O   H   O   H   O   O
   --- --- --- --- --- --- ------- ------- --- --- --- --- --- --- --- ---
+
+: 400 simulated at-bats (ordered vertically) {#tbl-at-bats}
 
 Harry Roberts investigated the batting records of a sample of major
-leaguers. He compared players' season-long records against the behavior
-of random-number drawings. If slumps existed rather than being a fiction
-of the imagination, the real players' records would shift from a string
-of hits to a string of outs less frequently than would the random-number
-sequences. But in fact the number of shifts, and the average lengths of
-strings of hits and outs, are on average the same for players as for
-player-simulating random-number devices.
+leaguers.[^roberts-records] He compared players' season-long records against
+the behavior of random-number drawings. If slumps existed rather than being a
+fiction of the imagination, the real players' records would shift from a
+string of hits to a string of outs less frequently than would the
+random-number sequences. But in fact the number of shifts, and the average
+lengths of strings of hits and outs, are on average the same for players as
+for player-simulating random-number devices.
+
+[^roberts-records]: See Simon's description of these experiments in [Batter's
+slump and other
+illusions](https://www.washingtonpost.com/archive/opinions/1987/08/09/batters-slump-other-illusions/72964746-cd59-4e0b-a941-e1cdfca917d6/),
+Washington Post, August 9th, 1987.
 
 Over long periods, averages may vary systematically, as Ty Cobb's annual
 batting averages varied non-randomly from season to season, Roberts
@@ -193,15 +183,14 @@ found. But in the short run, most individual and team performances have
 shown results similar to the outcomes that a lottery-type random number
 machine would produce.
 
-Thomas Gilovich, Robert Vallone and Amos Twersky performed a similar
-study of basketball shooting. They examined the records of shots from
-the floor by the Philadelphia 76'ers, foul shots by the Boston Celtics,
+Thomas Gilovich, Robert Vallone and Amos Twersky [-@gilovich1985hot] performed
+a similar study of basketball shooting. They examined the records of shots
+from the floor by the Philadelphia 76'ers, foul shots by the Boston Celtics,
 and a shooting experiment of Cornell University teams. They found that
-"basketball players and fans alike tend to believe that a player's
-chance of hitting a shot are greater following a hit than following a
-miss on the previous shot. However, detailed analyses...provided no
-evidence for a positive correlation between the outcomes of successive
-shots."
+"basketball players and fans alike tend to believe that a player's chance of
+hitting a shot are greater following a hit than following a miss on the
+previous shot. However, detailed analyses...provided no evidence for a
+positive correlation between the outcomes of successive shots."
 
 To put their conclusion differently, knowing whether a shooter has
 scored or not scored on the previous shot — or in any previous sequence
@@ -308,7 +297,7 @@ calling for research to be done on the fall of the Nile, and the television
 anchors would have been warning the people to change their ways and use less
 water.
 
-```{r fig-nile_height, opts.label='svg_fig', fig.cap="Height of the Nile River Over Half of a Century"}
+```{r fig-nile_height, opts.label="svg_fig", fig.cap="Height of the Nile River Over Half of a Century"}
 include_svg('diagrams/nile_height.svg')
 ```
 
@@ -335,12 +324,12 @@ falsified, and the price continued its long-run decline.
 ![The Price of Mercury from
 @cook1976limits](images/13-Chap-9_002.png){#fig-mercury_prediction}
 
-```{r fig-mercury_reserves, opts.label='svg_fig', fig.cap="Mercury Reserves, 1950-1990"}
+```{r fig-mercury_reserves, opts.label="svg_fig", fig.cap="Mercury Reserves, 1950-1990"}
 include_svg('diagrams/mercury_reserves.svg')
 ```
 
 
-```{r fig-mercury_price_indexes, opts.label='svg_fig', fig.cap="Mercury Price Indexes, 1950-1990"}
+```{r fig-mercury_price_indexes, opts.label="svg_fig", fig.cap="Mercury Price Indexes, 1950-1990"}
 include_svg('diagrams/mercury_price_indexes.svg')
 ```
 
@@ -380,163 +369,177 @@ Hollandsworth (.237, 1 HR, 18 RBI) to AAA Albuquerque\..." (Item in
 *Washington Post* , 6/14/97)
 
 It is a well-known fact that the Rookie of the Year in a sport such as
-baseball seldom has as outstanding a season in her/his sophomore year.
-Why is this so? Let's use the knowledge we have acquired of probability
-and simulation to explain this phenomenon.
+baseball seldom has as outstanding a season in their sophomore year. Why is
+this so? Let's use the knowledge we have acquired of probability and
+simulation to explain this phenomenon.
 
 The matter at hand might be thought of as a problem in pure
-probability — if one simply asks about the chance that a given player
-(the Rookie of the Year) will repeat. Or it could be considered a
-problem in statistics, as discussed in coming chapters. Let's consider
-the matter in the context of baseball.
+probability — if one simply asks about the chance that a given player (the
+Rookie of the Year) will repeat. Or it could be considered a problem in
+statistics, as discussed in coming chapters. Let's consider the matter in the
+context of baseball.
 
 Imagine 10 mechanical "ball players," each a machine that has three
 white balls (hits) and 7 black balls. Every time the machine goes to
 bat, you take a ball out of the machine, look to see if it is a hit or
 an out, and put it back. For each "ball player" you do this 100 times.
 One of them is going to do better than the others, and that one becomes
-the Rookie of the Year. (See Table 9-2.)
+the Rookie of the Year. See @tbl-rookie-seasons.
 
-**Table 9-2**
+|  # of Hits     | Batting Average |
+|----------------|-----------------|
+| 32             | .320            |
+| 34             | .340            |
+| 33             | .330            |
+| 30             | .300            |
+| 35             | .350            |
+| 33             | .330            |
+| 30             | .300            |
+| 31             | .310            |
+| 28             | .280            |
+| 25             | .250            |
 
-**Rookie Seasons** (100 at bats)
-
-  ---------------- ---------------------
-  **\# of Hits**   **Batting Average**
-  32               .320
-  34               .340
-  33               .330
-  30               .300
-  35               .350
-  33               .330
-  30               .300
-  31               .310
-  28               .280
-  25               .250
-  ---------------- ---------------------
+: Rookie Seasons (100 at bats) {#tbl-rookie-seasons}
 
 Would you now expect that the player who happened to be the best among
 the top ten in the first year to again be the best among the top ten in
 the next year, also? The sports writers do. But of course this seldom
 happens. The Rookie of the Year in major-league baseball seldom has as
-outstanding a season in his sophomore year as in his rookie year. You
-can expect him to do better than the average of all sophomores, but not
-necessarily better than all of the rest of the group of talented players
-who are now sophomores. (Please notice that we are not saying that there
-is no long-run difference among the top ten rookies. But suppose there
-is. Table 9-3 shows the season's performance for ten batters of
-differing performances).
+outstanding a season in their sophomore year as in their rookie year. You can
+expect them to do better than the average of all sophomores, but not
+necessarily better than all of the rest of the group of talented players who
+are now sophomores. (Please notice that we are not saying that there is no
+long-run difference among the top ten rookies. But suppose there is.
+@tbl-true-rookie shows the season's performance for ten batters of differing
+performances).
 
-Table 9-3
+| "True"     | Rookie     |
+|------------|------------|
+| .270       | .340       |
+| .270       | .240       |
+| .280       | .330       |
+| .280       | .300       |
+| .300       | .280       |
+| .300       | .420       |
+| .320       | .340       |
+| .320       | .350       |
+| .330       | .260       |
+| .330       | .330       |
 
-**Season's Performance**
+: Simulated season's performance for 10 batters of differing "true" averages {#tbl-true-rookie}
 
-  ------------ ------------
-  **"TRUE"**   **ROOKIE**
-  .270         .340
-  .270         .240
-  .280         .330
-  .280         .300
-  .300         .280
-  .300         .420
-  .320         .340
-  .320         .350
-  .330         .260
-  .330         .330
-  ------------ ------------
+We see from @tbl-true-rookie that we have ten batters whose "true" batting
+averages range from .270 to .330. Their rookie year performance (400 at bats),
+simulated on the basis of their "true"average is on the right. Which one is
+the rookie of the year? It's \#6, who hit .420 during the rookie session. Will
+they do as well next year? Not likely — their "true" average is only .300.
 
-We see from table 9-3 that we have ten batters whose "true" batting
-averages range from .270 to .330. Their rookie year performance (400 at
-bats), simulated on the basis of their "true"average is on the right.
-Which one is the rookie of the year? It's \#6, who hit .420 during the
-rookie session. Will he do as well next year? Not likely — his "true"
-average is only .300.
+::: {.notebook name="sampling_variability" title="Experiment in sampling variability"}
 
 Try generating some rookie "seasons" yourself with the following
-commands, ranging the batter's "true" performance by altering what you
-count as a hit.
+commands, ranging the batter's "true" performance by changing the value of `p_hit` (the probability of a hit).
 
+```{python}
+import numpy as np
 
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "sampling_variability_00.rss"
-
-GENERATE 400 1,100 at-bats
-COUNT at-bats <= 30 hits
-DIVIDE hits 400 average
-' Simulate a set of 10 or 20 such rookie seasons, and look at the one who
-' did best. How did his rookie season compare to his "true" average?
+rnd = np.random.default_rng()
 ```
 
-The explanation is the presence of *variability* . And lack of
-recognition of the role of variability is at the heart of much
-fallacious reasoning. Being alert to the role of variability is crucial.
+```{python}
+# Simulate a rookie season of 400 at-bats.
 
-Or consider the example of having a superb meal at a restaurant — the
-best meal you have ever eaten. That fantastic meal is almost surely the
-combination of the restaurant being better than average, plus a lucky
-night for the chef and the dish you ordered. The next time you return
-you can expect a meal better than average, because the restaurant is
-better than average in the long run. But the meal probably will be less
-good than the superb one you had the first time, because there is no
-reason to believe that the chef will get so lucky again and that the
-same sort of variability will happen this time.
+# You might try changing the value below and rerunning.
+# This is the true (long-run) probability of a hit for this batter.
+p_hit = 0.4
+print('True average is:', p_hit)
+at_bats = rnd.choice(['Hit', 'Out'], p=[p_hit, 1 - p_hit], size=400)
+simulated_average = np.sum(at_bats == 'Hit') / 400
+# Show the result
+print('Simulated average is:', simulated_average)
+```
+
+```{r}
+# Simulate a rookie season of 400 at-bats.
+
+# You might try changing the value below and rerunning.
+# This is the true (long-run) probability of a hit for this batter.
+p_hit <- 0.4
+message('True average is: ', p_hit)
+# We resample _with_ replacement here; the chances of a hit do not change
+# From at-bat to at-bat.
+at_bats <- sample(c('Hit', 'Out'), prob=c(p_hit, 1 - p_hit), size=400, replace=TRUE)
+simulated_average <- sum(at_bats == 'Hit') / 400
+# Show the result
+message('Simulated average is: ', simulated_average)
+```
+
+Simulate a set of 10 or 20 such rookie seasons, and look at the one who did
+best. How did their rookie season compare to their "true" average?
+
+:::
+
+The explanation is the presence of *variability* . And lack of recognition of
+the role of variability is at the heart of much fallacious reasoning. Being
+alert to the role of variability is crucial.
+
+Or consider the example of having a superb meal at a restaurant — the best
+meal you have ever eaten. That fantastic meal is almost surely the combination
+of the restaurant being better than average, plus a lucky night for the chef
+and the dish you ordered. The next time you return you can expect a meal
+better than average, because the restaurant is better than average in the long
+run. But the meal probably will be less good than the superb one you had the
+first time, because there is no reason to believe that the chef will get so
+lucky again and that the same sort of variability will happen this time.
 
 These examples illustrate the concept of "regression to the mean" — a
-confusingly-titled and very subtle effect caused by variability in
-results among successive samples drawn from the same population. This
-phenomenon was given its title more than a century ago by Francis
-Galton, one of the great founders of modern statistics, when at first he
-thought that the height of the human species was becoming more uniform,
-after he noticed that the children of the tallest and shortest parents
-usually are closer to the average of all people than their parents are.
-But later he discovered his fallacy — that the variability in heights of
-children of quite short and quite tall parents also causes some people
-to be even more exceptionally tall or short than their parents. So the
-spread in heights among humans remains much the same from generation to
-generation; there is no "regression to the mean." The heart of the
-matter is that any exceptional observed case in a group is likely to be
-the result of two forces — a) an *underlying propensity* to differ from
-the average in one direction or the other, plus b) *some chance sampling
-variability* that happens (in the observed case) to push even further in
-the exceptional direction.
+confusingly-titled and very subtle effect caused by variability in results
+among successive samples drawn from the same population. This phenomenon was
+given its title more than a century ago by Francis Galton, one of the great
+founders of modern statistics, when at first he thought that the height of the
+human species was becoming more uniform, after he noticed that the children of
+the tallest and shortest parents usually are closer to the average of all
+people than their parents are. But later he discovered his fallacy — that the
+variability in heights of children of quite short and quite tall parents also
+causes some people to be even more exceptionally tall or short than their
+parents. So the spread in heights among humans remains much the same from
+generation to generation; there is no "regression to the mean." The heart of
+the matter is that any exceptional observed case in a group is likely to be
+the result of two forces — a) an *underlying propensity* to differ from the
+average in one direction or the other, plus b) *some chance sampling
+variability* that happens (in the observed case) to push even further in the
+exceptional direction.
 
-A similar phenomenon arises in direct-mail marketing. When a firm tests
-many small samples of many lists of names and then focuses its mass
-mailings on the lists that performed best in the tests, the full list
-"rollouts" usually do not perform as well as the samples did in the
-initial tests. It took many years before mail-order experts (see
-especially [@burnett1988complete]) finally understood that regression to the
-mean *inevitably* causes an important part of the dropoff from sample to
-rollout observed in the set of lists that give the very best results in a
-multi-list test.
+A similar phenomenon arises in direct-mail marketing. When a firm tests many
+small samples of many lists of names and then focuses its mass mailings on the
+lists that performed best in the tests, the full list "rollouts" usually do
+not perform as well as the samples did in the initial tests. It took many
+years before mail-order experts (see especially [@burnett1988complete])
+finally understood that regression to the mean *inevitably* causes an
+important part of the dropoff from sample to rollout observed in the set of
+lists that give the very best results in a multi-list test.
 
-The larger the test samples, the less the dropoff, of course, because
-larger samples reduce variability in results. But larger samples risk
-more money. So the test-sample-size decision for the marketer inevitably
-is a trade-off between accuracy and cost.
+The larger the test samples, the less the dropoff, of course, because larger
+samples reduce variability in results. But larger samples risk more money. So
+the test-sample-size decision for the marketer inevitably is a trade-off
+between accuracy and cost.
 
-And one last amusing example: After I lectured to the class on this
-material, the student who had gotten the best grade on the first
-mid-term exam came up after class and said: "Does that mean that on the
-second mid-term I should expect to do well but not the best in the
-class?" And that's exactly what happened: He had the second-best score
-in the class on the next midterm.
+And one last amusing example: After I (JLS) lectured to the class on this
+material, the student who had gotten the best grade on the first mid-term exam
+came up after class and said: "Does that mean that on the second mid-term I
+should expect to do well but not the best in the class?" And that's exactly
+what happened: He had the second-best score in the class on the next midterm.
 
-A related problem arises when one conducts multiple tests, as when
-testing thousands of drugs for therapeutic value. Some of the drugs may
-appear to have a therapeutic effect just by chance. We will discuss this
-problem later when discussing hypothesis testing.
+A related problem arises when one conducts multiple tests, as when testing
+thousands of drugs for therapeutic value. Some of the drugs may appear to have
+a therapeutic effect just by chance. We will discuss this problem later when
+discussing hypothesis testing.
 
 ## Summary and conclusion
 
-The heart of statistics is clear thinking. One of the key elements in
-being a clear thinker is to have a sound gut understanding of
-statistical processes and variability. This chapter amplifies this
-point.
+The heart of statistics is clear thinking. One of the key elements in being a
+clear thinker is to have a sound gut understanding of statistical processes
+and variability. This chapter amplifies this point.
 
 A great benefit to using simulations rather than formulas to deal with
-problems in probability and statistics is that the presence and
-importance of variability becomes manifest in the course of the
-simulation work.
+problems in probability and statistics is that the presence and importance of
+variability becomes manifest in the course of the simulation work.
