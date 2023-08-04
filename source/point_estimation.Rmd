@@ -25,24 +25,6 @@ source("_common.R")
 
 # Point Estimation {#sec-point-estimation}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/17-Chap-13.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
-
 One of the great questions in statistical inference is: How big is it?
 This can mean — How long? How deep? How much time? At what angle?
 
@@ -95,7 +77,7 @@ topic.)
 
 ## Ways to estimate the mean
 
-**The Method of Moments**
+### The Method of Moments
 
 Since elementary school you have been taught to estimate the mean of a
 universe (or calculate the mean of a sample) by taking a simple
@@ -109,7 +91,7 @@ point of all the one-centimeter segments of the pole.
 
 Consider this example:
 
-**Example 13-1: Twenty-nine Out of Fifty People Polled Say They Will
+**Example: Twenty-nine Out of Fifty People Polled Say They Will
 Vote For The Democrat. Who Will Win The Election? The Relationship
 Between The Sample Proportion and The Population Proportion in a
 Two-Outcome Universe.**
@@ -158,23 +140,22 @@ at sea, and birds sometimes carry leaves out to sea.
 
 We'll return to this subject when we discuss criteria of methods.
 
-**Expected Value and the Method of Moments**
+### Expected Value and the Method of Moments
 
 Consider this gamble: You and another person roll a die. If it falls
 with the "6" upwards you get \$4, and otherwise you pay \$1. If you play 120
-times, at the end of the day you would expect to have (20\*\$4 - 100\*\$1 =)
+times, at the end of the day you would expect to have (20 * \$4 - 100 * \$1 =)
 -\$20 dollars. We say that -\$20 is your "expected value," and your expected
-value per roll is (-\$20/120 =) \$.166 or the loss of 1/6 of a dollar. If you
-get \$5 instead of \$4, your expected value is \$0.
+value per roll is (-\$20 / 120 =) \$.166 or the loss of 1/6 of a dollar. If
+you get \$5 instead of \$4, your expected value is \$0.
 
-This is exactly the same idea as the method of moments, and we even use
-the same term — "expected value," or "expectation" — for the outcome of
-a calculation of the mean of a distribution. We say that the expected
-value for the success of rolling a "6" with a single cast of a die is
-1/6, and that the expected value of rolling a "6" or a "5" is (1/6 + 1/6
-= ) 2/6.
+This is exactly the same idea as the method of moments, and we even use the
+same term — "expected value," or "expectation" — for the outcome of a
+calculation of the mean of a distribution. We say that the expected value for
+the success of rolling a "6" with a single cast of a die is 1/6, and that the
+expected value of rolling a "6" or a "5" is (1/6 + 1/6 = ) 2/6.
 
-**The Maximum Likelihood Principle**
+### The Maximum Likelihood Principle
 
 Another way of thinking about estimation of the population mean asks:
 Which population(s) would, among the possible populations, have the
@@ -212,7 +193,7 @@ is very low (though it has an even lower probability of producing any
 include_svg('diagrams/white_balls_universe.svg')
 ```
 
-### Choice of Estimation Method
+## Choice of Estimation Method
 
 When should you base your estimate on the method of moments, or of
 maximum likelihood, or still some other principle? There is no general
@@ -229,7 +210,7 @@ How should one judge the soundness of the process that produces an
 estimate? General criteria include *representativeness* and *accuracy* .
 But these are pretty vague; we'll have to get more specific.
 
-**Unbiasedness**
+### Unbiasedness
 
 Concerning representativeness: We want a procedure that will not be
 systematically in error in one direction or another. In technical terms,
@@ -304,27 +285,24 @@ proof of this proposition. You are more likely to be persuaded if you
 demonstrate this proposition to yourself experimentally in the following
 manner:
 
-**Step 1.** Let "1-6" = Democrat, "7-10" = Republican
+* **Step 1.** Let "1-6" = Democrat, "7-10" = Republican
+* **Step 2.** Choose a sample of, say, ten random numbers, and record the
+  proportion Democrat (the sample proportion).
+* **Step 3.** Repeat step 2 a thousand times.
+* **Step 4.** Compute the mean of the sample proportions, and compare it to the
+  population proportion of 60 percent. This result should be close enough to
+  reassure you that *on the average* the sample proportion is an "unbiased"
+  estimate of the population proportion, though in any particular sample it may
+  be substantially off in either direction.
 
-**Step 2.** Choose a sample of, say, ten random numbers, and record the
-proportion Democrat (the sample proportion).
-
-**Step 3.** Repeat step 2 a thousand times.
-
-**Step 4.** Compute the mean of the sample proportions, and compare it
-to the population proportion of 60 percent. This result should be close
-enough to reassure you that *on the average* the sample proportion is an
-"unbiased" estimate of the population proportion, though in any
-particular sample it may be substantially off in either direction.
-
-**Efficiency**
+### Efficiency
 
 We want an estimate to be accurate, in the sense that it is as close to
 the "actual" value of the parameter as possible. Sometimes it is
 possible to get more accuracy at the cost of biasing the estimate. More
 than that does not need to be said here.
 
-**Maximum Likelihood**
+### Maximum Likelihood
 
 Knowing that a particular value is the most likely of all values may be
 of importance in itself. For example, a person betting on one horse in a
@@ -336,10 +314,10 @@ particular interest in such situations.
 See [@savage1972foundations, Chapter 15], for many other criteria of
 estimators.
 
-**Criteria of the Criteria**
+## Criteria of the Criteria
 
-What should we look for in choosing criteria? Logically, this question
-should precede the above list of criteria.
+What should we look for in choosing criteria? Logically, this question should
+precede the above list of criteria.
 
 Savage [-@savage1972foundations, Chapter 15] has urged that we should always
 think in terms of the *consequences* of choosing criteria, in light of our
@@ -370,169 +348,167 @@ confusion and argument.
 ## Uses of the mean {#sec-uses-of-mean}
 
 Let's consider when the use of a device such as the mean is valuable, in
-the context of the data on marksmen in Table 13-1.[^gnedenko]. If we wish to
-compare marksman A versus marksman B, we can immediately see that marksman
-A hit the bullseye (80 shots for 3 points each time) as many times as marksman
-B hit *either* the bullseye or simply got in the black (30 shots for 3 points
-and 50 shots for 2 points), and A hit the black (2 points) as many times as
-B just got in the white (1 point). From these two comparisons covering all the
-shots, in both of which comparisons A does better, it is immediately obvious
-that marksman A is better than marksman B. We can say that A's score
-*dominates* B's score.
+the context of the data on marksmen in @tbl-marksmen-scores.[^gnedenko]. If we
+wish to compare marksman A versus marksman B, we can immediately see that
+marksman A hit the bullseye (80 shots for 3 points each time) as many times as
+marksman B hit *either* the bullseye or simply got in the black (30 shots for
+3 points and 50 shots for 2 points), and A hit the black (2 points) as many
+times as B just got in the white (1 point). From these two comparisons
+covering all the shots, in both of which comparisons A does better, it is
+immediately obvious that marksman A is better than marksman B. We can say that
+A's score *dominates* B's score.
 
 [^gnedenko]: This discussion follows [@gnedenko1962elementary, Chapter 8].
 
-Table 13-1
+::: {#tbl-marksmen-scores layout-row=2}
+| Score | # occurrences (%) | Probability |
+|------|------|------|
+| 1    | 0    | 0    |
+| 2    | 20    | .2    |
+| 3    | 80    | .8    |
 
-**Score No. of Occurrences Percent / Probability**
+: Marksman A
 
-  --- ---------------- ----
-      **Marksman A**   
-  1   0                0
-  2   20               .2
-  3   80               .8
-      **Marksman B**   
-  1   20               .2
-  2   50               .5
-  3   30               .3
-      **Marksman C**   
-  1   40               .4
-  2   10               .1
-  3   50               .5
-      **Marksman D**   
-  1   10               .1
-  2   60               .6
-  3   30               .3
-  --- ---------------- ----
+| Score | # occurrences (%) | Probability |
+|------|------|------|
+| 1    | 20    | .2    |
+| 2    | 50    | .5    |
+| 3    | 30    | .3    |
 
-When we turn to comparing marksman C to marksman D, however, we cannot
-say that one "dominates" the other as we could with the comparison of
-marksmen A and B. Therefore, we turn to a summarizing device. One such
-device that is useful here is the mean. For marksman C the mean score is
-(40\*1) + (10\*2) + (50\*3) = 210, while for marksman D the mean score is
-(10\*1) + (60\*2) + (30\*3) = 220. Hence we can say that D is better than
-C even though D's score does not dominate C's score in the bullseye category.
+: Marksman B
+
+| Score | # occurrences (%) | Probability |
+|------|------|------|
+| 1    | 10    | .1    |
+| 2    | 60    | .6    |
+| 3    | 30    | .3    |
+
+: Marksman C
+
+Score percentages by marksman
+:::
+
+When we turn to comparing marksman C to marksman D, however, we cannot say that
+one "dominates" the other as we could with the comparison of marksmen A and B.
+Therefore, we turn to a summarizing device. One such device that is useful here
+is the mean. For marksman C the mean score is $(40 * 1) + (10 * 2) + (50 * 3) =
+210$, while for marksman D the mean score is $(10 * 1) + (60 * 2) + (30 * 3) =
+220$. Hence we can say that D is better than C even though D's score does not
+dominate C's score in the bullseye category.
 
 Another use of the mean [@gnedenko1962elementary, p. 68] is shown in the
 estimation of the number of matches that we need to start fires for an
-operation carried out 20 times in a day (Table 13- 2). Let's say that the
-number of cases where s/he needs 1, 2 \... 5 matches to start a fire are as
-follows (along with their probabilities) based on the last 100 fires started:
+operation carried out 20 times in a day (@tbl-matches-fires). Let's say that
+the number of cases where s/he needs 1, 2 ... 5 matches to start a fire are
+as follows (along with their probabilities) based on the last 100 fires
+started:
 
-Table 13-2
+| Number of Matches    | Number of Cases     | Probabilities  |
+|----------------------|---------------------|----------------|
+|1                     | 7                   | .16            |
+|2                     | 16                  | .16            |
+|3                     | 55                  | .55            |
+|4                     | 21                  | .21            |
+|5                     | 1                   | .01            |
 
-  ----------------------- --------------------- -------------------
-  **Number of Matches**   **Number of Cases**   **Probabilities**
-  1                       7                     .16
-  2                       16                    .16
-  3                       55                    .55
-  4                       21                    .21
-  5                       1                     .01
-  ----------------------- --------------------- -------------------
+: Number of matches needed to start a fire {#tbl-matches-fires}
 
-If you know that the operator will be lighting twenty fires, you can
-estimate the number of matches that s/he will need by multiplying the
-mean number of matches (which turns out be 1\*.07 + 2\*0.16 + 3\* 0.55 +
-4\*0.21 + 5\*0.01 = 2.93 ) in the observed experience by 20. Here you are using
-the mean as an indication of a representative case.
+If you know that the operator will be lighting twenty fires, you can estimate
+the number of matches that s/he will need by multiplying the mean number of
+matches (which turns out be $1 * .07 + 2 * 0.16 + 3 * 0.55 + 4 * 0.21 + 5 *
+0.01 = 2.93$) in the observed experience by 20. Here you are using the mean as
+an indication of a representative case.
 
 It is common for writers to immediately produce the data in the forms of
-percentages or probabilities. But I think it is important to include in
-our discussion the absolute numbers, because this is what one must begin
-with in practice. And keeping the absolute numbers in mind is likely to
-avoid some confusions that arise if one immediately goes to percentages
-or to probabilities.
+percentages or probabilities. But I think it is important to include in our
+discussion the absolute numbers, because this is what one must begin with in
+practice. And keeping the absolute numbers in mind is likely to avoid some
+confusions that arise if one immediately goes to percentages or to
+probabilities.
 
-Still another use for the mean is when you have a set of observations
-with error in them. The mean of the observations probably is your best
-guess about which is the "right" one. Furthermore, the distance you are
-likely to be off the mark is less if you select the mean of the
-observations. An example might be a series of witnesses giving the
-police their guesses about the height of a man who overturned an
-outhouse. The mean probably is the best estimate to give to police
-officers as a description of the perpetrator (though it would be helpful
-to give the range of the observations as well).
+Still another use for the mean is when you have a set of observations with
+error in them. The mean of the observations probably is your best guess about
+which is the "right" one. Furthermore, the distance you are likely to be off
+the mark is less if you select the mean of the observations. An example might
+be a series of witnesses giving the police their guesses about the height of a
+man who overturned an outhouse. The mean probably is the best estimate to give
+to police officers as a description of the perpetrator (though it would be
+helpful to give the range of the observations as well).
 
-We use the mean so often, in so many different circumstances, that we
-become used to it and never think about its nature. So let's do so a bit
-now.
+We use the mean so often, in so many different circumstances, that we become
+used to it and never think about its nature. So let's do so a bit now.
 
 Different statistical ideas are appropriate for business and engineering
-decisions, biometrics, econometrics, scientific explanation (the
-philosophers' case), and other fields. So nothing said here holds
-everywhere and always.
+decisions, biometrics, econometrics, scientific explanation (the philosophers'
+case), and other fields. So nothing said here holds everywhere and always.
 
-One might ask: What is the "meaning" of a mean? But that is not a
-helpful question. Rather, we should ask about the *uses* of a mean.
-Usually a mean is used to summarize a set of data. As we saw with
-marksmen C and D, it often is difficult to look at a table of data and
-obtain an overall idea of how big or how small the observations are; the
-mean (or other measurements) can help. Or if you wish to compare two
-sets of data where the distributions of observations overlap each other,
-comparing the means of the two distributions can often help you better
-understand the matter.
+One might ask: What is the "meaning" of a mean? But that is not a helpful
+question. Rather, we should ask about the *uses* of a mean. Usually a mean is
+used to summarize a set of data. As we saw with marksmen C and D, it often is
+difficult to look at a table of data and obtain an overall idea of how big or
+how small the observations are; the mean (or other measurements) can help. Or
+if you wish to compare two sets of data where the distributions of observations
+overlap each other, comparing the means of the two distributions can often help
+you better understand the matter.
 
-Another complication is the confusion between *description* and
-*estimation* , which makes it difficult to decide where to place the
-topic of descriptive statistics in a textbook. For example, compare the
-mean income of all men in the U. S., as measured by the decennial
-census. This mean of the universe can have a very different meaning from
-the mean of a sample of men with respect to the same characteristic. The
-sample mean is a point estimate, a statistical device, whereas the mean
-of the universe is a description. The use of the mean as an estimator is
-fraught with complications. Still, maybe it is no more complicated than
-deciding what describer to use for a population. This entire matter is
-much more complex than it appears at first glance.
+Another complication is the confusion between *description* and *estimation* ,
+which makes it difficult to decide where to place the topic of descriptive
+statistics in a textbook. For example, compare the mean income of all men in
+the U. S., as measured by the decennial census. This mean of the universe can
+have a very different meaning from the mean of a sample of men with respect to
+the same characteristic. The sample mean is a point estimate, a statistical
+device, whereas the mean of the universe is a description. The use of the mean
+as an estimator is fraught with complications. Still, maybe it is no more
+complicated than deciding what describer to use for a population. This entire
+matter is much more complex than it appears at first glance.
 
-When the sample size approaches in size the entire population — when the
-sample becomes closer and closer to being the *same* as the
-population — the two issues blend. What does that tell us? Anything?
-What is the relationship between a baseball player's average for two
-weeks, and his/her lifetime average? This is subtle stuff — rivaling the
-subtleness of arguments about inference versus probability, and about
-the nature of confidence limits (see @sec-confidence-accuracy and
-@sec-confidence-two-approaches ). Maybe the only solid answer is to try to stay
-super-clear on what you are doing for what purpose, and to ask continually what
-job you want the statistic (or describer) to do for you.
+When the sample size approaches in size the entire population — when the sample
+becomes closer and closer to being the *same* as the population — the two
+issues blend. What does that tell us? Anything? What is the relationship
+between a baseball player's average for two weeks, and his/her lifetime
+average? This is subtle stuff — rivaling the subtleness of arguments about
+inference versus probability, and about the nature of confidence limits (see
+@sec-confidence-accuracy and @sec-confidence-two-approaches ). Maybe the only
+solid answer is to try to stay super-clear on what you are doing for what
+purpose, and to ask continually what job you want the statistic (or describer)
+to do for you.
 
-The issue of the relationship of sample size to population size arises
-here. If the sample size equals or approaches the population size, the
-very notion of estimation loses its meaning.
+The issue of the relationship of sample size to population size arises here. If
+the sample size equals or approaches the population size, the very notion of
+estimation loses its meaning.
 
-The notion of "best estimator" makes no sense in some situations,
-including the following: a) You draw one black ball from a bucket. You
-cannot put confidence intervals around your estimate of the proportion
-of black balls, except to say that the proportion is somewhere between 1
-and 0. No one would proceed without bringing in more information. That
-is, when there is almost no information, you simply cannot make much of
-an estimate — and the resampling method breaks down, too. It does not
-help much to shift the discussion to the models of the buckets, because
-then the issue is the unknown population of the buckets, in which case we
-need to bring in our general knowledge. b) When the sample size equals
-or is close to the population size, as discussed in this section, the data are
-a description rather than an estimate, because the sample is getting to be much
-the same as the universe; that is, if there are twelve people in your family,
-and you randomly take a sample of the amount of sugar used by eight members of
-the family, the results of the sample cannot be very different than if you
-compute the amount for all twelve family members. In such a case, the
-interpretation of the mean becomes complex.
+The notion of "best estimator" makes no sense in some situations, including the
+following: a) You draw one black ball from a bucket. You cannot put confidence
+intervals around your estimate of the proportion of black balls, except to say
+that the proportion is somewhere between 1 and 0. No one would proceed without
+bringing in more information. That is, when there is almost no information, you
+simply cannot make much of an estimate — and the resampling method breaks down,
+too. It does not help much to shift the discussion to the models of the
+buckets, because then the issue is the unknown population of the buckets, in
+which case we need to bring in our general knowledge. b) When the sample size
+equals or is close to the population size, as discussed in this section, the
+data are a description rather than an estimate, because the sample is getting
+to be much the same as the universe; that is, if there are twelve people in
+your family, and you randomly take a sample of the amount of sugar used by
+eight members of the family, the results of the sample cannot be very different
+than if you compute the amount for all twelve family members. In such a case,
+the interpretation of the mean becomes complex.
 
-Underlying all estimation is the assumption of continuation, which
-follows from random sampling — that there is no reason to expect the
-next sample to be different from the present one in any *particular*
-fashion, mean or variation. But we do expect it to be different in
-*some* fashion because of sampling variability.
+Underlying all estimation is the assumption of continuation, which follows from
+random sampling — that there is no reason to expect the next sample to be
+different from the present one in any *particular* fashion, mean or variation.
+But we do expect it to be different in *some* fashion because of sampling
+variability.
 
 ## Conclusion
 
-A *Newsweek* article says, "According to a recent reader's survey in
-Bride's magazine, the average blowout \[wedding\] will set you back
-about \$16,000" (Feb 15, 1993, p. 67). That use of the mean (I assume)
-for the average, rather than the median, could cost the parents of some
-brides a pretty penny. It could be that the cost for the average
-*person* — that is, the median expenditure — might be a lot less than
-\$16,000. (A few million dollar weddings could have a huge effect on a
-survey mean.) An inappropriate standard of comparison might enter into
-some family discussions as a result of this article, and cause higher
-outlays than otherwise. This chapter helps one understand the nature of
+A *Newsweek* article says, "According to a recent reader's survey in Bride's
+magazine, the average blowout \[wedding\] will set you back about \$16,000"
+(Feb 15, 1993, p. 67). That use of the mean (I assume) for the average, rather
+than the median, could cost the parents of some brides a pretty penny. It could
+be that the cost for the average *person* — that is, the median expenditure —
+might be a lot less than \$16,000. (A few million dollar weddings could have a
+huge effect on a survey mean.) An inappropriate standard of comparison might
+enter into some family discussions as a result of this article, and cause
+higher outlays than otherwise. This chapter helps one understand the nature of
 such estimates.
