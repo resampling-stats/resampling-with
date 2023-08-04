@@ -359,6 +359,14 @@ See @tbl-pipe.
 
 See [Quarto tables](https://quarto.org/docs/authoring/tables.html)
 
+### Grid tables
+
+These are the most flexible, but are fiddly to edit because they care about
+spacing.  Use these for headers, footer, fusing cells, etc.
+
+See: [Pandoc grid tables](https://pandoc.org/MANUAL.html#other-extensions) and
+`inference_ideas.Rmd` for examples.
+
 ## Loading `.Rmd` files as Jupyter notebooks
 
 Install Jupyter:
