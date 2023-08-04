@@ -248,147 +248,130 @@ difference* refer to *groups of individuals* , and in such a situation it does
 make sense to ask whether or not two groups are observably different from each
 other.
 
-**Example 23-1: Is Athletic Ability Directly Related to Intelligence?**
-(Is There Correlation Between Two Variables or Are They Independent?)
-(Program "Ability1")
+### Example: Is Athletic Ability Directly Related to Intelligence?
 
-A scientist often wants to know whether or not two characteristics go
-together, that is, whether or not they are correlated (that is, related
-or associated). For example, do youths with high athletic ability tend
-to also have high I.Q.s?
+::: {.notebook name="athlete_iq" title="Athletic ability and IQ"}
 
-Hypothetical physical-education scores of a group of ten high-school
-boys are shown in Table 23-1, ordered from high to low, along with the
-I.Q. score for each boy. The ranks for each student's athletic and I.Q.
-scores are then shown in columns 3 and 4.
+Question: **is There Correlation Between Two Variables or Are They
+Independent?**
 
-Table 23-1
+A scientist often wants to know whether or not two characteristics go together,
+that is, whether or not they are correlated (that is, related or associated).
+For example, do youths with high athletic ability tend to also have high I.Q.s?
 
-**Hypothetical Athletic and I.Q. Scores for High School Boys**
+Hypothetical physical-education scores of a group of ten high-school boys are
+shown in @tbl-physical-mental, ordered from high to low, along with the I.Q.
+score for each boy. The ranks for each student's athletic and I.Q. scores are
+then shown in the third and fourth columns:
 
-  -------------------- ---------------- ------------------- --------------
-  **Athletic Score**   **I.Q. Score**   **Athletic Rank**   **I.Q.Rank**
-  **(1)**              **(2)**          **(3)**             **(4)**
-  97                   114              1                   3
-  94                   120              2                   1
-  93                   107              3                   7
-  90                   113              4                   4
-  87                   118              5                   2
-  86                   101              6                   8
-  86                   109              7                   6
-  85                   110              8                   5
-  81                   100              9                   9
-  76                   99               10                  10
-  -------------------- ---------------- ------------------- --------------
+|  Athletic Score    | I.Q. Score     | Athletic Rank     | I.Q.Rank     |
+|--------------------|----------------|-------------------|--------------|
+| 97                 | 114            | 1                 | 3            |
+| 94                 | 120            | 2                 | 1            |
+| 93                 | 107            | 3                 | 7            |
+| 90                 | 113            | 4                 | 4            |
+| 87                 | 118            | 5                 | 2            |
+| 86                 | 101            | 6                 | 8            |
+| 86                 | 109            | 7                 | 6            |
+| 85                 | 110            | 8                 | 5            |
+| 81                 | 100            | 9                 | 9            |
+| 76                 | 99             | 10                | 10           |
 
-We want to know whether a high score on athletic ability tends to be
-found along with a high I.Q. score more often than would be expected by
-chance. Therefore, our strategy is to see how often high scores on
-*both* variables are found by chance. We do this by disassociating the
-two variables and making two separate and independent universes, one
-composed of the athletic scores and another of the I.Q. scores. Then we
-draw pairs of observations from the two universes at random, and compare
-the experimental patterns that occur by chance to what actually is
-observed to occur in the world.
+: Hypothetical athletic and i.q. scores for high school boys {#tbl-physical-mental}
 
-The first testing scheme we shall use is similar to our first approach
-to the pig rations — splitting the results into just "highs" and "lows."
-We take ten cards, one of each denomination from "ace" to "10," shuffle,
-and deal five cards to correspond to the first five athletic ranks. The
-face values then correspond to the
+We want to know whether a high score on athletic ability tends to be found
+along with a high I.Q. score more often than would be expected by chance.
+Therefore, our strategy is to see how often high scores on *both* variables are
+found by chance. We do this by disassociating the two variables and making two
+separate and independent universes, one composed of the athletic scores and
+another of the I.Q. scores. Then we draw pairs of observations from the two
+universes at random, and compare the experimental patterns that occur by chance
+to what actually is observed to occur in the world.
 
-I.Q. ranks. Under the benchmark hypothesis the athletic ranks will not
-be associated with the I.Q. ranks. Add the face values in the first five
-cards in each trial; the first hand includes 2, 4, 5, 6, and 9, so the
-sum is 26. Record, shuffle, and repeat perhaps ten times. Then compare
-the random results to the sum of the observed ranks of the five top
-athletes, which equals 17.
+The first testing scheme we shall use is similar to our first approach to the
+pig rations — splitting the results into just "highs" and "lows." We take ten
+cards, one of each denomination from "ace" to "10," shuffle, and deal five
+cards to correspond to the first five athletic ranks. The face values then
+correspond to the I.Q. ranks. Under the benchmark hypothesis the athletic ranks
+will not be associated with the I.Q. ranks. Add the face values in the first
+five cards in each trial; the first hand includes 2, 4, 5, 6, and 9, so the sum
+is 26. Record, shuffle, and repeat perhaps ten times. Then compare the random
+results to the sum of the observed ranks of the five top athletes, which equals
+17.
 
-The following steps describe a slightly different procedure than that
-just described, because this one may be easier to understand:
+The following steps describe a slightly different procedure than that just
+described, because this one may be easier to understand:
 
-**Step 1.** Convert the athletic and I.Q. scores to ranks. Then
-constitute a universe of spades, "ace" to "10," to correspond to the
-athletic ranks, and a universe of hearts, "ace" to "10," to correspond
-to the IQ ranks.
+* **Step 1.** Convert the athletic and I.Q. scores to ranks. Then constitute a
+  universe of spades, "ace" to "10," to correspond to the athletic ranks, and a
+  universe of hearts, "ace" to "10," to correspond to the IQ ranks.
+* **Step 2.** Deal out the well-shuffled cards into pairs, each pair with an
+  athletic score and an I.Q. score.
+* **Step 3.** Locate the cards with the top five athletic ranks, and add the
+  I.Q. rank scores on their paired cards. Compare this sum to the observed sum
+  of 17. If 17 or less, indicate "yes," otherwise "no." (Why do we use "17 or
+  less" rather than "less than 17"? Because we are asking the probability of a
+  score *this low or lower* .)
+* **Step 4.** Repeat steps 2 and 3 ten times.
+* **Step 5.** Calculate the proportion "yes." This estimates the probability
+  sought.
 
-**Step 2.** Deal out the well-shuffled cards into pairs, each pair with
-an athletic score and an I.Q. score.
-
-**Step 3.** Locate the cards with the top five athletic ranks, and add
-the I.Q. rank scores on their paired cards. Compare this sum to the
-observed sum of 17. If 17 or less, indicate "yes," otherwise "no." (Why
-do we use "17 or less" rather than "less than 17"? Because we are asking
-the probability of a score *this low or lower* .)
-
-**Step 4.** Repeat steps 2 and 3 ten times.
-
-**Step 5.** Calculate the proportion "yes." This estimates the
-probability sought.
-
-In Table 23-2 we see that the observed sum (17) is lower than the sum of
-the top 5 ranks in all but one (shown by an asterisk) of the ten random
-trials (trial 5), which suggests that there is a good chance (9 in 10)
-that the five best athletes will not have I.Q. scores that high by
-chance. But it might be well to deal some more to get a more reliable
-average. We add thirty hands, and thirty-nine of the total forty hands
-exceed the observed rank value, so the probability that the observed
-correlation of athletic and I.Q. scores would occur by chance is about
-
-.025. In other words, if there is no real association between the
-variables, the probability that the top 5 ranks would sum to a number
-this low or lower is only 1 in 40, and it therefore seems reasonable to
+In @tbl-ability-trials we see that the observed sum (17) is lower than the sum
+of the top 5 ranks in all but one (shown in bold) of the ten random
+trials (trial 5), which suggests that there is a good chance (9 in 10) that the
+five best athletes will not have I.Q. scores that high by chance. But it might
+be well to deal some more to get a more reliable average. We add thirty hands,
+and thirty-nine of the total forty hands exceed the observed rank value, so the
+probability that the observed correlation of athletic and I.Q. scores would
+occur by chance is about .025. In other words, if there is no real association
+between the variables, the probability that the top 5 ranks would sum to a
+number this low or lower is only 1 in 40, and it therefore seems reasonable to
 believe that high athletic ability tends to accompany a high I.Q.
 
-Table 23-2
+| Trial     |  Sum of IQ Ranks    | <= observed (17) |
+|-----------|---------------------|------------------|
+| 1         | 26                  | No
+| 2         | 23                  | No
+| 3         | 22                  | No
+| 4         | 37                  | No
+| **5**     | **16**              | **Yes**
+| 6         | 22                  | No
+| 7         | 22                  | No
+| 8         | 28                  | No
+| 9         | 38                  | No
+| 10        | 22                  | No
+| 11        | 35                  | No
+| 12        | 36                  | No
+| 13        | 31                  | No
+| 14        | 29                  | No
+| 15        | 32                  | No
+| 16        | 25                  | No
+| 17        | 25                  | No
+| 18        | 29                  | No
+| 19        | 25                  | No
+| 20        | 22                  | No
+| 21        | 30                  | No
+| 22        | 31                  | No
+| 23        | 35                  | No
+| 24        | 25                  | No
+| 25        | 33                  | No
+| 26        | 30                  | No
+| 27        | 24                  | No
+| 28        | 29                  | No
+| 29        | 30                  | No
+| 30        | 31                  | No
+| 31        | 30                  | No
+| 32        | 21                  | No
+| 33        | 25                  | No
+| 34        | 19                  | No
+| 35        | 29                  | No
+| 36        | 23                  | No
+| 37        | 23                  | No
+| 38        | 34                  | No
+| 39        | 23                  | No
+| 40        | 26                  | No
 
-**Results of 40 Random Trials of The Problem "Ability"**
-
-(Note: Observed sum of IQ ranks: 17)
-
-  ----------- --------------------- ---------------
-  **Trial**   **Sum of IQ Ranks**   **Yes or No**
-  1           26                    No
-  2           23                    No
-  3           22                    No
-  4           37                    No
-  \* 5        16                    Yes
-  6           22                    No
-  7           22                    No
-  8           28                    No
-  9           38                    No
-  10          22                    No
-  11          35                    No
-  12          36                    No
-  13          31                    No
-  14          29                    No
-  15          32                    No
-  16          25                    No
-  17          25                    No
-  18          29                    No
-  19          25                    No
-  20          22                    No
-  21          30                    No
-  22          31                    No
-  23          35                    No
-  24          25                    No
-  25          33                    No
-  26          30                    No
-  27          24                    No
-  28          29                    No
-  29          30                    No
-  30          31                    No
-  31          30                    No
-  32          21                    No
-  33          25                    No
-  34          19                    No
-  35          29                    No
-  36          23                    No
-  37          23                    No
-  38          34                    No
-  39          23                    No
-  40          26                    No
-  ----------- --------------------- ---------------
+: 40 random trials of the problem athletic / IQ problem {#tbl-ability-trials}
 
 The RESAMPLING STATS program "Ability1" creates an array containing the
 I.Q. rankings of the top 5 students in athletics. The SUM of these I.Q.
@@ -1440,13 +1423,13 @@ The players did all kinds of fancy calculating, using a wild variety of
 assumptions — although there was no possible way that the figuring could
 help them.
 
-When I stopped the game before completing the 10 buy-andsell sessions
-they expected, subjects would ask that the game go on. Then I would tell
-them that there was no basis to believe that there were patterns in the
-data, because the "prices" were just randomly-generated numbers. Winning
-or losing therefore did not depend upon the subjects' skill.
-Nevertheless, they demanded that the game not stop until the 10 "weeks"
-had been played, so they could find out whether they "won" or "lost."
+When I stopped the game before completing the 10 buy-and-sell sessions they
+expected, subjects would ask that the game go on. Then I would tell them that
+there was no basis to believe that there were patterns in the data, because the
+"prices" were just randomly-generated numbers. Winning or losing therefore did
+not depend upon the subjects' skill. Nevertheless, they demanded that the game
+not stop until the 10 "weeks" had been played, so they could find out whether
+they "won" or "lost."
 
 This study of batting illustrates how one can test for independence
 among various trials. The trials are independent if each observation is
