@@ -46,30 +46,28 @@ ported the code.
 ## Preview
 
 The correlation (speaking in a loose way for now) between two variables
-measures the strength of the relationship between them. A positive
-"linear" correlation between two variables x and y implies that high
-values of x are associated with high values of y, and that low values of
-x are associated with low values of y. A negative correlation implies
-the opposite; high values of x are associated with *low* values of y. By
-definition a "correlation coefficient" close to zero indicates little or
-no linear relationship between two variables; correlation coefficients
-close to 1 and -1 denote a strong positive or negative relationship. We
-will generally use a simpler measure of correlation than the correlation
-coefficient, however.
+measures the strength of the relationship between them. A positive "linear"
+correlation between two variables x and y implies that high values of x are
+associated with high values of y, and that low values of x are associated with
+low values of y. A negative correlation implies the opposite; high values of x
+are associated with *low* values of y. By definition a "correlation
+coefficient" close to zero indicates little or no linear relationship between
+two variables; correlation coefficients close to 1 and -1 denote a strong
+positive or negative relationship. We will generally use a simpler measure of
+correlation than the correlation coefficient, however.
 
-One way to measure correlation with the resampling method is to rank
-both variables from highest to lowest, and investigate how often in
-randomly-generated samples the rankings of the two variables are as
-close to each other as the rankings in the observed variables. A better
-approach, because it uses more of the quantitative information contained
-in the data though it requires more computation, is to multiply the
-values for the corresponding pairs of values for the two variables, and
-compare the sum of the resulting products to the analogous sum for
-randomly-generated pairs of the observed variable values. The last
-section of the chapter shows how the strength of a relationship can be
-determined when the data are counted, rather than measured. First comes
-some discussion of the philosophical issues involved in correlation and
-causation.
+One way to measure correlation with the resampling method is to rank both
+variables from highest to lowest, and investigate how often in
+randomly-generated samples the rankings of the two variables are as close to
+each other as the rankings in the observed variables. A better approach,
+because it uses more of the quantitative information contained in the data
+though it requires more computation, is to multiply the values for the
+corresponding pairs of values for the two variables, and compare the sum of the
+resulting products to the analogous sum for randomly-generated pairs of the
+observed variable values. The last section of the chapter shows how the
+strength of a relationship can be determined when the data are counted, rather
+than measured. First comes some discussion of the philosophical issues involved
+in correlation and causation.
 
 ## Introduction to correlation and causation
 
@@ -83,33 +81,31 @@ is the name we give to the variable(s) the researcher believes is (are)
 responsible for changes in the other variable, which we call the "dependent" or
 "response" variable.)
 
-A causal relationship cannot be defined perfectly neatly. Even an
-experiment does not determine perfectly whether a relationship deserves
-to be called "causal" because, among other reasons, the independent
-variable may not be clear-cut. For example, even if cigarette smoking
-experimentally produces cancer in rats, it might be the paper and not
-the tobacco that causes the cancer. Or consider the fabled gentlemen who
-got experimentally drunk on bourbon and soda on Monday night, scotch and
-soda on Tuesday night, and brandy and soda on Wednesday night — and
-stayed sober Thursday night by drinking nothing. With a vast inductive
-leap of scientific imagination, they treated their experience as an
-empirical demonstration that soda, the common element each evening, was
-the cause of the inebriated state they had experienced. Notice that
-their deduction was perfectly sound, given only the recent evidence they
-had. Other knowledge of the world is necessary to set them straight.
-That is, even in a controlled experiment there is often no way except
-subject-matter knowledge to avoid erroneous conclusions about causality.
-Nothing except substantive knowledge or scientific intuition would have
-led them to the recognition that it is the alcohol rather than the soda
-that made them drunk, *as long as they always took soda with their
-drinks* . And no statistical procedure can suggest to them that they
-ought to experiment with the presence and absence of soda. If this is
-true for an experiment, it must also be true for an uncontrolled study.
+A causal relationship cannot be defined perfectly neatly. Even an experiment
+does not determine perfectly whether a relationship deserves to be called
+"causal" because, among other reasons, the independent variable may not be
+clear-cut. For example, even if cigarette smoking experimentally produces
+cancer in rats, it might be the paper and not the tobacco that causes the
+cancer. Or consider the fabled gentlemen who got experimentally drunk on
+bourbon and soda on Monday night, scotch and soda on Tuesday night, and brandy
+and soda on Wednesday night — and stayed sober Thursday night by drinking
+nothing. With a vast inductive leap of scientific imagination, they treated
+their experience as an empirical demonstration that soda, the common element
+each evening, was the cause of the inebriated state they had experienced.
+Notice that their deduction was perfectly sound, given only the recent evidence
+they had. Other knowledge of the world is necessary to set them straight. That
+is, even in a controlled experiment there is often no way except subject-matter
+knowledge to avoid erroneous conclusions about causality. Nothing except
+substantive knowledge or scientific intuition would have led them to the
+recognition that it is the alcohol rather than the soda that made them drunk,
+*as long as they always took soda with their drinks* . And no statistical
+procedure can suggest to them that they ought to experiment with the presence
+and absence of soda. If this is true for an experiment, it must also be true
+for an uncontrolled study.
 
-Here are some tests that a relationship usually must pass to be called
-causal. That is, a working definition of a particular causal
-relationship is expressed in a statement that has these important
-characteristics:
+Here are some tests that a relationship usually must pass to be called causal.
+That is, a working definition of a particular causal relationship is expressed
+in a statement that has these important characteristics:
 
 1.  It is an association that is strong enough so that the observer
     believes it to have a predictive (explanatory) power great enough to
@@ -126,7 +122,6 @@ characteristics:
     judgment. This is an indication that whether or not a relationship
     is dubbed "causal" involves a good deal of human judgment and is
     subject to dispute.
-
 2.  The "side conditions" must be sufficiently *few* and sufficiently
     observable so that the relationship will apply under a wide enough
     range of conditions to be considered useful or interesting. In other
@@ -140,7 +135,6 @@ characteristics:
     extremely high once the specified conditions had been met. A similar
     example can be made of the relationship between income and
     happiness.
-
 3.  For a relationship to be called "causal," there should be sound
     reason to believe that, even if the control variable were not the
     "real" cause (and it never is), other relevant "hidden" and "real"
@@ -174,7 +168,6 @@ characteristics:
     one; there is no way that one can express in symbolic logic the fact
     that many other variables have been tried without changing the
     relationship in question.
-
 4.  The more tightly a relationship is bound into (that is, deduced
     from, compatible with, and logically connected to) a general
     framework of theory, the stronger is its claim to be called
@@ -194,71 +187,66 @@ characteristics:
     variety of tests, been shown to have predictive power, a statement
     connected with it is cloaked in this mantle.
 
-The social sciences other than economics do not have such well-developed
-bodies of deductive theory, and therefore this criterion of causality
-does not weigh as heavily in sociology, for instance, as in economics.
-Rather, the other social sciences seem to substitute a weaker and more
-general criterion, that is, whether or not the statement of the
-relationship is accompanied by other statements that seem to "explain"
-the "mechanism" by which the relationship operates. Consider, for
-example, the relationship between the phases of the moon and the suicide
-rate. The reason that sociologists do not call it causal is that there
-are no auxiliary propositions that explain the relationship and describe
-an operative mechanism. On the other hand, the relationship between
-broken homes and juvenile delinquency is often referred to as "causal,"
-in large part because a large body of psychoanalytic theory serves to
-explain why a child raised without one or the other parent, or in the
-presence of parental strife, should not adjust readily.
+The social sciences other than economics do not have such well-developed bodies
+of deductive theory, and therefore this criterion of causality does not weigh
+as heavily in sociology, for instance, as in economics. Rather, the other
+social sciences seem to substitute a weaker and more general criterion, that
+is, whether or not the statement of the relationship is accompanied by other
+statements that seem to "explain" the "mechanism" by which the relationship
+operates. Consider, for example, the relationship between the phases of the
+moon and the suicide rate. The reason that sociologists do not call it causal
+is that there are no auxiliary propositions that explain the relationship and
+describe an operative mechanism. On the other hand, the relationship between
+broken homes and juvenile delinquency is often referred to as "causal," in
+large part because a large body of psychoanalytic theory serves to explain why
+a child raised without one or the other parent, or in the presence of parental
+strife, should not adjust readily.
 
-Furthermore, one can never decide with perfect certainty whether in any
-*given* situation one variable "causes" a particular change in another
-variable. At best, given your particular purposes in investigating a
-phenomena, you may be safe in judging that very likely there is causal
-influence.
+Furthermore, one can never decide with perfect certainty whether in any *given*
+situation one variable "causes" a particular change in another variable. At
+best, given your particular purposes in investigating a phenomena, you may be
+safe in judging that very likely there is causal influence.
 
-In brief, it is correct to say (as it is so often said) that correlation
-does not prove causation — if we add the word "completely" to make it
-"correlation does not *completely* prove causation." On the other hand,
-causation can *never* be "proven" *completely* by correlation *or any
-other* tool or set of tools, including experimentation. The best we can
-do is make informed judgments about whether to call a relationship
-causal.
+In brief, it is correct to say (as it is so often said) that correlation does
+not prove causation — if we add the word "completely" to make it "correlation
+does not *completely* prove causation." On the other hand, causation can
+*never* be "proven" *completely* by correlation *or any other* tool or set of
+tools, including experimentation. The best we can do is make informed judgments
+about whether to call a relationship causal.
 
-It is clear, however, that in any situation where we are interested in
-the possibility of causation, we must *at least* know whether there is a
-relationship (correlation) between the variables of interest; the
-existence of a relationship is necessary for a relationship to be judged
-causal even if it is not sufficient to receive the causal label. And in
-other situations where we are not even interested in causality, but
-rather simply want to predict events or understand the structure of a
-system, we may be interested in the existence of relationships quite
-apart from questions about causations. Therefore our next set of
-problems deals with the probability of there being a relationship
-between two measured variables, variables that can take on any values
-(say, the values on a test of athletic scores) rather than just two
-values (say, whether or not there has been irradiation.)[^see-simon]
+It is clear, however, that in any situation where we are interested in the
+possibility of causation, we must *at least* know whether there is a
+relationship (correlation) between the variables of interest; the existence of
+a relationship is necessary for a relationship to be judged causal even if it
+is not sufficient to receive the causal label. And in other situations where we
+are not even interested in causality, but rather simply want to predict events
+or understand the structure of a system, we may be interested in the existence
+of relationships quite apart from questions about causations. Therefore our
+next set of problems deals with the probability of there being a relationship
+between two measured variables, variables that can take on any values (say, the
+values on a test of athletic scores) rather than just two values (say, whether
+or not there has been irradiation.)[^see-simon]
 
 [^see-simon]: For a much fuller discussion on causality and causation, see
    Simon and Burstein [-@simon1985basic].
 
-Another way to think about such problems is to ask whether two variables
-are *independent* of each other — that is, whether you know anything
-about the value of one variable if you know the value of the other in a
-particular case — or whether they are not independent but rather are
-related.
+Another way to think about such problems is to ask whether two variables are
+*independent* of each other — that is, whether you know anything about the
+value of one variable if you know the value of the other in a particular case —
+or whether they are not independent but rather are related.
 
 ## A Note on Association Compared to Testing a Hypothesis
 
-Problems in which we investigate a) whether there is an *association* ,
-versus b) whether there is a *difference* between just two groups, often
-look very similar, especially when the data constitute a 2-by-2 table.
-There is this important difference between the two types of analysis,
-however: Questions about *association* refer to *variables* — say
-weight and age — and it never makes sense to ask whether there is a
-difference between variables (except when asking whether they measure
-the same quantity). Questions about *similarity or difference* refer to
-*groups of individuals* , and in such a situation it does make sense to
-ask whether or not two groups are observably different from each other.
+Problems in which we investigate a) whether there is an *association* , versus
+b) whether there is a *difference* between just two groups, often look very
+similar, especially when the data constitute a 2-by-2 table. There is this
+important difference between the two types of analysis, however: Questions
+about *association* refer to *variables* — say weight and age — and it never
+makes sense to ask whether there is a difference between variables (except when
+asking whether they measure the same quantity). Questions about *similarity or
+difference* refer to *groups of individuals* , and in such a situation it does
+make sense to ask whether or not two groups are observably different from each
+other.
 
 **Example 23-1: Is Athletic Ability Directly Related to Intelligence?**
 (Is There Correlation Between Two Variables or Are They Independent?)
@@ -1470,7 +1458,7 @@ memory."
 The year-to-year level of Lake Michigan is an example in which
 observations are *not* independent. If Lake Michigan is very high in one
 year, it is likely to be higher than average the following year because
-some of the high level carries over from one year into the next.[^example]
+some of the high level carries over from one year into the next.[^wallis-example]
 We could test this hypothesis by writing down whether the level in each
 year from, say, 1860 to 1975 was higher or lower than the median level
 for those years. We would then count the number of runs of "higher" and
@@ -1484,10 +1472,10 @@ to this question is not so obvious. One could compare the numbers of
 runs of ups and downs against an average hand of cards, just as with the
 hits and outs in baseball.)
 
-[^example]: Example from [@wallis1956statistics, pages 565 -- 556].
+[^wallis-example]: Example from [@wallis1956statistics, pages 565 -- 556].
 
-Exercise for students: How could one check whether the successive
-numbers in a random-number table are independent?
+Exercise for students: How could one check whether the successive numbers in a
+random-number table are independent?
 
 ## Exercises
 
