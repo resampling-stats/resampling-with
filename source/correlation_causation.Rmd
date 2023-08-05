@@ -245,7 +245,7 @@ difference* refer to *groups of individuals* , and in such a situation it does
 make sense to ask whether or not two groups are observably different from each
 other.
 
-### Example: Is Athletic Ability Directly Related to Intelligence?
+### Example: Is Athletic Ability Directly Related to Intelligence? {#sec-athletic-iq-ranks}
 
 Question: **Is there correlation between two variables or are they
 independent?**
@@ -310,6 +310,25 @@ described, because this one may be easier to understand:
 * **Step 4.** Repeat steps 2 and 3 ten times.
 * **Step 5.** Calculate the proportion "yes." This estimates the probability
   sought.
+
+:::{.callout-note}
+## Sum of the top ranks and the difference in sums
+
+Notice that we could also find the sum of the IQ ranks for the *top* five
+athletes, as above, and then *subtract* the sum of the *bottom* five.  The
+result will be negative if the athletes have lower-numbered (higher) IQ ranks
+on average, and positive otherwise. But gives us no more information than the
+sum of the top five.  The sum of all the ranks ($1 + 2 + ... + 10$) is $55$.
+Say we find the sum of the top five ranks is 18, then the sum of the bottom
+five ranks must be $55 - 18 = 37$, and the subtraction of the two is $18
+- (55 - 18) = 18 * 2 - 55 = -19$.  In general, for any sum of the top five
+ranks $T$, the sum of the bottom five ranks $B$ is $55 - T$, and the difference
+is $T - B = T - (55 - T) = T * 2 - 55$. So, if the top-five sum $T$ is smaller,
+the difference between $T - B$ will also be more negative. Put another way, if
+we know the sum of the top five ranks $T$ is 18, we also know the difference is
+$2 * 18 = 55 = -19$, when $T = 19$, the difference $T - B$ is $2 * 19 - 15 =
+-17$, when $T = 20$,  $T - B = -15$ and so on.
+:::
 
 In @tbl-ability-trials we see that the observed sum (17) is lower than the sum
 of the top 5 ranks in all but one (shown in bold) of the ten random
@@ -523,16 +542,74 @@ the probability that an association as strong as that observed might occur by
 chance even if there is no association. Table 23-3 shows a proportion of five
 trials out of twenty.
 
-In the RESAMPLING STATS program "Ability2" we first note that the top 5
-athletes had 4 of the top 5 I.Q. scores. So we constitute the set of 10
-IQ rankings (vector A). We then SHUFFLE A and TAKE 5 I.Q. rankings (out
-of 10). We COUNT how many are in the top 5, and keep SCORE of the
-result. After REPEATing 1000 times, we find out how often we select 4 of
-the top 5.
+In the {{< var lang >}} program below, we first note that the top 5 athletes
+had 4 of the top 5 I.Q. scores. So we constitute the set of 10 IQ rankings
+{{< var array >}} `a`. We then SHUFFLE A and TAKE 5 I.Q. rankings (out of 10).
+We COUNT how many are in the top 5, and keep SCORE of the result. After REPEATing 1000
+times, we find out how often we select 4 of the top 5.
 
-Table 23-3
+```{python opts.label="py_ed"}
+# Number of repeats.
+N = 10000
+# The IQ ranks, ready for shuffling.
+iq_ranks = np.arange(1, 11)  # 1 through 10.
+# Scorekeeping array.
+z = np.zeros(N)
 
-**Results of 20 Random Trials of the Problem "ABILITY2"**
+for i in range(N):
+    # Shuffle the ranks.
+    shuffled = rnd.permuted(iq_ranks)
+    # Take the first 5 ranks.
+    top_5 = shuffled[:5]
+    # Everything up until this point is the same as the code above.
+    # Here is the difference.
+    # Check whether the selected IQ ranks are in the top 5.
+    are_top = top_5 <= 5
+    # Count how many were in the top 5
+    n_are_top = np.sum(are_top)
+    # Keep track of the result of each trial.
+    z[i] = n_are_top
+    # End the experiment, go back and repeat.
+
+# Determine how many trials produced 4 or more top ranks by chance.
+k = np.sum(z >= 4)
+#  Convert to a proportion.
+kk = k / N
+# Show the result.
+kk
+```
+
+```{r opts.label="py_ed"}
+# Number of repeats.
+N <- 10000
+# The IQ ranks, ready for shuffling.
+iq_ranks <- 1:10  # 1 through 10.
+# Scorekeeping array.
+z <- numeric(N)
+
+for (i in 1:N) {
+    # Shuffle the ranks.
+    shuffled <- sample(iq_ranks)
+    # Take the first 5 ranks.
+    top_5 <- shuffled[1:5]
+    # Everything up until this point is the same as the code above.
+    # Here is the difference.
+    # Check whether the selected IQ ranks are in the top 5.
+    are_top <- top_5 <= 5
+    # Count how many were in the top 5
+    n_are_top <- sum(are_top)
+    # Keep track of the result of each trial.
+    z[i] <- n_are_top
+    # End the experiment, go back and repeat.
+}
+
+# Determine how many trials produced 4 or more top ranks by chance.
+k = sum(z >= 4)
+#  Convert to a proportion.
+kk = k / N
+# Show the result.
+kk
+```
 
 Observed Score: 4
 
@@ -560,58 +637,26 @@ Observed Score: 4
   20          4           Yes
   ----------- ----------- ---------------
 
+: Results of 20 random trials of the top-5 rank counts {#tbl-top-rank-counts}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
 
-```matlab
-' Program file: "ability2.rss"
+So far we have proceeded on the theory that if there is *any* relationship
+between athletics and I.Q., then the better athletes have higher rather than
+lower I.Q. scores. The justification for this assumption is that past research
+suggests that it is probably true. But if we had *not* had the benefit of that
+past research, we would then have had to proceed somewhat differently; we would
+have had to consider the possibility that the top five athletes could have I.Q.
+scores either higher *or* lower than those of the other students. The results
+of the "two-tail" test would have yielded odds weaker than those we observed.
 
-REPEAT 1000
-    ' Do 1000 experiments.
-    NUMBERS 1,10 a
-    ' Constitute the set of I.Q. ranks.
-    SHUFFLE a b
-    ' Shuffle them.
-    TAKE b 1,5 c
-    ' Take the first 5 ranks.
-    COUNT c between 1 5 d
-    ' Of those 5, count how many are among the top half of the ranks (1-5).
-    SCORE d z
-    ' Keep track of that result in z
-END
-' End one experiment, go back and repeat until all 1000 are complete.
-COUNT z >= 4 k
-' Determine how many trials produced 4 or more top ranks by chance.
-DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Print the result.
+### Example: Athletic ability and I.Q. a third way
 
-' Note: The file "ability2" on the Resampling Stats software disk contains
-' this set of commands.
-```
-
-So far we have proceeded on the theory that if there is *any*
-relationship between athletics and I.Q., then the better athletes have
-higher rather than lower I.Q. scores. The justification for this
-assumption is that past research suggests that it is probably true. But
-if we had *not* had the benefit of that past research, we would then
-have had to proceed somewhat differently; we would have had to consider
-the possibility that the top five athletes could have I.Q. scores either
-higher *or* lower than those of the other students. The results of the
-"two-tail" test would have yielded odds weaker than those we observed.
-
-**Example 23-2: Athletic Ability and I.Q. a Third Way.**
-
-(Program "Ability3").
-
-Example 23-1 investigated the relationship between I.Q. and athletic
-score by ranking the two sets of scores. But ranking of scores loses
-some efficiency because it uses only an "ordinal" (rank-ordered) rather
-than a "cardinal" (measured) scale; the numerical shadings and relative
-relationships are lost when we convert to ranks. Therefore let us
-consider a test of correlation that uses the original cardinal numerical
-scores.
+The example in @sec-althletic-iq-ranks investigated the relationship between
+I.Q. and athletic score by ranking the two sets of scores. But ranking of
+scores loses some efficiency because it uses only an "ordinal" (rank-ordered)
+rather than a "cardinal" (measured) scale; the numerical shadings and relative
+relationships are lost when we convert to ranks. Therefore let us consider a
+test of correlation that uses the original cardinal numerical scores.
 
 First a little background: @fig-hypot_iq_athletic_1 and
 @fig-hypot_iq_athletic_2 show two hypothetical cases of very high association
@@ -626,11 +671,9 @@ an unfortunate deficiency of such diagrams that *some* variable must
 arbitrarily be placed on the x-axis, whether you intend to suggest causation or
 not.)
 
-
 ```{r fig-hypot_iq_athletic_1, opts.label="svg_fig", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 1"}
 include_svg('diagrams/hypot_iq_athletic_1.svg')
 ```
-
 
 ```{r fig-hypot_iq_athletic_2, opts.label="svg_fig", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 2"}
 include_svg('diagrams/hypot_iq_athletic_2.svg')
@@ -648,10 +691,9 @@ include_svg('diagrams/given_iq_athletic.svg')
 
 ## Correlation: sum of products
 
-Now let us take advantage of a handy property of numbers. The more
-closely two sets of numbers match each other in order, the higher the
-sums of their products. Consider the following arrays of the numbers 1,
-2, and 3:
+Now let us take advantage of a handy property of numbers. The more closely two
+sets of numbers match each other in order, the higher the sums of their
+products. Consider the following arrays of the numbers 1, 2, and 3:
 
 1 x 1 = 1
 
@@ -665,10 +707,10 @@ SUM = 14
 
 SUM = 11
 
-I will not attempt a mathematical proof, but the reader is encouraged to
-try additional combinations to be sure that the highest sum is obtained
-when the order of the two columns is the same. Likewise, the lowest sum
-is obtained when the two columns are in perfectly opposite order:
+I will not attempt a mathematical proof, but the reader is encouraged to try
+additional combinations to be sure that the highest sum is obtained when the
+order of the two columns is the same. Likewise, the lowest sum is obtained when
+the two columns are in perfectly opposite order:
 
 1 x 3 = 3
 
