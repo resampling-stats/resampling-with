@@ -1,22 +1,19 @@
- ---
+---
+resampling_with:
+    ed2_fname: 27-Chap-23
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.6
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: 27-Chap-23
 ---
 
 ```{r setup, include=FALSE}
@@ -250,10 +247,8 @@ other.
 
 ### Example: Is Athletic Ability Directly Related to Intelligence?
 
-::: {.notebook name="athlete_iq" title="Athletic ability and IQ"}
-
-Question: **is There Correlation Between Two Variables or Are They
-Independent?**
+Question: **Is there correlation between two variables or are they
+independent?**
 
 A scientist often wants to know whether or not two characteristics go together,
 that is, whether or not they are correlated (that is, related or associated).
@@ -311,7 +306,7 @@ described, because this one may be easier to understand:
   I.Q. rank scores on their paired cards. Compare this sum to the observed sum
   of 17. If 17 or less, indicate "yes," otherwise "no." (Why do we use "17 or
   less" rather than "less than 17"? Because we are asking the probability of a
-  score *this low or lower* .)
+  score *this low or lower*.)
 * **Step 4.** Repeat steps 2 and 3 ten times.
 * **Step 5.** Calculate the proportion "yes." This estimates the probability
   sought.
@@ -330,142 +325,202 @@ believe that high athletic ability tends to accompany a high I.Q.
 
 | Trial     |  Sum of IQ Ranks    | <= observed (17) |
 |-----------|---------------------|------------------|
-| 1         | 26                  | No
-| 2         | 23                  | No
-| 3         | 22                  | No
-| 4         | 37                  | No
-| **5**     | **16**              | **Yes**
-| 6         | 22                  | No
-| 7         | 22                  | No
-| 8         | 28                  | No
-| 9         | 38                  | No
-| 10        | 22                  | No
-| 11        | 35                  | No
-| 12        | 36                  | No
-| 13        | 31                  | No
-| 14        | 29                  | No
-| 15        | 32                  | No
-| 16        | 25                  | No
-| 17        | 25                  | No
-| 18        | 29                  | No
-| 19        | 25                  | No
-| 20        | 22                  | No
-| 21        | 30                  | No
-| 22        | 31                  | No
-| 23        | 35                  | No
-| 24        | 25                  | No
-| 25        | 33                  | No
-| 26        | 30                  | No
-| 27        | 24                  | No
-| 28        | 29                  | No
-| 29        | 30                  | No
-| 30        | 31                  | No
-| 31        | 30                  | No
-| 32        | 21                  | No
-| 33        | 25                  | No
-| 34        | 19                  | No
-| 35        | 29                  | No
-| 36        | 23                  | No
-| 37        | 23                  | No
-| 38        | 34                  | No
-| 39        | 23                  | No
-| 40        | 26                  | No
+| 1         | 26                  | No               |
+| 2         | 23                  | No               |
+| 3         | 22                  | No               |
+| 4         | 37                  | No               |
+| **5**     | **16**              | **Yes**          |
+| 6         | 22                  | No               |
+| 7         | 22                  | No               |
+| 8         | 28                  | No               |
+| 9         | 38                  | No               |
+| 10        | 22                  | No               |
+| 11        | 35                  | No               |
+| 12        | 36                  | No               |
+| 13        | 31                  | No               |
+| 14        | 29                  | No               |
+| 15        | 32                  | No               |
+| 16        | 25                  | No               |
+| 17        | 25                  | No               |
+| 18        | 29                  | No               |
+| 19        | 25                  | No               |
+| 20        | 22                  | No               |
+| 21        | 30                  | No               |
+| 22        | 31                  | No               |
+| 23        | 35                  | No               |
+| 24        | 25                  | No               |
+| 25        | 33                  | No               |
+| 26        | 30                  | No               |
+| 27        | 24                  | No               |
+| 28        | 29                  | No               |
+| 29        | 30                  | No               |
+| 30        | 31                  | No               |
+| 31        | 30                  | No               |
+| 32        | 21                  | No               |
+| 33        | 25                  | No               |
+| 34        | 19                  | No               |
+| 35        | 29                  | No               |
+| 36        | 23                  | No               |
+| 37        | 23                  | No               |
+| 38        | 34                  | No               |
+| 39        | 23                  | No               |
+| 40        | 26                  | No               |
 
 : 40 random trials of the problem athletic / IQ problem {#tbl-ability-trials}
 
-The RESAMPLING STATS program "Ability1" creates an array containing the
-I.Q. rankings of the top 5 students in athletics. The SUM of these I.Q.
-rankings constitutes the observed result to be tested against
-randomly-drawn samples. We observe that the actual I.Q. rankings of the
-top five athletes sums to 17. The more frequently that the sum of 5
-randomly-generated rankings (out of 10) is as low as this observed
-number, the higher is the probability that there is no relationship
-between athletic performance and I.Q. based on these data.
+In fact we can apply an even simpler procedure to get the same result, by reasoning about the individual trial.
 
-First we record the NUMBERS "1" through "10" into vector
+One trial in our procedure is:
 
-A. Then we SHUFFLE the numbers so the rankings are in a random order.
-Then TAKE the first 5 of these numbers and put them in another array, D,
-and SUM them, putting the result in E. We repeat this procedure 1000
-times, recording each result in a scorekeeping vector: Z. Graphing Z, we
-get a HIS- TOGRAM that shows us how often our randomly assigned sums are
-equal to or below 17.
+* **Step 2.** Deal out the well-shuffled cards into pairs, each pair with an
+  athletic score and an I.Q. score.
+* **Step 3.** Locate the cards with the top five athletic ranks, and add the
+  I.Q. rank scores on their paired cards. Compare this sum to the observed sum
+  of 17. If 17 or less, indicate "yes," otherwise "no." (Why do we use "17 or
+  less" rather than "less than 17"? Because we are asking the probability of a
+  score *this low or lower*.)
 
+Now consider the 5 IQ rank cards.  In the procedure above, we found these by
+*first* pairing the athletic ranks and the IQ ranks, *then* selecting the IQ
+ranks corresponding to the top 5 athletic ranks.  A little thought may persuade
+you, that by doing this, we have have a *random selection of 5 IQ ranks*.  We
+got that random selection by pairing, selecting on athletic rank — but the
+initial pairing and selection will do nothing other than giving us one
+particular set of randomly chosen 5 IQ rank cards.  So we can simplify our
+procedure even further by missing out the pairing and selecting by rank steps;
+we can just shuffle the IQ rank cards and deal out 5 to be our randomly
+selected IQ ranks.
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: {.notebook name="athlete_iq" title="Athletic ability and IQ"}
 
-```matlab
-' Program file: "correlation_causation_00.rss"
+::: nb-only
+Question: **Is there correlation between two variables or are they
+independent?**
 
-REPEAT 1000
-    ' Repeat the experiment 1000 times.
-    NUMBERS 1,10 a
-    ' Constitute the set of I.Q. ranks.
-    SHUFFLE a b
-    ' Shuffle them.
-    TAKE b 1,5 d
-    ' Take the first 5 ranks.
-    SUM d e
-    ' Sum those ranks.
-    SCORE e z
-    ' Keep track of the result of each trial.
-END
-' End the experiment, go back and repeat.
-HISTOGRAM z
-' Produce a histogram of trial results.
+We answer this by permuting the athletic ability and IQ *ranks*, pairing them,
+and seeing if the sum of the IQs ranks (randomly) paired with the top 5 athletic scores, are less than or equal to the observed value of 17.
+:::
+
+To simulate this problem in {{< var lang >}}, we first create
+{{< var an_array >}} containing the I.Q. rankings of the top 5 students in
+athletics. The `sum` of these I.Q. rankings constitutes the observed result to
+be tested against randomly-drawn samples. We observe that the actual I.Q.
+rankings of the top five athletes sums to 17. The more frequently that the sum
+of 5 randomly-generated rankings (out of 10) is as low as this observed number,
+the higher is the probability that there is no relationship between athletic
+performance and I.Q. based on these data.
+
+First we record the 1 through 10 into {{< var array >}} `iq_ranks`. Then we
+shuffle the numbers so the rankings are in a random order. Then select the first
+5 of these numbers and put them in another {{< var array >}}, `top_5`, and `sum`
+them, putting the result in `top_5_sum`. We repeat this procedure `N = 10000`
+times, recording each result in a scorekeeping vector: `z`. Graphing `z`, we get a
+histogram that shows us how often our randomly assigned sums are equal to or
+below 17.
+
+```{python opts.label="py_ed"}
+import numpy as np
+rnd = np.random.default_rng()
+import matplotlib.pyplot as plt
 ```
 
-**ABILITY1: Random Selection of 5 Out of 10 Ranks**
+```{python opts.label="py_ed"}
+# Number of repeats.
+N = 10000
+# The IQ ranks, ready for shuffling.
+iq_ranks = np.arange(1, 11)  # 1 through 10.
+# Scorekeeping array.
+z = np.zeros(N)
 
-![](images/27-Chap-23_000.png)
+for i in range(N):
+    # Shuffle the ranks.
+    shuffled = rnd.permuted(iq_ranks)
+    # Take the first 5 ranks.
+    top_5 = shuffled[:5]
+    # Sum those ranks.
+    top_5_sum = np.sum(top_5)
+    # Keep track of the result of each trial.
+    z[i] = top_5_sum
+    # End the experiment, go back and repeat.
 
-**Sum of top 5 ranks**
+# Produce a histogram of trial results.
+# Make the bins be the integers from 10 through 45.
+plt.hist(z, bins=np.arange(10, 46))
+plt.title('Sums of 5 ranks selected at random');
+```
 
-We see that in only about 2% of the trials did random selection of ranks
-produce a total of 17 or lower. RESAMPLING STATS will calculate this for
+```{r opts.label="py_ed"}
+# Number of repeats.
+N <- 10000
+# The IQ ranks, ready for shuffling.
+iq_ranks <- 1:10  # 1 through 10.
+# Scorekeeping array.
+z <- numeric(N)
+
+for (i in 1:N) {
+    # Shuffle the ranks.
+    shuffled <- sample(iq_ranks)
+    # Take the first 5 ranks.
+    top_5 <- shuffled[1:5]
+    # Sum those ranks.
+    top_5_sum <- sum(top_5)
+    # Keep track of the result of each trial.
+    z[i] <- top_5_sum
+    # End the experiment, go back and repeat.
+}
+
+# Produce a histogram of trial results.
+# Make the bins be the integers from 10 through 45.
+hist(z, breaks=10:45, main='Sums of 5 ranks selected at random')
+```
+
+```{r echo=FALSE, eval=TRUE}
+le_pct <- round(sum(get_var('z') <= 17) / get_var('N') * 100)
+```
+
+We see that in only about `r le_pct`% of the trials did random selection of
+ranks produce a total of 17 or lower. {{< var lang >}} can calculate this for
 us directly:
 
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "ability1.rss"
-
-COUNT z <= 17 k
-' Determine how many trials produced sums of ranks \<= 17 by chance.
-DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Print the results.
-
-' Note: The file "ability1" on the Resampling Stats software disk contains
-' this set of commands.
+```{python}
+# Determine how many trials produced sums of ranks <= 17 by chance.
+k = np.sum(z <= 17)
+# The proportion.
+kk = k / N
+# Show the result
+kk
 ```
 
-Why do we sum the ranks of the first *five* athletes and compare them
-with the second five athletes, rather than comparing the top three, say,
-with the bottom seven? Indeed, we could have looked at the top three,
-two, four, or even six or seven. The first reason for splitting the
-group in half is that an even split uses the available information more
-fully, and therefore we obtain greater efficiency. (I cannot prove this
-formally here, but perhaps it makes intuitive sense to you.) A second
-reason is that getting into the habit of always looking at an even split
-reduces the chances that you will pick and choose in such a manner as to
-fool yourself. For example, if the I.Q. ranks of the top five athletes
-were 3, 2, 1, 10, and 9, we would be deceiving ourselves if, after
-looking the data over, we drew the line between athletes 3 and 4. (More
-generally, choosing an appropriate measure before examining the data
-will help you avoid fooling yourself in such matters.)
+```{r}
+# Determine how many trials produced sums of ranks <= 17 by chance.
+k <- sum(z <= 17)
+# The proportion.
+kk <- k / N
+# Show the result
+kk
+```
 
-A simpler but less efficient approach to this same problem is to
-classify the top-half athletes by whether or not they were also in the
-top half of the I.Q. scores. Of the first five athletes actually
-observed, *four* were in the top five I.Q. scores. We can then shuffle
-five black and five red cards and see how often four or more (that is,
-four or five) blacks come up with the first five cards. The proportion
-of times that four or more blacks occurs in the trial is the probability
-that an association as strong as that observed might occur by chance
-even if there is no association. Table 23-3 shows a proportion of five
+Why do we sum the ranks of the first *five* athletes rather than taking the sum
+of the top three, say? Indeed, we could have looked at the top three, two,
+four, or even six or seven. The first reason for splitting the group in half is
+that an even split uses the available information more fully, and therefore we
+obtain greater efficiency. (I cannot prove this formally here, but perhaps it
+makes intuitive sense to you.) A second reason is that getting into the habit
+of always looking at an even split reduces the chances that you will pick and
+choose in such a manner as to fool yourself. For example, if the I.Q. ranks of
+the top five athletes were 3, 2, 1, 10, and 9, we would be deceiving ourselves
+if, after looking the data over, we drew the line between athletes 3 and 4.
+(More generally, choosing an appropriate measure before examining the data will
+help you avoid fooling yourself in such matters.)
+
+A simpler but less efficient approach to this same problem is to classify the
+top-half athletes by whether or not they were also in the top half of the I.Q.
+scores. Of the first five athletes actually observed, *four* were in the top
+five I.Q. scores. We can then shuffle five black and five red cards and see how
+often four or more (that is, four or five) blacks come up with the first five
+cards. The proportion of times that four or more blacks occurs in the trial is
+the probability that an association as strong as that observed might occur by
+chance even if there is no association. Table 23-3 shows a proportion of five
 trials out of twenty.
 
 In the RESAMPLING STATS program "Ability2" we first note that the top 5
@@ -572,12 +627,12 @@ arbitrarily be placed on the x-axis, whether you intend to suggest causation or
 not.)
 
 
-```{r fig-hypot_iq_athletic_1, opts.label='svg_fig', fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 1"}
+```{r fig-hypot_iq_athletic_1, opts.label="svg_fig", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 1"}
 include_svg('diagrams/hypot_iq_athletic_1.svg')
 ```
 
 
-```{r fig-hypot_iq_athletic_2, opts.label='svg_fig', fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 2"}
+```{r fig-hypot_iq_athletic_2, opts.label="svg_fig", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 2"}
 include_svg('diagrams/hypot_iq_athletic_2.svg')
 ```
 
@@ -587,7 +642,7 @@ than in @fig-hypot_iq_athletic_1. On the basis of @fig-given_iq_athletic alone,
 one can say only that there *might* be some association between the two
 variables.
 
-```{r fig-given_iq_athletic, opts.label='svg_fig', fig.cap="Given Scores for I.Q. and Athletic Ability"}
+```{r fig-given_iq_athletic, opts.label="svg_fig", fig.cap="Given Scores for I.Q. and Athletic Ability"}
 include_svg('diagrams/given_iq_athletic.svg')
 ```
 
