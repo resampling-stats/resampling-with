@@ -160,8 +160,9 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * Maybe more on Boolean arrays.
 * (a == 1) & (b == 3) (probability_theory_3 or before).
 * Python `range` cf `np.arange` (resampling_with_code)
-* Need `plt.hist`, at least by `probabality_theory_4_finite`.
-* `np.all` at least by `probabality_theory_4_finite`.
+* `np.all` (done in `probabality_theory_4_finite`).
+* Need `plt.hist`, at least by `probabality_theory_4_finite`.  We should
+  probably have a section or even a chapter on histograms.
 
 ## Data
 

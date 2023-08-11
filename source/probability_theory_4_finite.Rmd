@@ -1,22 +1,19 @@
 ---
+resampling_with:
+    ed2_fname: 12-Chap-8
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.5
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: 12-Chap-8
 ---
 
 ```{r setup, include=FALSE}
@@ -81,7 +78,7 @@ aid of a bucket with six balls.
 that order* if we choose three balls without replacement? @fig-success_case1
 diagrams the events we consider "success."
 
-```{r fig-success_case1, opts.label='svg_fig', fig.cap="The Event Classified as \"Success\" for Case 1"}
+```{r fig-success_case1, opts.label="svg_fig", fig.cap='The Event Classified as \"Success\" for Case 1'}
 include_svg('diagrams/success_case1.svg')
 ```
 
@@ -91,7 +88,7 @@ three balls without replacement. @fig-success_case2 diagrams two of the events
 we consider success. These possibilities include that which is shown in
 @fig-success_case1 above, plus other possibilities.
 
-```{r fig-success_case2, opts.label='svg_fig', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 2"}
+```{r fig-success_case2, opts.label="svg_fig", fig.cap='An Incomplete List of the Events Classified as \"Success\" for Case 2'}
 include_svg('diagrams/success_case2.svg')
 ```
 
@@ -104,14 +101,14 @@ all possibilities found in  @fig-success_case2; for example, @fig-success_case2
 includes choosing balls 2, 3 and 1 in that order, but @fig-success_case3 does
 not.
 
-```{r fig-success_case3, opts.label='svg_fig', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 3"}
+```{r fig-success_case3, opts.label="svg_fig", fig.cap='An Incomplete List of the Events Classified as \"Success\" for Case 3'}
 include_svg('diagrams/success_case3.svg')
 ```
 
 **Case 4.** What is the probability of getting two red balls and one
 black ball in any order?
 
-```{r fig-success_case4, opts.label='svg_fig', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 4"}
+```{r fig-success_case4, opts.label="svg_fig", fig.cap='An Incomplete List of the Events Classified as \"Success\" for Case 4'}
 include_svg('diagrams/success_case4.svg')
 ```
 
@@ -121,7 +118,7 @@ on the first draw *or* ball 2 on the second draw *or* ball 3 on the
 third draw? (@fig-success_case5) Or, what is the probability of getting all
 balls on the draws corresponding to their numbers?
 
-```{r fig-success_case5, opts.label='svg_fig', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 5"}
+```{r fig-success_case5, opts.label="svg_fig", fig.cap='An Incomplete List of the Events Classified as \"Success\" for Case 5'}
 include_svg('diagrams/success_case5.svg')
 ```
 
@@ -292,7 +289,7 @@ plt.title('# of girls');
 hist(trial_results, breaks=0:max(trial_results), main='# of girls')
 ```
 
-```{r, echo=FALSE, eval=TRUE}
+```{r echo=FALSE, eval=TRUE}
 trial_results <- get_var('trial_results')  # Might be Python edition.
 pct_4 <- round(sum(trial_results == 4) / length(trial_results) * 100)
 ```
@@ -495,7 +492,7 @@ for (i in 1:N) {
 hist(trial_results, breaks=0:max(trial_results), main='Points in bridge hands')
 ```
 
-```{r, echo=FALSE, eval=TRUE}
+```{r echo=FALSE, eval=TRUE}
 trial_results <- get_var('trial_results')  # Might be Python edition.
 pct_15 <- round(sum(trial_results == 15) / length(trial_results) * 100)
 ```
@@ -547,10 +544,13 @@ We record "no" even if a single one boy is chosen but he is chosen 1st, 2nd,
 * **Step 1.** Generate a class ({{< var array >}}) of length 50, consisting of
   25 strings valued "boy" and 25 strings valued "girl".
 * **Step 2.** Shuffle the class array, and select the first five
-  elements. If those are `['girl', 'girl', 'girl', 'girl', 'boy']`,
-  write "yes," otherwise "no."
-* **Step 3.** Repeat step 2, say, 10,000 times, and count the proportion of
-  "yes" results, which estimates the probability sought.
+  elements.
+* **Step 3.** If the first five elements are exactly `'girl', 'girl', 'girl',
+  'girl', 'boy'`, write "yes," otherwise "no."
+* **Step 4.** Repeat steps 2 and 3, say, 10,000 times, and count the proportion
+  of "yes" results, which estimates the probability sought.
+
+Let us start the single trial procedure like so:
 
 ```{python}
 import numpy as np
@@ -559,33 +559,155 @@ rnd = np.random.default_rng()
 ```
 
 ```{python}
+# Constitute the set of 25 girls and 25 boys.
+whole_class = np.repeat(['girl', 'boy'], [25, 25])
+
+# Shuffle the class into a random order.
+shuffled = rnd.permuted(whole_class)
+# Take the first 5 class members, call them c.
+c = shuffled[:5]
+# Show the result.
+c
+```
+
+```{r}
+# Constitute the set of 25 girls and 25 boys.
+whole_class <- rep(c('girl', 'boy'), c(25, 25))
+
+# Shuffle the class into a random order.
+shuffled <- sample(whole_class)
+# Take the first 5 class members, call them c.
+c <- shuffled[1:5]
+# Show the result.
+c
+```
+
+Our next step (step 3) is to check whether `c` is exactly equal to the result of interest.   The result of interest is:
+
+```{python}
 # The result we are looking for - four girls and then a boy.
 result_of_interest = np.repeat(['girl', 'boy'], [4, 1])
 result_of_interest
 ```
 
+```{r}
+# The result we are looking for - four girls and then a boy.
+result_of_interest <- rep(c('girl', 'boy'), c(4, 1 ))
+result_of_interest
+```
+
+We can then use {{< var an_array >}} *comparison* with `==` to do an element by element (*elementwise*) check, asking whether the corresponding elements are equal:
+
+```{python}
+# A Boolean array, with True where corresponding elements are equal, False
+# otherwise.
+are_equal = c == result_of_interest
+are_equal
+```
+
+```{r}
+# A Boolean array, with True where corresponding elements are equal, False
+# otherwise.
+are_equal <- c == result_of_interest
+are_equal
+```
+
+We are nearly finished with step 3 — it only remains to check whether *all* of
+the elements were equal, by checking whether *all* of the values in `are_equal`
+are {{< var true >}}.
+
+We know that there are 5 elements, so we could check whether there are 5 {{< var true >}} values with {{< var sum >}}:
+
+```{python}
+# Are there exactly 5 True values in `are_equal`?
+np.sum(are_equal) == 5
+```
+
+```{r}
+# Are there exactly 5 TRUE values in `are_equal`?
+sum(are_equal) == 5
+```
+
+Another way to ask the same question is by using the
+[`all`]{.r}[`np.all`]{.python} function on `are_equal`.  This returns {{< var
+true >}} if *all* the elements in `are_equal` are {{< var true >}}, and {{< var
+false >}} otherwise.
+
+:::{.callout-note}
+## Testing whether all elements of {{< var an_array >}} are the same
+
+The [`all`]{.r}[`np.all`]{.python}, applied to a Boolean {{< var array >}} (as
+here), checks whether *all* of the elements in the Boolean {{< var array >}}
+are {{< var true >}}.  If so, it returns {{< var true >}}, otherwise, it
+returns {{< var false >}}.
+
+For example:
+
+```{python}
+# All elements are True, `np.all` returns True
+np.all([True, True, True, True])
+```
+
+```{python}
+# At least one element is False, `np.all` returns False
+np.all([True, True, False, True])
+```
+
+```{r}
+# All elements are TRUE, `all` returns TRUE
+all(c(TRUE, TRUE, TRUE, TRUE))
+```
+
+```{r}
+# At least one element is FALSE, `all` returns FALSE
+all(c(TRUE, TRUE, FALSE, TRUE))
+```
+:::
+
+
+Here is the full procedure for steps 2 and 3 (a single trial):
+
+```{python}
+# Shuffle the class into a random order.
+shuffled = rnd.permuted(whole_class)
+# Take the first 5 class members, call them c.
+c = shuffled[:5]
+# For each element, test whether the result is the result of interest.
+are_equal = c == result_of_interest
+# Check whether we have the result we are looking for.
+is_four_girls_then_one_boy = np.all(are_equal)
+```
+
+```{r}
+# Shuffle the class into a random order.
+shuffled <- sample(whole_class)
+# Take the first 5 class members, call them c.
+c <- shuffled[1:5]
+# For each element, test whether the result is the result of interest.
+are_equal <- c == result_of_interest
+# Check whether we have the result we are looking for.
+is_four_girls_then_one_boy <- all(are_equal)
+```
+
+All that remains is to put the single trial procedure into a loop.
+
 ```{python}
 N = 10000
 trial_results = np.zeros(N)
 
-# Constitute the set of 25 girls and 25 boys.
-whole_class = np.repeat(['girl', 'boy'], [25, 25])
-
 # Repeat the following steps 1000 times.
 for i in range(N):
 
-    # Shuffle the numbers
+    # Shuffle the class into a random order.
     shuffled = rnd.permuted(whole_class)
     # Take the first 5 class members, call them c.
     c = shuffled[:5]
-    # Or: c = rnd.choice(whole_class, replace=False)
+    # For each element, test whether the result is the result of interest.
+    are_equal = c == result_of_interest
+    # Check whether we have the result we are looking for.
+    is_four_girls_then_one_boy = np.all(are_equal)
 
-    is_four_girls_then_one_boy = np.all(c == result_of_interest)
-    # Or:
-    # is_four_girls_then_one_boy = (
-    #   np.all(c[:4] == 'girl') and c[4] == 'boy'
-    # )
-
+    # Store the result of this trial.
     trial_results[i] = is_four_girls_then_one_boy
 
     # End the experiment, go back and repeat until all N trials are
@@ -601,33 +723,23 @@ kk = k / N
 print(kk)
 ```
 
-<!---
-Introduce `all`
--->
-
-```{r}
-# The result we are looking for - four girls and then a boy.
-result_of_interest <- rep(c('girl', 'boy'), c(4, 1 ))
-result_of_interest
-```
-
 ```{r}
 N <- 10000
 trial_results <- numeric(N)
 
-# Constitute the set of 25 girls and 25 boys.
-whole_class <- rep(c('girl', 'boy'), c(25, 25))
-
 # Repeat the following steps 1000 times.
 for (i in 1:N) {
 
-    # Shuffle the numbers
+    # Shuffle the class into a random order.
     shuffled <- sample(whole_class)
     # Take the first 5 class members, call them c.
     c <- shuffled[1:5]
+    # For each element, test whether the result is the result of interest.
+    are_equal <- c == result_of_interest
+    # Check whether we have the result we are looking for.
+    is_four_girls_then_one_boy <- all(are_equal)
 
-    is_four_girls_then_one_boy <- all(c == result_of_interest)
-
+    # Store the result of this trial.
     trial_results[i] <- is_four_girls_then_one_boy
 
     # End the experiment, go back and repeat until all N trials are
@@ -650,7 +762,7 @@ This type of problem is conventionally done with a *permutation* formula.
 
 ### Example: repeat pairings from random pairing
 
-::: {.notebook name="university_icebreaker" title="An icebreaker for two universties"}
+::: {.notebook name="university_icebreaker" title="An icebreaker for two universities"}
 
 **First put two groups of 10 people into 10 pairs.  Then re-randomize the
 pairings.  What is the chance that four or more pairs are the same in the
@@ -956,7 +1068,7 @@ where the state government owns the retail liquor stores ("Government").  See
 
 We found the average prices were:
 
-```{python, echo=FALSE, eval=TRUE}
+```{python echo=FALSE, eval=TRUE}
 import numpy as np
 import pandas as pd
 
