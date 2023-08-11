@@ -69,10 +69,8 @@ then produces (either with resampling or with Normal distribution
 theory) the distribution of sample means that would occur with repeated
 sampling from that designated universe with samples the size of the
 observed sample. One can then compute the distance between the (assumed)
-population mean and (say) the inner 45
-
-percent of sample means on each side of the actuallyobserved sample
-mean.
+population mean and (say) the inner 45 percent of sample means on each side of
+the actually observed sample mean.
 
 The crucial step is to shift vantage points. We look from the sample to
 the universe, instead of *from a hypothesized universe to simulated
@@ -80,43 +78,41 @@ samples* (as we have done so far). This same interval as computed above
 must be the relevant distance as when one looks from the sample to the
 universe. Putting this algebraically, we can state (on the basis of
 either simulation or formal calculation) that for any given population
-S, and for any given distance d from its mean mu, that p(mu xbar) \<
-d) = alpha, where xbar is a randomlygenerated sample mean and alpha is
-the probability resulting from the simulation or calculation.
+S, and for any given distance $d$ from its mean $\mu$, that $P((\mu - \bar{x})
+< d) = \alpha$, where $\bar{x}$ is a randomly generated sample mean and
+$\alpha$ is the probability resulting from the simulation or calculation.
 
 The above equation focuses on the deviation of various sample means
-(xbar) from a stated population mean (mu). But we are logically entitled
-to read the algebra in another fashion, focusing on the deviation of mu
-from a randomly generated sample mean. This implies that for any given
-randomly generated sample mean we observe, the same probability (alpha)
-describes the probability that mu will be at a distance d or less from
-the observed xbar. (I believe that this is the logic underlying the
-conventional view of confidence intervals, but I have yet to find a
-clear-cut statement of it; in any case, it appears to be logically
-correct.)
+($\bar{x}$) from a stated population mean ($\mu$). But we are logically
+entitled to read the algebra in another fashion, focusing on the deviation of
+$\mu$ from a randomly generated sample mean. This implies that for any given
+randomly generated sample mean we observe, the same probability ($\alpha$)
+describes the probability that $\mu$ will be at a distance $d$ or less from
+the observed $\bar{x}$. (I believe that this is the logic underlying the
+conventional view of confidence intervals, but I have yet to find a clear-cut
+statement of it; in any case, it appears to be logically correct.)
 
-To repeat this difficult idea in slightly different words: If one draws
-a sample (large enough to not worry about sample size and dispersion),
-one can say in advance that there is a probability p that the sample
-mean (xbar) will fall within z standard deviations of the population
-mean (mu). One estimates the population dispersion from the sample. If
-there is a probability p that xbar is within z standard deviations of
-mu, then with probability p, mu must be within that same z standard
-deviations of xbar. To repeat, this is, I believe, the heart of the
+To repeat this difficult idea in slightly different words: If one draws a
+sample (large enough to not worry about sample size and dispersion), one can
+say in advance that there is a probability $p$ that the sample mean
+($\bar{x}$) will fall within $z$ standard deviations of the population mean
+($\mu$). One estimates the population dispersion from the sample. If there is
+a probability $p$ that $\bar{x}$ is within $z$ standard deviations of $\mu$,
+then with probability $p$, $\mu$ must be within that same $z$ standard
+deviations of $\bar{x}$. To repeat, this is, I believe, the heart of the
 standard concept of the confidence interval, to the extent that there is
-thoughtthrough consensus on the matter.
+thought through consensus on the matter.
 
-So we can state for such populations the probability that the distance
-between the population and sample means will be d or less. Or with
-respect to a given distance, we can say that the probability that the
-population and sample means will be that close together is p.
+So we can state for such populations the probability that the distance between
+the population and sample means will be $d$ or less. Or with respect to a
+given distance, we can say that the probability that the population and sample
+means will be that close together is $p$.
 
 That is, we start by focusing on how much the sample mean diverges from
 the known population mean. But then — and to repeat once more this key
-conceptual step — we refocus our attention to *begin with the sample
-mean* and then discuss the probability that the population mean will be
-within a given distance. The resulting distance is what we call the
-"confidence interval."
+conceptual step — we refocus our attention to *begin with the sample mean* and
+then discuss the probability that the population mean will be within a given
+distance. The resulting distance is what we call the "confidence interval."
 
 Please notice that the distribution (universe) assumed at the beginning
 of this approach did not include the assumption that the distribution is
@@ -361,16 +357,17 @@ Population Means With the Normal Distribution* .
 In the conventional approach, one could in principle work from first
 principles with lists and sample space, but that would surely be too
 cumbersome. One could work with binomial proportions, but this problem
-has too large a sample for tree-drawing and quincunx techniques; even
-the ordinary textbook table of binomial coefficients is too small for
-this job. Calculating binomial coefficients also is a big job. So
-instead one would use the Normal approximation to the binomial formula.
+has too large a sample for tree-drawing and
+[quincunx](https://en.wikipedia.org/wiki/Galton_board) techniques; even the
+ordinary textbook table of binomial coefficients is too small for this job.
+Calculating binomial coefficients also is a big job. So instead one would use
+the Normal approximation to the binomial formula.
 
 (Note to the beginner: The distribution of means that we manipulate has
 the Normal shape because of the operation of the Law of Large Numbers
 (The Central Limit theorem). Sums and averages, when the sample is
 reasonably large, take on this shape even if the underlying distribution
-is not Normal. This is a truly astonishing property of randomlydrawn
+is not Normal. This is a truly astonishing property of randomly drawn
 samples — the distribution of their means quickly comes to resemble a
 "Normal" distribution, no matter the shape of the underlying
 distribution. We then standardize it with the standard deviation or
@@ -380,7 +377,7 @@ sampling error of the mean for any sample of reasonable size.)
 The exercise of creating the Normal shape *empirically* is simply a
 generalization of particular cases such as we will later create here for
 the poll by resampling simulation. One can also go one step further and
-use the formula of de Moivre-Laplace- Gauss to describe the empirical
+use the formula of de Moivre-Laplace-Gauss to describe the empirical
 distributions, and to serve instead of the empirical distributions.
 Looking ahead now, the difference between resampling and the
 conventional approach can be said to be that in the conventional
@@ -488,9 +485,7 @@ A — on twelve pigs. To obtain a random sample, he provides twelve
 customers (selected at random) with sufficient food for one pig. After 4
 weeks, the 12 pigs experience an average gain of 508 ounces. The weight
 gain of the individual pigs are as follows: 496, 544, 464, 416, 512,
-560, 608, 544, 480,
-
-466, 512, 496.
+560, 608, 544, 480, 466, 512, 496.
 
 The merchant sees that the ration produces results that are quite
 variable (from a low of 466 ounces to a high of 560 ounces) and is
@@ -655,6 +650,12 @@ PRINT K
 ' This problem would be approached conventionally with a binomial
 ' procedure leading to quite wide confidence intervals (Deshpande, p. 32).
 ```
+
+<!---
+Reference is @deshpande1995statistical
+
+In fact, it is the exact Theban jars problem they describe there.
+-->
 
 **Example 21-5: Determining a Confidence Interval for the Median Price
 Elasticity of Demand for Cigarettes**
@@ -1039,7 +1040,7 @@ the boundary distributions. We say that the boundary is at the point
 that centers a distribution which has only a (say) 2.5 percent chance of
 producing the observed sample; it is that distribution which is the
 subject of the discussion, and not the distribution which is centered at
-mu = xbar. Results of these simulations are shown in Figure 21-1.
+$\mu = \bar{x}$. Results of these simulations are shown in Figure 21-1.
 
 ![](images/25-Chap-21_004.png)
 
