@@ -360,33 +360,35 @@ A's score *dominates* B's score.
 
 [^gnedenko]: This discussion follows [@gnedenko1962elementary, Chapter 8].
 
-::: {#tbl-marksmen-scores layout-row=2}
-| Score | # occurrences (%) | Probability |
-|------|------|------|
-| 1    | 0    | 0    |
-| 2    | 20    | .2    |
-| 3    | 80    | .8    |
++--------+----------------+-------------+
+| Score  | \# occurrences | Probability |
++========+================+=============+
+| **Marksman A**                        |
++--------+----------------+-------------+
+| 1      | 0              | 0           |
++--------+----------------+-------------+
+| 2      | 20             | .2          |
++--------+----------------+-------------+
+| 3      | 80             |    .8       |
++--------+----------------+-------------+
+| **Marksman B**                        |
++--------+----------------+-------------+
+| 1      | 20             | .2          |
++--------+----------------+-------------+
+| 2      | 50             | .5          |
++--------+----------------+-------------+
+| 3      | 30             | .3          |
++--------+----------------+-------------+
+| **Marksman C**                        |
++--------+----------------+-------------+
+| 1      | 10             | .1          |
++--------+----------------+-------------+
+| 2      | 60             | .6          |
++--------+----------------+-------------+
+| 3      | 30             | .3          |
++--------+----------------+-------------+
 
-: Marksman A
-
-| Score | # occurrences (%) | Probability |
-|------|------|------|
-| 1    | 20    | .2    |
-| 2    | 50    | .5    |
-| 3    | 30    | .3    |
-
-: Marksman B
-
-| Score | # occurrences (%) | Probability |
-|------|------|------|
-| 1    | 10    | .1    |
-| 2    | 60    | .6    |
-| 3    | 30    | .3    |
-
-: Marksman C
-
-Score percentages by marksman
-:::
+: Score percentages by marksman {#tbl-marksmen-scores}
 
 When we turn to comparing marksman C to marksman D, however, we cannot say that
 one "dominates" the other as we could with the comparison of marksmen A and B.

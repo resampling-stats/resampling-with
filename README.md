@@ -367,6 +367,10 @@ spacing.  Use these for headers, footer, fusing cells, etc.
 See: [Pandoc grid tables](https://pandoc.org/MANUAL.html#other-extensions) and
 `inference_ideas.Rmd` for examples.
 
+There is a good summary of
+Markdown tables in [this
+page](https://dereksonderegger.github.io/570L/15-rmarkdown-tricks.html)
+
 ## Loading `.Rmd` files as Jupyter notebooks
 
 Install Jupyter:
