@@ -126,7 +126,7 @@ answers may be found throughout the social, biological and physical sciences;
 in business; in politics; in engineering; and in most other forms of human
 endeavor.
 
-## Types of statistics
+## Types of statistics {#sec-types-of-statistics}
 
 The term *statistics* sometimes causes confusion and therefore needs
 explanation.
@@ -141,10 +141,11 @@ yearly measures of "soluble reactive phosphorus" (SRP) from Lough Erne — a
 lake in Ireland [@zhou2000lake].
 
 ```{python, eval=TRUE, echo=FALSE}
-import os.path as op
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
-lake = pd.read_csv(op.join('data', 'lough_erne.csv'))
+lake = pd.read_csv(Path('data') / 'lough_erne.csv')
 yearly_srp = lake.loc[:, ['Year', 'SRP']].copy()
 ```
 

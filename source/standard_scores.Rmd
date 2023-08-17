@@ -14,7 +14,159 @@ jupyter:
     name: python3
 ---
 
+```{r setup, include=FALSE}
+source("_common.R")
+```
+
 # Standard deviation and standard scores
+
+This may not have been obvious, but through this book, we have been thinking about *distributions*.
+
+By distribution, we mean the histogram of the values we are interested in.
+
+The idea of the distribution, or histogram, carries with it the idea of the *center* of the distribution — the middle point — and the *spread* of the distribution — how far the values tend to spread around the center or middle point.
+
+For example, consider the values in @tbl-epl-points-wages.  They give the
+total number of points at the end of the 2021 season (from 38 games) and the
+estimated wage bill in thousands of British Pounts, for all the teams in the
+English Premier League.
+
+```{python echo=FALSE, eval=TRUE}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+district_income = pd.read_csv('data/congress_118.csv')
+district_income
+```
+
+```{python}
+district_income.groupby('Party')['2021 Median Income'].mean()
+```
+
+```{python}
+district_income[district_income['Representative'] == 'K. McCarthy']
+```
+
+```{python}
+mccarthy_index = 146
+```
+
+```{python}
+district_income[district_income['Representative'] == 'A. Ocasio-Cortez']
+```
+
+```{python}
+aoc_index = 360
+```
+
+```{python}
+incomes = district_income['2021 Median Income']
+```
+
+```{python}
+plt.hist(incomes, bins=25);
+```
+
+```{python}
+mccarthy_households = incomes[mccarthy_index]
+mccarthy_households
+```
+
+```{python}
+np.mean(incomes)
+```
+
+```{python}
+deviations = incomes - np.mean(incomes)
+plt.hist(deviations, bins=25);
+```
+
+```{python}
+deviations[mccarthy_index]
+```
+
+```{python}
+mccarthy_households - np.mean(incomes)
+```
+
+```{python}
+np.mean(deviations)
+```
+
+```{python}
+abs_deviation = np.abs(deviations)
+abs_deviation
+```
+
+```{python}
+mad = np.mean(abs_deviation)
+mad
+```
+
+```{python}
+deviations_in_mads = deviations / mad
+plt.hist(deviations_in_mads, bins=25);
+```
+
+```{python}
+deviations_in_mads[mccarthy_index]
+```
+
+```{python}
+squared_deviations = deviations ** 2
+squared_deviations
+```
+
+```{python}
+mean_squared_deviation = np.mean(squared_deviations)
+mean_squared_deviation
+```
+
+```{python}
+standard_deviation = np.sqrt(mean_squared_deviation)
+standard_deviation
+```
+
+```{python}
+mad
+```
+
+```{python}
+deviations = incomes - np.mean(incomes)
+squared_deviations = deviations ** 2
+mean_squared_deviation = np.mean(squared_deviations)
+standard_deviation = np.sqrt(mean_squared_deviation)
+standard_deviation
+```
+
+```{python}
+np.std(incomes)
+```
+
+```{python}
+deviations_in_stds = deviations / standard_deviation
+deviations_in_stds
+```
+
+```{python}
+plt.hist(deviations_in_stds, bins=25);
+```
+
+```{python}
+deviations_in_stds[mccarthy_index]
+```
+
+```{r echo=FALSE, eval=TRUE}
+ketable(py$epl,
+        caption = "2021 points and wage bills (£1000s) for EPL teams
+        {#tbl-epl-points-wages}")
+```
+
+Let's say we are a team near the middle of the league.
+
+So far we have been particularly interested in *statistics* like mean values.
+As you remember (@sec-types-of-statistics), a *statistic* is a *number* that
+we can calculate from a larger collection of numbers we are interested in.
 
 ```{python}
 from pathlib import Path
@@ -23,21 +175,18 @@ import numpy as np
 import pandas as pd
 pd.set_option('mode.copy_on_write', True)
 from textwrap import wrap
-
-data_path = Path('data')
 ```
 
 ```{python}
-df = pd.read_csv(data_path / 'premier_league_2021.csv')
-points_wages = df[['team', 'points', 'wages_year']].rename(
-    columns={'wages_year': 'wages'})
+points_wages = pd.read_csv('data/premier_league.csv')
 points_wages
 ```
 
 ```{r}
-df <- read.csv('data/premier_league_2021.csv')
+df <- read.csv('data/premier_league.csv')
 df
 ```
+
 ```{r}
 points <- df$points
 points
@@ -48,27 +197,6 @@ wages <- df$wages_year
 wages
 ```
 
-
-```{python}
-points = points_wages['points']
-wages = points_wages['wages']
-point_str = ', '.join(str(p) for p in points)
-py_prefix = 'points = np.array(['
-py_points = '\n'.join(wrap(f"{py_prefix}{point_str}])", 70,
-                      subsequent_indent=' ' * len(py_prefix)))
-r_prefix = 'points <- c('
-r_points = '\n'.join(wrap(f'{r_prefix}{point_str})', 70,
-                      subsequent_indent=' ' * len(r_prefix)))
-print(f"""\
-```{{python}}
-{py_points}
-```
-
-```{{r}}
-{r_points}
-```
-""")
-```
 
 ```{python}
 
