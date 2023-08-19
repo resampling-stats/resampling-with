@@ -18,30 +18,315 @@ jupyter:
 source("_common.R")
 ```
 
-# Standard deviation and standard scores
+# Ranks, Quantiles and Standard Scores
 
-This may not have been obvious, but through this book, we have been thinking about *distributions*.
+Sometimes have a set of measures, in some particular units, and we want some way to see quickly how these measures compare to one another, and how they may compare to other measures, in different units.
 
-By distribution, we mean the histogram of the values we are interested in.
+Ranks are one way of having an implicit comparison between values.  Is the
+value large in terms of the other values (with high rank) — or is it small
+(low rank)?
 
-The idea of the distribution, or histogram, carries with it the idea of the *center* of the distribution — the middle point — and the *spread* of the distribution — how far the values tend to spread around the center or middle point.
+We can derive quantiles from ranks.  These are values from 0 through 1 that are closer to 1 for high rank values, and closer to 0 for low rank values.  You will see what we mean later in the chapter.
 
-For example, consider the values in @tbl-epl-points-wages.  They give the
-total number of points at the end of the 2021 season (from 38 games) and the
-estimated wage bill in thousands of British Pounts, for all the teams in the
-English Premier League.
+Ranks and quantiles give an idea whether the measure is high or low compared
+to the other values, but they do not immediately tell us whether the measure
+is exceptional or unusual.  To do that, we may want to ask whether the measure
+falls outside the typical range of values — that is, how the measure compares
+to the *distribution* of values.  One common way of doing this is to
+re-express the measures (values) as *standard scores*, where the standard
+score for a particular value tells you how far the value is from the *center*
+of the distribution, in terms of the typical *spread* of the distribution.
+Standard values are particularly useful to allow us to *compare* different
+types of measures on a standard scale.  They translate the units of
+measurement into *standard* and comparable units.  We will explain this more
+towards the end of the chapter.
+
+## Household income and congressional districts
+
+Democratic [congresswoman Marcy
+Kaptur](https://en.wikipedia.org/wiki/Marcy_Kaptur) has represented the 9th
+district of Ohio since 1983. Ohio's 9th district is relatively working class,
+and the Democratic party has, traditionally, represented people with lower
+income.  However, Kaptur has pointed out that this pattern appears to be
+changing; more of the high-income congressional districts now lean Democrat,
+and the Republican party is now more likely to represent lower-income
+districts.  The French economist [Thomas
+Piketty](https://en.wikipedia.org/wiki/Thomas_Piketty) has described this
+phenomenon across several Western countries.  Voters for left parties are now
+more likely to be highly educated and wealthy.  He terms this shift "Brahmin
+Left Vs Merchant Right" [@piketty2018brahmin].  The data below come from a
+[table Kaptur
+prepared](https://s3.documentcloud.org/documents/23726766/rep-kaptur-district-chart.pdf)
+that shows this pattern in the US congress. The table lists the top 20 2023
+congressional districts by the median income of the households in that
+district, along with their representatives and their party.
 
 ```{python echo=FALSE, eval=TRUE}
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 district_income = pd.read_csv('data/congress_118.csv')
-district_income
 ```
 
-```{python}
-district_income.groupby('Party')['2021 Median Income'].mean()
+```{r echo=FALSE, eval=TRUE}
+d_inc <- py$district_income
+colnames(d_inc)[which(names(d_inc) == "Median_Income")] <- "Median Income"
+ketable(head(d_inc, 20),
+        caption = "Top 20 2023 Congressional districts by median household income {#tbl-district_income}")
 ```
+
+You may notice right away that many of the 20 richest districts have Democratic
+Party representatives.
+
+```{python echo=FALSE, eval=TRUE}
+means = district_income.groupby('Party')[['Median_Income']].mean()
+demo, repub = means['Median_Income']
+pct_diff = (demo - repub) / repub * 100
+```
+
+In fact, if we look at all 441 congressional districts in Kaptur's table, we
+find a large difference in the average median household income for Democrat and
+Republican districts; the Democrat districts are, on average, about
+`r round(py$pct_diff)`% richer (@tbl-party_means).
+
+```{r echo=FALSE, eval=TRUE}
+means <- py$means
+means$Median_Income <- formattable::currency(means$Median_Income, digits = 0)
+names(means) <- "Mean of median household income"
+ketable(means,
+        caption = "Means for median household income by party {#tbl-party_means}")
+```
+
+Next we are going to tip our hand, and show how we got these data.  In previous
+chapters, we had {{< var cell >}}s like this in which we enter the values we
+will analyze.  These example values are from @sec-public-liquor:
+
+```{python}
+# Liquor prices for US states with private market.
+priv = np.array([
+    4.82, 5.29, 4.89, 4.95, 4.55, 4.90, 5.25, 5.30, 4.29, 4.85, 4.54, 4.75,
+    4.85, 4.85, 4.50, 4.75, 4.79, 4.85, 4.79, 4.95, 4.95, 4.75, 5.20, 5.10,
+    4.80, 4.29])
+```
+
+```{r}
+# Liquor prices for US states with private market.
+priv <- c(4.82, 5.29, 4.89, 4.95, 4.55, 4.90, 5.25, 5.30, 4.29, 4.85, 4.54,
+          4.75, 4.85, 4.85, 4.50, 4.75, 4.79, 4.85, 4.79, 4.95, 4.95, 4.75,
+          5.20, 5.10, 4.80, 4.29)
+```
+
+Now we have 441 values to enter, and it is time to introduce {{< var lang >}}s
+standard tools for loading data.
+
+### Comma-separated-values (CSV) format {#sec-csv-format}
+
+The data we will load is in a file on disk called `data/congress_118.csv`.
+These are the data from Kaptur's table in a comma-separated-values (CSV) format
+file. We refer to this file with its *filename*, containing the directory
+(`data/`) followed by the name of the file (`congress_118.csv`), giving a
+filename of `data/congress_118.csv`.
+
+The *CSV format* is a very simple text format for storing table data.  Usually,
+the first line of the CSV file contains the column names of the table, and the
+rest of the lines contain the row values.  As the name suggests, commas (`,`)
+separate the column names in the first line, and the row values in the
+following lines. If you opened the `data/congress_118.csv` file in some editor,
+such as Notepad on Windows or TextEdit on Mac, you would find the first few
+lines looked like this:
+
+```{python, eval=TRUE, echo=FALSE, results='asis'}
+from pathlib import Path
+backticks = '```'
+lines = '\n'.join(
+    Path('data/congress_118.csv').read_text().splitlines()[:6])
+# Reticulate seems to suffer with the literal backticks here.
+print(f"""{backticks}
+{lines}
+{backticks}
+""")
+```
+
+::: python
+
+### Introducing the Pandas library {#sec-pandas-intro}
+
+Here we start using the Pandas library to load table data into Python.
+
+Thus far we have used the Numpy library to work with data in arrays.  Pandas is
+As always with Python, when we want to use a library, we have to `import` it
+first.
+
+We have used the term *library* here, but Python uses the term *module* to
+refer to libraries of code and data that you `import`.
+
+When using Numpy, we write:
+
+```{python}
+# Import the Numpy library (module), name it "np".
+import numpy as np
+```
+
+Now we will use the Pandas library (module).
+
+We can import Pandas like this:
+
+```{python}
+# Import the Pandas library (module)
+import pandas
+```
+
+As Numpy has a standard abbreviation `np`, that almost everyone writing Python
+code will recognize and use, so Pandas has the standard abbreviation `pd`:
+
+```{python}
+# Import the Pandas library (module), name it "pd".
+import pandas as pd
+```
+
+Pandas is the standard data science library for Python.   It is particularly
+good at loading data files, and presenting them to us as a useful table-like
+structure, called a *data frame*.
+
+We start by using Pandas to load our data file:
+
+```{python}
+district_income = pd.read_csv('data/congress_118.csv')
+```
+
+We have thus far done many operations that returned Numpy *arrays*.
+`pd.read_csv` returns a Pandas *data frame*:
+
+```{python}
+type(district_income)
+```
+
+A data frame is Pandas' own way of representing a table, with columns and rows.
+You can think of it as Python's version of a spreadsheet.  As strings or Numpy
+arrays have *methods* (functions attached to the array values), so Pandas data
+frames have methods.  These methods do things with the data frame to which they
+are attached.  For example, the `head` method of the data frame shows (by
+default) the first five rows in the table:
+
+```{python}
+# Show the first five rows in the data frame
+district_income.head()
+```
+
+We are particularly interested in the column named `Median_Income`.
+
+You may remember the idea of *indexing*, introduced in @sec-array-indexing.
+Indexing occurs when we fetch data from within a container, such as a string or
+an array.  We do this by putting square brackets `[]` after the value we want
+to index into, and put something inside the brackets to say what we want.
+
+For example, to get the second element of the `priv` array above, we use
+indexing:
+
+```{python}
+# Fetch the second element of the priv array with indexing.
+# This is the element at position 1.
+priv[1]
+```
+
+As you can index into strings and Numpy arrays, by using square brackets, so
+you can index into Pandas data frames.  Instead of putting the *position*
+between the square brackets, we can put the *column name*.  This fetches the
+data from that column, returning a new thing called a Pandas *Series*.
+
+```{python}
+# Index into Pandas data frame to get one column of data.
+# Notice we use a string between the square brackets, giving the column name.
+income_col = district_income['Median_Income']
+# The thing that comes back is of type Series.  A Series represents the
+# data from a single column.
+type(income_col)
+```
+
+We want to go straight to our familiar Numpy arrays, so we convert the column
+of data into a Numpy array, using the `np.array` function you have already
+seen:
+
+<!---
+Need to introduce indexing with slices.
+-->
+
+```{python}
+# Convert column data into a Numpy array.
+income_arr = np.array(income_col)
+# Show the first five values, by indexing with a slice.
+income_arr[:5]
+```
+
+Notice there are 441 values in the whole array, one of each congressional
+district:
+
+```{python}
+len(income_arr)
+```
+
+:::
+
+::: r
+
+### Introducing R data frames
+
+R is a data analysis language, so, as you would expect, it is particularly good
+at loading data files, and presenting them to us as a useful table-like
+structure, called a *data frame*.
+
+We start by using R to load our data file.  R has a special function to do
+this, called `read.csv`.
+
+```{r}
+district_income <- read.csv('data/congress_118.csv')
+```
+
+We have thus far done many operations that returned R *vectors*. `read.csv`
+returns a new thing, called a *data frame*:
+
+```{r}
+class(district_income)
+```
+
+A data frame is R's own way of representing a table, with columns and rows. You
+can think of it as R's version of a spreadsheet.   Data frames are a
+fundamental type in R, and there are many functions that operate on them. Among
+them is the function `head` which selects (by default) the first six rows of
+whatever you send it.  Here we select the first six rows of the data frame.
+
+```{r}
+# Show the first six rows in the data frame
+head(district_income)
+```
+
+We are particularly interested in the column named `Median_Income`.
+
+You can fetch columns of data from a data frame by using R's `$` syntax.  The
+`$` syntax means "fetch the thing named on the right of the `$` attached to the
+value given to the left of the `$`".
+
+So, to get the data for the `Median_Income` column, we can write:
+
+```{r}
+# Use $ syntax to get a column of data from a data frame.
+# "fetch the Median_Income thing from district_income".
+income_vec = district_income$Median_Income
+# The thing that comes back is our familiar R vector.
+# Show the first five values, by indexing with a slice.
+income_vec[1:5]
+```
+
+Notice there are 441 values in the whole vector, one of each congressional
+district:
+
+```{python}
+length(income_vec)
+```
+
+:::
+
+## Comparing two values in the district income data
 
 ```{python}
 district_income[district_income['Representative'] == 'K. McCarthy']
@@ -60,7 +345,7 @@ aoc_index = 360
 ```
 
 ```{python}
-incomes = district_income['2021 Median Income']
+incomes = district_income['Median_Income']
 ```
 
 ```{python}
@@ -156,6 +441,25 @@ plt.hist(deviations_in_stds, bins=25);
 deviations_in_stds[mccarthy_index]
 ```
 
+## Standard scores to compare values on different scales
+
+Now consider the values in @tbl-epl-points-wages.  They give the total number
+of points at the end of the 2021 season (from 38 games) and the estimated wage
+bill in thousands of British Pounds (£1000), for all the teams in the English
+Premier League (EPL).
+
+```{python}
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+pd.set_option('mode.copy_on_write', True)
+```
+
+```{python echo=FALSE, eval=TRUE}
+epl = pd.read_csv('data/premier_league.csv')
+```
+
 ```{r echo=FALSE, eval=TRUE}
 ketable(py$epl,
         caption = "2021 points and wage bills (£1000s) for EPL teams
@@ -164,17 +468,10 @@ ketable(py$epl,
 
 Let's say we are a team near the middle of the league.
 
-So far we have been particularly interested in *statistics* like mean values.
-As you remember (@sec-types-of-statistics), a *statistic* is a *number* that
-we can calculate from a larger collection of numbers we are interested in.
-
 ```{python}
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
 pd.set_option('mode.copy_on_write', True)
-from textwrap import wrap
 ```
 
 ```{python}
@@ -195,9 +492,4 @@ points
 ```{r}
 wages <- df$wages_year
 wages
-```
-
-
-```{python}
-
 ```

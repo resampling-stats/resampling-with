@@ -163,6 +163,8 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * `np.all` (done in `probabality_theory_4_finite`).
 * Need `plt.hist`, at least by `probabality_theory_4_finite`.  We should
   probably have a section or even a chapter on histograms.
+* Need slicing with slices, sometime before use in `more_sampling_tools`. Also
+  used in `standard_scores`.
 
 ## Data
 
