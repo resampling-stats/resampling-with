@@ -18,17 +18,19 @@ jupyter:
 source("_common.R")
 ```
 
-# Ranks, Quantiles and Standard Scores
+# Ranks, quantile positions and Standard Scores
 
 Sometimes have a set of measures, in some particular units, and we want some way to see quickly how these measures compare to one another, and how they may compare to other measures, in different units.
 
 Ranks are one way of having an implicit comparison between values.  Is the
-value large in terms of the other values (with high rank) — or is it small
-(low rank)?
+value large in terms of the other values (with high rank) — or is it small (low
+rank)?
 
-We can derive quantiles from ranks.  These are values from 0 through 1 that are closer to 1 for high rank values, and closer to 0 for low rank values.  You will see what we mean later in the chapter.
+We can derive quantile positions from ranks.  These are values from 0 through
+1 that are closer to 1 for high rank values, and closer to 0 for low rank
+values.  You will see what we mean later in the chapter.
 
-Ranks and quantiles give an idea whether the measure is high or low compared
+Ranks and quantile positions give an idea whether the measure is high or low compared
 to the other values, but they do not immediately tell us whether the measure
 is exceptional or unusual.  To do that, we may want to ask whether the measure
 falls outside the typical range of values — that is, how the measure compares
@@ -253,16 +255,26 @@ Need to introduce indexing with slices.
 
 ```{python}
 # Convert column data into a Numpy array.
-income_arr = np.array(income_col)
+incomes = np.array(income_col)
 # Show the first five values, by indexing with a slice.
-income_arr[:5]
+incomes[:5]
 ```
 
 Notice there are 441 values in the whole array, one of each congressional
 district:
 
 ```{python}
-len(income_arr)
+len(incomes)
+```
+
+While we are at it, let us also get the values from the "Rank" column, with the
+same procedure.  These are ranks from high to low, meaning 1 is the highest median income, and 441 is the lowest median income.
+
+```{python}
+rank_col = district_income['Rank']
+hi_to_lo_ranks = np.array(rank_col)
+# Show the first five values, by indexing with a slice.
+ranks[:5]
 ```
 
 :::
@@ -311,54 +323,356 @@ So, to get the data for the `Median_Income` column, we can write:
 ```{r}
 # Use $ syntax to get a column of data from a data frame.
 # "fetch the Median_Income thing from district_income".
-income_vec = district_income$Median_Income
+incomes = district_income$Median_Income
 # The thing that comes back is our familiar R vector.
 # Show the first five values, by indexing with a slice.
-income_vec[1:5]
+incomes[1:5]
 ```
 
 Notice there are 441 values in the whole vector, one of each congressional
 district:
 
 ```{python}
-length(income_vec)
+length(incomes)
+```
+
+While we are at it, let us also get the values from the "Rank" column, with the
+same procedure.  These are ranks from high to low, meaning 1 is the highest median income, and 441 is the lowest median income.
+
+```{r}
+hi_to_lo_ranks <- district_income$Rank
+# Show the first five values, by indexing with a slice.
+hi_to_lo_ranks[1:5]
 ```
 
 :::
 
 ## Comparing two values in the district income data
 
+Let us say that we have taken an interest in two particular members of
+Congress: the Speaker of the House of Representatives, Republican [Kevin
+McCarthy](https://en.wikipedia.org/wiki/Kevin_McCarthy), and the progressive
+activist and Democrat [Alexandria
+                       Ocasio-Cortez](https://en.wikipedia.org/wiki/Alexandria_Ocasio-Cortez).
+We will refer to both using their initials: KOM for Kevin Owen McCarthy and OAC
+for Alexandra Ocasio-Cortez.
+
+By scrolling through the CSV file, or the PDF of Kaptur's table linked above,
+we find the rows corresponding to McCarthy (KOM) and Ocasio-Cortez (AOC) —
+@tbl-rows-of-interest.
+
+```{python, eval=TRUE, echo=FALSE}
+roi = district_income[district_income['Representative']
+                      .isin(['K. McCarthy', 'A. Ocasio-Cortez'])]
+```
+
+```{r echo=FALSE, eval=TRUE}
+roi <- py$roi
+colnames(roi)[which(names(roi) == "Median_Income")] <- "Median Income"
+rownames(roi) <- NULL
+ketable(roi,
+        caption = "Rows for Kevin McCarthy and Alexandra Ocasio-Cortez
+        {#tbl-rows-of-interest}")
+```
+
+The rows show the *rank* of each congressional district in terms of median
+household income.  Remember that the districts are ordered by this rank, so we
+can get their respective *indices* (positions) in the `incomes`
+{{< var array >}} from their rank.
+[Remember, Python's indices start at 0, whereas the ranks start at 1, so we
+need to subtract 1 from the rank to get the index]{.python}
+
 ```{python}
-district_income[district_income['Representative'] == 'K. McCarthy']
+# Rank of McCarthy's district in terms of median household income.
+kom_rank = 147
+# Index (position) of McCarthy's value in the "incomes" array.
+# Subtract one from rank, because Python starts indices at 0 rather than 1.
+kom_index = kom_rank - 1
+```
+
+```{r}
+# Rank of McCarthy's district in terms of median household income.
+kom_rank = 147
+# Index (position) of McCarthy's value in the "incomes" vector.
+# This is the same as the rank.
+kom_index = kom_rank
+```
+
+Now we have the index (position) of KOM's value, we can find the household
+income for his district from the `incomes` {{< var array >}}:
+
+```{python}
+# Show the median household income from McCarthy's district
+# by indexing into the "incomes" array:
+kom_income = incomes[kom_index]
+kom_income
+```
+
+```{r}
+# Show the median household income from McCarthy's district
+# by indexing into the "incomes" vector:
+kom_income <- incomes[kom_index]
+kom_income
+```
+
+Here is the corresponding index and `incomes` value for AOC:
+
+```{python}
+# Index (position) of OAC's value in the "incomes" array.
+aoc_rank = 361
+aoc_index = aoc_rank - 1
+# Show the median household income from AOC's district
+# by indexing into the "incomes" array:
+aoc_income = incomes[aoc_index]
+aoc_income
+```
+
+```{r}
+# Index (position) of OAC's value in the "incomes" array.
+aoc_rank = 361
+aoc_index = aoc_rank
+# Show the median household income from AOC's district
+# by indexing into the "incomes" array:
+aoc_income <- incomes[aoc_index]
+aoc_income
+```
+
+Notice that we fetch the same value for median household income from `incomes`
+as you see in the corresponding rows.
+
+## Comparing values with ranks and quantile positions
+
+We have KOM's and AOC's district median household income values, but our next
+question might be — how unusual are these values?
+
+Of course, it depends what we mean by *unusual*.   We might mean, are they
+greater or smaller than most of the other values?
+
+One way of answering that question is simply looking at the rank of the values.
+If the rank is lower than $\frac{441}{2} = 220.5$ then this is a district with
+higher median income than most districts.  If it is greater than $220.5$ then
+it has lower median income than most districts.  We see that KOM's district,
+with rank `r get_var('kom_rank')` is wealthier than most, whereas AOC's
+district (rank `r get_var('aoc_rank')`) is poorer than most.
+
+But we can't interpret the ranks without remembering that there are 441 values,
+so — for example - the ranks of 361 represents a relatively low value and 147
+is relatively high.
+
+We would like some scale that tells us immediately whether this is a relatively
+low or a relatively high value, without having to remembering how many values
+there are.
+
+This is a good use for *quantile positions*.  The *quantile* of a value tells
+you where the value is, in the rankings, on a scale from 0 through 1.
+A quantile position of 0 tells you this is the lowest-ranking value, and
+a quantile position tells you this is the highest-ranking value.
+
+To see how this works, start with rank *from lowest to highest*.  That is, the
+lowest value will get rank of 1, and — in our case — the highest value will get
+a rank of 441.
+
+This is just the opposite of what we have at the moment, which is the ranks
+from highest median income (rank is 1) to lowest median income (rank is 441).
+
+
+We can get the low-to-high ranks by using the
+[`rank`]{.r}[`rankdata`]{.python} function
+[from R]{.r}
+[from the Scipy statistics library.]{.python}.
+
+
+::: python
+:::{.callout-note}
+## Introducing `scipy.stats`
+
+Up until now we have used two big Python libraries for numerical analysis.
+These are Numpy (`numpy`), that we have used throughout the book, and Pandas,
+that we used in @sec-pandas-intro.
+
+Here we introduce the third major library for numerical analysis in Python,
+called Scipy.  Scipy is a large collection of scientific Python routines,
+building on top of Numpy.
+
+Scipy has many parts (or "sub-packages"), for a range of scientific
+applications, but the part that interests us here is the statistics sub-package
+of Scipy, called `scipy.stats`.
+
+We will import that sub-package directly into Python with:
+
+```{python}
+# Import the Scipy statistics sub-package.
+# Rename to "sps" for short
+import scipy.stats as sps
+```
+
+In particular, we are going to use the `rankdata` function from `scipy.stats`.
+With the import above, we can get to that function with `sps.rankdata`.
+
+:::
+:::
+
+We can get the low-to-high ranks for the `incomes` values with:
+
+```{python}
+lo_to_hi_ranks = sps.rankdata(incomes)
+# Show the first five values.
+lo_to_hi_ranks[:5]
+```
+
+```{r}
+lo_to_hi_ranks <- rank(incomes)
+# Show the first five values.
+lo_to_hi_ranks[1:5]
+```
+
+:::{.callout-note}
+## Or ... get the low-to-high ranks from high-to-low ranks
+
+We are in the unusual position that we already have the high-to-low ranks in
+the `ranks` variables.  With these, we can get the low-to-high ranks by
+subtracting to the high-to-low ranks from 442, so that 441 becomes 1 and 1
+becomes 441:
+
+```{python}
+again = 442 - hi_to_lo_ranks
+again[:5]
+```
+
+```{r}
+again <- 442 - hi_to_lo_ranks
+again[1:5]
+```
+:::
+
+Now we have the low-to-high ranks, we can calculate the *quantile* for each
+value.  Think of the low-to-high ranks as being a line starting at 1 (the
+lowest rank — for the lowest median income) and going up to 441 (the highest
+rank — for the highest median income).
+
+The quantile position corresponding to any particular rank tells you how far
+along this line the rank is.  Notice that the length of the line is the
+distance from the first to the last value, so 441 - 1 = 440.
+
+So, if the rank was 1, then the value is at the start of the line.  It has got
+0 / 440 of the way along the line, and the quantile position is 0. If the rank
+is 441, the value is at the end of the line, it has got 440 / 440 of the way
+along the line and the quantile position is 1.
+
+Now consider the rank of 100.  It has got $\frac{(100 - 1)}{440}$ of the way
+along the line, and the quantile position is `r round(99 / 440, 2)`.
+
+More generally, we can translate the low-to-high ranks to quantile positions with:
+
+```{python}
+# Length of the line defining quantile positions.
+# Start is rank 1 (quantile position 0).
+# End is rank 441 (quantile position 1).
+distance = len(lo_to_hi_ranks) - 1  # 440 in our case.
+# What proportion along the line does each value get to?
+quantile_positions = (lo_to_hi_ranks - 1) / distance
+# Show the first five.
+quantile_positions[:5]
+```
+
+```{r}
+# Length of the line defining quantile positions.
+# Start is rank 1 (quantile position 0).
+# End is rank 441 (quantile position 1).
+distance <- length(lo_to_hi_ranks) - 1  # 440 in our case.
+quantile_positions <- (lo_to_hi_ranks - 1) / distance
+# Show the first five.
+quantile_positions[1:5]
+```
+
+The quantile positions for KOM and AOC tell us where their districts are in the
+ranks, on a 0 to 1 scale:
+
+```{python}
+kom_quantile_position= quantile_positions[kom_index]
+kom_quantile_position
+```
+
+```{r}
+kom_quantile_position<- quantile_positions[kom_index]
+kom_quantile_position
 ```
 
 ```{python}
-mccarthy_index = 146
+aoc_quantile_position= quantile_positions[aoc_index]
+aoc_quantile_position
 ```
 
-```{python}
-district_income[district_income['Representative'] == 'A. Ocasio-Cortez']
+```{r}
+aoc_quantile_position<- quantile_positions[aoc_index]
+aoc_quantile_position
 ```
 
-```{python}
-aoc_index = 360
-```
+If we multiply the quantile position by 100, we get the *percentile position*.
 
 ```{python}
-incomes = district_income['Median_Income']
+# Percentile positions are just quantile positions * 100
+print('KOM percentile position:', kom_quantile_position * 100)
+print('AOC percentile position:', aoc_quantile_position * 100)
 ```
 
+```{r}
+# Percentile positions are just quantile positions * 100
+message('KOM percentile position: ', kom_quantile_position * 100)
+message('AOC percentile position: ', aoc_quantile_position * 100)
+```
+
+The *median* is the value corresponding to the quantile position of 0.5 — or,
+equivalently — the percentile position of 50.[^median-complications]
+
+[^median-complications]: It is true that median is the value at the 50^th^
+    percentile position, but we will only have value at that exact position
+    if we have an odd number of values, as we do in the congress income
+    example.  Say we have $n$ values (in our case $n = 441$. If $n$ is *odd*,
+    then the length of the line from 1 to $n$ is *even*, the 50th percentile
+    position $\frac{n}{2}$ is a whole number, and corresponds to middle-ranked
+    value in the data. If $n$ is even, the length of the line 1 to $n$ is odd,
+    $\frac{n}{2}$ is not a whole number and does not correspond to the rank of
+    any value in the data.  In that case, we have to work out what to do.
+    There are various different methods to solve this [@hyndman1996sample], of
+    which the most straightforward is to take the average of the values at the
+    whole-number ranks either side of $\frac{n}{2}$.
+
+## Unusual values compared to the distribution
+
+So far, it looks as if AOC's district is fairly poor, and KOM's district is relatively wealthy.  But — are either of their districts *unusual* in their wealth or poverty?
+
+To answer that question, we have to think about the *distribution* of values.
+Are either AOC's or KOM's district outside the typical spread of values for
+districts?
+
 ```{python}
+mean_income = np.mean(incomes)
+```
+
+```{r}
+mean_income <- mean(incomes)
+```
+
+```{python, echo=FALSE}
 plt.hist(incomes, bins=25);
+plt.title('Median household income for 2023 congressional districts');
+plt.plot(kom_income, 2, 'ro', label='KOM')
+plt.plot(aoc_income, 2, 'bo', label='AOC')
+plt.plot(mean_income, 2, 'ko', label='Mean')
+plt.legend()
 ```
 
-```{python}
-mccarthy_households = incomes[mccarthy_index]
-mccarthy_households
-```
-
-```{python}
-np.mean(incomes)
+```{r, echo=FALSE}
+hist(incomes, breaks=25,
+    main='Median household income for 2023 congressional districts')
+points(kom_income, 2, pch=16, col='red')
+points(aoc_income, 2, pch=16, col='blue')
+points(mean_income, 2, pch=16, col='black')
+legend("topright",
+       legend = c("KOM", "AOC", "Mean"),
+       col = c('red', 'blue', 'black'),
+       pch = 16)
 ```
 
 ```{python}
