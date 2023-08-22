@@ -23,13 +23,100 @@ resampling_with:
 source("_common.R")
 ```
 
-# What is probability? {#sec-what-is-probability}
+# What is probability and what can we do with it? {#sec-what-is-probability}
 
 > Uncertainty, in the presence of vivid hopes and fears, is painful, but must
 > be endured if we wish to live without the support of comforting fairy
 > tales." — Bertrand Russell [-@russell1945history p. *xiv*].
 
-## Introduction
+<!---
+Not ready for review
+-->
+
+## Introduction, what is probability?
+
+Uncertainty is part of life. Although there is not much we can do to answer questions such as,
+will I loose my job within the next year?, or what is my life expectency?, it is possible to
+answer questions such as, what is my chances to win the lottery? (exceedingly small).
+
+Scientists from any discipline that we can think of, also need to deal with uncertainties,
+to come up with specific answers when possible, or know the limits of what it is possible to know.
+
+You will encounter numerous examples of this kind throughout this book. In fatc, this
+is what this book is all about.
+
+The uncertainty stems from different sources, some or all may be present in any given application.
+We'll briefly mention three.
+
+1. One cannot measure with absolute certainty. Also related is the fact that real numbers cannot
+   be exactly expressed in floating point on a computer - this can lead to severe numerical
+   instabilities. In general, any model that relies on measurements or estimates of parameters will
+   inherit the uncertainties in the measurements.
+2. Some processes are so complex that it is not possible to model it any any detail. For example,
+   individuals all have different handwriting patterns or voice patterns. Since these patterns are
+   persistent it is not unreasonable this it is produced by a specific mechanism. But describing this
+   mechanism is intractable. In practice, the mechanism is learned from the output of the mechanism -
+   signature verification model can be developed from observing a number of examples of signatures
+   produced by an individual. In a signature verification system a sample signature is compared with
+   the known model to verify the authenticity of the sample.
+3. It is also possible that the mechanism itself is stochastic. The signature example above qualifies
+   one can also mention on of the most successful physical theories, namely, quantum mechanics.
+   These processes need to be described in terms of probability, if they can be described at all.
+
+It is hard to give a precise definition of what is meant by probability and we will not attempt
+to do so. As a generic statement, we can say that _Probability provides us with the means of
+dealing with uncertainties in a principled way_.
+
+With this we try to avoid the controversy behind the so-called _frequentist_- and _Bayesian_
+approaches. Both see _probability_ in different, often complementary, ways.
+
+**Frequentist approach:** This approach sees the probability of an event as the fraction of times
+that it is observed out of a (very) large number of observations. It has its limitations, for example,
+if only a small number of observations are available. As a concrete example, what conclusion can
+one draw after observing 4 'heads' in a row after 4 coin tosses? Is it an example of a one-sided coin?
+It is impossible to tell with any great certainty.
+
+Another example where the frequentist notion of probability is inadequate, is with statements such as,
+the chances of rain tomorrow for London is 30%, and what is the difference with a 60% forecast.
+What exactly does this mean from a frequentist point of view?  How much rain are we talking about?
+How much of London should be covered? Does that mean that a 60% percent forecast predicts
+twice as much rain or does it cover twice the area? And so on.
+
+**Bayesian approach:** Bayesians have a more general notion of probability. For them it is a statement
+in their confidence that an event should occur. Therefore, The difference between a weather
+forecast of 30% and 60% is that one has twice the confidence that it will rain with the 60% forecast.
+If this sounds horribly subjective to you, you are in good company. One of the of the most common
+objections to a Bayesian approach is that it is subjective. Whichever way you are inclined to argue,
+there is no doubt that a Bayes approach can be very powerful. Let's return to the example of the 4
+heads in a row. The Bayes approach allows one to incorporate prior knowledge of the coin. It is often
+not unreasonable to assume a fair coin from the outset (or the bias, if one has any indication of that).
+Subsequent observation will alter or confirm the initial, _prior_, assumption. In the long run, after
+many observations, there will not be any disagreement between the frequentist or Bayesian approaches.
+
+David Mackay said that inference is impossible without making assumptions. This is equally true for the
+frequentist as well as the Bayesian approaches. The Bayesian approach forces one to be explicit about
+your assumptions. As long as the assumptions do not change, the conclusion should also be the
+same.
+
+Much of modern machine learning builds on a Bayesian approach.
+
+Both the approaches above rely on correlations - causality is explicitly excluded. The correlation between
+two variables, by which we mean how much can we tell about one variable by observing the other,
+doesn't tell us anything about a causal relationship. Let's therefore add a third approach to probability.
+
+**Causality:** Verifying the  presence or not of a causal relationship between variables is
+often of the utmost importance - in a medical test the researcher needs to know whether an
+observed effect in a patient was caused by the medication administered. This is but one application.
+In other applications we might already know that there is a causal relationship between observed events.
+How do we incorporate that knowledge in our probabilistic models if causality is precluded from the outset?
+Does it even matter; does that knowledge alter our reasoning? Much progress has been made in recent years
+on developing causality models and is still an exciting, active field of research.
+
+The rest of this chapter is about the general considerations that are important for principled
+reasoning in the presence of uncertainty.
+
+
+<!---
 
 The central concept for dealing with uncertainty is probability. Hence we must
 inquire into the "meaning" of the term probability. (The term "meaning" is in
@@ -1033,3 +1120,4 @@ mechanism is "really" something one wants to say is influenced by
 (not determined) in a smooth way even though the physical mechanism that
 produces the revolutions remains much the same over the traverse.
 
+-->
