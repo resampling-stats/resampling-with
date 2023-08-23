@@ -42,6 +42,11 @@ We will remove this warning when the page has adequate formatting, and we have
 ported the code.
 :::
 
+<!---
+This chapter seems to be more about Bayes's theorem than Bayesian analysis
+-->
+
+<!---
 > This branch of mathematics [probability] is the only one, I believe, in
 > which good writers frequently get results entirely erroneous. [@peirce1923chance, Doctrine of Chances, II]
 
@@ -54,6 +59,21 @@ Bayesian analysis that are uncontroversial.
 Better than defining Bayesian analysis in formal terms is to
 demonstrate its use. We shall start with the simplest sort of problem,
 and proceed gradually from there.
+-->
+
+A long time ago this writer developed a signature verification system with some of his students. The system wasn't
+perfect; it sometimes got it wrong. It would sometimes classify a genuine signature as a forgery and at other times a
+forgery as a genuine signature. Then we asked the question, if our system classified a signature as a forgery, what
+were the chances that it actually was a forgery?
+
+This is an important question because if the system is wrong too many times, i.e. it too often makes the mistake of
+saying that a genuine signature is a forgery then the customers providing the signatures will get really annoyed and
+the institution using our system will be mightily upset.
+
+We did the calculations and decided, wisely, not to try and sell the  system - it made too many mistakes.
+
+This chapter is all about answering questions like this one. The fundamental tool is Bayes' theorem. Before we
+introduce it, we'll answer questions like these, al always, through simulation.
 
 ## Simple decision problems
 
@@ -67,14 +87,11 @@ percent as "OK" but says that 20 percent are "faulty"; of those that are
 faulty, the mechanic correctly identifies 90 percent as faulty and says
 (incorrectly) that 10 percent are OK.
 
-We wish to know the probability that if the mechanic *says* a car is
-"OK," it *really* is faulty.  Phrased differently, what is the
-probability of a car being faulty if the mechanic said it was OK?
+We wish to know  what is the probability of a car being faulty if the mechanic said it was OK?
 
 We can get the desired probabilities directly by simulation without
 knowing Bayes' rule, as we shall see. But one must be able to model the
-physical problem correctly in order to proceed with the simulation; this
-requirement of a clearly visualized model is a strong point in favor of simulation.
+physical problem correctly for an accurate simulation. Let's unpack the problem in detail.
 
 1. Note that we are only interested in outcomes where the mechanic
    approved a car.
@@ -91,12 +108,12 @@ requirement of a clearly visualized model is a strong point in favor of simulati
 5. Out of all cars "approved", count how many are "faulty".
    The ratio between these numbers is our answer.
 
-Here is the whole thing:
+Here is the whole thing in code:
 
 ```{python}
 import numpy as np
 
-N = 10000  # number of cars
+N = 10_000  # number of cars
 
 # Counters for number of approved, number of approved and faulty
 approved = 0
@@ -126,12 +143,14 @@ k = approved_and_faulty / approved
 print(f'{k * 100:.2}%')
 ```
 
-The answer looks to be somewhere between 5 and 6%.  The code clearly follows the description step by step, but it is also quite slow.  If we can improve the code, we may be able to do our simulation with more cars, and get a more accurate answer.
+The answer looks to be somewhere between 5 and 6%.  The code clearly follows the description step by step, but it is
+also quite slow. If we can improve the code, we may be able to do our simulation with more cars,
+and get a more accurate answer.
 
 Let's use arrays to store the states of all cars in the lot simultaneously:
 
 ```{python}
-N = 1000000  # number of cars; we made this number larger by a factor of 100
+N = 1_000_000  # number of cars; we made this number larger by a factor of 100
 
 # Generate an array with as many entries as there are cars, each
 # being either 'working' or 'faulty'
@@ -178,14 +197,13 @@ k = N_faulty_but_approved / N_approved
 print(f'{k * 100:.2}%')
 ```
 
-The code now runs much faster, and with a larger number of cars we see that the answer is closer to a 5% chance of a car being broken after it has been
-approved by a mechanic.
+The code now runs much faster, and with a larger number of cars the answer is closer to a 5% chance of a car being
+broken after it has been approved by a mechanic.
 
 ### Calculation without simulation
 
 Simulation forces us to model our problem clearly and concretely in code.
-Such code is most often easier to reason about than opaque statistical methods.
-Running the simulation gives a good sense of what the correct answer should be.
+Moreover, running the simulation gives a good sense of what the correct answer should be.
 Thereafter, we can still look into different — sometimes more elegant or
 accurate — ways of modeling and solving the problem.
 
@@ -208,8 +226,7 @@ larger the number of cars we take, the closer we will get to 70%
 of these samples flowing down the "working" path, and 30% flowing
 along the "faulty" path.
 
-Now, we want to know, of all the cars approved by a mechanic, how many
-are faulty:
+Now, we want to know what is the fraction of faulty cars out of all the cars approved by a mechanic:
 
 $$ \frac{\mathrm{cars_{\mathrm{faulty}}}}{\mathrm{cars}_{\mathrm{approved}}} $$
 
@@ -242,15 +259,13 @@ We see that every time the tree branches, it filters the cars: some go to one br
 In these examples, we often calculate proportions.
 In the given simulation:
 
-- How many cars are approved by a mechanic?  59/100.
-- How many of those 59 were faulty? 3/59.
+- The proportion of the cars approved by a mechanic:  59/100 = 0.59.
+- The proportion of those 59 that were faulty: 3/59 = 0.0508.
 
-We often also count how commonly events occur: "it rained 4 out of the 10 days".
+Based on these numbers, we can therefore conclude that the probability that a car is approved by a mechanic is 0.59
+and the probability that a car that was approved is faulty, is 0.0508.
 
-An extension of this idea is to *predict* the probability of an event occurring, based on what we had seen in the past.
-We can say "out of 100 days, there was some rain on 20 of them; we therefore estimate that the probability of rain occurring is 20/100".
-Of course, this is not a complex or very accurate weather model; for that, we'd need to take other factors—such as season—into consideration.
-Overall, the more observations we have, the better our probability estimates become.
+In general, the more observations we have, the better our probability estimates become.
 We discussed this idea previously in "The Law of Large Numbers".
 
 <!---
@@ -259,21 +274,18 @@ We discussed this idea previously in "The Law of Large Numbers".
 
 **Ratios of proportions**
 
-At our mechanic's yard, we can ask "how many red cars here are faulty"?
-To calculate that, we'd first count the number of red cars, then the number of those red cars that are also broken, then calculate the ratio: `red_cars_faulty / red_cars`.
+At our mechanic's yard, we can ask "what is the probability that a  red car is faulty"?
+To calculate that, we'd first count the number of red cars, then the number of those red cars that are also broken,
+then calculate the ratio: `red_cars_faulty / red_cars`.
 
-We could just as well have worked in percentages: `percentage_of_red_cars_broken / percentage_of_cars_that_are_red`, since
-that is `(red_cars_broken / 100) / (red_cars / 100)`—the same ratio calculated before.
+Note that we could just as well have written:
 
-Our point is that the denominator doesn't matter when calculating ratios, so we
-could just as well have written:
+(red_cars_broken / all_cars) / (red_cars / all_cars).
 
-(red_cars_broken / all_cars) / (red_cars / all_cars)
-
-or
+There is a very good reason why we want to do this - we have converted the ratio to a ratio of probabilities:
 
 $$
-P(\text{cars that are red and that are broken}) / P(\text{red cars})
+P(\text{cars that are red and broken}) / P(\text{red cars})
 $$
 
 <!---
@@ -282,19 +294,19 @@ $$
 
 **Probability relationships: conditional probability**
 
-Here's one way of writing the probability that a car is broken:
+We need a more concise notation. Instead of writing
 
 $$
-P(\text{car is broken})
+P(\text{car is broken}),
 $$
 
-We can shorten "car is broken" to B, and write the same thing as:
+we can shorten "car is broken" to B, and write the same thing as:
 
 $$
 P(B)
 $$
 
-Similarly, we could write the probability that a car is red as:
+Similarly, we could write the probability that a "car is red" as:
 
 $$
 P(R)
@@ -305,7 +317,7 @@ probability that the car is broken, *given that* we already know that the car
 is red:
 
 $$
-P(\text{car is broken GIVEN THAT car is red})
+P(\text{car is broken GIVEN THAT the car is red})
 $$
 
 That is getting getting pretty verbose, so we will shorten this as we did above:
@@ -327,30 +339,58 @@ Such a probability is known as a *conditional probability*.  We discuss these in
 **TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY**
 -->.
 
-In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
+In our original problem, we ask what is the chance that a car is broken given that a mechanic approved it.
+As discussed under "Ratios of proportions", it can be calculated with:
 
 $$
 P(\text{car broken | mechanic approved})
 = P(\text{car broken and mechanic approved}) / P(\text{mechanic approved})
 $$
 
-We have already used $B$ to mean "broken" (above), so let us use $A$ to mean "mechanic approved".  Then we can write the statement above in a more compact way:
+We have already used $B$ to mean "broken" (above), so let us use $A$ to mean "mechanic approved".
+Then we can write the statement above in a more compact way:
 
 $$
 P(B | A) = P(B \text{ and } A) / P(A)
 $$
 
-As we use $|$ to mean "GIVEN THAT", we can also use the $\cap$ symbol to mean "and":
+$P(B \text{ and } A)$ means the probability that $B$ and $A$ are simultaneously observed. This *joint* probability is written as
 
 $$
-P(B | A) = P(B \cap A) / P(A)
+P(B,A).
 $$
 
 To put this generally, conditional probabilities for two events $X$ and $Y$ can be written as:
 
-$P(X | Y) = P(X \cap Y) / P(Y)$
+$$
+P(X | Y) = P(X, Y) / P(Y).
+$$
 
-Where (again) $\cap$ means "and", i.e. that both happen simultaneously.
+<!---
+We need to make the equations part of the sentences, i.e. need to add '.' or ',' everywhere.
+-->
+If we rewrite this in the equivalent form:
+
+$$
+P(X, Y) = P(X | Y) P(Y).
+$$
+Since
+$$P(X, Y) = P(Y, X) = P(Y | X) P(X)
+$$
+it follows that
+
+$$
+P(X | Y) P(Y) = P(Y | X) P(X).
+$$
+This becomes the celebrated Bayes' theorem.
+
+:::{.callout-note}
+## Bayes' Theorem
+
+$$
+P(X | Y)  = \frac{P(Y | X) P(X)} {P(Y)}.
+$$
+:::
 
 **Example: conditional probability**
 
@@ -368,7 +408,7 @@ Again, we start with our simulation.
 
 ```{python}
 # The number of people
-N = 1000000
+N = 1_000_000
 
 # For each person, generate a True or False label,
 # indicating that they have / don't have COVID
