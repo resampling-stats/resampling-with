@@ -1,22 +1,19 @@
 ---
+resampling_with:
+    ed2_fname: 12-Chap-8
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.5
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: 12-Chap-8
 ---
 
 ```{r setup, include=FALSE}
@@ -25,35 +22,17 @@ source("_common.R")
 
 # Probability Theory, Part 4: Estimating Probabilities from Finite Universes {#sec-finite-universes}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/12-Chap-8.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
-
 ## Introduction
 
-The examples in @sec-infinite-universes dealt with *infinite universes* , in which the
-probability of a given simple event is unaffected by the outcome of the
-previous simple event. But now we move on to finite universes,
-situations in which you begin with a *given set of objects* whose number
-is not enormous — say, a total of two, or two hundred, or two thousand.
-If we liken such a situation to a bucket containing balls of different
-colors each with a number on it, we are interested in the probability of
-drawing various sets of numbered and colored balls from the bucket on the
-condition that we *do not replace* balls after they are drawn.
+The examples in @sec-infinite-universes dealt with *infinite universes* , in
+which the probability of a given simple event is unaffected by the outcome of
+the previous simple event. But now we move on to finite universes, situations
+in which you begin with a *given set of objects* whose number is not enormous —
+say, a total of two, or two hundred, or two thousand. If we liken such a
+situation to a bucket containing balls of different colors each with a number
+on it, we are interested in the probability of drawing various sets of numbered
+and colored balls from the bucket on the condition that we *do not replace*
+balls after they are drawn.
 
 In the cases addressed in this chapter, it is important to remember that
 the single events no longer are independent of each other. A typical
@@ -72,21 +51,22 @@ sure that your simulation does not allow duplication of events that have
 already occurred. The easiest way to sample without replacement with resampling
 techniques is by simply ignoring an outcome if it has already occurred.
 
-Examples 8-1 through 8-10 deal with some of the more important sorts of
-questions one may ask about drawings without replacement from such an
-urn. To get an overview, I suggest that you read over the titles of
-Examples 8-1 to 8-10 before beginning to work through the examples
-themselves.
+Examples @sec-four-girls-one-boy through @sec-five-spades-four-girls deal with
+some of the more important sorts of questions one may ask about drawings
+without replacement from such an urn. To get an overview, I suggest that you
+read over the summaries (in **bold**) introducing examples
+@sec-four-girls-one-boy to @sec-five-spades-four-girls before beginning to work
+through the examples themselves.
 
-This chapter also revisits the general procedure used in solving
-problems in probability and statistics with simulation, here in
-connection with problems involving a finite universe. The steps that one
-follows in simulating the behavior of a universe of interest are set
-down in such fashion that one may, by random drawings, deduce the
-probability of various events. Having had by now the experience of
-working through the problems in Chapters 5 and 7, the reader should have
-a solid basis to follow the description of the general procedure which
-then helps in dealing with specific problems.
+This chapter also revisits the general procedure used in solving problems in
+probability and statistics with simulation, here in connection with problems
+involving a finite universe. The steps that one follows in simulating the
+behavior of a universe of interest are set down in such fashion that one may,
+by random drawings, deduce the probability of various events. Having had by now
+the experience of working through the problems in @sec-prob-theory-one-b and
+@sec-infinite-universes, the reader should have a solid basis to follow the
+description of the general procedure which then helps in dealing with specific
+problems.
 
 Let us begin by describing some of the major sorts of problems with the
 aid of a bucket with six balls.
@@ -98,7 +78,7 @@ aid of a bucket with six balls.
 that order* if we choose three balls without replacement? @fig-success_case1
 diagrams the events we consider "success."
 
-```{r fig-success_case1, opts.label='svg_fig', fig.cap="The Event Classified as \"Success\" for Case 1"}
+```{r fig-success_case1, opts.label="svg_fig", fig.cap='The Event Classified as \"Success\" for Case 1'}
 include_svg('diagrams/success_case1.svg')
 ```
 
@@ -108,7 +88,7 @@ three balls without replacement. @fig-success_case2 diagrams two of the events
 we consider success. These possibilities include that which is shown in
 @fig-success_case1 above, plus other possibilities.
 
-```{r fig-success_case2, opts.label='svg_fig', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 2"}
+```{r fig-success_case2, opts.label="svg_fig", fig.cap='An Incomplete List of the Events Classified as \"Success\" for Case 2'}
 include_svg('diagrams/success_case2.svg')
 ```
 
@@ -121,14 +101,14 @@ all possibilities found in  @fig-success_case2; for example, @fig-success_case2
 includes choosing balls 2, 3 and 1 in that order, but @fig-success_case3 does
 not.
 
-```{r fig-success_case3, opts.label='svg_fig', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 3"}
+```{r fig-success_case3, opts.label="svg_fig", fig.cap='An Incomplete List of the Events Classified as \"Success\" for Case 3'}
 include_svg('diagrams/success_case3.svg')
 ```
 
 **Case 4.** What is the probability of getting two red balls and one
 black ball in any order?
 
-```{r fig-success_case4, opts.label='svg_fig', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 4"}
+```{r fig-success_case4, opts.label="svg_fig", fig.cap='An Incomplete List of the Events Classified as \"Success\" for Case 4'}
 include_svg('diagrams/success_case4.svg')
 ```
 
@@ -138,13 +118,18 @@ on the first draw *or* ball 2 on the second draw *or* ball 3 on the
 third draw? (@fig-success_case5) Or, what is the probability of getting all
 balls on the draws corresponding to their numbers?
 
-```{r fig-success_case5, opts.label='svg_fig', fig.cap="An Incomplete List of the Events Classified as \"Success\" for Case 5"}
+```{r fig-success_case5, opts.label="svg_fig", fig.cap='An Incomplete List of the Events Classified as \"Success\" for Case 5'}
 include_svg('diagrams/success_case5.svg')
 ```
 
 ## Problems in finite universes
 
-## Example 8-1: What is the Probability of Selecting Four Girls and One Boy When Selecting Five Students From Any Group of Twenty-five Girls and Twenty-five Boys? (Sampling Without Replacement When There are Two Outcomes and the Order Does Not Matter)
+### Example: four girls and one boy {#sec-four-girls-one-boy}
+
+**What is the probability of selecting four girls and one boy when selecting
+five students from any group of twenty-five girls and twenty-five boys?**  This
+is an example of sampling without replacement when there are two outcomes and
+the order does not matter.
 
 The important difference between this example and the infinite-universe
 examples in the prior chapter is that the probability of obtaining a boy
@@ -169,36 +154,28 @@ We can no longer use our procedure from before.  If we designated
 draw random numbers, the probability of a girl would be the same on
 each pick.
 
-At this point, it is important to note that — for this particular
-problem — we do not need to distinguish between particular girls (or
-boys). That is, it does not matter *which* girl (or boy) is selected
-in a given trial. Nor did we pay attention to the *order* in which we
-selected girls or boys. This is an instance of Case 4 discussed
-above. Subsequent problems will deal with situations where the order
-of selection, and the particular individuals, do matter.
+At this point, it is important to note that — for this particular problem — we
+do not need to distinguish between particular girls (or boys). That is, it does
+not matter *which* girl (or boy) is selected in a given trial. Nor did we pay
+attention to the *order* in which we selected girls or boys. This is an
+instance of Case 4 discussed above. Subsequent problems will deal with
+situations where the order of selection, and the particular individuals, do
+matter.
 
-Our approach then is to mimic having the class in front of us: an
-array of 50 strings, half of the entries 'boy' and the other half
-'girl'.  We then shuffle the class (the array), and choose the first N
-students (strings).
+Our approach then is to mimic having the class in front of us: an array of 50
+strings, half of the entries 'boy' and the other half 'girl'.  We then shuffle
+the class (the array), and choose the first N students (strings).
 
-**Step 1.** Create a list with 50 labels, half 'boy' and half 'girl'.
+* **Step 1.** Create a list with 50 labels, half 'boy' and half 'girl'.
+* **Step 2.** Shuffle the class and select five students. Count whether there
+  are four labels equal 'girl'. If so, write "yes," otherwise "no".
+* **Step 3.** Repeat step 2, say, 10,000 times, and count the proportion "yes",
+  which estimates the probability sought.
 
-**Step 2.** Shuffle the class and select five students. Count whether
-  there are four labels equal 'girl'. If so, write "yes," otherwise
-  "no".
-
-**Step 3.** Repeat step 2, say, 10,000 times, and count the proportion
-  "yes", which estimates the probability sought.
-
-The results of a few experimental trials are shown in Table 8-1.
+The results of a few experimental trials are shown in @tbl-four-girls-one-boy.
 
 +----------------+---------------------------------------+---------------+
-|                | Table 8-1                             |               |
-|                |                                       |               |
-|                | **Experimental Trials**               |               |
-+----------------+---------------------------------------+---------------+
-| **Experiment** | **Strings Chosen**                    | **Success ?** |
+| **Experiment** | **Strings Chosen**                    | **Success?**  |
 +----------------+---------------------------------------+---------------+
 |              1 | 'girl', 'boy', 'boy', 'girl', 'boy'   | No            |
 +----------------+---------------------------------------+---------------+
@@ -207,9 +184,16 @@ The results of a few experimental trials are shown in Table 8-1.
 |              3 | 'girl, 'girl', 'girl', 'boy', 'girl'  | Yes           |
 +----------------+---------------------------------------+---------------+
 
+: A few experimental trials of four girls and one boy {#tbl-four-girls-one-boy}
+
 A solution to this problem with {{< var lang >}} is presented below.
 
-::: {.notebook name="finite_universes" title="Experiments in finite universes"}
+::: {.notebook name="four_girls_one_boy" title="Four girls and one boy"}
+
+::: nb-only
+What is the probability of selecting four girls and one boy when selecting
+five students from any group of twenty-five girls and twenty-five boys?
+:::
 
 ```{python}
 import numpy as np
@@ -288,15 +272,15 @@ kk <- k / N
 message(kk)
 ```
 
-We can also find the probabilities of other outcomes from a histogram of
-trial results obtained with the following command:
+We can also find the probabilities of other outcomes from a histogram of trial
+results obtained with the following command:
 
 ```{python}
 # Import the plotting package.
 import matplotlib.pyplot as plt
 
 # Do histogram, with one bin for each possible number.
-plt.hist(trial_results, bins=range(7), align='left', density=True, rwidth=0.75)
+plt.hist(trial_results, bins=range(7), align='left', rwidth=0.75)
 plt.title('# of girls');
 ```
 
@@ -305,22 +289,37 @@ plt.title('# of girls');
 hist(trial_results, breaks=0:max(trial_results), main='# of girls')
 ```
 
-In the resulting histogram we can see that in 14 percent of the trials,
+```{r echo=FALSE, eval=TRUE}
+trial_results <- get_var('trial_results')  # Might be Python edition.
+pct_4 <- round(sum(trial_results == 4) / length(trial_results) * 100)
+```
+
+In the resulting histogram we can see that in `r pct_4` percent of the trials,
 4 of the 5 selected were girls.
 
-It should be noted that for this problem — as for most other
-problems — there are several other resampling procedures that will also
-do the job correctly.
+It should be noted that for this problem — as for most other problems — there
+are several other resampling procedures that will also do the job correctly.
 
 In analytic probability theory this problem is worked with a formula for
 "combinations."
 
+:::
 
-## Example 8-2: Five Spades and Four Clubs in a Bridge Hand (Multiple-Outcome Sampling Without Replacement, Order Does not Matter)
+### Example: Five spades and four clubs in a bridge hand {#sec-five-spades-four-clubs}
 
-This problem is similar to Example 8-1 except that now there are four
-equally-likely outcomes instead of only two.
-[A Python]{.python}[An R]{.r} solution is:
+::: {.notebook name="five_spades_four_clubs" title="Five spades and four clubs"}
+
+**This is an example of multiple-outcome sampling without replacement, order does not matter**.
+
+The problem is similar to the example in @sec-four-girls-one-boy, except that
+now there are four equally-likely outcomes instead of only two. [A
+Python]{.python}[An R]{.r} solution is:
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+```
 
 ```{python}
 # Constitute the deck of 52 cards.
@@ -339,7 +338,7 @@ trial_results = np.zeros(N)
 for i in range(N):
 
     # Shuffle the deck and draw 13 cards.
-    hand = rnd.choice(deck, 13, replace=False)
+    hand = rnd.choice(deck, size=13, replace=False)
 
     # Count the number of spades in "hand", put the result in "n_spades".
     n_spades = np.sum(hand == 'spade')
@@ -413,13 +412,21 @@ prop_5_and_4 <- n_5_and_4 / N
 message(prop_5_and_4)
 ```
 
-## Example: A Total of Fifteen Points in a Bridge Hand {#sec-fifteen-bridge}
+:::
 
-Let us assume that ace counts as 4, king = 3,
-queen = 2, and jack = 1.
+### Example: a total of fifteen points in a bridge hand {#sec-fifteen-bridge}
 
-This problem bears the same relationship to Example 8-2 that Example 4-5
-bears to Example 4-4.
+::: {.notebook name="fifteen_points_in_bridge" title="Fifteen points in a bridge hand"}
+
+Let us assume that ace counts as 4, king = 3, queen = 2, and jack = 1.
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
+import matplotlib.pyplot as plt
+```
 
 ```{python}
 # Constitute a deck with 4 jacks (point value 1), 4 queens (value 2), 4
@@ -436,7 +443,7 @@ trial_results = np.zeros(N)
 # Do N trials.
 for i in range(N):
     # Shuffle the deck of cards and draw 13
-    hand = rnd.choice(whole_deck, 13, replace=False)
+    hand = rnd.choice(whole_deck, size=13, replace=False)
 
     # Total the points.
     points = np.sum(hand)
@@ -449,22 +456,8 @@ for i in range(N):
 
 ```{python}
 # Produce a histogram of trial results.
-plt.hist(trial_results, bins=range(25), align='left', density=True, rwidth=0.75)
+plt.hist(trial_results, bins=range(25), align='left', rwidth=0.75)
 plt.title('Points in bridge hands');
-```
-
-From this histogram, we see that in about 5 percent of our trials we obtained a
-total of exactly 15 points. We can also compute this directly:
-
-```{python}
-# How many times did we have a hand with fifteen points?
-k = np.sum(trial_results == 15)
-
-# Convert to a proportion.
-kk = k / N
-
-# Print the result.
-print(kk)
 ```
 
 ```{r}
@@ -482,7 +475,7 @@ trial_results <- numeric(N)
 # Do N trials.
 for (i in 1:N) {
     # Shuffle the deck of cards and draw 13
-    hand <- sample(whole_deck, 13)  # replace=FALSE is default.
+    hand <- sample(whole_deck, size=13)  # replace=FALSE is default.
 
     # Total the points.
     points <- sum(hand)
@@ -499,8 +492,24 @@ for (i in 1:N) {
 hist(trial_results, breaks=0:max(trial_results), main='Points in bridge hands')
 ```
 
-From this histogram, we see that in about 5 percent of our trials we obtained a
-total of exactly 15 points. We can also compute this directly:
+```{r echo=FALSE, eval=TRUE}
+trial_results <- get_var('trial_results')  # Might be Python edition.
+pct_15 <- round(sum(trial_results == 15) / length(trial_results) * 100)
+```
+
+From this histogram, we see that in about `r pct_15` percent of our trials we
+obtained a total of exactly 15 points. We can also compute this directly:
+
+```{python}
+# How many times did we have a hand with fifteen points?
+k = np.sum(trial_results == 15)
+
+# Convert to a proportion.
+kk = k / N
+
+# Show the result.
+kk
+```
 
 ```{r}
 # How many times did we have a hand with fifteen points?
@@ -509,30 +518,71 @@ k <- sum(trial_results == 15)
 # Convert to a proportion.
 kk <- k / N
 
-# Print the result.
-message(kk)
+# Show the result.
+kk
 ```
 
-## Example 8-4: Four Girls and Then One Boy From Twenty-five Girls and Twenty-five Boys Order Matters, Sampling Without Replacement, Two Outcomes, Several of Each Item
+:::
 
-What is the probability of getting an ordered series of *four girls and
-then one boy* , from a universe of twenty-five girls and twenty-five
-boys? This illustrates Case 3 above. Clearly we can use the same
-sampling mechanism as in Example 8-1, but now we record "yes" for a
-smaller number of composite events.
+### Example: Four girls then one boy from 25 girls and 25 boys
 
-We record "no" if only one boy is chosen but he is chosen 1st, 2nd, 3rd,
-or 4th, whereas in Example 8-1 such outcomes are recorded as "yes"-es.
+::: {.notebook name="four_girls_then_one_boy_25" title="Four girls then one boy from 25/25"}
 
-**Step 1.** Generate a class (array) of length 50, consisting of 25
-  strings valued "boy" and 25 strings valued "girl".
+**In this problem, order matters; we are sampling without replacement, with two
+outcomes, several of each item.**
 
-**Step 2.** Shuffle the class array, and select the first five
-  elements. If those are `['girl', 'girl', 'girl', 'girl', 'boy']`,
-  write "yes," otherwise "no."
+What is the probability of getting an ordered series of *four girls and then
+one boy* , from a universe of 25 girls and 25 boys? This illustrates Case 3
+above. Clearly we can use the same sampling mechanism as in the example
+@sec-four-girls-one-boy, but now we record "yes" for a smaller number of
+composite events.
 
-**Step 3.** Repeat step 2, say, 10,000 times, and count the proportion
-  "yes" which estimates the probability sought.
+We record "no" even if a single one boy is chosen but he is chosen 1st, 2nd,
+3rd, or 4th, whereas in @sec-four-girls-one-boy, such outcomes are recorded as
+"yes"-es.
+
+* **Step 1.** Generate a class ({{< var array >}}) of length 50, consisting of
+  25 strings valued "boy" and 25 strings valued "girl".
+* **Step 2.** Shuffle the class array, and select the first five
+  elements.
+* **Step 3.** If the first five elements are exactly `'girl', 'girl', 'girl',
+  'girl', 'boy'`, write "yes," otherwise "no."
+* **Step 4.** Repeat steps 2 and 3, say, 10,000 times, and count the proportion
+  of "yes" results, which estimates the probability sought.
+
+Let us start the single trial procedure like so:
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+```
+
+```{python}
+# Constitute the set of 25 girls and 25 boys.
+whole_class = np.repeat(['girl', 'boy'], [25, 25])
+
+# Shuffle the class into a random order.
+shuffled = rnd.permuted(whole_class)
+# Take the first 5 class members, call them c.
+c = shuffled[:5]
+# Show the result.
+c
+```
+
+```{r}
+# Constitute the set of 25 girls and 25 boys.
+whole_class <- rep(c('girl', 'boy'), c(25, 25))
+
+# Shuffle the class into a random order.
+shuffled <- sample(whole_class)
+# Take the first 5 class members, call them c.
+c <- shuffled[1:5]
+# Show the result.
+c
+```
+
+Our next step (step 3) is to check whether `c` is exactly equal to the result of interest.   The result of interest is:
 
 ```{python}
 # The result we are looking for - four girls and then a boy.
@@ -540,28 +590,124 @@ result_of_interest = np.repeat(['girl', 'boy'], [4, 1])
 result_of_interest
 ```
 
+```{r}
+# The result we are looking for - four girls and then a boy.
+result_of_interest <- rep(c('girl', 'boy'), c(4, 1 ))
+result_of_interest
+```
+
+We can then use {{< var an_array >}} *comparison* with `==` to do an element by element (*elementwise*) check, asking whether the corresponding elements are equal:
+
+```{python}
+# A Boolean array, with True where corresponding elements are equal, False
+# otherwise.
+are_equal = c == result_of_interest
+are_equal
+```
+
+```{r}
+# A Boolean array, with True where corresponding elements are equal, False
+# otherwise.
+are_equal <- c == result_of_interest
+are_equal
+```
+
+We are nearly finished with step 3 — it only remains to check whether *all* of
+the elements were equal, by checking whether *all* of the values in `are_equal`
+are {{< var true >}}.
+
+We know that there are 5 elements, so we could check whether there are 5 {{< var true >}} values with {{< var sum >}}:
+
+```{python}
+# Are there exactly 5 True values in `are_equal`?
+np.sum(are_equal) == 5
+```
+
+```{r}
+# Are there exactly 5 TRUE values in `are_equal`?
+sum(are_equal) == 5
+```
+
+Another way to ask the same question is by using the
+[`all`]{.r}[`np.all`]{.python} function on `are_equal`.  This returns {{< var
+true >}} if *all* the elements in `are_equal` are {{< var true >}}, and {{< var
+false >}} otherwise.
+
+:::{.callout-note}
+## Testing whether all elements of {{< var an_array >}} are the same
+
+The [`all`]{.r}[`np.all`]{.python}, applied to a Boolean {{< var array >}} (as
+here), checks whether *all* of the elements in the Boolean {{< var array >}}
+are {{< var true >}}.  If so, it returns {{< var true >}}, otherwise, it
+returns {{< var false >}}.
+
+For example:
+
+```{python}
+# All elements are True, `np.all` returns True
+np.all([True, True, True, True])
+```
+
+```{python}
+# At least one element is False, `np.all` returns False
+np.all([True, True, False, True])
+```
+
+```{r}
+# All elements are TRUE, `all` returns TRUE
+all(c(TRUE, TRUE, TRUE, TRUE))
+```
+
+```{r}
+# At least one element is FALSE, `all` returns FALSE
+all(c(TRUE, TRUE, FALSE, TRUE))
+```
+:::
+
+
+Here is the full procedure for steps 2 and 3 (a single trial):
+
+```{python}
+# Shuffle the class into a random order.
+shuffled = rnd.permuted(whole_class)
+# Take the first 5 class members, call them c.
+c = shuffled[:5]
+# For each element, test whether the result is the result of interest.
+are_equal = c == result_of_interest
+# Check whether we have the result we are looking for.
+is_four_girls_then_one_boy = np.all(are_equal)
+```
+
+```{r}
+# Shuffle the class into a random order.
+shuffled <- sample(whole_class)
+# Take the first 5 class members, call them c.
+c <- shuffled[1:5]
+# For each element, test whether the result is the result of interest.
+are_equal <- c == result_of_interest
+# Check whether we have the result we are looking for.
+is_four_girls_then_one_boy <- all(are_equal)
+```
+
+All that remains is to put the single trial procedure into a loop.
+
 ```{python}
 N = 10000
 trial_results = np.zeros(N)
 
-# Constitute the set of 25 girls and 25 boys.
-whole_class = np.repeat(['girl', 'boy'], [25, 25])
-
 # Repeat the following steps 1000 times.
 for i in range(N):
 
-    # Shuffle the numbers
+    # Shuffle the class into a random order.
     shuffled = rnd.permuted(whole_class)
     # Take the first 5 class members, call them c.
     c = shuffled[:5]
-    # Or: c = rnd.choice(whole_class, replace=False)
+    # For each element, test whether the result is the result of interest.
+    are_equal = c == result_of_interest
+    # Check whether we have the result we are looking for.
+    is_four_girls_then_one_boy = np.all(are_equal)
 
-    is_four_girls_then_one_boy = np.all(c == result_of_interest)
-    # Or:
-    # is_four_girls_then_one_boy = (
-    #   np.all(c[:4] == 'girl') and c[4] == 'boy'
-    # )
-
+    # Store the result of this trial.
     trial_results[i] = is_four_girls_then_one_boy
 
     # End the experiment, go back and repeat until all N trials are
@@ -577,33 +723,23 @@ kk = k / N
 print(kk)
 ```
 
-<!---
-Introduce `all`
--->
-
-```{r}
-# The result we are looking for - four girls and then a boy.
-result_of_interest <- rep(c('girl', 'boy'), c(4, 1 ))
-result_of_interest
-```
-
 ```{r}
 N <- 10000
 trial_results <- numeric(N)
 
-# Constitute the set of 25 girls and 25 boys.
-whole_class <- rep(c('girl', 'boy'), c(25, 25))
-
 # Repeat the following steps 1000 times.
 for (i in 1:N) {
 
-    # Shuffle the numbers
+    # Shuffle the class into a random order.
     shuffled <- sample(whole_class)
     # Take the first 5 class members, call them c.
     c <- shuffled[1:5]
+    # For each element, test whether the result is the result of interest.
+    are_equal <- c == result_of_interest
+    # Check whether we have the result we are looking for.
+    is_four_girls_then_one_boy <- all(are_equal)
 
-    is_four_girls_then_one_boy <- all(c == result_of_interest)
-
+    # Store the result of this trial.
     trial_results[i] <- is_four_girls_then_one_boy
 
     # End the experiment, go back and repeat until all N trials are
@@ -620,41 +756,51 @@ kk <- k / N
 message(kk)
 ```
 
-This type of problem is conventionally done with a *permutation*
-formula.
+This type of problem is conventionally done with a *permutation* formula.
 
-## Example 8-5: Four or More Couples Getting Their Own Partners When Ten Couples are Paired Randomly (Probability of Matching by Chance)
+:::
 
-Ten representatives each from two universities, Birmingham and
-Berkeley, attend a meeting.  As a social icebreaker, representatives
-are divided, randomly, into pairs consisting of one person from each
-university.
+### Example: repeat pairings from random pairing
 
-If they held a second round of the icebreaker, again with random
-pairing, what is the chance that four or more pairs will be the same?
+::: {.notebook name="university_icebreaker" title="An icebreaker for two universities"}
 
-In approaching this problem, we start at the point where the first
-icebreaker is complete.  We now have to determine what happens after
-the second round.
+**First put two groups of 10 people into 10 pairs.  Then re-randomize the
+pairings.  What is the chance that four or more pairs are the same in the
+second random pairing? This is a problem in the probability of matching by
+chance**.
 
-**Step 1.** Let "ace" through "10" of hearts represent the ten
-  students from Birmingham University.  Let "ace" through "10" of
-  spades be their allocated partners (in round one) from Berkeley.
+Ten representatives each from two universities, Birmingham and Berkeley, attend
+a meeting.  As a social icebreaker, representatives are divided, randomly, into
+pairs consisting of one person from each university.
 
-**Step 2.** Shuffle the hearts and deal them out in a row; shuffle the
-  spades and deal in a row just below the hearts.
+If they held a second round of the icebreaker, with a new random pairing, what
+is the chance that four or more pairs will be the same?
 
-**Step 3.** Count the pairs — a pair is one card from the heart row and
-  one card from the spade row — that contain the same denomination. If 4
-  or more pairs match, record "yes," otherwise "no."
+In approaching this problem, we start at the point where the first icebreaker
+is complete.  We now have to determine what happens after the second round.
 
-**Step 4.** Repeat steps (2) and (3), say, 10,000 times.
-
-**Step 5.** Count the proportion "yes." This estimates the probability
-of 4 or more pairs.
+* **Step 1.** Let "ace" through "10" of hearts represent the ten
+  representatives from Birmingham University.  Let "ace" through "10" of spades
+  be their allocated partners (in round one) from Berkeley.
+* **Step 2.** Shuffle the hearts and deal them out in a row; shuffle the spades
+  and deal in a row just below the hearts.
+* **Step 3.** Count the pairs — a pair is one card from the heart row and one
+  card from the spade row — that contain the same denomination. If 4 or more
+  pairs match, record "yes," otherwise "no."
+* **Step 4.** Repeat steps (2) and (3), say, 10,000 times.
+* **Step 5.** Count the proportion "yes." This estimates the probability of 4
+  or more pairs.
 
 Exercise for the student: Write the steps to do this example with random
-numbers.  The solution follows below.
+numbers.  The {{< var lang >}} solution follows below.
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
+import matplotlib.pyplot as plt
+```
 
 ```{python}
 N = 10000
@@ -721,9 +867,9 @@ kk <- k / N
 message(kk)
 ```
 
-We see that in about `r get_var('kk')` percent of the trials did 4 or more
-couples end up being re-paired with their own partners.  This can also be seen
-from the histogram:
+We see that in about `r round(get_var('kk') * 100)` percent of the trials did 4
+or more couples end up being re-paired with their own partners.  This can also
+be seen from the histogram:
 
 ```{python}
 # Produce a histogram of trial results.
@@ -731,18 +877,31 @@ plt.hist(trial_results, bins=range(10), align='left', rwidth=0.75)
 plt.title('Same pairs in round two');
 ```
 
-## Example 8-6: Matching Santa Hats: Another famous problem of this sort: The hat-checker at a restaurant mixes up the hats of a party of 6. What is the probability that at least one will get his own hat?
+:::
 
-After a long Christmas day, six Santas meet in the pub to let off
-steam. However, as luck would have it, their hats are mixed up by the
-host. When the hats are returned, what is the chance that at least one
-Santa will get his own hat back?
+### Example: Matching Santa Hats
 
-First, assign each of the 6 Santas a number, and place these numbers
-in an array. Next, shuffle the array (this represents the mixed-up
-hats) and compare to the original. The rest of the problem is the same
-as the pairs one from before, except that we are now interested in any
-trial where at least one (\>= 1) Santa received the right hat.
+::: {.notebook name="santas_hats" title="Santas' hats"}
+
+**The welcome staff at a restaurant mix up the hats of a party of six Christmas
+Santas. What is the probability that at least one will get their own hat?**.
+
+After a long Christmas day, six Santas meet in the pub to let off steam.
+However, as luck would have it, their hosts have mixed up their hats. When the
+hats are returned, what is the chance that at least one Santa will get his own
+hat back?
+
+First, assign each of the six Santas a number, and place these numbers in an
+array. Next, shuffle the array (this represents the mixed-up hats) and compare
+to the original. The rest of the problem is the same as the pairs one from
+before, except that we are now interested in any trial where at least one ($\ge
+1$) Santa received the right hat.
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+```
 
 ```{python}
 N = 10000
@@ -799,33 +958,41 @@ kk <- k / N
 print(kk)
 ```
 
-We see that in roughly 62 percent of the trials at least one
-person received their own hat back.
+We see that in roughly `r round(get_var('kk') * 100)` percent of the trials at
+least one Santa received their own hat back.
 
-## Example 8-7: Twenty executives are to be assigned to two divisions of a firm
+:::
 
-The top manager wants to spread the talent reasonably evenly, but she
-does not want to label particular executives with a quality rating and
-therefore considers distributing them with a random selection. She
-therefore wonders: What are probabilities of the best ten among the
-twenty being split among the divisions in the ratios 5 and 5, 4 and 6, 3
-and 7, etc. if their names are drawn from a hat? One might imagine much
-the same sort of problem in choosing two teams for a football or
-baseball contest.
+### Example: Twenty executives assigned to two divisions of a firm
+
+::: {.notebook name="twenty_executives" title="Twenty executives, two divisions"}
+
+The top manager wants to spread the talent reasonably evenly, but she does not
+want to label particular executives with a quality rating and therefore
+considers distributing them with a random selection. She therefore wonders:
+What are probabilities of the best ten among the twenty being split among the
+divisions in the ratios 5 and 5, 4 and 6, 3 and 7, etc., if their names are
+drawn from a hat? One might imagine much the same sort of problem in choosing
+two teams for a football or baseball contest.
 
 One may proceed as follows:
 
 1.  Put 10 balls labeled "W" (for "worst") and 10 balls labeled "B"
     (best) in a bucket.
-
 2.  Draw 10 balls without replacement and count the W's.
-
 3.  Repeat (say) 400 times.
-
-4.  Count the number of times each split — 5 W's and 5 B's, 4 and 6,
-    etc.---appears in the results.
+4.  Count the number of times each split — 5 W's and 5 B's, 4 and 6, etc. —
+    appears in the results.
 
 The problem can be done with {{< var lang >}} as follows:
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
+import matplotlib.pyplot as plt
+```
 
 ```{python}
 N = 10000
@@ -856,95 +1023,89 @@ hist(trial_results, breaks=0:max(trial_results),
      main= 'Number of best managers chosen')
 ```
 
-## Example 8-8: Executives Moving
+:::
 
+### Example: Executives Moving
+
+<!---
 **NOTE:** Same as couples example?
+-->
 
-A major retail chain moves its store managers from city to city
-every three years in order to calculate individuals' knowledge and
-experience. To make the procedure seem fair, the new locations are
-drawn at random. Nevertheless, the movement is not popular with
-managers' families. Therefore, to make the system a bit sporting and
-to give people some hope of remaining in the same location, the
-chain allows managers to draw in the lottery the same posts they are
-now in. What are the probabilities that 1, 2, 3\... will get their
-present posts again if the number of managers is 30?
+A major retail chain moves its store managers from city to city every three
+years in order to calculate individuals' knowledge and experience. To make the
+procedure seem fair, the new locations are drawn at random. Nevertheless, the
+movement is not popular with managers' families. Therefore, to make the system
+a bit sporting and to give people some hope of remaining in the same location,
+the chain allows managers to draw in the lottery the same posts they are now
+in. What are the probabilities that 1, 2, 3 ... will get their present posts
+again if the number of managers is 30?
 
 The problem can be solved with the following steps:
 
-1.  Number a set of green balls from "1" to "30" and put them into
-    Bucket A randomly. Number a set of red balls from "1" to "30" and
-    then put into Bucket B. For greater concreteness one could use 30
-    little numbered dolls in Bucket A and 30 little toy houses in
-    Bucket B.
-
+1.  Number a set of green balls from "1" to "30" and put them into Bucket A.
+    Number a set of red balls from "1" to "30" and then put into Bucket B. For
+    greater concreteness one could use 30 little numbered dolls in Bucket A and
+    30 little toy houses in Bucket B.
 2.  Shuffle Bucket A, and array all its green balls into a row (vector
     A). Array all the red balls from Bucket B into a second row B just
     below row A.
-
 3.  Count how many green balls in row A have the same numbers as the
     red balls just below them, and record that number on a
     scoreboard.
-
 4.  Repeat steps 2 and 3 perhaps 1000 times. Then count in the
     scoreboard the numbers of "0," "1," "2," "3."
 
-## Example 8-9: State Liquor Systems Again
+### Example: State Liquor Systems Again
 
-Let's end this chapter with the example of state liquor systems that was
-examined in the previous chapter and which will be discussed again later
-in the context of problems in statistics.
+Let's end this chapter with the example of state liquor systems that we
+first examined in @sec-infinite-universes and which will be discussed again
+later in the context of problems in statistics.
 
-Remember that as of 1963, there were 26 U.S. states in whose liquor
-systems the retail liquor stores are privately owned, and 16 "monopoly"
-states where the state government owns the retail liquor stores. These
-were the 1961 prices:
+Remember that as of 1963, there were 26 U.S. states in whose liquor systems the
+retail liquor stores are privately owned ("Private"), and 16 *monopoly* states
+where the state government owns the retail liquor stores ("Government").  See
+@tbl-whiskey-prices for the prices in the Private and Government states.
 
-**16 monopoly states:** \$4.65, \$4.55, \$4.11, \$4.15, \$4.20, \$4.55,
-\$3.80,
+We found the average prices were:
 
-\$4.00, \$4.19, \$4.75, \$4.74, \$4.50, \$4.10, \$4.00, \$5.05, \$4.20
+```{python echo=FALSE, eval=TRUE}
+import numpy as np
+import pandas as pd
 
-Mean: \$4.35
+price_df = pd.read_csv('data/liquor_prices.csv')
+priv_avg, govt_avg = price_df.groupby('state_type').mean().values.ravel()
+gov_priv_diff = govt_avg - priv_avg
+r_p_a, r_g_a, r_diff = np.round([priv_avg, govt_avg, gov_priv_diff], 2)
+```
 
-**26 private-ownership states:** \$4.82, \$5.29, \$4.89, \$4.95, \$4.55,
-\$4.90,
-
-\$5.25, \$5.30, \$4.29, \$4.85, \$4.54, \$4.75, \$4.85, \$4.85, \$4.50,
-\$4.75,
-
-\$4.79, \$4.85, \$4.79, \$4.95, \$4.95, \$4.75, \$5.20, \$5.10, \$4.80,
-\$4.29.
-
-Mean: \$4.84
+* Private: \$`r py$r_p_a`;
+* Government: \$`r py$r_g_a`;
+* Difference (Government - Private): \$`r py$r_diff`.
 
 Let us now consider that all these states' prices constitute one single
-*finite* universe. We ask: If these 42 states constitute a universe, and
-if they are all shuffled together, how likely is it that if one divides
-them into two samples at random (sampling without replacement),
-containing 16 and 26 observations respectively, the difference in mean
-prices turns out to be as great as \$.49 (the difference that was
-actually observed)?
+*finite* universe. We ask: If these 42 states constitute a universe, and if
+they are all shuffled together, how likely is it that if one divides them into
+two samples at random (sampling without replacement), containing 16 and 26
+observations respectively, the difference in mean prices turns out to be as
+great as \$`r py$r_diff` (the difference that was actually observed)?
 
-Again we write each of the forty-two observed state prices on a separate
-card. The shuffled deck simulates a situation in which each state has an
-equal chance for each price. Repeatedly deal groups of 16 and 26 cards,
-*without replacing* the cards as they are chosen, to simulate
-hypothetical monopoly-state and private-state samples. In each trial
-calculate the difference in mean prices.
+Again we write each of the forty-two observed state prices on a separate card.
+The shuffled deck simulates a situation in which each state has an equal chance
+for each price. Repeatedly deal groups of 16 and 26 cards, *without replacing*
+the cards as they are chosen, to simulate hypothetical monopoly-state and
+private-state samples. In each trial calculate the difference in mean prices.
 
 The steps more systematically:
 
-**Step A.** Write each of the 42 prices on a card and shuffle.
-
-**Steps B and C (combined in this case).** i) Draw cards randomly
-without replacement into groups of 16 and 26 cards. Then ii) calculate
-the mean price difference between the groups, and iii) compare the
-simulation-trial difference to the observed mean difference of \$4.84 - \$4.35
-= \$.49; if it is as great or greater than \$.49, write "yes," otherwise "no."
-
-**Step D.** Repeat step B-C a hundred or a thousand times. Calculate the
-proportion "yes," which estimates the probability we seek.
+* **Step A.** Write each of the 42 prices on a card and shuffle.
+* **Steps B and C (combined in this case).** i) Draw cards randomly without
+  replacement into groups of 16 and 26 cards. Then ii) calculate the mean price
+  difference between the groups, and iii) compare the simulation-trial
+  difference to the observed mean difference of \$`r py$r_g_a` - \$`r py$r_p_a`
+  = \$`r py$r_diff`; if it is as great or greater than \$`r py$r_diff`, write
+  "yes," otherwise "no."
+* **Step D.** Repeat step B-C a hundred or a thousand times. Calculate the
+  proportion "yes," which estimates the probability we seek.
 
 The probability that the postulated universe would produce a difference
 between groups as large or larger than observed in 1961 is estimated by
@@ -952,69 +1113,76 @@ how frequently the mean of the group of randomly-chosen sixteen prices
 from the simulated state ownership universe is less than (or equal to)
 the mean of the actual sixteen state-ownership prices.
 
-Please notice how the only difference between this treatment of the
-problem and the treatment in @sec-infinite-universes is that the drawing in this case
-is without replacement whereas in @sec-infinite-universes the drawing is with
+Please notice how the only difference between this treatment of the problem and
+the treatment in @sec-infinite-universes is that the drawing in this case is
+without replacement whereas in @sec-infinite-universes the drawing is with
 replacement.
 
 In @sec-infinite-universes we thought of these states as if they came from a
-non-finite universe, which is one possible interpretation in one
-context. But one can also reasonably think about them in another
-context — as if they constitute the entire universe (aside from those
-states excluded from the analysis because of data complexities). If so,
-one can ask: If these 42 states constitute a universe, how likely is it
-that one would choose two samples at random, containing 16 and 26
-observations, that would have prices as different as \$.49 (the
-difference that was actually observed)?
+non-finite universe, which is one possible interpretation in one context. But
+one can also reasonably think about them in another context — as if they
+constitute the entire universe (aside from those states excluded from the
+analysis because of data complexities). If so, one can ask: If these 42 states
+constitute a universe, how likely is it that one would choose two samples at
+random, containing 16 and 26 observations, that would have prices as different
+as \$.49 (the difference that was actually observed)?
 
-## Example 8-10: A Compound Problem: Five or More Spades in One Bridge Hand, and Four Girls and a Boy in a Five-Child Family
+### Example: Five or More Spades in One Bridge Hand; Four Girls and a Boy {#sec-five-spades-four-girls}
+
+::: {.notebook name="five_spades_four_girls" title="Five spades, four girls"}
+
+This is a compound problem: what are the chances of *both* five or more spades
+in one bridge hand, and four girls and a boy in a five-child family?
 
 "Compound" does not necessarily mean "complicated". It means that the
 problem is a compound of two or more simpler problems.
 
 A natural way to handle such a compound problem is in stages, as we saw
-in the archery problem. If a "success" is achieved in the first stage,
-go on to the second stage; if not, don't go on. More specifically in
-this example:
+in the archery problem of @sec-one-black-archery. If a "success" is achieved in
+the first stage, go on to the second stage; if not, don't go on. More
+specifically in this example:
 
-**Step 1.** Use a bridge card deck, and five coins with heads = "girl".
+* **Step 1.** Use a bridge card deck, and five coins with heads = "girl".
+* **Step 2.** Deal a 13-card bridge hand and count the spades. If 5 or more
+  spades, record "no" and end the experimental trial. Otherwise, continue to
+  step 3.
+* **Step 3.** Throw five coins, and count "heads." If four heads, record "yes,"
+  otherwise record "no."
+* **Step 4.** Repeat steps 2 and 3 a thousand times.
+* **Step 5.** Compute the proportion of "yes" in step 3. This estimates the
+  probability sought.
 
-**Step 2.** Deal a 13-card bridge hand and count the spades. If 5 or
-more spades, record "no" and end the experimental trial. Otherwise,
-continue to step 3.
+The {{< var lang >}} solution to this compound problem is neither long nor
+difficult. We tackle it almost as if the two parts of the problem were to be
+dealt with separately. We first determine, in a random bridge hand, whether 5
+spades or more are dealt, as was done in the problem
+@sec-five-spades-four-clubs. Then, `if` 5 or more spades are found, we use {{<
+var sample >}} to generate a random family of 5 children. This means that we
+need not generate families if 5 or more spades were not dealt to the bridge
+hand, because a "success" is only recorded if both conditions are met. After we
+record the number of girls in each sample of 5 children, we need only finish
+the loop (by [`}`]{.r}[unindenting the next line]{.python} and then use
+{{< var sum >}} to count the number of samples that had 4 girls, storing the
+result in `k`. Since we only drew samples of children for those trials in which
+a bridge hand of 5 spades had already been dealt, `k` will have the number of
+trials out of 10000 in which both conditions were met.
 
-**Step 3.** Throw five coins, and count "heads." If four heads, record
-"yes," otherwise record "no."
+```{python}
+import numpy as np
 
-**Step 4.** Repeat steps 2 and 3 a thousand times.
-
-**Step 5.** Compute the proportion of "yes" in step 3. This estimates
-the probability sought.
-
-The RESAMPLING STATS solution to "Compound" is neither long nor
-difficult. We tackle it almost as if the two parts of the problem were
-to be dealt with separately. We first determine, in a random bridge
-hand, whether 5 spades or more are dealt, as was done in the problem
-"Spades." Then, IF 5 or more spades are found, we proceed to GENERATE a
-random family of 5 children. This means that we need not GENERATE
-families if 5 or more spades were not dealt to the bridge hand, because
-a "success" is only recorded if both conditions are met. After we SCORE
-the number of girls in each sample of 5 children, we need only END the
-loop and COUNT the number of samples that had 4 girls. Since we only
-drew samples of children for those trials in which a bridge hand of 5
-spades had already been dealt, we will have in K the number of trials
-out of 1000 in which both conditions were met.
+rnd = np.random.default_rng()
+```
 
 ```{python}
 N = 10000
 trial_results = np.zeros(N)
 
 # Deck with 13 spades and 39 other cards
-deck = np.repeat(['spade', 'others'], [13, 39])
+deck = np.repeat(['spade', 'others'], [13, 52 - 13])
 
 for i in range(N):
     # Shuffle deck and draw 13 cards
-    hand = rnd.choice(deck, 13, replace=False)
+    hand = rnd.choice(deck, size=13, replace=False)
 
     n_spades = np.sum(hand == 'spade')
 
@@ -1036,7 +1204,7 @@ N <- 10000
 trial_results <- numeric(N)
 
 # Deck with 13 spades and 39 other cards
-deck <- rep(c('spade', 'others'), c(13, 39))
+deck <- rep(c('spade', 'others'), c(13, 52 - 13))
 
 for (i in 1:N) {
     # Shuffle deck and draw 13 cards
@@ -1059,7 +1227,9 @@ kk <- k / N
 print(kk)
 ```
 
-Alternative:
+Here is an alternative approach to the same problem, but getting the result at
+the end of the loop, by combining Boolean {{< var array >}}s (see
+@sec-combine-booleans).
 
 ```{python}
 N = 10000
@@ -1114,22 +1284,25 @@ k <- sum((trial_spades >= 5) & (trial_girls == 4))
 
 kk <- k / N
 
-print(kk)
+# Show the result
+message(kk)
 ```
 
-**Note:** Last version is a fraction more expensive, but has the
-    advantage that the condition we are testing for is summarized on
-    one line.  However, this would not be a good approach to take if
-    the experiments were not completely unrelated.
+:::
 
-Result: kk = `r get_var('kk')`
+:::{.callout-note}
+## Speed and readability
 
+The last version is a fraction more expensive, but has the advantage that the
+condition we are testing for is summarized on one line.  However, this would
+not be a good approach to take if the experiments were not completely
+unrelated.
 :::
 
 ## Summary
 
-This completes the discussion of problems in probability — that is,
-problems where we assume that the structure is known. Whereas @sec-infinite-universes
-dealt with samples drawn from universes considered *not finite* , this
-chapter deals with problems drawn from *finite universes* and therefore
-you *sample without replacement* .
+This completes the discussion of problems in probability — that is, problems
+where we assume that the structure is known. Whereas @sec-infinite-universes
+dealt with samples drawn from universes considered *not finite* , this chapter
+deals with problems drawn from *finite universes* and therefore you *sample
+without replacement*.

@@ -38,7 +38,9 @@ library(reticulate)
 # Make code output more predictable.
 ._seed <- 1014
 set.seed(._seed)
-py_set_seed(._seed)
+# For pick-up by Python initialization.
+reticulate::py_run_string(paste("_QUARTO_SEED =", ._seed))
+reticulate::source_python('_common.py')
 
 # Nice-looking table.
 ketable <- function(df, caption) {

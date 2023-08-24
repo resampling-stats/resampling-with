@@ -25,31 +25,14 @@ source("_common.R")
 
 # The Procedures of Monte Carlo Simulation (and Resampling) {#sec-monte-carlo}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/14-Chap-10.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
 Until now, the steps to follow in solving particular problems have been
 chosen to fit the specific facts of that problem. And so they always
 must. Now let's generalize what we have done in the previous chapters on
 probability into a general procedure for such problems, which will in
 turn become the basis for a detailed procedure for resampling simulation
 in statistics. The generalized procedure describes what we are doing
-when we estimate a probability using Monte Carlo simulation for
-problem-solving.
+when we estimate a probability using Monte Carlo simulation
+problem-solving operations.
 
 ## A definition and general procedure for Monte Carlo simulation
 
@@ -66,152 +49,158 @@ problems in statistics, but in the latter case the process is called
 *resampling* . The reason that the same definition fits is that *at the
 core of every problem in inferential statistics lies a problem in
 probability* ; that is, the procedure for handling every statistics
-problem is the procedure for handling a problem in probability. (There
-is related discussion of definitions in Chapters 4 and 14.)
+problem is the procedure for handling a problem in probability. (There is
+related discussion of definitions in @sec-prob-theory-one-a and
+@sec-framing-questions.)
 
 The following series of steps should apply to all problems in
 probability. I'll first state the procedure straight through without
 examples, and then show how it applies to individual examples.
 
-**Step A.** Construct a simulated "universe" of cards or dice or some
-other randomizing mechanism whose composition is similar to the universe
-whose behavior we wish to describe and investigate. The term "universe"
-refers to the system that is relevant for a single simple event.
-
-**Step B.** Specify the procedure that produces a pseudo-sample which
-simulates the real-life sample in which we are interested. That is,
-specify the procedural rules by which the sample is drawn from the
-simulated universe. These rules must correspond to the behavior of the
-real universe in which you are interested. To put it another way, the
-simulation procedure must produce simple experimental events with the
-same probabilities that the simple events have in the real world.
-
-**Step C.** If several simple events must be combined into a composite
-event, and if the composite event was not described in the procedure in
-step B, describe it now.
-
-**Step D.** Calculate the probability of interest from the tabulation of
-outcomes of the resampling trials.
+* **Step A** *Construct a simulation "universe"* of cards or dice or some other
+  randomizing mechanism whose composition is similar to the universe whose
+  behavior we wish to describe and investigate. The term "universe" refers to
+  the system that is relevant for a single simple event.
+* **Step B** *Specify the procedure* that produces a pseudo-sample which
+  simulates the real-life sample in which we are interested. That is, specify
+  the procedural rules by which the sample is drawn from the simulated
+  universe. These rules must correspond to the behavior of the real universe in
+  which you are interested. To put it another way, the simulation procedure
+  must produce simple experimental events with the same probabilities that the
+  simple events have in the real world.
+* **Step C** *Describe any composite events*.  If several simple events must be
+  combined into a composite event, and if the composite event was not described
+  in the procedure in step B, describe it now.
+* **Step D.** *Calculate the probability* of interest from the tabulation of
+  outcomes of the resampling trials.
 
 Now let us apply the general procedure to some examples to make it more
 concrete.
 
 Here are four problems to be used as illustrations:
 
-1.  If on average 3 percent of the gizmos sent out are defective, what
-    is the chance that there will be more than 10 defectives in a
-    shipment of 200?
+1.  **Three percent gizmos** — if on average 3 percent of the gizmos sent out
+   are defective, what is the chance that there will be more than 10 defectives
+   in a shipment of 200?
+2.  **Three girls, 106 in 206** — what are the chances of getting three or more
+   girls in the first four children, if the probability of a female birth is
+   106/206?
+3. **Less than 20 baskets** — what are the chances of Joe Hothand scoring 20
+   or fewer baskets in 57 shots if his long-run average is 47 percent?
+4. **Same birthday in 25** — what is the probability of two or more people in a
+   group of 25 persons having the same birthday — i. e., the same month and
+   same day of the month?
 
-2.  What are the chances of getting three or more girls in the first
-    four children, if the probability of a female birth is 106/ 206?
+## Apply step A — construct a simulation universe
 
-3.  What are the chances of Joe Hothand scoring 20 or fewer baskets in
-    57 shots if his long-run average is 47 percent?
+As a reminder:
 
-4.  What is the probability of two or more people in a group of 25
-    persons having the same birthday — i. e., the same month and same
-    day of the month?
+* **Step A** *Construct a simulation "universe"* of cards or dice or some other
+  randomizing mechanism whose composition is similar to the universe whose
+  behavior we wish to describe and investigate. The term "universe" refers to
+  the system that is relevant for a single simple event.
 
-    **Step A.** Construct a simulated "universe" of cards or dice or
-    some other randomizing mechanism whose composition is similar to the
-    universe whose behavior we wish to describe and investigate. The
-    term "universe" refers to the system that is relevant for a single
-    simple event. For example:
+For our example problems:
 
-    1.  A random drawing with replacement from the set of numbers
-        1\...100 with 1\...3 designated as defective simulates the
-        system that produces 3 defective gizmos among 100.
-
-    2.  A coin with two sides, or a random drawing from two sets of
-        random numbers "1-105" and "106-205," simulates the system that
-        produces a single male or female birth, when we are estimating
-        the probability of three girls in the first four children.
-        Notice that in this universe the probability of a girl remains
-        the same from trial event to trial event — that is, the trials
-        are independent — demonstrating a universe from which we sample
-        with replacement.
-
-    3.  A random drawing with replacement from a bucket containing a
-        hundred balls, 47 red and 53 black, simulates the system that
-        produces 47 percent baskets for Joe Hothand.
-
-    4.  A random drawing with replacement from the numbers 1\...365
-        simulates the system that produces a birthday.
+1. *Three percent gizmos*:  A random drawing with replacement from the set of
+   numbers 1 through 100 with 1 through 3 designated as defective, simulates
+   the system that produces 3 defective gizmos among 100.
+2. *Three girls, 106 in 206*: You could take two decks of cards, from which you
+   take out both Aces of spades, and replace these with a Joker. You now have
+   103 cards (206 / 2), of which 53 (106 / 2) are red, counting the Joker as
+   red.  You could also use a random drawing from two sets of numbers, one
+   comprising 1 through 106 and the other 107 through 206.  Either universe can
+   simulate the system that produces a single male or female birth, when we are
+   estimating the probability of three girls in the first four children. Notice
+   that in this universe the probability of a girl remains the same from trial
+   event to trial event — that is, the trials are independent — demonstrating a
+   universe from which we sample with replacement.
+3. *Less than 20 baskets*: A random drawing with replacement from a bucket
+   containing a hundred balls, 47 red and 53 black, simulates the system that
+   produces 47 percent baskets for Joe Hothand.
+4. *Same birthday in 25*:  A random drawing with replacement from the numbers 1
+   through 365 simulates the system that produces a birthday.
 
 This step A includes two operations:
 
-1.  Decide which symbols will stand for the elements of the universe you
-    will simulate.
+1. Decide which symbols will stand for the elements of the universe you will
+   simulate.
+2. Determine whether the sampling will be with or without replacement. (This
+   can be ambiguous in a complex modeling situation.)
 
-2.  Determine whether the sampling will be with or without replacement.
-    (This can be ambiguous in a complex modeling situation.)
+Hard thinking is required in order to determine the appropriate "real" universe
+whose properties interest you.
 
-Hard thinking is required in order to determine the appropriate "real"
-universe whose properties interest you.
+## Apply step B — specify the procedure
 
-**Step B.** Specify the procedure that produces a pseudo-sample that
-simulates the real-life sample in which we are interested. That is,
-specify the procedural rules by which the sample is drawn from the
-simulated universe. These rules must correspond to the behavior of the
-real universe in which you are interested. To put it another way, the
-simulation procedure must produce simple experimental events with the
-same probabilities that the simple events have in the real world.
+* **Step B** *Specify the procedure* that produces a pseudo-sample which
+  simulates the real-life sample in which we are interested. That is, specify
+  the procedural rules by which the sample is drawn from the simulated
+  universe. These rules must correspond to the behavior of the real universe in
+  which you are interested. To put it another way, the simulation procedure
+  must produce simple experimental events with the same probabilities that the
+  simple events have in the real world.
 
 For example:
 
-1.  For a single gizmo, you can draw a single number from an infinite
-    universe. Or one can use a finite set with replacement and
-    shuffling,
+1. *Three percent gizmos*: For a single gizmo, you can draw a single number
+   from an infinite universe. Or one can use a finite set with replacement and
+   shuffling.
+2. *Three girls, 106 in 206*: In the case of three or more daughters among four
+   children, you could use the deck of 103 cards, from Step A, of which 53
+   count as red.  To simulate one child, you can draw a card and then replace
+   it, noting female for a red card or a Joker. Or if you are using random
+   numbers from the computer, the random numbers automatically simulate
+   replacement. Just as the chances of having a boy or a girl do not change
+   depending on the sex of the preceding child, so we want to ensure through
+   sampling with replacement that the chances do not change each time we choose
+   from the deck of cards.
+3. *Less than 20 baskets*: In the case of Joe Hothand's shooting, the procedure
+   is to consider the numbers 1 through 47 as "baskets," and 48 through 100 as
+   "misses," with the same other considerations as the gizmos.
+4. *Same birthday in 25*. In the case of the birthday problem, the drawing must
+   be with replacement, because the fact that you have drawn — say — a 10
+   (10^th^ day in year), should not affect the chances of drawing 10 for a
+   second person in the room.
 
-2.  In the case of three or more daughters among four children, you can
-    draw a card and then replace it if you are using a deck of red and
-    black cards and you are assuming a female birth is 50-50. Or if you
-    are using a random-numbers table, the random numbers automatically
-    simulate replacement. Just as the chances of having a boy or a girl
-    do not change depending on the sex of the preceding child, so we
-    want to ensure through sampling with replacement that the chances do
-    not change each time we choose from the deck of cards.
+Recording the outcome of the sampling must be indicated as part of this step,
+e.g., "record 'yes' if girl or basket, 'no' if a boy or a miss."
 
-3.  In the case of Joe Hothand's shooting, the procedure is to consider
-    the numbers "1-47" as "baskets," and "48-100" as "misses," with the
-    same other considerations as the gizmos.
+## Apply step C — describe any composite events
 
-4.  In the case of the birthday problem, the drawing obviously must be
-    with replacement.
+* **Step C** *Describe any composite events*.  If several simple events must be
+  combined into a composite event, and if the composite event was not described
+  in the procedure in step B, describe it now.
 
-Recording the outcome of the sampling must be indicated as part of this
-step, e.g., "record 'yes' if girl or basket, 'no' if a boy or a miss."
+For example:
 
-**Step C.** If several simple events must be combined into a composite
-event, and if the composite event was not described in the procedure in
-step B, describe it now. For example:
+1. *Three percent gizmos*: For the gizmos, draw a sample of 200.
+2. *Three girls, 106 in 206*: For the three or more girls among four children,
+   the procedure for each simple event of a single birth was described in step
+   B. Now we must specify repeating the simple event four times, and counting
+   whether the outcome is or is not three girls.
+3. *Less than 20 baskets*: In the case of Joe Hothand's shots, we must draw 57
+   numbers to make up a sample of shots, and examine whether there are 20 or
+   more misses.
 
-1.  For the gizmos, draw a sample of 200.
+Recording the results as "ten or more defectives," "three or more girls" or
+"two or less girls," and "20 or more misses" or "19 or fewer," is part of this
+step. This record indicates the results of all the trials and is the basis for
+a tabulation of the final result.
 
-2.  For the three or more girls among four children, the procedure for
-    each simple event of a single birth was described in step B. Now we
-    must specify repeating the simple event four times, and counting
-    whether the outcome is or is not three girls.
+## Apply step D — calculate the probability
 
-3.  In the case of Joe Hothand's shots, we must draw 57 numbers to make
-    up a sample of shots, and examine whether there are 20 or more
-    misses.
+* **Step D.** *Calculate the probability* of interest from the tabulation of
+  outcomes of the resampling trials.
 
-Recording the results as "ten or more defectives," "three or more girls"
-or "two or less girls," and "20 or more misses" or "19 or fewer," is
-part of this step. This record indicates the results of all the trials
-and is the basis for a tabulation of the final result.
+For example: the proportions of "yes" and "no," and "20 or more" and "19 or
+fewer" estimate the probability we seek in step C.
 
-**Step D.** Calculate the probability of interest from the tabulation of
-outcomes of the resampling trials. For example: the proportions of "yes"
-and "no," and "20 or more" and "19 or fewer" estimate the probability we
-seek in step C.
-
-The above procedure is similar to the procedure followed with the
-analytic formulaic method except that the latter method constructs
-notation and manipulates it.
+The above procedure is similar to the procedure followed with the analytic
+formulaic method except that the latter method constructs notation and
+manipulates it.
 
 ## Summary
 
-This chapter describes more generally the specific steps used in prior
-chapters to solve problems in probability.
+This chapter gives a more general description of the specific steps used in
+prior chapters to solve problems in probability.

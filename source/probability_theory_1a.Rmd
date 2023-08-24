@@ -23,7 +23,7 @@ resampling_with:
 source("_common.R")
 ```
 
-# Probability Theory, Part 1
+# Probability Theory, Part 1 {#sec-prob-theory-one-a}
 
 ## Introduction
 
@@ -852,7 +852,7 @@ deductive method for handling other problems.
 Return now to the tree diagram (@fig-commanders-tree) above. We can
 read from the tree diagram that 70 percent of the time it will be nice, and of
 that 70 percent of the time, 65 percent of the games will be wins. That is,
-0.65 \* 0.7 = 0.455 = the probability of a nice day and a win. That is the
+$0.65 * 0.7 = 0.455$ = the probability of a nice day and a win. That is the
 answer we seek. The method seems easy, but it also is easy to get confused and
 obtain the wrong answer.
 
@@ -865,7 +865,7 @@ $$
 P(\text{nice day and win}) = P(\text{nice day}) * P(\text{winning | nice day})
 $$
 
-where the vertical line in P(winning\|nice day) means "conditional
+where the vertical line in $P(\text{winning | nice day})$ means "conditional
 upon" or "given that."  That is, the vertical line indicates a "conditional
 probability," a concept we must consider in a minute.
 
