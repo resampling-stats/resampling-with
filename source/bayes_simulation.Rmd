@@ -61,19 +61,26 @@ demonstrate its use. We shall start with the simplest sort of problem,
 and proceed gradually from there.
 -->
 
-A long time ago this writer developed a signature verification system with some of his students. The system wasn't
-perfect; it sometimes got it wrong. It would sometimes classify a genuine signature as a forgery and at other times a
-forgery as a genuine signature. Then we asked the question, if our system classified a signature as a forgery, what
-were the chances that it actually was a forgery?
+Suppose you have worked hard to developed a signature verification system and you are quite proud about your achievement
+of 98% accuracy. We'll explain in more detail below exactly what we mean by that. For now we believe that the system is
+sufficiently accurate to be useful in practice. You might even be optimistic that it will be possible to make a bit of
+out of your long hours of labour on the system.
 
-This is an important question because if the system is wrong too many times, i.e. it too often makes the mistake of
-saying that a genuine signature is a forgery then the customers providing the signatures will get really annoyed and
-the institution using our system will be mightily upset.
+As one final check before you put it in the market place, you want to find out how often it will classify a genuine
+signature as a forgery. And also, how many forgeries will be accepted as genuine signatures.
 
-We did the calculations and decided, wisely, not to try and sell the  system - it made too many mistakes.
+This is an important question because if the system is wrong too many times, for example, if  it too often makes the
+mistake of classifying a genuine signature is a forgery then the customers providing the signatures will get really
+annoyed and the store using your system will be mightily upset and probably sue you for damages.
 
-This chapter is all about answering questions like this one. The fundamental tool is Bayes' theorem. Before we
-introduce it, we'll answer questions like these, al always, through simulation.
+Doesn't the 98% accuracy already guarantees how often things will go wrong? If this is the case, you can manage the
+expectations of the store and protect yourself from any liability.
+
+This chapter is all about answering questions like this one and we'll investigate this example in detail below. In the
+mean time, you may want to think for a moment why it really is not a good idea to try and sell this system - the accuracy
+is simply not nearly good enough.
+
+The fundamental tool is Bayes' theorem. Before we introduce it, we'll see how far simulations can get us.
 
 ## Simple decision problems
 
@@ -392,9 +399,100 @@ P(X | Y)  = \frac{P(Y | X) P(X)} {P(Y)}.
 $$
 :::
 
+It is worth thinking a moment about the meaning of $P(X)$ and $P(Y)$ in Bayes' theorem. Recall that
+
+$$
+P(X, Y) = P(X | Y) P(Y).
+$$
+If we now sum over all the values that $X$ can take, we get,
+
+$$
+\sum_X P(X, Y) = \sum_X P(X | Y) P(Y),
+$$
+or
+$$
+\sum_X P(X, Y) = P(Y) \sum_X P(X | Y).
+$$
+Since $P(X | Y)$ is a probability distribution over $X$, we have $ \sum_X P(X | Y) = 1$. We therefore have
+$$
+P(Y) = \sum_X P(X, Y).
+$$
+Similarly,
+$$
+P(X) = \sum_Y P(X, Y).
+$$
+
+These are called the marginal distributions of $X$ and $Y$.
+
+:::{.callout-note}
+## Note
+From the discussion above it should be clear that the joint distribution $(P(X, Y)$ is the fundamental quantity in the
+sense that if $(P(X, Y)$ is known, the marginal distributions, $P(X)$ and $P(Y)$ as well as the conditional distributions
+$P(X | Y)$ and $P(Y | X)$ can be calculated from it.
+
+In many applications we don't know the joint distribution but we do know the conditional probabilities. We'll discuss
+an example below.
+:::
+
+**Example: joint probability**
+
+Assume that $X$ and $Y$ can both take on the values 0, 1 and 2, and that the joint probability $P(X, Y)$ is given in
+the following table,
+
+| X/Y  |  0    | 1    |  2   |
+|:----:|:-----:|:----:|:----:|
+| 0    |  0.1  | 0.05 | 0.15 |
+| 1    | 0.05  | 0.15 | 0.2  |
+| 2    | 0.15  | 0.05 | 0.1  |
+
+The first thing to check is that this is a valid probability distribution. By this we mean that the sum
+of the probabilities over all the values of $X$ and $Y$ sum to 1, $\sum_{X,Y} P(X, Y) = 1$, i.e.
+
+$$
+0.1 + 0.05 + 0.15 + 0.05 + 0.15 + 0.2 + 0.15 + 0.05 + 0.1 = 1.
+$$
+
+The marginal probabilities are,
+$$
+P(X=0) = 0.1 + 0.05 + 0.15 = 0.3
+$$
+$$
+P(X=1) = 0.05 + 0.15 + 0.2 = 0.4
+$$
+$$
+P(X=2) = 0.15 + 0.05 + 0.1 = 0.3
+$$
+and
+$$
+P(Y=0) = 0.1 + 0.05 + 0.15 = 0.3
+$$
+$$
+P(Y=1) = 0.05 + 0.15 + 0.05 = 0.25
+$$
+$$
+P(Y=2) = 0.15 + 0.2 + 0.1 = 0.45.
+$$
+
+The conditional probabilities, $P(X | Y) = P(X, Y) / P(Y)$, are best written in a table,
+
+| X/Y  |  0        | 1         |  2        |
+|:----:|:---------:|:---------:|:---------:|
+| 0    |  0.1/0.3  | 0.05/0.25 | 0.15/0.45 |
+| 1    | 0.05/0.3  | 0.15/0.25 | 0.2/0.45  |
+| 2    | 0.15/0.3  | 0.05/0.25 | 0.1/0.45  |
+
+Similarly, $P(Y | X) = P(X, Y) / P(X)$ is given by the table,
+
+| X/Y  |  0        | 1        |  2       |
+|:----:|:---------:|:--------:|:--------:|
+| 0    |  0.1/0.3  | 0.05/0.3 | 0.15/0.3 |
+| 1    | 0.05/0.4  | 0.15/0.4 | 0.2/0.4  |
+| 2    | 0.15/0.3  | 0.05/0.3 | 0.1/0.3  |
+
 **Example: conditional probability**
 
-Let's discuss a very relevant example.  You get a COVID test, and the test is negative.  Now, you would like to know what the chance is of you having COVID.
+Let's discuss a very relevant example.  You get a COVID test, and the test is negative.
+Now, you would like to know what the chance is of you having COVID.
 
 We have the following information:
 
@@ -455,7 +553,8 @@ print(k)
 
 This gives around 0.006 or 0.6%.
 
-Now that we have a rough indication of what the answer should be, let's try and calculate it directly, based on the tree of informatiom shown earlier.
+Now that we have a rough indication of what the answer should be, let's try and calculate it directly, based on the
+tree of information shown earlier.
 
 We use $P^+$/$P^-$ to indicate COVID positive or negative, and
 $P(T^+)$/$P(T^-)$ to indicate positive or negative test results.
@@ -463,24 +562,25 @@ $P(T^+)$/$P(T^-)$ to indicate positive or negative test results.
 You would like to know the probability of having COVID *given that* your test was negative.  Using the conditional probability relationship from above, we can write:
 
 $$
-P(C^+ | T^-) = P(C^+ \cap T^-) / P(T^-)
+P(C^+ | T^-) = P(C^+ , T^-) / P(T^-)
 $$
 
-We see from the tree diagram that $P(C^+ \cap T^-) = P(T^- | C^+) * P(C^+) = .4 * .015 = 0.006$.
+We see from the tree diagram that $P(C^+ , T^-) = P(T^- | C^+) * P(C^+) = .4 * .015 = 0.006$.
 
 <!---
 **TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES**
 -->
 
-We observe that $P(T^-) = P(T^- \cap C^-) + P(T^- \cap C^+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
+We observe that $P(T^-) = P(T^- , C^-) + P(T^- , C^+)$, i.e. that we can obtain a negative test result through two paths,
+having COVID or not having COVID.  We expand these further as conditional probabilities:
 
-$P(T^- \cap C^-) = P(T^- | C^-) * P(C^-)$
+$P(T^- , C^-) = P(T^- | C^-) * P(C^-)$
 
 and
 
-$P(T^- \cap C^+) = P(T^- | C^+) * P(C^+)$.
+$P(T^- , C^+) = P(T^- | C^+) * P(C^+)$.
 
-We can now calculate
+We can now calculate the marginal,
 
 $$
 P(T^-) = P(T^- | C^-) * P(C^-) + P(T^- | C^+) * P(C^+)
@@ -494,7 +594,7 @@ The answer, then, is:
 
 $P(C^+ | T^-) = 0.006 / 0.986 = 0.0061$ or 0.61%.
 
-This matches very closely our simulation result, so we have some confidence that we have done the calculation correctly.
+Not surprisingly, this matches very closely our simulation result.
 
 **Estimating Driving Risk for Insurance Purposes**
 
@@ -513,7 +613,8 @@ percent of risk, i. e., a driver with a probability of .6 should pay
 If nothing is known of a driver except that they had an accident last
 year, what fee should they pay?
 
-Another way to phrase this question is: given that a driver had an accident last year, what is the probability of them having an accident overall?
+Another way to phrase this question is: given that a driver had an accident last year, what is the probability of them
+having an accident overall?
 
 We will proceed as follows:
 
@@ -526,7 +627,7 @@ We will proceed as follows:
 3. Among those, calculate what their average risk is of making an accident.  This will indicate the appropriate insurance premium.
 
 ```{python}
-N = 100000
+N = 100_000
 cost_per_percent = 100
 
 people = np.random.choice(
@@ -568,6 +669,7 @@ The answer should be around 4450 USD.
 
 <!---
 **TODO: SHALL WE REMOVE THIS PROBLEM, OR INTEGRATE PARTS OF ITS DESCRIPTION WITH THE COVID EXAMPLE?**
+Let's keep for now
 -->
 
 This is a classic Bayesian problem (quoted by Tversky and Kahneman
@@ -619,15 +721,155 @@ One may obtain an answer as follows:
     hundred draws a person would be likely to draw the correct
     conclusion that the proportion of "T"s to ("T"s plus "F"s) would be
     small. And it is easy with a computer to do 10,000 trials very
-    quickly.
+    quickly. Let's run the simulation.
 
-    Note that the respondents in the Cascells *et al.* study were not naive;
-    the medical staff members were supposed to understand statistics. Yet most
-    doctors and other personnel offered wrong answers. If simulation can do
-    better than the standard deductive method, then simulation would seem to
-    be the method of choice. And only one piece of training for simulation is
-    required: Teach the habit of saying "I'll simulate it" and then actually
-    doing so.
+    ```{python}
+    n_trials = 100_000  # number of trials
+
+    T = 0 # The true postives
+    F = 0 # The false positives
+    for _ in range(n_trials):
+        # Draw from the first, white/black bucket
+        draw_1 = np.random.choice(['W', 'B'], p = [0.999, 0.001])
+        if draw_1 == 'B':  # This is correctly classified
+            T += 1
+        else:  # Among these, some will be false classifed as positive
+            draw_2 = np.random.choice(['G', 'R'], p = [0.95, 0.05])
+            if draw_2 == 'R':
+                F += 1
+
+    print(f'Percentage of True positives: {100 * T/(T+F):.2}%')
+    ```
+    The test is not very reliable! The reason is that the large majority of the population does not have the disease.
+    From this large number, the test will indicate a significant number of positives.
+
+:::{.callout-note}
+## Note
+As the code clearly demonstrates, We are sampling from two distinct probability distributions in succession. First we
+sample from the distribution that describes the prevalence of the disease, then we sample from the distribution that
+describes the uncertainty in the test results. This is such a common procedure that it is given a name, *ancestral sampling*.
+:::
+
+Note that the respondents in the Cascells *et al.* study were not naive;
+the medical staff members were supposed to understand statistics. Yet most
+doctors and other personnel offered wrong answers. If simulation can do
+better than the standard deductive method, then simulation would seem to
+be the method of choice. And only one piece of training for simulation is
+required: Teach the habit of saying "I'll simulate it" and then actually
+doing so.
+
+**Signature verification**
+:::{.callout-note}
+## Note
+In this example we approach the problem from a theoretical point of view using Bayes' theorem. This may be skipped
+at a first reading.
+:::
+Let's return to the signature verification problem mentioned in the introduction. Approaching it from a theoretical
+point of view forces us to make our assumptions explicit.
+
+:::{.callout-note}
+## Note
+As David MacKay pointed out: *One cannot do inference without assumptions*. By making your assumptions explicit, forces
+one to think clearly about them.
+:::
+
+Let's first state exactly what we want to achieve: If the signature verification system tells us that a signature is
+a forgery, what is the probability that it actually is a forgery? More precisely, what i the probability that the
+signature is a forgery, given that the system tells us that it is a forgery. This can be stated in terms of a formula:
+$$
+P({\text the signature is a forgery} | {\text the system says it is a forgery).
+$$
+It is rather cumbersome to write it like this, let's introduce symbols. Let's indicate the system by $C$ and the actual
+signature by $S$. Then both symbols, $C$ and $S$ can take on two values, $T$  for genuine signature, and $F$ for a
+forgery. Now we can write our problem statement much more concisely as,
+$$
+P(S=F | C=F).
+$$
+The next question is, what do we know that will help us answering this question. In the introduction we said that the
+*accuracy* of the system is 98% without being precise by what we mean with that. Time to correct that.
+
+During the course of developing any system such as a signature verification system, it will be subjected to extensive
+testing. How that should be done is a topic in itself. But we can safely assume that we have specific details available
+about the performance of the model because of the extensive testing; that is where the 98% comes from. There is, however,
+different ways of measuring the performance of a system and it is important to state exactly what is meant by this 98%.
+In this case it means that if the system says a signature is genuine, there is a 98% chance that it is genuine, and a 2%
+chance that it is a forgery. Also, if the system says a signature is a forgery, there is a 98% percent chance that the
+signature is a forgery and a 2% chance that it is genuine. Note that these probabilities need not be the same; here it is
+the result of the way the system is calibrated. This can be expressed mathematically as
+$$
+P(C=T | S=T) = 0.98,
+$$
+$$
+P(C=F | S=T) = 0.02,
+$$
+$$
+P(C=T | S=F) = 0.02,
+$$
+$$
+P(C=F | S=F) = 0.98.
+$$
+We therefore have all the probabilities of $P(C | S)$ obtained as part of the development of the system. What we are
+after is $P(S | C)$ and more specifically, $P(S=F | C=F)$. Thus we are looking for an inversion of the conditional
+probabilities, and that is given by Bayes' theorem,
+$$
+P(S | C) = \frac{ P(C | S) P(S) }{ P(C) },
+$$
+or more specifically,
+$$
+P(S=F | C=F) = \frac{ P(C=F | S=F) P(S=F) }{ P(C=F) }.
+$$
+
+:::{.callout-note}
+## Note
+Thinking back to the ancestral sampling we did in the disease example above, we sampled from two distributions, the
+distribution that described the prevalence of the disease in the population, followed by sampling from a distribution
+that described the performance of the test. After the sampling we divided by a normalisation terms to convert it
+to a probability.
+
+In Bayes' theorem we see the  theoretical foundation of this process. First we sample from $P(S)$, then we sample
+from $P(C | S)$, followed by division by $P(C)$, i.e. the normalisation.
+:::
+
+Now we know all the conditional probabilities on the right hand side but we don't know the marginal probabilities $P(S)$
+and $P(C)$. We can't do much about $P(C)$, at least not at the moment. Let's turn our attention to $P(S)$. This is the
+*prior* probability that a signature is a forgery ($P(S=F)$), or genuine ($P(S=T)$). The thing is, we don't really have
+these numbers - we simply don't know how many of all the signatures presented, are forgeries. Our options are either
+to give up, or to try and make a reasonable assumption of the prior probability $P(S=F)$. What is the prior probability
+that a signature is a forgery? It depends, the prevalence of crime differs from country to country. Crime statistics
+is often expressed as a number out 100 000 of the population. Of course, the higher the crime rate, the more useful your
+system is bound to be - a country with a zero crime rate will obviously have no use for your system. A crime rate of
+about 30/100 000 is considered to be high, let's work with that, i.e. we set
+$$
+p(S=F) = 0.0003
+$$
+and
+$$
+P(S=T) = 0.9997.
+$$
+
+The only remaining term on the right hand side of Bayes' equation is $P(C)$ and this is given by the marginal
+$$
+P(C=F) = \sum_S P(C=F, S) = \sum_S P(C=F | S) P(S).
+$$
+Writing it out,
+$$
+P(C=F) =  P(C=F | S=T) P(S=T) + P(C=F | S=F) P(S=F).
+$$
+Substituting the values we calculated above,
+$$
+P(C=F) =  0.02 * 0.9997 + 0.98 * 0.0003 = 0.02.
+$$
+Substituting the values in Bayes' theorem, we find that
+$$
+P(S=F | C=F) = \frac{ 0.98 * 0.0003}{0.02} = 0.015.
+$$
+This means that if the system indicates a forgery, the probability that it is actually genuine, i.e. that the system is
+mistaken, is 1 - 0.015 = 0.985.
+
+It will be a bad idea to try and sell this system, given this crime rate. In order to make your system viable, either
+you need to improve vastly on its accuracy, or your local crime rate must increase hundred-fold. The latter is
+undesirable, the former is a challenge.
+
 
 ## Fundamental problems in statistical practice
 
@@ -698,7 +940,7 @@ the situation instead.
 We will do a naïve implementation that closely follows the logic described above, followed by a slightly optimized version.
 
 ```{python}
-N = 100000
+N = 100_000
 
 parents = []
 
@@ -748,7 +990,7 @@ Let's tune the code a bit to run faster.  Instead of doing the trials
 one mouse at a time, we will do the whole bunch together.
 
 ```{python}
-N = 1000000
+N = 1_000_000
 
 # In N trials, pair two Bb mice and generate a child
 test_mice = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25], size=N)
