@@ -752,6 +752,12 @@ plt.hist(deviations_in_stds, bins=25);
 ```
 
 ```{python}
+pct_5, pct_95 = np.percentile(incomes, [5, 95])
+plt.hist(incomes, bins=25)
+plt.plot([pct_5, pct_95], [1, 1], 'ro')
+```
+
+```{python}
 deviations_in_stds[mccarthy_index]
 ```
 
