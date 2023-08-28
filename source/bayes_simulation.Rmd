@@ -57,7 +57,7 @@ and proceed gradually from there.
 
 ## Simple decision problems
 
-**Assessing the Likelihood That a Used Car Will Be Sound**
+### Assessing the Likelihood That a Used Car Will Be Sound
 
 Consider a problem in estimating the soundness of a used car one
 considers purchasing (after [@wonnacott1990introductory, pages 93--94]).
@@ -235,9 +235,9 @@ Fraction of faulty cars out of approved cars: 0.03 / (0.03 + 0.56) = 0.0508
 
 We see that every time the tree branches, it filters the cars: some go to one branch, the rest to another.  In our code, we used the AND (`&`) operator to find the intersection between faulty AND approved cars, i.e., to filter out from all faulty cars only the cars that were ALSO approved.
 
-### Probability interpretation
+## Probability interpretation
 
-**Probability from proportion**
+### Probability from proportion
 
 In these examples, we often calculate proportions.
 In the given simulation:
@@ -257,7 +257,7 @@ We discussed this idea previously in "The Law of Large Numbers".
 ** TODO: REFERENCE SECTION ON LARGE NUMBERS **
 -->
 
-**Ratios of proportions**
+#### Ratios of proportions
 
 At our mechanic's yard, we can ask "how many red cars here are faulty"?
 To calculate that, we'd first count the number of red cars, then the number of those red cars that are also broken, then calculate the ratio: `red_cars_faulty / red_cars`.
@@ -280,7 +280,7 @@ $$
 ** TODO: THE ABOVE MAY BE A SUBTLE POINT THAT NEEDS TO EXPANDED, BUT THE TEXT IS GETTING LONG AS-IS **
 -->
 
-**Probability relationships: conditional probability**
+### Probability relationships: conditional probability
 
 Here's one way of writing the probability that a car is broken:
 
@@ -346,7 +346,7 @@ $P(X | Y) = P(X \text{ and } Y) / P(Y)$
 
 Where (again) $\text{ and }$ means that *both* events occur.
 
-**Example: conditional probability**
+### Example: conditional probability
 
 Let's discuss a very relevant example.  You get a COVID test, and the test is negative.  Now, you would like to know what the chance is of you having COVID.
 
@@ -458,10 +458,9 @@ $P(C^+ | T^-) = 0.006 / 0.986 = 0.0061$ or 0.61%.
 
 This matches very closely our simulation result, so we have some confidence that we have done the calculation correctly.
 
-**Estimating Driving Risk for Insurance Purposes**
+### Estimating Driving Risk for Insurance Purposes
 
-Another sort of introductory problem, following after @feller1968introduction,
-p 122:
+Another sort of introductory problem, following after [@feller1968introduction, p 122]:
 
 A mutual insurance company charges its members according to the risk
 of having an car accident. It is known that there are two classes of
@@ -480,12 +479,10 @@ Another way to phrase this question is: given that a driver had an accident last
 We will proceed as follows:
 
 1. Generate a population of N people.  Label each as `good driver` or `poor driver`.
-
-1. Simulate the last year for each person: did they have an accident or not?
-
-2. Select only the ones that had an accident last year.
-
-3. Among those, calculate what their average risk is of making an accident.  This will indicate the appropriate insurance premium.
+2. Simulate the last year for each person: did they have an accident or not?
+3. Select only the ones that had an accident last year.
+4. Among those, calculate what their average risk is of making an accident.
+   This will indicate the appropriate insurance premium.
 
 ```{python}
 N = 100000
@@ -526,7 +523,7 @@ print(f'{premium:.0f} USD')
 
 The answer should be around 4450 USD.
 
-**Screening for Disease**
+### Screening for Disease
 
 <!---
 **TODO: SHALL WE REMOVE THIS PROBLEM, OR INTEGRATE PARTS OF ITS DESCRIPTION WITH THE COVID EXAMPLE?**
@@ -565,15 +562,11 @@ One may obtain an answer as follows:
 1.  Construct bucket A with 999 white beads and 1 black bead, and bucket B
     with 95 green beads and 5 red beads. A more complete problem that
     also discusses false negatives would need a third bucket.
-
 2.  Pick a bead from bucket A. If black, record "T," replace the bead, and
     end the trial. If white, continue to step 3.
-
 3.  If a white bead is drawn from bucket A, select a bead from bucket
-
     B. If red, record "F" and replace the bead, and if green record "N"
     and replace the bead.
-
 4.  Repeat steps 2-4 perhaps 10,000 times, and in the results count the
     proportion of "T"s to ("T"s plus "F"s) ignoring the "N"s).
 
@@ -639,7 +632,6 @@ the situation instead.
     'bb', using those probabilities. We were told that the "test mouse" is
     black, so if we draw 'bb', we try again. (Alternatively, we could draw 'BB'
     and 'Bb' with probabilities of 1/3 and 2/3 respectively.)
-
 2.  We now want to examine the offspring of the test mouse when mated
     with a brown "bb" mouse.  Specifically, we are only interested in
     cases where all offspring were black.  We will store the genetic
@@ -648,13 +640,10 @@ the situation instead.
 
     If our test mouse is "BB", we already know that all their offspring will
     be black ("Bb").  Thus, store "BB" in the parent list.
-
 3.  If our test mouse is "Bb", we have a bit more work to do.  Draw
     seven offspring from the middle row of Table tbl-mice-genetics.
     If all the offspring are black, store "Bb" in the parent list.
-
 4.  Repeat steps 1-3 perhaps 10000 times.
-
 5.  Now, out of all parents count the numbers of "BB" vs "Bb".
 
 We will do a naïve implementation that closely follows the logic described above, followed by a slightly optimized version.
@@ -813,7 +802,7 @@ The logic for a problem of Schlaifer's [-@schlaifer1961introduction, example
 heretofore been published and therefore must be considered tentative and
 requiring particular scrutiny.
 
-**An Intermediate Problem in Conditional Probability**
+### An Intermediate Problem in Conditional Probability
 
 Schlaifer employs a quality-control problem for his leading example of
 Bayesian estimation with Normal sampling. A chemical manufacturer wants
@@ -848,7 +837,7 @@ distribution (centered at 2.3) to see how frequently its mean exceeds
 2.5. This work is so straightforward that we need not even state the
 steps in the procedure.
 
-**Estimating the Posterior Distribution**
+### Estimating the Posterior Distribution
 
 Next we estimate the posterior distribution. @fig-batch_posterior shows the
 prior distribution of batch yields, based on 100 previous batches.
@@ -876,7 +865,6 @@ weighted proportions of sample means that fall into this interval.
     to (subtracted from) each of the nine x ~i~ , say, 1.03 + .05 = 1.08. For
     a distribution centered at 2.3, the values would be (1.84 + .22 = 2.06,
     1.75 + .22 = 1.97...).
-
 2.  Working with the distribution centered at 2.3 as an example:
     Constitute a universe of the values (1.84+.22=2.06, 1.75 + .22 =
     1.97...). Here we may notice that the variability in the sample
@@ -885,51 +873,45 @@ weighted proportions of sample means that fall into this interval.
     contrast to conventional Bayesian practice where the posterior is
     the result of the prior and sample means weighted by the reciprocals of the
     variances (see e.g. [@box1992bayesian, page 17 and Appendix A1.1]).
-
 3.  Draw nine observations from this universe (with replacement, of
     course), compute the mean, and record.
-
 4.  Repeat step 2 perhaps 1000 times and plot the distribution of
     outcomes.
-
 5.  Compute the percentages of the means within (say) .5 on each side of
     the sample mean, i. e. from 2.03--2.13. The resulting number — call
     it UP ^i^ — is the un-standardized (un-normalized) effect of this
     sub-distribution in the posterior distribution.
-
 6.  Repeat steps 1-5 to cover each other possible batch yield from 2.0
     to 3.0 (2.3 was just done).
-
 7.  Weight each of these sub-distributions — actually, its UP ^i^ --- by
     its prior probability, and call that WP ^i^ -.
-
 8.  Standardize the WP ^i^ s to a total probability of 1.0. The result
     is the posterior distribution. The value found is 2.283, which the
     reader may wish to compare with a theoretically-obtained result
     (which Schlaifer does not give).
 
-    This procedure must be biased because the numbers of "hits" will
-    differ between the two sides of the mean for all sub-distributions
-    except that one centered at the same point as the sample, but the
-    extent and properties of this bias are as-yet unknown. The bias
-    would seem to be smaller as the interval is smaller, but a small
-    interval requires a large number of simulations; a satisfactorily
-    narrow interval surely will contain relatively few trials, which is
-    a practical problem of still-unknown dimensions.
+This procedure must be biased because the numbers of "hits" will
+differ between the two sides of the mean for all sub-distributions
+except that one centered at the same point as the sample, but the
+extent and properties of this bias are as-yet unknown. The bias
+would seem to be smaller as the interval is smaller, but a small
+interval requires a large number of simulations; a satisfactorily
+narrow interval surely will contain relatively few trials, which is
+a practical problem of still-unknown dimensions.
 
-    Another procedure — less theoretically justified and probably more
-    biased — intended to get around the problem of the narrowness of the
-    interval, is as follows:
+Another procedure — less theoretically justified and probably more
+biased — intended to get around the problem of the narrowness of the
+interval, is as follows:
 
-    **5a.** Compute the percentages of the means on each side of the
-    sample mean, and note the smaller of the two (or in another possible
-    process, the difference of the two). The resulting number — call it
-    UP ^i^ — is the un-standardized (un-normalized) weight of this
-    sub-distribution in the posterior distribution.
+5.  (**5a.**) Compute the percentages of the means on each side of the sample
+    mean, and note the smaller of the two (or in another possible process, the
+    difference of the two). The resulting number — call it UP ^i^ — is the
+    un-standardized (un-normalized) weight of this sub-distribution in the
+    posterior distribution.
 
-    Another possible criterion — a variation on the procedure in 5a — is
-    the *difference* between the two tails; for a universe with the same
-    mean as the sample, this difference would be zero.
+Another possible criterion — a variation on the procedure in 5a — is
+the *difference* between the two tails; for a universe with the same
+mean as the sample, this difference would be zero.
 
 ## Conclusion
 
@@ -947,7 +929,6 @@ Simulation has two valuable properties for Bayesian analysis:
 
 1. It can provide an effective way to handle problems whose
    analytic solution may be difficult or impossible.
-
 2. Simulation can provide insight to problems that otherwise are
    difficult to understand fully, as is peculiarly the case with
    Bayesian analysis.
