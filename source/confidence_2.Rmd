@@ -483,7 +483,21 @@ of 12. Average the weight gain for that sample, and record the result.
 Take repeated samples, and record the result for each. We can then make
 a histogram of the results; it might look something like this:
 
-![](images/25-Chap-21_000.png)
+```{python, eval=TRUE, echo=FALSE}
+import numpy as np
+import matplotlib.pyplot as plt
+
+rnd = np.random.default_rng()
+weights = np.array([496, 544, 464, 416, 512, 560,
+                    608, 544, 480, 466, 512, 496])
+N = 10_000
+bootstrap_means = np.zeros(N)
+for i in range(N):
+    bootstrap_means[i] = np.mean(rnd.choice(weights, size=len(weights)))
+plt.hist(bootstrap_means, bins=25)
+plt.title('Distribution of average weights from samples')
+plt.xlabel('Average of weight sample');
+```
 
 Though we do not know the true average weight gain, we can use this
 histogram to estimate the bounds within which it falls. The merchant can
