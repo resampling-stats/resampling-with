@@ -633,22 +633,34 @@ bootstrap procedure for estimating a confidence limit around the mean,
 as follows:
 
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-```matlab
-' Program file: "confidence_2_00.rss"
+rnd = np.random.default_rng()
 
-DATA (11.4 13.4 13.5 13.8 13.9 14.4 14.5 15.0 15.1 15.8 16.0 16.3 16.5 16.9 17.0 17.2 17.5 19.0) c
-REPEAT 1000
-    SAMPLE 18 c c$
-    MEDIAN c$ d$
-    SCORE d$ z
-END
-HISTOGRAM z
-PERCENTILE z (2.5 97.5) k
-PRINT K
-' This problem would be approached conventionally with a binomial
-' procedure leading to quite wide confidence intervals (Deshpande, p. 32).
+data = np.array(
+    [11.4, 13.4, 13.5, 13.8, 13.9, 14.4, 14.5, 15.0, 15.1, 15.8, 16.0, 16.3,
+     16.5, 16.9, 17.0, 17.2, 17.5, 19.0]
+)
+
+n = 10000
+medians = np.zeros(n)
+
+for i in range(n):
+    sample = rnd.choice(data, size=18, replace=True)
+    # In the line above, replace=True is the default, so we could leave it out to
+    # get the same result.  We added it just to emphasize that bootstrap samples
+    # are samples _with_ replacement.
+    medians[i] = np.median(sample)
+
+plt.hist(medians, bins='auto')
+
+pp = np.percentile(medians, (2.5, 97.5))
+print(pp)
+
+# This problem would be approached conventionally with a binomial
+# procedure leading to quite wide confidence intervals (Deshpande, p. 32).
 ```
 
 <!---
@@ -676,10 +688,10 @@ Table 21-2
   -.749    -.752    -.753    -.766    -.805    -.866    -.926    -.971
   -.972    -.975    -1.018   -1.024   -1.066   -1.118   -1.145   -1.146
   -1.157   -1.282   -1.339   -1.420   -1.443   -1.478   -2.041   -2.092
-  -7.100                                                         
+  -7.100
   -------- -------- -------- -------- -------- -------- -------- --------
 
- Price elasticity of demand in various states at various dates (computed
+Price elasticity of demand in various states at various dates (computed
 from cigarette sales data preceding and following a tax change in a
 state) [@lyon1968price]
 
@@ -687,30 +699,42 @@ The positive observations (implying an increase in demand when the price
 rises) run against all theory, but can be considered to be the result
 simply of measurement errors, and treated as they stand. Aside from this
 minor complication, the reader may work this example similarly to the
-case of the Theban jars. Here is a RESAMPLING STATS program
-("cigarett").
+case of the Theban jars. Consider this program:
 
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-```matlab
-' Program file: "confidence_2_01.rss"
+rnd = np.random.default_rng()
 
-READ file “cigaret.dat” elast
-' Read in the data from an external file
-MEDIAN elast med-elas
-REPEAT 1000
-    SAMPLE 73 elast elast$
-    ' A bootstrap sample (note that the "\$" indicates a bootstrap counterpart
-    ' to the observed sample)
-    MEDIAN elast$ med$
-    SCORE med$ scrboard
-END
-HISTOGRAM scrboard
-PERCENTILE scrboard (2.5 97.5) interval
-PRINT med-elas interval
+data = np.array([
+    1.725, 1.139, 0.957, 0.863, 0.802, 0.517, 0.407, 0.304,
+    0.204, 0.125, 0.122, 0.106, 0.031, -0.032, -0.1,  -0.142,
+    -0.174, -0.234, -0.240, -0.251, -0.277, -0.301, -0.302, -0.302,
+    -0.307, -0.328, -0.329, -0.346, -0.357, -0.376, -0.377, -0.383,
+    -0.385, -0.393, -0.444, -0.482, -0.511, -0.538, -0.541, -0.549,
+    -0.554, -0.600, -0.613, -0.644, -0.692, -0.713, -0.724, -0.734,
+    -0.749, -0.752, -0.753, -0.766, -0.805, -0.866, -0.926, -0.971,
+    -0.972, -0.975, -1.018, -1.024, -1.066, -1.118, -1.145, -1.146,
+    -1.157, -1.282, -1.339, -1.420, -1.443, -1.478, -2.041, -2.092,
+    -7.100
+])
+data_median = np.median(data)
+
+n = 10000
+
+medians = np.zeros(n)
+
+for i in range(n):
+    sample = np.random.choice(data, size=73, replace=True)
+    medians[i] = np.median(sample)
+
+plt.hist(medians, bins='auto')
+
+pp = np.percentile(medians, (2.5, 97.5))
+print(pp)
 ```
-
 
 ![](images/25-Chap-21_001.png)
 
@@ -780,35 +804,28 @@ Here is a RESAMPLING STATS program ("mice-ci"):
 
 <!--- Resampling stats file; Matlab syntax closeish -->
 
-```matlab
-' Program file: "confidence_2_02.rss"
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-NUMBERS (94 38 23 197 99 16 141) treatmt
-' treatment group
-NUMBERS (52 10 40 104 51 27 146 30 46) control
-' control group
-REPEAT 1000
-    ' step 5 above
-    SAMPLE 7 treatmt treatmt$
-    ' step 2 above
-    SAMPLE 9 control control$
-    ' step 3
-    MEAN treatmt$ tmean
-    ' step 4
-    MEAN control$ cmean
-    ' step 4
-    SUBTRACT tmean cmean diff
-    ' step 4
-    SCORE diff scrboard
-    ' step 4
-END
-' step 5
-HISTOGRAM scrboard
-PERCENTILE scrboard (5 95) interval
-' step 6
-PRINT interval
+rnd = np.random.default_rng()
+
+treatment = np.array([94, 38, 23, 197, 99, 16, 141])
+control = np.array([52, 10, 40, 104, 51, 27, 146, 30, 46])
+
+n = 10000
+mean_delta = np.zeros(n)
+
+for i in range(n):
+    treatment_sample = rnd.choice(treatment, size=7, replace=True)
+    control_sample = rnd.choice(control, size=9, replace=True)
+    mean_delta[i] = np.mean(treatment_sample) - np.mean(control_sample)
+
+plt.hist(medians, bins='auto')
+
+pp = np.percentile(medians, (5, 95))
+print(pp)
 ```
-
 
 ![](images/25-Chap-21_002.png)
 
@@ -856,35 +873,27 @@ waiting until afterwards to discuss the logic of the inference.
 
 Here is a RESAMPLING STATS program ("myocar3"):
 
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+rnd = np.random.default_rng()
 
-```matlab
-' Program file: "confidence_2_03.rss"
+men = np.repeat([1, 0], repeats=[10, 125])
 
-URN 10#1 125#0 men
-' A bucket (called "men") with ten "1s" (infarctions) and 125 "0s" (no
-' infarction)
-REPEAT 1000
-    ' Do 1000 trials
-    SAMPLE 135 men a
-    ' Sample (with replacement) 135 numbers from the bucket, put them in a
-    COUNT a =1 b
-    ' Count the infarctions
-    DIVIDE b 135 c
-    ' Express as a proportion
-    SCORE c z
-    ' Keep score of the result
-END
-' End the trial, go back and repeat
-HISTOGRAM z
-' Produce a histogram of all trial results
-PERCENTILE z (2.5 97.5) k
-' Determine the 2.5th and 97.5th percentiles of all trial results; these
-' points enclose 95 percent of the results
-PRINT k
+n = 10000
+z = np.zeros(n)
+
+for i in range(n):
+    sample = rnd.choice(men, size=135, replace=True)
+    infarctions = np.sum(sample == 1)
+    z[i] = infarctions / 135
+
+plt.hist(medians, bins='auto')
+
+pp = np.percentile(z, (2.5, 97.5))
+print(pp)
 ```
-
 
 ![](images/25-Chap-21_003.png)
 
