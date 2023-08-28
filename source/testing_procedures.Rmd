@@ -228,22 +228,18 @@ the earlier explication of resampling taken altogether in earlier chapters
 than it is to the theory of hypothesis tests discussed in this chapter, but it
 is more expedient to present it here.
 
-**Computation of Probabilities with Resampling**
+## Computation of Probabilities with Resampling
 
 We can do the problem by hand as follows:
 
 1.  Constitute a bucket with either one blue and one pink ball, or 106
     blue and 100 pink balls.
-
 2.  Draw ten balls with replacement, count pinks, and record.
-
 3.  Repeat step (2) say 400 times.
-
 4.  Calculate proportion of results with 9 or 10 pinks.
 
 Or, we can take advantage of the speed and efficiency of the computer as
 follows:
-
 
 ```{python}
 import numpy as np
@@ -253,20 +249,35 @@ rnd = np.random.default_rng()
 
 n = 10000
 
-ones = np.zeros(n)
+females = np.zeros(n)
 
 for i in range(n):
-    sample = rnd.choice([1, 2], size=10, replace=True)
-    ones[i] = np.sum(sample == 1)
+    samp = rnd.choice(['female', 'male'], size=10, replace=True)
+    females[i] = np.sum(samp == 'female')
 
-plt.hist(ones, bins='auto')
-k = np.sum(ones >= 9)
-print(k / n)
+plt.hist(females, bins='auto')
+
+k = np.sum(females >= 9)
+kk = k / n
+print('Proportion with >= 9 females:', kk)
 ```
 
-![](images/23-Chap-19_000.png)
+```{r}
+n <- 10000
 
-Result: kk = 0.0108
+females <- numeric(n)
+
+for (i in 1:n) {
+    samp <- sample(c('female', 'male'), size=10, replace=TRUE)
+    females[i] <- sum(samp == 'female')
+}
+
+hist(females)
+
+k <- sum(females >= 9)
+kk <- k / n
+message('Proportion with >= 9 females: ', kk)
+```
 
 This outcome implies that there is roughly a one percent chance that one
 would observe 9 or 10 female births in a single sample of 10 calves if
@@ -277,7 +288,7 @@ calves being born.
 
 ## Conventional methods
 
-**The Sample Space and First Principles**
+### The Sample Space and First Principles
 
 Assume for a moment that our problem is a smaller one and therefore much
 easier — the probability of getting two females in two calves if the
@@ -289,22 +300,20 @@ possible combinations — FF, FM, MF, MM. Now we look at the ratio of the
 number of combinations that have 2 females to the total, which is 1/4.
 We may then interpret this probability.
 
-We might also use this method for (say) *five* female calves *in a row*
-. We can make a list of possibilities such as FFFFF, MFFFF, MMFFF,
-MMMFFF\...MFMFM\...MMMMM. There will be
+We might also use this method for (say) *five* female calves *in a row*. We can
+make a list of possibilities such as FFFFF, MFFFF, MMFFF, MMMFFF ... MFMFM ...
+MMMMM. There will be 2\*2\*2\*2\*2 = 32 possibilities, and 64 and 128
+possibilities for six and seven calves respectively. But when we get as high as
+ten calves, this method would become very troublesome.
 
-2\*2\*2\*2\*2 = 32 possibilities, and 64 and 128 possibilities for six
-and seven calves respectively. But when we get as high as ten calves,
-this method would become very troublesome.
-
-**Sample Space Calculations**
+### Sample Space Calculations
 
 For two females in a row, we could use the well known, and very simple,
 multiplication rule; we could do so even for ten females in a row. But
 calculating the probability of nine females in ten is a bit more
 complex.
 
-**Pascal's Triangle**
+### Pascal's Triangle
 
 One can use Pascal's Triangle to obtain binomial coefficients for p = .5
 and a sample size of 10, focusing on those for 9 or 10 successes. Then
@@ -316,14 +325,14 @@ resampling simulation described above because Pascal's Triangle requires
 that one understand the entire structure; simulation requires only that
 you follow the rules of the model.
 
-**The Quincunx**
+### The Quincunx
 
-The quincunx — a device that filters tiny balls through a set of bumper
-points not unlike a pinball machine, mentioned here simply for
-completeness — is more a simulation method than theoretical, but it may
-be considered "conventional." Hence, it is included here.
+The quincunx — a device that filters tiny balls through a set of bumper points
+not unlike a pinball machine, mentioned here simply for completeness — is more
+a simulation method than theoretical, but it may be considered "conventional."
+Hence, it is included here.
 
-**Table of Binomial Coefficients**
+### Table of Binomial Coefficients
 
 Pascal's Triangle becomes cumbersome or impractical with large
 numbers — say, 17 females of 20 births — or with probabilities other
@@ -333,7 +342,7 @@ sizes. One can also use the pre-computed table of binomial coefficients
 found in any standard text. But the probabilities for n = 10 and 9 or 10
 females are too small to be shown.
 
-**Binomial Formula**
+### Binomial Formula
 
 For larger sample sizes, one can use the binomial formula. The binomial
 formula gives no deeper understanding of the statistical structure than
@@ -341,19 +350,18 @@ does the Triangle (but it does yield a deeper understanding of the pure
 mathematics). With very large numbers, even the binomial formula is
 cumbersome.
 
-**The Normal Approximation**
+### The Normal Approximation
 
-When the sample size becomes too large for any of the above methods, one
-can then use the Normal approximation, which yields results close to the
-binomial (as seen very nicely in the output of the quincunx). But use of
-the Normal distribution requires an estimate of the standard deviation,
-which can be derived either by formula or by resampling. (See a more
-extended parallel discussion in @sec-confidence-two-approaches on confidence intervals for
-the Bush-Dukakis comparison.)
+When the sample size becomes too large for any of the above methods, one can
+then use the Normal approximation, which yields results close to the binomial
+(as seen very nicely in the output of the quincunx). But use of the Normal
+distribution requires an estimate of the standard deviation, which can be
+derived either by formula or by resampling. (See a more extended parallel
+discussion in @sec-confidence-two-approaches on confidence intervals for the
+Bush-Dukakis comparison.)
 
-The desired probability can be obtained from the Z formula and a
-standard table of the Normal distribution found in every elementary
-text.
+The desired probability can be obtained from the Z formula and a standard table
+of the Normal distribution found in every elementary text.
 
 The Z table can be made less mysterious if we generate it with
 simulation, or with graph paper or Archimedes' method, using as raw
@@ -373,12 +381,9 @@ mean. The steps are:
 1.  Establish the Normal shape — from the exercise above, or from the
     quincunx or Pascal's Triangle or the binomial formula or the formula
     for the Normal approximation or some other device.
-
 2.  Standardize that shape in standard deviations.
-
 3.  Compute the Z score for the sample mean — that is, its deviation
     from the universe mean in standard deviations.
-
 4.  Examine the Normal (or really, tables computed from graph paper,
     etc.) to find the probability of a mean deviating that far by
     chance.
@@ -392,25 +397,23 @@ adjustment.)
 [^bruce]: This is one of many issues that Peter Bruce first raised, and whose
     treatment here reflects back-and-forth discussion between us.
 
-In the example of the ten calves, the choice of a benchmark universe — a
-universe that (on average) produces equal proportions of males and
-females — seems rather straightforward and even automatic, requiring no
-difficult judgments. But in other cases the process requires more
-judgments.
+In the example of the ten calves, the choice of a benchmark universe
+— a universe that (on average) produces equal proportions of males and females
+— seems rather straightforward and even automatic, requiring no difficult
+judgments. But in other cases the process requires more judgments.
 
 Let's consider another case where the choice of a benchmark universe
 requires no difficult judgments. Assume the U.S. Department of Labor's
-Bureau of Labor Statistics takes a very large sample — say, 20,000
-persons — and finds a 10 percent unemployment rate. At some later time
-another but smaller sample is drawn — 2,000 persons — showing an 11
-percent unemployment rate. Should BLS conclude that unemployment has
-risen, or is there a large chance that the difference between 10 percent
-and 11 percent is due to sample variability? In this case, it makes
-rather obvious sense to ask how often a sample of 2,000 drawn from a
-universe of 10 percent unemployment (ignoring the variability in the
-larger sample) will be as different as 11 percent due solely to sample
-variability? This problem differs from that of the calves only in the
-proportions and the sizes of the samples.
+Bureau of Labor Statistics (BLS) takes a very large sample — say, 20,000
+persons — and finds a 10 percent unemployment rate. At some later time another
+but smaller sample is drawn — 2,000 persons — showing an 11 percent
+unemployment rate. Should BLS conclude that unemployment has risen, or is there
+a large chance that the difference between 10 percent and 11 percent is due to
+sample variability? In this case, it makes rather obvious sense to ask how
+often a sample of 2,000 drawn from a universe of 10 percent unemployment
+(ignoring the variability in the larger sample) will be as different as 11
+percent due solely to sample variability? This problem differs from that of the
+calves only in the proportions and the sizes of the samples.
 
 Let's change the facts and assume that a very large sample had not been
 drawn and only a sample of 2,000 had been taken, indicating 11 percent
@@ -427,14 +430,14 @@ drawn from the pooled universe would be as different as observed seems
 obvious.
 
 One of the reasons that the above cases — especially the two-sample
-case — seem so clearcut is that the variance of the benchmark hypothesis
-is not an issue, being implied by the fact that the samples deal with
-proportions. If the data were continuous, however, this issue would
-quickly arise. Consider, for example, that the BLS might take the same
-sorts of samples and ask unemployed persons the *lengths of time* they
-had been unemployed. Comparing a small sample to a very large one would
-be easy to decide about. And even comparing two small samples might be
-straightforward — simply pooling them as is.
+case — seem so clear-cut is that the variance of the benchmark hypothesis is
+not an issue, being implied by the fact that the samples deal with proportions.
+If the data were continuous, however, this issue would quickly arise. Consider,
+for example, that the BLS might take the same sorts of samples and ask
+unemployed persons the *lengths of time* they had been unemployed. Comparing
+a small sample to a very large one would be easy to decide about. And even
+comparing two small samples might be straightforward — simply pooling them as
+is.
 
 But what about if you have a sample of 2,000 with data on lengths of
 unemployment spells with a mean of 30 days, and you are asked the
