@@ -611,6 +611,7 @@ data = np.array(
     [11.4, 13.4, 13.5, 13.8, 13.9, 14.4, 14.5, 15.0, 15.1, 15.8, 16.0, 16.3,
      16.5, 16.9, 17.0, 17.2, 17.5, 19.0]
 )
+observed_median = np.median(data)
 
 n = 10000
 medians = np.zeros(n)
@@ -624,21 +625,44 @@ for i in range(n):
 
 plt.hist(medians, bins='auto')
 
-pp = np.percentile(medians, (2.5, 97.5))
-print(pp)
+print('Observed median aluminum content:', observed_median)
 
-# This problem would be approached conventionally with a binomial
-# procedure leading to quite wide confidence intervals (Deshpande, p. 32).
+pp = np.percentile(medians, (2.5, 97.5))
+print('Estimate of 95 percent confidence interval:', pp)
 ```
 
-<!---
-Reference is @deshpande1995statistical
+```{r}
+data = c(11.4, 13.4, 13.5, 13.8, 13.9, 14.4, 14.5,
+         15.0, 15.1, 15.8, 16.0, 16.3, 16.5, 16.9,
+         17.0, 17.2, 17.5, 19.0)
 
-In fact, it is the exact Theban jars problem they describe there.
+observed_median <- median(data)
+
+n <- 10000
+medians <- numeric(n)
+
+for (i in 1:n) {
+    sample <- sample(data, replace=TRUE)
+    medians[i] <- median(sample)
+}
+
+hist(medians)
+
+message('Observed median aluminum content: ', observed_median)
+
+pp <- quantile(medians, c(0.025, 0.975))
+message('Estimate of 95 percent confidence interval: ', pp[1], ' - ', pp[2])
+```
+
+(This problem would be approached conventionally with a binomial procedure
+leading to quite wide confidence intervals [@deshpande1995statistical, p. 32]).
+
+<!---
+@deshpande1995statistical used the exact Theban jars problem they describe
+there.
 -->
 
-**Example 21-5: Determining a Confidence Interval for the Median Price
-Elasticity of Demand for Cigarettes**
+### Example: Confidence Interval for the Median Price Elasticity of Demand for Cigarettes
 
 The data for a measure of responsiveness of demand to a price change
 (the "elasticity" — percent change in demand divided by percent change
@@ -710,7 +734,40 @@ plt.hist(medians, bins='auto')
 print('Observed median elasticity', data_median)
 
 pp = np.percentile(medians, (2.5, 97.5))
-print('Estimate of 95% confidence interval', pp)
+print('Estimate of 95 percent confidence interval', pp)
+```
+
+```{r}
+data = c(
+    1.725, 1.139, 0.957, 0.863, 0.802, 0.517, 0.407, 0.304,
+    0.204, 0.125, 0.122, 0.106, 0.031, -0.032, -0.1,  -0.142,
+    -0.174, -0.234, -0.240, -0.251, -0.277, -0.301, -0.302, -0.302,
+    -0.307, -0.328, -0.329, -0.346, -0.357, -0.376, -0.377, -0.383,
+    -0.385, -0.393, -0.444, -0.482, -0.511, -0.538, -0.541, -0.549,
+    -0.554, -0.600, -0.613, -0.644, -0.692, -0.713, -0.724, -0.734,
+    -0.749, -0.752, -0.753, -0.766, -0.805, -0.866, -0.926, -0.971,
+    -0.972, -0.975, -1.018, -1.024, -1.066, -1.118, -1.145, -1.146,
+    -1.157, -1.282, -1.339, -1.420, -1.443, -1.478, -2.041, -2.092,
+    -7.100)
+
+data_median <- median(data)
+
+n <- 10000
+
+medians <- numeric(n)
+
+for (i in 1:n) {
+    sample <- sample(data, replace=TRUE)
+    medians[i] <- median(sample)
+}
+
+hist(medians)
+
+message('Observed median elasticity: ', data_median)
+
+pp <- quantile(medians, c(0.025, 0.975))
+message('Estimate of 95 percent confidence interval: ',
+        pp[1], ' - ', pp[2])
 ```
 
 ## Measured Data Example: Confidence Intervals For a Difference Between Two Means
@@ -751,23 +808,17 @@ thus creating a universe that is effectively infinite.
 
 Here are the steps:
 
-**Step 1:** Consider the two samples separately as the relevant
-universes.
-
-**Step 2:** Draw a sample of 7 with replacement from the treatment group
-and calculate the mean.
-
-**Step 3:** Draw a sample of 9 with replacement from the control group
-and calculate the mean.
-
-**Step 4:** Calculate the difference in means (treatment minus control)
-& record.
-
-**Step 5:** Repeat steps 2-4 many times.
-
-**Step 6:** Review the distribution of resample means; the 5th and 95th
-percentiles are estimates of the endpoints of a 90 percent confidence
-interval.
+* **Step 1:** Consider the two samples separately as the relevant universes.
+* **Step 2:** Draw a sample of 7 with replacement from the treatment group and
+  calculate the mean.
+* **Step 3:** Draw a sample of 9 with replacement from the control group and
+  calculate the mean.
+* **Step 4:** Calculate the difference in means (treatment minus control)
+  & record.
+* **Step 5:** Repeat steps 2-4 many times.
+* **Step 6:** Review the distribution of resample means; the 5^th^ and 95^th^
+  percentiles are estimates of the endpoints of a 90 percent confidence
+  interval.
 
 Here is a {{< var lang >}} example:
 
@@ -815,10 +866,11 @@ for (i in 1:n) {
 
 hist(mean_delta)
 
-message('Observed difference in means: ', observed_diff)
+message('Observed difference in means: ', round(observed_diff, 2))
 
 pp <- quantile(mean_delta, c(0.05, 0.95))
-message('Estimate of 90 percent confidence interval: ', pp)
+message('Estimate of 90 percent confidence interval: ',
+        round(pp[1], 2), ' - ', round(pp[2], 2))
 ```
 
 **Interpretation:** This means that one can be 90 percent confident that
@@ -880,6 +932,25 @@ plt.hist(z, bins='auto')
 
 pp = np.percentile(z, (2.5, 97.5))
 print('Estimate of 95 percent confidence interval', pp)
+```
+
+```{r}
+men <- rep(c(1, 0), c(10, 125))
+
+n <- 10000
+z <- numeric(n)
+
+for (i in 1:n) {
+    sample <- sample(men, replace=TRUE)
+    infarctions <- sum(sample == 1)
+    z[i] <- infarctions / 135
+}
+
+hist(z)
+
+pp <- quantile(z, c(0.025, 0.975))
+message('Estimate of 95 percent confidence interval: ',
+        round(pp[1], 2), ' - ', round(pp[2], 2))
 ```
 
 (The result is the 95 percent confidence interval, enclosing 95 percent of the
@@ -1016,25 +1087,23 @@ because of the correspondence of this value to a conventional breakpoint
 in statistical inference. So we could experiment with various universes
 by trial and error to find this universe.
 
-We can learn from our previous simulations of the Bush-- Dukakis poll in
-Approach 1 that about 95 percent of the samples fall within .025 on
-either side of the sample mean (which we had been implicitly assuming is
-the location of the population mean). If we assume (and there seems no
-reason not to) that the dispersions of the universes we experiment with
-are the same, we will find (by symmetry) that the universe we seek is
-centered on those points .025 away from .56, or .535 and .585.
+We can learn from our previous simulations of the Bush — Dukakis poll in
+Approach 1 that about 95 percent of the samples fall within .025 on either side
+of the sample mean (which we had been implicitly assuming is the location of
+the population mean). If we assume (and there seems no reason not to) that the
+dispersions of the universes we experiment with are the same, we will find (by
+symmetry) that the universe we seek is centered on those points .025 away from
+.56, or .535 and .585.
 
-From the standpoint of Approach 2, then, the conventional sample formula
-that is centered at the mean can be considered a shortcut to estimating
-the boundary distributions. We say that the boundary is at the point
-that centers a distribution which has only a (say) 2.5 percent chance of
-producing the observed sample; it is that distribution which is the
-subject of the discussion, and not the distribution which is centered at
-$\mu = \bar{x}$. Results of these simulations are shown in Figure 21-1.
+From the standpoint of Approach 2, then, the conventional sample formula that
+is centered at the mean can be considered a shortcut to estimating the boundary
+distributions. We say that the boundary is at the point that centers
+a distribution which has only a (say) 2.5 percent chance of producing the
+observed sample; it is that distribution which is the subject of the
+discussion, and not the distribution which is centered at $\mu = \bar{x}$.
+Results of these simulations are shown in @fig-app-2-bush-duk.
 
-![](images/25-Chap-21_004.png)
-
-**Figure 21-1**
+![Approach 2 for Bush-Dukakis problem](images/25-Chap-21_004.png){#fig-app-2-bush-duk}
 
 About these distributions centered at .535 and .585 — or more
 importantly for understanding an election situation, the universe
@@ -1058,13 +1127,11 @@ confidence interval.
 
 To implement Approach 2 for measured data, one may proceed exactly as
 with Approach 1 above except that the output of the simulation with the
-sample mean as midpoint will be used for guidance about where to locate
-trial universes for Approach 2. The results for the tree diameter data
-(Table 21-1) are shown in Figure 21-2.
+sample mean as midpoint will be used for guidance about where to locate trial
+universes for Approach 2. The results for the tree diameter data
+(@tbl-tree-diameters) are shown in @fig-app-2-trees.
 
-![](images/25-Chap-21_005.png)
-
-**Figure 21-2**
+![Approach 2 for tree diameters](images/25-Chap-21_005.png){#fig-app-2-trees}
 
 ## Interpretation of Approach 2
 
