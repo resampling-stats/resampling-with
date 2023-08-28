@@ -245,22 +245,24 @@ Or, we can take advantage of the speed and efficiency of the computer as
 follows:
 
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-```matlab
-' Program file: "testing_procedures_00.rss"
+rnd = np.random.default_rng()
 
-REPEAT 1000
-    GENERATE 10 1,2 a
-    COUNT a =1 b
-    SCORE b z
-END
-HISTOGRAM z
-COUNT z >=9 k
-DIVIDE k 1000 kk
-PRINT kk
+n = 10000
+
+ones = np.zeros(n)
+
+for i in range(n):
+    sample = rnd.choice([1, 2], size=10, replace=True)
+    ones[i] = np.sum(sample == 1)
+
+plt.hist(ones, bins='auto')
+k = np.sum(ones >= 9)
+print(k / n)
 ```
-
 
 ![](images/23-Chap-19_000.png)
 
