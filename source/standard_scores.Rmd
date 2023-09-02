@@ -367,7 +367,7 @@ Congress: the Speaker of the House of Representatives, Republican [Kevin
 McCarthy](https://en.wikipedia.org/wiki/Kevin_McCarthy), and the progressive
 activist and Democrat [Alexandria
                        Ocasio-Cortez](https://en.wikipedia.org/wiki/Alexandria_Ocasio-Cortez).
-We will refer to both using their initials: KOM for Kevin Owen McCarthy and OAC
+We will refer to both using their initials: KOM for Kevin Owen McCarthy and AOC
 for Alexandra Ocasio-Cortez.
 
 By scrolling through the CSV file, or the PDF of Kaptur's table linked above,
@@ -431,7 +431,7 @@ kom_income
 Here is the corresponding index and `incomes` value for AOC:
 
 ```{python}
-# Index (position) of OAC's value in the "incomes" array.
+# Index (position) of AOC's value in the "incomes" array.
 aoc_rank = 361
 aoc_index = aoc_rank - 1
 # Show the median household income from AOC's district
@@ -441,7 +441,7 @@ aoc_income
 ```
 
 ```{r}
-# Index (position) of OAC's value in the "incomes" array.
+# Index (position) of AOC's value in the "incomes" array.
 aoc_rank = 361
 aoc_index = aoc_rank
 # Show the median household income from AOC's district
