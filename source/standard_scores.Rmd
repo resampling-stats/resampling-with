@@ -603,132 +603,104 @@ print('Middle rank:', hi_to_lo_ranks[220])
 print('Quantile position:', quantile_positions[220])
 ```
 
-```{r}
-message('Quantile position for rank 221: ', quantile_positions[221])
-```
-
-The value corresponding to the QP of 0.5 is the *quantile value*, or just
-*quantile* for short:
+The value corresponding to the QP of 0.5 is the *quantile value*, or just *quantile* for short:
 
 ```{python}
 # Quantile value for 0.5
-print('Quantile value for QP of 0.5:', sorted_incomes[221])
+print('Quantile value for QP of 0.5:', sorted_incomes[220])
 ```
 
-```{r}
-# Quantile value for 0.5
-message('Quantile value for QP of 0.5: ', sorted_incomes[221])
-```
-
-In fact we can ask {{< var lang >}} for this *value* (quantile) directly, using
-{{< var np_or_r >}}'s `quantile` function:
+In fact we can ask {lang for this *value* (quantile) directly, using the `quantile` function:
 
 ```{python}
 np.quantile(sorted_incomes, 0.5)
 ```
 
-```{r}
-quantile(sorted_incomes, 0.5)
-```
-
-We've used the sorted values above, but the `quantile` routine will do the
-sorting for us, internally, so we can also use the unsorted values:
+And in fact, the `quantile` routine will do the sorting for us, internally, so we can also write:
 
 ```{python}
 np.quantile(incomes, 0.5)
 ```
 
-```{r}
-quantile(incomes, 0.5)
-```
+Call this the 0.5 *quantile* --- the value corresponding to the 0.5 QP.
 
-Call this the 0.5 *quantile* — the value corresponding to the 0.5 QP.
-
-This is an interesting value.  Notice that, by the definition of QP, exactly
-half of the remaining values (after excluding the 0.5 quantile value) have
-lower rank, and are therefore less than the 0.5 quantile value.  Similarly
-exactly half of the remaining values are greater than the 0.5 quantile.   You
-may recognize this as the *median* value.  The median is such a common quartile
-value that Numpy / R have a `median` function as a shortcut for
+This is an interesting value.  Notice that, by the definition of QP, exactly half of the remaining values (after excluding the 0.5 quantile value) have lower rank, and are therefore less   than the 0.5 quantile value.  Similarly exactly half of the remaining values are greater than the 0.5 quantile.   You may recognize this as the *median* value.  This is such a common quartile value that Numpy / R have a function `median` as a shortcut for
 `np.quantile(data, 0.5)`.
 
 ```{python}
 np.median(incomes)
 ```
 
-```{r}
-median(incomes)
-```
-
 Another interesting QP is 0.25.  We find the QP of 0.25 at rank:
 
 ```{python}
-qp25_rank = (441 - 1) * 0.25 + 1
-qp25_rank
-```
-
-```{r}
-qp25_rank <- (441 - 1) * 0.25 + 1
-qp25_rank
+(441 - 1) * 0.25 + 1
 ```
 
 ```{python}
-print('Rank corresponding to QP 0.25:', qp25_rank
 # Therefore, index 110 (Python indices start from 0)
-qp25_index = qp25_rank - 1
-print('0.25 quantile value:', sorted_incomes[qp25_index])
-print('0.25 quantile value using np.quantile:', np.quantile(incomes, 0.25))
+print('25% rank:', hi_to_lo_ranks[110])
+print('0.25 quantile value:', sorted_incomes[110])
+print('0.25 quantile value using np.quantile:',
+      np.quantile(incomes, 0.25))
 ```
 
-```{r}
-message('Rank corresponding to QP 0.25: ', qp25_rank
-message('0.25 quantile value: ', sorted_incomes[qp25_rank])
-message('0.25 quantile value using quantile: ', quantile(incomes, 0.25))
-```
-
-```{python, eval=TRUE, echo=FALSE}
+```{python}
 ax, secax = plot_ranks_qps()
 qp25 = 111
 q25 = np.quantile(incomes, 0.25)
 x_min, x_max, y_min, y_max = ax.axis()
-ax.plot([qp25, qp25], [y_min, q25], 'k:')
+ax.axvline(qp25, linestyle=':', color='k')
 ax.plot([qp25, x_min], [q25, q25], 'k:', label='0.25 quantile')
 ax.legend()
 ```
 
-Call the 0.25 quantile value $V$.  $V$ is the number such that 25% of the
-remaining values are less than $V$, and 75% are greater.
+Call the 0.25 quantile value $V$.  $V$ is the number such that 25% of the remaining values are less than $V$, and 75% are greater.
 
-Now let's think about the 0.01 quantile.  We don't have a value exactly
-corresponding to this QP, because there is no rank exactly corresponding to the
-QP of 0.01:
+
+Now let's think about the 0.01 quantile.  We don't have a value exactly corresponding to this quantile position, because there is no rank exactly corresponding to the 0.01 quantile position:
 
 ```{python}
-qp001 = (441 - 1) * 0.01 + 1
-# Not a whole number - no exactly corresponding rank.
-qp001
+rank_for_qp001 = (441 - 1) * 0.01 + 1
+rank_for_qp001
 ```
 
-```{r}
-qp001 <- (441 - 1) * 0.01 + 1
-# Not a whole number - no exactly corresponding rank.
-qp001
+Let's have a look at the first 10 values:
+
+```{python}
+def plot_ranks_qps_001():
+    fig, ax = plt.subplots()
+    ax.plot(hi_to_lo_ranks[:10], sorted_incomes[:10], 
+            color='blue', marker='+',
+            linestyle=':')
+    ax.set_title('Ranked median household incomes for congressional districts')
+    ax.set_xlabel('Rank')
+    ax.set_xticks([1, 2, 4, 6, 8, 10])
+    ax.set_ylabel('Median household income')
+    secax = ax.secondary_xaxis('top', functions=(rank2qp, qp2rank))
+    secax.set_xlabel('Gradient position')
+    secax.set_xticks(np.linspace(0, 0.02, 5));
+    return ax, secax
+    
+plot_ranks_qps_001();
 ```
 
-Let's have a look at the first 10 ranks / QPs, and incomes:
+What then, is the quantile value for a QP = 0.01?   There are various ways to answer that question, but one obvious way, and the default for Numpy / R, is to draw a straight line up from the matching rank --- or equivalently, down from the QP --- then note where that line crosses the lines joining the points on the graph above, and look across to the y-axis for the corresponding value:
 
-```{python, eval=TRUE, echo=FALSE}
-fig, ax = plt.subplots()
-ax.plot(hi_to_lo_ranks[:10], sorted_incomes[:10],
-        color='blue', marker='+',
-        linestyle=':')
-ax.set_title('Ranked median household incomes for congressional districts')
-ax.set_xlabel('Rank')
-# ax.set_xticks([1, 100, 200, 300, 400, 441])
-ax.set_ylabel('Median household income')
-secax = ax.secondary_xaxis('top', functions=(rank2qp, qp2rank))
-secax.set_xlabel('Gradient position')
+```{python}
+ax, secax = plot_ranks_qps_001()
+q001 = np.quantile(incomes, 0.01)
+ax.axvline(rank_for_qp001, linestyle=':', color='k')
+ax.plot([rank_for_qp001, 0], [q001, q001], 'k:', label='0.01 quantile')
+ax.legend();
 ```
+
+```{python}
+np.quantile(incomes, 0.01)
+```
+
+This is called the *linear* method --- because it uses straight lines joining the points to estimate the quantile value for a QP that does not correspond to a whole-number rank.
+
 
 The *median* is the value corresponding to the quantile position of 0.5 — or,
 equivalently — the percentile position of 50.[^median-complications]
