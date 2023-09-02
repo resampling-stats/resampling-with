@@ -539,7 +539,10 @@ quantile_positions[1:5]
 
 Let's plot the ranks and the QPs together on the x-axis:
 
+
 ```{python echo=FALSE, eval=TRUE}
+hi_to_lo_ranks = get_var('hi_to_lo_ranks')
+sorted_incomes = get_var('sorted_incomes')
 L = len(hi_to_lo_ranks)
 
 def rank2qp(r):
@@ -551,7 +554,7 @@ def qp2rank(qp):
 # Plot blue crosses at data points.
 def plot_ranks_qps():
     fig, ax = plt.subplots()
-    ax.plot(hi_to_lo_ranks, sorted_incomes, 
+    ax.plot(hi_to_lo_ranks, sorted_incomes,
             color='blue', marker='+',
             linestyle=':')
     ax.set_title('Ranked median household incomes for congressional districts')
@@ -634,8 +637,13 @@ np.quantile(incomes, 0.5)
 
 Call this the 0.5 *quantile* --- the value corresponding to the 0.5 QP.
 
-This is an interesting value.  Notice that, by the definition of QP, exactly half of the remaining values (after excluding the 0.5 quantile value) have lower rank, and are therefore less   than the 0.5 quantile value.  Similarly exactly half of the remaining values are greater than the 0.5 quantile.   You may recognize this as the *median* value.  This is such a common quartile value that Numpy / R have a function `median` as a shortcut for
-`np.quantile(data, 0.5)`.
+This is an interesting value.  Notice that, by the definition of QP, exactly
+half of the remaining values (after excluding the 0.5 quantile value) have
+lower rank, and are therefore less   than the 0.5 quantile value.  Similarly
+exactly half of the remaining values are greater than the 0.5 quantile.   You
+may recognize this as the *median* value.  This is such a common quantile value
+that {{< var np_or_r >}} has a function [`median`]{.r}[`np.median`]{.python} as
+a shortcut for [`quantile(data, 0.5)`]{.r}[`np.quantile(data, 0.5)`]{.python}.
 
 ```{python}
 np.median(incomes)
@@ -644,18 +652,33 @@ np.median(incomes)
 Another interesting QP is 0.25.  We find the QP of 0.25 at rank:
 
 ```{python}
-(441 - 1) * 0.25 + 1
+qp25_rank = (441 - 1) * 0.25 + 1
+qp25_rank
+```
+
+```{r}
+qp25_rank <- (441 - 1) * 0.25 + 1
+qp25_rank
 ```
 
 ```{python}
 # Therefore, index 110 (Python indices start from 0)
-print('25% rank:', hi_to_lo_ranks[110])
-print('0.25 quantile value:', sorted_incomes[110])
+qp25_index = qp25_rank - 1
+print('Rank corresponding to QP 0.25:', qp25_rank)
+print('0.25 quantile value:', sorted_incomes[qp25_index])
 print('0.25 quantile value using np.quantile:',
       np.quantile(incomes, 0.25))
 ```
 
-```{python}
+```{r}
+message('Rank corresponding to QP 0.25: ', qp25_rank)
+message('0.25 quantile value: ', sorted_incomes[qp25_rank])
+message('0.25 quantile value using quantile: ', quantile(incomes, 0.25))
+```
+
+```{python, eval=TRUE, echo=FALSE}
+incomes = get_var('incomes')
+
 ax, secax = plot_ranks_qps()
 qp25 = 111
 q25 = np.quantile(incomes, 0.25)
@@ -672,6 +695,11 @@ Now let's think about the 0.01 quantile.  We don't have a value exactly correspo
 
 ```{python}
 rank_for_qp001 = (441 - 1) * 0.01 + 1
+rank_for_qp001
+```
+
+```{r}
+rank_for_qp001 <- (441 - 1) * 0.01 + 1
 rank_for_qp001
 ```
 
@@ -703,6 +731,8 @@ lines joining the values to the left and right of the QP on the graph above,
 and look across to the y-axis for the corresponding value:
 
 ```{python, eval=TRUE, echo=FALSE}
+rank_for_qp001 = get_var('rank_for_qp001')
+
 ax, secax = plot_ranks_qps_001()
 
 q001 = np.quantile(incomes, 0.01)
@@ -745,24 +775,15 @@ mean_income <- mean(incomes)
 ```
 
 ```{python, eval=TRUE, echo=FALSE}
+kom_income = get_var('kom_income')
+aoc_income = get_var('aoc_income')
+
 plt.hist(incomes, bins=25);
 plt.title('Median household income for 2023 congressional districts');
 plt.plot(kom_income, 2, 'ro', label='KOM')
 plt.plot(aoc_income, 2, 'bo', label='AOC')
-plt.plot(mean_income, 2, 'ko', label='Mean')
+plt.plot(np.mean(incomes), 2, 'ko', label='Mean')
 plt.legend()
-```
-
-```{r echo=FALSE}
-hist(incomes, breaks=25,
-    main='Median household income for 2023 congressional districts')
-points(kom_income, 2, pch=16, col='red')
-points(aoc_income, 2, pch=16, col='blue')
-points(mean_income, 2, pch=16, col='black')
-legend("topright",
-       legend = c("KOM", "AOC", "Mean"),
-       col = c('red', 'blue', 'black'),
-       pch = 16)
 ```
 
 ```{python}
