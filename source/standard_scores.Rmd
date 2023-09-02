@@ -665,12 +665,12 @@ rank_for_qp001 = (441 - 1) * 0.01 + 1
 rank_for_qp001
 ```
 
-Let's have a look at the first 10 values:
+Let's have a look at the first 10 values for rank / QP and incomes:
 
-```{python}
+```{python, eval=TRUE, echo=FALSE}
 def plot_ranks_qps_001():
     fig, ax = plt.subplots()
-    ax.plot(hi_to_lo_ranks[:10], sorted_incomes[:10], 
+    ax.plot(hi_to_lo_ranks[:10], sorted_incomes[:10],
             color='blue', marker='+',
             linestyle=':')
     ax.set_title('Ranked median household incomes for congressional districts')
@@ -681,14 +681,20 @@ def plot_ranks_qps_001():
     secax.set_xlabel('Gradient position')
     secax.set_xticks(np.linspace(0, 0.02, 5));
     return ax, secax
-    
+
 plot_ranks_qps_001();
 ```
 
-What then, is the quantile value for a QP = 0.01?   There are various ways to answer that question, but one obvious way, and the default for Numpy / R, is to draw a straight line up from the matching rank --- or equivalently, down from the QP --- then note where that line crosses the lines joining the points on the graph above, and look across to the y-axis for the corresponding value:
+What then, is the quantile value for QP = 0.01?  There are various ways to
+answer that question [@hyndman1996sample], but one obvious way, and the default
+for {{< var np_or_r >}}, is to draw a straight line up from the matching rank
+— or equivalently, down from the QP — then note where that line crosses the
+lines joining the values to the left and right of the QP on the graph above,
+and look across to the y-axis for the corresponding value:
 
-```{python}
+```{python, eval=TRUE, echo=FALSE}
 ax, secax = plot_ranks_qps_001()
+
 q001 = np.quantile(incomes, 0.01)
 ax.axvline(rank_for_qp001, linestyle=':', color='k')
 ax.plot([rank_for_qp001, 0], [q001, q001], 'k:', label='0.01 quantile')
@@ -699,28 +705,22 @@ ax.legend();
 np.quantile(incomes, 0.01)
 ```
 
-This is called the *linear* method --- because it uses straight lines joining the points to estimate the quantile value for a QP that does not correspond to a whole-number rank.
+```{r}
+quantile(incomes, 0.01)
+```
 
+This is called the *linear* method — because it uses straight lines joining the
+points to estimate the quantile value for a QP that does not correspond to
+a whole-number rank.
 
-The *median* is the value corresponding to the quantile position of 0.5 — or,
-equivalently — the percentile position of 50.[^median-complications]
-
-[^median-complications]: It is true that median is the value at the 50^th^
-    percentile position, but we will only have value at that exact position
-    if we have an odd number of values, as we do in the congress income
-    example.  Say we have $n$ values (in our case $n = 441$. If $n$ is *odd*,
-    then the length of the line from 1 to $n$ is *even*, the 50th percentile
-    position $\frac{n}{2}$ is a whole number, and corresponds to middle-ranked
-    value in the data. If $n$ is even, the length of the line 1 to $n$ is odd,
-    $\frac{n}{2}$ is not a whole number and does not correspond to the rank of
-    any value in the data.  In that case, we have to work out what to do.
-    There are various different methods to solve this [@hyndman1996sample], of
-    which the most straightforward is to take the average of the values at the
-    whole-number ranks either side of $\frac{n}{2}$.
 
 ## Unusual values compared to the distribution
 
-So far, it looks as if AOC's district is fairly poor, and KOM's district is relatively wealthy.  But — are either of their districts *unusual* in their wealth or poverty?
+Now we return the problem of whether KOMs and AOCs districts are unusual in
+terms of their median household incomes.  From what we have so far, we might
+conclude that AOC's district is fairly poor, and KOM's district is relatively
+wealthy.  But — are either of their districts *unusual* in their wealth or
+poverty?
 
 To answer that question, we have to think about the *distribution* of values.
 Are either AOC's or KOM's district outside the typical spread of values for
@@ -734,7 +734,7 @@ mean_income = np.mean(incomes)
 mean_income <- mean(incomes)
 ```
 
-```{python echo=FALSE}
+```{python, eval=TRUE, echo=FALSE}
 plt.hist(incomes, bins=25);
 plt.title('Median household income for 2023 congressional districts');
 plt.plot(kom_income, 2, 'ro', label='KOM')
