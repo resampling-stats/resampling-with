@@ -277,7 +277,7 @@ same procedure.  These are ranks from high to low, meaning 1 is the highest medi
 rank_col = district_income['Rank']
 hi_to_lo_ranks = np.array(rank_col)
 # Show the first five values, by indexing with a slice.
-ranks[:5]
+hi_to_lo_ranks[:5]
 ```
 
 :::
@@ -336,11 +336,21 @@ Notice there are 441 values in the whole vector, one of each congressional
 district:
 
 ```{python}
+len(incomes)
+```
+
+```{r}
 length(incomes)
 ```
 
 While we are at it, let us also get the values from the "Rank" column, with the
 same procedure.  These are ranks from high to low, meaning 1 is the highest median income, and 441 is the lowest median income.
+
+```{python}
+hi_to_lo_ranks = district_income['Rank']
+# Show the first five values, by indexing with a slice.
+hi_to_lo_ranks[:5]
+```
 
 ```{r}
 hi_to_lo_ranks <- district_income$Rank
@@ -504,15 +514,15 @@ and the QP is 1.
 Now consider the rank of 100.  It has got $\frac{(100 - 1)}{440}$ of the way
 along the line, and the QP position is `r round(99 / 440, 2)`.
 
-More generally, we can translate the low-to-high ranks to QPs with:
+More generally, we can translate the high-to-low ranks to QPs with:
 
 ```{python}
 # Length of the line defining quantile positions.
 # Start is rank 1 (quantile position 0).
 # End is rank 441 (quantile position 1).
-distance = len(lo_to_hi_ranks) - 1  # 440 in our case.
+distance = len(hi_to_lo_ranks) - 1  # 440 in our case.
 # What proportion along the line does each value get to?
-quantile_positions = (lo_to_hi_ranks - 1) / distance
+quantile_positions = (hi_to_lo_ranks - 1) / distance
 # Show the first five.
 quantile_positions[:5]
 ```
@@ -521,8 +531,8 @@ quantile_positions[:5]
 # Length of the line defining quantile positions.
 # Start is rank 1 (quantile position 0).
 # End is rank 441 (quantile position 1).
-distance <- length(lo_to_hi_ranks) - 1  # 440 in our case.
-quantile_positions <- (lo_to_hi_ranks - 1) / distance
+distance <- length(hi_to_lo_ranks) - 1  # 440 in our case.
+quantile_positions <- (hi_to_lo_ranks - 1) / distance
 # Show the first five.
 quantile_positions[1:5]
 ```
@@ -761,11 +771,7 @@ plt.hist(deviations, bins=25);
 ```
 
 ```{python}
-deviations[mccarthy_index]
-```
-
-```{python}
-mccarthy_households - np.mean(incomes)
+deviations[kom_index]
 ```
 
 ```{python}
@@ -773,12 +779,12 @@ np.mean(deviations)
 ```
 
 ```{python}
-abs_deviation = np.abs(deviations)
-abs_deviation
+abs_deviations = np.abs(deviations)
+abs_deviations
 ```
 
 ```{python}
-mad = np.mean(abs_deviation)
+mad = np.mean(abs_deviations)
 mad
 ```
 
@@ -788,7 +794,7 @@ plt.hist(deviations_in_mads, bins=25);
 ```
 
 ```{python}
-deviations_in_mads[mccarthy_index]
+deviations_in_mads[kom_index]
 ```
 
 ```{python}
@@ -838,7 +844,7 @@ plt.plot([pct_5, pct_95], [1, 1], 'ro')
 ```
 
 ```{python}
-deviations_in_stds[mccarthy_index]
+deviations_in_stds[kom_index]
 ```
 
 ## Standard scores to compare values on different scales

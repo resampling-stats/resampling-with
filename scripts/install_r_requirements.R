@@ -16,7 +16,7 @@ if (getOption('repos')["CRAN"] == "@CRAN@") {
 
 # https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them
 # "remotes" for dev version of reticulate - see below.
-to_install <- c("optparse", "fs", "kableExtra", 'quarto', 'remotes')
+to_install <- c("optparse", "fs", "kableExtra", 'quarto', 'remotes', 'formattable')
 to_install <- to_install[!(to_install %in% installed.packages()[,"Package"])]
 if (length(to_install)) {
     install.packages(to_install, dependencies=TRUE)
