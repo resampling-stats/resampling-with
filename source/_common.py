@@ -20,4 +20,6 @@ _npr.default_rng = _default_seeded_rng
 
 # Python variable in Python edition else R variable.
 def get_var(name):
-    return globals().get(name, getattr(r, name))
+    if name in globals():
+        return globals()[name]
+    return getattr(r, name)

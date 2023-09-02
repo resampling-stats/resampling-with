@@ -663,9 +663,8 @@ qp25_rank
 
 ```{python}
 # Therefore, index 110 (Python indices start from 0)
-qp25_index = qp25_rank - 1
 print('Rank corresponding to QP 0.25:', qp25_rank)
-print('0.25 quantile value:', sorted_incomes[qp25_index])
+print('0.25 quantile value:', sorted_incomes[110])
 print('0.25 quantile value using np.quantile:',
       np.quantile(incomes, 0.25))
 ```
