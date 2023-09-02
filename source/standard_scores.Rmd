@@ -18,7 +18,7 @@ jupyter:
 source("_common.R")
 ```
 
-# Ranks, quantile positions and Standard Scores
+# Ranks, quantiles and Standard Scores
 
 Sometimes have a set of measures, in some particular units, and we want some way to see quickly how these measures compare to one another, and how they may compare to other measures, in different units.
 
@@ -28,20 +28,23 @@ rank)?
 
 We can derive quantile positions from ranks.  These are values from 0 through
 1 that are closer to 1 for high rank values, and closer to 0 for low rank
-values.  You will see what we mean later in the chapter.
+values.  Each value in the data has a rank, and a corresponding quantile
+position.  We can also look at the *value* corresponding to each quantile
+position, and these are the *quantiles*. You will see what we mean later in the
+chapter.
 
-Ranks and quantile positions give an idea whether the measure is high or low compared
-to the other values, but they do not immediately tell us whether the measure
-is exceptional or unusual.  To do that, we may want to ask whether the measure
-falls outside the typical range of values — that is, how the measure compares
-to the *distribution* of values.  One common way of doing this is to
-re-express the measures (values) as *standard scores*, where the standard
-score for a particular value tells you how far the value is from the *center*
-of the distribution, in terms of the typical *spread* of the distribution.
-Standard values are particularly useful to allow us to *compare* different
-types of measures on a standard scale.  They translate the units of
-measurement into *standard* and comparable units.  We will explain this more
-towards the end of the chapter.
+Ranks and quantile positions give an idea whether the measure is high or low
+compared to the other values, but they do not immediately tell us whether the
+measure is exceptional or unusual.  To do that, we may want to ask whether the
+measure falls outside the typical range of values — that is, how the measure
+compares to the *distribution* of values.  One common way of doing this is to
+re-express the measures (values) as *standard scores*, where the standard score
+for a particular value tells you how far the value is from the *center* of the
+distribution, in terms of the typical *spread* of the distribution. Standard
+values are particularly useful to allow us to *compare* different types of
+measures on a standard scale.  They translate the units of measurement into
+*standard* and comparable units.  We will explain this more towards the end of
+the chapter.
 
 ## Household income and congressional districts
 
@@ -137,7 +140,7 @@ following lines. If you opened the `data/congress_118.csv` file in some editor,
 such as Notepad on Windows or TextEdit on Mac, you would find the first few
 lines looked like this:
 
-```{python, eval=TRUE, echo=FALSE, results='asis'}
+```{python echo=FALSE, eval=TRUE, results="asis"}
 from pathlib import Path
 backticks = '```'
 lines = '\n'.join(
@@ -361,7 +364,7 @@ By scrolling through the CSV file, or the PDF of Kaptur's table linked above,
 we find the rows corresponding to McCarthy (KOM) and Ocasio-Cortez (AOC) —
 @tbl-rows-of-interest.
 
-```{python, eval=TRUE, echo=FALSE}
+```{python echo=FALSE, eval=TRUE}
 roi = district_income[district_income['Representative']
                       .isin(['K. McCarthy', 'A. Ocasio-Cortez'])]
 ```
@@ -463,92 +466,33 @@ We would like some scale that tells us immediately whether this is a relatively
 low or a relatively high value, without having to remembering how many values
 there are.
 
-This is a good use for *quantile positions*.  The *quantile* of a value tells
-you where the value is, in the rankings, on a scale from 0 through 1.
-A quantile position of 0 tells you this is the lowest-ranking value, and
-a quantile position tells you this is the highest-ranking value.
+This is a good use for *quantile positions*.  The *quantile position* of
+a value tells you where the value ranks relative to the other values, on
+a scale from 0 through 1. A quantile position of 0 tells you this is the
+lowest-ranking value, and a quantile position of 1 tells you this is the
+highest-ranking value.
 
-To see how this works, start with rank *from lowest to highest*.  That is, the
-lowest value will get rank of 1, and — in our case — the highest value will get
-a rank of 441.
-
-This is just the opposite of what we have at the moment, which is the ranks
-from highest median income (rank is 1) to lowest median income (rank is 441).
-
-
-We can get the low-to-high ranks by using the
-[`rank`]{.r}[`rankdata`]{.python} function
-[from R]{.r}
-[from the Scipy statistics library.]{.python}.
-
-
-::: python
-:::{.callout-note}
-## Introducing `scipy.stats`
-
-Up until now we have used two big Python libraries for numerical analysis.
-These are Numpy (`numpy`), that we have used throughout the book, and Pandas,
-that we used in @sec-pandas-intro.
-
-Here we introduce the third major library for numerical analysis in Python,
-called Scipy.  Scipy is a large collection of scientific Python routines,
-building on top of Numpy.
-
-Scipy has many parts (or "sub-packages"), for a range of scientific
-applications, but the part that interests us here is the statistics sub-package
-of Scipy, called `scipy.stats`.
-
-We will import that sub-package directly into Python with:
+We can plot the *ranks* on the x-axis against the corresponding values.  To get the values corresponding to the ranks, we need to sort the data from lowest to highest, with:
+[`sort`]{.r}[`np.sort`]{.python}
 
 ```{python}
-# Import the Scipy statistics sub-package.
-# Rename to "sps" for short
-import scipy.stats as sps
-```
-
-In particular, we are going to use the `rankdata` function from `scipy.stats`.
-With the import above, we can get to that function with `sps.rankdata`.
-
-:::
-:::
-
-We can get the low-to-high ranks for the `incomes` values with:
-
-```{python}
-lo_to_hi_ranks = sps.rankdata(incomes)
-# Show the first five values.
-lo_to_hi_ranks[:5]
+# Sort the incomes from lowest (first) to highest (last).
+sorted_incomes = np.sort(incomes)
+# Show the first 10 values:
+sorted_incomes[:10]
 ```
 
 ```{r}
-lo_to_hi_ranks <- rank(incomes)
-# Show the first five values.
-lo_to_hi_ranks[1:5]
+# Sort the incomes from lowest (first) to highest (last).
+sorted_incomes <- sort(incomes)
+# Show the first 10 values:
+sorted_incomes[1:10]
 ```
 
-:::{.callout-note}
-## Or ... get the low-to-high ranks from high-to-low ranks
-
-We are in the unusual position that we already have the high-to-low ranks in
-the `ranks` variables.  With these, we can get the low-to-high ranks by
-subtracting to the high-to-low ranks from 442, so that 441 becomes 1 and 1
-becomes 441:
-
-```{python}
-again = 442 - hi_to_lo_ranks
-again[:5]
-```
-
-```{r}
-again <- 442 - hi_to_lo_ranks
-again[1:5]
-```
-:::
-
-Now we have the low-to-high ranks, we can calculate the *quantile* for each
-value.  Think of the low-to-high ranks as being a line starting at 1 (the
-lowest rank — for the lowest median income) and going up to 441 (the highest
-rank — for the highest median income).
+We can calculate the *quantile position* for each rank.  Think of the
+low-to-high ranks as being a line starting at 1 (the lowest rank — for the
+lowest median income) and going up to 441 (the highest rank — for the highest
+median income).
 
 The quantile position corresponding to any particular rank tells you how far
 along this line the rank is.  Notice that the length of the line is the
@@ -583,6 +527,31 @@ distance <- length(lo_to_hi_ranks) - 1  # 440 in our case.
 quantile_positions <- (lo_to_hi_ranks - 1) / distance
 # Show the first five.
 quantile_positions[1:5]
+```
+
+Let's plot the ranks and the quantile positions together on the x-axis:
+
+```{python echo=FALSE, eval=TRUE}
+# Plot blue crosses at data points.
+fig, ax = plt.subplots()
+ax.plot(hi_to_lo_ranks, sorted_incomes, 
+        color='blue', marker='+',
+        linestyle='')  # Don't join points with lines
+ax.set_title('Ranked median household incomes for congressional districts')
+ax.set_xlabel('Rank')
+ax.set_xticks([1, 100, 200, 300, 400, 441])
+ax.set_ylabel('Median household income')
+
+L = len(hi_to_lo_ranks)
+
+def rank2qp(r):
+    return (r - 1) / (L - 1)
+
+def qp2rank(qp):
+    return qp * (L - 1) + 1
+
+secax = ax.secondary_xaxis('top', functions=(rank2qp, qp2rank))
+secax.set_xlabel('Gradient position')
 ```
 
 The quantile positions for KOM and AOC tell us where their districts are in the
@@ -622,6 +591,38 @@ message('KOM percentile position: ', kom_quantile_position * 100)
 message('AOC percentile position: ', aoc_quantile_position * 100)
 ```
 
+Now consider one particular quantile position — 0.5.  The 0.5 quantile position is exactly half-way along the line from rank 1 to rank 441.  In our case this corresponds to rank (441 - 1) / 2 + 1 = 221.
+
+```{python}
+# For rank 221 we need index 220, because Python indices start at 0
+print('Middle rank:', lo_to_hi_ranks[220])
+print('Quantile position:', quantile_positions[220])
+```
+
+The value corresponding to the QP of 0.5 is the *quantile value*, or just *quantile* for short:
+
+```{python}
+# Quantile value for 0.5
+print('Quantile value for QP of 0.5:', sorted_incomes[220])
+```
+
+In fact we can ask {lang for this *value* (quantile) directly, using the `quantile` function:
+
+```{python}
+np.quantile(sorted_incomes, 0.5)
+```
+
+And in fact, the `quantile` routine will do the sorting for us, internally, so we can also write:
+
+```{python}
+np.quantile(incomes, 0.5)
+```
+
+Call this the 0.5 *quantile* --- the value corresponding to the 0.5 QP.
+
+This is an interesting value.  Notice that, by the definition of QP, exactly half of the remaining values (after excluding the 0.5 quantile value) have lower rank, and are therefore less   than the 0.5 quantile value.  Similarly exactly half of the remaining values are greater than the 0.5 quantile.   You may recognize this as the *median* value.  And this fact Numpy / R have 
+
+
 The *median* is the value corresponding to the quantile position of 0.5 — or,
 equivalently — the percentile position of 50.[^median-complications]
 
@@ -654,7 +655,7 @@ mean_income = np.mean(incomes)
 mean_income <- mean(incomes)
 ```
 
-```{python, echo=FALSE}
+```{python echo=FALSE}
 plt.hist(incomes, bins=25);
 plt.title('Median household income for 2023 congressional districts');
 plt.plot(kom_income, 2, 'ro', label='KOM')
@@ -663,7 +664,7 @@ plt.plot(mean_income, 2, 'ko', label='Mean')
 plt.legend()
 ```
 
-```{r, echo=FALSE}
+```{r echo=FALSE}
 hist(incomes, breaks=25,
     main='Median household income for 2023 congressional districts')
 points(kom_income, 2, pch=16, col='red')
