@@ -7,7 +7,7 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.14.5
+      jupytext_version: 1.14.6
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -137,7 +137,7 @@ the first line of the CSV file contains the column names of the table, and the
 rest of the lines contain the row values.  As the name suggests, commas (`,`)
 separate the column names in the first line, and the row values in the
 following lines. If you opened the `data/congress_118.csv` file in some editor,
-such as Notepad on Windows or TextEdit on Mac, you would find the first few
+such as Notepad on Windows or TextEdit on Mac, you would find that the first few
 lines looked like this:
 
 ```{python echo=FALSE, eval=TRUE, results="asis"}
@@ -225,13 +225,13 @@ Indexing occurs when we fetch data from within a container, such as a string or
 an array.  We do this by putting square brackets `[]` after the value we want
 to index into, and put something inside the brackets to say what we want.
 
-For example, to get the second element of the `priv` array above, we use
+For example, to get the *first* element of the `priv` array above, we use
 indexing:
 
 ```{python}
-# Fetch the second element of the priv array with indexing.
-# This is the element at position 1.
-priv[1]
+# Fetch the first element of the priv array with indexing.
+# This is the element at position 0.
+priv[0]
 ```
 
 As you can index into strings and Numpy arrays, by using square brackets, so
@@ -271,7 +271,7 @@ len(incomes)
 ```
 
 While we are at it, let us also get the values from the "Rank" column, with the
-same procedure.  These are ranks from high to low, meaning 1 is the highest median income, and 441 is the lowest median income.
+same procedure.  These are *ascending* ranks; the ranks are from high to low, meaning 1 is the highest median income, and 441 is the lowest median income.
 
 ```{python}
 rank_col = district_income['Rank']
@@ -332,7 +332,13 @@ incomes = district_income$Median_Income
 incomes[1:5]
 ```
 
-Notice there are 441 values in the whole vector, one of each congressional
+:::
+
+### Incomes and Ranks
+
+We now have the `incomes` values as {{< var an_array >}}.
+
+There are 441 values in the whole vector, one of each congressional
 district:
 
 ```{python}
@@ -344,7 +350,8 @@ length(incomes)
 ```
 
 While we are at it, let us also get the values from the "Rank" column, with the
-same procedure.  These are ranks from high to low, meaning 1 is the highest median income, and 441 is the lowest median income.
+same procedure.  These are ranks from high to low, meaning 1 is the highest
+median income, and 441 is the lowest median income.
 
 ```{python}
 hi_to_lo_ranks = district_income['Rank']
@@ -357,8 +364,6 @@ hi_to_lo_ranks <- district_income$Rank
 # Show the first five values, by indexing with a slice.
 hi_to_lo_ranks[1:5]
 ```
-
-:::
 
 ## Comparing two values in the district income data
 
@@ -389,9 +394,9 @@ ketable(roi,
 ```
 
 The rows show the *rank* of each congressional district in terms of median
-household income.  Remember that the districts are ordered by this rank, so we
-can get their respective *indices* (positions) in the `incomes`
-{{< var array >}} from their rank.
+household income.  The districts are ordered by this rank, so we can get their
+respective *indices* (positions) in the `incomes` {{< var array >}} from their
+rank.
 [Remember, Python's indices start at 0, whereas the ranks start at 1, so we
 need to subtract 1 from the rank to get the index]{.python}
 
@@ -675,7 +680,7 @@ message('0.25 quantile value: ', sorted_incomes[qp25_rank])
 message('0.25 quantile value using quantile: ', quantile(incomes, 0.25))
 ```
 
-```{python, eval=TRUE, echo=FALSE}
+```{python echo=FALSE, eval=TRUE}
 incomes = get_var('incomes')
 
 ax, secax = plot_ranks_qps()
@@ -704,7 +709,7 @@ rank_for_qp001
 
 Let's have a look at the first 10 values for rank / QP and incomes:
 
-```{python, eval=TRUE, echo=FALSE}
+```{python echo=FALSE, eval=TRUE}
 def plot_ranks_qps_001():
     fig, ax = plt.subplots()
     ax.plot(hi_to_lo_ranks[:10], sorted_incomes[:10],
@@ -729,7 +734,7 @@ for {{< var np_or_r >}}, is to draw a straight line up from the matching rank
 lines joining the values to the left and right of the QP on the graph above,
 and look across to the y-axis for the corresponding value:
 
-```{python, eval=TRUE, echo=FALSE}
+```{python echo=FALSE, eval=TRUE}
 rank_for_qp001 = get_var('rank_for_qp001')
 
 ax, secax = plot_ranks_qps_001()
@@ -773,7 +778,7 @@ mean_income = np.mean(incomes)
 mean_income <- mean(incomes)
 ```
 
-```{python, eval=TRUE, echo=FALSE}
+```{python echo=FALSE, eval=TRUE}
 kom_income = get_var('kom_income')
 aoc_income = get_var('aoc_income')
 
