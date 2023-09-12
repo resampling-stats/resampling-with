@@ -1004,14 +1004,14 @@ that we stress that the different urns are actually different models, each with 
 
 The result of the mating that produced little-mouse tells us that $P(G = \text{BB}) = \frac{1}{3}$ and
 $P(G = \text{Bb}) = \frac{2}{3}$. These are the prior probabilities and we can model it by taking an urn and put 3
-balls in it, 2 marked `Bb` and 1 marked `BB`. We can now draw, with replacement, from this urn. If we draw `BB`, the
+beads in it, 2 marked `Bb` and 1 marked `BB`. We can now draw, with replacement, from this urn. If we draw `BB`, the
 next draw will be from an urn called `Model 1`. If we draw `Bb`, the next draw will be from an urn called `Model 2`.
 We now need to decide what goes into `Model 1`. From Table @tbl-joint-proba-model-3, we note that the only
-color that can be sampled is `Black`. We therefore put a single (or any number, for that matter) black ball in the
-urn of `Model 1`- ensuring that we'll always draw a black ball. For the urn of `Model 2` we turn to
+color that can be sampled is `Black`. We therefore put a single (or any number, for that matter) black bead in the
+urn of `Model 1`- ensuring that we'll always draw a black bead. For the urn of `Model 2` we turn to
 Table @tbl-joint-proba-model-2
 and note that one can draw either `Black` or `Brown`, each with probability 1/2. The urn of `Model 2` therefore has
-has two balls, one labelled `Black`, the other `Brown`.
+has two beads, one labelled `Black`, the other `Brown`.
 
 :::{.callout-note}
 ## Note
@@ -1022,11 +1022,11 @@ then from the urns representing the joint distributions of Models 1 or 2.
 The procedure now continues as follows.
 
 a. If we draw `BB` from the first urn, we next draw seven times (with replacement)
-   the urn of `Model 1`. We know that we'll only draw black balls, therefore the probability
+   the urn of `Model 1`. We know that we'll only draw black beads, therefore the probability
    $P(C=\text{Black} | M=1) = 1$. Note the abuse of notation.
 b. If we draw `Bb` from the first urn, we next draw seven times (with replacement)
-   the urn of `Model 2`. We know that we'll draw black or brown balls, each with probability 1/2. The probability
-   of drawing 7 black balls in succession is therefore $(1/2)^7$. Again with the same abuse of notation, we have
+   the urn of `Model 2`. We know that we'll draw black or brown beads, each with probability 1/2. The probability
+   of drawing 7 black beads in succession is therefore $(1/2)^7$. Again with the same abuse of notation, we have
    $P(C=\text{Black} | M=2) = (1/2)^7.$
 c. All we need to do is to count how many times we are successful after drawing from the model urns.
 
@@ -1206,14 +1206,14 @@ might well be the answer[^sequentially]
 [^sequentially]: We can use a similar procedure to illustrate an aspect of the
     Bayesian procedure that Box and Tiao emphasize, its
     sequentially-consistent character. First let us carry out the above
-    procedure but observe only three black balls in a row. The program to be
+    procedure but observe only three black beads in a row. The program to be
     used is the same except for the insertion of "3" for "7" where "7"
     appears. We then estimate the probability for BB, which turns out to be
     about 1/5 instead of about 1/65. We then substitute for bucket A a bucket
     A' with appropriate numbers of black Bb's and black BB's, to represent the
     "updated" prior probability. We may then continue by substituting "4" for
-    "3" above (to attain a total of seven observed black balls), and find that
-    the probability is about what it was when we observed 7 black balls in
+    "3" above (to attain a total of seven observed black beads), and find that
+    the probability is about what it was when we observed 7 black beads in
     a single sample (1/65). This shows that the Bayesian procedure accumulates
     information without "leakage" and with consistency.
 
