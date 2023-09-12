@@ -20,7 +20,9 @@ source("_common.R")
 
 # Ranks, quantiles and Standard Scores
 
-Sometimes have a set of measures, in some particular units, and we want some way to see quickly how these measures compare to one another, and how they may compare to other measures, in different units.
+Sometimes have a set of measures, in some particular units, and we want some
+way to see quickly how these measures compare to one another, and how they may
+compare to other measures, in different units.
 
 Ranks are one way of having an implicit comparison between values.  Is the
 value large in terms of the other values (with high rank) — or is it small (low
@@ -59,8 +61,8 @@ districts.  The French economist [Thomas
 Piketty](https://en.wikipedia.org/wiki/Thomas_Piketty) has described this
 phenomenon across several Western countries.  Voters for left parties are now
 more likely to be highly educated and wealthy.  He terms this shift "Brahmin
-Left Vs Merchant Right" [@piketty2018brahmin].  The data below come from a
-[table Kaptur
+Left Vs Merchant Right" [@piketty2018brahmin].  The data below come from
+a [table Kaptur
 prepared](https://s3.documentcloud.org/documents/23726766/rep-kaptur-district-chart.pdf)
 that shows this pattern in the US congress. The table lists the top 20 2023
 congressional districts by the median income of the households in that
@@ -70,14 +72,14 @@ district, along with their representatives and their party.
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-district_income = pd.read_csv('data/congress_118.csv')
+district_income = pd.read_csv('data/congress_2023.csv')
 ```
 
 ```{r echo=FALSE, eval=TRUE}
 d_inc <- py$district_income
 colnames(d_inc)[which(names(d_inc) == "Median_Income")] <- "Median Income"
-ketable(head(d_inc, 20),
-        caption = "Top 20 2023 Congressional districts by median household income {#tbl-district_income}")
+ketable(tail(d_inc, 20),
+        caption = "20 most wealthy 2023 Congressional districts by household income {#tbl-district_income}")
 ```
 
 You may notice right away that many of the 20 richest districts have Democratic
@@ -126,17 +128,17 @@ standard tools for loading data.
 
 ### Comma-separated-values (CSV) format {#sec-csv-format}
 
-The data we will load is in a file on disk called `data/congress_118.csv`.
-These are the data from Kaptur's table in a comma-separated-values (CSV) format
+The data we will load is in a file on disk called `data/congress_2023.csv`.
+These are data from Kaptur's table in a comma-separated-values (CSV) format
 file. We refer to this file with its *filename*, containing the directory
-(`data/`) followed by the name of the file (`congress_118.csv`), giving a
-filename of `data/congress_118.csv`.
+(`data/`) followed by the name of the file (`congress_2023.csv`), giving
+a filename of `data/congress_2023.csv`.
 
 The *CSV format* is a very simple text format for storing table data.  Usually,
 the first line of the CSV file contains the column names of the table, and the
 rest of the lines contain the row values.  As the name suggests, commas (`,`)
 separate the column names in the first line, and the row values in the
-following lines. If you opened the `data/congress_118.csv` file in some editor,
+following lines. If you opened the `data/congress_2023.csv` file in some editor,
 such as Notepad on Windows or TextEdit on Mac, you would find that the first few
 lines looked like this:
 
@@ -144,7 +146,7 @@ lines looked like this:
 from pathlib import Path
 backticks = '```'
 lines = '\n'.join(
-    Path('data/congress_118.csv').read_text().splitlines()[:6])
+    Path('data/congress_2023.csv').read_text().splitlines()[:6])
 # Reticulate seems to suffer with the literal backticks here.
 print(f"""{backticks}
 {lines}
@@ -196,7 +198,7 @@ structure, called a *data frame*.
 We start by using Pandas to load our data file:
 
 ```{python}
-district_income = pd.read_csv('data/congress_118.csv')
+district_income = pd.read_csv('data/congress_2023.csv')
 ```
 
 We have thus far done many operations that returned Numpy *arrays*.
@@ -217,6 +219,9 @@ default) the first five rows in the table:
 # Show the first five rows in the data frame
 district_income.head()
 ```
+
+The data are in income order, sorted lowest to highest, so the first five
+districts are those with the lowest household income.
 
 We are particularly interested in the column named `Median_Income`.
 
@@ -263,23 +268,6 @@ incomes = np.array(income_col)
 incomes[:5]
 ```
 
-Notice there are 441 values in the whole array, one of each congressional
-district:
-
-```{python}
-len(incomes)
-```
-
-While we are at it, let us also get the values from the "Rank" column, with the
-same procedure.  These are *ascending* ranks; the ranks are from high to low, meaning 1 is the highest median income, and 441 is the lowest median income.
-
-```{python}
-rank_col = district_income['Rank']
-hi_to_lo_ranks = np.array(rank_col)
-# Show the first five values, by indexing with a slice.
-hi_to_lo_ranks[:5]
-```
-
 :::
 
 ::: r
@@ -294,7 +282,7 @@ We start by using R to load our data file.  R has a special function to do
 this, called `read.csv`.
 
 ```{r}
-district_income <- read.csv('data/congress_118.csv')
+district_income <- read.csv('data/congress_2023.csv')
 ```
 
 We have thus far done many operations that returned R *vectors*. `read.csv`
@@ -314,6 +302,9 @@ whatever you send it.  Here we select the first six rows of the data frame.
 # Show the first six rows in the data frame
 head(district_income)
 ```
+
+The data are in income order, sorted lowest to highest, so the first five
+districts are those with the lowest household income.
 
 We are particularly interested in the column named `Median_Income`.
 
@@ -349,20 +340,104 @@ len(incomes)
 length(incomes)
 ```
 
-While we are at it, let us also get the values from the "Rank" column, with the
-same procedure.  These are ranks from high to low, meaning 1 is the highest
-median income, and 441 is the lowest median income.
+While we are at it, let us also get the values from the "Ascending_Rank"
+column, with the same procedure.  These are ranks from low to high, meaning
+1 is the lowest median income, and 441 is the highest median income.
 
 ```{python}
-hi_to_lo_ranks = district_income['Rank']
+lo_to_hi_ranks = np.array(district_income['Ascending_Rank'])
 # Show the first five values, by indexing with a slice.
-hi_to_lo_ranks[:5]
+lo_to_hi_ranks[:5]
 ```
 
 ```{r}
-hi_to_lo_ranks <- district_income$Rank
+lo_to_hi_ranks <- district_income$Ascending_Rank
 # Show the first five values, by indexing with a slice.
-hi_to_lo_ranks[1:5]
+lo_to_hi_ranks[1:5]
+```
+
+In our case, the [data frame]{.r}[DataFrame]{.python} has the `Ascending_Rank`
+column with the ranks we need, but if we need the ranks and we don't have them,
+we can calculate them using the [`rank` function]{.r}[`rankdata` function from
+the Scipy `stats` package]{.python}.
+
+::: python
+
+### Introducing Scipy
+
+Earlier in this chapter we introduced the Pandas module.  We used Pandas to
+load the CSV data into Python.
+
+Now we introduce another fundamental Python library for working with data
+called Scipy.  The name Scipy comes from the compression of SCIentific PYthon,
+and the library is nearly as broad as the name suggests — it is a huge
+collection of functions and data that implement a wide range of scientific
+algorithms.  Scipy is an umbrella package, in that it contains sub-packages,
+each covering a particular field of scientific computing.  One of those
+sub-packages is called `stats`, and, yes, it covers statistics.
+
+We can get the Scipy `stats` sub-package with:
+
+```{python}
+import scipy.stats
+```
+
+but, as for Numpy and Pandas, we often `import` the package with an
+abbreviation, such as:
+
+```{python}
+# Import the scipy.stats package with the name "sps".
+import scipy.stats as sps
+```
+
+One of the many functions in `scipy.stats` is the `rankdata` function.
+
+:::
+
+### Calculating ranks
+
+As you might expect [`rank`]{.r}[`sps.rankdata`]{.python} accepts {{< var
+an_array >}} as an input argument.  Let's say that there are
+[`n <- length(data)`]{.r}[`n = len(data)`]{.python}
+values in the {{< var array >}} that we pass to
+[`rank`]{.r}[`sps.rankdata`]{.python}.  The function returns
+{{< var an_array >}}, length $n$, where the elements are the ranks of each
+corresponding element in the input `data` {{< var array >}}.  A rank value of
+1 corresponds the lowest value in `data` (closest to negative infinity), and
+a rank of $n$ corresponds to the highest value (closest to positive infinity).
+
+Here's an example `data` {{< var array >}} to show how
+[`rank`]{.r}[`sps.rankdata`]{.python} works.
+
+```{python}
+# The data.
+data = np.array([3, -1, 5, -2])
+# Corresponding ranks for the data.
+sps.rankdata(data)
+```
+
+```{r}
+# The data.
+data <- c(3, -1, 5, -2)
+# Corresponding ranks for the data.
+rank(data)
+```
+
+We can use [`rank`]{.r}[`sps.rankdata`]{.python} to recalculate the ranks for the
+congressional median household income values.
+
+```{python}
+# Recalculate the ranks.
+recalculated_ranks = sps.rankdata(incomes)
+# Show the first 5 ranks.
+recalculated_ranks[:5]
+```
+
+```{r}
+# Recalculate the ranks.
+recalculated_ranks <- rank(incomes)
+# Show the first 5 ranks.
+recalculated_ranks[1:5]
 ```
 
 ## Comparing two values in the district income data
@@ -370,14 +445,15 @@ hi_to_lo_ranks[1:5]
 Let us say that we have taken an interest in two particular members of
 Congress: the Speaker of the House of Representatives, Republican [Kevin
 McCarthy](https://en.wikipedia.org/wiki/Kevin_McCarthy), and the progressive
-activist and Democrat [Alexandria
-                       Ocasio-Cortez](https://en.wikipedia.org/wiki/Alexandria_Ocasio-Cortez).
+activist and Democrat
+[Alexandria Ocasio-Cortez](https://en.wikipedia.org/wiki/Alexandria_Ocasio-Cortez).
 We will refer to both using their initials: KOM for Kevin Owen McCarthy and AOC
 for Alexandra Ocasio-Cortez.
 
-By scrolling through the CSV file, or the PDF of Kaptur's table linked above,
-we find the rows corresponding to McCarthy (KOM) and Ocasio-Cortez (AOC) —
-@tbl-rows-of-interest.
+By scrolling through the CSV file, or (in our case) using some simple
+[R]{.r}[Pandas]{.python} code that we won't cover now, we find the rows
+corresponding to McCarthy (KOM) and Ocasio-Cortez (AOC)
+— @tbl-rows-of-interest.
 
 ```{python echo=FALSE, eval=TRUE}
 roi = district_income[district_income['Representative']
@@ -402,7 +478,7 @@ need to subtract 1 from the rank to get the index]{.python}
 
 ```{python}
 # Rank of McCarthy's district in terms of median household income.
-kom_rank = 147
+kom_rank = 295
 # Index (position) of McCarthy's value in the "incomes" array.
 # Subtract one from rank, because Python starts indices at 0 rather than 1.
 kom_index = kom_rank - 1
@@ -410,7 +486,7 @@ kom_index = kom_rank - 1
 
 ```{r}
 # Rank of McCarthy's district in terms of median household income.
-kom_rank = 147
+kom_rank = 295
 # Index (position) of McCarthy's value in the "incomes" vector.
 # This is the same as the rank.
 kom_index = kom_rank
@@ -437,7 +513,7 @@ Here is the corresponding index and `incomes` value for AOC:
 
 ```{python}
 # Index (position) of AOC's value in the "incomes" array.
-aoc_rank = 361
+aoc_rank = 81
 aoc_index = aoc_rank - 1
 # Show the median household income from AOC's district
 # by indexing into the "incomes" array:
@@ -447,7 +523,7 @@ aoc_income
 
 ```{r}
 # Index (position) of AOC's value in the "incomes" array.
-aoc_rank = 361
+aoc_rank = 81
 aoc_index = aoc_rank
 # Show the median household income from AOC's district
 # by indexing into the "incomes" array:
@@ -474,34 +550,17 @@ with rank `r get_var('kom_rank')` is wealthier than most, whereas AOC's
 district (rank `r get_var('aoc_rank')`) is poorer than most.
 
 But we can't interpret the ranks without remembering that there are 441 values,
-so — for example - the ranks of 361 represents a relatively low value and 147
-is relatively high.
+so — for example - a rank of 81 represents a relatively low value one of 295 is
+relatively high.
 
 We would like some scale that tells us immediately whether this is a relatively
 low or a relatively high value, without having to remembering how many values
 there are.
 
 This is a good use for *quantile positions* (QPs).  The QP of a value tells you
-where the value ranks relative to the other values, on a scale from 0 through
-1. A QP of 0 tells you this is the lowest-ranking value, and a QP of 1 tells
-you this is the highest-ranking value.
-
-We can plot the *ranks* on the x-axis against the corresponding values.  To get the values corresponding to the ranks, we need to sort the data from lowest to highest, with:
-[`sort`]{.r}[`np.sort`]{.python}
-
-```{python}
-# Sort the incomes from lowest (first) to highest (last).
-sorted_incomes = np.sort(incomes)
-# Show the first 10 values:
-sorted_incomes[:10]
-```
-
-```{r}
-# Sort the incomes from lowest (first) to highest (last).
-sorted_incomes <- sort(incomes)
-# Show the first 10 values:
-sorted_incomes[1:10]
-```
+where the value ranks relative to the other values, on a scale from $0$ through
+$1$. A QP of $0$ tells you this is the lowest-ranking value, and a QP of $1$
+tells you this is the highest-ranking value.
 
 We can calculate the QP for each rank.  Think of the low-to-high ranks as being
 a line starting at 1 (the lowest rank — for the lowest median income) and going
@@ -511,33 +570,33 @@ The QP corresponding to any particular rank tells you how far along this line
 the rank is.  Notice that the length of the line is the distance from the first
 to the last value, so 441 - 1 = 440.
 
-So, if the rank was 1, then the value is at the start of the line.  It has got
-0 / 440 of the way along the line, and the QP is 0. If the rank is 441, the
-value is at the end of the line, it has got 440 / 440 of the way along the line
-and the QP is 1.
+So, if the rank was $1$, then the value is at the start of the line.  It has
+got $\frac{0]{440}$ of the way along the line, and the QP is $0$. If the rank is
+$441$, the value is at the end of the line, it has got $\frac{440}{440}$ of the
+way along the line and the QP is $1$.
 
-Now consider the rank of 100.  It has got $\frac{(100 - 1)}{440}$ of the way
+Now consider the rank of $100$.  It has got $\frac{(100 - 1)}{440}$ of the way
 along the line, and the QP position is `r round(99 / 440, 2)`.
 
 More generally, we can translate the high-to-low ranks to QPs with:
 
 ```{python}
 # Length of the line defining quantile positions.
-# Start is rank 1 (quantile position 0).
-# End is rank 441 (quantile position 1).
-distance = len(hi_to_lo_ranks) - 1  # 440 in our case.
+# Start of line is rank 1 (quantile position 0).
+# End of line is rank 441 (quantile position 1).
+distance = len(lo_to_hi_ranks) - 1  # 440 in our case.
 # What proportion along the line does each value get to?
-quantile_positions = (hi_to_lo_ranks - 1) / distance
+quantile_positions = (lo_to_hi_ranks - 1) / distance
 # Show the first five.
 quantile_positions[:5]
 ```
 
 ```{r}
 # Length of the line defining quantile positions.
-# Start is rank 1 (quantile position 0).
-# End is rank 441 (quantile position 1).
-distance <- length(hi_to_lo_ranks) - 1  # 440 in our case.
-quantile_positions <- (hi_to_lo_ranks - 1) / distance
+# Start of line is rank 1 (quantile position 0).
+# End of line is rank 441 (quantile position 1).
+distance <- length(lo_to_hi_ranks) - 1  # 440 in our case.
+quantile_positions <- (lo_to_hi_ranks - 1) / distance
 # Show the first five.
 quantile_positions[1:5]
 ```
@@ -546,9 +605,9 @@ Let's plot the ranks and the QPs together on the x-axis:
 
 
 ```{python echo=FALSE, eval=TRUE}
-hi_to_lo_ranks = get_var('hi_to_lo_ranks')
-sorted_incomes = get_var('sorted_incomes')
-L = len(hi_to_lo_ranks)
+lo_to_hi_ranks = get_var('lo_to_hi_ranks')
+incomes = get_var('incomes')
+L = len(lo_to_hi_ranks)
 
 def rank2qp(r):
     return (r - 1) / (L - 1)
@@ -559,7 +618,7 @@ def qp2rank(qp):
 # Plot blue crosses at data points.
 def plot_ranks_qps():
     fig, ax = plt.subplots()
-    ax.plot(hi_to_lo_ranks, sorted_incomes,
+    ax.plot(lo_to_hi_ranks, incomes,
             color='blue', marker='+',
             linestyle=':')
     ax.set_title('Ranked median household incomes for congressional districts')
@@ -574,8 +633,8 @@ def plot_ranks_qps():
 plot_ranks_qps();
 ```
 
-The QPs for KOM and AOC tell us where their districts are in the ranks, on
-a 0 to 1 scale:
+The QPs for KOM and AOC tell us where their districts' incomes are in the
+ranks, on a 0 to 1 scale:
 
 ```{python}
 kom_quantile_position = quantile_positions[kom_index]
@@ -597,7 +656,8 @@ aoc_quantile_position <- quantile_positions[aoc_index]
 aoc_quantile_position
 ```
 
-If we multiply the QP by 100, we get the *percentile positions*.
+If we multiply the QP by 100, we get the *percentile positions* — so the
+percentile position ranges from 0 through 100.
 
 ```{python}
 # Percentile positions are just quantile positions * 100
@@ -611,44 +671,83 @@ message('KOM percentile position: ', kom_quantile_position * 100)
 message('AOC percentile position: ', aoc_quantile_position * 100)
 ```
 
-Now consider one particular QP — 0.5.  The 0.5 QP is exactly half-way along the
-line from rank 1 to rank 441.  In our case this corresponds to rank (441 - 1)
-/ 2 + 1 = 221.
+Now consider one particular QP: $0.5$.  The $0.5$ QP is exactly half-way along
+the line from rank $1$ to rank $441$.  In our case this corresponds to rank
+$\frac{441 - 1}{2} + 1 = 221$.
 
 ```{python}
 # For rank 221 we need index 220, because Python indices start at 0
-print('Middle rank:', hi_to_lo_ranks[220])
+print('Middle rank:', lo_to_hi_ranks[220])
 print('Quantile position:', quantile_positions[220])
 ```
 
-The value corresponding to the QP of 0.5 is the *quantile value*, or just *quantile* for short:
+```{r}
+message('Middle rank: ', lo_to_hi_ranks[221])
+message('Quantile position: ', quantile_positions[221])
+```
+
+The *value* corresponding to any particular QP is the *quantile value*, or just
+the *quantile* for short.  For a QP of 0.5, the *quantile* (quantile value) is:
 
 ```{python}
 # Quantile value for 0.5
-print('Quantile value for QP of 0.5:', sorted_incomes[220])
+print('Quantile value for QP of 0.5:', incomes[220])
 ```
 
-In fact we can ask {lang for this *value* (quantile) directly, using the `quantile` function:
-
-```{python}
-np.quantile(sorted_incomes, 0.5)
+```{r}
+# Quantile value for 0.5
+message('Quantile value for QP of 0.5: ', incomes[221])
 ```
 
-And in fact, the `quantile` routine will do the sorting for us, internally, so we can also write:
+In fact we can ask {{< var lang >}} for this *value* (quantile) directly, using
+the `quantile` function:
 
 ```{python}
 np.quantile(incomes, 0.5)
 ```
 
-Call this the 0.5 *quantile* --- the value corresponding to the 0.5 QP.
+```{r}
+quantile(incomes, 0.5)
+```
 
-This is an interesting value.  Notice that, by the definition of QP, exactly
-half of the remaining values (after excluding the 0.5 quantile value) have
-lower rank, and are therefore less   than the 0.5 quantile value.  Similarly
-exactly half of the remaining values are greater than the 0.5 quantile.   You
-may recognize this as the *median* value.  This is such a common quantile value
-that {{< var np_or_r >}} has a function [`median`]{.r}[`np.median`]{.python} as
-a shortcut for [`quantile(data, 0.5)`]{.r}[`np.quantile(data, 0.5)`]{.python}.
+:::{.callout-note}
+## `quantile` and sorting
+
+In our case, the `incomes` data is already sorted from lowest (at position
+[1]{.r}[0]{.python} in the {{< var array >}} to highest (at position
+[441]{.r}[440]{.python} in the {{< var array >}}).  The `quantile` function
+does not need the data to be sorted; it does its own internal sorting to do the
+calculation.
+
+For example, we could shuffle `incomes` into a random order, and still get the
+same values from `quantile`.
+
+```{python}
+rnd = np.random.default_rng()
+shuffled_incomes = rnd.permuted(incomes)
+# Quantile still gives the same value.
+np.quantile(incomes, 0.5)
+```
+
+```{r}
+shuffled_incomes <- sample(incomes)
+# Quantile still gives the same value.
+quantile(incomes, 0.5)
+```
+
+:::
+
+
+Above we have 0.5 *quantile* — the value corresponding to the 0.5 QP.
+
+The 0.5 quantile is an interesting value.  Notice that, by the definition of
+QP, exactly half of the remaining values (after excluding the 0.5 quantile
+value) have lower rank, and are therefore less   than the 0.5 quantile value.
+Similarly exactly half of the remaining values are greater than the 0.5
+quantile.   You may recognize this as the *median* value.  This is such
+a common quantile value that {{< var np_or_r >}} has a function
+[`median`]{.r}[`np.median`]{.python} as a shortcut for [`quantile(data,
+0.5)`]{.r}[`np.quantile(data, 0.5)`]{.python}.
 
 ```{python}
 np.median(incomes)
@@ -669,14 +768,14 @@ qp25_rank
 ```{python}
 # Therefore, index 110 (Python indices start from 0)
 print('Rank corresponding to QP 0.25:', qp25_rank)
-print('0.25 quantile value:', sorted_incomes[110])
+print('0.25 quantile value:', incomes[110])
 print('0.25 quantile value using np.quantile:',
       np.quantile(incomes, 0.25))
 ```
 
 ```{r}
 message('Rank corresponding to QP 0.25: ', qp25_rank)
-message('0.25 quantile value: ', sorted_incomes[qp25_rank])
+message('0.25 quantile value: ', incomes[qp25_rank])
 message('0.25 quantile value using quantile: ', quantile(incomes, 0.25))
 ```
 
@@ -692,10 +791,12 @@ ax.plot([qp25, x_min], [q25, q25], 'k:', label='0.25 quantile')
 ax.legend()
 ```
 
-Call the 0.25 quantile value $V$.  $V$ is the number such that 25% of the remaining values are less than $V$, and 75% are greater.
+Call the 0.25 quantile value $V$.  $V$ is the number such that 25% of the
+*remaining* values are less than $V$, and 75% are greater.
 
-
-Now let's think about the 0.01 quantile.  We don't have a value exactly corresponding to this quantile position, because there is no rank exactly corresponding to the 0.01 quantile position:
+Now let's think about the 0.01 quantile.  We don't have an *income value*
+exactly corresponding to this QP, because there is no rank exactly
+corresponding to the 0.01 QP.
 
 ```{python}
 rank_for_qp001 = (441 - 1) * 0.01 + 1
@@ -712,7 +813,7 @@ Let's have a look at the first 10 values for rank / QP and incomes:
 ```{python echo=FALSE, eval=TRUE}
 def plot_ranks_qps_001():
     fig, ax = plt.subplots()
-    ax.plot(hi_to_lo_ranks[:10], sorted_incomes[:10],
+    ax.plot(lo_to_hi_ranks[:10], incomes[:10],
             color='blue', marker='+',
             linestyle=':')
     ax.set_title('Ranked median household incomes for congressional districts')
@@ -755,7 +856,47 @@ quantile(incomes, 0.01)
 
 This is called the *linear* method — because it uses straight lines joining the
 points to estimate the quantile value for a QP that does not correspond to
-a whole-number rank.
+a whole-number rank.  $0000$
+
+:::{.callout-note}
+## Calculating quantiles using the linear method
+
+We have given a graphical explanation of how to calculate the quantile for QP
+that does not correspond to whole-number rank in the data. Another explanation
+is to think of the quantile value as being a *weighted average* of the quantile
+values for the QPs of the whole number ranks just less than, and just greater
+than the QP we are interested in.  For example, let us return to the QP of
+0.01.  Let us remind ourselves of the QPs, whole-number ranks and
+corresponding values either side of the QP $0.01$:
+
+| Rank | Quantile position | Value |
+|------|-------------------|-------|
+| 5    | 0.0099            | 37933 |
+| 5.4  | 0.01              | **V** |
+| 6    | 0.0113            | 40319 |
+
+: Ranks, QPs and corresponding values around QP of 0.01
+
+Our question is — what is $V$ in the table?  One answer is to take the average
+of the two values either side of the desired QP — in this case $(37933
++ 40319) / 2$.  Notice we could also write this as $37933 * 0.5 + 40319 * 0.5$
+— showing that we are giving equal weight ($0.5$) to the two values either side.
+
+But giving both values equal  doesn't seem quite right, because the QP we want
+is closer to the QP for rank 5 (and corresponding value 37933) than it is to
+the QP for rank 6 (corresponding value 40319).  We should give more weight to
+the rank 5 value than the rank 6 value.   Specifically the lower value is 0.4
+rank units away from the QP rank we want, and the higher is 0.6 rank units
+away.  So we give higher weight for shorter distance, and multiply the rank
+5 value by $1 - 0.4 = 0.6$, and the rank 6 value by $1 - 0.6 = 0.4$.  Therefore
+the weighted average is $37933 * 0.6 + 40319 * 0.4$ =
+`r 37933 * 0.6 + 40319 * 0.4`.  This is a mathematical way to get the value we
+described graphically, of tracking up from the rank of 5.4 to the line drawn
+between the values for rank 5 and 6, and reading off the y-value at which this
+track crosses that line.
+:::
+
+
 
 
 ## Unusual values compared to the distribution
