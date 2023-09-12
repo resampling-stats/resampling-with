@@ -171,3 +171,7 @@ mosquitoes](https://github.com/odsti/datasets/tree/main/mosquito_beer)
 
 > If we have data, let’s look at data. If all we have are opinions, let’s go
 > with mine. – Jim Barksdale, former Netscape CEO - for example at [this book](https://www.oreilly.com/library/view/analytics-and-dynamic/9781118919774/9781118919774c05.xhtml)
+
+## Python notation
+
+> Introduce `_` notation for large integers
