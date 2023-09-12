@@ -36,13 +36,13 @@ Not ready for review
 ## Introduction, what is probability?
 
 Uncertainty is part of life. Although there is not much we can do to answer questions such as,
-will I loose my job within the next year?, or what is my life expectency?, it is possible to
+will I loose my job within the next year?, or what is my life expectancy?, it is possible to
 answer questions such as, what is my chances to win the lottery? (exceedingly small).
 
 Scientists from any discipline that we can think of, also need to deal with uncertainties,
 to come up with specific answers when possible, or know the limits of what it is possible to know.
 
-You will encounter numerous examples of this kind throughout this book. In fatc, this
+You will encounter numerous examples of this kind throughout this book. In fact, this
 is what this book is all about.
 
 The uncertainty stems from different sources, some or all may be present in any given application.
@@ -114,6 +114,81 @@ on developing causality models and is still an exciting, active field of researc
 
 The rest of this chapter is about the general considerations that are important for principled
 reasoning in the presence of uncertainty.
+
+## Understand your problem
+
+In practice you will asked to provide answers based on data. For example, you may be given data about customer
+behaviour in a large bank and asked to develop a model that will provide the probability of default of the customers in
+the bank. This is an important problem for all financial institutions - if it does not have a good credit risk model,
+it will either loose money by being too conservative in the way it lends money, or loose money bay taking on too much
+of a risk. You can opt for applying a sophisticated model such as a deep neural network but you are almost guaranteed
+to come to grief. First study the problem and come to terms of all the many issues at stake. We speak of experience!
+
+Let's illustrate the idea with a simple example. The teacher asks little Annie to solve the following problem: Ten
+sheep are on this side of the road and one sheep crosses to the other side, how many sheep remain on this side? Annie
+knows the answer of course, and replies, correctly, none. This quite agitates the teacher and asks, there were ten sheep
+on this side of the road and one crosses over to the other side, how is it that you tell non remain? Annie replies,
+You don't know sheep, if one crosses the road everyone else follows and none remain. We can confirm this, also from
+experience!
+
+It is easy to get the arithmetic right, but as easy to get the problem wrong if you don't understand it.
+
+Please make sure you know what problem you have to solve. You may even run into situations where a company provides you
+with lots of data and then ask you to extract meaningful information from it. Our advice it, work with the company to
+first formulate a meaningful problem. Then you can direct your investigation to solving this problem.
+
+Work with the domain experts! You may also find that you expertise is in more demand if you have specialised domain knowledge!
+
+## Understand your data
+
+You will often find that you spend more time trying to understand your data than solving the problem. During this
+investigation you will probably look at things like,
+
+1. Possible correlations between the variables.
+2. Is the data complete? Real-world data often has empty fields that are filled with `NaN`'s. How do you deal with this?
+   Do you discard these fields or do you impute values for them?
+3. Do you have reason to believe that the information you need to solve the problem is in the data? This is a much-neglected
+   problem, perhaps because it is not easy to provide an answer. There are certainly situations where some of the
+   variables can act as a proxy for what is needed. This simply means that the information is hidden, but present in
+   the data. Precisely because it is not an easy problem to answer, it is necessary to give it some thought and
+   most definitely keep it in mind while you are modelling.
+
+   One example that is often quoted in the literature is about a group of researchers that wanted to build a model to
+   visually distinguish between criminals and non-criminals. For this they used a dataset of photographs of known criminals
+   and non-criminals. For their criminals they relied on police mug shots. You have to seriously ask yourself whether
+   you believe that one tell whether a person is a criminal based on visual appearance.
+4. Is your data balanced, if not how are you going to deal with it? If you are ever asked to develop a credit risk model,
+   you will have a vast quantity of non-defaulting examples and few, perhaps 5%, of defaulting examples. No financial
+   institution will survive a high percentage of defaulting customers. How will you deal with it?
+5. Is you data biased? Because of historical reasons and social inequalities your data may be biased against minorities,
+   or on race, gender, etc. If this is the case your model will seriously deficient. You may also find that the instituion
+   you are working for has strict policies in place against the use of potentially harmful variables.
+
+   These raise serious ethical questions that the practitioner should be aware of.
+
+   Returning to the criminal detection problem mentioned above, it failed. Let's think of what the model does. Since it
+   it given samples of photographs of criminals and non-criminals, i.e. each photograph comes with the label, `criminal`
+   or `non-criminal`, it is adjusting its parameters in order to find the maximum correlation between samples belonging
+   to the same class, and to maximize the difference between the two classes. Your model will latch on to any feature that
+   satisfies these requirements, including unacceptable bias.
+
+## How is you model going to be used?
+
+The responsibility of the technical developer does not end with providing the model, or the analytics needed for the
+purpose. It is important to know how your model is going to be used. If you are to develop a system that need to
+detect a terrorist before they board an aircraft, your thinking will be very different when the result of an error
+by your system is relatively benign.
+
+The institution you work for may also need to be able to audit the output of your system. This brings is to the next issue.
+
+## Involve all stakeholders
+
+You cannot, and don't want to take on the responsibility for all the choices outlined above, and this is by no means an
+exhaustive list! Work with the domain knowledge experts within the institution, involve all managers that have a stake in
+your system. And work within a team.
+
+Make sure you are that team member that everyone wants to work with, because of your expertise, because you are trustworthy,
+and easy to work with.
 
 
 <!---
