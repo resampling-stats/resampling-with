@@ -550,8 +550,8 @@ with rank `r get_var('kom_rank')` is wealthier than most, whereas AOC's
 district (rank `r get_var('aoc_rank')`) is poorer than most.
 
 But we can't interpret the ranks without remembering that there are 441 values,
-so — for example - a rank of 81 represents a relatively low value one of 295 is
-relatively high.
+so — for example - a rank of 81 represents a relatively low value, whereas one
+of 295 is relatively high.
 
 We would like some scale that tells us immediately whether this is a relatively
 low or a relatively high value, without having to remembering how many values
@@ -571,7 +571,7 @@ the rank is.  Notice that the length of the line is the distance from the first
 to the last value, so 441 - 1 = 440.
 
 So, if the rank was $1$, then the value is at the start of the line.  It has
-got $\frac{0]{440}$ of the way along the line, and the QP is $0$. If the rank is
+got $\frac{0}{440}$ of the way along the line, and the QP is $0$. If the rank is
 $441$, the value is at the end of the line, it has got $\frac{440}{440}$ of the
 way along the line and the QP is $1$.
 
@@ -737,17 +737,15 @@ quantile(incomes, 0.5)
 
 :::
 
+Above we have the 0.5 *quantile* — the value corresponding to the QP of 0.5.
 
-Above we have 0.5 *quantile* — the value corresponding to the 0.5 QP.
-
-The 0.5 quantile is an interesting value.  Notice that, by the definition of
-QP, exactly half of the remaining values (after excluding the 0.5 quantile
-value) have lower rank, and are therefore less   than the 0.5 quantile value.
-Similarly exactly half of the remaining values are greater than the 0.5
-quantile.   You may recognize this as the *median* value.  This is such
-a common quantile value that {{< var np_or_r >}} has a function
-[`median`]{.r}[`np.median`]{.python} as a shortcut for [`quantile(data,
-0.5)`]{.r}[`np.quantile(data, 0.5)`]{.python}.
+The 0.5 quantile is an interesting value.  By the definition of QP, exactly
+half of the remaining values (after excluding the 0.5 quantile value) have
+lower rank, and are therefore less   than the 0.5 quantile value. Similarly
+exactly half of the remaining values are greater than the 0.5 quantile.   You
+may recognize this as the *median* value.  This is such a common quantile value
+that {{< var np_or_r >}} has a function [`median`]{.r}[`np.median`]{.python} as
+a shortcut for [`quantile(data, 0.5)`]{.r}[`np.quantile(data, 0.5)`]{.python}.
 
 ```{python}
 np.median(incomes)
@@ -861,42 +859,40 @@ a whole-number rank.  $0000$
 :::{.callout-note}
 ## Calculating quantiles using the linear method
 
-We have given a graphical explanation of how to calculate the quantile for QP
+We gave a graphical explanation of how to calculate the quantile for a QP
 that does not correspond to whole-number rank in the data. Another explanation
 is to think of the quantile value as being a *weighted average* of the quantile
 values for the QPs of the whole number ranks just less than, and just greater
 than the QP we are interested in.  For example, let us return to the QP of
-0.01.  Let us remind ourselves of the QPs, whole-number ranks and
+$0.01$.  Let us remind ourselves of the QPs, whole-number ranks and
 corresponding values either side of the QP $0.01$:
 
-| Rank | Quantile position | Value |
-|------|-------------------|-------|
-| 5    | 0.0099            | 37933 |
-| 5.4  | 0.01              | **V** |
-| 6    | 0.0113            | 40319 |
+| Rank | Quantile position | Quantile value |
+|------|-------------------|----------------|
+| 5    | 0.0099            | 37933          |
+| 5.4  | 0.01              | **V**          |
+| 6    | 0.0113            | 40319          |
 
 : Ranks, QPs and corresponding values around QP of 0.01
 
-Our question is — what is $V$ in the table?  One answer is to take the average
-of the two values either side of the desired QP — in this case $(37933
-+ 40319) / 2$.  Notice we could also write this as $37933 * 0.5 + 40319 * 0.5$
-— showing that we are giving equal weight ($0.5$) to the two values either side.
+What value should we should give $V$ in the table?  One answer is to take the
+average of the two values either side of the desired QP — in this case $(37933
++ 40319) / 2$.  We could write this same calculation as $37933 * 0.5
++ 40319 * 0.5$ — showing that we are giving equal weight ($0.5$) to the two
+values either side.
 
-But giving both values equal  doesn't seem quite right, because the QP we want
-is closer to the QP for rank 5 (and corresponding value 37933) than it is to
-the QP for rank 6 (corresponding value 40319).  We should give more weight to
-the rank 5 value than the rank 6 value.   Specifically the lower value is 0.4
-rank units away from the QP rank we want, and the higher is 0.6 rank units
-away.  So we give higher weight for shorter distance, and multiply the rank
-5 value by $1 - 0.4 = 0.6$, and the rank 6 value by $1 - 0.6 = 0.4$.  Therefore
-the weighted average is $37933 * 0.6 + 40319 * 0.4$ =
-`r 37933 * 0.6 + 40319 * 0.4`.  This is a mathematical way to get the value we
-described graphically, of tracking up from the rank of 5.4 to the line drawn
-between the values for rank 5 and 6, and reading off the y-value at which this
-track crosses that line.
+But giving both values equal weight doesn't seem quite right, because the QP we
+want is closer to the QP for rank 5 (and corresponding value 37933) than it is
+to the QP for rank 6 (and corresponding value 40319).  We should give more
+weight to the rank 5 value than the rank 6 value.   Specifically the lower
+value is 0.4 rank units away from the QP rank we want, and the higher is 0.6
+rank units away.  So we give higher weight for shorter distance, and multiply
+the rank 5 value by $1 - 0.4 = 0.6$, and the rank 6 value by $1 - 0.6 = 0.4$.
+Therefore the weighted average is $37933 * 0.6 + 40319 * 0.4 = 38887.4$. This
+is a mathematical way to get the value we described graphically, of tracking up
+from the rank of 5.4 to the line drawn between the values for rank 5 and 6, and
+reading off the y-value at which this track crosses that line.
 :::
-
-
 
 
 ## Unusual values compared to the distribution
@@ -908,8 +904,26 @@ wealthy.  But — are either of their districts *unusual* in their wealth or
 poverty?
 
 To answer that question, we have to think about the *distribution* of values.
-Are either AOC's or KOM's district outside the typical spread of values for
+Are either AOC's or KOM's district outside the *typical spread* of values for
 districts?
+
+The rest of this section is an attempt to answer what we could mean by
+*outside* and *typical spread*.
+
+Let us start with a histogram of the district incomes, marking the position of
+the KOM and AOC districts.
+
+```{python echo=FALSE, eval=TRUE}
+plt.hist(incomes, bins=25, color='black');
+plt.title('Median household income for 2023 congressional districts');
+plt.axvline(kom_income, color='red', linestyle=':', label='KOM')
+plt.axvline(aoc_income, color='blue', linestyle=':', label='KOM')
+plt.legend();
+```
+
+What could we mean by "outside" the "typical spread".  By outside, we mean
+somewhere away from the center of the distribution.  Let us take the mean of
+the distribution to be its center, and add that to the plot.
 
 ```{python}
 mean_income = np.mean(incomes)
@@ -920,148 +934,315 @@ mean_income <- mean(incomes)
 ```
 
 ```{python echo=FALSE, eval=TRUE}
-kom_income = get_var('kom_income')
-aoc_income = get_var('aoc_income')
-
-plt.hist(incomes, bins=25);
+plt.hist(incomes, bins=25, color='black');
 plt.title('Median household income for 2023 congressional districts');
-plt.plot(kom_income, 2, 'ro', label='KOM')
-plt.plot(aoc_income, 2, 'bo', label='AOC')
-plt.plot(np.mean(incomes), 2, 'ko', label='Mean')
-plt.legend()
+plt.axvline(kom_income, color='red', linestyle=':', label='KOM')
+plt.axvline(aoc_income, color='blue', linestyle=':', label='KOM')
+plt.axvline(mean_income, color='green', linestyle='-', label='Mean')
+plt.legend();
 ```
+
+## On deviations
+
+Now let us ask what we could mean by *typical spread*.  By *spread* we mean
+deviation either side of the center.
+
+We can calculate how far away each income is away from the mean, by subtracting
+the mean from all the income values.  Call the result — the *deviations* from
+the mean, or *deviations* for short.
 
 ```{python}
 deviations = incomes - np.mean(incomes)
-plt.hist(deviations, bins=25);
 ```
 
-```{python}
-deviations[kom_index]
+```{r}
+deviations <- incomes - mean(incomes)
 ```
 
-```{python}
-np.mean(deviations)
+The deviation values give, for each district, how far that district's income is
+from the mean.  Values near the mean will have small (positive or negative)
+values, and values further from the mean will have large (positive and
+negative) values.  Here is a histogram of the *deviation* values.
+
+```{python echo=FALSE, eval=TRUE}
+plt.hist(deviations, bins=25, color='black');
+plt.title('Deviations of median household income for 2023 congressional districts');
 ```
 
+The distribution of deviations centers on zero — an in fact the deviations have
+a mean of (as near as the computer can accurately calculate) zero:
+
 ```{python}
+# Show the mean of the deviations, rounded to 8 decimal places.
+np.round(np.mean(deviations), 8)
+```
+
+```{r}
+# Show the mean of the deviations, rounded to 8 decimal places.
+round(mean(deviations), 8)
+```
+
+## The mean absolute deviation
+
+Now let us consider the deviation value for KOM and AOC:
+
+```{python}
+print('Deviation for KOM:', deviations[kom_index])
+print('Deviation for AOC:', deviations[aoc_index])
+```
+
+```{r}
+message('Deviation for KOM: ', deviations[kom_index])
+message('Deviation for AOC: ', deviations[aoc_index])
+```
+
+We have the same problem as before.  Yes, we see that KOM has a positive
+deviation, and therefore, that his district is more wealthy than average across
+the 441 districts.  Conversely AOC's district has a negative deviation, and is
+poorer than average.  But we still lack a standard measure of how far away from
+the mean each district is, in terms of the spread of values in the histogram.
+
+To get such a standard measure, we would like idea of a typical or average
+deviation.  Then we will compare KOM's and AOC's deviations to the average
+deviation, to see if they are unusually far from the mean.
+
+You have just seen, above that we can use the literal average of the deviations
+(the mean) because the positive and negative deviations will exactly cancel
+out, and the mean deviation will always be as near as the computer can
+calculate to zero.
+
+To stop the negatives canceling the positives, we can simply knock the negative
+signs off all the negative deviations.
+
+This is the job of the {{< var np_or_r >}} `abs` function — where `abs` is
+short for *absolute*.  The `abs` function will knock negative signs off
+negative values, like this:
+
+```{python}
+np.abs([-1, 0, 1, -2])
+```
+
+```{r}
+abs(c(-1, 0, 1, -2))
+```
+
+To get an average of the deviations, *regardless of whether they are positive
+or negative*, we can just take the mean of the absolute deviations, like this.
+
+```{python}
+# The Mean Absolute Deviation (MAD)
 abs_deviations = np.abs(deviations)
-abs_deviations
-```
-
-```{python}
 mad = np.mean(abs_deviations)
+# Show the result
 mad
 ```
 
-```{python}
-deviations_in_mads = deviations / mad
-plt.hist(deviations_in_mads, bins=25);
+```{r}
+# The Mean Absolute Deviation (MAD)
+abs_deviations <- abs(deviations)
+mad <- mean(abs_deviations)
+# Show the result
+mad
 ```
 
+This is the Mean Absolute Deviation (MAD).  It is one measure of the typical
+spread.  The Mean Absolute Deviation is the average distance (regardless of
+positive or negative) of a value from the mean of the values.
+
+We can get an idea of how typical a particular deviation is by dividing by the
+deviation by the MAD value, like this:
+
 ```{python}
-deviations_in_mads[kom_index]
+print('Deviation in MAD units for KOM:', deviations[kom_index] / mad)
+print('Deviation in MAD units AOC:', deviations[aoc_index] / mad)
 ```
+
+```{r}
+message('Deviation in MAD units for KOM: ', deviations[kom_index] / mad)
+message('Deviation in MAD units AOC: ', deviations[aoc_index] / mad)
+```
+
+## The standard deviation
+
+We are interested in the average deviation, but we find that a simple average
+of the deviations from the mean always gives 0 (with calculation error),
+because the positive and negative deviations cancel exactly.
+
+The MAD calculation solves this problem by knocking the signs off the negative
+values before we take the mean.
+
+Another very popular way of solving the same problem is to precede the
+calculation by squaring all the deviations, like this:
 
 ```{python}
 squared_deviations = deviations ** 2
-squared_deviations
+# Show the first five values.
+squared_deviations[:5]
 ```
+
+```{r}
+squared_deviations <- deviations ** 2
+# Show the first five values.
+squared_deviations[1:5]
+```
+
+The process of squaring the deviations turns all the negative values into
+positive values.
+
+We can then take the average (mean) of the *squared deviations* to give a measure of the typical *squared* deviation:
 
 ```{python}
 mean_squared_deviation = np.mean(squared_deviations)
 mean_squared_deviation
 ```
 
+```{r}
+mean_squared_deviation <- mean(squared_deviations)
+mean_squared_deviation
+```
+
+Rather confusingly, the field of statistics terms this mean squared deviation
+value — the *variance*.  Just to emphasize that naming, let's calculate again
+using the "variance" name.
+
 ```{python}
+# Statistics calls the mean squared deviation - the "variance"
+variance = np.mean(squared_deviations)
+variance
+```
+
+```{r}
+# Statistics calls the mean squared deviation - the "variance"
+variance <- mean(squared_deviations)
+variance
+```
+
+The variance is the typical (mean) *squared* deviation.  The units for the
+variance, in our case, would be *squared dollars*.  But we are more interested
+in the typical *deviation*, in our original units -- dollars rather than
+squared dollars.
+
+So we take the square root of the mean squared deviation, to get the *standard
+deviation*.  It is the *standard* deviation in the sense that it a measure of
+typical deviation, obtained by squaring the deviations, taking the mean, and
+then taking the square root.
+
+```{python}
+# The standard deviation is the square root of the mean squared deviation.
+# (and therefore, the square root of the variance).
 standard_deviation = np.sqrt(mean_squared_deviation)
 standard_deviation
 ```
 
-```{python}
-mad
+```{r}
+# The standard deviation is the square root of the mean squared deviation.
+# (and therefore, the square root of the variance).
+standard_deviation <- sqrt(mean_squared_deviation)
+standard_deviation
 ```
+
+The *standard deviation* (the square root of the mean squared deviation) is
+a popular alternative to the Mean Absolute Deviation, as a measure of typical
+spread.
+
+For example, we can now ask how many standard deviations each of our two
+districts of interest are from the mean:
+
+```{python}
+print('Deviation in standard deviation units for KOM:',
+      deviations[kom_index] / standard_deviation)
+print('Deviation in standard deviation units for AOC:',
+      deviations[aoc_index] / standard_deviation)
+```
+
+```{r}
+message('Deviation in standard deviation units for KOM: ',
+        deviations[kom_index] / standard_deviation)
+message('Deviation in standard deviation units for AOC: ',
+        deviations[aoc_index] / standard_deviation)
+```
+
+The values for each district are a re-expression of the income values in terms
+of how many standard deviations each value is from the mean.
+
+## Standard scores
+
+In fact, we will often find uses for the procedure we have just applied, where
+we take the original values (here, `incomes`) and:
+
+* Subtract the mean to convert to deviations, then
+* Divide by the standard deviation
+
+Let's apply that procedure to all the `incomes` values:
 
 ```{python}
 deviations = incomes - np.mean(incomes)
-squared_deviations = deviations ** 2
-mean_squared_deviation = np.mean(squared_deviations)
-standard_deviation = np.sqrt(mean_squared_deviation)
-standard_deviation
+std = np.sqrt(np.mean(deviations ** 2))
+deviations_in_stds = deviations / std
+deviations_in_stds[:5]
 ```
 
-```{python}
-np.std(incomes)
+```{r}
+deviations <- incomes - mean(incomes)
+std <- sqrt(mean(deviations ** 2))
+deviations_in_stds <- deviations / std
+deviations_in_stds[1:5]
 ```
 
-```{python}
-deviations_in_stds = deviations / standard_deviation
-deviations_in_stds
-```
+This procedure converts the original data (here `incomes`) to deviations from
+the mean in terms of the standard deviation.  The resulting values are called
+*standard scores* or sometimes *z-scores*.  For example, one name for this
+procedure is "z-scoring".
+
+If you plot a histogram of the standard scores, you will see they have a mean
+of (actually exactly) 0, and a standard deviation of (actually exactly) 1.
 
 ```{python}
 plt.hist(deviations_in_stds, bins=25);
 ```
 
-```{python}
-pct_5, pct_95 = np.percentile(incomes, [5, 95])
-plt.hist(incomes, bins=25)
-plt.plot([pct_5, pct_95], [1, 1], 'ro')
-```
-
-```{python}
-deviations_in_stds[kom_index]
-```
-
 ## Standard scores to compare values on different scales
 
-Now consider the values in @tbl-epl-points-wages.  They give the total number
-of points at the end of the 2021 season (from 38 games) and the estimated wage
-bill in thousands of British Pounds (£1000), for all the teams in the English
-Premier League (EPL).
+Why are standard scores so useful?  They allow us to compare values on very
+different scales.
 
-```{python}
-from pathlib import Path
-
-import numpy as np
-import pandas as pd
-pd.set_option('mode.copy_on_write', True)
-```
+Consider the values in @tbl-epl-points-wages.  Each row of the table
+corresponds to team competing an English Premier League (EPL).  For those of
+you with absolutely no interest in sports, this is the league of the top teams
+in English football, or soccer to our North American friends.  The columns of
+the table give the total number of points at the end of the 2021 season (from
+38 games), where the team gets 3 points for a win, and 1 point for a draw.  The
+"wages" column gives the estimated total wage bill in thousands of British
+Pounds (£1000) for each team.
 
 ```{python echo=FALSE, eval=TRUE}
-epl = pd.read_csv('data/premier_league.csv')
+points_wages = pd.read_csv('data/premier_league.csv')
 ```
 
 ```{r echo=FALSE, eval=TRUE}
-ketable(py$epl,
+ketable(py$points_wages,
         caption = "2021 points and wage bills (£1000s) for EPL teams
         {#tbl-epl-points-wages}")
 ```
 
-Let's say we are a team near the middle of the league.
+Let's say we are a team near the middle of the league, and we are thinking
+about whether we should be investing in higher-paid players this season.
 
-```{python}
-import numpy as np
-import pandas as pd
-pd.set_option('mode.copy_on_write', True)
-```
+One thing we might like to know is whether there is an association between the
+wage bill and the points scored.
 
-```{python}
-points_wages = pd.read_csv('data/premier_league.csv')
-points_wages
-```
+To look at that, we can do a scatter plot.  This is a plot with — say — wages
+on the x-axis, and points on the y-axis.  For each team we have a pair of
+values — their wage bill and their points scored.  For each team, we put
+a marker on the scatter plot at the coordinates given by the wage value (on the
+x-axis) and the points value (on the y-axis).
 
-```{r}
-df <- read.csv('data/premier_league.csv')
-df
-```
+Here is that plot for our EPL data in @tbl-epl-points-wages:
 
-```{r}
-points <- df$points
-points
-```
-
-```{r}
-wages <- df$wages_year
-wages
+```{python, echo=FALSE, eval=TRUE}
+plt.scatter(points_wages['wages'],
+            points_wages['points'])
+plt.xlabel('Wage bill in £1000s')
+plt.ylabel('Total points scored')
+plt.title('Relationship of wages to points scored')
 ```
