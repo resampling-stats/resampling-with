@@ -25,24 +25,6 @@ source("_common.R")
 
 # Confidence Intervals, Part 2: The Two Approaches to Estimating Confidence Intervals {#sec-confidence-two-approaches}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/25-Chap-21.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
-
 There are two broad conceptual approaches to the question at hand: 1)
 Study the probability of various distances between the sample mean and
 the *likeliest* population mean; and 2) study the behavior of particular
@@ -171,7 +153,7 @@ this difference is not likely to be crucial; this last assumption is
 all-important, of course. True, we do not know what the dispersion might
 be for the "true" universe. But elsewhere (Simon, forthcoming) I argue
 that the concept of the "true universe" is not helpful — or maybe even
-worse than nothing — and should be foresworn. And we can postulate a
+worse than nothing — and should be forsworn. And we can postulate a
 dispersion for any *other* universe we choose to investigate. That is,
 for this postulation we unabashedly bring in any other knowledge we may
 have. The defense for such an almost-arbitrary move would be that this
@@ -183,12 +165,12 @@ leading backwards into the mists of axiom formation. But the axioms
 themselves inevitably are chosen arbitrarily just as there is
 arbitrariness in the practice at hand, though the choice process for
 axioms is less obvious and more hallowed by having been done by the
-masterminds of the past. \[See Simon, forthcoming, on the necessity for
-judgment.\] The absence of a sequence of equations leading from some
-first principles to the procedure described in the paragraph above is
-evidence of what is felt to be missing by those who crave logical
-justification. The key equation in this approach is formally
-unassailable, but it seems to come from nowhere.)
+masterminds of the past. (See @simon1998philosophy, on the necessity for
+judgment.) The absence of a sequence of equations leading from some first
+principles to the procedure described in the paragraph above is evidence of
+what is felt to be missing by those who crave logical justification. The key
+equation in this approach is formally unassailable, but it seems to come from
+nowhere.)
 
 In the examples in the following chapter may be found computations for
 two population distributions — one binomial and one quantitative — of
@@ -267,7 +249,7 @@ relative probabilities that the sample came from one of two specified universes
 information on reliability, but this procedure departs from the concept of
 confidence intervals.
 
-**Example 21-1: Counted Data: The Accuracy of Political Polls**
+### Example: Counted Data: The Accuracy of Political Polls
 
 Consider the reliability of a randomly selected 1988 presidential
 election poll, showing 840 intended votes for Bush and 660 intended
@@ -283,67 +265,54 @@ showed ...
 .. multistage sampling ...
 -->
 
-***What is the question?*** Stated technically, what are the 95%
-confidence limits for the proportion of Bush supporters in the
-population? (The proportion is the mean of a binomial population or
-sample, of course.) More broadly, within which bounds could one
-confidently believe that the population proportion was likely to lie? At
-this stage of the work, we must already have translated the conceptual
-question (in this case, a decision-making question from the point of view of
-the candidates) into a statistical question. (See @sec-framing-questions on
-translating questions into statistical form.)
-
-***What is the purpose*** to be served by answering this question? There
-is no sharp and clear answer in this case. The goal could be to satisfy
-public curiosity, or strategy planning for a candidate (though a
-national proportion is not as helpful for planning strategy as state
-data would be). A secondary goal might be to help guide decisions about
-the sample size of subsequent polls.
-
-***Is this a "probability" or a "probability-statistics" question?***
-The latter; we wish to infer from sample to population rather than the
-converse.
-
-***Given that this is a statistics question: What is the form of the
-statistics question — confidence limits or hypothesis testing?***
-Confidence limits.
-
-***Given that the question is about confidence limits: What is the
-description of the sample that has been observed?*** a) The raw sample
-data — the observed numbers of interviewees are
-
-840 for Bush and 660 for Dukakis — constitutes the best description of
-the universe. The *statistics of the sample* are the given
-proportions — 56 percent for Bush, 44 percent for Dukakis.
-
-***Which universe?*** (Assuming that the observed sample is
-representative of the universe from which it is drawn, what is your
-*best guess about the properties* of the universe about whose parameter
-you wish to make statements? The best guess is that the population
-proportion is the sample proportion — that is, the population contains
-56 percent Bush votes, 44 percent Dukakis votes.
-
-***Possibilities for Bayesian analysis*** **?** Not in this case, unless
-you believe that the sample was biased somehow.
-
-***Which parameter(s) do you wish to make statements about?*** Mean,
-median, standard deviation, range, interquartile range, other? We wish
-to estimate the proportion in favor of Bush (or Dukakis).
-
-***Which symbols for the observed entities?*** Perhaps 56 green and 44
-yellow balls, if a bucket is used, or "0" and "1" if the computer is used.
-
-***Discrete or continuous distribution?*** In principle, discrete. (
-*All* distributions must be discrete *in practice* .)
-
-***What values or ranges of values?*** "0" or "1."
-
-***Finite or infinite?*** Infinite — the sample is small relative to the
-population.
-
-***If the universe is what you guess it to be, for which samples do you
-wish to estimate the variation?*** A sample the same size as the
-observed poll.
+*   **What is the question?** Stated technically, what are the 95% confidence
+    limits for the proportion of Bush supporters in the population? (The
+    proportion is the mean of a binomial population or sample, of course.) More
+    broadly, within which bounds could one confidently believe that the
+    population proportion was likely to lie? At this stage of the work, we must
+    already have translated the conceptual question (in this case,
+    a decision-making question from the point of view of the candidates) into
+    a statistical question. (See @sec-framing-questions on translating
+    questions into statistical form.)
+*   **What is the purpose** to be served by answering this question? There is
+    no sharp and clear answer in this case. The goal could be to satisfy public
+    curiosity, or strategy planning for a candidate (though a national
+    proportion is not as helpful for planning strategy as state data would be).
+    A secondary goal might be to help guide decisions about the sample size of
+    subsequent polls.
+*   **Is this a "probability" or a "probability-statistics" question?** The
+    latter; we wish to infer from sample to population rather than the
+    converse.
+*   **Given that this is a statistics question: What is the form of the
+    statistics question — confidence limits or hypothesis testing?** Confidence
+    limits.
+*   **Given that the question is about confidence limits: What is the
+    description of the sample that has been observed?** a) The raw sample data
+    — the observed numbers of interviewees are 840 for Bush and 660 for Dukakis
+    — constitutes the best description of the universe. The *statistics of the
+    sample* are the given proportions — 56 percent for Bush, 44 percent for
+    Dukakis.
+*   **Which universe?** (Assuming that the observed sample is
+    representative of the universe from which it is drawn, what is your *best
+    guess about the properties* of the universe about whose parameter you wish
+    to make statements? The best guess is that the population proportion is the
+    sample proportion — that is, the population contains 56 percent Bush votes,
+    44 percent Dukakis votes.
+*   **Possibilities for Bayesian analysis?**  Not in this case, unless you
+    believe that the sample was biased somehow.
+*   **Which parameter(s) do you wish to make statements about?** Mean,
+    median, standard deviation, range, interquartile range, other? We wish
+    to estimate the proportion in favor of Bush (or Dukakis).
+*   **Which symbols for the observed entities?** Perhaps 56 green and 44
+    yellow balls, if a bucket is used, or "0" and "1" if the computer is used.
+*   **Discrete or continuous distribution?** In principle, discrete. (*All*
+    distributions must be discrete *in practice*.)
+*   **What values or ranges of values?*** "0" or "1."
+*   **Finite or infinite?** Infinite — the sample is small relative to the
+    population.
+*   **If the universe is what you guess it to be, for which samples do you
+    wish to estimate the variation?** A sample the same size as the observed
+    poll.
 
 Here one may continue either with resampling or with the conventional
 method. Everything done up to now would be the same whether continuing
@@ -352,7 +321,7 @@ with resampling or with a standard parametric test.
 ## Conventional Calculational Methods
 
 *Estimating the Distribution of Differences Between Sample and
-Population Means With the Normal Distribution* .
+Population Means With the Normal Distribution*.
 
 In the conventional approach, one could in principle work from first
 principles with lists and sample space, but that would surely be too
@@ -396,34 +365,24 @@ proportion as the criterion.
 *Estimating the Distribution of Differences Between Sample and
 Population Means By Resampling*
 
-***What procedure to produce entities?*** Random selection from bucket or
-computer.
-
-***Simple (single step) or complex (multiple "if" drawings)?***
-
-Simple.
-
-***What procedure to produce resamples?*** That is, with or without
-replacement? With replacement.
-
-***Number of drawings observations in actual sample, and hence, number
-of drawings in resamples*** **?** 1500.
-
-***What to record as result of each resample drawing?*** Mean, median,
-or whatever of resample? The proportion is what we seek.
-
-***Stating the distribution of results*** **:** The distribution of
-proportions for the trial samples.
-
-***Choice of confidence bounds?*** **:** 95%, two tails (choice made by
-the textbook that posed the problem).
-
-***Computation of probabilities within chosen bounds*** **:** Read the
-probabilistic result from the histogram of results.
-
-***Computation of upper and lower confidence bounds:*** Locate the
-values corresponding to the 2.5 ^th^ and 97.5 ^th^ percentile of the
-resampled proportions.
+* **What procedure to produce entities?**: Random selection from bucket or
+  computer.
+* **Simple (single step) or complex (multiple "if" drawings)?**: Simple.
+* **What procedure to produce resamples?** That is, with or without
+  replacement? With replacement.
+* **Number of drawings observations in actual sample, and hence, number of
+  drawings in resamples?** 1500.
+* **What to record as result of each resample drawing?** Mean, median,
+  or whatever of resample? The proportion is what we seek.
+* **Stating the distribution of results** **:** The distribution of
+  proportions for the trial samples.
+* **Choice of confidence bounds?** **:** 95%, two tails (choice made by
+  the textbook that posed the problem).
+* **Computation of probabilities within chosen bounds** **:** Read the
+  probabilistic result from the histogram of results.
+* **Computation of upper and lower confidence bounds:** Locate the
+  values corresponding to the 2.5^th^ and 97.5^th^ percentile of the resampled
+  proportions.
 
 Because the theory of confidence intervals is so abstract (even with the
 resampling method of computation), let us now walk through this
@@ -433,29 +392,26 @@ process works in reverse to estimate the reliability of the sample,
 using the Bush-Dukakis poll as an example. The computer program follows
 below.
 
-**Step 1:** Draw a sample of 1500 voters from a universe that, based on
-the observed sample, is 56 percent for Bush, 44 percent for Dukakis. The
-first such sample produced by the computer happens to be 53 percent for
-Bush; it might have been 58 percent, or 55 percent, or very rarely, 49
-percent for Bush.
-
-**Step 2:** Repeat step 1 perhaps 400 or 1000 times.
-
-**Step 3:** Estimate the distribution of means (proportions) of samples
-of size 1500 drawn from this 56-44 percent Bush- Dukakis universe; the
-resampling result is shown below.
-
-**Step 4:** In a fashion similar to what was done in steps 13, now
-compute the 95 percent confidence intervals for some *other* postulated
-universe mean — say 53% for Bush, 47% for Dukakis. This step produces a
-confidence interval that is not centered on the sample mean and the
-estimated universe mean, and hence it shows the independence of the
-procedure from that magnitude. And we now compare the breadth of the
-estimated confidence interval generated with the 53-47 percent universe
-against the confidence interval derived from the corresponding
-distribution of sample means generated by the "true" Bush-Dukakis
-population of 56 percent — 44 percent. If the procedure works well, the
-results of the two procedures should be similar.
+* **Step 1:** Draw a sample of 1500 voters from a universe that, based on the
+  observed sample, is 56 percent for Bush, 44 percent for Dukakis. The first
+  such sample produced by the computer happens to be 53 percent for Bush; it
+  might have been 58 percent, or 55 percent, or very rarely, 49 percent for
+  Bush.
+* **Step 2:** Repeat step 1 perhaps 400 or 1000 times.
+* **Step 3:** Estimate the distribution of means (proportions) of samples of
+  size 1500 drawn from this 56-44 percent Bush- Dukakis universe; the
+  resampling result is shown below.
+* **Step 4:** In a fashion similar to what was done in steps 13, now
+  compute the 95 percent confidence intervals for some *other* postulated
+  universe mean — say 53% for Bush, 47% for Dukakis. This step produces
+  a confidence interval that is not centered on the sample mean and the
+  estimated universe mean, and hence it shows the independence of the procedure
+  from that magnitude. And we now compare the breadth of the estimated
+  confidence interval generated with the 53-47 percent universe against the
+  confidence interval derived from the corresponding distribution of sample
+  means generated by the "true" Bush-Dukakis population of 56 percent — 44
+  percent. If the procedure works well, the results of the two procedures
+  should be similar.
 
 Now we interpret the results using this first approach. The histogram
 shows the probability that the difference between the sample mean and
@@ -476,9 +432,7 @@ and its mean. We estimate the error by experimenting with one or more
 universes in that neighborhood, and we then give the probability that
 the population mean is within that margin of error from the sample mean.
 
-**Example 21-2: Measured Data Example — the Bootstrap: A Feed Merchant
-Experiences Varied Pig Weight Gains With a New Ration and Wants to be
-Safe in Advertising an Average Weight Gain**
+### Example: Measured Data Example — the Bootstrap
 
 A feed merchant decides to experiment with a new pig ration — ration
 A — on twelve pigs. To obtain a random sample, he provides twelve
@@ -511,7 +465,21 @@ of 12. Average the weight gain for that sample, and record the result.
 Take repeated samples, and record the result for each. We can then make
 a histogram of the results; it might look something like this:
 
-![](images/25-Chap-21_000.png)
+```{python, eval=TRUE, echo=FALSE}
+import numpy as np
+import matplotlib.pyplot as plt
+
+rnd = np.random.default_rng()
+weights = np.array([496, 544, 464, 416, 512, 560,
+                    608, 544, 480, 466, 512, 496])
+N = 10_000
+bootstrap_means = np.zeros(N)
+for i in range(N):
+    bootstrap_means[i] = np.mean(rnd.choice(weights, size=len(weights)))
+plt.hist(bootstrap_means, bins=25)
+plt.title('Distribution of average weights from samples')
+plt.xlabel('Average of weight sample');
+```
 
 Though we do not know the true average weight gain, we can use this
 histogram to estimate the bounds within which it falls. The merchant can
@@ -528,61 +496,49 @@ many times (and using nothing else), we are able to make inferences
 about the population from which the sample came. This problem would
 conventionally be addressed with the "t-test."
 
-**Example 21-3: Measured Data Example: Estimating Tree Diameters**
+### Example: Measured Data Example: Estimating Tree Diameters
 
-***What is the question?*** A horticulturist is experimenting with a new
-type of tree. She plants 20 of them on a plot of land, and measures
-their trunk diameter after two years. She wants to establish a 90%
-confidence interval for the population average trunk diameter. For the
-data given below, calculate the mean of the sample and calculate (or
-describe a simulation procedure for calculating) a 90% confidence
-interval around the mean. Here are the 20 diameters, in centimeters and
-in no particular order:
+* **What is the question?** A horticulturist is experimenting with a new type
+  of tree. She plants 20 of them on a plot of land, and measures their trunk
+  diameter after two years. She wants to establish a 90% confidence interval
+  for the population average trunk diameter. For the data given below,
+  calculate the mean of the sample and calculate (or describe a simulation
+  procedure for calculating) a 90% confidence interval around the mean. Here
+  are the 20 diameters, in centimeters and in no particular order (@tbl-tree-diameters):
 
-Table 21-1
+  +-----+-----+-----+-----+------+-----+------+------+-----+------+
+  | 8.5 | 7.6 | 9.3 | 5.5 | 11.4 | 6.9 | 6.5  | 12.9 | 8.7 | 4.8  |
+  +-----+-----+-----+-----+------+-----+------+------+-----+------+
+  | 4.2 | 8.1 | 6.5 | 5.8 | 6.7  | 2.4 | 11.1 | 7.1  | 8.8 | 7.2  |
+  +-----+-----+-----+-----+------+-----+------+------+-----+------+
 
-**Tree Diameters, in Centimeters**
+  : Tree Diameters, in Centimeters {#tbl-tree-diameters}
 
-  ------------- ----- ------ ----- ------ ------ ----- -----
-  8.5 7.6 9.3   5.5   11.4   6.9   6.5    12.9   8.7   4.8
-  4.2 8.1 6.5   5.8   6.7    2.4   11.1   7.1    8.8   7.2
-  ------------- ----- ------ ----- ------ ------ ----- -----
-
-***What is the purpose to be served by answering the question?***
-
-Either research & development, or pure science.
-
-***Is this a "probability" or a "statistics" question?*** Statistics.
-
-***What is the form of the statistics question?*** Confidence limits.
-
-***What is the description of the sample that has been observed?***
-
-The raw data as shown above.
-
-***Statistics of the sample*** **?** Mean of the tree data.
-
-***Which universe?*** Assuming that the observed sample is
-representative of the universe from which it is drawn, what is your best
-guess about the properties of the universe whose parameter you wish to
-make statements about? Answer: The universe is like the sample above but
-much, much bigger. That is, in the absence of other information, we
-imagine this "bootstrap" universe as a collection of (say) one million
-trees of 8.5 centimeters width, one million of 7.2 centimeters, and so
-on. We'll see in a moment that the device of sampling with replacement
-makes it unnecessary for us to work with such a large universe; by
-replacing each element after we draw it in a resample, we achieve the
-same effect as creating an almost-infinite universe from which to draw
-the resamples. (Are there possibilities for Bayesian analysis?) No
-Bayesian prior information will be included.
-
-***Which parameter do you wish to make statements about?*** The mean.
-
-***Which symbols for the observed entities?*** Cards or computer entries
-with numbers 8.5...7.2, sample of an infinite size.
-
-***If the universe is as guessed at, for which samples do you wish to
-estimate the variation?*** Samples of size 20.
+* **What is the purpose to be served by answering the question?** Either
+  research & development, or pure science.
+* **Is this a "probability" or a "statistics" question?** Statistics.
+* **What is the form of the statistics question?** Confidence limits.
+* **What is the description of the sample that has been observed?** The raw
+  data as shown above.
+* **Statistics of the sample** **?** Mean of the tree data.
+* **Which universe?** Assuming that the observed sample is
+  representative of the universe from which it is drawn, what is your best
+  guess about the properties of the universe whose parameter you wish to make
+  statements about? Answer: The universe is like the sample above but much,
+  much bigger. That is, in the absence of other information, we imagine this
+  "bootstrap" universe as a collection of (say) one million trees of 8.5
+  centimeters width, one million of 7.2 centimeters, and so on. We'll see in
+  a moment that the device of sampling with replacement makes it unnecessary
+  for us to work with such a large universe; by replacing each element after we
+  draw it in a resample, we achieve the same effect as creating an
+  almost-infinite universe from which to draw the resamples. (Are there
+  possibilities for Bayesian analysis?) No Bayesian prior information will be
+  included.
+* **Which parameter do you wish to make statements about?** The mean.
+* **Which symbols for the observed entities?** Cards or computer entries
+  with numbers 8.5...7.2, sample of an infinite size.
+* **If the universe is as guessed at, for which samples do you wish to estimate
+  the variation?** Samples of size 20.
 
 Here one may continue with the conventional method. Everything up to now
 is the same whether continuing with resampling or with a standard
@@ -591,25 +547,19 @@ conventional test.
 
 Continuing with resampling:
 
-***What procedure will be used to produce the trial entities?***
-
-Random selection:
-
-Simple (single step), not complex (multiple "if") sample drawings).
-
-***What procedure to produce resamples?*** With replacement. As noted
-above, sampling with replacement allows us to forego creating a very
-large bootstrap universe; replacing the elements after we draw them
-achieves the same effect as would an infinite universe.
-
-***Number of drawings*** **?** 20 trees
-
-***What to record as result of resample drawing?*** The mean. ***How to
-state the distribution of results?*** See histogram. ***Choice of
-confidence bounds*** **:** 90%, two-tailed.
-
-***Computation of values of the resample statistic corresponding to
-chosen confidence bounds:*** Read from histogram.
+* **What procedure will be used to produce the trial entities?** Random
+  selection: simple (single step), not complex (multiple "if") sample
+  drawings).
+* **What procedure to produce resamples?** With replacement. As noted above,
+  sampling with replacement allows us to forego creating a very large bootstrap
+  universe; replacing the elements after we draw them achieves the same effect
+  as would an infinite universe.
+* **Number of drawings?** 20 trees
+* **What to record as result of resample drawing?** The mean.
+* **How to state the distribution of results?** See histogram.
+* **Choice of confidence bounds?** 90%, two-tailed.
+* **Computation of values of the resample statistic corresponding to chosen
+  confidence bounds?** Read from histogram.
 
 As has been discussed in @sec-point-estimation, it often is more appropriate to
 work with the median than with the mean. One reason is that the median is not
@@ -633,108 +583,191 @@ bootstrap procedure for estimating a confidence limit around the mean,
 as follows:
 
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-```matlab
-' Program file: "confidence_2_00.rss"
+rnd = np.random.default_rng()
 
-DATA (11.4 13.4 13.5 13.8 13.9 14.4 14.5 15.0 15.1 15.8 16.0 16.3 16.5 16.9 17.0 17.2 17.5 19.0) c
-REPEAT 1000
-    SAMPLE 18 c c$
-    MEDIAN c$ d$
-    SCORE d$ z
-END
-HISTOGRAM z
-PERCENTILE z (2.5 97.5) k
-PRINT K
-' This problem would be approached conventionally with a binomial
-' procedure leading to quite wide confidence intervals (Deshpande, p. 32).
+data = np.array(
+    [11.4, 13.4, 13.5, 13.8, 13.9, 14.4, 14.5, 15.0, 15.1, 15.8, 16.0, 16.3,
+     16.5, 16.9, 17.0, 17.2, 17.5, 19.0]
+)
+observed_median = np.median(data)
+
+n = 10000
+medians = np.zeros(n)
+
+for i in range(n):
+    sample = rnd.choice(data, size=18, replace=True)
+    # In the line above, replace=True is the default, so we could leave it out to
+    # get the same result.  We added it just to emphasize that bootstrap samples
+    # are samples _with_ replacement.
+    medians[i] = np.median(sample)
+
+plt.hist(medians, bins='auto')
+
+print('Observed median aluminum content:', observed_median)
+
+pp = np.percentile(medians, (2.5, 97.5))
+print('Estimate of 95 percent confidence interval:', pp)
 ```
 
-<!---
-Reference is @deshpande1995statistical
+```{r}
+data = c(11.4, 13.4, 13.5, 13.8, 13.9, 14.4, 14.5,
+         15.0, 15.1, 15.8, 16.0, 16.3, 16.5, 16.9,
+         17.0, 17.2, 17.5, 19.0)
 
-In fact, it is the exact Theban jars problem they describe there.
+observed_median <- median(data)
+
+n <- 10000
+medians <- numeric(n)
+
+for (i in 1:n) {
+    sample <- sample(data, replace=TRUE)
+    medians[i] <- median(sample)
+}
+
+hist(medians)
+
+message('Observed median aluminum content: ', observed_median)
+
+pp <- quantile(medians, c(0.025, 0.975))
+message('Estimate of 95 percent confidence interval: ', pp[1], ' - ', pp[2])
+```
+
+(This problem would be approached conventionally with a binomial procedure
+leading to quite wide confidence intervals [@deshpande1995statistical, p. 32]).
+
+<!---
+@deshpande1995statistical used the exact Theban jars problem they describe
+there.
 -->
 
-**Example 21-5: Determining a Confidence Interval for the Median Price
-Elasticity of Demand for Cigarettes**
+### Example: Confidence Interval for the Median Price Elasticity of Demand for Cigarettes
 
 The data for a measure of responsiveness of demand to a price change
 (the "elasticity" — percent change in demand divided by percent change
-in price) are shown for cigarette price changes as follows:
+in price) are shown for cigarette price changes as follows
+(@tbl-cigarette-price).  I (JLS) computed the data from cigarette sales data
+preceding and following a tax change in a state [@lyon1968price].
 
-Table 21-2
++--------+--------+--------+--------+--------+--------+--------+--------+
+| 1.725  | 1.139  | .957   | .863   | .802   | .517   | .407   | .304   |
++--------+--------+--------+--------+--------+--------+--------+--------+
+| .204   | .125   | .122   | .106   | .031   | -.032  | -.1    | -.142  |
++--------+--------+--------+--------+--------+--------+--------+--------+
+| -.174  | -.234  | -.240  | -.251  | -.277  | -.301  | -.302  | -.302  |
++--------+--------+--------+--------+--------+--------+--------+--------+
+| -.307  | -.328  | -.329  | -.346  | -.357  | -.376  | -.377  | -.383  |
++--------+--------+--------+--------+--------+--------+--------+--------+
+| -.385  | -.393  | -.444  | -.482  | -.511  | -.538  | -.541  | -.549  |
++--------+--------+--------+--------+--------+--------+--------+--------+
+| -.554  | -.600  | -.613  | -.644  | -.692  | -.713  | -.724  | -.734  |
++--------+--------+--------+--------+--------+--------+--------+--------+
+| -.749  | -.752  | -.753  | -.766  | -.805  | -.866  | -.926  | -.971  |
++--------+--------+--------+--------+--------+--------+--------+--------+
+| -.972  | -.975  | -1.018 | -1.024 | -1.066 | -1.118 | -1.145 | -1.146 |
++--------+--------+--------+--------+--------+--------+--------+--------+
+| -1.157 | -1.282 | -1.339 | -1.420 | -1.443 | -1.478 | -2.041 | -2.092 |
++--------+--------+--------+--------+--------+--------+--------+--------+
+| -7.100 |        |        |        |        |        |        |        |
++--------+--------+--------+--------+--------+--------+--------+--------+
 
-  -------- -------- -------- -------- -------- -------- -------- --------
-  1.725    1.139    .957     .863     .802     .517     .407     .304
-  .204     .125     .122     .106     .031     -.032    -.1      -.142
-  -.174    -.234    -.240    -.251    -.277    -.301    -.302    -.302
-  -.307    -.328    -.329    -.346    -.357    -.376    -.377    -.383
-  -.385    -.393    -.444    -.482    -.511    -.538    -.541    -.549
-  -.554    -.600    -.613    -.644    -.692    -.713    -.724    -.734
-  -.749    -.752    -.753    -.766    -.805    -.866    -.926    -.971
-  -.972    -.975    -1.018   -1.024   -1.066   -1.118   -1.145   -1.146
-  -1.157   -1.282   -1.339   -1.420   -1.443   -1.478   -2.041   -2.092
-  -7.100                                                         
-  -------- -------- -------- -------- -------- -------- -------- --------
-
- Price elasticity of demand in various states at various dates (computed
-from cigarette sales data preceding and following a tax change in a
-state) [@lyon1968price]
+: Price elasticity of demand in various states at various dates {#tbl-cigarette-price}
 
 The positive observations (implying an increase in demand when the price
 rises) run against all theory, but can be considered to be the result
 simply of measurement errors, and treated as they stand. Aside from this
 minor complication, the reader may work this example similarly to the
-case of the Theban jars. Here is a RESAMPLING STATS program
-("cigarett").
+case of the Theban jars. Consider this program:
 
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-```matlab
-' Program file: "confidence_2_01.rss"
+rnd = np.random.default_rng()
 
-READ file “cigaret.dat” elast
-' Read in the data from an external file
-MEDIAN elast med-elas
-REPEAT 1000
-    SAMPLE 73 elast elast$
-    ' A bootstrap sample (note that the "\$" indicates a bootstrap counterpart
-    ' to the observed sample)
-    MEDIAN elast$ med$
-    SCORE med$ scrboard
-END
-HISTOGRAM scrboard
-PERCENTILE scrboard (2.5 97.5) interval
-PRINT med-elas interval
+data = np.array([
+    1.725, 1.139, 0.957, 0.863, 0.802, 0.517, 0.407, 0.304,
+    0.204, 0.125, 0.122, 0.106, 0.031, -0.032, -0.1,  -0.142,
+    -0.174, -0.234, -0.240, -0.251, -0.277, -0.301, -0.302, -0.302,
+    -0.307, -0.328, -0.329, -0.346, -0.357, -0.376, -0.377, -0.383,
+    -0.385, -0.393, -0.444, -0.482, -0.511, -0.538, -0.541, -0.549,
+    -0.554, -0.600, -0.613, -0.644, -0.692, -0.713, -0.724, -0.734,
+    -0.749, -0.752, -0.753, -0.766, -0.805, -0.866, -0.926, -0.971,
+    -0.972, -0.975, -1.018, -1.024, -1.066, -1.118, -1.145, -1.146,
+    -1.157, -1.282, -1.339, -1.420, -1.443, -1.478, -2.041, -2.092,
+    -7.100
+])
+data_median = np.median(data)
+
+n = 10000
+
+medians = np.zeros(n)
+
+for i in range(n):
+    sample = np.random.choice(data, size=73, replace=True)
+    medians[i] = np.median(sample)
+
+plt.hist(medians, bins='auto')
+
+print('Observed median elasticity', data_median)
+
+pp = np.percentile(medians, (2.5, 97.5))
+print('Estimate of 95 percent confidence interval', pp)
 ```
 
+```{r}
+data = c(
+    1.725, 1.139, 0.957, 0.863, 0.802, 0.517, 0.407, 0.304,
+    0.204, 0.125, 0.122, 0.106, 0.031, -0.032, -0.1,  -0.142,
+    -0.174, -0.234, -0.240, -0.251, -0.277, -0.301, -0.302, -0.302,
+    -0.307, -0.328, -0.329, -0.346, -0.357, -0.376, -0.377, -0.383,
+    -0.385, -0.393, -0.444, -0.482, -0.511, -0.538, -0.541, -0.549,
+    -0.554, -0.600, -0.613, -0.644, -0.692, -0.713, -0.724, -0.734,
+    -0.749, -0.752, -0.753, -0.766, -0.805, -0.866, -0.926, -0.971,
+    -0.972, -0.975, -1.018, -1.024, -1.066, -1.118, -1.145, -1.146,
+    -1.157, -1.282, -1.339, -1.420, -1.443, -1.478, -2.041, -2.092,
+    -7.100)
 
-![](images/25-Chap-21_001.png)
+data_median <- median(data)
 
-Result:
+n <- 10000
 
-MED-ELAS = -0.511 \[observed value\]
+medians <- numeric(n)
 
-INTERVAL = -0.692 -0.357 \[estimated 95 percent confidence interval\]
+for (i in 1:n) {
+    sample <- sample(data, replace=TRUE)
+    medians[i] <- median(sample)
+}
 
-**Example 21-6: Measured Data Example: Confidence Intervals For a
-Difference Between Two Means, the Mice Data Again**
+hist(medians)
+
+message('Observed median elasticity: ', data_median)
+
+pp <- quantile(medians, c(0.025, 0.975))
+message('Estimate of 95 percent confidence interval: ',
+        pp[1], ' - ', pp[2])
+```
+
+## Measured Data Example: Confidence Intervals For a Difference Between Two Means
+
+This is another example from the mice data.
 
 Returning to the data on the survival times of the two groups of mice in
-Example 18-4: It is the view of this book that confidence intervals
-should be calculated for a difference between two groups only if one is
-reasonably satisfied that the difference is not due to chance. Some
+@sec-eg-bootstrap-sampling. It is the view of this book that confidence
+intervals should be calculated for a difference between two groups only if one
+is reasonably satisfied that the difference is not due to chance. Some
 statisticians might choose to compute a confidence interval in this case
-nevertheless, some because they believe that the confidence-interval
-machinery is more appropriate to deciding whether the difference is the
-likely outcome of chance than is the machinery of a hypothesis test in
-which you are concerned with the behavior of a benchmark or null
-universe. So let us calculate a confidence interval for these data,
-which will in any case demonstrate the technique for determining a
-confidence interval for a difference between two samples.
+nevertheless, some because they believe that the confidence-interval machinery
+is more appropriate to deciding whether the difference is the likely outcome
+of chance than is the machinery of a hypothesis test in which you are
+concerned with the behavior of a benchmark or null universe. So let us
+calculate a confidence interval for these data, which will in any case
+demonstrate the technique for determining a confidence interval for
+a difference between two samples.
 
 Our starting point is our estimate for the difference in mean survival
 times between the two samples — 30.63 days. We ask "How much might this
@@ -757,70 +790,79 @@ thus creating a universe that is effectively infinite.
 
 Here are the steps:
 
-**Step 1:** Consider the two samples separately as the relevant
-universes.
+* **Step 1:** Consider the two samples separately as the relevant universes.
+* **Step 2:** Draw a sample of 7 with replacement from the treatment group and
+  calculate the mean.
+* **Step 3:** Draw a sample of 9 with replacement from the control group and
+  calculate the mean.
+* **Step 4:** Calculate the difference in means (treatment minus control)
+  & record.
+* **Step 5:** Repeat steps 2-4 many times.
+* **Step 6:** Review the distribution of resample means; the 5^th^ and 95^th^
+  percentiles are estimates of the endpoints of a 90 percent confidence
+  interval.
 
-**Step 2:** Draw a sample of 7 with replacement from the treatment group
-and calculate the mean.
+Here is a {{< var lang >}} example:
 
-**Step 3:** Draw a sample of 9 with replacement from the control group
-and calculate the mean.
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-**Step 4:** Calculate the difference in means (treatment minus control)
-& record.
+rnd = np.random.default_rng()
 
-**Step 5:** Repeat steps 2-4 many times.
+treatment = np.array([94, 38, 23, 197, 99, 16, 141])
+control = np.array([52, 10, 40, 104, 51, 27, 146, 30, 46])
 
-**Step 6:** Review the distribution of resample means; the 5th and 95th
-percentiles are estimates of the endpoints of a 90 percent confidence
-interval.
+observed_diff = np.mean(treatment) - np.mean(control)
 
-Here is a RESAMPLING STATS program ("mice-ci"):
+n = 10000
+mean_delta = np.zeros(n)
 
+for i in range(n):
+    treatment_sample = rnd.choice(treatment, size=7, replace=True)
+    control_sample = rnd.choice(control, size=9, replace=True)
+    mean_delta[i] = np.mean(treatment_sample) - np.mean(control_sample)
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+plt.hist(mean_delta, bins='auto')
 
-```matlab
-' Program file: "confidence_2_02.rss"
+print('Observed difference in means:', observed_diff)
 
-NUMBERS (94 38 23 197 99 16 141) treatmt
-' treatment group
-NUMBERS (52 10 40 104 51 27 146 30 46) control
-' control group
-REPEAT 1000
-    ' step 5 above
-    SAMPLE 7 treatmt treatmt$
-    ' step 2 above
-    SAMPLE 9 control control$
-    ' step 3
-    MEAN treatmt$ tmean
-    ' step 4
-    MEAN control$ cmean
-    ' step 4
-    SUBTRACT tmean cmean diff
-    ' step 4
-    SCORE diff scrboard
-    ' step 4
-END
-' step 5
-HISTOGRAM scrboard
-PERCENTILE scrboard (5 95) interval
-' step 6
-PRINT interval
+pp = np.percentile(mean_delta, (5, 95))
+print('Estimate of 90 percent confidence interval:', pp)
 ```
 
+```{r}
+treatment = c(94, 38, 23, 197, 99, 16, 141)
+control = c(52, 10, 40, 104, 51, 27, 146, 30, 46)
 
-![](images/25-Chap-21_002.png)
+observed_diff <- mean(treatment) - mean(control)
 
-Result: interval = -15.016 73.825
+n <- 10000
+mean_delta <- numeric(n)
+
+for (i in 1:n) {
+    treatment_sample <- sample(treatment, replace=TRUE)
+    control_sample <- sample(control, replace=TRUE)
+    mean_delta[i] <- mean(treatment_sample) - mean(control_sample)
+}
+
+hist(mean_delta)
+
+message('Observed difference in means: ', round(observed_diff, 2))
+
+pp <- quantile(mean_delta, c(0.05, 0.95))
+message('Estimate of 90 percent confidence interval: ',
+        round(pp[1], 2), ' - ', round(pp[2], 2))
+```
 
 **Interpretation:** This means that one can be 90 percent confident that
-the mean of the difference (which is estimated to be 30.63) falls
-between -15.016 and 73.825. So the reliability of the estimate of the
-mean is very small.
+the mean of the difference (which is estimated to be
+`r get_var('observed_diff')`) falls between
+`r get_var('pp')[1]`) and
+`r get_var('pp')[2]`). So the reliability of the estimate of the mean is very
+small.
 
-**Example 21-7: Counted Data Example: Confidence Limit on a Proportion,
-Framingham Cholesterol Data**
+## Count Data Example: Confidence Limit on a Proportion, Framingham Cholesterol Data
 
 The Framingham cholesterol data were used in @sec-framingham-example to
 illustrate the first classic question in statistical inference — interpretation
@@ -832,67 +874,68 @@ calculate the appropriate sample size for experiments and surveys, another
 important topic in statistics.
 
 Consider for now just the data for the sub-group of 135 high-cholesterol men in
-Table 15-4. Our second classic statistical question is as follows: How much
-confidence should we have that if we were to take a much larger sample than was
-actually obtained, the sample mean (that is, the proportion 10/135
-
-= .07) would be in some close vicinity of the observed sample mean? Let
+@tbl-framingham-data. Our second classic statistical question is as follows:
+How much confidence should we have that if we were to take a much larger
+sample than was actually obtained, the sample mean (that is, the proportion
+10/135 = .07) would be in some close vicinity of the observed sample mean? Let
 us first carry out a resampling procedure to answer the questions,
 waiting until afterwards to discuss the logic of the inference.
 
 1.  Construct a bucket containing 135 balls — 10 red (infarction) and 125
     green (no infarction) to simulate the universe as we guess it to be.
-
 2.  Mix, choose a ball, record its color, replace it, and repeat 135
     times (to simulate a sample of 135 men).
-
 3.  Record the number of red balls among the 135 balls drawn.
+4.  Repeat steps 2-3 perhaps 10000 times, and observe how much the total
+    number of reds varies from sample to sample. We arbitrarily denote the
+    boundary lines that include 47.5 percent of the hypothetical samples on
+    each side of the sample mean as the 95 percent "confidence limits" around
+    the mean of the actual population.
 
-4.  Repeat steps 2-4 perhaps 1000 times, and observe how much the total
-    number of reds varies from sample to sample. We arbitrarily denote
-    the boundary lines that include 47.5 percent of the hypothetical
-    samples on each side of the sample mean as the 95 percent
-    "confidence limits" around the mean of the actual population.
+Here is a {{< var lang >}} program:
 
-Here is a RESAMPLING STATS program ("myocar3"):
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
+rnd = np.random.default_rng()
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+men = np.repeat([1, 0], repeats=[10, 125])
 
-```matlab
-' Program file: "confidence_2_03.rss"
+n = 10000
+z = np.zeros(n)
 
-URN 10#1 125#0 men
-' A bucket (called "men") with ten "1s" (infarctions) and 125 "0s" (no
-' infarction)
-REPEAT 1000
-    ' Do 1000 trials
-    SAMPLE 135 men a
-    ' Sample (with replacement) 135 numbers from the bucket, put them in a
-    COUNT a =1 b
-    ' Count the infarctions
-    DIVIDE b 135 c
-    ' Express as a proportion
-    SCORE c z
-    ' Keep score of the result
-END
-' End the trial, go back and repeat
-HISTOGRAM z
-' Produce a histogram of all trial results
-PERCENTILE z (2.5 97.5) k
-' Determine the 2.5th and 97.5th percentiles of all trial results; these
-' points enclose 95 percent of the results
-PRINT k
+for i in range(n):
+    sample = rnd.choice(men, size=135, replace=True)
+    infarctions = np.sum(sample == 1)
+    z[i] = infarctions / 135
+
+plt.hist(z, bins='auto')
+
+pp = np.percentile(z, (2.5, 97.5))
+print('Estimate of 95 percent confidence interval', pp)
 ```
 
+```{r}
+men <- rep(c(1, 0), c(10, 125))
 
-![](images/25-Chap-21_003.png)
+n <- 10000
+z <- numeric(n)
 
-**Propor tion with infarction**
+for (i in 1:n) {
+    sample <- sample(men, replace=TRUE)
+    infarctions <- sum(sample == 1)
+    z[i] <- infarctions / 135
+}
 
-Result: k = 0.037037 0.11852
+hist(z)
 
-(This is the 95 percent confidence interval, enclosing 95 percent of the
+pp <- quantile(z, c(0.025, 0.975))
+message('Estimate of 95 percent confidence interval: ',
+        round(pp[1], 2), ' - ', round(pp[2], 2))
+```
+
+(The result is the 95 percent confidence interval, enclosing 95 percent of the
 resample results)
 
 The variation in the histogram above highlights the fact that a sample
@@ -1011,7 +1054,7 @@ centroid (mean) at those 2.5 percent points on the line. The new
 distributions will have 2.5 percent of their areas on the other side of the
 mean of the sample.
 
-**Example 21-8: Approach 2 for Counted Data: the Bush- Dukakis Poll**
+### Example: Approach 2 for Counted Data: the Bush-Dukakis Poll
 
 Let's implement Approach 2 for counted data, using for comparison the
 Bush-Dukakis poll data discussed earlier in the context of Approach 1.
@@ -1026,25 +1069,23 @@ because of the correspondence of this value to a conventional breakpoint
 in statistical inference. So we could experiment with various universes
 by trial and error to find this universe.
 
-We can learn from our previous simulations of the Bush-- Dukakis poll in
-Approach 1 that about 95 percent of the samples fall within .025 on
-either side of the sample mean (which we had been implicitly assuming is
-the location of the population mean). If we assume (and there seems no
-reason not to) that the dispersions of the universes we experiment with
-are the same, we will find (by symmetry) that the universe we seek is
-centered on those points .025 away from .56, or .535 and .585.
+We can learn from our previous simulations of the Bush — Dukakis poll in
+Approach 1 that about 95 percent of the samples fall within .025 on either side
+of the sample mean (which we had been implicitly assuming is the location of
+the population mean). If we assume (and there seems no reason not to) that the
+dispersions of the universes we experiment with are the same, we will find (by
+symmetry) that the universe we seek is centered on those points .025 away from
+.56, or .535 and .585.
 
-From the standpoint of Approach 2, then, the conventional sample formula
-that is centered at the mean can be considered a shortcut to estimating
-the boundary distributions. We say that the boundary is at the point
-that centers a distribution which has only a (say) 2.5 percent chance of
-producing the observed sample; it is that distribution which is the
-subject of the discussion, and not the distribution which is centered at
-$\mu = \bar{x}$. Results of these simulations are shown in Figure 21-1.
+From the standpoint of Approach 2, then, the conventional sample formula that
+is centered at the mean can be considered a shortcut to estimating the boundary
+distributions. We say that the boundary is at the point that centers
+a distribution which has only a (say) 2.5 percent chance of producing the
+observed sample; it is that distribution which is the subject of the
+discussion, and not the distribution which is centered at $\mu = \bar{x}$.
+Results of these simulations are shown in @fig-app-2-bush-duk.
 
-![](images/25-Chap-21_004.png)
-
-**Figure 21-1**
+![Approach 2 for Bush-Dukakis problem](images/25-Chap-21_004.png){#fig-app-2-bush-duk}
 
 About these distributions centered at .535 and .585 — or more
 importantly for understanding an election situation, the universe
@@ -1064,17 +1105,15 @@ One can then say that this point represents a "limit" or "boundary" so
 that the interval between it and the sample mean may be called a
 confidence interval.
 
-**Example 21-9: Approach 2 for Measured Data: The Diameters of Trees**
+### Example: Approach 2 for Measured Data: The Diameters of Trees
 
 To implement Approach 2 for measured data, one may proceed exactly as
 with Approach 1 above except that the output of the simulation with the
-sample mean as midpoint will be used for guidance about where to locate
-trial universes for Approach 2. The results for the tree diameter data
-(Table 21-1) are shown in Figure 21-2.
+sample mean as midpoint will be used for guidance about where to locate trial
+universes for Approach 2. The results for the tree diameter data
+(@tbl-tree-diameters) are shown in @fig-app-2-trees.
 
-![](images/25-Chap-21_005.png)
-
-**Figure 21-2**
+![Approach 2 for tree diameters](images/25-Chap-21_005.png){#fig-app-2-trees}
 
 ## Interpretation of Approach 2
 
@@ -1094,19 +1133,18 @@ universe — say, a universe at (say) the two-tailed 95 percent boundary
 line. We then say: The probability that the observed sample would be
 produced by a universe with a mean as far (or further) from the observed
 sample's mean as the universe under investigation is only 2.5 percent.
-This is similar to the probvalue interpretation of a hypothesis-test
-framework. It is not a direct statement about the location of the mean
-of the universe from which the sample has been drawn. But it is
-certainly reasonable to derive a betting-odds interpretation of the
-statement just above, to wit: The chances are 2 ½ in 100 (or, the odds
-are 2 ½ to 97 ½ ) that a population located here would generate a sample
-with a mean as far away as the observed sample. And it would seem
-legitimate to proceed to the further betting-odds statement that
-(assuming we have no additional information) the odds are 97 ½ to 2 ½
-that the mean of the universe that generated this sample is no farther
-away from the sample mean than the mean of the boundary universe under
-discussion. About this statement there is nothing slippery, and its
-meaning should not be controversial.
+This is similar to the probability value interpretation of a hypothesis-test
+framework. It is not a direct statement about the location of the mean of the
+universe from which the sample has been drawn. But it is certainly reasonable
+to derive a betting-odds interpretation of the statement just above, to wit:
+The chances are 2½ in 100 (or, the odds are 2½ to 97½ ) that a population
+located here would generate a sample with a mean as far away as the observed
+sample. And it would seem legitimate to proceed to the further betting-odds
+statement that (assuming we have no additional information) the odds are 97
+½ to 2 ½ that the mean of the universe that generated this sample is no
+farther away from the sample mean than the mean of the boundary universe under
+discussion. About this statement there is nothing slippery, and its meaning
+should not be controversial.
 
 Here again the tactic for interpreting the statistical procedure is to
 restate the facts of the behavior of the universe that we are
@@ -1157,29 +1195,26 @@ helps one's intuitive understanding.
 Solutions for problems may be found in the section titled, "Exercise
 Solutions" at the back of this book.
 
-**Exercise 21-1**
+### Exercise 1
 
 In a sample of 200 people, 7 percent are found to be unemployed.
 Determine a 95 percent confidence interval for the true population
 proportion.
 
-**Exercise 21-2**
+### Exercise 2
 
-A sample of 20 batteries is tested, and the average lifetime is
+A sample of 20 batteries is tested, and the average lifetime is 28.85 months.
+Establish a 95 percent confidence interval for the true average value. The
+sample values (lifetimes in months) are listed below.
 
-28.85 months. Establish a 95 percent confidence interval for the true
-average value. The sample values (lifetimes in months) are listed below.
+30 32 31 28 31 29 29 24 30 31 28 28 32 31 24 23 31 27 27 31
 
-30 32 31 28 31 29 29 24 30 31 28 28 32 31 24 23 31 27 27
+### Exercise 3
 
-31
-
-**Exercise 21-3**
-
-Suppose we have 10 measurements of Optical Density on a batch of HIV
-negative control:
+Suppose we have 10 measurements of Optical Density on a batch of HIV negative
+control:
 
 .02 .026 .023 .017 .022 .019 .018 .018 .017 .022
 
-Derive a 95 percent confidence interval for the sample mean. Are there
-enough measurements to produce a satisfactory answer?
+Derive a 95 percent confidence interval for the sample mean. Are there enough
+measurements to produce a satisfactory answer?

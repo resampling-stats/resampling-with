@@ -1031,22 +1031,16 @@ famous Framingham study (drawn from Kahn and Sempos [-@kahn1989statistical])
 concerning the development of myocardial infarction 16 years after the
 Framingham study began, for men ages 35- 44 with serum cholesterol above 250,
 compared to those with serum cholesterol below 250. The raw data are shown in
-Table 15-4 (divided into "high" and "low" cholesterol by Kahn and Sempos).
+@tbl-framingham-data.  The data are from [@shurtleff1970framingham], cited in
+[@kahn1989statistical, page 61, Table 3-8]. Kahn and Sempos divided the cases
+into "high" and "low" cholesterol.
 
-Table 15-4
+| Serum Cholesterol | Developed MI | Didn't Develop MI | Total |
+|-------------------|--------------|-------------------|-------|
+| > 250             | 10           | 125               | 135   |
+| <= 250            | 21           | 449               | 470   |
 
-**Development of Myocardial Infarction in Framingham After 16 Years**
-
-**Men Age 35-44, by Level of Serum Cholesterol**
-
-  ----------------------- ------------------ ----------------------- -----------
-  **Serum Cholesterol**   **Developed MI**   **Didn't Develop MI**   **Total**
-   \> 250                 10                 125                     135
-  \<= 250                 21                 449                     470
-  ----------------------- ------------------ ----------------------- -----------
-
-Source: [@shurtleff1970framingham], cited in [@kahn1989statistical, page 61,
-Table 3-8].
+: Development of Myocardial Infarction in Men Aged 35-44 After 16 Years {#tbl-framingham-data}
 
 The statistical logic properly begins by asking: How likely is that
 the two observed groups "really" came from the same "population"
