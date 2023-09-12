@@ -350,8 +350,10 @@ In our original problem, we ask what is the chance that a car is broken given th
 As discussed under "Ratios of proportions", it can be calculated with:
 
 $$
-P(\text{car broken | mechanic approved})
-= P(\text{car broken and mechanic approved}) / P(\text{mechanic approved})
+P(\text{car broken | mechanic approved}) =
+$$
+$$
+P(\text{car broken and mechanic approved}) / P(\text{mechanic approved})
 $$
 
 We have already used $B$ to mean "broken" (above), so let us use $A$ to mean "mechanic approved".
@@ -759,11 +761,13 @@ required: Teach the habit of saying "I'll simulate it" and then actually
 doing so.
 
 **Signature verification**
+
 :::{.callout-note}
 ## Note
 In this example we approach the problem from a theoretical point of view using Bayes' theorem. This may be skipped
 at a first reading.
 :::
+
 Let's return to the signature verification problem mentioned in the introduction. Approaching it from a theoretical
 point of view forces us to make our assumptions explicit.
 
@@ -777,7 +781,7 @@ Let's first state exactly what we want to achieve: If the signature verification
 a forgery, what is the probability that it actually is a forgery? More precisely, what i the probability that the
 signature is a forgery, given that the system tells us that it is a forgery. This can be stated in terms of a formula:
 $$
-P({\text the signature is a forgery} | {\text the system says it is a forgery).
+P(\text{the signature is a forgery} | \text{the system says it is a forgery}).
 $$
 It is rather cumbersome to write it like this, let's introduce symbols. Let's indicate the system by $C$ and the actual
 signature by $S$. Then both symbols, $C$ and $S$ can take on two values, $T$  for genuine signature, and $F$ for a
@@ -892,50 +896,203 @@ Bb mated with Bb   ¼           ½           ¼
 
 : Probabilities for Genetic Character of Mice Offspring [@box1992bayesian, pp. 12-14] {#tbl-mice-genetics}
 
-Suppose we have a "test" mouse which has been produced
-by a mating between two (*Bb*) mice and is black.
-What is the genetic kind of this mouse?
+Lets carefully look at exactly what we are given - we need this because shortly we'll want to express the problem in
+terms of formulae.
 
-To answer that, we look at the information in the last line of the table:
-it shows that the probabilities of a test mouse is of kind *BB* and *Bb* are precisely known, and are 1/3 and 2/3 respectively ((1/4)/(1/4 + 1/2) vs (1/2)/(1/4 + 1/2)).  We call this our "prior" estimate — in other words, our estimate before seeing data.
+1. We are given 3 different situations, `BB mated with bb`, `Bb mated with bb` and `Bb mated with Bb`. Note that
+   we have no information about the situation when, for example, `BB mated with Bb`. We can think of these 3 situations
+   as 3 different models.
 
-Suppose the test mouse is now mated with a brown mouse (of kind *bb*) and
-produces seven black offspring. Before, we thought that it was more likely for
-the parent to be of kind *Bb* than of kind *BB*. But if that were true, then
-we would have expected to have seen some brown offspring (the probability of
-mating *Bb* with *bb* resulting in brown offspring is given as 0.5).
-Therefore, we sense that it may now be more likely that the parent was of type
-*BB* instead. How do we quantify that?
+   Let's write down the join probabilities for the three models. For this we need to introduce proper notation. We'll
+   indicate the genome by $G$,
+   $$
+   G \in \{ \text{BB}, \text{Bb}, \text{bb}\},
+   $$
+   the colour by $C$,
+   $$
+   C \in
+   \{\text{Black}, \text{Brown}\},$$
+   and the model by $M$,
+   $$
+   M \in \{ 1, 2, 3 \}.
+   $$
 
-One can calculate, as Fisher [-@fisher1959statistical, page 19] did, the
-probabilities after seeing the data (we call this the *posterior*
-probability). This is typically done using using Bayes' rule.
+   The joint distribution for $M = 1$, $P(G, C | M=1)$ is given by,
 
-But instead of doing that, let's take the easy route out and simulate
-the situation instead.
+   Genome/Colour    Black    Brown
+   -------------   -------  -------
+   BB                 0        0
+   Bb                 1        0
+   bb                 0        0
+   -------------   -------  -------
+   : The joint distribution for `Model 1`. {#tbl-joint-proba-model-1}
+
+
+   The joint distribution for $M = 2$, $P(G, C | M=2)$ is given by,
+
+   Genome/Colour    Black    Brown
+   -------------   -------  -------
+   BB                 0        0
+   Bb                 ½        0
+   bb                 0        ½
+   -------------   -------  -------
+   : The joint probabilities for `Model 2`. {#tbl-joint-proba-model-2}
+
+   The joint distribution for $M = 3$, $P(G, C | M=3)$ is given by,
+
+   Genome/Colour    Black    Brown
+   -------------   -------  -------
+   BB                 ¼        0
+   Bb                 ½        0
+   bb                 0        ¼
+   -------------   -------  -------
+   : The joint probabilities for `Model 3`. {#tbl-joint-proba-model-3}
+
+   Note that probabilities for each model add up to 1, as it should for a properly probability distribution.
+2. We are given that a mating takes place between Bb and Bb. This means we have to investigate model 3, and its joint
+   probabilities are given by @tbl-joint-proba-model-3.
+3. The first observation we are given is that the offspring of the mating is `Black`. Since  the offspring is `Black`
+   the gnome of the the offspring can only be `BB` or `Bb`. The two probabilities are easily calculated and are given by
+   1/3 (= (1/4)/(1/4 + 1/2)) and 2/3 (=(1/2)/(1/4 + 1/2)), respectively. Given only this information, we conclude that
+   it is twice as likely that the offspring is of type `BB` rather than `Bb`. It will be convenient to refer to this
+   offspring as little-mouse.
+
+    We also want to calculate the probabilities from the joint probabilities for $M = 3$ given in Table @tbl-joint-proba-model-3.
+    More explicitly, we want to calculate,
+    $$
+    P(G| C = \text{Black}, M=3) = P(G, C|M=3)/P(C = \text{Black}| M=3).
+    $$
+    Everything on the right hand side is known, except $P(C = \text{Black}| M=3)$. But this can be calculated from the
+    join distribution,
+
+    $$
+    P(C = \text{Black}| M=3) = \sum_{G} P(G, C=\text{Black}|M=3),
+    $$
+
+    or
+
+    $$
+    P(C = \text{Black}| M=3) = 1/4 + 1/2 = 3/4.
+    $$
+
+    This means that
+
+    $$
+    P(G = \text{BB}| C = \text{Black}, M=3) = \frac{1}{4}/\frac{3}{4} = \frac{1}{3}.
+    $$
+
+    Similarly,
+
+    $$
+    P(G = \text{Bb}| C = \text{Black}, M=3) = \frac{1}{2}/\frac{3}{4} = \frac{2}{3}.
+    $$
+
+
+4. We now mate little-mouse with a $G=\text{bb}$ mouse and observe 7 offspring from this mating, all black. How does this
+   additional information change
+   our believe that little-mouse is `BB` or `Bb`? Given that little-mouse is Black, its gnome can only be `BB` or `Bb`.
+   Thus the mating of little-mouse directs us to either `Model 1` or `Model 2`, depending whether is gnome is `BB` or `Bb`,
+   respectively.
+
+Before we turn to sampling, let's first calculate the answer theoretically and then check it by resampling.
+
+This is where we need to think carefully about our modelling assumptions. This is as much true for a theoretical
+investigation as for sampling. It is perfectly fine if you find one of the two approaches more intuitive than the
+the other! In fact we are going to explain the theory in terms of *urns* - drawing from urns is the same as sampling -
+the only difference here is
+that we stress that the different urns are actually different models, each with its own probability distribution.
+
+The result of the mating that produced little-mouse tells us that $P(G = \text{BB}) = \frac{1}{3}$ and
+$P(G = \text{Bb}) = \frac{2}{3}$. These are the prior probabilities and we can model it by taking an urn and put 3
+balls in it, 2 marked `Bb` and 1 marked `BB`. We can now draw, with replacement, from this urn. If we draw `BB`, the
+next draw will be from an urn called `Model 1`. If we draw `Bb`, the next draw will be from an urn called `Model 2`.
+We now need to decide what goes into `Model 1`. From Table @tbl-joint-proba-model-3, we note that the only
+color that can be sampled is `Black`. We therefore put a single (or any number, for that matter) black ball in the
+urn of `Model 1`- ensuring that we'll always draw a black ball. For the urn of `Model 2` we turn to
+Table @tbl-joint-proba-model-2
+and note that one can draw either `Black` or `Brown`, each with probability 1/2. The urn of `Model 2` therefore has
+has two balls, one labelled `Black`, the other `Brown`.
+
+:::{.callout-note}
+## Note
+The important point to note is that we draw twice, once from the urn representing the prior probability,
+then from the urns representing the joint distributions of Models 1 or 2.
+:::
+
+The procedure now continues as follows.
+
+a. If we draw `BB` from the first urn, we next draw seven times (with replacement)
+   the urn of `Model 1`. We know that we'll only draw black balls, therefore the probability
+   $P(C=\text{Black} | M=1) = 1$. Note the abuse of notation.
+b. If we draw `Bb` from the first urn, we next draw seven times (with replacement)
+   the urn of `Model 2`. We know that we'll draw black or brown balls, each with probability 1/2. The probability
+   of drawing 7 black balls in succession is therefore $(1/2)^7$. Again with the same abuse of notation, we have
+   $P(C=\text{Black} | M=2) = (1/2)^7.$
+c. All we need to do is to count how many times we are successful after drawing from the model urns.
+
+   Let's do it theoretically. We want to calculate,
+
+   $$
+    P(G=BB, C=\text{Black}) = P(C=\text{Black}  | G=\text{BB}) P(G=\text{BB}),
+    $$
+
+    and
+
+    $$
+    P(G=\text{Bb}, C=\text{Black}) = P(C=\text{Black}  | G=\text{Bb}) P(G=\text{Bb}).
+    $$
+    From the discussion above we have that
+
+    $$
+    P(G=\text{BB}, C=\text{Black}) = P(C=\text{Black}  | G=\text{BB}) P(G=BB)  = 1 \times \frac{1}{3},
+    $$
+
+    and
+
+    $$
+    P(G=\text{Bb}, C=\text{Black}) = P(C=\text{Black}  | G=\text{Bb}) P(G=\text{Bb})  = (1/2)^7 \times \frac{2}{3}.
+    $$
+
+   The ratio is therefore given by,
+
+   $$
+    \frac{ P(G=\text{BB}, C=\text{Black}) }{ P(G=\text{Bb}, C=\text{Black}) } = \frac{ 1/3 }{ (1/2)^7\times \frac{2}{3} } = 64.
+   $$
+
+:::{.callout-note}
+## Note
+Note how quickly our prior probabilities change as we observe more `Black` in succession - the ratio doubles for every
+successive `Black` mouse we observe.
+:::
+
+
+Let's now turn to a simulation. Note that we'll follow the same steps as described above. We have a choice whether we
+first sample from `Model 3` producing the prior probabilities of `BB` or `Bb`, or use the known prior probabilities
+and directly sample from the prior probabilities. Next we sample from `Model 1` or `Model 2`, depending on the outcome
+of the first sampling. Here we describe the first approach.
 
 1.  We begin, as do Box and Tiao, by restricting our attention to the third
-    line in Table @tbl-mice-genetics. We draw a mouse with label 'BB', 'Bb', or
-    'bb', using those probabilities. We were told that the "test mouse" is
-    black, so if we draw 'bb', we try again. (Alternatively, we could draw 'BB'
-    and 'Bb' with probabilities of 1/3 and 2/3 respectively.)
+    model in Table @tbl-mice-genetics. We draw a mouse with label `BB`, `Bb`, or
+    `bb`, using those probabilities. We were told that the little mouse is
+    black, so if we draw `bb`, we ignore it and draw again. (Alternatively, we could draw `BB`
+    and `Bb` with probabilities of 1/3 and 2/3 respectively, as mentioned above.)
 
-2.  We now want to examine the offspring of the test mouse when mated
-    with a brown "bb" mouse.  Specifically, we are only interested in
-    cases where all offspring were black.  We will store the genetic
+2.  We now want to examine the offspring of the little mouse when mated
+    with a brown `bb` mouse.  Specifically, we are only interested in
+    cases where all offspring were black.  We'll store the genetic
     kind of the parents of such offspring so that we can count them
     later.
 
-    If our test mouse is "BB", we already know that all their offspring will
-    be black ("Bb").  Thus, store "BB" in the parent list.
+    If our little mouse is `BB`, `Model 1` tells that its offspring will
+    always be black `Bb`.  Thus, store `BB` in the parent list, tacitly drawing from the urn of `Model 1`.
 
-3.  If our test mouse is "Bb", we have a bit more work to do.  Draw
-    seven offspring from the middle row of Table tbl-mice-genetics.
-    If all the offspring are black, store "Bb" in the parent list.
+3.  If our little mouse is `Bb`, we have to draw explicitly from the urn of `Model 2`.  Draw
+    seven offspring from `Model 2` in Table @tbl-mice-genetics.
+    If all the offspring are black, store `Bb` in the parent list.
 
-4.  Repeat steps 1-3 perhaps 10000 times.
+4.  Repeat steps 1-3 perhaps 10\;000 times.
 
-5.  Now, out of all parents count the numbers of "BB" vs "Bb".
+5.  Now, out of all parents count the numbers of `BB` vs `Bb`.
 
 We will do a naïve implementation that closely follows the logic described above, followed by a slightly optimized version.
 
@@ -945,22 +1102,22 @@ N = 100_000
 parents = []
 
 for i in range(N):
-    test_mouse = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25])
+    little_mouse = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25])
 
-    # The test mouse is black; since we drew a brown mouse skip this trial
-    if test_mouse == 'bb':
+    # The little mouse is black; since we drew a brown mouse skip this trial
+    if little_mouse == 'bb':
         continue
 
-    # If the test mouse is 'BB', all 7 children are guaranteed to
+    # If the little mouse is 'BB', all 7 children are guaranteed to
     # be 'Bb' black.
     # Therefore, add 'BB' to the parent list.
-    if test_mouse == 'BB':
+    if little_mouse == 'BB':
         parents.append('BB')
 
     # If the parent mouse is 'Bb', we draw 7 children to
     # see whether all of them are black ('Bb').
     # The probabilities come from the middle row of the table.
-    if test_mouse == 'Bb':
+    if little_mouse == 'Bb':
       children = np.random.choice(['Bb', 'bb'], p=[0.5, 0.5], size=7)
       if np.all(children == 'Bb'):
           parents.append('Bb')
@@ -982,44 +1139,44 @@ print(f'Ratio: {p_BB/p_Bb:.1f}')
 
 We see that all the offspring being black considerably changes the
 situation!
-We started with the odds being 2:1 in favor of Bb vs BB.
+We started with the odds being 2:1 in favor of `Bb` vs `BB`.
 The "posterior" or "after the evidence" ratio is closer to 64:1 in
-favor of *BB*! (1973, pp. 12-14)
+favor of `BB`! (1973, pp. 12-14)
 
-Let's tune the code a bit to run faster.  Instead of doing the trials
+Let's tune the code to run faster.  Instead of doing the trials
 one mouse at a time, we will do the whole bunch together.
 
 ```{python}
 N = 1_000_000
 
 # In N trials, pair two Bb mice and generate a child
-test_mice = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25], size=N)
+little_mice = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25], size=N)
 
-# The resulting test mouse is black, so filter out all brown ones
-test_mice = test_mice[test_mice != 'bb']
-M = len(test_mice)
+# The resulting little mouse is black, so filter out all brown ones
+little_mice = little_mice[little_mice != 'bb']
+M = len(little_mice)
 
-# Each test mouse will now be mated with a brown mouse, producing 7 offspring.
+# Each little mouse will now be mated with a brown mouse, producing 7 offspring.
 # We then store whether all the offspring were black or not.
 all_offspring_black = np.zeros(M, dtype=bool)
 
-# If a test mouse is 'BB', we are assured that all its offspring
+# If a little mouse is 'BB', we are assured that all its offspring
 # will be black
-all_offspring_black[test_mice == 'BB'] = True
+all_offspring_black[little_mice == 'BB'] = True
 
-# If a test mouse is 'Bb', we have to generate its offspring and
+# If a little mouse is 'Bb', we have to generate its offspring and
 # see whether they are all black or not
-test_mice_Bb = (test_mice == 'Bb')
-N_test_mice_Bb = np.sum(test_mice_Bb)
+little_mice_Bb = (little_mice == 'Bb')
+N_little_mice_Bb = np.sum(little_mice_Bb)
 
 # Generate all offspring of all 'Bb' test mice
 offspring = np.random.choice(
-    ['Bb', 'bb'], p=[0.5, 0.5], size=(N_test_mice_Bb, 7)
+    ['Bb', 'bb'], p=[0.5, 0.5], size=(N_little_mice_Bb, 7)
 )
-all_offspring_black[test_mice_Bb] = np.all(offspring == 'Bb', axis=1)
+all_offspring_black[little_mice_Bb] = np.all(offspring == 'Bb', axis=1)
 
 # Find the genetic types of the parents of all-black offspring
-parents = test_mice[all_offspring_black]
+parents = little_mice[all_offspring_black]
 
 # Calculate what fraction of parents were 'BB' vs 'Bb'
 parents_BB = (parents == 'BB')
@@ -1041,14 +1198,10 @@ XXX TODO: How can we show how to derive this quantity using a filter tree type a
 -->
 
 Creating the correct simulation procedure is not trivial, because Bayesian
-reasoning is subtle — a reason it has been the cause of controversy
-for more than two centuries. But it certainly is not easier to create a
+reasoning is subtle. But it certainly is not easier to create a
 correct procedure using analytic tools (except in the cookbook sense of
-plug-and-pray). And the difficult mathematics that underlie the
-analytic method (see e.g. [@box1992bayesian, Appendix A1.1] make it almost
-impossible for the statistician to fully understand the procedure from
-beginning to end. If one is interested in insight, the simulation procedure
-might well be preferred.[^sequentially]
+plug-and-pray). If one is interested in insight, a combination of theory and  simulation procedure
+might well be the answer[^sequentially]
 
 [^sequentially]: We can use a similar procedure to illustrate an aspect of the
     Bayesian procedure that Box and Tiao emphasize, its
@@ -1064,6 +1217,7 @@ might well be preferred.[^sequentially]
     a single sample (1/65). This shows that the Bayesian procedure accumulates
     information without "leakage" and with consistency.
 
+<!---
 ## Problems based on normal and other distributions
 
 This section should be skipped by all except advanced practitioners of
@@ -1210,7 +1364,7 @@ weighted proportions of sample means that fall into this interval.
     Another possible criterion — a variation on the procedure in 5a — is
     the *difference* between the two tails; for a universe with the same
     mean as the sample, this difference would be zero.
-
+--->
 ## Conclusion
 
 All but the simplest problems in conditional probability are
@@ -1229,13 +1383,8 @@ Simulation has two valuable properties for Bayesian analysis:
    analytic solution may be difficult or impossible.
 
 2. Simulation can provide insight to problems that otherwise are
-   difficult to understand fully, as is peculiarly the case with
-   Bayesian analysis.
+   difficult to understand fully.
 
 Bayesian problems of updating estimates can be handled easily and
-straightforwardly with simulation, whether the data are discrete or
-continuous. The process and the results tend to be intuitive and
-transparent. Simulation works best with the original raw data rather
-than with abstractions from them via percentages and
-distributions. This can aid the understanding as well as facilitate
-computation.
+straightforwardly with simulation. The process and the results tend to be intuitive and
+transparent.
