@@ -916,7 +916,7 @@ the KOM and AOC districts.
 ```{python echo=FALSE, eval=TRUE}
 kom_income = get_var('kom_income')
 aoc_income = get_var('aoc_income')
-plt.hist(incomes, bins=25, color='black');
+plt.hist(incomes, bins=25, color='gray');
 plt.title('Median household income for 2023 congressional districts');
 plt.axvline(kom_income, color='red', linestyle=':', label='KOM')
 plt.axvline(aoc_income, color='blue', linestyle=':', label='KOM')
@@ -936,11 +936,12 @@ mean_income <- mean(incomes)
 ```
 
 ```{python echo=FALSE, eval=TRUE}
-plt.hist(incomes, bins=25, color='black');
+mean_income = get_var('mean_income')
+plt.hist(incomes, bins=25, color='gray');
 plt.title('Median household income for 2023 congressional districts');
 plt.axvline(kom_income, color='red', linestyle=':', label='KOM')
 plt.axvline(aoc_income, color='blue', linestyle=':', label='KOM')
-plt.axvline(np.mean(incomes), color='green', linestyle='-', label='Mean')
+plt.axvline(mean_income, color='green', linestyle='-', label='Mean')
 plt.legend();
 ```
 
@@ -968,7 +969,7 @@ negative) values.  Here is a histogram of the *deviation* values.
 
 ```{python echo=FALSE, eval=TRUE}
 deviations = get_var('deviations')
-plt.hist(deviations, bins=25, color='black');
+plt.hist(deviations, bins=25, color='gray');
 plt.title('Deviations of median household income for 2023 congressional districts');
 ```
 
@@ -1009,16 +1010,16 @@ To get such a standard measure, we would like idea of a typical or average
 deviation.  Then we will compare KOM's and AOC's deviations to the average
 deviation, to see if they are unusually far from the mean.
 
-You have just seen, above that we can use the literal average of the deviations
-(the mean) because the positive and negative deviations will exactly cancel
-out, and the mean deviation will always be as near as the computer can
-calculate to zero.
+You have just seen, above that we cannot use the literal average (mean) of the
+deviations for this purpose because the positive and negative deviations will
+exactly cancel out, and the mean deviation will always be as near as the
+computer can calculate to zero.
 
-To stop the negatives canceling the positives, we can simply knock the negative
+To stop the negatives canceling the positives, we can simply knock the minus
 signs off all the negative deviations.
 
 This is the job of the {{< var np_or_r >}} `abs` function — where `abs` is
-short for *absolute*.  The `abs` function will knock negative signs off
+short for *absolute*.  The `abs` function will knock minus signs off
 negative values, like this:
 
 ```{python}
@@ -1030,7 +1031,7 @@ abs(c(-1, 0, 1, -2))
 ```
 
 To get an average of the deviations, *regardless of whether they are positive
-or negative*, we can just take the mean of the absolute deviations, like this.
+or negative*, we can take the mean of the absolute deviations, like this:
 
 ```{python}
 # The Mean Absolute Deviation (MAD)
@@ -1049,10 +1050,10 @@ mad
 ```
 
 This is the Mean Absolute Deviation (MAD).  It is one measure of the typical
-spread.  The Mean Absolute Deviation is the average distance (regardless of
-positive or negative) of a value from the mean of the values.
+spread.  MAD is the average distance (regardless of positive or negative) of
+a value from the mean of the values.
 
-We can get an idea of how typical a particular deviation is by dividing by the
+We can get an idea of how typical a particular deviation is by dividing the
 deviation by the MAD value, like this:
 
 ```{python}
@@ -1068,8 +1069,9 @@ message('Deviation in MAD units AOC: ', deviations[aoc_index] / mad)
 ## The standard deviation
 
 We are interested in the average deviation, but we find that a simple average
-of the deviations from the mean always gives 0 (with calculation error),
-because the positive and negative deviations cancel exactly.
+of the deviations from the mean always gives 0 (perhaps with some tiny
+calculation error), because the positive and negative deviations cancel
+exactly.
 
 The MAD calculation solves this problem by knocking the signs off the negative
 values before we take the mean.
@@ -1089,6 +1091,56 @@ squared_deviations <- deviations ** 2
 squared_deviations[1:5]
 ```
 
+:::{.callout-note}
+## Exponential format for showing very large and very small numbers
+
+The `squared_deviation` values above appear in *exponential notation*
+(E-notation).  Other terms for E-notation are [scientific
+notation](https://en.wikipedia.org/wiki/Scientific_notation), *scientific
+form*, or *standard form*. E-notation is a useful way to express very large
+(far from 0) or very small (close to 0) numbers in a more compact form.
+
+E-notation represents a value as a floating point value $m$ multiplied by 10 to
+the power of an exponent $n$:
+
+$$
+m * 10^n
+$$
+
+$m$ is a floating point number with one digit before the decimal point — so it
+can be any value from 1.0 through 9.9999... $n$ is an integer (positive or
+negative whole number).
+
+For example, the median household income of KOM's district is 77205 (dollars).
+We can express that same number in E-notation as $7.7205 * 10^4$ .
+{{< var lang >}} writes this as `7.7205e4`, where the number before the `e` is
+$m$ and the number after the `e` is the exponent value $n$. E-notation is
+another way of writing the number, because $7.7205 * 10^4 = 77205$.
+
+```{python}
+7.7205e4 == 77205
+```
+
+```{r}
+7.7205e4 == 77205
+```
+
+It is no great advantage to use E-notation in this case; 77205 is probably
+easier to read and understand than `7.7205e41`.  The notation comes into its
+own where you start to lose track of the powers of 10 when you read a number
+— and that does happen when the number becomes very long without E-notation.
+For example, $77205^2 = 5960612025$.  5960612025 is long enough that you start
+having to count the digits to see how large it is.  In E-notation, that number
+is `5.960612025e9`.  If you remember that $10^9$ is one US billion, then the
+E-notation tells you at a glance that the value is about $5.9$ billion.
+
+{{< var np_or_r >}} makes its own decision whether to print out numbers using
+E-notation.   This only affects the display of the numbers; the underlying
+values remain the same whether {{< var np_or_r >}} chooses to show them in
+E-notation or not.
+
+:::
+
 The process of squaring the deviations turns all the negative values into
 positive values.
 
@@ -1104,9 +1156,9 @@ mean_squared_deviation <- mean(squared_deviations)
 mean_squared_deviation
 ```
 
-Rather confusingly, the field of statistics terms this mean squared deviation
-value — the *variance*.  Just to emphasize that naming, let's calculate again
-using the "variance" name.
+Rather confusingly, the field of statistics uses the term *variance* to refer
+to mean squared deviation value.  Just to emphasize that naming, let's
+do the same calculation but using "variance" as the variable name.
 
 ```{python}
 # Statistics calls the mean squared deviation - the "variance"
@@ -1120,15 +1172,15 @@ variance <- mean(squared_deviations)
 variance
 ```
 
-The variance is the typical (mean) *squared* deviation.  The units for the
-variance, in our case, would be *squared dollars*.  But we are more interested
-in the typical *deviation*, in our original units -- dollars rather than
-squared dollars.
+The variance is the typical (in the sense of the mean) *squared* deviation.
+The units for the variance, in our case, would be *squared dollars*.  But we
+are more interested in the typical *deviation*, in our original units --
+dollars rather than squared dollars.
 
-So we take the square root of the mean squared deviation, to get the *standard
-deviation*.  It is the *standard* deviation in the sense that it a measure of
-typical deviation, obtained by squaring the deviations, taking the mean, and
-then taking the square root.
+So we take the square root of the mean squared deviation (the square root of
+the variance), to get the *standard deviation*.  It is the *standard* deviation
+in the sense that it a measure of *typical* deviation, in the specific sense of
+the square root of the mean squared deviations.
 
 ```{python}
 # The standard deviation is the square root of the mean squared deviation.
@@ -1148,8 +1200,27 @@ The *standard deviation* (the square root of the mean squared deviation) is
 a popular alternative to the Mean Absolute Deviation, as a measure of typical
 spread.
 
-For example, we can now ask how many standard deviations each of our two
-districts of interest are from the mean:
+@fig-mean-stds shows another histogram of the `income` values, marking the
+mean, the mean plus or minus one standard deviation, and the mean plus or minus
+two standard deviations.  You can see that the mean plus or minus one standard
+deviation includes a fairly large proportion of the data.  The mean plus or
+minus two standard deviation includes much larger proportion.
+
+```{python, eval=TRUE, echo=FALSE, label=fig-mean-stds, fig.cap='Income histogram plus or minus 1 and 2 standard deviations'}
+m = mean_income
+s = get_var('standard_deviation')
+plt.hist(incomes, bins=25, color='gray')
+plt.axvline(m, color='green', linestyle='-', label='Mean')
+plt.axvline(m - 2 * s , color='red', linestyle=':', label='Mean minus 2 SDs')
+plt.axvline(m - 1 * s , color='orange', linestyle=':', label='Mean minus 1 SD')
+plt.axvline(m + 1 * s , color='blue', linestyle=':', label='Mean plus 1 SD')
+plt.axvline(m + 2 * s , color='black', linestyle=':', label='Mean plus 2 SDs')
+plt.legend()
+```
+
+We can use the standard deviations to return to the question of how unusual our
+two congressional districts of interest are in terms of the distribution, by
+calculating how many standard deviations each district is from the mean:
 
 ```{python}
 print('Deviation in standard deviation units for KOM:',
@@ -1176,32 +1247,43 @@ we take the original values (here, `incomes`) and:
 * Subtract the mean to convert to deviations, then
 * Divide by the standard deviation
 
-Let's apply that procedure to all the `incomes` values:
+Let's apply that procedure to all the `incomes` values.
+
+First we calculate the standard deviation:
 
 ```{python}
 deviations = incomes - np.mean(incomes)
-std = np.sqrt(np.mean(deviations ** 2))
-deviations_in_stds = deviations / std
-deviations_in_stds[:5]
+income_std = np.sqrt(np.mean(deviations ** 2))
 ```
 
 ```{r}
 deviations <- incomes - mean(incomes)
-std <- sqrt(mean(deviations ** 2))
-deviations_in_stds <- deviations / std
+income_std <- sqrt(mean(deviations ** 2))
+```
+
+Then we calculate standard scores:
+
+```{python}
+deviations_in_stds = deviations / income_std
+deviations_in_stds[:5]
+```
+
+```{r}
+deviations_in_stds <- deviations / income_std
 deviations_in_stds[1:5]
 ```
 
 This procedure converts the original data (here `incomes`) to deviations from
 the mean in terms of the standard deviation.  The resulting values are called
-*standard scores* or sometimes *z-scores*.  For example, one name for this
-procedure is "z-scoring".
+[standard scores](https://en.wikipedia.org/wiki/Standard_score) or *z-scores*.
+One name for this procedure is "z-scoring".
 
 If you plot a histogram of the standard scores, you will see they have a mean
 of (actually exactly) 0, and a standard deviation of (actually exactly) 1.
 
-```{python}
-plt.hist(deviations_in_stds, bins=25);
+```{python, eval=TRUE, echo=FALSE}
+deviations_in_stds = get_var('deviations_in_stds')
+plt.hist(deviations_in_stds, bins=25, color='gray')
 ```
 
 ## Standard scores to compare values on different scales
@@ -1210,13 +1292,14 @@ Why are standard scores so useful?  They allow us to compare values on very
 different scales.
 
 Consider the values in @tbl-epl-points-wages.  Each row of the table
-corresponds to team competing an English Premier League (EPL).  For those of
-you with absolutely no interest in sports, this is the league of the top teams
-in English football, or soccer to our North American friends.  The columns of
-the table give the total number of points at the end of the 2021 season (from
-38 games), where the team gets 3 points for a win, and 1 point for a draw.  The
-"wages" column gives the estimated total wage bill in thousands of British
-Pounds (£1000) for each team.
+corresponds to a team competing in the English Premier League (EPL) for the
+2021-2022 season.  For those of you with absolutely no interest in sports, the
+EPL is the league of the top 20 teams in English football, or *soccer* to our
+North American friends.  The `points` column of the table gives the total
+number of points at the end of the 2021 season (from 38 games).  The team gets
+3 points for a win, and 1 point for a draw, so the maximum possible points from
+38 games are $3 * 38 = 114$. The `wages` column gives the estimated total wage
+bill in thousands of British Pounds (£1000).
 
 ```{python echo=FALSE, eval=TRUE}
 points_wages = pd.read_csv('data/premier_league.csv')
@@ -1228,9 +1311,11 @@ ketable(py$points_wages,
         {#tbl-epl-points-wages}")
 ```
 
-Let's say we own Crystal Palace Football Club. Crystal palace was a bit below
-the middle of the league in terms of points. Now we are thinking about whether
-we should invest in higher-paid players for the coming season.
+Let's say we own [Crystal Palace Football
+Club](https://en.wikipedia.org/wiki/Crystal_Palace_F.C.). Crystal Palace was
+a bit below average in the league in terms of points. Now we are thinking about
+whether we should invest in higher-paid players for the coming season, to
+improve our points score, and therefore, league position.
 
 One thing we might like to know is whether there is an association between the
 wage bill and the points scored.
@@ -1297,8 +1382,7 @@ deviation.  In code:
 # The standard deviation is the square root of the
 # mean squared deviation.
 wage_deviations = wages - np.mean(wages)
-wage_mean_sq_dev = np.mean(wage_deviations ** 2)
-wage_std = np.sqrt(wage_mean_sq_dev)
+wage_std = np.sqrt(np.mean(wage_deviations ** 2))
 wage_std
 ```
 
@@ -1306,21 +1390,8 @@ wage_std
 # The standard deviation is the square root of the
 # mean squared deviation.
 wage_deviations <- wages - mean(wages)
-wage_mean_sq_dev <- mean(wage_deviations ** 2)
-wage_std <- sqrt(wage_mean_sq_dev)
+wage_std <- sqrt(mean(wage_deviations ** 2))
 wage_std
-```
-
-We can write that same calculation in a more compact form as:
-
-```{python}
-# More compact version of standard deviation calculation
-np.sqrt(np.mean((wages - np.mean(wages)) ** 2))
-```
-
-```{r}
-# More compact version of standard deviation calculation
-sqrt(mean((wages - mean(wages)) ** 2))
 ```
 
 Now we can apply the standard score procedure to wages.  We divide the
@@ -1337,13 +1408,15 @@ standard_wages <- (wages - mean(wages)) / wage_std
 We apply the same procedure to the points:
 
 ```{python}
-point_std = np.sqrt(np.mean((points - np.mean(points)) ** 2))
-standard_points = (points - np.mean(points)) / point_std
+point_deviations = points - np.mean(points)
+point_std = np.sqrt(np.mean(point_deviations ** 2))
+standard_points = point_deviations / point_std
 ```
 
 ```{r}
-point_std = sqrt(mean((points - mean(points)) ** 2))
-standard_points = (points - mean(points)) / point_std
+point_deviations <- points - mean(points)
+point_std = sqrt(mean(point_deviations ** 2))
+standard_points = point_deviations / point_std
 ```
 
 Now, when we plot the standard score version of the points against the standard
@@ -1386,7 +1459,8 @@ cp_standard_wages <- standard_wages[cp_index]
 cp_standard_wages
 ```
 
-Our wage bill is a below average, but its still within striking distance of the mean.
+Our wage bill is a below average, but its still within striking distance of the
+mean.
 
 We know that we are comparing ourselves against the other teams, so perhaps we
 want to increase our wage bill by one standard deviation, to push us above the
@@ -1419,8 +1493,8 @@ r
 ```
 
 The $r$ value is the answer to our question.  For every one unit increase in
-standard scores in wages, we expect an increase of $r$ (`r get_var('r')`) in
-points, in standard scores.
+standard scores in wages, we expect an increase of $r$ (`r get_var('r')`)
+standard score units in points.
 
 ## Conclusion
 
