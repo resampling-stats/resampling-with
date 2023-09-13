@@ -914,6 +914,8 @@ Let us start with a histogram of the district incomes, marking the position of
 the KOM and AOC districts.
 
 ```{python echo=FALSE, eval=TRUE}
+kom_income = get_var('kom_income')
+aoc_income = get_var('aoc_income')
 plt.hist(incomes, bins=25, color='black');
 plt.title('Median household income for 2023 congressional districts');
 plt.axvline(kom_income, color='red', linestyle=':', label='KOM')
@@ -938,7 +940,7 @@ plt.hist(incomes, bins=25, color='black');
 plt.title('Median household income for 2023 congressional districts');
 plt.axvline(kom_income, color='red', linestyle=':', label='KOM')
 plt.axvline(aoc_income, color='blue', linestyle=':', label='KOM')
-plt.axvline(mean_income, color='green', linestyle='-', label='Mean')
+plt.axvline(np.mean(incomes), color='green', linestyle='-', label='Mean')
 plt.legend();
 ```
 
@@ -965,6 +967,7 @@ values, and values further from the mean will have large (positive and
 negative) values.  Here is a histogram of the *deviation* values.
 
 ```{python echo=FALSE, eval=TRUE}
+deviations = get_var('deviations')
 plt.hist(deviations, bins=25, color='black');
 plt.title('Deviations of median household income for 2023 congressional districts');
 ```
@@ -1225,8 +1228,9 @@ ketable(py$points_wages,
         {#tbl-epl-points-wages}")
 ```
 
-Let's say we are a team near the middle of the league, and we are thinking
-about whether we should be investing in higher-paid players this season.
+Let's say we own Crystal Palace Football Club. Crystal palace was a bit below
+the middle of the league in terms of points. Now we are thinking about whether
+we should invest in higher-paid players for the coming season.
 
 One thing we might like to know is whether there is an association between the
 wage bill and the points scored.
@@ -1237,12 +1241,201 @@ values — their wage bill and their points scored.  For each team, we put
 a marker on the scatter plot at the coordinates given by the wage value (on the
 x-axis) and the points value (on the y-axis).
 
-Here is that plot for our EPL data in @tbl-epl-points-wages:
+Here is that plot for our EPL data in @tbl-epl-points-wages, with the Crystal
+Palace marker picked out in red.
 
 ```{python, echo=FALSE, eval=TRUE}
 plt.scatter(points_wages['wages'],
             points_wages['points'])
+cp = points_wages[points_wages['team'] == 'Crystal Palace'].iloc[0]
+plt.plot(cp['wages'], cp['points'], 'ro', label='Crystal Palace')
 plt.xlabel('Wage bill in £1000s')
 plt.ylabel('Total points scored')
 plt.title('Relationship of wages to points scored')
+plt.legend(loc='lower right')
 ```
+
+It looks like there is a rough association of wages and points; teams that
+spend more in wages tend to have more points.
+
+At the moment, the points and wages are in very different units.  Points are on
+a possible scale of 0 (lose every game) to 38 * 3 = 114 (win every game). Wages
+are in thousands of pounds.   Maybe we are no interested in the values in these
+units, but in how unusual the values are, in terms of wages, and in terms of
+points.
+
+This is a good application of standard scores.   Standard scores convert the
+original values to values on a standard scale, where 0 corresponds to an
+average value, 1 to a value one standard deviation above the mean, and -1 to
+a value one standard deviation below the mean.  If we follow the standard score
+process for both points and wages, the values will be in the same standard
+units.
+
+To do this calculation, we need the values from the table.  We follow the same
+recipe as before, in loading the data with [R]{.r}[Pandas, and converting to
+arrays]{.python}.
+
+```{python}
+import numpy as np
+import pandas as pd
+
+points_wages = pd.read_csv('data/premier_league.csv')
+points = np.array(points_wages['points'])
+wages = np.array(points_wages['wages'])
+```
+
+```{r}
+points_wages = read.csv('data/premier_league.csv')
+points = points_wages$points
+wages = points_wages$wages
+```
+
+As you recall, the standard deviation is the square root of the mean squared
+deviation.  In code:
+
+```{python}
+# The standard deviation is the square root of the
+# mean squared deviation.
+wage_deviations = wages - np.mean(wages)
+wage_mean_sq_dev = np.mean(wage_deviations ** 2)
+wage_std = np.sqrt(wage_mean_sq_dev)
+wage_std
+```
+
+```{r}
+# The standard deviation is the square root of the
+# mean squared deviation.
+wage_deviations <- wages - mean(wages)
+wage_mean_sq_dev <- mean(wage_deviations ** 2)
+wage_std <- sqrt(wage_mean_sq_dev)
+wage_std
+```
+
+We can write that same calculation in a more compact form as:
+
+```{python}
+# More compact version of standard deviation calculation
+np.sqrt(np.mean((wages - np.mean(wages)) ** 2))
+```
+
+```{r}
+# More compact version of standard deviation calculation
+sqrt(mean((wages - mean(wages)) ** 2))
+```
+
+Now we can apply the standard score procedure to wages.  We divide the
+deviations by the standard deviation.
+
+```{python}
+standard_wages = (wages - np.mean(wages)) / wage_std
+```
+
+```{r}
+standard_wages <- (wages - mean(wages)) / wage_std
+```
+
+We apply the same procedure to the points:
+
+```{python}
+point_std = np.sqrt(np.mean((points - np.mean(points)) ** 2))
+standard_points = (points - np.mean(points)) / point_std
+```
+
+```{r}
+point_std = sqrt(mean((points - mean(points)) ** 2))
+standard_points = (points - mean(points)) / point_std
+```
+
+Now, when we plot the standard score version of the points against the standard
+score version of the wages, we see that they are in comparable units, each with
+a mean of 0, and a spread (a standard deviation) of 1.
+
+```{python, eval=TRUE, echo=FALSE}“:w
+plt.scatter(standard_wages, standard_points)
+plt.xlabel('Wage bill in standard units')
+plt.ylabel('Total points scored in standard units')
+plt.title('Relationship of wages to points scored in standard scores')
+```
+
+Let us go back to our concerns as the owners of Crystal Palace.  Counting down
+from the top in the table above, we see that Crystal Palace is the 12th row.
+Therefore, we can get the Crystal Palace wage value with:
+
+```{python}
+# In Python the 12th value is at position (index) 11
+cp_index = 11
+cp_wages = wages[cp_index]
+cp_wages
+```
+
+```{r}
+cp_index <- 12
+cp_wages <- wages[cp_index]
+cp_wages
+```
+
+We can get our wage bill in standard units in the same way:
+
+```{python}
+cp_standard_wages = standard_wages[cp_index]
+cp_standard_wages
+```
+
+```{r}
+cp_standard_wages <- standard_wages[cp_index]
+cp_standard_wages
+```
+
+Our wage bill is a below average, but its still within striking distance of the mean.
+
+We know that we are comparing ourselves against the other teams, so perhaps we
+want to increase our wage bill by one standard deviation, to push us above the
+mean, and somewhat away from the center of the pack.  If we add one standard
+deviation to our wage bill, that increases the standard score of our wages by
+1.
+
+But — if we increase our wages by one standard deviation — how much can we
+expect that to increase our points — in standard units.
+
+That is question about the strength of the association between two measures
+— here wages and points — and we will cover that topic in much more detail in
+@sec-correlation-causation.  But, racing ahead — here is the answer to the
+question we have just posed — the amount we expect to gain in points, in
+standard units, if we increase our wages by one standard deviation (and
+therefore, 1 in standard units).
+
+For reasons we won't justify now, we calculate the $r$ value, like this:
+
+```{python}
+standards_multiplied = standard_wages * standard_points
+r = np.mean(standards_multiplied)
+r
+```
+
+```{r}
+standards_multiplied <- standard_wages * standard_points
+r = mean(standards_multiplied)
+r
+```
+
+The $r$ value is the answer to our question.  For every one unit increase in
+standard scores in wages, we expect an increase of $r$ (`r get_var('r')`) in
+points, in standard scores.
+
+## Conclusion
+
+When we look at a set of values, we often ask questions about whether
+individual values are unusual or surprising.  One way of doing that is to look
+at where the values are in the sorted order — for example, using the raw rank
+of values, or the proportion of values below this value — the quantiles or
+percentiles of a value.  Another measure of interest is where a value is in
+comparison to the spread of all values either side of the mean.  We use the
+term "deviations" to refer to the original values after we have subtracted the
+mean of the values.  We can measure spread either side of the mean with metrics
+such as the mean of the absolute deviations (MAD) and the square root of the
+mean squared deviations (the standard deviation).  One common use of the
+deviations and the standard deviation is to transform values into *standard
+scores*.  These are the deviations divided by the standard deviation, and they
+transform values to have a standard mean (zero) and spread (standard deviation
+of 1).  This can make it easier to compare sets of values with very different
+ranges and means.
