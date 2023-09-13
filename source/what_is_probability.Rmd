@@ -190,6 +190,29 @@ your system. And work within a team.
 Make sure you are that team member that everyone wants to work with, because of your expertise, because you are trustworthy,
 and easy to work with.
 
+## Follow good software practices
+
+This might appear as an unusual topic for a book on statistics. However, it does emphasize resampling methods. And that
+is all about coding. Anyway, you will become so much more marketable if you learn the basics of solid software practices.
+We don't have the space to do it here but we do want to stress its importance. Always keep in mind the following:
+
+1. Use versioning control, we recommend using git. If you regularly push to the git repo this will protect you from
+   accidental software loss. It makes is also eay to share your code. You want other people to use your code, it make you
+   so much more useful!
+2. Ask someone elso to critically review your code. Even better if you work in an environment where there is a formal
+   system of code review.
+3. Read other people's code. You will learn a lot.
+4. Always tests for your code. This means that you run your code on small examples for which you know the answer. Every
+   time you make changes to your code you can check that no unwanted side effects occurred.
+5. Even better if you start you coding exercise with a small example for which you know the answer. This is known as
+   test-driven and we do this all the time.
+6. Python has several formal testing environments that help you write tests. We recommend `pytest`.
+7. Always be critical of yourself. You will run into bugs and make errors. This is inevitable and you should learn how
+   to recognise non-obvious errors. Are the results what you expect, are they reasonable? This of everything you
+   possibly can to find fault with the output of your system.
+8. Always be critical of yourself. Know that you can and will make mistakes. That is no shame; being sloppy and not following
+   good practices, is.
+
 
 <!---
 
