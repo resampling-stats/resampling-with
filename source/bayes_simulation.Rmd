@@ -42,11 +42,6 @@ We will remove this warning when the page has adequate formatting, and we have
 ported the code.
 :::
 
-<!---
-This chapter seems to be more about Bayes's theorem than Bayesian analysis
--->
-
-<!---
 > This branch of mathematics [probability] is the only one, I believe, in
 > which good writers frequently get results entirely erroneous. [@peirce1923chance, Doctrine of Chances, II]
 
@@ -59,32 +54,10 @@ Bayesian analysis that are uncontroversial.
 Better than defining Bayesian analysis in formal terms is to
 demonstrate its use. We shall start with the simplest sort of problem,
 and proceed gradually from there.
--->
-
-Suppose you have worked hard to developed a signature verification system and you are quite proud about your achievement
-of 98% accuracy. We'll explain in more detail below exactly what we mean by that. For now we believe that the system is
-sufficiently accurate to be useful in practice. You might even be optimistic that it will be possible to make a bit of
-out of your long hours of labour on the system.
-
-As one final check before you put it in the market place, you want to find out how often it will classify a genuine
-signature as a forgery. And also, how many forgeries will be accepted as genuine signatures.
-
-This is an important question because if the system is wrong too many times, for example, if  it too often makes the
-mistake of classifying a genuine signature is a forgery then the customers providing the signatures will get really
-annoyed and the store using your system will be mightily upset and probably sue you for damages.
-
-Doesn't the 98% accuracy already guarantees how often things will go wrong? If this is the case, you can manage the
-expectations of the store and protect yourself from any liability.
-
-This chapter is all about answering questions like this one and we'll investigate this example in detail below. In the
-mean time, you may want to think for a moment why it really is not a good idea to try and sell this system - the accuracy
-is simply not nearly good enough.
-
-The fundamental tool is Bayes' theorem. Before we introduce it, we'll see how far simulations can get us.
 
 ## Simple decision problems
 
-**Assessing the Likelihood That a Used Car Will Be Sound**
+### Assessing the Likelihood That a Used Car Will Be Sound
 
 Consider a problem in estimating the soundness of a used car one
 considers purchasing (after [@wonnacott1990introductory, pages 93--94]).
@@ -94,11 +67,14 @@ percent as "OK" but says that 20 percent are "faulty"; of those that are
 faulty, the mechanic correctly identifies 90 percent as faulty and says
 (incorrectly) that 10 percent are OK.
 
-We wish to know  what is the probability of a car being faulty if the mechanic said it was OK?
+We wish to know the probability that if the mechanic *says* a car is
+"OK," it *really* is faulty.  Phrased differently, what is the
+probability of a car being faulty if the mechanic said it was OK?
 
 We can get the desired probabilities directly by simulation without
 knowing Bayes' rule, as we shall see. But one must be able to model the
-physical problem correctly for an accurate simulation. Let's unpack the problem in detail.
+physical problem correctly in order to proceed with the simulation; this
+requirement of a clearly visualized model is a strong point in favor of simulation.
 
 1. Note that we are only interested in outcomes where the mechanic
    approved a car.
@@ -115,12 +91,12 @@ physical problem correctly for an accurate simulation. Let's unpack the problem 
 5. Out of all cars "approved", count how many are "faulty".
    The ratio between these numbers is our answer.
 
-Here is the whole thing in code:
+Here is the whole thing:
 
 ```{python}
 import numpy as np
 
-N = 10_000  # number of cars
+N = 10000  # number of cars
 
 # Counters for number of approved, number of approved and faulty
 approved = 0
@@ -150,14 +126,12 @@ k = approved_and_faulty / approved
 print(f'{k * 100:.2}%')
 ```
 
-The answer looks to be somewhere between 5 and 6%.  The code clearly follows the description step by step, but it is
-also quite slow. If we can improve the code, we may be able to do our simulation with more cars,
-and get a more accurate answer.
+The answer looks to be somewhere between 5 and 6%.  The code clearly follows the description step by step, but it is also quite slow.  If we can improve the code, we may be able to do our simulation with more cars, and get a more accurate answer.
 
 Let's use arrays to store the states of all cars in the lot simultaneously:
 
 ```{python}
-N = 1_000_000  # number of cars; we made this number larger by a factor of 100
+N = 1000000  # number of cars; we made this number larger by a factor of 100
 
 # Generate an array with as many entries as there are cars, each
 # being either 'working' or 'faulty'
@@ -204,13 +178,14 @@ k = N_faulty_but_approved / N_approved
 print(f'{k * 100:.2}%')
 ```
 
-The code now runs much faster, and with a larger number of cars the answer is closer to a 5% chance of a car being
-broken after it has been approved by a mechanic.
+The code now runs much faster, and with a larger number of cars we see that the answer is closer to a 5% chance of a car being broken after it has been
+approved by a mechanic.
 
 ### Calculation without simulation
 
 Simulation forces us to model our problem clearly and concretely in code.
-Moreover, running the simulation gives a good sense of what the correct answer should be.
+Such code is most often easier to reason about than opaque statistical methods.
+Running the simulation gives a good sense of what the correct answer should be.
 Thereafter, we can still look into different — sometimes more elegant or
 accurate — ways of modeling and solving the problem.
 
@@ -233,7 +208,8 @@ larger the number of cars we take, the closer we will get to 70%
 of these samples flowing down the "working" path, and 30% flowing
 along the "faulty" path.
 
-Now, we want to know what is the fraction of faulty cars out of all the cars approved by a mechanic:
+Now, we want to know, of all the cars approved by a mechanic, how many
+are faulty:
 
 $$ \frac{\mathrm{cars_{\mathrm{faulty}}}}{\mathrm{cars}_{\mathrm{approved}}} $$
 
@@ -259,61 +235,66 @@ Fraction of faulty cars out of approved cars: 0.03 / (0.03 + 0.56) = 0.0508
 
 We see that every time the tree branches, it filters the cars: some go to one branch, the rest to another.  In our code, we used the AND (`&`) operator to find the intersection between faulty AND approved cars, i.e., to filter out from all faulty cars only the cars that were ALSO approved.
 
-### Probability interpretation
+## Probability interpretation
 
-**Probability from proportion**
+### Probability from proportion
 
 In these examples, we often calculate proportions.
 In the given simulation:
 
-- The proportion of the cars approved by a mechanic:  59/100 = 0.59.
-- The proportion of those 59 that were faulty: 3/59 = 0.0508.
+- How many cars are approved by a mechanic?  59/100.
+- How many of those 59 were faulty? 3/59.
 
-Based on these numbers, we can therefore conclude that the probability that a car is approved by a mechanic is 0.59
-and the probability that a car that was approved is faulty, is 0.0508.
+We often also count how commonly events occur: "it rained 4 out of the 10 days".
 
-In general, the more observations we have, the better our probability estimates become.
+An extension of this idea is to *predict* the probability of an event occurring, based on what we had seen in the past.
+We can say "out of 100 days, there was some rain on 20 of them; we therefore estimate that the probability of rain occurring is 20/100".
+Of course, this is not a complex or very accurate weather model; for that, we'd need to take other factors—such as season—into consideration.
+Overall, the more observations we have, the better our probability estimates become.
 We discussed this idea previously in "The Law of Large Numbers".
 
 <!---
 ** TODO: REFERENCE SECTION ON LARGE NUMBERS **
 -->
 
-**Ratios of proportions**
+#### Ratios of proportions
 
-At our mechanic's yard, we can ask "what is the probability that a  red car is faulty"?
-To calculate that, we'd first count the number of red cars, then the number of those red cars that are also broken,
-then calculate the ratio: `red_cars_faulty / red_cars`.
+At our mechanic's yard, we can ask "how many red cars here are faulty"?
+To calculate that, we'd first count the number of red cars, then the number of those red cars that are also broken, then calculate the ratio: `red_cars_faulty / red_cars`.
 
-Note that we could just as well have written:
+We could just as well have worked in percentages: `percentage_of_red_cars_broken / percentage_of_cars_that_are_red`, since
+that is `(red_cars_broken / 100) / (red_cars / 100)`—the same ratio calculated before.
 
-(red_cars_broken / all_cars) / (red_cars / all_cars).
+Our point is that the denominator doesn't matter when calculating ratios, so we
+could just as well have written:
 
-There is a very good reason why we want to do this - we have converted the ratio to a ratio of probabilities:
+(red_cars_broken / all_cars) / (red_cars / all_cars)
+
+or
 
 $$
-P(\text{cars that are red and broken}) / P(\text{red cars})
+P(\text{cars that are red and that are broken}) / P(\text{red cars})
 $$
 
 <!---
 ** TODO: THE ABOVE MAY BE A SUBTLE POINT THAT NEEDS TO EXPANDED, BUT THE TEXT IS GETTING LONG AS-IS **
 -->
 
-**Probability relationships: conditional probability**
+### Probability relationships: conditional probability
 
-We need a more concise notation. Instead of writing
+Here's one way of writing the probability that a car is broken:
 
 $$
-P(\text{car is broken}),
+P(\text{car is broken})
 $$
 
-we can shorten "car is broken" to B, and write the same thing as:
+We can shorten "car is broken" to B, and write the same thing as:
 
 $$
 P(B)
 $$
 
-Similarly, we could write the probability that a "car is red" as:
+Similarly, we could write the probability that a car is red as:
 
 $$
 P(R)
@@ -324,7 +305,7 @@ probability that the car is broken, *given that* we already know that the car
 is red:
 
 $$
-P(\text{car is broken GIVEN THAT the car is red})
+P(\text{car is broken GIVEN THAT car is red})
 $$
 
 That is getting getting pretty verbose, so we will shorten this as we did above:
@@ -340,161 +321,34 @@ P(B | R)
 $$
 
 We read this as "the probability that the car is broken given that the car is red".
-Such a probability is known as a *conditional probability*.  We discuss these in more details in Ch X
+Such a probability is known as a *conditional probability*.  We discuss these in more details in Ch TKTK.
 
 <!---
 **TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY**
--->.
+-->
 
-In our original problem, we ask what is the chance that a car is broken given that a mechanic approved it.
-As discussed under "Ratios of proportions", it can be calculated with:
+In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
 
 $$
-P(\text{car broken | mechanic approved}) =
-$$
-$$
-P(\text{car broken and mechanic approved}) / P(\text{mechanic approved})
+P(\text{car broken | mechanic approved})
+= P(\text{car broken and mechanic approved}) / P(\text{mechanic approved})
 $$
 
-We have already used $B$ to mean "broken" (above), so let us use $A$ to mean "mechanic approved".
-Then we can write the statement above in a more compact way:
+We have already used $B$ to mean "broken" (above), so let us use $A$ to mean "mechanic approved".  Then we can write the statement above in a more compact way:
 
 $$
 P(B | A) = P(B \text{ and } A) / P(A)
 $$
 
-$P(B \text{ and } A)$ means the probability that $B$ and $A$ are simultaneously observed. This *joint* probability is written as
-
-$$
-P(B,A).
-$$
-
 To put this generally, conditional probabilities for two events $X$ and $Y$ can be written as:
 
-$$
-P(X | Y) = P(X, Y) / P(Y).
-$$
+$P(X | Y) = P(X \text{ and } Y) / P(Y)$
 
-<!---
-We need to make the equations part of the sentences, i.e. need to add '.' or ',' everywhere.
--->
-If we rewrite this in the equivalent form:
+Where (again) $\text{ and }$ means that *both* events occur.
 
-$$
-P(X, Y) = P(X | Y) P(Y).
-$$
-Since
-$$P(X, Y) = P(Y, X) = P(Y | X) P(X)
-$$
-it follows that
+### Example: conditional probability
 
-$$
-P(X | Y) P(Y) = P(Y | X) P(X).
-$$
-This becomes the celebrated Bayes' theorem.
-
-:::{.callout-note}
-## Bayes' Theorem
-
-$$
-P(X | Y)  = \frac{P(Y | X) P(X)} {P(Y)}.
-$$
-:::
-
-It is worth thinking a moment about the meaning of $P(X)$ and $P(Y)$ in Bayes' theorem. Recall that
-
-$$
-P(X, Y) = P(X | Y) P(Y).
-$$
-If we now sum over all the values that $X$ can take, we get,
-
-$$
-\sum_X P(X, Y) = \sum_X P(X | Y) P(Y),
-$$
-or
-$$
-\sum_X P(X, Y) = P(Y) \sum_X P(X | Y).
-$$
-Since $P(X | Y)$ is a probability distribution over $X$, we have $ \sum_X P(X | Y) = 1$. We therefore have
-$$
-P(Y) = \sum_X P(X, Y).
-$$
-Similarly,
-$$
-P(X) = \sum_Y P(X, Y).
-$$
-
-These are called the marginal distributions of $X$ and $Y$.
-
-:::{.callout-note}
-## Note
-From the discussion above it should be clear that the joint distribution $(P(X, Y)$ is the fundamental quantity in the
-sense that if $(P(X, Y)$ is known, the marginal distributions, $P(X)$ and $P(Y)$ as well as the conditional distributions
-$P(X | Y)$ and $P(Y | X)$ can be calculated from it.
-
-In many applications we don't know the joint distribution but we do know the conditional probabilities. We'll discuss
-an example below.
-:::
-
-**Example: joint probability**
-
-Assume that $X$ and $Y$ can both take on the values 0, 1 and 2, and that the joint probability $P(X, Y)$ is given in
-the following table,
-
-| X/Y  |  0    | 1    |  2   |
-|:----:|:-----:|:----:|:----:|
-| 0    |  0.1  | 0.05 | 0.15 |
-| 1    | 0.05  | 0.15 | 0.2  |
-| 2    | 0.15  | 0.05 | 0.1  |
-
-The first thing to check is that this is a valid probability distribution. By this we mean that the sum
-of the probabilities over all the values of $X$ and $Y$ sum to 1, $\sum_{X,Y} P(X, Y) = 1$, i.e.
-
-$$
-0.1 + 0.05 + 0.15 + 0.05 + 0.15 + 0.2 + 0.15 + 0.05 + 0.1 = 1.
-$$
-
-The marginal probabilities are,
-$$
-P(X=0) = 0.1 + 0.05 + 0.15 = 0.3
-$$
-$$
-P(X=1) = 0.05 + 0.15 + 0.2 = 0.4
-$$
-$$
-P(X=2) = 0.15 + 0.05 + 0.1 = 0.3
-$$
-and
-$$
-P(Y=0) = 0.1 + 0.05 + 0.15 = 0.3
-$$
-$$
-P(Y=1) = 0.05 + 0.15 + 0.05 = 0.25
-$$
-$$
-P(Y=2) = 0.15 + 0.2 + 0.1 = 0.45.
-$$
-
-The conditional probabilities, $P(X | Y) = P(X, Y) / P(Y)$, are best written in a table,
-
-| X/Y  |  0        | 1         |  2        |
-|:----:|:---------:|:---------:|:---------:|
-| 0    |  0.1/0.3  | 0.05/0.25 | 0.15/0.45 |
-| 1    | 0.05/0.3  | 0.15/0.25 | 0.2/0.45  |
-| 2    | 0.15/0.3  | 0.05/0.25 | 0.1/0.45  |
-
-Similarly, $P(Y | X) = P(X, Y) / P(X)$ is given by the table,
-
-| X/Y  |  0        | 1        |  2       |
-|:----:|:---------:|:--------:|:--------:|
-| 0    |  0.1/0.3  | 0.05/0.3 | 0.15/0.3 |
-| 1    | 0.05/0.4  | 0.15/0.4 | 0.2/0.4  |
-| 2    | 0.15/0.3  | 0.05/0.3 | 0.1/0.3  |
-
-**Example: conditional probability**
-
-Let's discuss a very relevant example.  You get a COVID test, and the test is negative.
-Now, you would like to know what the chance is of you having COVID.
+Let's discuss a very relevant example.  You get a COVID test, and the test is negative.  Now, you would like to know what the chance is of you having COVID.
 
 We have the following information:
 
@@ -508,7 +362,7 @@ Again, we start with our simulation.
 
 ```{python}
 # The number of people
-N = 1_000_000
+N = 1000000
 
 # For each person, generate a True or False label,
 # indicating that they have / don't have COVID
@@ -555,34 +409,40 @@ print(k)
 
 This gives around 0.006 or 0.6%.
 
-Now that we have a rough indication of what the answer should be, let's try and calculate it directly, based on the
-tree of information shown earlier.
+Now that we have a rough indication of what the answer should be, let's try and calculate it directly, based on the tree of informatiom shown earlier.
 
-We use $P^+$/$P^-$ to indicate COVID positive or negative, and
-$P(T^+)$/$P(T^-)$ to indicate positive or negative test results.
+We will use these abbreviations:
 
-You would like to know the probability of having COVID *given that* your test was negative.  Using the conditional probability relationship from above, we can write:
+* $C^+$ means Covid positive (you do actually have Covid).
+* $C^-$ means Covid negative (you do *not* actually have Covid).
+* $T^+$ means the Covid *test* was positive.
+* $T^-$ means the Covid *test* was negative.
+
+For example $P(C^+ | T^-)$ is the probability ($P$) that you do actually have Covid ($C^+$) *given that* ($|$) the test was negative ($T^-$).
+
+We would like to know the probability of having COVID *given that* your test
+was negative ($P(C^+ | T^-)$).  Using the conditional probability relationship
+from above, we can write:
 
 $$
-P(C^+ | T^-) = P(C^+ , T^-) / P(T^-)
+P(C^+ | T^-) = P(C^+ \text{ and } T^-) / P(T^-)
 $$
 
-We see from the tree diagram that $P(C^+ , T^-) = P(T^- | C^+) * P(C^+) = .4 * .015 = 0.006$.
+We see from the tree diagram that $P(C^+ \text{ and } T^-) = P(T^- | C^+) * P(C^+) = .4 * .015 = 0.006$.
 
 <!---
 **TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES**
 -->
 
-We observe that $P(T^-) = P(T^- , C^-) + P(T^- , C^+)$, i.e. that we can obtain a negative test result through two paths,
-having COVID or not having COVID.  We expand these further as conditional probabilities:
+We observe that $P(T^-) = P(T^- \text{ and } C^-) + P(T^- \text{ and } C^+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
 
-$P(T^- , C^-) = P(T^- | C^-) * P(C^-)$
+$P(T^- \text{ and } C^-) = P(T^- | C^-) * P(C^-)$
 
 and
 
-$P(T^- , C^+) = P(T^- | C^+) * P(C^+)$.
+$P(T^- \text{ and } C^+) = P(T^- | C^+) * P(C^+)$.
 
-We can now calculate the marginal,
+We can now calculate
 
 $$
 P(T^-) = P(T^- | C^-) * P(C^-) + P(T^- | C^+) * P(C^+)
@@ -596,12 +456,11 @@ The answer, then, is:
 
 $P(C^+ | T^-) = 0.006 / 0.986 = 0.0061$ or 0.61%.
 
-Not surprisingly, this matches very closely our simulation result.
+This matches very closely our simulation result, so we have some confidence that we have done the calculation correctly.
 
-**Estimating Driving Risk for Insurance Purposes**
+### Estimating Driving Risk for Insurance Purposes
 
-Another sort of introductory problem, following after @feller1968introduction,
-p 122:
+Another sort of introductory problem, following after [@feller1968introduction, p 122]:
 
 A mutual insurance company charges its members according to the risk
 of having an car accident. It is known that there are two classes of
@@ -615,21 +474,18 @@ percent of risk, i. e., a driver with a probability of .6 should pay
 If nothing is known of a driver except that they had an accident last
 year, what fee should they pay?
 
-Another way to phrase this question is: given that a driver had an accident last year, what is the probability of them
-having an accident overall?
+Another way to phrase this question is: given that a driver had an accident last year, what is the probability of them having an accident overall?
 
 We will proceed as follows:
 
 1. Generate a population of N people.  Label each as `good driver` or `poor driver`.
-
-1. Simulate the last year for each person: did they have an accident or not?
-
-2. Select only the ones that had an accident last year.
-
-3. Among those, calculate what their average risk is of making an accident.  This will indicate the appropriate insurance premium.
+2. Simulate the last year for each person: did they have an accident or not?
+3. Select only the ones that had an accident last year.
+4. Among those, calculate what their average risk is of making an accident.
+   This will indicate the appropriate insurance premium.
 
 ```{python}
-N = 100_000
+N = 100000
 cost_per_percent = 100
 
 people = np.random.choice(
@@ -667,11 +523,10 @@ print(f'{premium:.0f} USD')
 
 The answer should be around 4450 USD.
 
-**Screening for Disease**
+### Screening for Disease
 
 <!---
 **TODO: SHALL WE REMOVE THIS PROBLEM, OR INTEGRATE PARTS OF ITS DESCRIPTION WITH THE COVID EXAMPLE?**
-Let's keep for now
 -->
 
 This is a classic Bayesian problem (quoted by Tversky and Kahneman
@@ -707,15 +562,11 @@ One may obtain an answer as follows:
 1.  Construct bucket A with 999 white beads and 1 black bead, and bucket B
     with 95 green beads and 5 red beads. A more complete problem that
     also discusses false negatives would need a third bucket.
-
 2.  Pick a bead from bucket A. If black, record "T," replace the bead, and
     end the trial. If white, continue to step 3.
-
 3.  If a white bead is drawn from bucket A, select a bead from bucket
-
     B. If red, record "F" and replace the bead, and if green record "N"
     and replace the bead.
-
 4.  Repeat steps 2-4 perhaps 10,000 times, and in the results count the
     proportion of "T"s to ("T"s plus "F"s) ignoring the "N"s).
 
@@ -723,157 +574,15 @@ One may obtain an answer as follows:
     hundred draws a person would be likely to draw the correct
     conclusion that the proportion of "T"s to ("T"s plus "F"s) would be
     small. And it is easy with a computer to do 10,000 trials very
-    quickly. Let's run the simulation.
+    quickly.
 
-    ```{python}
-    n_trials = 100_000  # number of trials
-
-    T = 0 # The true postives
-    F = 0 # The false positives
-    for _ in range(n_trials):
-        # Draw from the first, white/black bucket
-        draw_1 = np.random.choice(['W', 'B'], p = [0.999, 0.001])
-        if draw_1 == 'B':  # This is correctly classified
-            T += 1
-        else:  # Among these, some will be false classifed as positive
-            draw_2 = np.random.choice(['G', 'R'], p = [0.95, 0.05])
-            if draw_2 == 'R':
-                F += 1
-
-    print(f'Percentage of True positives: {100 * T/(T+F):.2}%')
-    ```
-    The test is not very reliable! The reason is that the large majority of the population does not have the disease.
-    From this large number, the test will indicate a significant number of positives.
-
-:::{.callout-note}
-## Note
-As the code clearly demonstrates, We are sampling from two distinct probability distributions in succession. First we
-sample from the distribution that describes the prevalence of the disease, then we sample from the distribution that
-describes the uncertainty in the test results. This is such a common procedure that it is given a name, *ancestral sampling*.
-:::
-
-Note that the respondents in the Cascells *et al.* study were not naive;
-the medical staff members were supposed to understand statistics. Yet most
-doctors and other personnel offered wrong answers. If simulation can do
-better than the standard deductive method, then simulation would seem to
-be the method of choice. And only one piece of training for simulation is
-required: Teach the habit of saying "I'll simulate it" and then actually
-doing so.
-
-**Signature verification**
-
-:::{.callout-note}
-## Note
-In this example we approach the problem from a theoretical point of view using Bayes' theorem. This may be skipped
-at a first reading.
-:::
-
-Let's return to the signature verification problem mentioned in the introduction. Approaching it from a theoretical
-point of view forces us to make our assumptions explicit.
-
-:::{.callout-note}
-## Note
-As David MacKay pointed out: *One cannot do inference without assumptions*. By making your assumptions explicit, forces
-one to think clearly about them.
-:::
-
-Let's first state exactly what we want to achieve: If the signature verification system tells us that a signature is
-a forgery, what is the probability that it actually is a forgery? More precisely, what i the probability that the
-signature is a forgery, given that the system tells us that it is a forgery. This can be stated in terms of a formula:
-$$
-P(\text{the signature is a forgery} | \text{the system says it is a forgery}).
-$$
-It is rather cumbersome to write it like this, let's introduce symbols. Let's indicate the system by $C$ and the actual
-signature by $S$. Then both symbols, $C$ and $S$ can take on two values, $T$  for genuine signature, and $F$ for a
-forgery. Now we can write our problem statement much more concisely as,
-$$
-P(S=F | C=F).
-$$
-The next question is, what do we know that will help us answering this question. In the introduction we said that the
-*accuracy* of the system is 98% without being precise by what we mean with that. Time to correct that.
-
-During the course of developing any system such as a signature verification system, it will be subjected to extensive
-testing. How that should be done is a topic in itself. But we can safely assume that we have specific details available
-about the performance of the model because of the extensive testing; that is where the 98% comes from. There is, however,
-different ways of measuring the performance of a system and it is important to state exactly what is meant by this 98%.
-In this case it means that if the system says a signature is genuine, there is a 98% chance that it is genuine, and a 2%
-chance that it is a forgery. Also, if the system says a signature is a forgery, there is a 98% percent chance that the
-signature is a forgery and a 2% chance that it is genuine. Note that these probabilities need not be the same; here it is
-the result of the way the system is calibrated. This can be expressed mathematically as
-$$
-P(C=T | S=T) = 0.98,
-$$
-$$
-P(C=F | S=T) = 0.02,
-$$
-$$
-P(C=T | S=F) = 0.02,
-$$
-$$
-P(C=F | S=F) = 0.98.
-$$
-We therefore have all the probabilities of $P(C | S)$ obtained as part of the development of the system. What we are
-after is $P(S | C)$ and more specifically, $P(S=F | C=F)$. Thus we are looking for an inversion of the conditional
-probabilities, and that is given by Bayes' theorem,
-$$
-P(S | C) = \frac{ P(C | S) P(S) }{ P(C) },
-$$
-or more specifically,
-$$
-P(S=F | C=F) = \frac{ P(C=F | S=F) P(S=F) }{ P(C=F) }.
-$$
-
-:::{.callout-note}
-## Note
-Thinking back to the ancestral sampling we did in the disease example above, we sampled from two distributions, the
-distribution that described the prevalence of the disease in the population, followed by sampling from a distribution
-that described the performance of the test. After the sampling we divided by a normalisation terms to convert it
-to a probability.
-
-In Bayes' theorem we see the  theoretical foundation of this process. First we sample from $P(S)$, then we sample
-from $P(C | S)$, followed by division by $P(C)$, i.e. the normalisation.
-:::
-
-Now we know all the conditional probabilities on the right hand side but we don't know the marginal probabilities $P(S)$
-and $P(C)$. We can't do much about $P(C)$, at least not at the moment. Let's turn our attention to $P(S)$. This is the
-*prior* probability that a signature is a forgery ($P(S=F)$), or genuine ($P(S=T)$). The thing is, we don't really have
-these numbers - we simply don't know how many of all the signatures presented, are forgeries. Our options are either
-to give up, or to try and make a reasonable assumption of the prior probability $P(S=F)$. What is the prior probability
-that a signature is a forgery? It depends, the prevalence of crime differs from country to country. Crime statistics
-is often expressed as a number out 100 000 of the population. Of course, the higher the crime rate, the more useful your
-system is bound to be - a country with a zero crime rate will obviously have no use for your system. A crime rate of
-about 30/100 000 is considered to be high, let's work with that, i.e. we set
-$$
-p(S=F) = 0.0003
-$$
-and
-$$
-P(S=T) = 0.9997.
-$$
-
-The only remaining term on the right hand side of Bayes' equation is $P(C)$ and this is given by the marginal
-$$
-P(C=F) = \sum_S P(C=F, S) = \sum_S P(C=F | S) P(S).
-$$
-Writing it out,
-$$
-P(C=F) =  P(C=F | S=T) P(S=T) + P(C=F | S=F) P(S=F).
-$$
-Substituting the values we calculated above,
-$$
-P(C=F) =  0.02 * 0.9997 + 0.98 * 0.0003 = 0.02.
-$$
-Substituting the values in Bayes' theorem, we find that
-$$
-P(S=F | C=F) = \frac{ 0.98 * 0.0003}{0.02} = 0.015.
-$$
-This means that if the system indicates a forgery, the probability that it is actually genuine, i.e. that the system is
-mistaken, is 1 - 0.015 = 0.985.
-
-It will be a bad idea to try and sell this system, given this crime rate. In order to make your system viable, either
-you need to improve vastly on its accuracy, or your local crime rate must increase hundred-fold. The latter is
-undesirable, the former is a challenge.
-
+    Note that the respondents in the Cascells *et al.* study were not naive;
+    the medical staff members were supposed to understand statistics. Yet most
+    doctors and other personnel offered wrong answers. If simulation can do
+    better than the standard deductive method, then simulation would seem to
+    be the method of choice. And only one piece of training for simulation is
+    required: Teach the habit of saying "I'll simulate it" and then actually
+    doing so.
 
 ## Fundamental problems in statistical practice
 
@@ -896,228 +605,71 @@ Bb mated with Bb   ¼           ½           ¼
 
 : Probabilities for Genetic Character of Mice Offspring [@box1992bayesian, pp. 12-14] {#tbl-mice-genetics}
 
-Lets carefully look at exactly what we are given - we need this because shortly we'll want to express the problem in
-terms of formulae.
+Suppose we have a "test" mouse which has been produced
+by a mating between two (*Bb*) mice and is black.
+What is the genetic kind of this mouse?
 
-1. We are given 3 different situations, `BB mated with bb`, `Bb mated with bb` and `Bb mated with Bb`. Note that
-   we have no information about the situation when, for example, `BB mated with Bb`. We can think of these 3 situations
-   as 3 different models.
+To answer that, we look at the information in the last line of the table:
+it shows that the probabilities of a test mouse is of kind *BB* and *Bb* are precisely known, and are 1/3 and 2/3 respectively ((1/4)/(1/4 + 1/2) vs (1/2)/(1/4 + 1/2)).  We call this our "prior" estimate — in other words, our estimate before seeing data.
 
-   Let's write down the join probabilities for the three models. For this we need to introduce proper notation. We'll
-   indicate the genome by $G$,
-   $$
-   G \in \{ \text{BB}, \text{Bb}, \text{bb}\},
-   $$
-   the colour by $C$,
-   $$
-   C \in
-   \{\text{Black}, \text{Brown}\},$$
-   and the model by $M$,
-   $$
-   M \in \{ 1, 2, 3 \}.
-   $$
+Suppose the test mouse is now mated with a brown mouse (of kind *bb*) and
+produces seven black offspring. Before, we thought that it was more likely for
+the parent to be of kind *Bb* than of kind *BB*. But if that were true, then
+we would have expected to have seen some brown offspring (the probability of
+mating *Bb* with *bb* resulting in brown offspring is given as 0.5).
+Therefore, we sense that it may now be more likely that the parent was of type
+*BB* instead. How do we quantify that?
 
-   The joint distribution for $M = 1$, $P(G, C | M=1)$ is given by,
+One can calculate, as Fisher [-@fisher1959statistical, page 19] did, the
+probabilities after seeing the data (we call this the *posterior*
+probability). This is typically done using using Bayes' rule.
 
-   Genome/Colour    Black    Brown
-   -------------   -------  -------
-   BB                 0        0
-   Bb                 1        0
-   bb                 0        0
-   -------------   -------  -------
-   : The joint distribution for `Model 1`. {#tbl-joint-proba-model-1}
-
-
-   The joint distribution for $M = 2$, $P(G, C | M=2)$ is given by,
-
-   Genome/Colour    Black    Brown
-   -------------   -------  -------
-   BB                 0        0
-   Bb                 ½        0
-   bb                 0        ½
-   -------------   -------  -------
-   : The joint probabilities for `Model 2`. {#tbl-joint-proba-model-2}
-
-   The joint distribution for $M = 3$, $P(G, C | M=3)$ is given by,
-
-   Genome/Colour    Black    Brown
-   -------------   -------  -------
-   BB                 ¼        0
-   Bb                 ½        0
-   bb                 0        ¼
-   -------------   -------  -------
-   : The joint probabilities for `Model 3`. {#tbl-joint-proba-model-3}
-
-   Note that probabilities for each model add up to 1, as it should for a properly probability distribution.
-2. We are given that a mating takes place between Bb and Bb. This means we have to investigate model 3, and its joint
-   probabilities are given by @tbl-joint-proba-model-3.
-3. The first observation we are given is that the offspring of the mating is `Black`. Since  the offspring is `Black`
-   the gnome of the the offspring can only be `BB` or `Bb`. The two probabilities are easily calculated and are given by
-   1/3 (= (1/4)/(1/4 + 1/2)) and 2/3 (=(1/2)/(1/4 + 1/2)), respectively. Given only this information, we conclude that
-   it is twice as likely that the offspring is of type `BB` rather than `Bb`. It will be convenient to refer to this
-   offspring as little-mouse.
-
-    We also want to calculate the probabilities from the joint probabilities for $M = 3$ given in Table @tbl-joint-proba-model-3.
-    More explicitly, we want to calculate,
-    $$
-    P(G| C = \text{Black}, M=3) = P(G, C|M=3)/P(C = \text{Black}| M=3).
-    $$
-    Everything on the right hand side is known, except $P(C = \text{Black}| M=3)$. But this can be calculated from the
-    join distribution,
-
-    $$
-    P(C = \text{Black}| M=3) = \sum_{G} P(G, C=\text{Black}|M=3),
-    $$
-
-    or
-
-    $$
-    P(C = \text{Black}| M=3) = 1/4 + 1/2 = 3/4.
-    $$
-
-    This means that
-
-    $$
-    P(G = \text{BB}| C = \text{Black}, M=3) = \frac{1}{4}/\frac{3}{4} = \frac{1}{3}.
-    $$
-
-    Similarly,
-
-    $$
-    P(G = \text{Bb}| C = \text{Black}, M=3) = \frac{1}{2}/\frac{3}{4} = \frac{2}{3}.
-    $$
-
-
-4. We now mate little-mouse with a $G=\text{bb}$ mouse and observe 7 offspring from this mating, all black. How does this
-   additional information change
-   our believe that little-mouse is `BB` or `Bb`? Given that little-mouse is Black, its gnome can only be `BB` or `Bb`.
-   Thus the mating of little-mouse directs us to either `Model 1` or `Model 2`, depending whether is gnome is `BB` or `Bb`,
-   respectively.
-
-Before we turn to sampling, let's first calculate the answer theoretically and then check it by resampling.
-
-This is where we need to think carefully about our modelling assumptions. This is as much true for a theoretical
-investigation as for sampling. It is perfectly fine if you find one of the two approaches more intuitive than the
-the other! In fact we are going to explain the theory in terms of *urns* - drawing from urns is the same as sampling -
-the only difference here is
-that we stress that the different urns are actually different models, each with its own probability distribution.
-
-The result of the mating that produced little-mouse tells us that $P(G = \text{BB}) = \frac{1}{3}$ and
-$P(G = \text{Bb}) = \frac{2}{3}$. These are the prior probabilities and we can model it by taking an urn and put 3
-beads in it, 2 marked `Bb` and 1 marked `BB`. We can now draw, with replacement, from this urn. If we draw `BB`, the
-next draw will be from an urn called `Model 1`. If we draw `Bb`, the next draw will be from an urn called `Model 2`.
-We now need to decide what goes into `Model 1`. From Table @tbl-joint-proba-model-3, we note that the only
-color that can be sampled is `Black`. We therefore put a single (or any number, for that matter) black bead in the
-urn of `Model 1`- ensuring that we'll always draw a black bead. For the urn of `Model 2` we turn to
-Table @tbl-joint-proba-model-2
-and note that one can draw either `Black` or `Brown`, each with probability 1/2. The urn of `Model 2` therefore has
-has two beads, one labelled `Black`, the other `Brown`.
-
-:::{.callout-note}
-## Note
-The important point to note is that we draw twice, once from the urn representing the prior probability,
-then from the urns representing the joint distributions of Models 1 or 2.
-:::
-
-The procedure now continues as follows.
-
-a. If we draw `BB` from the first urn, we next draw seven times (with replacement)
-   the urn of `Model 1`. We know that we'll only draw black beads, therefore the probability
-   $P(C=\text{Black} | M=1) = 1$. Note the abuse of notation.
-b. If we draw `Bb` from the first urn, we next draw seven times (with replacement)
-   the urn of `Model 2`. We know that we'll draw black or brown beads, each with probability 1/2. The probability
-   of drawing 7 black beads in succession is therefore $(1/2)^7$. Again with the same abuse of notation, we have
-   $P(C=\text{Black} | M=2) = (1/2)^7.$
-c. All we need to do is to count how many times we are successful after drawing from the model urns.
-
-   Let's do it theoretically. We want to calculate,
-
-   $$
-    P(G=BB, C=\text{Black}) = P(C=\text{Black}  | G=\text{BB}) P(G=\text{BB}),
-    $$
-
-    and
-
-    $$
-    P(G=\text{Bb}, C=\text{Black}) = P(C=\text{Black}  | G=\text{Bb}) P(G=\text{Bb}).
-    $$
-    From the discussion above we have that
-
-    $$
-    P(G=\text{BB}, C=\text{Black}) = P(C=\text{Black}  | G=\text{BB}) P(G=BB)  = 1 \times \frac{1}{3},
-    $$
-
-    and
-
-    $$
-    P(G=\text{Bb}, C=\text{Black}) = P(C=\text{Black}  | G=\text{Bb}) P(G=\text{Bb})  = (1/2)^7 \times \frac{2}{3}.
-    $$
-
-   The ratio is therefore given by,
-
-   $$
-    \frac{ P(G=\text{BB}, C=\text{Black}) }{ P(G=\text{Bb}, C=\text{Black}) } = \frac{ 1/3 }{ (1/2)^7\times \frac{2}{3} } = 64.
-   $$
-
-:::{.callout-note}
-## Note
-Note how quickly our prior probabilities change as we observe more `Black` in succession - the ratio doubles for every
-successive `Black` mouse we observe.
-:::
-
-
-Let's now turn to a simulation. Note that we'll follow the same steps as described above. We have a choice whether we
-first sample from `Model 3` producing the prior probabilities of `BB` or `Bb`, or use the known prior probabilities
-and directly sample from the prior probabilities. Next we sample from `Model 1` or `Model 2`, depending on the outcome
-of the first sampling. Here we describe the first approach.
+But instead of doing that, let's take the easy route out and simulate
+the situation instead.
 
 1.  We begin, as do Box and Tiao, by restricting our attention to the third
-    model in Table @tbl-mice-genetics. We draw a mouse with label `BB`, `Bb`, or
-    `bb`, using those probabilities. We were told that the little mouse is
-    black, so if we draw `bb`, we ignore it and draw again. (Alternatively, we could draw `BB`
-    and `Bb` with probabilities of 1/3 and 2/3 respectively, as mentioned above.)
-
-2.  We now want to examine the offspring of the little mouse when mated
-    with a brown `bb` mouse.  Specifically, we are only interested in
-    cases where all offspring were black.  We'll store the genetic
+    line in Table @tbl-mice-genetics. We draw a mouse with label 'BB', 'Bb', or
+    'bb', using those probabilities. We were told that the "test mouse" is
+    black, so if we draw 'bb', we try again. (Alternatively, we could draw 'BB'
+    and 'Bb' with probabilities of 1/3 and 2/3 respectively.)
+2.  We now want to examine the offspring of the test mouse when mated
+    with a brown "bb" mouse.  Specifically, we are only interested in
+    cases where all offspring were black.  We will store the genetic
     kind of the parents of such offspring so that we can count them
     later.
 
-    If our little mouse is `BB`, `Model 1` tells that its offspring will
-    always be black `Bb`.  Thus, store `BB` in the parent list, tacitly drawing from the urn of `Model 1`.
-
-3.  If our little mouse is `Bb`, we have to draw explicitly from the urn of `Model 2`.  Draw
-    seven offspring from `Model 2` in Table @tbl-mice-genetics.
-    If all the offspring are black, store `Bb` in the parent list.
-
-4.  Repeat steps 1-3 perhaps 10\;000 times.
-
-5.  Now, out of all parents count the numbers of `BB` vs `Bb`.
+    If our test mouse is "BB", we already know that all their offspring will
+    be black ("Bb").  Thus, store "BB" in the parent list.
+3.  If our test mouse is "Bb", we have a bit more work to do.  Draw
+    seven offspring from the middle row of Table tbl-mice-genetics.
+    If all the offspring are black, store "Bb" in the parent list.
+4.  Repeat steps 1-3 perhaps 10000 times.
+5.  Now, out of all parents count the numbers of "BB" vs "Bb".
 
 We will do a naïve implementation that closely follows the logic described above, followed by a slightly optimized version.
 
 ```{python}
-N = 100_000
+N = 100000
 
 parents = []
 
 for i in range(N):
-    little_mouse = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25])
+    test_mouse = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25])
 
-    # The little mouse is black; since we drew a brown mouse skip this trial
-    if little_mouse == 'bb':
+    # The test mouse is black; since we drew a brown mouse skip this trial
+    if test_mouse == 'bb':
         continue
 
-    # If the little mouse is 'BB', all 7 children are guaranteed to
+    # If the test mouse is 'BB', all 7 children are guaranteed to
     # be 'Bb' black.
     # Therefore, add 'BB' to the parent list.
-    if little_mouse == 'BB':
+    if test_mouse == 'BB':
         parents.append('BB')
 
     # If the parent mouse is 'Bb', we draw 7 children to
     # see whether all of them are black ('Bb').
     # The probabilities come from the middle row of the table.
-    if little_mouse == 'Bb':
+    if test_mouse == 'Bb':
       children = np.random.choice(['Bb', 'bb'], p=[0.5, 0.5], size=7)
       if np.all(children == 'Bb'):
           parents.append('Bb')
@@ -1139,44 +691,44 @@ print(f'Ratio: {p_BB/p_Bb:.1f}')
 
 We see that all the offspring being black considerably changes the
 situation!
-We started with the odds being 2:1 in favor of `Bb` vs `BB`.
+We started with the odds being 2:1 in favor of Bb vs BB.
 The "posterior" or "after the evidence" ratio is closer to 64:1 in
-favor of `BB`! (1973, pp. 12-14)
+favor of *BB*! (1973, pp. 12-14)
 
-Let's tune the code to run faster.  Instead of doing the trials
+Let's tune the code a bit to run faster.  Instead of doing the trials
 one mouse at a time, we will do the whole bunch together.
 
 ```{python}
-N = 1_000_000
+N = 1000000
 
 # In N trials, pair two Bb mice and generate a child
-little_mice = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25], size=N)
+test_mice = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25], size=N)
 
-# The resulting little mouse is black, so filter out all brown ones
-little_mice = little_mice[little_mice != 'bb']
-M = len(little_mice)
+# The resulting test mouse is black, so filter out all brown ones
+test_mice = test_mice[test_mice != 'bb']
+M = len(test_mice)
 
-# Each little mouse will now be mated with a brown mouse, producing 7 offspring.
+# Each test mouse will now be mated with a brown mouse, producing 7 offspring.
 # We then store whether all the offspring were black or not.
 all_offspring_black = np.zeros(M, dtype=bool)
 
-# If a little mouse is 'BB', we are assured that all its offspring
+# If a test mouse is 'BB', we are assured that all its offspring
 # will be black
-all_offspring_black[little_mice == 'BB'] = True
+all_offspring_black[test_mice == 'BB'] = True
 
-# If a little mouse is 'Bb', we have to generate its offspring and
+# If a test mouse is 'Bb', we have to generate its offspring and
 # see whether they are all black or not
-little_mice_Bb = (little_mice == 'Bb')
-N_little_mice_Bb = np.sum(little_mice_Bb)
+test_mice_Bb = (test_mice == 'Bb')
+N_test_mice_Bb = np.sum(test_mice_Bb)
 
 # Generate all offspring of all 'Bb' test mice
 offspring = np.random.choice(
-    ['Bb', 'bb'], p=[0.5, 0.5], size=(N_little_mice_Bb, 7)
+    ['Bb', 'bb'], p=[0.5, 0.5], size=(N_test_mice_Bb, 7)
 )
-all_offspring_black[little_mice_Bb] = np.all(offspring == 'Bb', axis=1)
+all_offspring_black[test_mice_Bb] = np.all(offspring == 'Bb', axis=1)
 
 # Find the genetic types of the parents of all-black offspring
-parents = little_mice[all_offspring_black]
+parents = test_mice[all_offspring_black]
 
 # Calculate what fraction of parents were 'BB' vs 'Bb'
 parents_BB = (parents == 'BB')
@@ -1198,26 +750,29 @@ XXX TODO: How can we show how to derive this quantity using a filter tree type a
 -->
 
 Creating the correct simulation procedure is not trivial, because Bayesian
-reasoning is subtle. But it certainly is not easier to create a
+reasoning is subtle — a reason it has been the cause of controversy
+for more than two centuries. But it certainly is not easier to create a
 correct procedure using analytic tools (except in the cookbook sense of
-plug-and-pray). If one is interested in insight, a combination of theory and  simulation procedure
-might well be the answer[^sequentially]
+plug-and-pray). And the difficult mathematics that underlie the
+analytic method (see e.g. [@box1992bayesian, Appendix A1.1] make it almost
+impossible for the statistician to fully understand the procedure from
+beginning to end. If one is interested in insight, the simulation procedure
+might well be preferred.[^sequentially]
 
 [^sequentially]: We can use a similar procedure to illustrate an aspect of the
     Bayesian procedure that Box and Tiao emphasize, its
     sequentially-consistent character. First let us carry out the above
-    procedure but observe only three black beads in a row. The program to be
+    procedure but observe only three black balls in a row. The program to be
     used is the same except for the insertion of "3" for "7" where "7"
     appears. We then estimate the probability for BB, which turns out to be
     about 1/5 instead of about 1/65. We then substitute for bucket A a bucket
     A' with appropriate numbers of black Bb's and black BB's, to represent the
     "updated" prior probability. We may then continue by substituting "4" for
-    "3" above (to attain a total of seven observed black beads), and find that
-    the probability is about what it was when we observed 7 black beads in
+    "3" above (to attain a total of seven observed black balls), and find that
+    the probability is about what it was when we observed 7 black balls in
     a single sample (1/65). This shows that the Bayesian procedure accumulates
     information without "leakage" and with consistency.
 
-<!---
 ## Problems based on normal and other distributions
 
 This section should be skipped by all except advanced practitioners of
@@ -1247,7 +802,7 @@ The logic for a problem of Schlaifer's [-@schlaifer1961introduction, example
 heretofore been published and therefore must be considered tentative and
 requiring particular scrutiny.
 
-**An Intermediate Problem in Conditional Probability**
+### An Intermediate Problem in Conditional Probability
 
 Schlaifer employs a quality-control problem for his leading example of
 Bayesian estimation with Normal sampling. A chemical manufacturer wants
@@ -1282,7 +837,7 @@ distribution (centered at 2.3) to see how frequently its mean exceeds
 2.5. This work is so straightforward that we need not even state the
 steps in the procedure.
 
-**Estimating the Posterior Distribution**
+### Estimating the Posterior Distribution
 
 Next we estimate the posterior distribution. @fig-batch_posterior shows the
 prior distribution of batch yields, based on 100 previous batches.
@@ -1310,7 +865,6 @@ weighted proportions of sample means that fall into this interval.
     to (subtracted from) each of the nine x ~i~ , say, 1.03 + .05 = 1.08. For
     a distribution centered at 2.3, the values would be (1.84 + .22 = 2.06,
     1.75 + .22 = 1.97...).
-
 2.  Working with the distribution centered at 2.3 as an example:
     Constitute a universe of the values (1.84+.22=2.06, 1.75 + .22 =
     1.97...). Here we may notice that the variability in the sample
@@ -1319,52 +873,46 @@ weighted proportions of sample means that fall into this interval.
     contrast to conventional Bayesian practice where the posterior is
     the result of the prior and sample means weighted by the reciprocals of the
     variances (see e.g. [@box1992bayesian, page 17 and Appendix A1.1]).
-
 3.  Draw nine observations from this universe (with replacement, of
     course), compute the mean, and record.
-
 4.  Repeat step 2 perhaps 1000 times and plot the distribution of
     outcomes.
-
 5.  Compute the percentages of the means within (say) .5 on each side of
     the sample mean, i. e. from 2.03--2.13. The resulting number — call
     it UP ^i^ — is the un-standardized (un-normalized) effect of this
     sub-distribution in the posterior distribution.
-
 6.  Repeat steps 1-5 to cover each other possible batch yield from 2.0
     to 3.0 (2.3 was just done).
-
 7.  Weight each of these sub-distributions — actually, its UP ^i^ --- by
     its prior probability, and call that WP ^i^ -.
-
 8.  Standardize the WP ^i^ s to a total probability of 1.0. The result
     is the posterior distribution. The value found is 2.283, which the
     reader may wish to compare with a theoretically-obtained result
     (which Schlaifer does not give).
 
-    This procedure must be biased because the numbers of "hits" will
-    differ between the two sides of the mean for all sub-distributions
-    except that one centered at the same point as the sample, but the
-    extent and properties of this bias are as-yet unknown. The bias
-    would seem to be smaller as the interval is smaller, but a small
-    interval requires a large number of simulations; a satisfactorily
-    narrow interval surely will contain relatively few trials, which is
-    a practical problem of still-unknown dimensions.
+This procedure must be biased because the numbers of "hits" will
+differ between the two sides of the mean for all sub-distributions
+except that one centered at the same point as the sample, but the
+extent and properties of this bias are as-yet unknown. The bias
+would seem to be smaller as the interval is smaller, but a small
+interval requires a large number of simulations; a satisfactorily
+narrow interval surely will contain relatively few trials, which is
+a practical problem of still-unknown dimensions.
 
-    Another procedure — less theoretically justified and probably more
-    biased — intended to get around the problem of the narrowness of the
-    interval, is as follows:
+Another procedure — less theoretically justified and probably more
+biased — intended to get around the problem of the narrowness of the
+interval, is as follows:
 
-    **5a.** Compute the percentages of the means on each side of the
-    sample mean, and note the smaller of the two (or in another possible
-    process, the difference of the two). The resulting number — call it
-    UP ^i^ — is the un-standardized (un-normalized) weight of this
-    sub-distribution in the posterior distribution.
+5.  (**5a.**) Compute the percentages of the means on each side of the sample
+    mean, and note the smaller of the two (or in another possible process, the
+    difference of the two). The resulting number — call it UP ^i^ — is the
+    un-standardized (un-normalized) weight of this sub-distribution in the
+    posterior distribution.
 
-    Another possible criterion — a variation on the procedure in 5a — is
-    the *difference* between the two tails; for a universe with the same
-    mean as the sample, this difference would be zero.
---->
+Another possible criterion — a variation on the procedure in 5a — is
+the *difference* between the two tails; for a universe with the same
+mean as the sample, this difference would be zero.
+
 ## Conclusion
 
 All but the simplest problems in conditional probability are
@@ -1381,10 +929,14 @@ Simulation has two valuable properties for Bayesian analysis:
 
 1. It can provide an effective way to handle problems whose
    analytic solution may be difficult or impossible.
-
 2. Simulation can provide insight to problems that otherwise are
-   difficult to understand fully.
+   difficult to understand fully, as is peculiarly the case with
+   Bayesian analysis.
 
 Bayesian problems of updating estimates can be handled easily and
-straightforwardly with simulation. The process and the results tend to be intuitive and
-transparent.
+straightforwardly with simulation, whether the data are discrete or
+continuous. The process and the results tend to be intuitive and
+transparent. Simulation works best with the original raw data rather
+than with abstractions from them via percentages and
+distributions. This can aid the understanding as well as facilitate
+computation.
