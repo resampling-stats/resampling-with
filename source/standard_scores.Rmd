@@ -919,7 +919,7 @@ aoc_income = get_var('aoc_income')
 plt.hist(incomes, bins=25, color='gray');
 plt.title('Median household income for 2023 congressional districts');
 plt.axvline(kom_income, color='red', linestyle=':', label='KOM')
-plt.axvline(aoc_income, color='blue', linestyle=':', label='KOM')
+plt.axvline(aoc_income, color='blue', linestyle=':', label='AOC')
 plt.legend();
 ```
 
