@@ -24,11 +24,18 @@ Sometimes have a set of measures, in some particular units, and we want some
 way to see quickly how these measures compare to one another, and how they may
 compare to other measures, in different units.
 
-Ranks are one way of having an implicit comparison between values.  Is the
-value large in terms of the other values (with high rank) — or is it small (low
-rank)?
+Ranks are one way of having an implicit comparison between values.[^ordering]
+Is the value large in terms of the other values (with high rank) — or is it
+small (low rank)?
 
-We can derive quantile positions from ranks.  These are values from 0 through
+[^ordering]: To get ranks we have to be able to sort our values in some
+    reasonable way, from high to low or low to high.  This usually makes sense
+    for measured data, where the measurement gives a number, but may not make
+    sense for other data, such as names or labels.  For example, it may ore may
+    not be meaningful to rank names alphabetically.  As usual, this is a matter
+    of judgment.
+
+If We can derive quantile positions from ranks.  These are values from 0 through
 1 that are closer to 1 for high rank values, and closer to 0 for low rank
 values.  Each value in the data has a rank, and a corresponding quantile
 position.  We can also look at the *value* corresponding to each quantile
@@ -64,8 +71,8 @@ more likely to be highly educated and wealthy.  He terms this shift "Brahmin
 Left Vs Merchant Right" [@piketty2018brahmin].  The data below come from
 a [table Kaptur
 prepared](https://s3.documentcloud.org/documents/23726766/rep-kaptur-district-chart.pdf)
-that shows this pattern in the US congress. The table lists the top 20 2023
-congressional districts by the median income of the households in that
+that shows this pattern in the US congress. The table lists the top 20
+districts of the 2023 congress by the median income of the households in that
 district, along with their representatives and their party.
 
 ```{python echo=FALSE, eval=TRUE}
@@ -106,7 +113,8 @@ ketable(means,
 
 Next we are going to tip our hand, and show how we got these data.  In previous
 chapters, we had {{< var cell >}}s like this in which we enter the values we
-will analyze.  These example values are from @sec-public-liquor:
+will analyze.  These values come from the example we introduced in
+@sec-public-liquor:
 
 ```{python}
 # Liquor prices for US states with private market.
