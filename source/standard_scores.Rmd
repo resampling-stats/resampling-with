@@ -29,10 +29,10 @@ Is the value large in terms of the other values (with high rank) — or is it
 small (low rank)?
 
 [^ordering]: To get ranks we have to be able to sort our values in some
-    reasonable way, from high to low or low to high.  This usually makes sense
-    for measured data, where the measurement gives a number in the same unit
-    for each observation, but may not make sense for other data, such as names
-    or labels.  For example, it may or may not be meaningful to rank names
+    reasonable way from low to high.  This usually makes sense for measured
+    data, where the measurement gives a number in the same unit for each
+    observation, but may not make sense for other data, such as names or
+    labels.  For example, it may or may not be meaningful to rank names
     alphabetically.  As usual, this is a matter of judgment.
 
 We can convert ranks to quantile positions.  Quantile positions are values from
