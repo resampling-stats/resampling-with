@@ -1295,7 +1295,6 @@ print('Deviation in standard deviation units for AOC:',
 km_std_devs <- deviations[km_index] / standard_deviation
 message('Deviation in standard deviation units for KM: ',
         round(km_std_devs), 2)
-        deviations[km_index] / standard_deviation)
 aoc_std_devs <- deviations[aoc_index] / standard_deviation
 message('Deviation in standard deviation units for AOC: ',
         round(aoc_std_devs), 2)
