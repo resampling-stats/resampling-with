@@ -73,7 +73,12 @@ a [table Kaptur
 prepared](https://s3.documentcloud.org/documents/23726766/rep-kaptur-district-chart.pdf)
 that shows this pattern in the US congress. The table lists the top 20
 districts of the 2023 congress by the median income of the households in that
-district, along with their representatives and their party.
+district, along with their representatives and their party.[^median]
+
+[^median]: For now, let us define the median value $M$ as the value such that
+    (as close as possible to) half of the households in the district have
+    a lower income than $M$, and (as close as possible to) half have a higher
+    income.  We will give more detail on the median later in the chapter.
 
 ```{python echo=FALSE, eval=TRUE}
 import numpy as np
@@ -264,13 +269,13 @@ priv[0]
 As you can index into strings and Numpy arrays, by using square brackets, so
 you can index into Pandas data frames.  Instead of putting the *position*
 between the square brackets, we can put the *column name*.  This fetches the
-data from that column, returning a new thing called a Pandas *Series*.
+data from that column, returning a new type of value called a Pandas *Series*.
 
 ```{python}
 # Index into Pandas data frame to get one column of data.
 # Notice we use a string between the square brackets, giving the column name.
 income_col = district_income['Median_Income']
-# The thing that comes back is of type Series.  A Series represents the
+# The value that comes back is of type Series.  A Series represents the
 # data from a single column.
 type(income_col)
 ```
@@ -308,7 +313,7 @@ district_income <- read.csv('data/congress_2023.csv')
 ```
 
 We have thus far done many operations that returned R *vectors*. `read.csv`
-returns a new thing, called a *data frame*:
+returns a new type of value, called a *data frame*:
 
 ```{r}
 class(district_income)
@@ -469,12 +474,12 @@ Congress: the Speaker of the House of Representatives, Republican [Kevin
 McCarthy](https://en.wikipedia.org/wiki/Kevin_McCarthy), and the progressive
 activist and Democrat
 [Alexandria Ocasio-Cortez](https://en.wikipedia.org/wiki/Alexandria_Ocasio-Cortez).
-We will refer to both using their initials: KOM for Kevin Owen McCarthy and AOC
+We will refer to both using their initials: KM for Kevin Owen McCarthy and AOC
 for Alexandra Ocasio-Cortez.
 
 By scrolling through the CSV file, or (in our case) using some simple
 [R]{.r}[Pandas]{.python} code that we won't cover now, we find the rows
-corresponding to McCarthy (KOM) and Ocasio-Cortez (AOC)
+corresponding to McCarthy (KM) and Ocasio-Cortez (AOC)
 — @tbl-rows-of-interest.
 
 ```{python echo=FALSE, eval=TRUE}
@@ -500,35 +505,35 @@ need to subtract 1 from the rank to get the index]{.python}
 
 ```{python}
 # Rank of McCarthy's district in terms of median household income.
-kom_rank = 295
+km_rank = 295
 # Index (position) of McCarthy's value in the "incomes" array.
 # Subtract one from rank, because Python starts indices at 0 rather than 1.
-kom_index = kom_rank - 1
+km_index = km_rank - 1
 ```
 
 ```{r}
 # Rank of McCarthy's district in terms of median household income.
-kom_rank = 295
+km_rank = 295
 # Index (position) of McCarthy's value in the "incomes" vector.
 # This is the same as the rank.
-kom_index = kom_rank
+km_index = km_rank
 ```
 
-Now we have the index (position) of KOM's value, we can find the household
+Now we have the index (position) of KM's value, we can find the household
 income for his district from the `incomes` {{< var array >}}:
 
 ```{python}
 # Show the median household income from McCarthy's district
 # by indexing into the "incomes" array:
-kom_income = incomes[kom_index]
-kom_income
+km_income = incomes[km_index]
+km_income
 ```
 
 ```{r}
 # Show the median household income from McCarthy's district
 # by indexing into the "incomes" vector:
-kom_income <- incomes[kom_index]
-kom_income
+km_income <- incomes[km_index]
+km_income
 ```
 
 Here is the corresponding index and `incomes` value for AOC:
@@ -558,7 +563,7 @@ as you see in the corresponding rows.
 
 ## Comparing values with ranks and quantile positions
 
-We have KOM's and AOC's district median household income values, but our next
+We have KM's and AOC's district median household income values, but our next
 question might be — how unusual are these values?
 
 Of course, it depends what we mean by *unusual*.   We might mean, are they
@@ -566,9 +571,9 @@ greater or smaller than most of the other values?
 
 One way of answering that question is simply looking at the rank of the values.
 If the rank is lower than $\frac{441}{2} = 220.5$ then this is a district with
-higher median income than most districts.  If it is greater than $220.5$ then
-it has lower median income than most districts.  We see that KOM's district,
-with rank `r get_var('kom_rank')` is wealthier than most, whereas AOC's
+lower median income than most districts.  If it is greater than $220.5$ then
+it has higher median income than most districts.  We see that KM's district,
+with rank `r get_var('km_rank')` is wealthier than most, whereas AOC's
 district (rank `r get_var('aoc_rank')`) is poorer than most.
 
 But we can't interpret the ranks without remembering that there are 441 values,
@@ -649,23 +654,23 @@ def plot_ranks_qps():
     ax.set_ylabel('Median household income')
 
     secax = ax.secondary_xaxis('top', functions=(rank2qp, qp2rank))
-    secax.set_xlabel('Gradient position')
+    secax.set_xlabel('Quantile position')
     return ax, secax
 
 plot_ranks_qps();
 ```
 
-The QPs for KOM and AOC tell us where their districts' incomes are in the
+The QPs for KM and AOC tell us where their districts' incomes are in the
 ranks, on a 0 to 1 scale:
 
 ```{python}
-kom_quantile_position = quantile_positions[kom_index]
-kom_quantile_position
+km_quantile_position = quantile_positions[km_index]
+km_quantile_position
 ```
 
 ```{r}
-kom_quantile_position <- quantile_positions[kom_index]
-kom_quantile_position
+km_quantile_position <- quantile_positions[km_index]
+km_quantile_position
 ```
 
 ```{python}
@@ -683,13 +688,13 @@ percentile position ranges from 0 through 100.
 
 ```{python}
 # Percentile positions are just quantile positions * 100
-print('KOM percentile position:', kom_quantile_position * 100)
+print('KM percentile position:', km_quantile_position * 100)
 print('AOC percentile position:', aoc_quantile_position * 100)
 ```
 
 ```{r}
 # Percentile positions are just quantile positions * 100
-message('KOM percentile position: ', kom_quantile_position * 100)
+message('KM percentile position: ', km_quantile_position * 100)
 message('AOC percentile position: ', aoc_quantile_position * 100)
 ```
 
@@ -876,17 +881,19 @@ quantile(incomes, 0.01)
 
 This is called the *linear* method — because it uses straight lines joining the
 points to estimate the quantile value for a QP that does not correspond to
-a whole-number rank.  $0000$
+a whole-number rank.
 
 :::{.callout-note}
 ## Calculating quantiles using the linear method
 
 We gave a graphical explanation of how to calculate the quantile for a QP
-that does not correspond to whole-number rank in the data. Another explanation
-is to think of the quantile value as being a *weighted average* of the quantile
-values for the QPs of the whole number ranks just less than, and just greater
-than the QP we are interested in.  For example, let us return to the QP of
-$0.01$.  Let us remind ourselves of the QPs, whole-number ranks and
+that does not correspond to whole-number rank in the data.  A more formal way
+of getting the value using the numerical equivalent of the graphical method is
+[linear interpolation](https://en.wikipedia.org/wiki/Linear_interpolation).
+Linear interpolation calculates the quantile value as a *weighted average* of
+the quantile values for the QPs of the whole number ranks just less than, and
+just greater than the QP we are interested in. For example, let us return to
+the QP of $0.01$.  Let us remind ourselves of the QPs, whole-number ranks and
 corresponding values either side of the QP $0.01$:
 
 | Rank | Quantile position | Quantile value |
@@ -919,28 +926,29 @@ reading off the y-value at which this track crosses that line.
 
 ## Unusual values compared to the distribution
 
-Now we return the problem of whether KOMs and AOCs districts are unusual in
+Now we return the problem of whether KMs and AOCs districts are unusual in
 terms of their median household incomes.  From what we have so far, we might
-conclude that AOC's district is fairly poor, and KOM's district is relatively
+conclude that AOC's district is fairly poor, and KM's district is relatively
 wealthy.  But — are either of their districts *unusual* in their wealth or
 poverty?
 
 To answer that question, we have to think about the *distribution* of values.
-Are either AOC's or KOM's district outside the *typical spread* of values for
+Are either AOC's or KM's district outside the *typical spread* of values for
 districts?
 
 The rest of this section is an attempt to answer what we could mean by
 *outside* and *typical spread*.
 
 Let us start with a histogram of the district incomes, marking the position of
-the KOM and AOC districts.
+the KM and AOC districts.
 
 ```{python echo=FALSE, eval=TRUE}
-kom_income = get_var('kom_income')
+km_income = get_var('km_income')
 aoc_income = get_var('aoc_income')
+# Use 25 bins for the histogram.
 plt.hist(incomes, bins=25, color='gray');
 plt.title('Median household income for 2023 congressional districts');
-plt.axvline(kom_income, color='red', linestyle=':', label='KOM')
+plt.axvline(km_income, color='red', linestyle=':', label='KM')
 plt.axvline(aoc_income, color='blue', linestyle=':', label='AOC')
 plt.legend();
 ```
@@ -961,8 +969,8 @@ mean_income <- mean(incomes)
 mean_income = get_var('mean_income')
 plt.hist(incomes, bins=25, color='gray');
 plt.title('Median household income for 2023 congressional districts');
-plt.axvline(kom_income, color='red', linestyle=':', label='KOM')
-plt.axvline(aoc_income, color='blue', linestyle=':', label='KOM')
+plt.axvline(km_income, color='red', linestyle=':', label='KM')
+plt.axvline(aoc_income, color='blue', linestyle=':', label='KM')
 plt.axvline(mean_income, color='green', linestyle='-', label='Mean')
 plt.legend();
 ```
@@ -995,8 +1003,10 @@ plt.hist(deviations, bins=25, color='gray');
 plt.title('Deviations of median household income for 2023 congressional districts');
 ```
 
-The distribution of deviations centers on zero — an in fact the deviations have
-a mean of (as near as the computer can accurately calculate) zero:
+Notice that the shape of the distribution has not changed — all that changed is
+the position of the distribution on the x-axis.  In fact, the distribution of
+deviations centers on zero — the deviations have a mean of (as near as the
+computer can accurately calculate) zero:
 
 ```{python}
 # Show the mean of the deviations, rounded to 8 decimal places.
@@ -1010,26 +1020,26 @@ round(mean(deviations), 8)
 
 ## The mean absolute deviation
 
-Now let us consider the deviation value for KOM and AOC:
+Now let us consider the deviation value for KM and AOC:
 
 ```{python}
-print('Deviation for KOM:', deviations[kom_index])
+print('Deviation for KM:', deviations[km_index])
 print('Deviation for AOC:', deviations[aoc_index])
 ```
 
 ```{r}
-message('Deviation for KOM: ', deviations[kom_index])
+message('Deviation for KM: ', deviations[km_index])
 message('Deviation for AOC: ', deviations[aoc_index])
 ```
 
-We have the same problem as before.  Yes, we see that KOM has a positive
+We have the same problem as before.  Yes, we see that KM has a positive
 deviation, and therefore, that his district is more wealthy than average across
 the 441 districts.  Conversely AOC's district has a negative deviation, and is
 poorer than average.  But we still lack a standard measure of how far away from
 the mean each district is, in terms of the spread of values in the histogram.
 
 To get such a standard measure, we would like idea of a typical or average
-deviation.  Then we will compare KOM's and AOC's deviations to the average
+deviation.  Then we will compare KM's and AOC's deviations to the average
 deviation, to see if they are unusually far from the mean.
 
 You have just seen, above that we cannot use the literal average (mean) of the
@@ -1079,12 +1089,12 @@ We can get an idea of how typical a particular deviation is by dividing the
 deviation by the MAD value, like this:
 
 ```{python}
-print('Deviation in MAD units for KOM:', deviations[kom_index] / mad)
+print('Deviation in MAD units for KM:', deviations[km_index] / mad)
 print('Deviation in MAD units AOC:', deviations[aoc_index] / mad)
 ```
 
 ```{r}
-message('Deviation in MAD units for KOM: ', deviations[kom_index] / mad)
+message('Deviation in MAD units for KM: ', deviations[km_index] / mad)
 message('Deviation in MAD units AOC: ', deviations[aoc_index] / mad)
 ```
 
@@ -1133,7 +1143,7 @@ $m$ is a floating point number with one digit before the decimal point — so it
 can be any value from 1.0 through 9.9999... $n$ is an integer (positive or
 negative whole number).
 
-For example, the median household income of KOM's district is 77205 (dollars).
+For example, the median household income of KM's district is 77205 (dollars).
 We can express that same number in E-notation as $7.7205 * 10^4$ .
 {{< var lang >}} writes this as `7.7205e4`, where the number before the `e` is
 $m$ and the number after the `e` is the exponent value $n$. E-notation is
@@ -1148,7 +1158,7 @@ another way of writing the number, because $7.7205 * 10^4 = 77205$.
 ```
 
 It is no great advantage to use E-notation in this case; 77205 is probably
-easier to read and understand than `7.7205e41`.  The notation comes into its
+easier to read and understand than `7.7205e4`.  The notation comes into its
 own where you start to lose track of the powers of 10 when you read a number
 — and that does happen when the number becomes very long without E-notation.
 For example, $77205^2 = 5960612025$.  5960612025 is long enough that you start
@@ -1194,6 +1204,18 @@ variance <- mean(squared_deviations)
 variance
 ```
 
+::: python
+
+It will come as no surprise to find that Numpy has a function to do the whole
+variance calculation — subtracting the mean, and returning the average squared
+deviation — `np.var`:
+
+```{python}
+# Use np.var to calculate the mean squared deviation directly.
+np.var(incomes)
+```
+:::
+
 The variance is the typical (in the sense of the mean) *squared* deviation.
 The units for the variance, in our case, would be *squared dollars*.  But we
 are more interested in the typical *deviation*, in our original units --
@@ -1217,6 +1239,22 @@ standard_deviation
 standard_deviation <- sqrt(mean_squared_deviation)
 standard_deviation
 ```
+
+::: python
+
+Again,  Numpy has a function to do this calculation directly: `np.std`:
+
+```{python}
+# Use np.std to calculate the square root of the mean squared deviation
+# directly.
+np.std(incomes)
+```
+
+```{python}
+# Of course, np.std(incomes) is the same as:
+np.sqrt(np.var(incomes))
+```
+:::
 
 The *standard deviation* (the square root of the mean squared deviation) is
 a popular alternative to the Mean Absolute Deviation, as a measure of typical
@@ -1245,17 +1283,22 @@ two congressional districts of interest are in terms of the distribution, by
 calculating how many standard deviations each district is from the mean:
 
 ```{python}
-print('Deviation in standard deviation units for KOM:',
-      deviations[kom_index] / standard_deviation)
+km_std_devs = deviations[km_index] / standard_deviation
+print('Deviation in standard deviation units for KM:',
+      np.round(km_std_devs), 2)
+aoc_std_devs = deviations[aoc_index] / standard_deviation
 print('Deviation in standard deviation units for AOC:',
-      deviations[aoc_index] / standard_deviation)
+      np.round(aoc_std_devs), 2)
 ```
 
 ```{r}
-message('Deviation in standard deviation units for KOM: ',
-        deviations[kom_index] / standard_deviation)
+km_std_devs <- deviations[km_index] / standard_deviation
+message('Deviation in standard deviation units for KM: ',
+        round(km_std_devs), 2)
+        deviations[km_index] / standard_deviation)
+aoc_std_devs <- deviations[aoc_index] / standard_deviation
 message('Deviation in standard deviation units for AOC: ',
-        deviations[aoc_index] / standard_deviation)
+        round(aoc_std_devs), 2)
 ```
 
 The values for each district are a re-expression of the income values in terms
@@ -1307,6 +1350,67 @@ of (actually exactly) 0, and a standard deviation of (actually exactly) 1.
 deviations_in_stds = get_var('deviations_in_stds')
 plt.hist(deviations_in_stds, bins=25, color='gray')
 ```
+
+With all this information — what should we conclude about the two districts in
+question?  KM's district is `r round(get_var('km_std_devs'), 2)` standard
+deviations _above_ the mean, but that's not enough to conclude that it is
+unusual — we can see from the histogram that a large proportion of the
+districts are at least this distance from the mean.  We can calculate that
+proportion directly.
+
+```{python}
+# Distances (negative or positive) from the mean.
+abs_std_devs = np.abs(deviations_in_stds)
+# Number where distance greater than KM distance.
+n_gt_km = np.sum(abs_std_devs > km_std_devs)
+prop_gt_km = n_gt_km / len(deviations_in_stds)
+print("Proportion of districts further from mean than KM:",
+      np.round(prop_gt_km, 2))
+```
+
+```{r}
+# Distances (negative or positive) from the mean.
+abs_std_devs <- abs(deviations_in_stds)
+# Number where distance greater than KM distance.
+n_gt_km <- sum(abs_std_devs > km_std_devs)
+prop_gt_km <- n_gt_km / length(deviations_in_stds)
+message("Proportion of districts further from mean than KM: ",
+        round(prop_gt_km, 2))
+```
+
+A full `r round(get_var('prop_gt_km'), 2) * 100`% of districts are further
+from the mean than is KM's district.  KM's district is richer than average, but
+not unusual.  The benefit of the standard deviation distance is that we can see
+this directly from the value, without doing the calculation of proportions,
+because the standard deviation is a measure of typical spread, and KM's
+district is well-within this measure.
+
+AOC's district is `r round(get_var('aoc_std_devs'), 2)` standard deviations
+from the mean.  This is a little more unusual than KM's score, but still not
+very striking.
+
+```{python}
+# Number where distance greater than AOC distance.
+# Make AOC's distance positive to correspond to distance from the mean.
+n_gt_aoc = np.sum(abs_std_devs > np.abs(aoc_std_devs))
+prop_gt_aoc = n_gt_aoc / len(deviations_in_stds)
+print("Proportion of districts further from mean than AOC:",
+      np.round(prop_gt_aoc, 2))
+```
+
+```{r}
+# Number where distance greater than AOC distance.
+# Make AOC's distance positive to correspond to distance from the mean.
+n_gt_aoc <- sum(abs_std_devs > abs(aoc_std_devs))
+prop_gt_aoc <- n_gt_aoc / length(deviations_in_stds)
+message("Proportion of districts further from mean than AOC's district: ",
+        round(prop_gt_aoc, 2))
+```
+
+Only `r round(get_var('prop_gt_aoc'), 2) * 100`% of districts are further from
+the mean than AOC's district, but this is still a reasonable proportion.  We
+see from the standard score that AOC is within one standard deviation.   AOC's
+district is poorer than average, but not to a remarkable degree.
 
 ## Standard scores to compare values on different scales
 
