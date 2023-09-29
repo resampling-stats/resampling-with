@@ -30,14 +30,14 @@ small (low rank)?
 
 [^ordering]: To get ranks we have to be able to sort our values in some
     reasonable way, from high to low or low to high.  This usually makes sense
-    for measured data, where the measurement gives a number, but may not make
-    sense for other data, such as names or labels.  For example, it may ore may
-    not be meaningful to rank names alphabetically.  As usual, this is a matter
-    of judgment.
+    for measured data, where the measurement gives a number in the same unit
+    for each observation, but may not make sense for other data, such as names
+    or labels.  For example, it may ore may not be meaningful to rank names
+    alphabetically.  As usual, this is a matter of judgment.
 
-If We can derive quantile positions from ranks.  These are values from 0 through
-1 that are closer to 1 for high rank values, and closer to 0 for low rank
-values.  Each value in the data has a rank, and a corresponding quantile
+We can convert ranks to quantile positions.  Quantile positions are values from
+0 through 1 that are closer to 1 for high rank values, and closer to 0 for low
+rank values.  Each value in the data has a rank, and a corresponding quantile
 position.  We can also look at the *value* corresponding to each quantile
 position, and these are the *quantiles*. You will see what we mean later in the
 chapter.
@@ -49,11 +49,11 @@ measure falls outside the typical range of values — that is, how the measure
 compares to the *distribution* of values.  One common way of doing this is to
 re-express the measures (values) as *standard scores*, where the standard score
 for a particular value tells you how far the value is from the *center* of the
-distribution, in terms of the typical *spread* of the distribution. Standard
-values are particularly useful to allow us to *compare* different types of
-measures on a standard scale.  They translate the units of measurement into
-*standard* and comparable units.  We will explain this more towards the end of
-the chapter.
+distribution, in terms of the typical *spread* of the distribution. (We will
+say more about what we mean by "typical" later.)  Standard values are
+particularly useful to allow us to *compare* different types of measures on
+a standard scale.  They translate the units of measurement into *standard* and
+comparable units.  We will explain this more towards the end of the chapter.
 
 ## Household income and congressional districts
 
@@ -169,8 +169,8 @@ print(f"""{backticks}
 Here we start using the Pandas library to load table data into Python.
 
 Thus far we have used the Numpy library to work with data in arrays.  Pandas is
-As always with Python, when we want to use a library, we have to `import` it
-first.
+As always with Python, when we want to use a library like Pandas, we have to
+`import` it first.
 
 We have used the term *library* here, but Python uses the term *module* to
 refer to libraries of code and data that you `import`.
@@ -228,8 +228,22 @@ default) the first five rows in the table:
 district_income.head()
 ```
 
-The data are in income order, sorted lowest to highest, so the first five
+The data are in income order, from lowest to highest, so the first five
 districts are those with the lowest household income.
+
+:::{.callout-note}
+## Sorting
+
+::: python
+If the data were not already in income order, we could have sorted them with [Numpy's `sort`]{.python}[R's  function.
+:::
+
+:::
+
+
+:::
+
+
 
 We are particularly interested in the column named `Median_Income`.
 
