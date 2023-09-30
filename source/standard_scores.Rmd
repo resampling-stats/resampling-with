@@ -1550,7 +1550,10 @@ score version of the wages, we see that they are in comparable units, each with
 a mean of 0, and a spread (a standard deviation) of 1.
 
 ```{python, eval=TRUE, echo=FALSE}
+# Get variables into Python for plot (we need this in the R edition).
 standard_wages = get_var('standard_wages')
+standard_points = get_var('standard_points')
+# Make plot.
 plt.scatter(standard_wages, standard_points)
 plt.xlabel('Wage bill in standard units')
 plt.ylabel('Total points scored in standard units')
