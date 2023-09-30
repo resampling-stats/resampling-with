@@ -1470,9 +1470,9 @@ spend more in wages tend to have more points.
 
 At the moment, the points and wages are in very different units.  Points are on
 a possible scale of 0 (lose every game) to 38 * 3 = 114 (win every game). Wages
-are in thousands of pounds.   Maybe we are no interested in the values in these
-units, but in how unusual the values are, in terms of wages, and in terms of
-points.
+are in thousands of pounds.   Maybe we are not interested in the values in
+these units, but in how unusual the values are, in terms of wages, and in terms
+of points.
 
 This is a good application of standard scores.   Standard scores convert the
 original values to values on a standard scale, where 0 corresponds to an
@@ -1548,7 +1548,7 @@ Now, when we plot the standard score version of the points against the standard
 score version of the wages, we see that they are in comparable units, each with
 a mean of 0, and a spread (a standard deviation) of 1.
 
-```{python, eval=TRUE, echo=FALSE}“:w
+```{python, eval=TRUE, echo=FALSE}
 plt.scatter(standard_wages, standard_points)
 plt.xlabel('Wage bill in standard units')
 plt.ylabel('Total points scored in standard units')
@@ -1603,7 +1603,8 @@ question we have just posed — the amount we expect to gain in points, in
 standard units, if we increase our wages by one standard deviation (and
 therefore, 1 in standard units).
 
-For reasons we won't justify now, we calculate the $r$ value, like this:
+For reasons we won't justify now, we calculate the $r$ value of association
+between wages and points, like this:
 
 ```{python}
 standards_multiplied = standard_wages * standard_points
