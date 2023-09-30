@@ -1042,7 +1042,7 @@ To get such a standard measure, we would like idea of a typical or average
 deviation.  Then we will compare KM's and AOC's deviations to the average
 deviation, to see if they are unusually far from the mean.
 
-You have just seen, above that we cannot use the literal average (mean) of the
+You have just seen above that we cannot use the literal average (mean) of the
 deviations for this purpose because the positive and negative deviations will
 exactly cancel out, and the mean deviation will always be as near as the
 computer can calculate to zero.
@@ -1161,12 +1161,12 @@ It is no great advantage to use E-notation in this case; 77205 is probably
 easier to read and understand than `7.7205e4`.  The notation comes into its
 own where you start to lose track of the powers of 10 when you read a number
 — and that does happen when the number becomes very long without E-notation.
-For example, $77205^2 = 5960612025$.  5960612025 is long enough that you start
-having to count the digits to see how large it is.  In E-notation, that number
-is `5.960612025e9`.  If you remember that $10^9$ is one US billion, then the
-E-notation tells you at a glance that the value is about $5.9$ billion.
+For example, $77205^2 = 5960612025$.  $5960612025$ is long enough that you
+start having to count the digits to see how large it is.  In E-notation, that
+number is `5.960612025e9`.  If you remember that $10^9$ is one US billion, then
+the E-notation tells you at a glance that the value is about $5.9$ billion.
 
-{{< var np_or_r >}} makes its own decision whether to print out numbers using
+{{< var lang >}} makes its own decision whether to print out numbers using
 E-notation.   This only affects the display of the numbers; the underlying
 values remain the same whether {{< var np_or_r >}} chooses to show them in
 E-notation or not.
@@ -1176,7 +1176,8 @@ E-notation or not.
 The process of squaring the deviations turns all the negative values into
 positive values.
 
-We can then take the average (mean) of the *squared deviations* to give a measure of the typical *squared* deviation:
+We can then take the average (mean) of the *squared deviations* to give
+a measure of the typical *squared* deviation:
 
 ```{python}
 mean_squared_deviation = np.mean(squared_deviations)
@@ -1278,9 +1279,9 @@ plt.axvline(m + 2 * s , color='black', linestyle=':', label='Mean plus 2 SDs')
 plt.legend()
 ```
 
-We can use the standard deviations to return to the question of how unusual our
-two congressional districts of interest are in terms of the distribution, by
-calculating how many standard deviations each district is from the mean:
+Now let us return to the question of how unusual our two congressional
+districts are in terms of the distribution.  First we calculate the number of
+standard deviations of each district from the mean:
 
 ```{python}
 km_std_devs = deviations[km_index] / standard_deviation
@@ -1301,12 +1302,13 @@ message('Deviation in standard deviation units for AOC: ',
 ```
 
 The values for each district are a re-expression of the income values in terms
-of how many standard deviations each value is from the mean.
+of the distribution.  They give the distance from the mean (positive or
+negative) in units of standard deviation.
 
 ## Standard scores
 
-In fact, we will often find uses for the procedure we have just applied, where
-we take the original values (here, `incomes`) and:
+We will often find uses for the procedure we have just applied, where we take
+the original values (here, `incomes`) and:
 
 * Subtract the mean to convert to deviations, then
 * Divide by the standard deviation
@@ -1353,9 +1355,9 @@ plt.hist(deviations_in_stds, bins=25, color='gray')
 With all this information — what should we conclude about the two districts in
 question?  KM's district is `r round(get_var('km_std_devs'), 2)` standard
 deviations _above_ the mean, but that's not enough to conclude that it is
-unusual — we can see from the histogram that a large proportion of the
-districts are at least this distance from the mean.  We can calculate that
-proportion directly.
+unusual.  We see from the histogram that a large proportion of the districts
+are at least this distance from the mean.  We can calculate that proportion
+directly.
 
 ```{python}
 # Distances (negative or positive) from the mean.
@@ -1377,16 +1379,15 @@ message("Proportion of districts further from mean than KM: ",
         round(prop_gt_km, 2))
 ```
 
-A full `r round(get_var('prop_gt_km'), 2) * 100`% of districts are further
-from the mean than is KM's district.  KM's district is richer than average, but
-not unusual.  The benefit of the standard deviation distance is that we can see
+A full `r round(get_var('prop_gt_km'), 2) * 100`% of districts are further from
+the mean than is KM's district.  KM's district is richer than average, but not
+unusual.  The benefit of the standard deviation distance is that we can see
 this directly from the value, without doing the calculation of proportions,
 because the standard deviation is a measure of typical spread, and KM's
 district is well-within this measure.
 
 AOC's district is `r round(get_var('aoc_std_devs'), 2)` standard deviations
-from the mean.  This is a little more unusual than KM's score, but still not
-very striking.
+from the mean.  This is a little more unusual than KM's score.
 
 ```{python}
 # Number where distance greater than AOC distance.
@@ -1549,6 +1550,7 @@ score version of the wages, we see that they are in comparable units, each with
 a mean of 0, and a spread (a standard deviation) of 1.
 
 ```{python, eval=TRUE, echo=FALSE}
+standard_wages = get_var('standard_wages')
 plt.scatter(standard_wages, standard_points)
 plt.xlabel('Wage bill in standard units')
 plt.ylabel('Total points scored in standard units')
