@@ -322,8 +322,6 @@ second_char
 ```
 :::
 
-::: python
-
 ## Strings in {{< var array >}}s
 
 As we can store numbers as elements in {{< var array >}}s, we can also store
@@ -732,7 +730,7 @@ you can just omit the `replace=TRUE` argument to `sample`, or you can specify
 `replace=FALSE` explicitly, perhaps to remind yourself that this is sampling
 without replacement. Whether you omit the `replace` argument, or specify
 `replace=FALSE`, the behavior is the same.
-::::
+:::
 
 ```{r}
 # Take a sample of 12 jurors from the panel *with replacement*
@@ -841,18 +839,18 @@ the same jury, and therefore, the same argument applies there as here.
 The trick there was that we were selecting from a very large pool of many
 thousand eligible jurors, of whom 26% were black.  Let's say there were 10,000
 eligible jurors, of whom 2,600 were black.  When selecting the first juror,
-there is exactly a 2,600 in 10,000 chance of getting a black juror — 26%.  And
-yes, it's true, that the chance will have changed very slightly for the second
-juror — if the first juror was black, the chance that the second juror will be
-black is 2,599 in 9,999.  But these changes are very small; even if we select
-eleven black jurors out of eleven, when we come to the twelfth juror, we still
-have a 2,589 out of 9,989 chance of getting another black juror, and that works
-out at a 25.92% chance — hardly changed from the original 26%.  So yes, you'd
-be right, we really should have compiled our population of 2,600 black jurors
-and 7,400 white jurors, and then sampled without replacement from that
-population, but as the resulting sample probabilities will be very similar to
-the simpler sampling with replacement, we're afraid we chose to slide that one
-quietly past you, in the hope you would forgive us when you realized.
+there is exactly a 2,600 in 10,000 chance of getting a black juror — 26%.  If
+we do get a black juror first, then the chance that the second juror will be
+black has changed slightly, 2,599 in 9,999.  But these changes are very small;
+even if we select eleven black jurors out of eleven, when we come to the
+twelfth juror, we still have a 2,589 out of 9,989 chance of getting another
+black juror, and that works out at a 25.92% chance — hardly changed from the
+original 26%.  So yes, you'd be right, we really should have compiled our
+population of 2,600 black jurors and 7,400 white jurors, and then sampled
+without replacement from that population, but as the resulting sample
+probabilities will be very similar to the simpler sampling with replacement, we
+chose to try and slide that one quietly past you, in the hope you would forgive
+us when you realized.
 :::
 
 ## Conclusion
