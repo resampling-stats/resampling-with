@@ -16,3 +16,10 @@ def _default_seeded_rng(*args, **kwargs):
 
 
 _npr.default_rng = _default_seeded_rng
+
+
+# Python variable in Python edition else R variable.
+def get_var(name):
+    if name in globals():
+        return globals()[name]
+    return getattr(r, name)
