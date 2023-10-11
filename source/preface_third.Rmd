@@ -1,22 +1,18 @@
 ---
+resampling_with:
+    ed2_fname: ""
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.7
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: ""
 ---
 
 # Preface to the third edition {.unnumbered}
@@ -133,7 +129,7 @@ way we analyze data, in academia, and in industry.  At the center of this
 change — was code.  Code is the language that allows us to tell the computer
 what it should do with data; it is the native language of data analysis.
 
-This insight transforms the way with think of code.  In the past, we have
+This insight transforms the way we think of code.  In the past, we have
 thought of code as a separate, specialized skill, that some of us learn.  We
 take coding courses — we "learn to code".   If code is the fundamental
 language for analyzing data, then we need code to express what data analysis
@@ -238,7 +234,7 @@ basic ideas behind statistical inference, and how you can apply these ideas
 to draw practical statistical conclusions.  We recommend it to you as an
 introduction to statistics.  If you are a teacher, we suggest you consider this
 book as a primary text for first statistics courses.  We hope you will find,
-as we have, that this method of explaining through building is much more
+as we have, that this method of explaining through building, is much more
 productive and satisfying than the traditional method of trying to convey some
 "intuitive" understanding of fairly complicated mathematics.  We explain the
 relationship of these resampling techniques to traditional methods.  Even if
