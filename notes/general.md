@@ -172,6 +172,7 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
   > *Series*.
 
 * More about histograms, bins, bin-edges.
+* f strings by `testing_counts_1`.
 
 ## Data
 

@@ -1,27 +1,25 @@
 ---
+resampling_with:
+    ed2_fname: 19-Chap-15
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.15.2
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: 19-Chap-15
 ---
 
 ```{r setup, include=FALSE}
 source("_common.R")
 ```
+
 # Hypothesis-Testing with Counted Data, Part 1 {#sec-testing-counts-one}
 
 :::{.callout-warning}
@@ -113,10 +111,10 @@ hypotheses about samples and populations.
 
 ## Should a single sample of counted data be considered different from a benchmark universe?
 
-**Example 15-1: Does Irradiation Affect the Sex Ratio in Fruit Flies?**
-(Where the Benchmark Universe Mean (in this case, the Proportion) is
-Known, is the Mean (Proportion) of the Population Affected by the
-Treatment?) (Program "Fruitfly")
+### Example: Does Irradiation Affect the Sex Ratio in Fruit Flies?
+
+**Where the Benchmark Universe Mean (in this case, the Proportion) is Known, is
+the Mean (Proportion) of the Population Affected by the Treatment?)**
 
 You think you have developed a technique for irradiating the genes of
 fruit flies so that the sex ratio of the offspring will *not* be half
@@ -131,28 +129,52 @@ which the sex ratio is one male to one female? The benchmark (null)
 hypothesis, then, is that the treatment makes no difference and the
 sample comes from the one-male-to-one-female universe. Therefore, we
 investigate *how likely a one-to-one universe is to produce a
-distribution of fourteen or more of just one sex* .
+distribution of fourteen or more of just one sex*.
 
 A coin has a one-to-one (one out of two) chance of coming up tails.
 Therefore, we might flip a coin in groups of twenty flips, and count the
 number of heads in each twenty flips. Or we can use a random number
 table. The following steps will produce a sound estimate:
 
-**Step 1.** Let heads = male, tails = female.
-
-**Step 2.** Flip twenty coins and count the number of males. If 14 or
-more males occur, record "yes." Also, if 6 or fewer males occur, record
-"yes" because this means we have gotten 14 or more females. Otherwise,
-record "no."
-
+* **Step 1.** Let heads = male, tails = female.
+* **Step 2.** Flip twenty coins and count the number of males. If 14 or more
+  males occur, record "yes." Also, if 6 or fewer males occur, record "yes"
+  because this means we have gotten 14 or more females. Otherwise, record "no."
 **Step 3.** Repeat step 2 perhaps 100 times.
-
 **Step 4.** Calculate the proportion "yes" in the 100 trials. This
-proportion estimates the probability that a fruit-fly population with a
-propensity to produce 50 percent males will by chance produce as many as
-14 or as few as 6 males in a sample of 20 flies.
+  proportion estimates the probability that a fruit-fly population with
+  a propensity to produce 50 percent males will by chance produce as many as 14
+  or as few as 6 males in a sample of 20 flies.
 
-Table 15-1 shows the results obtained in twenty-five trials of twenty
+
+```{python echo=FALSE, eval=TRUE}
+import numpy as np
+import pandas as pd
+
+rnd = np.random.default_rng()
+
+n = 25
+
+counts = np.zeros(n)
+for i in range(n):
+    flies = rnd.choice(['heads', 'tails'], size=14)
+    counts[i] = np.sum(flies == 'heads')
+
+strange = np.array(['No'] * n)
+strange[(counts >= 14) & (counts <= 6)] = 'Yes'
+
+fruitfly_trials = pd.DataFrame(
+    {'Trial no': np.arange(1, n + 1),
+     '# of heads': counts,
+     '>=14 or <= 6': strange})
+```
+
+```{r echo=FALSE, eval=TRUE}
+ketable(py$fruitfly_trials,
+        caption = "Results from 25 random trials for Fruitfly problem {#tbl-fruitfly-trials}")
+```
+
+@tbl-fruitfly-trials shows the results obtained in twenty-five trials of twenty
 flips each. In two of the twenty-five trials (8 percent) there were
 fourteen or more heads, which we call "males," and in one of the
 twenty-five trials (4 percent) there were only six heads, meaning there
@@ -174,52 +196,32 @@ females out of twenty births is .057 and, of course, the same for
 fourteen or more males from a one-to-one universe, implying a total
 probability of .114 of getting fourteen or more males *or* females.
 
-Table 15-1
-
-**Results From 25 Random Trials for "Fruitfly" Problem**
-
-  -------------- ----------- ----------- -------------- ----------- ----------- -------------- ----------- -----------
-  **Trial of**   **\#**      **\>=14**   **Trial of**   **\#**      **\>=14**   **Trial of**   **\#**      **\>=14**
-  **20 Coin**    **of**      **or**      **20 Coin**    **of**      **or**      **20 Coin**    **of**      **or**
-  **Flips**      **Heads**   **\<=6**    **Flips**      **Heads**   **\<=6**    **Flips**      **Heads**   **\<=6**
-  1              11          no          10             10          no          19             13          no
-  2              12          no          11             10          no          20             10          no
-  3              8           no          12             10          no          21             11          no
-  4              12          no          13             9           no          22             14          yes
-  5              12          no          14             9           no          23             9           no
-  6              7           no          15             12          no          24             7           no
-  7              9           no          16             7           no          25             10          no
-  8              8           no          17             14          yes                                    
-  9              6           yes         18             12          no                                     
-  -------------- ----------- ----------- -------------- ----------- ----------- -------------- ----------- -----------
-
 Now let us obtain larger and more accurate simulation samples with the
 computer. The key step in the {{< var lang >}} program "Fruitfly" represents
-male fruit flies with the string `'male'` and female fruit flies with the string 
-`'female'`. The [`sample`]{.r}[`rnd.choice`]{.python} function is then used to 
-generate 20 of these strings with an equal probability that either string is 
-selected. This simulates randomly choosing 20 fruit flies on the benchmark
-assumption — the "null hypothesis" — that each fruit fly has an equal chance of
-being a male or female. Now we want to discover the chances of getting more 
-than 13 (i.e., 14 or more) males or more than 13 females under these conditions.
- So we use [`sum`]{.r}[`np.sum`]{.python} to count the number of males in
-each random sample and then store this value in the `scores` 
-{{< var array >}} of this number for each sample. We repeat these 
-steps 10,000 times.
+male fruit flies with the string `'male'` and female fruit flies with the
+string `'female'`. The [`sample`]{.r}[`rnd.choice`]{.python} function is then
+used to generate 20 of these strings with an equal probability that either
+string is selected. This simulates randomly choosing 20 fruit flies on the
+benchmark assumption — the "null hypothesis" — that each fruit fly has an equal
+chance of being a male or female. Now we want to discover the chances of
+getting more than 13 (i.e., 14 or more) males or more than 13 females under
+these conditions. So we use [`sum`]{.r}[`np.sum`]{.python} to count the number
+of males in each random sample and then store this value in the `scores` {{<
+var array >}} of this number for each sample. We repeat these steps 10,000
+times.
 
-After one thousand samples have been drawn, we COUNT how often there
-were more than 13 males and then count the number of times there were
-fewer than 7 males (because if there were fewer than 7 males there must
-have been more than 13 females). When we ADD the two results together we
-have the probability that the results obtained from the sample of
-irradiated fruit flies would be obtained from a random sample of fruit
-flies.
+After one thousand samples have been drawn, we count (`sum`) how often there
+were more than 13 males and then count the number of times there were fewer
+than 7 males (because if there were fewer than 7 males there must have been
+more than 13 females). When we add the two results together we have the
+probability that the results obtained from the sample of irradiated fruit flies
+would be obtained from a random sample of fruit flies.
 
 ::: {.notebook name="fruit_fly" title="Fruit fly simulation"}
 
 ::: nb-only
-This notebook uses simulation to test the null hypothesis that it is equally 
-likely that new fruit files are male or female. 
+This notebook uses simulation to test the null hypothesis that it is equally
+likely that new fruit files are male or female.
 :::
 
 ```{python}
@@ -231,7 +233,6 @@ rnd = np.random.default_rng()
 ```
 
 ```{python}
-
 # Set the number of trials
 n_trials = 10000
 
@@ -253,7 +254,7 @@ for i in range(n_trials):
 
     # store the result of this trial
     scores[i] = b
-  
+
 # Produce a histogram of the trial results
 plt.title(f"Number of males in {n_trials} samples of \n{sample_size} simulated fruit flies")
 plt.hist(scores)
@@ -263,7 +264,6 @@ plt.show()
 ```
 
 ```{r}
-
 # Set the number of trials
 n_trials <- 10000
 
@@ -274,9 +274,7 @@ sample_size <- 20
 scores <- numeric(n_trials)
 
 # Do 1000 trials
-for (i in 1:n_trials)
-
-    {
+for (i in 1:n_trials) {
     # Generate 20 simulated fruit flies, where each has an equal chance of being
     # male or female
     a <- sample(c('male', 'female'), size = sample_size, prob = c(0.5, 0.5),
@@ -287,8 +285,8 @@ for (i in 1:n_trials)
 
     # store the result of this trial
     scores[i] <- b
-    }
-  
+}
+
 # Produce a histogram of the trial results
 title_of_plot <- paste0("Number of males in", n_trials, " samples of \n", sample_size, " simulated fruit flies")
 hist(scores, xlab = 'Number of Males', main = title_of_plot)
@@ -298,7 +296,7 @@ hist(scores, xlab = 'Number of Males', main = title_of_plot)
 
 ![](images/19-Chap-15_000.png)
 
-**\# males**
+**# males**
 
 In the histogram above, we see that in 16 percent of the trials, the
 number of males was 14 or more, or 6 or fewer. Or instead of reading the
@@ -321,7 +319,7 @@ mm = m / n_trials
 
 # Print the results.
 print(mm)
-
+```
 
 ```{r}
 # Determine the number of trials in which we had 14 or more males.
@@ -485,14 +483,17 @@ n_trials = 10000
 # set the size of each sample
 sample_size = 10
 
+# Probability of any one calf being female.
+p_female = 100 / 206
+
 # an array to store the results
 scores = np.zeros(n_trials)
 
 # for 10000 repeats
 for i in range(n_trials):
 
-    a = rnd.choice(['female', 'male'], 
-        p=[p_female, 1 - p_female], 
+    a = rnd.choice(['female', 'male'],
+        p=[p_female, 1 - p_female],
         size = sample_size)
     b = np.sum(a == 'female')
 
