@@ -174,6 +174,7 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * More about histograms, bins, bin-edges.
 * f strings by `testing_counts_1`.
 * underscores in integers by `testing_counts_1`.
+* `paste`, `paste0`, `seq` by `testing_counts_1`.
 
 ## Data
 

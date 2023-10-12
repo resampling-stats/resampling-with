@@ -461,85 +461,87 @@ any one calf being female is 100 / 206.
 :::
 
 ```{python}
-# set the number of trials
+# Set the number of trials.
 n_trials = 10000
 
-# set the size of each sample
+# Set the size of each sample.
 sample_size = 10
 
 # Probability of any one calf being female.
 p_female = 100 / 206
 
-# an array to store the results
+# An array to store the results.
 scores = np.zeros(n_trials)
 
-# for 10000 repeats
+# For 10000 repeats.
 for i in range(n_trials):
 
     a = rnd.choice(['female', 'male'],
-        p=[p_female, 1 - p_female],
-        size = sample_size)
+                   p=[p_female, 1 - p_female],
+                   size=sample_size)
     b = np.sum(a == 'female')
 
-    # store the result of the current trial
+    # Store the result of the current trial.
     scores[i] = b
 
-# plot a histogram of the scores
+# Plot a histogram of the scores.
 plt.title(f"Number of females in {n_trials} samples of \n{sample_size} simulated calves")
 plt.hist(scores)
 plt.xlabel('Number of Females')
 plt.ylabel('Frequency')
 
-# count the number of scores that were greater than or equal to 9
+# Count the number of scores that were greater than or equal to 9.
 k = np.sum(scores >= 9)
 
-# express as a proportion
+# Express as a proportion.
 kk = k / n_trials
 
-# show the proportion
-print(f"The probability of 9 or 10 females occurring by chance is {kk}")
+# Show the proportion.
+print("Probability of 9 or 10 females occurring by chance:", kk)
 ```
 
 ```{r}
-# set the number of trials
+# Set the number of trials.
 n_trials <- 10000
 
-# set the size of each sample
+# Set the size of each sample.
 sample_size <- 10
 
-# an array to store the results
+# Probability of any one calf being female.
+p_female <- 100 / 206
+
+# A vector to store the results.
 scores <- numeric(n_trials)
 
-# for 10000 repeats
+# for 10000 repeats.
 for (i in 1:n_trials) {
 
-    # generate 10 numbers between 1 and 206
-    a <- sample(1:206, size = sample_size)
+    a <- sample(c('female', 'male'),
+                size=sample_size,
+                prob=c(p_female, 1 - p_female),
+                replace=TRUE)
+    b <- sum(a == 'female')
 
-    # count how many numbers were between 101 and 206
-    b <- sum((a >= 101) & ((a <= 206)))
-
-    # store the result of the current trial
+    # Store the result of the current trial.
     scores[i] <- b
 }
 
-# plot a histogram of the scores
+# Plot a histogram of the scores.
 title_of_plot <- paste0("Number of females in", n_trials, " samples of \n", sample_size, " simulated calves")
-hist(scores, xlab = 'Number of Females', main = title_of_plot)
+hist(scores, xlab = 'Number of Females', main=title_of_plot)
 
-# count the number of scores that were greater than or equal to 9
+# Count the number of scores that were greater than or equal to 9.
 k <- sum(scores >= 9)
 
-# express as a proportion
+# Express as a proportion.
 kk <- k / n_trials
 
-# show the proportion
-print(paste("The probability of 9 or 10 females occurring by chance is", kk))
+# Show the proportion.
+message("Probability of 9 or 10 females occurring by chance: ", kk)
 ```
 
-We read from the result in vector `kk` in the "calves" program that the
-probability of 9 or 10 females occurring by chance is a bit more than one
-percent.
+We read from the result in variable `kk` that the probability of 9 or 10
+females occurring by chance is a bit more than one percent.
 
 :::
 <!---
@@ -551,14 +553,14 @@ End of calves notebook.
 **Is the Proportion of a Population Greater Than a Given Value?**
 
 A municipal official wants to determine whether a majority of the town's
-residents are for or against the awarding of a high-speed broadband internet
-contract, and he asks you to take a poll. You judge that the voter registration
-records are a fair representation of the universe in which the politician was
-interested, and you therefore decided to interview a random selection of
-registered voters. Of a sample of fifty people who expressed opinions, thirty
-said "yes" they were for the plan and twenty said "no," they were against it.
-How conclusively do the results show that the people in town want this internet
-contract?
+residents are for or against the awarding of a high-speed internet
+contract, and she asks you to take a poll. You judge that the voter
+registration records are a fair representation of the universe in which the
+politician was interested, and you therefore decided to interview a random
+selection of registered voters. Of a sample of fifty people who expressed
+opinions, thirty said "yes" they were for the plan and twenty said "no," they
+were against it. How conclusively do the results show that the people in town
+want this internet contract?
 
 Now comes some necessary subtle thinking in the interpretation of what
 seems like a simple problem. Notice that our aim in the analysis is to
@@ -588,7 +590,7 @@ special about the 50 percent figure; the same procedure would be followed for
 In brief, we a) take two pieces of paper, write "Yes" on one and "No" on the
 other, put them in a bucket b) draw a piece of paper from the bucket, record
 whether it was "Yes" or "No", replace, and repeat 50 times c) count the number
-of "yeses" and "noes" in the first fifty draws, c) repeat for perhaps a hundred
+of "yeses" and "noes" in the fifty draws, c) repeat for perhaps a hundred
 trials, then d) count the proportion of the trials in which a 50-50 universe
 would produce thirty or more "yes" answers.
 
@@ -646,9 +648,9 @@ votes that, in our setup, have the same odds as to 30 or more "Yes" votes,
 there would have been `r d2w[sum(yeses <= 20) + 1]`. This indicates how samples
 can vary just by chance.
 
-Taken together, the evidence suggests that the mayor would be wise not to place
-very much confidence in the poll results, but rather ought to act with caution
-or else take a larger sample of voters.
+Taken together, the evidence suggests that the official would be wise not to
+place very much confidence in the poll results, but rather ought to act with
+caution or else take a larger sample of voters.
 
 ::: {.notebook name="contract_poll" title="Contract poll simulation"}
 
@@ -767,8 +769,8 @@ for i in range(n):
     votes = rnd.choice(['Trump', 'Clinton'], size=1500)
     trumps[i] = np.sum(votes == 'Trump')
 
-# Integer bins from 675 through 825 in steps of 5.
-plt.hist(trumps, bins=range(675, 826, 5))
+# Integer bins from 670 through 830 in steps of 5.
+plt.hist(trumps, bins=range(670, 831, 5))
 plt.title('Number of Trump voters of 1500 in null-world simulation')
 
 # How often >= 840 Trump votes in random draw?
@@ -791,8 +793,8 @@ for (i in 1:n) {
     trumps[i] <- sum(votes == 'Trump')
 }
 
-# Integer bins from 675 through 825 in steps of 5.
-hist(trumps, breaks=seq(675, 826, by=5),
+# Integer bins from 670 through 830 in steps of 5.
+hist(trumps, breaks=seq(670, 830, by=5),
      main='Number of Trump voters of 1500 in null-world simulation')
 
 # How often >= 840 Trump votes in random draw?
