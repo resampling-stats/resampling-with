@@ -46,13 +46,12 @@ The first task in inferential statistics is to make one or more *point
 estimates* — that is, to make one or more statements about *how much*
 there is of something we are interested in — including especially the
 mean and the dispersion. (That work goes under the label "estimation"
-and is discussed in @sec-point-estimation.) Frequently the next step, after making
-such quantitative estimation of the universe from which a sample has
-been drawn, is to consider whether two or more samples are different
-from each other, or whether the single sample is different from a
-specified value; this work goes under the label "hypothesis testing." We
-ask: Did something happen? Or: Is there a difference between two
-universes? These are yes-no questions.
+and is discussed in @sec-point-estimation.) Frequently the next step, after
+making such quantitative estimation of the universe from which a sample has
+been drawn, is to consider whether two or more samples are different from each
+other, or whether the single sample is different from a specified value; this
+work goes under the label "hypothesis testing." We ask: Did something happen?
+Or: Is there a difference between two universes? These are yes-no questions.
 
 In other cases, the next step is to inquire into the reliability of the
 estimates; this goes under the label "confidence intervals." (Some
@@ -82,13 +81,9 @@ direction — for example if you hypothesize that the sample mean will be
 employ a *one-tailed test* . If you do *not* have strong basis for such
 a prediction, use the *two-tailed* test. As an example, when a scientist
 tests a new medication, his/her hypothesis would be that the number of
-patients who get well will be higher in the treated group than in the
-control group. Thus, s/he applies the one-tailed test.
-
-<!---
-Have we already introduced one- and two-tailed tests?
--->
-
+patients who get well will be higher in the treated group than in the control
+group. Thus, s/he applies the one-tailed test.  See the text below for more
+detail on one- and two-tailed tests.
 
 Some language first:
 
@@ -111,7 +106,7 @@ hypotheses about samples and populations.
 
 ## Should a single sample of counted data be considered different from a benchmark universe?
 
-### Example: Does Irradiation Affect the Sex Ratio in Fruit Flies?
+### Example: Does Irradiation Affect the Sex Ratio in Fruit Flies? {#sec-fruitfly}
 
 **Where the Benchmark Universe Mean (in this case, the Proportion) is Known, is
 the Mean (Proportion) of the Population Affected by the Treatment?)**
@@ -131,73 +126,73 @@ sample comes from the one-male-to-one-female universe. Therefore, we
 investigate *how likely a one-to-one universe is to produce a
 distribution of fourteen or more of just one sex*.
 
-A coin has a one-to-one (one out of two) chance of coming up tails.
-Therefore, we might flip a coin in groups of twenty flips, and count the
-number of heads in each twenty flips. Or we can use a random number
-table. The following steps will produce a sound estimate:
+A coin has a one-to-one (one out of two) chance of coming up tails. Therefore,
+we might flip a coin in groups of twenty flips, and count the number of heads
+in each twenty flips. Or we can use a random number table. The following steps
+will produce a sound estimate:
 
 * **Step 1.** Let heads = male, tails = female.
 * **Step 2.** Flip twenty coins and count the number of males. If 14 or more
   males occur, record "yes." Also, if 6 or fewer males occur, record "yes"
   because this means we have gotten 14 or more females. Otherwise, record "no."
-**Step 3.** Repeat step 2 perhaps 100 times.
-**Step 4.** Calculate the proportion "yes" in the 100 trials. This
+* **Step 3.** Repeat step 2 perhaps 100 times.
+* **Step 4.** Calculate the proportion "yes" in the 100 trials. This
   proportion estimates the probability that a fruit-fly population with
   a propensity to produce 50 percent males will by chance produce as many as 14
   or as few as 6 males in a sample of 20 flies.
 
 
-```{python echo=FALSE, eval=TRUE}
-import numpy as np
-import pandas as pd
-
-rnd = np.random.default_rng()
-
-n = 25
-
-counts = np.zeros(n)
-for i in range(n):
-    flies = rnd.choice(['heads', 'tails'], size=14)
-    counts[i] = np.sum(flies == 'heads')
-
-strange = np.array(['No'] * n)
-strange[(counts >= 14) & (counts <= 6)] = 'Yes'
-
-fruitfly_trials = pd.DataFrame(
-    {'Trial no': np.arange(1, n + 1),
-     '# of heads': counts,
-     '>=14 or <= 6': strange})
-```
-
 ```{r echo=FALSE, eval=TRUE}
-ketable(py$fruitfly_trials,
+# Calculate some values for the text below.
+flies <- read.csv('data/fruitfly_trials.csv', check.names=FALSE)
+n <- 25
+counts <- head(flies[['# of heads']], n)
+n_25_gte_14 <- sum(counts >= 14)
+n_25_lte_6 <- sum(counts <= 6)
+n_25_both <- n_25_gte_14 + n_25_lte_6
+d2w <- c('zero', 'one', 'two', 'three', 'four',
+         'five', 'six', 'seven', 'eight', 'nine',
+         paste(10:100))
+# Show the table.
+ketable(head(flies, n),
         caption = "Results from 25 random trials for Fruitfly problem {#tbl-fruitfly-trials}")
 ```
 
 @tbl-fruitfly-trials shows the results obtained in twenty-five trials of twenty
-flips each. In two of the twenty-five trials (8 percent) there were
-fourteen or more heads, which we call "males," and in one of the
-twenty-five trials (4 percent) there were only six heads, meaning there
-were fourteen tails ("females"). We can therefore estimate that, even if
-the treatment does *not* affect the sex and the births over a long
-period really are one to one, three out of twenty-five times (12
-percent) we would get fourteen or more of one sex or the other.
-Therefore, finding fourteen males out of twenty births is not
-overwhelming evidence that the treatment has any effect, even though the
-result is suggestive.
+flips each. In `r d2w[n_25_gte_14 + 1]` of the twenty-five trials
+(`r round(n_25_gte_14 / n * 100)` percent) there were fourteen or more heads,
+which we call "males," and in `r d2w[n_25_lte_6 + 1]` of the twenty-five trials
+(`r round(n_25_lte_6 / n * 100)` percent) there six or fewer heads, meaning
+there were fourteen or more tails ("females"). We can therefore estimate that,
+even if the treatment does *not* affect the sex and the births over a long
+period really are one to one, `r d2w[n_25_both + 1]` out of twenty-five times
+(`r round(n_25_both / n * 100)` percent) we would get fourteen or more of one
+sex or the other. Therefore, finding fourteen males out of twenty births is not
+overwhelming evidence that the treatment has any effect, even though the result
+is suggestive.
+
+```{r, eval=TRUE, echo=FALSE}
+counts <- flies[['# of heads']]
+n <- length(counts)
+n_gte_14 <- sum(counts >= 14)
+n_lte_6 <- sum(counts <= 6)
+n_both <- n_gte_14 + n_lte_6
+```
 
 How accurate is the estimate? Seventy-five more trials were made, and of
-the 100 trials ten contained fourteen or more "males" (10 percent), and
-seven trials contained fourteen or more "females" (7 percent), a total
-of 17 percent. So the first twenty-five trials gave a fairly reliable
-indication. As a matter of fact, analytically-based computation (not
-explained here) shows that the probability of getting fourteen or more
-females out of twenty births is .057 and, of course, the same for
-fourteen or more males from a one-to-one universe, implying a total
-probability of .114 of getting fourteen or more males *or* females.
+the 100 trials `r d2w[n_gte_14 + 1]` contained fourteen or more "males"
+(`r round(n_gte_14 / n * 100)` percent), and  `r round(n_lte_6 / n * 100)`
+trials contained fourteen or more "females" (`r round(n_lte_6 / n * 100)`
+percent), a total of `r round(n_both / n * 100)` percent. So the first
+twenty-five trials gave a fairly reliable indication. As a matter of fact,
+analytically-based computation (not explained here) shows that the probability
+of getting fourteen or more females out of twenty births is .057 and, of
+course, the same for fourteen or more males from a one-to-one universe,
+implying a total probability of .114 of getting fourteen or more males *or*
+females.
 
 Now let us obtain larger and more accurate simulation samples with the
-computer. The key step in the {{< var lang >}} program "Fruitfly" represents
+computer. The key step in the {{< var lang >}} notebook below represents
 male fruit flies with the string `'male'` and female fruit flies with the
 string `'female'`. The [`sample`]{.r}[`rnd.choice`]{.python} function is then
 used to generate 20 of these strings with an equal probability that either
@@ -210,7 +205,7 @@ of males in each random sample and then store this value in the `scores` {{<
 var array >}} of this number for each sample. We repeat these steps 10,000
 times.
 
-After one thousand samples have been drawn, we count (`sum`) how often there
+After ten thousand samples have been drawn, we count (`sum`) how often there
 were more than 13 males and then count the number of times there were fewer
 than 7 males (because if there were fewer than 7 males there must have been
 more than 13 females). When we add the two results together we have the
@@ -292,16 +287,10 @@ title_of_plot <- paste0("Number of males in", n_trials, " samples of \n", sample
 hist(scores, xlab = 'Number of Males', main = title_of_plot)
 ```
 
-**20 Fruitflies**
-
-![](images/19-Chap-15_000.png)
-
-**# males**
-
-In the histogram above, we see that in 16 percent of the trials, the
-number of males was 14 or more, or 6 or fewer. Or instead of reading the
-results from the histogram, we can calculate the result by tacking on
-the following commands to the above program:
+In the histogram above, we see that in 16 percent of the trials, the number of
+males was 14 or more, or 6 or fewer. Or instead of reading the results from the
+histogram, we can calculate the result by tacking on the following commands to
+the above program:
 
 
 ```{python}
@@ -338,16 +327,22 @@ mm <- m/n_trials
 print(mm)
 ```
 
+:::
+<!---
+End of notebook
+-->
+
 Notice that the strength of the evidence for the effectiveness of the
 radiation treatment depends upon the original question: whether or not
 the treatment had *any* effect on the sex of the fruit fly, which is a
 two-tailed question. If there were reason to believe at the start that
 the treatment could increase *only* the number of *males* , then we
-would focus our attention on the result that in only two of our first
-twenty-five trials were fourteen or more males. There would then be only
-a 2/25 = .08 probability of getting the observed results by chance if
-the treatment really has no effect, rather than the weaker odds against
-obtaining fourteen or more of *either* males or females.
+would focus our attention on the result that in only
+`r d2w[n_25_gte_14 + 1]` of the twenty-five trials were fourteen or more males.
+There would then be only a `r n_25_gte_14`/25 =
+`r round(n_25_gte_14 / 25, 2)`  probability of getting the observed
+results by chance if the treatment really has no effect, rather than the weaker
+odds against obtaining fourteen or more of *either* males or females.
 
 Therefore, whether you decide to figure the odds of just fourteen or
 more males (what is called a "one-tail test") or the odds for fourteen
@@ -402,79 +397,87 @@ Because of the great importance of this sort of case, which brings out
 the basic principles particularly clearly, let us consider another
 example:
 
-**Example 15-2: Does the Bio-Engineer's Treatment Increase the Female
-Calf Rate? What is the probability that among 10 calves born, 9 or more
-will be female?**
+### Example: Does a treatment increase the female calf rate?
+
+**What is the probability that among 10 calves born, 9 or more will be
+female?**
 
 Let's consider this question in the context of a set of queries for
 performing statistical inference that will be discussed further in
 @sec-testing-procedures.
 
-***The question*** (From Hodges and Lehman): Female calves are more
-valuable than males. A bio-engineer claims to be able to cause more
-females to be born than the expected 50 percent rate. He conducts his
-procedure, and nine females are born out of the next 10 pregnancies
-among the treated cows. Should you believe his claim? That is, what is
-the probability of a result this (or more) surprising occurring by
-chance if his procedure has no effect? In this problem, we assume that
-on average 100 of 206 births are female, in contrast to the 50-50
-benchmark universe in the previous problem.
+***The question***: (From @hodges1970basic): Female calves are more valuable
+than males. A bio-engineer claims to be able to cause more females to be born
+than the expected 50 percent rate. He conducts his procedure, and nine females
+are born out of the next 10 pregnancies among the treated cows. Should you
+believe his claim? That is, what is the probability of a result this (or more)
+surprising occurring by chance if his procedure has no effect? In this problem,
+we assume that on average 100 of 206 births are female, in contrast to the
+50-50 benchmark universe in the previous problem.
 
-***What is the purpose of the work?*** Female calves are more valuable
-than male calves.
+***What is the purpose of the work?***: Female calves are more valuable than
+male calves.
 
-***Statistical inference?*** Yes.
+***Statistical inference?***: Yes.
 
-***Confidence interval or Test of hypothesis?*** Test of hypothesis.
+***Confidence interval or Test of hypothesis?***: Test of hypothesis.
 
 ***Will you state the costs and benefits of various outcomes, or a loss
-function?*** Yes. One need only say that the benefits are very large,
-and if the results are promising, it is worth gathering more data to
-confirm results.
+function?***: Yes. One need only say that the benefits are very large, and if
+the results are promising, it is worth gathering more data to confirm results.
 
-***How many samples of data are part of the hypothesis test?***
-
+***How many samples of data are part of the hypothesis test?***: 
 One.
 
 ***What is the size of the first sample about which you wish to make
-significance statements?*** Ten.
+significance statements?***: Ten.
 
-***What comparison(s) to make?*** Compare the sample to the benchmark
+***What comparison(s) to make?***: Compare the sample to the benchmark
 universe.
 
-***What is the benchmark universe*** **that embodies the null
-hypothesis?** 100/206 female.
+***What is the benchmark universe***: **that embodies the null hypothesis?**
+100/206 female.
 
-***Which symbols for the observed entities?*** Balls in bucket, or numbers.
+***Which symbols for the observed entities?***: Balls in bucket, or numbers.
 
-***What values or ranges of values*** **?** "1-100" and "101-206."
+***What values or ranges of values?***: We could write numbers 1 through 206 on
+pieces of paper, and take numbers 1-100 as "male" and 101-206 as "female".  Or
+we could use some other mechanism to give us a 100/206 chance of any one calf
+being female.
 
-***Finite or infinite universe*** **?** Infinite.
+***Finite or infinite universe?***: Infinite.
 
 ***Which sample(s) do you wish to compare to which, or to the null
-universe (and perhaps to the alternative universe)?*** Ten calves.
+universe (and perhaps to the alternative universe)?***: Ten calves.
 
-***What procedure to produce the sample entities?*** Sampling with
+***What procedure to produce the sample entities?***: Sampling with
 replacement.
 
-***Simple (single step) or complex (multiple "if" drawings)?*** Can
+***Simple (single step) or complex (multiple "if" drawings)?***: Can
 think of it either way.
 
-***What to record as the outcome of each resample trial?*** The
-proportion (or number) of females.
+***What to record as the outcome of each resample trial?***: The proportion (or
+number) of females.
 
-***What is the criterion*** **to be used in the test?** The probability
-that in a sample of ten calves, nine (or more) females would be drawn by
-chance from the benchmark universe of 100/206 females.
+***What is the criterion to be used in the test?***: The probability that in
+a sample of ten calves, nine (or more) females would be drawn by chance from
+the benchmark universe of 100/206 females.
 
-***"One tail" or "two tail" test?*** One tail, because the farmer is
-only interested in females. Finding a large proportion of males would
-not be of interest; it would not cause rejecting the null hypothesis.
+***"One tail" or "two tail" test?***: One tail, because the farmer is only
+interested in females. Finding a large proportion of males would not be of
+interest; it would not cause rejecting the null hypothesis.
 
-The actual computation of probability may be done in several ways, as
-discussed earlier for four children and for ten cows. Conventional
-methods are discussed for comparison in @sec-testing-procedures. Here is the
-resampling solution in RESAMPLING STATS:
+The actual computation of probability may be done in several ways, as discussed
+earlier for four children and for ten cows. Conventional methods are discussed
+for comparison in @sec-testing-procedures. Here is the resampling solution in
+{{< var lang >}}.
+
+::: {.notebook name="female_calves" title="Female calf numbers simulation"}
+
+::: nb-only
+This notebook uses simulation to test the null hypothesis that the chances of
+any one calf being female is 100 / 206.
+:::
 
 ```{python}
 # set the number of trials
@@ -554,28 +557,28 @@ kk <- k / n_trials
 print(paste("The probability of 9 or 10 females occurring by chance is", kk))
 ```
 
-![](images/19-Chap-15_001.png)
-
-**\# females**
-
-Result: kk = 0.013867
-
 We read from the result in vector `kk` in the "calves" program that the
 probability of 9 or 10 females occurring by chance is a bit more than one
 percent.
 
-**Example 15-3: A Public-Opinion Poll** (Is the Proportion of a
-Population Greater Than a Given Value?) (Program "CABLEPOL")
+:::
+<!---
+End of calves notebook.
+-->
+
+### Example: A Public-Opinion Poll
+
+**Is the Proportion of a Population Greater Than a Given Value?**
 
 A municipal official wants to determine whether a majority of the town's
-residents are for or against the awarding of a cable-television
-franchise, and he asks you to take a poll. You judge that the telephone
-book is a fair representation of the universe in which the politician
-was interested, and you therefore decided to interview by telephone. Of
-a sample of fifty people who expressed opinions, thirty said "yes" they
-were for the plan and twenty said "no," they were against it. How
-conclusively do the results show that the people in town want cable
-television?
+residents are for or against the awarding of a high-speed broadband internet
+contract, and he asks you to take a poll. You judge that the voter registration
+records are a fair representation of the universe in which the politician was
+interested, and you therefore decided to interview a random selection of
+registered voters. Of a sample of fifty people who expressed opinions, thirty
+said "yes" they were for the plan and twenty said "no," they were against it.
+How conclusively do the results show that the people in town want this internet
+contract?
 
 Now comes some necessary subtle thinking in the interpretation of what
 seems like a simple problem. Notice that our aim in the analysis is to
@@ -591,237 +594,238 @@ assessing the maximum probability of being wrong. If the maximum
 probability of error turns out to be inconsequential, then we need not
 worry about less likely errors.
 
-This problem is very much like the one-group fruit fly irradiation
-problem in Example 15-1. The only difference is that now we are
-comparing the observed sample against an arbitrary value of 50 percent
-(because that is the break-point in a situation where the majority
-decides) whereas in the fruitfly example we compared the observed sample
-against the normal population proportion (also 50 percent, because that
-is the normal proportion of males). But it really does not matter *why*
-we are comparing the observed sample to the figure of 50 percent; the
-procedure is the same in both cases. (Please notice that there is
-nothing special about the 50 percent figure; the same procedure would be
-followed for 20 percent or 85 percent.)
+This problem is very much like the one-group fruit fly irradiation problem
+above. The only difference is that now we are comparing the observed sample
+against an arbitrary value of 50 percent (because that is the break-point in
+a situation where the majority decides) whereas in @sec-fruitfly we compared
+the observed sample against the normal population proportion (also 50 percent,
+because that is the normal proportion of males). But it really does not matter
+*why* we are comparing the observed sample to the figure of 50 percent; the
+procedure is the same in both cases. (Please notice that there is nothing
+special about the 50 percent figure; the same procedure would be followed for
+20 percent or 85 percent.)
 
-In brief, we a) designate "1-5" as "no" in the random-number table,
-"6-0" as "yes," b) count the number of "yeses" and "noes" in the first
-fifty numbers, c) repeat for perhaps a hundred trials, then d) count the
-proportion of the trials in which a 50-50 universe would produce thirty
-or more "yes" answers.
+In brief, we a) take two pieces of paper, write "Yes" on one and "No" on the
+other, put them in a bucket b) draw a piece of paper from the bucket, record
+whether it was "Yes" or "No", replace, and repeat 50 times c) count the number
+of "yeses" and "noes" in the first fifty draws, c) repeat for perhaps a hundred
+trials, then d) count the proportion of the trials in which a 50-50 universe
+would produce thirty or more "yes" answers.
 
 In operational steps, the procedure is as follows:
 
-**Step 1.** "1-5" = no, "6-0" = yes.
+* **Step 1.** "1-5" = no, "6-0" = yes.
+* **Step 2.** In 50 random numbers, count the "yeses," and record "false
+  positive" if 30 or more "yeses."
+* **Step 3.** Repeat step 2 perhaps 100 times.
+* **Step 4.** Calculate the proportion of experimental trials showing
+  "false positive." This estimates the probability that as many as 30 "yeses"
+  would be observed by chance in a sample of 50 people *if* half (or more) are
+  really against the plan.
 
-**Step 2.** In 50 random numbers, count the "yeses," and record "false
-positive" if 30 or more "yeses."
+```{python, eval=TRUE, echo=FALSE}
+import pandas as pd
 
-**Step 3.** Repeat step 2 perhaps 100 times.
-
-**Step 4.** Calculate the proportion of experimental trials showing
-"false positive." This estimates the probability that as many as 30
-"yeses" would be observed by chance in a sample of 50 people *if* half
-(or more) are really against the plan.
-
-In Table 15-2, we see the results of twenty trials; 4 of 20 times (20
-percent) 30 or more "yeses" were observed by chance. So our
-"significance level" or "prob value" is 20 percent, which is normally
-too high to feel confident that our poll results are reliable. This is
-the probability that as many as thirty of fifty people would say "yes"
-by chance if the population were "really" split evenly. (If the
-population were split so that *more* than 50 percent were against the
-plan, the probability would be even *less* that the observed results
-would occur by chance. In this sense, the benchmark hypothesis is
-conservative). On the other hand, if we had been counting "1-5" as "yes"
-instead of "no," there would only have been one "false positive." This
-indicates how samples can vary just by chance.
-
-Table 15-2
-
-**Results of Twenty Random Trials for Problem "Cablepol"**
-
-**Trials With**
-
-**Trial Number of "Noes" Number of "Yeses" \>=30 "Yeses"**
-
-  ---- ---- ---- -----
-  1    23   27   
-  2    25   25   
-  3    26   24   
-  4    22   28   
-  5    22   28   
-  6    20   30   \ +
-  7    25   25   
-  8    21   29   
-  9    28   22   
-  10   19   31   \ +
-  11   28   22   
-  12   19   31   \ +
-  13   18   32   \ +
-  14   23   27   
-  15   34   16   
-  16   27   23   
-  17   22   28   
-  18   26   24   
-  19   28   22   
-  20   27   23   
-  ---- ---- ---- -----
-
-Taken together, the evidence suggests that the mayor would be wise not
-to place very much confidence in the poll results, but rather ought to
-act with caution or else take a larger sample of voters.
-
-The RESAMPLING STATS program "Cablepol" GENERATEs samples of 50
-simulated voters on the assumption that only 50 percent are in favor of
-the franchise. Then it COUNTs the number of samples where over 29 (30 or
-more) of the 50 respondents said they were in favor of the franchise.
-(That is, we use a "one-tailed test.") The result in KK is the chance of
-a "false positive," that is, 30 or more people saying they favor a
-franchise when support for the proposal is actually split evenly down
-the middle.
-
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "testing_counts_1_03.rss"
-
-REPEAT 1000
-    ' Do 1000 trials.
-    GENERATE 50 1,2 a
-    ' Generate randomly 50 "1"s and "2"s, put them in a. Let "1" = "yes" and
-    ' "2" = "no."
-END
-COUNT a =1 b
-' Count the number of yeses, put the result in b.
-SCORE b z
-' Keep track of each trial result in z.
+n = 20
+yeses = np.zeros(n, dtype=int)
+for i in range(n):
+    answers = rnd.choice(['No', 'Yes'], size=50)
+    yeses[i] = np.sum(answers == 'Yes')
+contract_trials = pd.DataFrame(
+    {'Trial no': np.arange(1, n + 1),
+     '# of "Noes"': 50 - yeses,
+     '# of "Yeses"': yeses,
+     '>= 30 "Yeses"': np.where(yeses >= 30, '+', '')
+     })
 ```
 
-End the trial, go back and repeat until all 1000 trials are complete,
-then proceed.
-
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "testing_counts_1_04.rss"
-
-HISTOGRAM z
-' Produce a histogram of the trial results.
+```{r echo=FALSE, eval=TRUE}
+yeses <- py$yeses
+n <- length(yeses)
+n_gte_30 <- sum(yeses >= 30)
+gte_30_pct <- round(n_gte_30 / n * 100)
+# Show the table.
+ketable(py$contract_trials,
+        caption = "Results from 20 random trials for contract poll problem {#tbl-contract-trials}")
 ```
 
-In the histogram below, we see that 11 percent of our trials had 30 or
-more voters in favor, despite the fact that they were drawn from a
-population that was split 50-50. RESAMPLING STATS will calculate this
-proportion directly if we add the following commands to the above:
+In @tbl-contract-trials, we see the results of twenty trials; `r n_gte_30` of
+`r n` times (`r gte_30_pct` percent), 30 or more "yeses" were observed by
+chance. So our "significance level" or "prob value" is `r gte_30_pct` percent,
+which is normally too high to feel confident that our poll results are
+reliable. This is the probability that as many as thirty of fifty people would
+say "yes" by chance if the population were "really" split evenly. (If the
+population were split so that *more* than 50 percent were against the plan, the
+probability would be even *less* that the observed results would occur by
+chance. In this sense, the benchmark hypothesis is conservative). On the other
+hand, if we had been counting the number of times there are 30 or more "No"
+votes that, in our setup, have the same odds as to 30 or more "Yes" votes,
+there would have been `r d2w[sum(yeses <= 20) + 1]`. This indicates how samples
+can vary just by chance.
 
+Taken together, the evidence suggests that the mayor would be wise not to place
+very much confidence in the poll results, but rather ought to act with caution
+or else take a larger sample of voters.
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: {.notebook name="contract_poll" title="Contract poll simulation"}
 
-```matlab
-' Program file: "cablepol.rss"
+This {{< var lang >}} notebook generates samples of 50 simulated voters on the
+assumption that only 50 percent are in favor of the contract. Then it counts
+(`sum`s) the number of samples where over 29 (30 or more) of the 50 respondents
+said they were in favor of the contract. (That is, we use a "one-tailed test.")
+The result in the `kk` variable is the chance of a "false positive," that is,
+30 or more people saying they favor a contract when support for the proposal is
+actually split evenly down the middle.
 
-COUNT z >= 30 k
-' Determine how many trials had 30 or more in favor.
-DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Print the result.
+```{python}
+import numpy as np
 
-' Note: The file "cablepol" on the Resampling Stats software disk contains
-' this set of commands.
+rnd = np.random.default_rng()
+
+# We will do 10,000 iterations.
+n = 10_000
+
+# Make an array of integers to store the "Yes" counts.
+yeses = np.zeros(n, dtype=int)
+
+for i in range(n):
+    answers = rnd.choice(['No', 'Yes'], size=50)
+    yeses[i] = np.sum(answers == 'Yes')
+
+# Produce a histogram of the trial results.
+# Use integer bins for histogram, from 10 through 40.
+plt.hist(yeses, bins=range(10, 41))
+plt.title('Number of yes votes out of 50, in null universe')
 ```
 
-**Samples of 50 Voters**
+```{r}
+# We will do 10,000 iterations.
+n <- 10000
 
-![](images/19-Chap-15_002.png)
+# Make an array of integers to store the "Yes" counts.
+yeses <- numeric(n)
 
-**\# voters in favor**
+for (i in 1:n) {
+    answers <- sample(c('No', 'Yes'), size=50, replace=TRUE)
+    yeses[i] <- sum(answers == 'Yes')
+}
 
-The section above discusses testing hypotheses about a single sample of
-counted data relative to a benchmark universe. This section discusses
-the issue of whether *two* samples with counted data should be
-considered the same or different.
+# Produce a histogram of the trial results.
+# Use integer bins for histogram, from 10 through 40.
+hist(yeses, breaks=10:40,
+     main='Number of yes votes out of 50, in null universe')
+```
 
-**Example 15-4: Did the Bush-Dukakis Poll Indicate that Bush Would
-Win?**
+In the histogram above, we see that about 11 percent of our trials had 30 or
+more voters in favor, despite the fact that they were drawn from a population
+that was split 50-50. {{< var lang >}} will calculate this proportion directly
+if we add the following commands to the above:
 
-What is the probability that a sample outcome such as actually observed
-(840 Bush, 660 Dukakis) would occur by chance if Dukakis is "really"
-ahead — that is, if Dukakis has 50 percent (or more) of the support? To
-restate in sharper statistical language: What is the probability that
-the observed sample or one even more favorable to Bush would occur if
-the universe has a mean of 50 percent or below?
+```{python}
+k = np.sum(yeses >= 30)
+kk = k / n
+print('Proportion >= 30:', np.round(kk, 2))
+```
+
+```{r}
+k <- sum(yeses >= 30)
+kk <- k / n
+message('Proportion >= 30:', round(kk, 2))
+```
+
+:::
+<!---
+End of contract_poll notebook.
+-->
+
+The section above discusses testing hypotheses about a single sample of counted
+data relative to a benchmark universe. This section discusses the issue of
+whether *two* samples with counted data should be considered the same or
+different.
+
+### Example: Did the Trump-Clinton Poll Indicate that Trump Would Win?
+
+::: {.notebook name="trump_clinton" title="Trump/Clinton poll simulation"}
+
+What is the probability that a sample outcome such as actually observed (840
+Trump, 660 Clinton) would occur by chance if Clinton is "really" ahead — that
+is, if Clinton has 50 percent (or more) of the support? To restate in sharper
+statistical language: What is the probability that the observed sample or one
+even more favorable to Trump would occur if the universe has a mean of 50
+percent or below?
 
 Here is a procedure that responds to that question:
 
-1.  Create a benchmark universe with one ball marked "B" and another
-    marked "D."
-
-2.  Draw a ball, record its marking, and replace. (We sample with
-    replacement to simulate the practically-infinite population of U. S.
-    voters.)
-
-3.  Repeat step 2 1500 times and count the number of "B"s. If 840 or
+1.  Create a benchmark universe with one ball marked "Trump" and another
+    marked "Clinton"
+2.  Draw a ball, record its marking, and replace. (We sample with replacement
+    to simulate the practically-infinite population of U. S. voters.)
+3.  Repeat step 2 1500 times and count the number of "Trump"s. If 840 or
     greater, record "Y"; otherwise, record "N."
-
 4.  Repeat steps 3 and 4 perhaps 1000 or 10,000 times, and count the
     number of "Y"s. The outcome estimates the probability that 840 or
-    more Bush choices would occur if the universe is "really" half or
-    more in favor of Dukakis.
+    more Trump choices would occur if the universe is "really" half or
+    more in favor of Clinton.
 
-    This procedure may be done as follows with a computer and Resampling
-    Stats (program "bush-hyp"):
+This procedure may be done as follows with {{< var lang >}}.
 
+```{python}
+import numpy as np
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+rnd = np.random.default_rng()
 
-```matlab
-' Program file: "testing_counts_1_06.rss"
+# Number of repeats we will run.
+n = 10_000
 
-REPEAT 1000
-    GENERATE 1500 1,2 a
-    ' Generate 1500 "1's" and "2's," selected randomly, letting "1" = Bush
-    COUNT a =1 b
-    ' Count Bush votes
-    SCORE b z
-    ' Keep score
-END HISTOGRAM z
-COUNT z >=840 k
-' How often \>= 840 Bush votes in random draw?
-DIVIDE k 1000 kk
-' As a proportion of simulated resamples
-PRINT kk
-' The result was kk = 0. This implies shows a probability so small as
-' not to occur once in a thousand times that Bush's "victory" in the
-' sample would occur by chance if he really were behind. The results
-' of the various runs may be seen in the histogram and printout
-' following.
-MAXSIZE a 1500
-' Enlarge vector a's capacity to 1500 (default is 1000 in some
-' versions of Resampling Stats)
-REPEAT 1000
-    GENERATE 1500 1,2 a
-    ' Generate 50 "1's" and "2's," selected randomly, letting "1" = Bush
-    COUNT a =1 b
-    ' Count Bush votes
-    DIVIDE b 1500 c
-    ' Find proportion pro-Bush
-    SCORE b z
-    ' Keep score
-END HISTOGRAM z
-COUNT z >=.56 k
-' How often \>= .56 Bush votes in random draw?
-DIVIDE k 1000 kk
-' As a proportion of simulated resamples
-PRINT kk
-' **Samples of 1500 Voters**
+# Make an integer array to store the counts.
+trumps = np.zeros(n, dtype=int)
+
+for i in range(n):
+    votes = rnd.choice(['Trump', 'Clinton'], size=1500)
+    trumps[i] = np.sum(votes == 'Trump')
+
+# Integer bins from 675 through 825 in steps of 5.
+plt.hist(trumps, bins=range(675, 826, 5))
+plt.title('Number of Trump voters of 1500 in null-world simulation')
+
+# How often >= 840 Trump votes in random draw?
+k = np.sum(trumps >= 840)
+# As a proportion of simulated resamples.
+kk = k / n
+
+print('Proportion voting for Trump:', kk)
 ```
 
-![](images/19-Chap-15_003.png)
+```{r}
+# Number of repeats we will run.
+n <- 10000
 
-**proportion voters for Bush**
+# Make an array to store the counts.
+trumps <- numeric(n, dtype=int)
+
+for (i in 1:n) {
+    votes <- sample(c('Trump', 'Clinton'), size=1500, replace=TRUE)
+    trumps[i] <- sum(votes == 'Trump')
+
+# Integer bins from 675 through 825 in steps of 5.
+hist(trumps, breaks=seq(675, 826, by=5)
+     main='Number of Trump voters of 1500 in null-world simulation')
+
+# How often >= 840 Trump votes in random draw?
+k <- sum(trumps >= 840)
+# As a proportion of simulated resamples.
+kk <- k / n
+
+message('Proportion voting for Trump:', kk)
+```
+
+The value for `kk` is our estimate of the probability that Trump's "victory" in
+the sample would occur by chance if he really were behind.  In this case, our
+probability estimate is less than 1 in 10,000 (< 0.0001).
+
+<!---
+The results of the various runs may be seen in the histogram and printout
+following.
 
 **Bin Center Freq Pct Cum Pct**
 
@@ -843,254 +847,243 @@ PRINT kk
   0.535   5     0.5    99.9
   0.54    1     0.1    100
   ------- ----- ------ ------
+-->
 
-**Example 15-5: Comparison of Possible Cancer Cure to Placebo
-Effect** (Do Two Binomial Populations Differ in Their Proportions)
-(Program "CANCER").
+### Example: Comparison of Possible Cancer Cure to Placebo
 
-Example 15-1 used an observed sample of male and female fruitflies
-to test the benchmark (null) hypothesis that the flies came from a
-universe with a one-to-one sex ratio, and the poll data problem also
-compared results to a 50-50 hypothesis. The calves problem also
-compared the results to a single benchmark universe — a proportion
-of 100/206 females. Now we want to compare *two samples with each
-other* , rather than comparing one sample with a hypothesized
-universe. That is, in this example we are not comparing one sample
-to a benchmark universe, but rather asking whether *both* samples
-come from the *same* universe. The universe from which both samples
-come, *if* both belong to the same universe, may be thought of as
-the benchmark universe, in this case.
+**Do Two Binomial Populations Differ in Their Proportions**.
 
-The scientific question is whether pill P cures a rare cancer. A
-researcher gave pill P to six patients selected randomly from a
-group of twelve cancer patients; of the six, five got well. He gave
-an inactive placebo to the other six patients, and two of them got
-well. Does the evidence justify a conclusion that the pill has a
-curative effect?
+@sec-fruitly used an observed sample of male and female fruitflies to test the
+benchmark (null) hypothesis that the flies came from a universe with
+a one-to-one sex ratio, and the poll data problem also compared results to
+a 50-50 hypothesis. The calves problem also compared the results to a single
+benchmark universe — a proportion of 100/206 females. Now we want to compare
+*two samples with each other* , rather than comparing one sample with
+a hypothesized universe. That is, in this example we are not comparing one
+sample to a benchmark universe, but rather asking whether *both* samples come
+from the *same* universe. The universe from which both samples come, *if* both
+belong to the same universe, may be thought of as the benchmark universe, in
+this case.
 
-(An identical statistical example would serve for an experiment on
-methods of teaching reading to children. In such a situation the
-researcher would respond to inconclusive results by running the
-experiment on more subjects, but in cases like the cancer-pill
-example the researcher often cannot obtain more subjects.)
+The scientific question is whether pill P cures a rare cancer. A researcher
+gave pill P to six patients selected randomly from a group of twelve cancer
+patients; of the six, five got well. He gave an inactive placebo to the other
+six patients, and two of them got well. Does the evidence justify a conclusion
+that the pill has a curative effect?
 
-We can answer the stated question by *combining* the two samples and
-testing both samples against the resulting combined universe. In
-this case, the universe is twelve subjects, seven (5 + 2) of whom
-got well. How likely would such a universe produce two samples as
-far apart as five of six, and two of six, patients who get well? In
-other words, how often will two samples of six subjects, each drawn
-from a universe in which 7/12 of the patients get well, be as far
-apart as 5 -- 2 = 3 patients in favor of the sample designated
-"pill"? This is obviously a one-tail test, for there is no reason to
-believe that the pill group might do *less* well than the placebo
-group.
+(An identical statistical example would serve for an experiment on methods of
+teaching reading to children. In such a situation the researcher would respond
+to inconclusive results by running the experiment on more subjects, but in
+cases like the cancer-pill example the researcher often cannot obtain more
+subjects.)
 
-We might construct a twelve-sided die, seven of whose sides are
-marked "get well." Or we would use pairs of numbers from the
-random-number table, with numbers "01-07" corresponding to get well,
-numbers "08-12" corresponding to "not get well," and all other
-numbers omitted. (If you wish to save time, you can work out a
-system that uses more numbers and skips fewer, but that is up to
-you.) Designate the first six subjects "pill" and the next six
-subjects "placebo."
+We can answer the stated question by *combining* the two samples and testing
+both samples against the resulting combined universe. In this case, the
+universe is twelve subjects, seven (5 + 2) of whom got well. How likely would
+such a universe produce two samples as far apart as five of six, and two of
+six, patients who get well? In other words, how often will two samples of six
+subjects, each drawn from a universe in which 7/12 of the patients get well, be
+as far apart as 5 - 2 = 3 patients in favor of the sample designated "pill"?
+This is obviously a one-tail test, for we have no reason to believe that the
+pill group might do *less* well than the placebo group.
+
+We might construct a twelve-sided die, seven of whose sides are marked "get
+well." Or put 12 pieces of paper in a bucket, seven with "get well" and five
+with "not well".  Or we would use pairs of numbers from the random-number
+table, with numbers "01-07" corresponding to get well, numbers "08-12"
+corresponding to "not get well," and all other numbers omitted. (If you wish to
+save time, you can work out a system that uses more numbers and skips fewer,
+but that is up to you.) Designate the first six subjects "pill" and the next
+six subjects "placebo."
 
 The specific procedure might be as follows:
 
-**Step 1.** "01-07" = get well, "08-12" = do not get well
+* **Step 1.** Write "get well" on seven pieces of paper, "not well" on another
+  five.  Put the 12 pieces of paper into a bucket.
+* **Step 2.** Select two groups, "pill" and "placebo", each with six random
+  draws (with replacement) from the 12 pieces of paper.
+* **Step 3.** Record how many "get well" in each group.
+* **Step 4.** Subtract the result in group "placebo" from that in group "pill"
+  (the difference may be negative).
+* **Step 5.** Repeat steps 1-4 perhaps 100 times.
+* **Step 6.** Compute the proportion of trials in which the pill does
+  better by three or more cases.
 
-**Step 2.** Select two groups, A and B, each with six random numbers
-from "01" to "12."
+```{python, eval=TRUE, echo=FALSE}
+options = np.repeat(['get well', 'not well'], [7, 5])
 
-**Step 3.** Record how many "get well" in each group.
+n = 25
+pill_cures = np.zeros(n, dtype=int)
+placebo_cures = np.zeros(n, dtype=int)
+pill_betters = np.zeros(n, dtype=int)
 
-**Step 4.** Subtract the result in group A from that in group B (the
-difference may be negative).
+for i in range(n):
+    pill = rnd.choice(options, size=6)
+    pill_cures[i] = np.sum(pill == 'get well')
+    placebo = rnd.choice(options, size=6)
+    placebo_cures[i] = np.sum(placebo == 'get well')
+    pill_betters[i] = pill_cures[i] - placebo_cures[i]
 
-**Step 5.** Repeat steps 1-4 perhaps 100 times.
+pill_trials = pd.DataFrame(
+    {'Trial no': np.arange(1, n + 1),
+     '# of pill cures': pill_cures,
+     '# of placebo cures': placebo_cures,
+     'Difference': pill_betters})
+```
 
-**Step 6.** Compute the proportion of trials in which the pill does
-better by three or more cases. In the trials shown in Table 15-3, in
-three cases (12 percent) the difference between the randomly-drawn
-groups is three cases or greater. Apparently it is *somewhat*
-unusual — it happens 12 percent of the time — for this universe to
-generate "pill" samples in which the number of recoveries exceeds
-the number in the "placebo" samples by three or more. Therefore the
-answer to the scientific question, based on these samples, is that
-there is *some* reason to think that the medicine does have a
-favorable effect. But the investigator might sensibly await more
-data before reaching a firm conclusion about the pill's efficiency,
-given the 7 to 1 odds (12 percent probability).
+```{r echo=FALSE, eval=TRUE}
+pill_betters <- py$pill_betters
+n <- length(pill_betters)
+n_gte_3 <- sum(pill_betters >= 3)
+gte_3_pct <- round(n_gte_3 / n * 100)
+# Show the table.
+ketable(py$pill_trials,
+        caption = "Results from 25 random trials for pill/placbo {#tbl-pill-trials}")
+```
 
-Table 15-3
+In the trials shown in @tbl-pill-trials, in `r d2w[n_gte_3 + 1]` cases
+(`r gte_3_pct` percent) the difference between the randomly-drawn groups is
+three cases or greater. Apparently it is *somewhat* unusual — it happens 
+`r gte_3_pct` percent of the time — for this universe to generate "pill"
+samples in which the number of recoveries exceeds the number in the "placebo"
+samples by three or more. Therefore the answer to the scientific question,
+based on these samples, is that there is *some* reason to think that the
+medicine does have a favorable effect. But the investigator might sensibly
+await more data before reaching a firm conclusion about the pill's efficiency,
+given the `r gte_3_pct` percent probability.
 
-**Results of 25 Random Trials for Probability "Cancer"**
+::: {.notebook name="pill_placebo" title="Cures for pill vs placebo"}
 
-  ----------- ---------------- ------------------- ----------------
-  **Trial**   **Pill Cures**   **Placebo Cures**   **Difference**
-  1           4                4                   0
-  2           3                5                   -2
-  3           4                3                   1
-  4 \*        5                2                   3
-  5           4                3                   1
-  6           2                5                   -3
-  7           4                4                   0
-  8           4                5                   -1
-  9           4                4                   0
-  10 \*       5                2                   3
-  11          4                5                   -1
-  12          5                3                   2
-  13          3                5                   -2
-  14          3                2                   1
-  15          3                4                   -1
-  16          5                4                   1
-  17 \*       6                3                   3
-  18          4                5                   -1
-  19          3                4                   -1
-  20          2                3                   -1
-  21          4                4                   0
-  22          4                4                   0
-  23          3                5                   -2
-  24          3                3                   0
-  25          3                3                   0
-  ----------- ---------------- ------------------- ----------------
-
-Now for a RESAMPLING STATS solution. Again, the benchmark hypothesis
-is that pill P has no effect, and we ask how often, on this
-assumption, the results that were obtained from the actual test of
-the pill would occur by chance.
+Now for a {{< var lang >}} solution. Again, the benchmark hypothesis is that
+pill P has no effect, and we ask how often, on this assumption, the results
+that were obtained from the actual test of the pill would occur by chance.
 
 Given that in the test 7 of 12 patients overall got well, the
 benchmark hypothesis assumes 7/12 to be the chances of any random
-patient being cured. We GENERATE two similar samples of 6 patients,
+patient being cured. We generate two similar samples of 6 patients,
 both taken from the same universe composed of the combined
-samples — the bootstrap procedure. Letting the numbers "1" through
-"7" denote patients who got well and "8-12" denote persons not
-getting well, we COUNT the number who got well in each sample. Then
-we SUBTRACT the number who got well in the "pill" sample from the
-number who got well in the "no-pill" sample. We SCORE the resulting
-difference for each trial in Z.
+samples — the bootstrap procedure. We count (`sum`) the number who are "get
+well" in each sample. Then we subtract the number who got well in the "pill"
+sample from the number who got well in the "no-pill" sample. We record the
+resulting difference for each trial in the variable `pill_betters`.
 
-In the actual test, 3 more patients got well in the sample given the
-pill than in the sample given the placebo. We therefore count how
-many of the trials yield results where the difference between the
-sample given the pill and the sample not given the pill was greater
-than 2 (equal to or greater than 3). This result is the probability
-that the results derived from the actual test would be obtained from
-random samples drawn from a population which has a constant cure
-rate, pill or no pill.
+In the actual test, 3 more patients got well in the sample given the pill than
+in the sample given the placebo. We therefore count how many of the trials
+yield results where the difference between the sample given the pill and the
+sample not given the pill was greater than 2 (equal to or greater than 3). This
+result is the probability that the results derived from the actual test would
+be obtained from random samples drawn from a population which has a constant
+cure rate, pill or no pill.
 
+```{python}
+import numpy as np
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+rnd = np.random.default_rng()
 
-```matlab
-' Program file: "testing_counts_1_07.rss"
+# The bucket with the pieces of paper.
+options = np.repeat(['get well', 'not well'], [7, 5])
 
-REPEAT 1000
-    ' Do 1000 experiments.
-    GENERATE 6 1,12 a
-    ' Randomly generate 6 numbers between "1" and "12." Let "1-7" = cure,
-    ' "8-12" = no cure. This will be the "medicine" group.
-    GENERATE 6 1,12 b
-    ' Similarly for the "placebo" group.
-    COUNT a between 1 7 aa
-    ' Count the number of cures in the trial "medicine" group. ("Medicine"
-    ' is in quotes because the vector a is an arbitrary random selection
-    ' of our experiment — one we know has no medicinal value because the
-    ' cure rate — 7/12 — is the same as for the "placebo" experimental
-    ' group.)
-    COUNT b between 1 7 bb
-    ' Count the number of cures in the trial "placebo" group.
-    SUBTRACT aa bb c
-    ' Subtract trial "placebo" cures from trial "medicine" cures.
-    SCORE c z
-    ' Keep track of each trial result in z.
-END
-' End one experiment, go back and repeat until 1000 are complete, then
-' proceed.
-HISTOGRAM z
-' Produce a histogram of the trial results.
+n = 10_000
+
+pill_betters = np.zeros(n, dtype=int)
+
+for i in range(n):
+    pill = rnd.choice(options, size=6)
+    pill_cures = np.sum(pill == 'get well')
+    placebo = rnd.choice(options, size=6)
+    placebo_cures = np.sum(placebo == 'get well')
+    pill_betters[i] = pill_cures - placebo_cures
+
+plt.hist(pill_betters, bins=range(-6, 7))
+plt.title('Number of extra cures pill vs placebo in null universe')
 ```
 
-**Cancer**
+```{r}
+# The bucket with the pieces of paper.
+options <- rep(c('get well', 'not well'), c(7, 5))
 
-12 Treatments (6 Medicine, 6 Placebo)
+n <- 10000
 
-![](images/19-Chap-15_004.png)
+pill_betters <- numeric(n)
 
-**excess cures ("medicine" - "placebo")**
+for i in range(n):
+    pill <- sample(options, size=6, replace=TRUE)
+    pill_cures <- sum(pill == 'get well')
+    placebo <- sample(options, size=6, replace=TRUE)
+    placebo_cures <- sum(placebo == 'get well')
+    pill_betters[i] <- pill_cures - placebo_cures
+
+hist(pill_betters, breaks=-6:6,
+     main='Number of extra cures pill vs placebo in null universe')
+```
 
 Recall our actual observed results: In the medicine group, three
 more patients were cured than in the placebo group. From the
-histogram, we see that in only 8 percent of the simulated trials did
-the "medicine" group do as well or better. The results seem to
-suggest — but by no means conclusively — that the medicine's
-performance is not due to chance. Further study would probably be
-warranted. The following commands added to the above program will
-calculate this proportion directly:
+histogram, we see that in only about 8 percent of the simulated trials did the
+"medicine" group do as well or better. The results seem to suggest — but by no
+means conclusively — that the medicine's performance is not due to chance.
+Further study would probably be warranted. The following commands added to the
+above program will calculate this proportion directly:
 
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "cancer.rss"
-
-COUNT z >=3 k DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Print the result.
-
-' Note: The file "cancer" on the Resampling Stats software disk
-' contains this set of commands.
+```{python}
+# How many trials gave an advantage of 3 or greater to the pill?
+k = np.sum(pill_betters >= 3)
+# Convert to a proportion.
+kk = k / n
+# Print the result.
+print('Proportion with advantage of 3 or more for pill:',
+      np.round(kk, 2))
 ```
 
-As I wrote when I first proposed this bootstrap method in 1969, this
-method is not the standard way of handling the problem; it is not
-even analogous to the standard analytic difference-of-proportions
-method (though since then it has become widely accepted). Though the
-method shown is quite direct and satisfactory, there are also *many
-other* resampling methods that one might construct to solve the same
-problem. By all means, invent your own statistics rather than simply
-trying to copy the methods described here; the examples given here
-only illustrate the process of inventing statistics rather than
-offering solutions for all classes of problems.
+:::
+<!---
+End of pill vs placebo notebook.
+-->
 
-**Example 15-6: Did Attitudes About Marijuana Change?**
+As I (JLS) wrote when I first proposed this bootstrap method in 1969, this
+method is not the standard way of handling the problem; it is not even
+analogous to the standard analytic difference-of-proportions method (though
+since then it has become widely accepted). Though the method shown is quite
+direct and satisfactory, there are also *many other* resampling methods that
+one might construct to solve the same problem. By all means, invent your own
+statistics rather than simply trying to copy the methods described here; the
+examples given here only illustrate the process of inventing statistics rather
+than offering solutions for all classes of problems.
+
+## Example: Did Attitudes About Marijuana Change?
 
 <!---
 Example 8.18 in W+W 1990.  Looks like fake data.
 -->
 
-Consider two polls, each asking 1500 Americans about marijuana
-legalization. One poll, taken in 1980, found 52 percent of
-respondents in favor of decriminalization; the other, taken in 1985,
-found 46 percent in favor of decriminalization [@wonnacott1990introductory page
-275]. Our null (benchmark) hypothesis is that both samples came from the same
-universe (the universe made up of the total of the two sets of observations).
-If so, let us then ask how likely would be two polls to produce results as
-different as were observed? Hence we construct a universe with a mean of 49
-percent (the mean of the two polls of 52 percent and 46 percent), and
-repeatedly draw pairs of samples of size 1500 from it.
+Consider two polls, each asking 1500 Americans about marijuana legalization.
+One poll, taken in 1980, found 52 percent of respondents in favor of
+decriminalization; the other, taken in 1985, found 46 percent in favor of
+decriminalization [@wonnacott1990introductory page 275]. Our null (benchmark)
+hypothesis is that both samples came from the same universe (the universe made
+up of the total of the two sets of observations). If so, let us then ask how
+likely would be two polls to produce results as different as were observed?
+Hence we construct a universe with a mean of 49 percent (the mean of the two
+polls of 52 percent and 46 percent), and repeatedly draw pairs of samples of
+size 1500 from it.
 
 To see how the construction of the appropriate question is much more
-challenging intellectually than is the actual mathematics, let us
-consider another possibility suggested by a student: What about
-considering the universe to be the earlier poll with a mean of 52
-percent, and then asking the probability that the later poll of 1500
-people with a mean of 46 percent would come from it? Indeed, on
-first thought that procedure seems reasonable.
+challenging intellectually than is the actual mathematics, let us consider
+another possibility suggested by a student: What about considering the universe
+to be the earlier poll with a mean of 52 percent, and then asking the
+probability that the later poll of 1500 people with a mean of 46 percent would
+come from it? Indeed, on first thought that procedure seems reasonable.
 
-Upon reflection — and it takes considerable thought on these matters
-to get them right — that would *not* be an appropriate procedure.
-The student's suggested procedure would be the same as assuming that
-we had long-run solid knowledge of the universe, as if based on
-millions of observations, and then asking about the probability of a
-particular sample drawn from it. That does not correspond to the
-facts.
+Upon reflection — and it takes considerable thought on these matters to get
+them right — that would *not* be an appropriate procedure. The student's
+suggested procedure would be the same as assuming that we had long-run solid
+knowledge of the universe, as if based on millions of observations, and then
+asking about the probability of a particular sample drawn from it. That does
+not correspond to the facts.
 
-The only way to find the approach you eventually consider best — and
-there is no guarantee that it is indeed *correct* — is by close
-reference to the particular facts of the case.
+The only way to find the approach you eventually consider best — and there is
+no guarantee that it is indeed *correct* — is by close reference to the
+particular facts of the case.
 
 ## Example: Infarction and Cholesterol: Framingham Study {#sec-framingham-example}
 
@@ -1166,24 +1159,20 @@ the same throughout the sample; record the number of reds. Then do
 the same with another sample of 470 (the low serum-cholesterol
 group).
 
-**Step 3:** Calculate the difference in infarction rates for the two
-simulated groups, and compare it to the actual difference of
-
-.029; if the simulated difference is that large, record "Yes" for
-this trial; if not, record "No."
-
-**Step 4:** Repeat steps 2 and 3 until a total of (say) 400 or 1000
-trials have been completed. Compute the frequency with which the
-simulated groups produce a difference as great as actually observed.
-This frequency is an estimate of the probability that a difference
-as great as actually observed in Framingham would occur even if
-serum cholesterol has no effect upon myocardial infarction.
+* **Step 3:** Calculate the difference in infarction rates for the two
+  simulated groups, and compare it to the actual difference of .029; if the
+  simulated difference is that large, record "Yes" for this trial; if not,
+  record "No."
+* **Step 4:** Repeat steps 2 and 3 until a total of (say) 400 or 1000
+  trials have been completed. Compute the frequency with which the simulated
+  groups produce a difference as great as actually observed. This frequency is
+  an estimate of the probability that a difference as great as actually
+  observed in Framingham would occur even if serum cholesterol has no effect
+  upon myocardial infarction.
 
 The procedure above can be carried out with balls in a bucket
 in a few hours. Yet it is natural to seek the added convenience of
-the computer to draw the samples. Here is a RESAMPLING STATS program
-("myocar1"):
-
+the computer to draw the samples. Here is a {{< var lang >}} program:
 
 <!--- Resampling stats file; Matlab syntax closeish -->
 
@@ -1494,22 +1483,20 @@ density *ranks* of the two sets, where Saturn has rank 1 and Venus has rank 5.
 This might have a scientific advantage if the sample data are dominated by a
 single "outlier," whose domination is removed when we rank the data.
 
-We see that the sum of the ranks for the "closer" set is 3+5=8. We
-can then ask: If the ranks were assigned at random, how likely is it
-that a set of two planets would have a sum as large as 8? Again,
-because the sample is small, we can examine all the possible
-permutations, as Mosteller and Rourke do in Table 3-1 [@mosteller1973sturdy,
-page 56] (Substitute "Closer" for "B," "Further" for "A"). In two of the ten
-permutations, a sum of ranks as great as 8 is observed, so the probability of
-a result as great as observed happening by chance is 20 percent, using these
-data. (We could just as well consider the difference in mean ranks between the
-two groups: (8/2 - 7/3 =) 1.6.)
+We see that the sum of the ranks for the "closer" set is 3+5=8. We can then
+ask: If the ranks were assigned at random, how likely is it that a set of two
+planets would have a sum as large as 8? Again, because the sample is small, we
+can examine all the possible permutations, as Mosteller and Rourke do in Table
+3-1 [@mosteller1973sturdy, page 56] (Substitute "Closer" for "B," "Further" for
+"A"). In two of the ten permutations, a sum of ranks as great as 8 is observed,
+so the probability of a result as great as observed happening by chance is 20
+percent, using these data. (We could just as well consider the difference in
+mean ranks between the two groups: (8/2 - 7/3 =) 1.6.)
 
 <!---
 Perhaps easier to reproduce M+R table here - no-one will have that reference to
 hand.
 -->
-
 
 To illuminate the logic of this test, consider comparing the heights
 of two samples of trees. If sample A has the five tallest trees, and
@@ -1586,8 +1573,10 @@ Result: prob = 0.21
 Interpretation: 21 percent of the time, random shufflings produced a
 difference in ranks as great as or greater than observed. Hence, on the
 strength of this evidence, we should *not* conclude that there is a
-statistically significant difference in densities between the faurther
-planets and the closer planets.
+statistically significant difference in densities between the further planets
+and the closer planets.
+
+## Conclusion
 
 This chapter has begun the actual work of testing hypotheses. The next
 chapter continues with discussion of somewhat more complex problems with
