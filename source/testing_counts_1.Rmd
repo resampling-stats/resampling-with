@@ -1551,7 +1551,7 @@ can examine all the possible permutations, as Mosteller and Rourke do in Table
 "A"). In two of the ten permutations, a sum of ranks as great as 8 is observed,
 so the probability of a result as great as observed happening by chance is 20
 percent, using these data. (We could just as well consider the difference in
-mean ranks between the two groups: (8/2 - 7/3 = 1.67).
+mean ranks between the two groups: (8/2 - 7/3 = 10 / 6 = 1.67).
 
 <!---
 Perhaps easier to reproduce M+R table here - no-one will have that reference to
@@ -1576,17 +1576,18 @@ example):
 1.  Compute the mean ranks of the two groups.
 2.  Calculate the difference between the means computed in step 1.
 3.  Create a bucket containing the ranks from 1 to the number of
-    observations (5, in the case of the planets), and shuffle them.
-4.  Since we are working with the ranked data, we must draw without
+    observations (5, in the case of the planets)
+4.  Shuffle the ranks.
+5.  Since we are working with the ranked data, we must draw without
     replacement, because there can only be one #3, one #7, and so on. So draw
     the number of observations corresponding to the number of observations
     — 2 "Closer" and 3 "Further."
-5.  Compute the mean ranks of the two simulated groups of planets.
-6.  Calculate the difference between the means computed in step 5
+6.  Compute the mean ranks of the two simulated groups of planets.
+7.  Calculate the difference between the means computed in step 5
     and record.
-7.  Repeat steps 3 to 6 perhaps 1000 times.
-8.  Count how often the shuffled difference in ranks exceeds the
-    observed difference of 1.6.
+8.  Repeat steps 4 through 7 perhaps 1000 times.
+9.  Count how often the shuffled difference in ranks exceeds the
+    observed difference from step 2 (1.67).
 
 ::: {.notebook name="planet_densities" title="Planet densities and distance"}
 
@@ -1600,17 +1601,30 @@ import numpy as np
 
 rnd = np.random.default_rng()
 
+# Steps 1 and 2.
+actual_mean_diff = 8 / 2 - 7 / 3
+
+# Step 3
+ranks = np.arange(1, 6)
+
 n = 10_000
 
 mean_differences = np.zeros(n)
 
 for i in range(n):
+    # Step 4
     shuffled = rnd.permuted(ranks)
+    # Step 5
     closer = shuffled[:2]  # First 2
     further = shuffled[2:] # Last 3
-    mean_differences[i] = np.mean(closer) - np.mean(further)
+    # Step 6
+    mean_close = np.mean(closer)
+    mean_far = np.mean(further)
+    # Step 7
+    mean_differences[i] = mean_close - mean_far
 
-k = np.sum(mean_differences >= 1.67)
+# Step 9
+k = np.sum(mean_differences >= actual_mean_diff)
 prob = k / n
 
 print('Proportion of trials with mean difference >= 1.67:',
@@ -1618,18 +1632,31 @@ print('Proportion of trials with mean difference >= 1.67:',
 ```
 
 ```{r}
+# Steps 1 and 2.
+actual_mean_diff <- 8 / 2 - 7 / 3
+
+# Step 3
+ranks <- 1:5
+
 n <- 10000
 
 mean_differences <- numeric(n)
 
 for (i in 1:n) {
+    # Step 4
     shuffled <- sample(ranks)
+    # Step 5
     closer <- shuffled[1:2]  # First 2
     further <- shuffled[3:5] # Last 3
-    mean_differences[i] <- mean(closer) - mean(further)
+    # Step 6
+    mean_close <- mean(closer)
+    mean_far <- mean(further)
+    # Step 7
+    mean_differences[i] <- mean_close - mean_far
 }
 
-k <- sum(mean_differences >= 1.67)
+# Step 9
+k <- sum(mean_differences >= actual_mean_diff)
 prob <- k / n
 
 message('Proportion of trials with mean difference >= 1.67: ',
@@ -1639,8 +1666,13 @@ message('Proportion of trials with mean difference >= 1.67: ',
 Interpretation: `r round(get_var('prob') * 100)` percent of the time, random
 shufflings produced a difference in ranks as great as or greater than observed.
 Hence, on the strength of this evidence, we should *not* conclude that there is
-a statistically significant difference in densities between the further planets
+a statistically surprising difference in densities between the further planets
 and the closer planets.
+
+:::
+<!---
+End of planets notebook.
+-->
 
 ## Conclusion
 
