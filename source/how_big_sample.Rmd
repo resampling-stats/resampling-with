@@ -91,9 +91,9 @@ shows the middle (modal), 25th percentile, and 75th percentile scores
 for — please keep this in mind — *National Opinion Surveys* in the top
 panel. The bottom panel shows how subgroup analyses affect sample size.
 
-Pretest sample sizes are smaller, of course, perhaps 25-100
-observations. Samples in research for Master's and Ph.D. theses are
-likely to be closer to a pretest than to national samples.
+Pretest sample sizes are smaller, of course, perhaps 25-100 observations.
+Samples in research for Master's and Ph.D. theses are likely to be closer to
+a pretest than to national samples.
 
 Table 24-1
 
@@ -141,7 +141,7 @@ sample sizes in relationship research.
 
 ## Some practical examples
 
-**Example 24-1**
+### Example: what proportion of homes are listening to a radio station? {#sec-proportion-radio}
 
 What proportion of the homes in Countryville are tuned into television
 station WCNT's ten o'clock news program? That is the question your
@@ -357,28 +357,25 @@ End of notebook.
 It is a simple matter to go back and try a sample size of (say) 1600
 rather than 400, and examine the effect on the mean difference.
 
-**Example 24-2**
+### Example: average weight gain for pig rations
 
-This example, like Example 24-1, illustrates the choice of sample size
-for estimating a summarization statistic. Later examples deal with
-sample sizes for probability statistics.
+This example, like @sec-proportion-radio, illustrates the choice of sample size
+for estimating a summarization statistic. Later examples deal with sample sizes
+for probability statistics.
 
 Hark back to the pig-ration problems presented earlier, and consider the
-following set of pig weight-gains recorded for ration A: 31, 34, 29, 26,
-32, 35, 38, 34, 31, 29, 32, 30. Assume that
-
-our purpose now is to estimate the average weight gain for ration A, so
-that the feed company can advertise to farmers how much weight gain to
-expect from ration A. If the universe is made up of pig weight-gains
-like those we observed, we can simulate the universe with, say, 1
-million weight gains of thirty-one pounds, 1 million of thirty-four
-pounds, and so on for the twelve observed weight gains. Or, more
-conveniently, as accuracy will not be affected much, we can make up a
-universe of say, thirty cards for each thirty-one-pound gain, thirty
-cards for each thirty-four-pound gains and so forth, yielding a deck of
-30 x 12 = 360 cards. Then shuffle, and, just for a starting point, try
-sample sizes of twelve pigs. The means of the samples for twenty such
-trials are as in Table 24-3.
+following set of pig weight-gains recorded for ration A: 31, 34, 29, 26, 32,
+35, 38, 34, 31, 29, 32, 30. Assume that our purpose now is to estimate the
+average weight gain for ration A, so that the feed company can advertise to
+farmers how much weight gain to expect from ration A. If the universe is made
+up of pig weight-gains like those we observed, we can simulate the universe
+with, say, 1 million weight gains of thirty-one pounds, 1 million of
+thirty-four pounds, and so on for the twelve observed weight gains. Or, more
+conveniently, as accuracy will not be affected much, we can make up a universe
+of say, thirty cards for each thirty-one-pound gain, thirty cards for each
+thirty-four-pound gains and so forth, yielding a deck of 30 x 12 = 360 cards.
+Then shuffle, and, just for a starting point, try sample sizes of twelve pigs.
+The means of the samples for twenty such trials are as in Table 24-3.
 
 Now ask yourself whether a sample size of twelve pigs gives you enough
 accuracy. There is a .5 chance that the mean for the sample will be more
@@ -442,7 +439,7 @@ Table 24-3
 The attentive reader of this example may have been troubled by this
 question: How do you know what kind of a distribution of values is
 contained in the universe before the sample is taken? The answer is that
-you guess, just as in Example 24-1 you guessed at the mean of the
+you guess, just as in @sec-proportion-radio you guessed at the mean of the
 universe. If you guess wrong, you will get either more accuracy or less
 accuracy than you expected from a given sample size, but the results
 will not be fatal; if you obtain more accuracy than you wanted, you have
@@ -727,17 +724,16 @@ PRINT kk
 ' males and females are split 50-50.
 ```
 
-**Example 24-3**
+### Example: 
 
-Referring back to Example 15-3, on the cable-television poll, how large
-a sample *should* you have taken? Pretend that the data have not yet
-been collected. You need *some* estimate of how the results will turn
-out before you can select a sample size. But you have not the foggiest
-idea how the results will turn out. Therefore, go out and take a very
-small sample, maybe ten people, to give you some idea of whether people
-will split quite evenly or unevenly. Seven of your ten initial
-interviews say they are for CATV. How large a sample do you now need to
-provide an answer of which you can be fairly sure?
+Referring back to @sec-contract-poll, on the internet provider poll, how large
+a sample *should* you have taken? Pretend that the data have not yet been
+collected. You need *some* estimate of how the results will turn out before you
+can select a sample size. But you have not the foggiest idea how the results
+will turn out. Therefore, go out and take a very small sample, maybe ten
+people, to give you some idea of whether people will split quite evenly or
+unevenly. Seven of your ten initial interviews say they are for CATV. How large
+a sample do you now need to provide an answer of which you can be fairly sure?
 
 Using the techniques of the previous chapter, we estimate roughly that
 from a sample of fifty people at least thirty-two would have to vote the
@@ -807,15 +803,15 @@ If "kk" is close to 1, we can be confident that this sample will be
 large enough to avoid a result that we might mistakenly think comes from
 a 50/50 universe (provided that the real universe is 70% favorable).
 
-**Example 24-4**
+### Example: how large a sample for pig rations?
 
 How large a sample is needed to determine whether there is any
-difference between the two pig rations in Example 15-7? The first step
+difference between the two pig rations in @sec-pig-rations? The first step
 is to guess the results of the tests. You estimate that the average for
 ration A will be a weight gain of thirty-two pounds. You further guess
 that twelve pigs on ration A might gain thirty-six, thirty-five,
 thirty-four, thirty-three, thirty-three, thirty-two, thirty-two,
-thirty-one, thirty-one, thirty, twentynine, and twenty-eight pounds.
+thirty-one, thirty-one, thirty, twenty-nine, and twenty-eight pounds.
 This set of guesses has an equal number of pigs above and below the
 average and more pigs close to the average than farther away. That is,
 there are more pigs at 33 and 31 pounds than at 36 and 28 pounds. This
