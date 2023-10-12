@@ -2,7 +2,7 @@
 
 NUMBERS 1,5 ranks
 ' step 3 above
-REPEAT 1000
+REPEAT 10000
     ' step 7
     SHUFFLE ranks ranks$
     ' step 3
@@ -12,7 +12,7 @@ REPEAT 1000
     ' step 4
     MEAN closer m_close
     ' step 5
-    MEAN farther m_far
+    MEAN further m_far
     ' step 5
     SUBTRACT m_close m_far diff
     ' step 6
@@ -20,7 +20,7 @@ REPEAT 1000
     ' step 6
 END
 ' step 7
-COUNT z >=1.6 k
+COUNT z >=1.67 k
 ' step 8
-DIVIDE k 1000 prob
-' PRINT prob
+DIVIDE k 10000 prob
+PRINT prob
