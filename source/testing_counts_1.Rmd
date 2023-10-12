@@ -624,7 +624,10 @@ In operational steps, the procedure is as follows:
   really against the plan.
 
 ```{python, eval=TRUE, echo=FALSE}
+import numpy as np
 import pandas as pd
+
+rnd = np.random.default_rng()
 
 n = 20
 yeses = np.zeros(n, dtype=int)
@@ -801,14 +804,15 @@ print('Proportion voting for Trump:', kk)
 n <- 10000
 
 # Make an array to store the counts.
-trumps <- numeric(n, dtype=int)
+trumps <- numeric(n)
 
 for (i in 1:n) {
     votes <- sample(c('Trump', 'Clinton'), size=1500, replace=TRUE)
     trumps[i] <- sum(votes == 'Trump')
+}
 
 # Integer bins from 675 through 825 in steps of 5.
-hist(trumps, breaks=seq(675, 826, by=5)
+hist(trumps, breaks=seq(675, 826, by=5),
      main='Number of Trump voters of 1500 in null-world simulation')
 
 # How often >= 840 Trump votes in random draw?
@@ -1006,12 +1010,13 @@ n <- 10000
 
 pill_betters <- numeric(n)
 
-for i in range(n):
+for (i in 1:n) {
     pill <- sample(options, size=6, replace=TRUE)
     pill_cures <- sum(pill == 'get well')
     placebo <- sample(options, size=6, replace=TRUE)
     placebo_cures <- sum(placebo == 'get well')
     pill_betters[i] <- pill_cures - placebo_cures
+}
 
 hist(pill_betters, breaks=-6:6,
      main='Number of extra cures pill vs placebo in null universe')
