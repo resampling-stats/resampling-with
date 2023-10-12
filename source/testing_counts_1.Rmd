@@ -237,7 +237,6 @@ plt.title(f"Number of males in {n_trials} samples of \n{sample_size} simulated f
 plt.hist(scores)
 plt.xlabel('Number of Males')
 plt.ylabel('Frequency')
-plt.show()
 ```
 
 ```{r}
@@ -490,7 +489,6 @@ plt.title(f"Number of females in {n_trials} samples of \n{sample_size} simulated
 plt.hist(scores)
 plt.xlabel('Number of Females')
 plt.ylabel('Frequency')
-plt.show()
 
 # count the number of scores that were greater than or equal to 9
 k = np.sum(scores >= 9)
