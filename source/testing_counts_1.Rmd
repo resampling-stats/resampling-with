@@ -106,7 +106,7 @@ hypotheses about samples and populations.
 
 ## Should a single sample of counted data be considered different from a benchmark universe?
 
-### Example: Does Irradiation Affect the Sex Ratio in Fruit Flies? {#sec-fruitfly}
+#### Example: Does Irradiation Affect the Sex Ratio in Fruit Flies? {#sec-fruitfly}
 
 **Where the Benchmark Universe Mean (in this case, the Proportion) is Known, is
 the Mean (Proportion) of the Population Affected by the Treatment?)**
@@ -827,6 +827,11 @@ The value for `kk` is our estimate of the probability that Trump's "victory" in
 the sample would occur by chance if he really were behind.  In this case, our
 probability estimate is less than 1 in 10,000 (< 0.0001).
 
+:::
+<!---
+End of Trump / Clinton notebook.
+-->
+
 <!---
 The results of the various runs may be seen in the histogram and printout
 following.
@@ -1055,7 +1060,7 @@ statistics rather than simply trying to copy the methods described here; the
 examples given here only illustrate the process of inventing statistics rather
 than offering solutions for all classes of problems.
 
-## Example: Did Attitudes About Marijuana Change?
+### Example: Did Attitudes About Marijuana Change?
 
 <!---
 Example 8.18 in W+W 1990.  Looks like fake data.
@@ -1090,7 +1095,7 @@ The only way to find the approach you eventually consider best — and there is
 no guarantee that it is indeed *correct* — is by close reference to the
 particular facts of the case.
 
-## Example: Infarction and Cholesterol: Framingham Study {#sec-framingham-example}
+### Example: Infarction and Cholesterol: Framingham Study {#sec-framingham-example}
 
 It is so important to understand the logic of hypothesis tests, and
 of the resampling method of doing them, that we will now tackle
@@ -1141,29 +1146,24 @@ enough infarctions, that the difference in occurrence rates would be
 as high as the observed difference of .029? (10/135 = .074, and
 21/470 = .045, and .074 - .045 = .029).
 
-So far, everything that has been said applies both to the
-conventional formulaic method and to the "new statistics" resampling
-method. But the logic is seldom explained to the reader of a piece
-of research — if indeed the researcher her/ himself grasps what the
-formula is doing. And if one just grabs for a formula with a prayer
-that it is the right one, one need never analyze the statistical
-logic of the problem at hand.
+So far, everything that has been said applies both to the conventional
+formulaic method and to the "new statistics" resampling method. But the logic
+is seldom explained to the reader of a piece of research — if indeed the
+researcher her/ himself grasps what the formula is doing. And if one just grabs
+for a formula with a prayer that it is the right one, one need never analyze
+the statistical logic of the problem at hand.
 
-Now we tackle this problem with a method that you would think of
-yourself if you began with the following mind-set: How can I
-simulate the mechanism whose operation I wish to understand? These
-steps will do the job:
+Now we tackle this problem with a method that you would think of yourself if
+you began with the following mind-set: How can I simulate the mechanism whose
+operation I wish to understand? These steps will do the job:
 
-**Step 1:** Fill a bucket with 605 balls, 31 red (infarction) and the
-rest (605 — 31 = 574) green (no infarction).
-
-**Step 2:** Draw a sample of 135 (simulating the high
-serum-cholesterol group), one ball at a time and throwing it back
-after it is drawn to keep the simulated probability of an infarction
-the same throughout the sample; record the number of reds. Then do
-the same with another sample of 470 (the low serum-cholesterol
-group).
-
+* **Step 1:** Fill a bucket with 605 balls, 31 red (infarction) and the rest
+  (605 — 31 = 574) green (no infarction).
+* **Step 2:** Draw a sample of 135 (simulating the high serum-cholesterol
+group), one ball at a time and throwing it back after it is drawn to keep the
+simulated probability of an infarction the same throughout the sample; record
+the number of reds. Then do the same with another sample of 470 (the low
+serum-cholesterol group).
 * **Step 3:** Calculate the difference in infarction rates for the two
   simulated groups, and compare it to the actual difference of .029; if the
   simulated difference is that large, record "Yes" for this trial; if not,
@@ -1175,55 +1175,86 @@ group).
   observed in Framingham would occur even if serum cholesterol has no effect
   upon myocardial infarction.
 
-The procedure above can be carried out with balls in a bucket
-in a few hours. Yet it is natural to seek the added convenience of
-the computer to draw the samples. Here is a {{< var lang >}} program:
+The procedure above can be carried out with balls in a bucket in a few hours.
+Yet it is natural to seek the added convenience of the computer to draw the
+samples. Here is a {{< var lang >}} program:
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: {.notebook name="framingham_hearts" title="Framingham heart data"}
 
-```matlab
-' Program file: "testing_counts_1_09.rss"
+::: nb-only
+We use simulation to investigate the relationship between serum cholesterol and heart attacks in the Framingham data.
+:::
 
-URN 31#1 574#2 men
-' A bucket called "men" with 31 "1's" (=infarctions) and 574 "2's" (=no
-' infarction)
-REPEAT 1000
-    SAMPLE 135 men high
-    ' Sample (with replacement!) 135 of the numbers in this bucket, give this
-    ' group the name "high"
-    SAMPLE 470 men low
-    ' Same for a group of 470, call it "low"
-    COUNT high =1 a
-    ' Count infarctions in first group
-    DIVIDE a 135 aa
-    ' Express as a proportion
-    COUNT low =1 b
-    ' Count infarctions in second group
-    DIVIDE b 470 bb
-    ' Express as a proportion
-    SUBTRACT aa bb c
-    ' Find the difference in infarction rates
-    SCORE c z
-    ' Keep score of this difference
-END HISTOGRAM z
-COUNT z >=.029 k
-' How often was the resampled difference \>= the observed difference?
-DIVIDE k 1000 kk
-' Convert this result to a proportion
-PRINT kk
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
+n = 10_000
+
+men = np.repeat(['infarction', 'no infarction'], [31, 574])
+
+n_high = 135  # Number of men with high cholesterol
+n_low = 470  # Number of men with low cholesterol
+
+infarct_differences = np.zeros(n)
+
+for i in range(n):
+    highs = rnd.choice(men, size=n_high)
+    lows = rnd.choice(men, size=n_low)
+    high_infarcts = np.sum(highs == 'infarction')
+    low_infarcts = np.sum(lows == 'infarction')
+    high_prop = high_infarcts / n_high
+    low_prop = low_infarcts / n_low
+    infarct_differences[i] = high_prop - low_prop
+
+plt.hist(infarct_differences, bins=np.arange(-0.1, 0.1, 0.005))
+plt.title('Infarct proportion differences in null universe')
+
+# How often was the resampled difference >= the observed difference?
+k = np.sum(infarct_differences >= 0.029)
+# Convert this result to a proportion
+kk = k / n
+
+print('Proportion of trials with difference >= observed:',
+      np.round(kk, 2))
 ```
 
-![](images/19-Chap-15_005.png)
+```{r}
+n <- 10000
 
-**Difference between paired resamples (propor tion with
-infarction)**
+men <- rep(c('infarction', 'no infarction'), c(31, 574))
 
-Result: kk = 0.102 (the proportion of resample pairs with a
-difference \>= .029)
+n_high <- 135  # Number of men with high cholesterol
+n_low <- 470  # Number of men with low cholesterol
+
+infarct_differences <- numeric(n)
+
+for (i in 1:n) {
+    highs <- sample(men, size=n_high, replace=TRUE)
+    lows <- sample(men, size=n_low, replace=TRUE)
+    high_infarcts <- sum(highs == 'infarction')
+    low_infarcts <- sum(lows == 'infarction')
+    high_prop <- high_infarcts / n_high
+    low_prop <- low_infarcts / n_low
+    infarct_differences[i] <- high_prop - low_prop
+}
+
+hist(infarct_differences, breaks=seq(-0.1, 0.1, by=0.005),
+     main='Infarct proportion differences in null universe')
+
+# How often was the resampled difference >= the observed difference?
+k <- sum(infarct_differences >= 0.029)
+# Convert this result to a proportion
+kk <- k / n
+
+message('Proportion of trials with difference >= observed:',
+        round(kk, 2))
+```
 
 The results of the test using this program may be seen in the
 histogram. We find — perhaps surprisingly — that a difference as
-large as observed would occur by chance fully 10 percent of the
+large as observed would occur by chance around 10 percent of the
 time. (If we were not guided by the theoretical expectation that
 high serum cholesterol produces heart disease, we might include the
 10 percent difference going in the other direction, giving a 20
@@ -1233,45 +1264,46 @@ dangerous. At a minimum, this statistical result should call for
 more research before taking any strong action clinically or
 otherwise.
 
-Where should one look to determine which procedures should be used
-to deal with a problem such as set forth above? Unlike the formulaic
-approach, the basic source is not a manual which sets forth a menu
-of formulas together with sets of rules about when they are
-appropriate. Rather, you consult your own understanding about what
-is happening in (say) the Framingham situation, and the question
-that needs to be answered, and then you construct a "model" that is
-as faithful to the facts as is possible. The bucket-sampling described
-above is such a model for the case at hand.
+:::
+<!---
+End of Framingham notebook.
+-->
 
-To connect up what we have done with the conventional approach, one
-could apply a z test (conceptually similar to the t test, but
-applicable to yes-no data; it is the Normal-distribution
-approximation to the large binomial distribution). Do so, we find
-that the results are much the same as the resampling result — an
+Where should one look to determine which procedures should be used to deal with
+a problem such as set forth above? Unlike the formulaic approach, the basic
+source is not a manual which sets forth a menu of formulas together with sets
+of rules about when they are appropriate. Rather, you consult your own
+understanding about what is happening in (say) the Framingham situation, and
+the question that needs to be answered, and then you construct a "model" that
+is as faithful to the facts as is possible. The bucket-sampling described above
+is such a model for the case at hand.
+
+To connect up what we have done with the conventional approach, one could apply
+a z test (conceptually similar to the t test, but applicable to yes-no data; it
+is the Normal-distribution approximation to the large binomial distribution).
+Do so, we find that the results are much the same as the resampling result — an
 eleven percent probability.
 
-Someone may ask: Why do a resampling test when you can use a
-standard device such as a z or t test? The great advantage of
-resampling is that it avoids using the wrong method. The researcher
-is more likely to arrive at sound conclusions with resampling
-because s/he can understand what s/he is doing, instead of blindly
-grabbing a formula which may be in error.
+Someone may ask: Why do a resampling test when you can use a standard device
+such as a z or t test? The great advantage of resampling is that it avoids
+using the wrong method. The researcher is more likely to arrive at sound
+conclusions with resampling because s/he can understand what s/he is doing,
+instead of blindly grabbing a formula which may be in error.
 
-The textbook from which the problem is drawn is an excellent one;
-the difficulty of its presentation is an inescapable consequence of
-the formulaic approach to probability and statistics. The body of
-complex algebra and tables that only a rare expert understands down
-to the foundations constitutes an impenetrable wall to
-understanding. Yet without such understanding, there can be only
-rote practice, which leads to frustration and error.
+The textbook from which the problem is drawn is an excellent one; the
+difficulty of its presentation is an inescapable consequence of the formulaic
+approach to probability and statistics. The body of complex algebra and tables
+that only a rare expert understands down to the foundations constitutes an
+impenetrable wall to understanding. Yet without such understanding, there can
+be only rote practice, which leads to frustration and error.
 
-**Example 15-8: Is One Pig Ration More Effective Than the Other?**
-(Testing For a Difference in Means With a Two-by-Two Classification)
-(Program "Pigs1")
+### Example: Is One Pig Ration More Effective Than the Other?
 
-Each of two new types of ration is fed to twelve pigs. A farmer
-wants to know whether ration A or ration B is better.[^pig-example] The weight
-gains in pounds for pigs fed on rations A and B are:
+**Testing For a Difference in Means With a Two-by-Two Classification**.
+
+Each of two new types of ration is fed to twelve pigs. A farmer wants to know
+whether ration A or ration B is better.[^pig-example] The weight gains in
+pounds for pigs fed on rations A and B are:
 
 [^pig-example]: The data for this example are based on Dixon and Massey
     [-@dixon1983introduction, p. 124], who offer an orthodox method of
@@ -1296,7 +1328,7 @@ with the lowest weight gains — and examine whether an unusually
 large number of high-weight-gain pigs were fed on one or the other
 of the rations.
 
-We can make this test by ordering and grouping the twentyfour pigs:
+We can make this test by ordering and grouping the twenty four pigs:
 
 **High-weight group:**
 
@@ -1321,16 +1353,13 @@ nine or more times in the first twelve cards, to reflect ration A's
 appearance nine times among the highest twelve weight gains. More
 specifically:
 
-**Step 1.** Constitute a deck of twelve red and twelve black cards,
-and shuffle.
-
-**Step 2.** Deal out twelve cards, count the number red, and record
-"yes" if there are nine or more of *either* red or black.
-
-**Step 3.** Repeat step 2 perhaps fifty times.
-
-**Step 4.** Compute the proportion "yes." This proportion estimates
-the probability sought.
+* **Step 1.** Constitute a deck of twelve red and twelve black cards,
+  and shuffle.
+* **Step 2.** Deal out twelve cards, count the number red, and record
+  "yes" if there are nine or more of *either* red or black.
+* **Step 3.** Repeat step 2 perhaps fifty times.
+* **Step 4.** Compute the proportion "yes." This proportion estimates the
+  probability sought.
 
 Table 15-4 shows the results of fifty trials. In three (marked by
 asterisks) of the fifty (that is, 6 percent of the trials) there
@@ -1365,7 +1394,7 @@ Table 15-4
   18          8         4         36          5         7                               
   ----------- --------- --------- ----------- --------- --------- ----------- --------- ---------
 
-Now a RESAMPLING STATS procedure to answer the question:
+Now a {{< var lang >}} procedure to answer the question:
 
 The NUMBERS statement creates an array of numbers "1" through "24,"
 which will represent the rankings of weight gains for each of the 24
