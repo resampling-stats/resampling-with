@@ -39,7 +39,744 @@ We will remove this warning when the page has adequate formatting, and we have
 ported the code.
 :::
 
+## Preview
 
+In this chapter we'll reflect on the basic principles behind resampling in particular, and statistics or probability in
+general. One way of approaching this is to ask, Is there anything that we cannot do with resampling?
+The answer is an emphatic *yes*! In order to be able to sample, the probability distributions to sample
+*from* has to be available. There are many situations where this is simply not true. Any time a manager
+at a financial institution asks you whether a particular client is likely to default if granted a loan,
+it takes you outside the realm of sampling. In this case you'll  need to build a probabilistic *model*
+will that will estimate the *probability of default*.
+
+We'll return to this question and explain how one can develop models that answer questions like these.
+
+Another question one can ask is whether everything one can ever want to know, can in principle be learned from data.
+In this case the answer is not so straightforward. Ultimately, it is a deep philosophical question, one that we'll not pursue.
+However, we can approach this question from the data point of view and examine examples where data cannot provide the
+answers.
+
+The topic of this chapter is to understand the limitations of resampling or data in general, and give an indication of what approaches
+are available beyond resampling.
+
+First we need to provide some background.
+
+## An excursion into linear algebra.
+
+:::{.callout-note}
+## On solving linear systems of equations.
+
+If you are familiar with the normal equations for solving linear least squares equations, you can safely skip this
+section.
+:::
+
+Lets set it as our goal to solve any linear system of equations that can be written in matrix form as
+
+$$
+A \mathbf{x} = \mathbf{y},
+$$
+where $A$ is an $m\times n$ matrix, $\mathbf{x}$ is an $n\times 1$ (columns) vector, and $\mathbf{y}$ is an $m\times 1$
+(column) vector. Note that we want to find a solution for any such system - there are no other conditions other than the
+constraints on the dimensions that we have listed. Note in particular that $m$ need not equal $n$, and if $m=n$ we don't
+demand that the determinant of $A$ be non-zero. Let's give examples of the typical situations that one encounters in general,
+although we'll mainly be interested in the second example.
+
+
+1.  The first example represents all systems of equations where $m=n$ with non-zero determinant. In all these cases the equation is *solvable* by perhaps using
+    Gaussian elimination with partial pivoting. (Not Cramer's rule!)
+    $$ x = 1.$$
+    This equation is so trivial that we almost don't recognize it as an equation. In this case $A = [1]$, i.e.
+    a $1\times 1$ matrix, $\mathbf{x} = 1$ and $\mathbf{y} = 1$.
+2. The second example, and the one we are primarily interested in, represents all overdetermined systems of
+   linear equations, i.e. systems of equations where we have more equations than unknowns.
+    \begin{eqnarray*}
+    x &=& 1\\
+    x &=& 1.1\\
+    x &=& 1.2.
+    \end{eqnarray*}
+    This system clearly has a problem. How can $x$ simultaneously be equal to 1, 1.1, and 1.2? The system is no solution!
+    not in the ordinary sense. It turns out that this system is of the form of our generic equation. We see this by rewriting
+    it in matrix form,
+
+    $$
+    \left[
+    \begin{array}{c}
+    1\\1\\1
+    \end{array}
+    \right]
+    x = \left[
+    \begin{array}{c}
+    1.0\\1.1\\1.2
+    \end{array}
+    \right].
+    $$
+    This equation represents all equations where there are more equations than unknowns, i.e. the system is *over determined*.
+    It can only be solved in the least squares sense. Instead of looking for an exact solution, which does not exist, we look
+    instead for a solution that best fits the system in the least squares sense. Technically, we are looking for the solution
+    that minimizes the squared error. Please take our word for it that the solution is given by the *normal equations*
+    (of course you should not take our word for it but do a little investigation yourself!),
+
+    $$
+    A^T A \mathbf{x} = A^T \mathbf{y}.
+    $$
+    Here $A^T$ is the transpose of $A$, $A^TA$ is a square, $n\times n$ matrix and $A^T \mathbf{y}$ is an $n\times 1$ (column)
+    vector. Moreover, if $A$ is of full rank, it can be shown that $A^TA$ has an inverse, a situation that we assume to be true.
+
+    Before we continue with the example let's point out that this situation is common in practice. When Worsely measured the
+    height of the sun above the horizon 10 times, and got 10 different answers, he wat exactly in this this position. Recall
+    that he took the expedient to calculate the mean of his observations. Let's calculate the solution of our system
+    above using the normal equations,
+
+    $$
+    \left[ \begin{array}{ccc}
+    1 & 1 & 1 \end{array} \right]
+    \left[
+    \begin{array}{c}
+    1\\1\\1
+    \end{array}
+    \right]
+    x = \left[ \begin{array}{ccc}
+    1 & 1 & 1 \end{array} \right]
+    \left[
+    \begin{array}{c}
+    1\\1\\1
+    \end{array}
+    \right]
+    \left[
+    \begin{array}{c}
+    1.0\\1.1\\1.2
+    \end{array}
+    \right].
+    $$
+    Multiplying out we get
+
+    $$
+     3 x = 1.0+1.1+1.2,
+    $$
+    or
+    $$ x = \frac{1.0+1.1+1.2}{3}.$$
+    This is simply the mean of the 'measurements', exactly what Worsely used!
+3. The example represents all systems of equations where we have an infinite number of solutions.
+    $$
+    x + y = 1.
+    $$
+    In contrast with the previous system of equations that did not have any solutions in the strict sense, this one suffers
+    from the opposite problem - it has an infinite number of solutions. Yet it is of the form of our generic system with
+    $ A = [1 1]$, $\mathbf{x} = \left[ \begin{array}{c}x\\y \end{array} \right]$ and $\mathbf{y} = [0]$. The problem now is
+    to identify a natural solution among the infinity of available solutions. To find this solution one has to calculate
+    the generalized inverse that will take us too far from our core focus. But it turns out that it can again be cast as an
+    optimization problem. In this case we are looking for the solution with the smallest norm. In this case it is given by
+    $$
+    \mathbf{x} = \left[\begin{array}{c} \frac12\\ \frac12\end{array} \right].
+    $$
+    It should be obvious that this is indeed a solution of the equation. What is more, it is the solution
+    that is the closest to the origin, i.e. out of the infinite number of solutions, this is the one with the
+    shortest length.
+
+
+Armed with the normal equations we can explain the linear correlation between variables.
+
+## Linear correlation
+
+Later in this chapter, we'll discuss the general correlation or association between variables.  Note that it is very important that variables are associated or correlated
+with one another. In general terms it means that one can infer something of one variable by observing
+another, correlated variable. The simples correlation is the linear correlation given by,
+
+$$ y = ax + b,$$
+for two variables $x$ and $y$. Clearly, given $a$ and $b$, we can infer the value of $y$ if we are
+given the value of $x$. If $a\not=0$ then we can also infer the value of $x$, given the value of $y$.
+In this case, one can have an exact correlation - there is no doubt about the value of either of the variables,
+given the value of the other variable.
+
+In practice things are never this easy - if they were we would not have had any need for statistics of
+probability - variables are never exactly correlated. If we know the value of one variable, we can deduce
+an approximate value for the other, correlated, variable. The better the correlation, the more accurate
+the approximation.
+
+Let's illustrate the ideas by means of an example. For this, we first need to generate data, i.e.
+values for $x$ and corresponding values for $y$.
+
+First we import the necessary libraries.
+
+
+```{python}
+import numpy as np
+from scipy import stats
+from scipy.stats import uniform, pearsonr
+
+from numpy.random import Generator, PCG64
+
+seed = 12311 # This is a random seed so that we can reproduce the results from one run to the next
+
+numpy_randomGen = Generator(PCG64(seed))
+scipy_randomGen = uniform
+scipy_randomGen.random_state=numpy_randomGen
+```
+Now we choose random values for $x$ in the interval $(0, 1)$ and corresponding values for $y$ in the
+same interval:
+
+```{python}
+import numpy as np
+from scipy import stats
+from scipy.stats import uniform, pearsonr
+
+from numpy.random import Generator, PCG64
+
+seed = 12311 # This is a random seed so that we can reproduce the results from one run to the next
+
+numpy_randomGen = Generator(PCG64(seed))
+scipy_randomGen = uniform
+scipy_randomGen.random_state=numpy_randomGen
+
+A = 0.33  # The chosen slope of the linear relationship
+B = 1.0  # The chosen intercept of the linear relationship
+NOISE = 0.1 # This determined the amount of noise we add to the simulation
+
+# Generate 50 random samples for x.
+x = scipy_randomGen.rvs(size=50)
+
+# Generate the corresponding values for y.
+# Noise is added to ensure that the linear relationship is not exact.
+y = A*x + B + NOISE*scipy_randomGen.rvs(size=50)
+
+# Show the relationship
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(1, 1)
+ax.plot(x, y, '.r')
+```
+Two questions now arise: Given a value for $x$, what is the estimate for $y$? And,
+how good is this estimate? Let's answer the first question first. The data values are clearly clustered
+around a straight line. In fact, we have the equation for this line, the one we used to generate the
+samples. In practice we don't have the line, only the samples, and we would like to find the line that
+best fits the data.
+
+Every measurement $x_i,\;\; i=1,\ldots,n$ we have a corresponding $y_i,\;\; i=1,\ldots,n$. We are looking
+for a linear relationship between the $x_i$ and $y_i$. That is, we are looking for $a$ and $b$ such that
+$$
+y_i = ax_i + b,\;\; i =1,\ldots, n.
+$$
+This gives us $n$ equations in the two unknowns, $a$ and $b$. We are back at example 2 above! We cannot
+solve these equations exactly but we can solve them in a least squares sense. Writing the system in
+matrix form, gives
+
+$$
+\left[ \begin{array}{cc}
+x_1 & 1\\
+\vdots & \\
+x_n & 1
+\end{array} \right]
+\left[\begin{array}{c}
+a\\b \end{array}
+\right]
+=
+\left[ \begin{array}{c} y_1\\ \vdots \\ y_n\end{array} \right].
+$$
+The normal equations are given by
+$$
+\left[ \begin{array}{ccc}
+x_1 & \cdots & x_n\\
+1 & & 1 \end{array} \right]
+\left[ \begin{array}{cc}
+x_1 & 1\\
+\vdots & \\
+x_n & 1
+\end{array} \right]
+\left[\begin{array}{c}
+a\\b \end{array}
+\right]
+=
+\left[ \begin{array}{ccc}
+x_1 & \cdots & x_n\\
+1 & & 1 \end{array} \right]
+\left[ \begin{array}{c} y_1\\ \vdots \\ y_n\end{array} \right],
+$$
+or after multipying,
+
+$$
+\left[ \begin{array}{cc}
+\sum_i x_i^2 & \sum_i x_i\\
+\sum_i x_i & n \end{array}\right]
+\left[\begin{array}{c}
+a\\b \end{array}
+\right]
+=
+\left[ \begin{array}{c}
+\sum_i x_i y_i\\
+\sum_i y_i \end{array} \right].
+$$
+Let's solve these equations for the numerical example above and see what we find. The key function is
+the scipy function `stats.linregress(x,y)`. It gives us the slope and intercept of the best linear fit
+of the data.
+
+```{python}
+import numpy as np
+from scipy import stats
+from scipy.stats import uniform
+
+from numpy.random import Generator, PCG64
+
+seed = 12311 # This is a random seed so that we can reproduce the results from one run to the next
+
+numpy_randomGen = Generator(PCG64(seed))
+scipy_randomGen = uniform
+scipy_randomGen.random_state=numpy_randomGen
+
+A = 0.33  # The chosen slope of the linear relationship
+B = 1.0  # The chosen intercept of the linear relationship
+NOISE = 0.1 # This determined the amount of noise we add to the simulation
+
+# Generate 50 random samples for x.
+x = scipy_randomGen.rvs(size=50)
+
+# Generate the corresponding values for y.
+# Noise is added to ensure that the linear relationship is not exact.
+y = A*x + B + NOISE*scipy_randomGen.rvs(size=50)
+
+slope, intercept, _, _, _ = stats.linregress(x,y)
+
+print(' slope: ', slope, '\n', 'intercept: ', intercept)
+
+# The coordinates for drawing the best linear fit.
+x_fit = np.array([0, 1])
+y_fit = slope*x_fit + intercept
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(1, 1)
+ax.plot(x,y,'.r', x_fit, y_fit, 'b')
+```
+The Figure shows that we indeed have a good linear fit of the data. Moreover, the slope and intercept
+calculated from the data is close the values we used to produce the data.
+
+Let's now simplify the normal equations and see what we can learn from that. We can always normalize the data
+by subtracting the means of both the $x_i$ and the $y_i$ before we proceed with the calculations.
+This means that
+
+$$
+\sum_i x_i = 0 = \sum_i y_i.
+$$
+The normal equations now simplify as,
+
+$$
+\left[ \begin{array}{cc}
+\sum_i x_i^2 & 0\\
+0 & n \end{array}\right]
+\left[\begin{array}{c}
+a\\b \end{array}
+\right]
+=
+\left[ \begin{array}{c}
+\sum_i x_i y_i\\
+0 \end{array} \right].
+$$
+This gives us $b=0$. Therefore, if we fit a straight line to the data *after* removal of the means,
+the intercept is 0.
+
+Let's do another normalization and divide the data with their standard deviations. Since we know that the
+means are 0, the standard deviations are just the length of the data vectors,
+
+$$
+\sigma_x^2 = \sum_i x_i^2
+$$
+and
+$$
+\sigma_y^2 = \sum_i y_i^2.
+$$
+The squares of the standard deviations, $\sigma_x^2$ and $\sigma_y^2$ also have special names, namely
+the variance.
+
+Now if we assume that we have already subtracted the means and also divided by the standard deviations,
+we can set $\sum_i x_i^2 = 1$ in the normal equations. Since we already know that $b=0$, we find that
+
+$$
+a = \sum_i x_i y_i.
+$$
+The right hand side should be familiar from linear algebra - it is the inner product between the two data vectors
+$$
+\begin{eqnarray*}
+\mathbf{x} & = & \left[ \begin{array}{c}
+x_1 \\ \vdots \\x_n \end{array} \right]\\
+\mathbf{y} & = & \left[ \begin{array}{c}
+y_1 \\ \vdots \\y_n \end{array} \right].
+\end{eqnarray*}
+$$
+But we have already normalized the two data vectors so that their respective lengths are 1. Therefore
+the inner product equals the cosine of the angle between the two vectors.
+
+We have therefore arrived at an important conclusion:
+
+*If the data of two data vectors are normalized by first subtracting their means and then divide by their
+lengths (standard deviations), the slope and intercept of the best linear fit have a special meanings.
+intercept $b = 0$, i.e. the best linear fit passes through the origin, and the slope equals the cosine of
+the angle between the two data vectors.
+
+Let's reflect on the meaning of the slope. The cosine is a measure of how much the two vectors differ from
+one another. If the angle between the two is zero, the cosine is either 1 or -1. If the two vectors are
+perpendicular, the two vectors form a right angle and the cosine is 0.
+
+If the cosine of the angle is either +1 or -1 we say that the two datasets are perfectly correlated. In general,
+if two dataset are positively correlated ($a>0$(not necessarily perfectly) it means that if the values of one dataset
+has an upward trend, the values of the other dataset will also have an upward trend. On the other hand,
+if the two datasets are negatively correlated $a<0$ it means that if the values of one dataset has an upward
+trend, the other dataset will have a downward trend.
+
+The cosine of the angle between the two datasets is called the *correlation coefficient*. It is also
+called *Pearson's* correlation coefficient after Karl Pearson who developed it from ideas proposed by Francis
+Galton and actually first formulated by Auguste Bravais about 40 years earlier. We'll stick to calling
+it the *correlation coefficient*!
+
+:::{.callout-note}
+## The cosine measure.
+
+In machine learning the cosine of the angle between two vectors are commonly used as a measure of how much
+the two vectors differ from one another.
+:::
+
+The formula for the correlation coefficient between two variables, $x$ and $y$, is given by
+$$
+r_{xy} = \frac{ \sum_{i=1}^n (x_i - \bar{x})((y_i - \bar{y}) }
+         { \sqrt{ \sum_{i=1}^n (x_i - \bar{x})^2} \times \sqrt{ \sum_{i=1}^n (y_i - \bar{y})^2} },
+$$
+where the means are given by,
+$$
+\bar{x} = \frac1n\sum_{i=1}^n x_i,
+$$
+$$
+\bar{y} = \frac1n \sum_{i=1}^n y_i.
+$$
+
+We'll now put everything together in code.
+
+```{python}
+import numpy as np
+from scipy import stats
+from scipy.stats import uniform, pearsonr
+
+from numpy.random import Generator, PCG64
+
+seed = 12311 # This is a random seed so that we can reproduce the results from one run to the next
+
+numpy_randomGen = Generator(PCG64(seed))
+scipy_randomGen = uniform
+scipy_randomGen.random_state=numpy_randomGen
+
+A = 0.33  # The chosen slope of the linear relationship
+B = 1.0  # The chosen intercept of the linear relationship
+NOISE = 0.1 # This determined the amount of noise we add to the simulation
+
+# Generate 50 random samples for x.
+x = scipy_randomGen.rvs(size=50)
+
+# Generate the corresponding values for y.
+# Noise is added to ensure that the linear relationship is not exact.
+y = A*x + B + NOISE*scipy_randomGen.rvs(size=50)
+
+# Normalize the data
+# Subtract the means
+x = x - np.mean(x)
+y = y - np.mean(y)
+
+# Calulate the standard deviation using scipy's tsdt() method and normalize
+std_x = stats.tstd(x)
+std_y = stats.tstd(y)
+x = x/std_x
+y = y/std_y
+
+
+# Calculate the best linear fit
+slope, intercept, _, _, _ = stats.linregress(x,y)
+x_fit = np.array([-2, 2])
+y_fit = slope*x_fit + intercept
+
+# The coordinates for drawing the best linear fit.
+x_fit = np.array([-2, 2])
+y_fit = slope*x_fit + intercept
+
+# Plot the result
+from matplotlib import pyplot as plt
+fig, ax = plt.subplots(1, 1)
+ax.plot(x,y,'.r', x_fit, y_fit, 'b')
+
+# We are particularly interested in the values of the slope and intersect
+# We also want to compare the slope with the correlation coefficient as calculated
+corr = pearsonr(x,y) # The correlation coefficient
+
+print(' intercept: ', intercept, '\n', 'slope: ', slope, '\n', 'corr coeff: ', corr.statistic)
+```
+This is close enough to the theoretical values to convince the most sceptical among us!
+
+### Example: Is Athletic Ability Directly Related to Intelligence? {#sec-athletic-iq-ranks}
+
+Question: **Is there correlation between the two variables?**
+
+A scientist often wants to know whether or not two characteristics go together,
+that is, whether or not they are correlated (that is, related or associated).
+For example, do youths with high athletic ability tend to also have high I.Q.s?
+
+Hypothetical physical-education scores of a group of ten high-school boys are
+shown in @tbl-physical-mental, ordered from high to low, along with the I.Q.
+score for each boy. The ranks for each student's athletic and I.Q. scores are
+then shown in the third and fourth columns:
+
+|  Athletic Score    | I.Q. Score     | Athletic Rank     | I.Q.Rank     |
+|--------------------|----------------|-------------------|--------------|
+| 97                 | 114            | 1                 | 3            |
+| 94                 | 120            | 2                 | 1            |
+| 93                 | 107            | 3                 | 7            |
+| 90                 | 113            | 4                 | 4            |
+| 87                 | 118            | 5                 | 2            |
+| 86                 | 101            | 6                 | 8            |
+| 86                 | 109            | 7                 | 6            |
+| 85                 | 110            | 8                 | 5            |
+| 81                 | 100            | 9                 | 9            |
+| 76                 | 99             | 10                | 10           |
+
+: Hypothetical athletic and i.q. scores for high school boys {#tbl-physical-mental}
+
+From a casual inspection of the Athletic scores and the IQ scores it appears as if there is indeed a correlation or
+association. But we don't need to guess, we can calculated the correlation coefficient.
+
+```{python}
+import numpy as np
+from scipy.stats import pearsonr
+
+athl_score = np.array([
+97, 94, 93, 90, 87, 86, 86, 85, 81, 76
+])
+iq_score = np.array([
+114, 120, 107, 113, 118, 101, 109, 110, 100, 99
+])
+
+corr = pearsonr(athl_score, iq_score)
+print('correlation: ', corr.statistic)
+```
+The correlation coefficient indicates that there might indeed be a strong (positive) relationship between athletic
+ability and I.Q. The reason for the cautionary note is that this is a tiny sample and there might be many other reasons
+for the relationship, such as recruitment policy, etc.
+
+This brings us naturally to a discussion of causality.
+
+## Causality
+
+Before commencing on a discussion of causality proper, let's summarize what we have just learned. Our discussion above
+centered around *linear correlation*. We developed the notion of the *correlation coefficient* which is a measure of
+how well two variables are linearly correlated. The question then arises what about more general associations between
+variables, such a nonlinear relationships between variables? On that, linear correlation has nothing to contribute.
+If there is a nonlinear association between variables it will not possible to determine that using linear correlation.
+
+Then there is the matter of statistical dependence or independence. Intuitively, two variables are statistically
+independent if knowledge about one variable does not tell us anything about the other variable. Here a formula makes it
+clear. $x$ and $y$ are statistically independent if
+$$
+P(x | y) = P(x).
+$$
+This means that the probability distribution of $x$ remains the same, no matter what the value of $y$ might be. One cannot
+do inference given statistically independent variables.
+
+Are variables that are statistically independent, linearly uncorrelated? The answer is, yes, because there is no
+association between the variables, linear or nonlinear. On the other hand, are variables that are statistically dependent,
+also linearly correlated? In this case the answer is, no. There might be a nonlinear relationship between the variables,
+that is linearly uncorrelated. We an easily construct a simple example.
+
+```{python}
+import numpy as np
+from scipy import stats
+from scipy.stats import uniform, pearsonr
+
+from numpy.random import Generator, PCG64
+
+seed = 12311 # This is a random seed so that we can reproduce the results from one run to the next
+
+numpy_randomGen = Generator(PCG64(seed))
+scipy_randomGen = uniform
+scipy_randomGen.random_state=numpy_randomGen
+
+NOISE = 0.1 # This determined the amount of noise we add to the simulation
+
+# Generate data
+t = np.linspace(0, 2*np.pi, 101)
+x = np.cos(t) + NOISE*scipy_randomGen.rvs(size=101)
+y = np.sin(t) + NOISE*scipy_randomGen.rvs(size=101)
+
+slope, intercept, _, _, _ = stats.linregress(x,y)
+
+print(' slope: ', slope, '\n', 'intercept: ', intercept)
+
+# The coordinates for drawing the best linear fit.
+x_fit = np.array([-1.1, 1.1])
+y_fit = slope*x_fit + intercept
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(1, 1)
+ax.plot(x,y,'.r', x_fit, y_fit, 'b')
+
+# The correlation coefficient
+corr = pearsonr(x, y)
+print('corr coeff: ', corr.statistic)
+
+```
+Although we can learn much from the value of $y$ by knowing the value of $x$, the correlation coefficient is tiny
+and gives no hint of the strong association between the two variables. This example shows us that looking for
+*linear* associations do us no good if we are dealing with nonlinear associations. In practice of course, the most
+interesting associations are nonlinear, requiring techniques that are able to uncover these relationships. That is
+exactly what the huge breakthroughs since about 2012 deep neural networks provided for us. You can think of the
+different (nonlinear) layers of a deep neural network as a nonlinear transformation of the data into a linear
+relationship where we can apply our linear techniques.
+
+In statistics, everything used to be about *inference*, based on the association between variables. The goal was to
+extract the maximum amount of information possible from the data. To give an idea of just how wildly successful this
+program has been, one has only to refer to the thoroughly impressive generative methods, such as ChatGPT, that are solely
+based on data. So successful has this been that it is becoming increasingly difficult to distinguish between the
+generative model and a human response. At first sight it would appear as if we have arrived at true machine intelligence.
+But appearances can be misleading, and humans are gullible. One should not mistake a huge, perfect memory with intelligence
+of understanding. The generative model is just as likely to repeat the latest conspiracy theory as providing useful advice.
+Granted, this depends on the prevalence of data in specific fields. In some areas conspiracy theories are more prevalent
+than the genuine article, in which case the generative model is more likely to regurgitate the nonsense than the sense.
+We don't mean to disparage generative models - their achievements are spectacular. And there is no doubt that it will change
+the general landscape in significant ways. To quote a lost author (sadly lost to me), it is not hard to envisage a future
+where the principle task of the programmer will be to adapt a generative model to specific situations. Something like,
+get rid of your conspiracy theories, in this application they are not wellcome!
+
+What lies beyond data, what are the questions we cannot answer from data?
+
+### Example: A statistical view.
+
+Many years ago a statistician friend of mine made the comment that we know that the sun will rise tomorrow morining
+because we have watched it rise for thousands, if not millions, of years. As a budding applied mathematician who knew
+about gravity and things like that, the comment bothered me. Apart from the fact that it probably reflected a specific
+philosophical view of the nature of science, I was hard-fetched to find an adequate response.
+
+Today my response will perhaps be along the lines of, there is a reason, beyond the observations, why the sun rises
+every morning. And if we ignore the reasons, we loose all understanding, and all the benefits that go with understanding.
+
+With data there *must* be a reason to *why* we observe what we observe. If there is no reason, no coherent mechanism that
+that produces the data, there is little if anything the data will tell us. Of course, the mechanism is often too
+complex to understand in any useful way. In that case we have no choice but to try and learn as much as we can from the
+data. But that inevitably limits our understanding.
+
+It is not unreasonable to ask the question whether there is any reason to believe that the information that is needed
+to answer a specific questions, is actually present in the data. Practical experience has taught us that one should indeed
+ask this question. But it has also taught us that a answer is not always easily forthcoming. Often, the information is
+disguised and only present via proxy.
+
+The next example is one where the information really is not in the data.
+
+### Example: A shoe sale.
+
+A potential client approached our company asking for a model that will optimize their profit putting their unsold shoes
+on sale at season's end. The problem is clear: If they give the shoes away, they will get rid of them but without any profit.
+If they charge too much, they won't sell any and will be left with a lot of surplus shoes, and no profit. Our sales people
+said sure, just give us your historical data as far back as you can of prices versus sales. Our clever experts will
+develop a model in no time. Wrong! The clever experts had no idea how to approach this problem. Fortunately they could
+refer the sales people to The Book of Why, where Judea Pearl and Dana Mackenzie wrote, *Many scientists have been quite
+traumatized to learn that none of the methods they learned in statistics will answer a simple question like "What happens
+if we double the price"?* Or, as in our case, half the price.
+
+Note that nothing in the historical data informs us about the outcome of our actions. Last time when the price was half
+the present price, may have been before inflation (or covid!). Or all the other stores has an even lower or higher
+price. The best-known way, and still the prevalent approach, to answer questions like these, is through carefully controlled
+experiments. However, there is another way due the more recent studies into cause-effect relationships - *causality* -
+and that is to develop a model of consumer behaviour, including present marketing conditions. The next step is to find
+surrogate data that can serve as a proxy for the real thing (see Pearl and Mackenzie).
+
+### Example: Covid
+
+During the Covid pandemic there was an association between the number of Covid tests that were performed and the number
+of positive test cases. The more tests that were performed, the more positive test cases were recorded. Also, an association
+was recorded between Civid-related deaths and the number of tests that were performed. That did make
+a politician too happy - it reflected badly on the administration. So, the politician decided to intervene and stop the
+Covid tests. Sure enough the positive test cases dropped to zero.
+
+The politician was therefore right in asserting that there was a causal relationship between the tests and the positive
+test cases. However, the number of deaths due to Covid showed no reaction to the stopping of the rests. More importantly,
+the number of Covid-related deaths did not show any response due to the stopping of the tests. Not surprisingly, this shows
+that, although there was an association between the number of tests and Covid-related deaths, there is no causual relationship -
+the tests did not cause the Covid-related deaths.
+
+The previous examples are all rooted in *causality* - the concept that was for a long time banned from statistics.
+Although most of us have a pretty good idea what is meant by *causality*, a precise definition alludes us; it might be
+impossible not to end up in a circular argument.
+We'll therefore treat it as a primitive concept that we intuitively understand, much like points or lines in geometry.
+In short, we assume that you know what we are talking about when we talk about *causality*.
+
+Let's now look at the keys ideas of causality as illustrated by the previous examples. A very readable and popular introduction by one
+of the pioneers of the field is, The Book of Why.
+
+### Association
+
+*Association* is just that, from data we learn that if we observe the value of some variable, we can get a quantitative
+idea of what the value of another, associated, variable can be. There is no understanding, no explanation of how or why this
+might have come about. In order to understand, to explain, to establish causal relationships, one has to understand
+the *why* of the observed data. That is, we need to understand the mechanism that produced the data.
+Even if it is not in  detail, we need to have some understanding of it.
+
+And to do this, we need to look outside the data.
+
+
+One cannot explain gravitation by observing at what time the sun rises in the morning. We cannot build
+an optimum sales model, based on the historical data of sales prices and sales.
+
+### Intervention
+
+In order to make any progress beyond learning from data, we have, not only to observe, but also to act, to intervene.
+We need to move beyond being a computer that consumes the dat we are given, to being human, to take charge. 
+
+
+
+$$
+P(x|y) = P(x)
+$$
+then also
+$$
+P(y|x) = P(y).
+$$
+
+Now things are about to change (for us, the ideas have been around for quite a while!). First of all we need to make a
+distinction about *association* and *causality*. If we talk about the association, better perhaps, *correlation* in general
+(not linear) terms, between variables, we are not allowed to infer any *causal* relationship between the variables.
+
+
+
+<!---
+## Stuff
+
+At the beginning everything was just about the correlation between variables. Perhaps better to explain
+what we mean by this through an example.
+
+Central to commercial banks is the granting of loans to their clients. If they grant a loan that
+a client cannot afford to pay back, the bank will loose money. And that is definitely not part of their
+business plan. On the other hand, the interest that client pay on their loans is a major source of
+income for banks. Banks, therefore, can also not afford to not grant loans. The trick is to assess
+the client's ability to pay back a loan. But how do they go about doing this? Without going into any
+details of the development of credit risk models, we can make general assertions. First of all, for
+every one of their clients, the bank has a client transaction history as well as demographic
+information. This can be supplemented by credit bureau data - the data that credit bureaus gather
+for all individuals about all their credit transactions. The idea is to use this data to assess
+the credit-worthiness of a client. In technical terms, the bank calculates the probability of default
+(PD) for a given client, given all the information available for that client. If the  PD is higher than
+a default value (set by management, depending on the exposure appetite of the institution), the loan
+application will be denied. If it is low enough, the loan will be approved (the amount might be
+determined by a second, affordability, model.
+
+The PD model is developed by investigating all loans granted by the bank in the past. Some of them
+defaulted, the majority did not. The bank therefore has a database available of the Known Good Bad (KGB)
+clients. And for each of these clients the historical and demographic data is
+available. If the new client has be assessed, the model determines the extent to
+which this client's data is correlated with the KGB clients. If the client's data is strongly
+correlated with the known defaulters the loan will be declined.
+
+The model is therefore based on **correlation** - to what extent is the data of the loan applicant
+correlated with the data used to train the credit model. At this level, the specifics of the model
+is irrelevant, all rely on the correlation between the applicant's data and the KGB data.
+
+This idea is immensely powerful. It allows object recognition in images and drives ChatGPT, for example.
+In fact, this idea is so powerful that everything else was banned from statistics for a very long time.
+-->
+<!--- Add references to Pearl -->
+
+<!--- By the way, this points to one of the limitations of a sampling approach.>
+
+
+<!---
 ## Preview
 
 The correlation (speaking in a loose way for now) between two variables
@@ -887,10 +1624,11 @@ selected randomly.
 Finally, we COUNT the trials in which the sum of the products of the
 randomly-paired athletic and I.Q. scores equals or exceeds the sum of
 the products in the observed data.
-
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
 
+<!---
 ```matlab
 ' Program file: "correlation_causation_03.rss"
 
@@ -932,10 +1670,11 @@ ATHLETES & IQ SCORES
 
 We see that obtaining a chance trial result as great as that observed
 was rare. RESAMPLING STATS will calculate this proportion for us:
-
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
 
+<!---
 ```matlab
 ' Program file: "ability3.rss"
 
@@ -1063,8 +1802,11 @@ do as follows (program "inp10"):
 
 The following program in RESAMPLING STATS provides the solution:
 
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
+
+<!---
 
 ```matlab
 ' Program file: "correlation_causation_05.rss"
@@ -1122,7 +1864,7 @@ Local Yes   37       20
 Local No    15        6
 -->
 
-
+<!---
 Table 23-9
 
 **Results of Observed Sample For Problem "Beerpoll"**
@@ -1233,8 +1975,11 @@ questions, we check how often the random trials had a difference
 (between consistent and inconsistent responses) as great as 24, the
 value in the observed sample.
 
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
+
+<!---
 
 ```matlab
 ' Program file: "beerpoll.rss"
@@ -1423,8 +2168,11 @@ hence fewer) "streaks" and "slumps" than would result by chance.
 
 In RESAMPLING STATS, we can do this experiment 1000 times.
 
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
+
+<!---
 
 ```matlab
 ' Program file: "sluggo.rss"
@@ -1619,8 +2367,11 @@ a more "sophisticated" measure, the correlation coefficient.)
 The data for 18 randomly-selected players in the 1989 season are as
 follows, as they would appear in the first lines of the program.
 
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
+
+<!---
 
 ```matlab
 ' Program file: "correlation_causation_08.rss"
@@ -1705,7 +2456,7 @@ would be adapted from Noreen (1989), and otherwise, what Noreen (1990) might
 be.
 -->
 
-
+<!---
 Exercise: Should the algorithm of non-computer resampling steps be
 similar to the algorithm for I.Q. and athletic ability shown in the
 text? One can also work with the correlation coefficient rather then the
@@ -1715,3 +2466,4 @@ sum-of-products method, and expect to get the same result.
     problem.
 
 2.  Write a computer program to implement those steps.
+-->
