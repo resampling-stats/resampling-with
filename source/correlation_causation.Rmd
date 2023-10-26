@@ -22,23 +22,6 @@ source("_common.R")
 
 # Correlation and Causation
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/27-Chap-23.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
 ## Preview
 
 In this chapter we'll reflect on the basic principles behind resampling in particular, and statistics or probability in
@@ -162,7 +145,7 @@ although we'll mainly be interested in the second example.
     $$
     In contrast with the previous system of equations that did not have any solutions in the strict sense, this one suffers
     from the opposite problem - it has an infinite number of solutions. Yet it is of the form of our generic system with
-    $ A = [1 1]$, $\mathbf{x} = \left[ \begin{array}{c}x\\y \end{array} \right]$ and $\mathbf{y} = [0]$. The problem now is
+    $A = [1 1]$, $\mathbf{x} = \left[ \begin{array}{c}x\\y \end{array} \right]$ and $\mathbf{y} = [0]$. The problem now is
     to identify a natural solution among the infinity of available solutions. To find this solution one has to calculate
     the generalized inverse that will take us too far from our core focus. But it turns out that it can again be cast as an
     optimization problem. In this case we are looking for the solution with the smallest norm. In this case it is given by
