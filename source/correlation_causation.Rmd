@@ -512,6 +512,13 @@ A scientist often wants to know whether or not two characteristics go together,
 that is, whether or not they are correlated (that is, related or associated).
 For example, do youths with high athletic ability tend to also have high I.Q.s?
 
+:::{.callout-note}
+## The data.
+
+This data is clearly hypothetical and should not be used to draw any important conclusions. For one, it is a very small
+dataset. For larger datasets it might well be that the scores follow a different distribution.
+:::
+
 Hypothetical physical-education scores of a group of ten high-school boys are
 shown in @tbl-physical-mental, ordered from high to low, along with the I.Q.
 score for each boy. The ranks for each student's athletic and I.Q. scores are
@@ -530,9 +537,9 @@ then shown in the third and fourth columns:
 | 81                 | 100            | 9                 | 9            |
 | 76                 | 99             | 10                | 10           |
 
-: Hypothetical athletic and i.q. scores for high school boys {#tbl-physical-mental}
+: Hypothetical athletic and I.Q. scores for high school boys {#tbl-physical-mental}
 
-From a casual inspection of the Athletic scores and the IQ scores it appears as if there is indeed a correlation or
+From a casual inspection of the Athletic scores and the I.Q. scores it appears as if there is indeed a correlation or
 association. But we don't need to guess, we can calculated the correlation coefficient.
 
 ```{python}
@@ -642,8 +649,10 @@ What lies beyond data, what are the questions we cannot answer from data?
 
 Many years ago a statistician friend of mine made the comment that we know that the sun will rise tomorrow morining
 because we have watched it rise for thousands, if not millions, of years. As a budding applied mathematician who knew
-about gravity and things like that, the comment bothered me. Apart from the fact that it probably reflected a specific
-philosophical view of the nature of science, I was hard-fetched to find an adequate response.
+about gravity, the elliptic orbits of the planets and things like that, the comment was bothersome. Apart from the fact
+that it probably reflected a specific philosophical view of the nature of science, I was hard-pressed to find an adequate
+response. Isn't science just about observation, developing models to fit the facts, to be discarded when it comes into
+conflict with the facts and replaced with another ephemeral model?
 
 Today my response will perhaps be along the lines of, there is a reason, beyond the observations, why the sun rises
 every morning. And if we ignore the reasons, we loose all understanding, and all the benefits that go with understanding.
@@ -652,6 +661,10 @@ With data there *must* be a reason to *why* we observe what we observe. If there
 that produces the data, there is little if anything the data will tell us. Of course, the mechanism is often too
 complex to understand in any useful way. In that case we have no choice but to try and learn as much as we can from the
 data. But that inevitably limits our understanding.
+
+It does sounds odd, though, that one should discard hard-earned knowledge and submit to the limitations of data. Our
+understanding of gravity, that earth revolves around the sun and spins on its own axis, did not come without a considerable
+effort, and price. Just ask Copernicus or Galileo. No reason to pretend that we don't need it!
 
 It is not unreasonable to ask the question whether there is any reason to believe that the information that is needed
 to answer a specific questions, is actually present in the data. Practical experience has taught us that one should indeed
@@ -718,7 +731,7 @@ an optimum sales model, based on the historical data of sales prices and sales.
 ### Intervention
 
 In order to make any progress beyond learning from data, we have, not only to observe, but also to act, to intervene.
-We need to move beyond being a computer that consumes the dat we are given, to being human, to take charge. 
+We need to move beyond being a computer that consumes the dat we are given, to being human, to take charge.
 
 
 
