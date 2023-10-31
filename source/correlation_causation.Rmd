@@ -714,22 +714,62 @@ an optimum sales model, based on the historical data of sales prices and sales.
 ### Intervention
 
 In order to make any progress beyond learning from data, we have, not only to observe, but also to act, to intervene.
-We need to move beyond being a computer that consumes the dat we are given, to being human, to take charge.
+We need to move beyond being a computer that consumes the data we are given, to being human, to take charge. By
+*intervention* we mean that we are actively 'turning a knob', and see how that affects the value that we are interested
+in. If the active intervention changes the value of the observation, we conclude a causal effect. Turning the knob
+*causes* the value to change. If you press down on the accelerator of you car, it goes faster. Your action causes the
+increase in speed.
 
+Note that this is quite different from, say, linear regression that might show the relationship between how hard you
+press on the accelerator and how fast you go. Given how hard one presses, it is possible to *infer* the speed for that
+pressure. However, it is not possible to conclude any causal relationship. For that we need to *understand* the
+relationship between force and acceleration.
 
+It is not possible to infer causal relationships from data, mainly due to the possibility of *confounders* - the common
+cause of two observed variables. We already alluded to it when we examined the strong relationship between I.Q.
+and athletic ability. One cannot conclude that the one is the cause of the other because of confounders. It is quite
+possible that the relationship is caused by the recruitment program - only talented athletes with a high I.Q. are
+recruited  with the individuals that score high on both abilities the most sought after. There may also be other
+confounders.
 
-$$
-P(x|y) = P(x)
-$$
-then also
-$$
-P(y|x) = P(y).
-$$
+One way one can assess whether athletic ability causes a high I.Q. is to study an intervention in terms of an injury
+and see whether it has a measurable effect on I.Q.
 
-Now things are about to change (for us, the ideas have been around for quite a while!). First of all we need to make a
-distinction about *association* and *causality*. If we talk about the association, better perhaps, *correlation* in general
-(not linear) terms, between variables, we are not allowed to infer any *causal* relationship between the variables.
+### Counterfactuals
 
+Pearl calls  this the highest level of causation. At this level one starts to ask questions about situations that have
+not been observed. Even situations that cannot be observed. One such question, and of particular importance for someone
+my age, is, what is my life expectancy? It is really important to know if you need to survive after retirement on the
+money you saved during your working life. But you have no observations to guide you. Note that this question is very
+different from the one that insurance companies ask their actuaries to calculate: what is the expected or average
+life expectancy of someone who doesn't smoke or drink excessively, has no known health issues and does not engage in
+any high-risk sport, etc. In that case one can use lots of data and come with an estimate of the expected life
+expectancy for different *categories* of the population. For me as individual, it is just about meaningless.
+
+Physicists, among others, ask and answer counterfactual questions all the time. We don't need to observe a particular
+planet orbiting a particular star to be able to predict what its position will be a thousand years from now. In this case,
+as in many others, a few data points together with a deep understanding of the processes involved, give us the answer.
+
+### Summary
+
+"In God we trust. All others [must] have data". This is the provocative title of one of the chapters in The Emperor of
+All Maladies. A Biography of Cancer by Siddhartha Mukherjee. In this chapter he addresses the question why the
+radical surgery on carcinoma of the  breast followed the principle that "the disease, even in its early stage, is such
+a formidable enemy that it is my duty to carry out as radical an operation as the ... anatomy permits",  persisted for
+so long. Tragically, proponents of radical surgery refused to run clinical trials, perhaps in fear of what the data
+would tell them. When trials were eventually run, the results were unambiguous, any surgery beyond local surgery holds
+no benefits. And countless number of women were maimed.
+
+This example illustrates both the importance of data, as well as determining causal effects. What, if any, were
+the benefits of  radical surgery?
+
+Extracting associations from data is powerful. However, it is also limited - there are questions that cannot be
+answered just from the data. The information just isn't always available in the data. Instead of despairing, this author
+takes comfort out of it. It means that there are processes that are either hard or impossible to automate. Human ingenuity
+is required. Instead of describing, we also have to understand.
+
+The takeaway message is, perhaps, *think* carefully about your data. Try and *understand* as much as is humanly possible
+about mechanisms that produced the data.
 
 
 <!---
