@@ -25,24 +25,25 @@ source("_common.R")
 ## Preview
 
 In this chapter we'll reflect on the basic principles behind resampling in particular, and statistics or probability in
-general. One way of approaching this is to ask, Is there anything that we cannot do with resampling?
+general. One way of approaching this is to ask: *Is there anything that we cannot do with resampling?*
 The answer is an emphatic *yes*! In order to be able to sample, the probability distributions to sample
-*from* has to be available. There are many situations where this is not available. Any time a manager
-at a financial institution asks you whether a particular client is likely to default, if granted a loan,
-it takes you outside the realm of sampling. In this case you'll  need to build a probabilistic *model*
+*from* have to be available. There are many situations where they are not. Any time a manager
+at a financial institution asks whether a particular client is likely to default, if granted a loan,
+it takes you outside the realm of sampling. In this case you'll need to build a probabilistic *model*
 that will estimate the *probability of default*.
 
-We'll return to this question and explain how one can develop models that answer questions like these.
+We'll later explain how to develop models that answer questions like these.
 
-Another, more general, question one can ask is whether everything one can ever want to know, can in principle be learned from data.
-In this case the answer is not so straightforward. Ultimately, it is a deep philosophical question, touching on the very
-foundations of science in general; one that we'll not pursue.
-However, we can approach this question from the data point of view and examine examples where data falls short.
+Another, more general question is whether everything one would ever want to know can, in principle, be learned from data.
+In this case the answer is not so straightforward. Ultimately, that is a deep philosophical question, touching on the very
+foundations of science in general; one we will not pursue.
+However, we will consider the limitations we are subject to when available data is limited.
 
-The topic of this chapter is to understand the limitations of resampling or data in general, and give an indication of what approaches
-are available beyond resampling.
+The aim of this chapter is to better understand the limitations of
+resampling, or data, in general, and to give an indication of which
+approaches are available beyond resampling.
 
-First we need to provide some background.
+But, first, we need to provide some background.
 
 ## An excursion into linear algebra.
 
@@ -59,11 +60,11 @@ $$
 A \mathbf{x} = \mathbf{y},
 $$
 where $A$ is an $m\times n$ matrix, $\mathbf{x}$ is an $n\times 1$ (columns) vector, and $\mathbf{y}$ is an $m\times 1$
-(column) vector. Note that we want to find a solution for any such system - there are no conditions other than that the
-number of rows of $\mathbf{x}$ must be the same as the number of columns of $A$, and the number of rows of $\mathbf{y}
+(column) vector. Note that we want to find a solution for any such system---there are no conditions other than that the
+number of rows of $\mathbf{x}$ must be the same as the number of columns of $A$, and the number of rows of $\mathbf{y}$
 must be the same as the number of rows of $A$. Note in particular that $m$ need not equal $n$, and if $m=n$ we don't
-require that the determinant of $A$ be non-zero. Let's give examples of the typical situations that one encounters in general,
-although we'll mainly be interested in the second example.
+require that the determinant of $A$ be non-zero. Let's consider examples of typical situations that arise,
+with emphasis on the second example.
 
 
 1.  The first example represents all systems of equations where $m=n$ with non-zero determinant. In all these cases the equation is *solvable* by perhaps using
@@ -78,7 +79,7 @@ although we'll mainly be interested in the second example.
     x &=& 1.1\\
     x &=& 1.2.
     \end{eqnarray*}
-    This system clearly has a problem - $x$ cannot simultaneously equal 1, 1.1, and 1.2. The system has no solution!,
+    This system clearly has a problem - $x$ cannot simultaneously equal 1, 1.1, and 1.2. The system has no solution (!)---at least
     not in the ordinary sense. It turns out that this system is of the form of our generic systems of equations. We see
     this by rewriting it in matrix form,
 
@@ -144,7 +145,7 @@ although we'll mainly be interested in the second example.
     x + y = 1.
     $$
     In contrast with the previous system of equations that did not have any solutions in the strict sense, this one suffers
-    from the opposite problem - it has an infinite number of solutions. Yet it is of the form of our generic system with
+    from the opposite problem—it has an infinite number of solutions. Yet it is of the form of our generic system with
     $A = [1\; 1]$, $\mathbf{x} = \left[ \begin{array}{c}x\\y \end{array} \right]$ and $\mathbf{y} = [1]$. The problem now is
     to identify a natural solution among the infinity of available solutions. To find this solution one has to calculate
     the generalized inverse that will take us too far from our core focus. But it turns out that it can again be cast as an
@@ -290,17 +291,18 @@ $$
 ## Linear correlation
 
 Later in this chapter, we'll discuss the general correlation or association between variables.  Note that we need
-aassociated or correlated variables in order to do inference. In general terms it means that one can learn something
-about one variable by observing the other. The *simplest*  is the linear correlation where the relationship is given by,
+associated or correlated variables in order to do inference. In general terms it means that you can learn something
+about one variable by observing the other. The *simplest*  is the linear correlation where the relationship for two variables, $x$ and $y$, is given by
 
-$$ y = ax + b,$$
-for two variables $x$ and $y$. Clearly, given $a$ and $b$, we can infer the value of $y$ if we are
+$$ y = ax + b,$$.
+
+Clearly, given $a$ and $b$, we can infer the value of $y$ if we are
 given the value of $x$. If $a\not=0$ then we can also infer the value of $x$, given the value of $y$.
 In this case, one has an *exact* correlation - there is no doubt about the value of either of the variables,
 given the value of the other variable.
 
-In practice things are never this easy - if they were we would not have had any need for statistics of
-probability - variables are never exactly correlated. The best we can hope for is, if we know/observe the value of one
+In practice things are never this easy—if they were we would not have had any need for statistics of
+probability—variables are never exactly correlated. The best we can hope for is, if we know/observe the value of one
  variable, we can calculate an approximate value for the other variable.  The better the correlation between the two variables,
  the more accurate the estimate.
 
@@ -777,7 +779,7 @@ Many years ago a statistician friend of mine made the comment that we know that 
 because we have watched it rise for thousands, if not millions, of years. As a budding applied mathematician who knew
 about gravity, the elliptic orbits of the planets and things like that, the comment was bothersome. Apart from the fact
 that it probably reflected a specific philosophical view of the nature of science, I was hard-pressed to find an adequate
-response. because, isn't science just about observation, developing models to fit the facts, to be discarded when it comes into
+response. Because, isn't science just about observation, developing models to fit the facts, to be discarded when it comes into
 conflict with the facts and replaced with another ephemeral model?
 
 Today my response will perhaps be along the lines of, there is a reason, beyond the observations, why the sun rises
@@ -903,9 +905,9 @@ of a situation never obseved.
 
 ### Summary
 
-"In God we trust. All others [must] have data". This is the provocative title of one of the chapters in The Emperor of
-All Maladies. A Biography of Cancer by Siddhartha Mukherjee. In this chapter he addresses the question why the
-radical surgery on carcinoma of the  breast followed the principle that "the disease, even in its early stage, is such
+"In God we trust. All others [must] have data". This quote by W. E. Deming is the provocative title of one of the chapters in *The Emperor of
+All Maladies: A Biography of Cancer* by Siddhartha Mukherjee. There he addresses the question of why the
+radical surgery on carcinoma of the breast followed the principle that "the disease, even in its early stage, is such
 a formidable enemy that it is my duty to carry out as radical an operation as the ... anatomy permits",  persisted for
 so long. Tragically, proponents of radical surgery refused to run clinical trials, perhaps in fear of what the data
 would tell them. When trials were eventually run, the results were unambiguous, any surgery beyond local surgery holds
