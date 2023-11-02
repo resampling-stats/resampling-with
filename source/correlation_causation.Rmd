@@ -1,22 +1,19 @@
- ---
+---
+resampling_with:
+    ed2_fname: 27-Chap-23
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.6
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: 27-Chap-23
 ---
 
 ```{r setup, include=FALSE}
@@ -25,24 +22,950 @@ source("_common.R")
 
 # Correlation and Causation {#sec-correlation-causation}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
+## Preview
 
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/27-Chap-23.pdf).
+In this chapter we'll reflect on the basic principles behind resampling in particular, and statistics or probability in
+general. One way of approaching this is to ask: *Is there anything that we cannot do with resampling?*
+The answer is an emphatic *yes*! In order to be able to sample, the probability distributions to sample
+*from* have to be available. There are many situations where they are not. Any time a manager
+at a financial institution asks whether a particular client is likely to default, if granted a loan,
+it takes you outside the realm of sampling. In this case you'll need to build a probabilistic *model*
+that will estimate the *probability of default*.
 
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
+We'll later explain how to develop models that answer questions like these.
 
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
+Another, more general question is whether everything one would ever want to know can, in principle, be learned from data.
+In this case the answer is not so straightforward. Ultimately, that is a deep philosophical question, touching on the very
+foundations of science in general; one we will not pursue.
+However, we will consider the limitations we are subject to when available data is limited.
 
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
+The aim of this chapter is to better understand the limitations of
+resampling, or data, in general, and to give an indication of which
+approaches are available beyond resampling.
+
+But, first, we need to provide some background.
+
+## An excursion into linear algebra.
+
+:::{.callout-note}
+## On solving linear systems of equations.
+
+If you are familiar with the normal equations for solving linear least squares equations, you can safely skip this
+section.
+:::
+
+Let's set it as our goal to solve any linear system of equations that can be written in matrix form as
+
+$$
+A \mathbf{x} = \mathbf{y},
+$$
+where $A$ is an $m\times n$ matrix, $\mathbf{x}$ is an $n\times 1$ (columns) vector, and $\mathbf{y}$ is an $m\times 1$
+(column) vector. Note that we want to find a solution for any such system---there are no conditions other than that the
+number of rows of $\mathbf{x}$ must be the same as the number of columns of $A$, and the number of rows of $\mathbf{y}$
+must be the same as the number of rows of $A$. Note in particular that $m$ need not equal $n$, and if $m=n$ we don't
+require that the determinant of $A$ be non-zero. Let's consider examples of typical situations that arise,
+with emphasis on the second example.
+
+
+1.  The first example represents all systems of equations where $m=n$ with non-zero determinant. In all these cases the equation is *solvable* by perhaps using
+    Gaussian elimination with partial pivoting. (Not Cramer's rule!)
+    $$ x = 1.$$
+    This equation is so trivial that we almost don't recognize it as an equation. In this case $A = [1]$, i.e.
+    a $1\times 1$ matrix, $\mathbf{x} = 1$ and $\mathbf{y} = 1$.
+2. The second example, and the one we are primarily interested in, represents all overdetermined systems of
+   linear equations, i.e. systems of equations where we have more equations than unknowns,
+    \begin{eqnarray*}
+    x &=& 1\\
+    x &=& 1.1\\
+    x &=& 1.2.
+    \end{eqnarray*}
+    This system clearly has a problem - $x$ cannot simultaneously equal 1, 1.1, and 1.2. The system has no solution (!)---at least
+    not in the ordinary sense. It turns out that this system is of the form of our generic systems of equations. We see
+    this by rewriting it in matrix form,
+
+   $$
+    \left[
+    \begin{array}{c}
+    1\\1\\1
+    \end{array}
+    \right]
+    x = \left[
+    \begin{array}{c}
+    1.0\\1.1\\1.2
+    \end{array}
+    \right].
+    $$
+    This equation represents all equations where there are more equations than unknowns, i.e. all *over determined* systems.
+    Since this system cannot be solved, we look
+    instead for a solution that best fits the system in a sense that we'll explain later. Please take our word for it, for now,
+     that the solution is given by the *normal equations*,
+    $$
+    A^T A \mathbf{x} = A^T \mathbf{y}.
+    $$
+    Here $A^T$ is the transpose of $A$, $A^TA$ is an $n\times n$, square, symmetrid matrix and $A^T \mathbf{y}$ is an $n\times 1$ (column)
+    vector. Moreover, if the columns of $A$ are linearly independent, it can be shown that $A^TA$ has an inverse,
+    a situation that is almost always true.
+
+    Before we continue with the example let's point out that this situation is common in practice. When Worsely measured the
+    height of the sun above the horizon 10 times, and got 10 different answers, he was in exactly this position. Recall
+    that he took the expedient to calculate the mean of his observations. Let's calculate the solution of our system
+    above using the normal equations,
+
+    $$
+    \left[ \begin{array}{ccc}
+    1 & 1 & 1 \end{array} \right]
+    \left[
+    \begin{array}{c}
+    1\\1\\1
+    \end{array}
+    \right]
+    x = \left[ \begin{array}{ccc}
+    1 & 1 & 1 \end{array} \right]
+    \left[
+    \begin{array}{c}
+    1\\1\\1
+    \end{array}
+    \right]
+    \left[
+    \begin{array}{c}
+    1.0\\1.1\\1.2
+    \end{array}
+    \right].
+    $$
+    Multiplying out we get
+
+    $$
+     3 x = 1.0+1.1+1.2,
+    $$
+    or
+    $$ x = \frac{1.0+1.1+1.2}{3}.$$
+    This is simply the mean of the 'measurements', exactly what Worsely used!
+3. This example represents all systems of equations where we have an infinite number of solutions.
+    $$
+    x + y = 1.
+    $$
+    In contrast with the previous system of equations that did not have any solutions in the strict sense, this one suffers
+    from the opposite problem—it has an infinite number of solutions. Yet it is of the form of our generic system with
+    $A = [1\; 1]$, $\mathbf{x} = \left[ \begin{array}{c}x\\y \end{array} \right]$ and $\mathbf{y} = [1]$. The problem now is
+    to identify a natural solution among the infinity of available solutions. To find this solution one has to calculate
+    the generalized inverse that will take us too far from our core focus. But it turns out that it can again be cast as an
+    optimization problem. In this case we are looking for the solution with the smallest norm. For this example it is given by
+    $$
+    \mathbf{x} = \left[\begin{array}{c} \frac12\\ \frac12\end{array} \right].
+    $$
+    It should be obvious that this is indeed a solution of the equation. What is more, it is the solution
+    that is the closest to the origin, i.e. out of the infinite number of solutions, this is the one with the
+    shortest length.
+
+
+Armed with the normal equations we can explain the linear correlation between variables.
+
+:::{.callout-note}
+## Deriving the normal equations.
+Let's return to the system of linear equations,
+
+$$
+A\mathbf{x} = \mathbf{y},
+$$
+where $A$ and $\mathbf{y}$ are known and $\mathbf{x}$ is unknown. $A$ is an $m\times n$
+matrix with $m>n$ and $\mathbf{y}$ is an $m$-dimensional vector. We therefore have more equations
+than unknowns. This means that we don't have a solution for the linear system, just as it is not possible
+for $x$ to be simultaneously, $x=1$ and $x=2$. There is no value for $\mathbf{x}$ that will satisfy the system of
+equations (unless we are very lucky such as in $x=1$ and $x=1$). We should therefore rather write,
+$$
+\mathbf{e} = A\mathbf{x} - \mathbf{y}
+$$
+where $\mathbf{e}$ is the difference between the vector $A\mathbf{x}$ and the given vector $\mathbf{y}$ for a specific
+value of $\mathbf{x}$. It means that $\mathbf{e}$ is a functions of $\mathbf{x}$ but we don't indicate it as such
+so as not to clutter the notation. Imagine that as we roam through all possible (vector) values for $\mathbf{x}$ how
+$A\mathbf{x}$ evaluates to corresponding values. These values differ from the given value of $\mathbf{y}$, sometimes by
+a little, sometimes by a lot. Our task is to identify that value of $\mathbf{x}$ that makes the difference between
+$A\mathbf{x}$ and $\mathbf{y}$ as small as possible. But small in what sense?
+
+Let's first take a small diversion and investigate what the components of $\mathbf{e}$ are. First we write $A$ in its
+row form, that is, we explicitly write down the rows,
+$$
+A = \left[  \begin{array}{c}
+       \mathbf{r}_1^T\\
+       \vdots\\
+       \mathbf{r}_m^T
+           \end{array}
+    \right].
+$$
+Note that we write down the *transpose* of the rows, $\mathbf{r}^T$ and not $\mathbf{r}$. The reason is that the latter
+*always*, no exceptions allowes, indicates a *column* vector, and we need to populate the matrix with its rows.
+
+Now we can easily write down
+$$
+A\mathbf{x} = \left[ \begin{matrix}
+       \mathbf{r}_1^T\\
+       \vdots\\
+       \mathbf{r}_m^T\\
+           \end{matrix}
+     \right] \mathbf{x}
+     =
+     \left[ \begin{matrix}
+       \mathbf{r}_1^T \mathbf{x}\\
+       \vdots\\
+       \mathbf{r}_m^T\mathbf{x}\\
+           \end{matrix}
+     \right],
+$$
+and
+$$
+\mathbf{e} = A\mathbf{x}-\mathbf{y} = \left[ \begin{array}{c}
+       \mathbf{r}_1^T \mathbf{x}\\
+       \vdots\\
+       \mathbf{r}_m^T\mathbf{x}\\
+           \end{array}
+     \right]
+     -
+     \left[ \begin{array}{c}
+       y_1\\
+       \vdots\\
+       y_m\\
+           \end{array}
+     \right].
+$$
+Therefore
+$$
+\mathbf{e} = \left[ \begin{array}{c}
+       e_1\\
+       \vdots\\
+       e_m\\
+           \end{array}
+     \right]
+     =
+     \left[ \begin{array}{c}
+       \mathbf{r}_1^T \mathbf{x}\\
+       \vdots\\
+       \mathbf{r}_m^T\mathbf{x}\\
+           \end{array}
+     \right]
+     -
+     \left[ \begin{array}{c}
+       y_1\\
+       \vdots\\
+       y_m\\
+           \end{array}
+     \right]
+     =
+     \left[ \begin{array}{c}
+       \mathbf{r}_1^T \mathbf{x} - y_1\\
+       \vdots\\
+       \mathbf{r}_m^T\mathbf{x} - y_m\\
+           \end{array}
+     \right],
+$$
+or, more explicitly,
+
+\begin{eqnarray*}
+e_1 &=& \mathbf{r}_1^T \mathbf{x} - y1\\
+e_2 &=& \mathbf{r}_1^T \mathbf{x} - y2\\
+ & \vdots &  .
+\end{eqnarray*}
+
+Returning to our question above, we want to identify that value of $\mathbf{x}$ that will minimize the errors,
+$e_1, \ldots, e_m$. We are back at the question, minimize in what sense? A generally used measure for the error is,
+$$
+\mathbf{e}^T\mathbf{e} = e_1^2 + \cdots + e_m^2,
+$$
+whick is just the sum of the squares of the individual errors. Rewriting this, we find,
+$$
+\mathbf{e}^T\mathbf{e} = (A\mathbf{x} - \mathbf{y})^T (A\mathbf{x} - \mathbf{y}).
+$$
+Multiplying this out, gives,
+$$
+\mathbf{e}^T\mathbf{e} = \mathbf{x}^T A^T A \mathbf{x} -  \mathbf{x}^T A^T \mathbf{y} - \mathbf{y}^T A\mathbf{x} +
+\mathbf{y}^T \mathbf{y}.
+$$
+In order to find the values of $\mathbf{x}$ that will minimize the sum of the squares of the errors, we need to set the
+partial derivatives to all the components, $x_1, \ldots, x_n$ in the equation to zero. The detailed calculations are messy
+and we enrourage you to work it out for a small, say $2\times 2$ example. The result is the normal equations,
+$$
+A^T A\mathbf{x} = A^T\mathbf{y}.
+$$
 :::
 
 
+## Linear correlation
+
+Later in this chapter, we'll discuss the general correlation or association between variables.  Note that we need
+associated or correlated variables in order to do inference. In general terms it means that you can learn something
+about one variable by observing the other. The *simplest*  is the linear correlation where the relationship for two variables, $x$ and $y$, is given by
+
+$$ y = ax + b,$$.
+
+Clearly, given $a$ and $b$, we can infer the value of $y$ if we are
+given the value of $x$. If $a\not=0$ then we can also infer the value of $x$, given the value of $y$.
+In this case, one has an *exact* correlation - there is no doubt about the value of either of the variables,
+given the value of the other variable.
+
+In practice things are never this easy—if they were we would not have had any need for statistics of
+probability—variables are never exactly correlated. The best we can hope for is, if we know/observe the value of one
+ variable, we can calculate an approximate value for the other variable.  The better the correlation between the two variables,
+ the more accurate the estimate.
+
+Let's illustrate the ideas by means of an example. For this, we first need to generate data, i.e.
+values for $x$ and corresponding values for $y$.
+
+First we import the necessary libraries.
+
+
+```{python}
+import numpy as np
+from scipy import stats
+from scipy.stats import uniform, pearsonr
+
+from numpy.random import Generator, PCG64
+
+seed = 12311 # This is a random seed so that we can reproduce the results from one run to the next
+
+numpy_randomGen = Generator(PCG64(seed))
+scipy_randomGen = uniform
+scipy_randomGen.random_state=numpy_randomGen
+```
+Now we choose random values for $x$ in the interval $(0, 1)$ and corresponding values for $y$ in the
+same interval.
+
+```{python}
+import numpy as np
+from scipy import stats
+from scipy.stats import uniform, pearsonr
+
+from numpy.random import Generator, PCG64
+
+seed = 12311 # This is a random seed so that we can reproduce the results from one run to the next
+
+numpy_randomGen = Generator(PCG64(seed))
+scipy_randomGen = uniform
+scipy_randomGen.random_state=numpy_randomGen
+
+A = 0.33  # The chosen slope of the linear relationship
+B = 1.0  # The chosen intercept of the linear relationship
+NOISE = 0.1 # This determined the amount of noise we add to the simulation
+
+# Generate 50 random samples for x.
+x = scipy_randomGen.rvs(size=50)
+
+# Generate the corresponding values for y.
+# Noise is added to ensure that the linear relationship is not exact.
+y = A*x + B + NOISE*scipy_randomGen.rvs(size=50)
+
+# Show the relationship
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(1, 1)
+ax.plot(x, y, '.r')
+```
+Two questions now arise: Given a value for $x$, what is the estimate for $y$? And,
+how good is this estimate? Let's answer the first question first. The data values are clearly clustered
+around a straight line. In fact, we have the equation for this line, the one we used to generate the
+samples. In practice we don't have the line, only the samples, and we would like to find the line that
+best fits the data.
+
+:::{.callout}
+## Making assumptions
+
+Let's say we are given only the values for $x$ and corresponding values for $y$, without any knowledge where it came from.
+How do we know that we should fit a straight line? The answer is, we don't know. In this simple situation one can plot
+the values and from the shape of the plot conclude that there might be a linear relationship. In higher dimensions visualization
+becomes increasingly difficult and in that case we need to make assumptions as to the type of model that best describes the
+data.
+
+Data analysts spend an inordinate amount of time inspecting their data and trying to learn as much as possible about it.
+
+:::
+
+For every measurement $x_i,\;\; i=1,\ldots,n$ we have a corresponding $y_i,\;\; i=1,\ldots,n$. We are looking
+for a linear relationship between the $x_i$ and $y_i$. That is, we are looking for $a$ and $b$ such that
+$$
+y_i = ax_i + b,\;\; i =1,\ldots, n,
+$$
+or, if you paid attention, find values of $a$ and $b$ that will best solve the system in the least squares sense.
+This is a linear system of $n$ equations in the two unknowns, $a$ and $b$. We are back at example 2 above! We cannot
+solve these equations exactly but we can solve them in a least squares sense. Writing the system in
+matrix form, gives
+
+$$
+\left[ \begin{array}{cc}
+x_1 & 1\\
+\vdots & \\
+x_n & 1
+\end{array} \right]
+\left[\begin{array}{c}
+a\\b \end{array}
+\right]
+=
+\left[ \begin{array}{c} y_1\\ \vdots \\ y_n\end{array} \right].
+$$
+The normal equations are given by
+$$
+\left[ \begin{array}{ccc}
+x_1 & \cdots & x_n\\
+1 & & 1 \end{array} \right]
+\left[ \begin{array}{cc}
+x_1 & 1\\
+\vdots & \\
+x_n & 1
+\end{array} \right]
+\left[\begin{array}{c}
+a\\b \end{array}
+\right]
+=
+\left[ \begin{array}{ccc}
+x_1 & \cdots & x_n\\
+1 & & 1 \end{array} \right]
+\left[ \begin{array}{c} y_1\\ \vdots \\ y_n\end{array} \right],
+$$
+or after multipying,
+$$
+\left[ \begin{array}{cc}
+\sum_i x_i^2 & \sum_i x_i\\
+\sum_i x_i & n \end{array}\right]
+\left[\begin{array}{c}
+a\\b \end{array}
+\right]
+=
+\left[ \begin{array}{c}
+\sum_i x_i y_i\\
+\sum_i y_i \end{array} \right].
+$$
+Let's solve these equations for the numerical example above with code and see what we find. The key function is
+the `scipy` function `stats.linregress(x,y)`. It gives us the slope and intercept of the best linear fit
+of the data.
+
+```{python}
+import numpy as np
+from scipy import stats
+from scipy.stats import uniform
+
+from numpy.random import Generator, PCG64
+
+seed = 12311 # This is a random seed so that we can reproduce the results from one run to the next
+
+numpy_randomGen = Generator(PCG64(seed))
+scipy_randomGen = uniform
+scipy_randomGen.random_state=numpy_randomGen
+
+A = 0.33  # The chosen slope of the linear relationship
+B = 1.0  # The chosen intercept of the linear relationship
+NOISE = 0.1 # This determined the amount of noise we add to the simulation
+
+# Generate 50 random samples for x.
+x = scipy_randomGen.rvs(size=50)
+
+# Generate the corresponding values for y.
+# Noise is added to ensure that the linear relationship is not exact.
+y = A*x + B + NOISE*scipy_randomGen.rvs(size=50)
+
+slope, intercept, _, _, _ = stats.linregress(x,y)
+
+print(' slope: ', slope, '\n', 'intercept: ', intercept)
+
+# The coordinates for drawing the best linear fit.
+x_fit = np.array([0, 1])
+y_fit = slope*x_fit + intercept
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(1, 1)
+ax.plot(x,y,'.r', x_fit, y_fit, 'b')
+plt.show()
+```
+The Figure shows that we indeed have a good linear fit of the data. Moreover, the slope and intercept
+calculated from the data is close to the values we used to produce the data.
+
+Let's now simplify the normal equations and see what we can learn from it. We can always normalize the data
+by subtracting the means of both the $x_i$ and the $y_i$ before we proceed with the calculations.
+This means that
+
+$$
+\sum_i x_i = 0 = \sum_i y_i,
+$$
+and the normal equations simplify as,
+
+$$
+\left[ \begin{array}{cc}
+\sum_i x_i^2 & 0\\
+0 & n \end{array}\right]
+\left[\begin{array}{c}
+a\\b \end{array}
+\right]
+=
+\left[ \begin{array}{c}
+\sum_i x_i y_i\\
+0 \end{array} \right].
+$$
+This gives us $b=0$. Therefore, if we fit a straight line to the data *after* removal of the means,
+the intercept is 0.
+
+Let's do another normalization and divide the data with their standard deviations. Since we know that the
+means are 0, the standard deviations $\sigma_x$ and $\sigma_y$ are just the lengths of the data vectors,
+
+$$
+\sigma_x^2 = \sum_i x_i^2
+$$
+and
+$$
+\sigma_y^2 = \sum_i y_i^2.
+$$
+The squares of the standard deviations, $\sigma_x^2$ and $\sigma_y^2$ also have special names, namely
+the variance.
+
+Now if we assume that we have already subtracted the means and also divided by the standard deviations,
+we can set $\sum_i x_i^2 = 1$ in the normal equations. Since we already know that $b=0$, we find that
+$$
+a = \sum_i x_i y_i.
+$$
+The right hand side should be familiar from linear algebra - it is the inner product between the two data vectors
+$$
+\begin{eqnarray*}
+\mathbf{x} & = & \left[ \begin{array}{c}
+x_1 \\ \vdots \\x_n \end{array} \right]\\
+\mathbf{y} & = & \left[ \begin{array}{c}
+y_1 \\ \vdots \\y_n \end{array} \right].
+\end{eqnarray*}
+$$
+But we have already normalized the two data vectors so that their respective lengths are 1. Therefore
+the inner product equals the cosine of the angle between the two vectors.
+
+We have therefore arrived at an important conclusion:
+
+*If the data of two data vectors are normalized by first subtracting their means and then divide by their
+lengths (standard deviations), the slope and intercept of the best linear fit have a special values.
+The intercept $b = 0$, i.e. the best linear fit passes through the origin, and the slope equals the cosine of
+the angle between the two data vectors.*
+
+Let's reflect on the meaning of the slope. The cosine is a measure of how much the two vectors differ from
+one another. If the angle between the two is zero, the cosine is either 1 or -1. If the two vectors are
+perpendicular, the two vectors form a right angle and the cosine is 0.
+
+If the cosine of the angle is either +1 or -1 we say that the two datasets are perfectly correlated. In general,
+if two dataset are positively correlated ($a>0$(not necessarily perfectly) it means that if the values of one dataset
+have an upward trend, the values of the other dataset will also have an upward trend. On the other hand,
+if the two datasets are negatively correlated $a<0$ it means that if the values of one dataset have an upward
+trend, the other dataset will have a downward trend.
+
+The cosine of the angle between the two datasets is called the *correlation coefficient*. It is also
+called *Pearson's* correlation coefficient after Karl Pearson who developed it from ideas proposed by Francis
+Galton but,  actually, first formulated by Auguste Bravais about 40 years earlier. We'll stick to calling
+it the *correlation coefficient*!
+
+:::{.callout-note}
+## The cosine measure.
+
+In machine learning the cosine of the angle between two vectors are commonly used as a measure of how much
+the two vectors differ from one another.
+:::
+
+The formula for the correlation coefficient between two variables, $x$ and $y$, is given by
+$$
+r_{xy} = \frac{ \sum_{i=1}^n (x_i - \bar{x})((y_i - \bar{y}) }
+         { \sqrt{ \sum_{i=1}^n (x_i - \bar{x})^2} \times \sqrt{ \sum_{i=1}^n (y_i - \bar{y})^2} },
+$$
+where the means are given by,
+$$
+\bar{x} = \frac1n\sum_{i=1}^n x_i,
+$$
+$$
+\bar{y} = \frac1n \sum_{i=1}^n y_i.
+$$
+
+We'll now put everything together in code.
+
+```{python}
+import numpy as np
+from scipy import stats
+from scipy.stats import uniform, pearsonr
+
+from numpy.random import Generator, PCG64
+
+seed = 12311 # This is a random seed so that we can reproduce the results from one run to the next
+
+numpy_randomGen = Generator(PCG64(seed))
+scipy_randomGen = uniform
+scipy_randomGen.random_state=numpy_randomGen
+
+A = 0.33  # The chosen slope of the linear relationship
+B = 1.0  # The chosen intercept of the linear relationship
+NOISE = 0.1 # This determined the amount of noise we add to the simulation
+
+# Generate 50 random samples for x.
+x = scipy_randomGen.rvs(size=50)
+
+# Generate the corresponding values for y.
+# Noise is added to ensure that the linear relationship is not exact.
+y = A*x + B + NOISE*scipy_randomGen.rvs(size=50)
+
+# Normalize the data
+# Subtract the means
+x = x - np.mean(x)
+y = y - np.mean(y)
+
+# Calulate the standard deviation using scipy's tsdt() method and normalize
+std_x = stats.tstd(x)
+std_y = stats.tstd(y)
+x = x/std_x
+y = y/std_y
+
+
+# Calculate the best linear fit
+slope, intercept, _, _, _ = stats.linregress(x,y)
+x_fit = np.array([-2, 2])
+y_fit = slope*x_fit + intercept
+
+# The coordinates for drawing the best linear fit.
+x_fit = np.array([-2, 2])
+y_fit = slope*x_fit + intercept
+
+# Plot the result
+from matplotlib import pyplot as plt
+fig, ax = plt.subplots(1, 1)
+ax.plot(x,y,'.r', x_fit, y_fit, 'b')
+
+# We are particularly interested in the values of the slope and intersect
+# We also want to compare the slope with the correlation coefficient as calculated
+corr = pearsonr(x,y) # The correlation coefficient
+
+print(' intercept: ', intercept, '\n', 'slope: ', slope, '\n', 'corr coeff: ', corr.statistic)
+```
+This is close enough to the theoretical values to convince the most sceptical among us!
+
+### Example: Is Athletic Ability Directly Related to Intelligence? {#sec-athletic-iq-ranks}
+
+Question: **Is there a correlation between the two variables?**
+
+A scientist often wants to know whether or not two characteristics go together,
+that is, whether or not they are correlated (that is, related or associated).
+For example, do youths with high athletic ability tend to also have high I.Q.s?
+
+:::{.callout-note}
+## The data.
+
+This data is clearly hypothetical and should not be used to draw any important conclusions. For one, it is a very small
+dataset. For larger datasets it might well be that the scores follow a different distribution.
+:::
+
+Hypothetical physical-education scores of a group of ten high-school boys are
+shown in @tbl-physical-mental, ordered from high to low, along with the I.Q.
+score for each boy. The ranks for each student's athletic and I.Q. scores are
+then shown in the third and fourth columns:
+
+|  Athletic Score    | I.Q. Score     | Athletic Rank     | I.Q.Rank     |
+|--------------------|----------------|-------------------|--------------|
+| 97                 | 114            | 1                 | 3            |
+| 94                 | 120            | 2                 | 1            |
+| 93                 | 107            | 3                 | 7            |
+| 90                 | 113            | 4                 | 4            |
+| 87                 | 118            | 5                 | 2            |
+| 86                 | 101            | 6                 | 8            |
+| 86                 | 109            | 7                 | 6            |
+| 85                 | 110            | 8                 | 5            |
+| 81                 | 100            | 9                 | 9            |
+| 76                 | 99             | 10                | 10           |
+
+: Hypothetical athletic and I.Q. scores for high school boys {#tbl-physical-mental}
+
+From a casual inspection of the Athletic scores and the I.Q. scores it appears as if there is indeed a correlation or
+association. But we don't need to guess, we can calculated the correlation coefficient.
+
+```{python}
+import numpy as np
+from scipy.stats import pearsonr
+
+athl_score = np.array([
+97, 94, 93, 90, 87, 86, 86, 85, 81, 76
+])
+iq_score = np.array([
+114, 120, 107, 113, 118, 101, 109, 110, 100, 99
+])
+
+corr = pearsonr(athl_score, iq_score)
+print('correlation: ', corr.statistic)
+```
+The correlation coefficient indicates that there *might*  be a  (positive) correlation between athletic
+ability and I.Q. The reason for the cautionary note is that this is a tiny sample and there might be many other reasons
+for the relationship, such as recruitment policy, etc.
+
+This brings us naturally to a discussion of causality: Accepting that there is a positive correlation between the two
+variables, does it mean that a higher I.Q. *causes* higher athletic ability, or is it perhaps the other way round?
+
+## Causality
+
+Before commencing on a discussion of causality proper, let's summarize what we have just learned. Our discussion above
+centered around *linear correlation*. We developed the notion of the *correlation coefficient* which is a measure of
+how well two variables are *linearly* correlated. The question then arises what about more general associations between
+variables, such nonlinear relationships between variables? In that case, linear correlation has nothing to contribute as
+an example will shortly make clear.
+If there is a nonlinear association between variables it need not show up as a linear correlation.
+
+Then there is the matter of statistical dependence or independence. Intuitively, two variables are statistically
+independent if knowledge about one variable does not tell us anything about the other variable. Here a formula makes it
+clear. $x$ and $y$ are statistically independent if
+$$
+P(x | y) = P(x).
+$$
+This means that the probability distribution of $x$ remains the same, no matter what the value of $y$ might be. One cannot
+do inference given statistically independent variables.
+
+Are variables that are statistically independent, linearly uncorrelated? The answer is, yes, because there is no
+association between the variables, linear or nonlinear. On the other hand, variables that are statistically dependent,
+need not be  linearly correlated - there might be a nonlinear relationship between the variables,
+that is linearly uncorrelated. Let's turn to an example.
+
+```{python}
+import numpy as np
+from scipy import stats
+from scipy.stats import uniform, pearsonr
+
+from numpy.random import Generator, PCG64
+
+seed = 12311 # This is a random seed so that we can reproduce the results from one run to the next
+
+numpy_randomGen = Generator(PCG64(seed))
+scipy_randomGen = uniform
+scipy_randomGen.random_state=numpy_randomGen
+
+NOISE = 0.1 # This determined the amount of noise we add to the simulation
+
+# Generate data
+t = np.linspace(0, 2*np.pi, 101)
+x = np.cos(t) + NOISE*scipy_randomGen.rvs(size=101)
+y = np.sin(t) + NOISE*scipy_randomGen.rvs(size=101)
+
+slope, intercept, _, _, _ = stats.linregress(x,y)
+
+print(' slope: ', slope, '\n', 'intercept: ', intercept)
+
+# The coordinates for drawing the best linear fit.
+x_fit = np.array([-1.1, 1.1])
+y_fit = slope*x_fit + intercept
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(1, 1)
+ax.plot(x,y,'.r', x_fit, y_fit, 'b')
+
+# The correlation coefficient
+corr = pearsonr(x, y)
+print('corr coeff: ', corr.statistic)
+
+```
+Although we can clearly learn much about the value of $y$, given the  value of $x$, the correlation coefficient is tiny
+and gives no hint of the strong association between the two variables. This example shows us that looking for
+*linear* associations do us no good if we are dealing with nonlinear associations. In practice of course, the most
+interesting associations are nonlinear, requiring techniques that are able to uncover these relationships. That is
+exactly what the huge breakthroughs since about 2012 deep neural networks achieved. You can think of the
+different (nonlinear) layers of a deep neural network as a nonlinear transformation of the data into a linear
+relationship. Once we have that, we can apply our linear techniques.
+
+In statistics, everything used to be about *inference*, based on the association between variables. The goal was to
+extract the maximum amount of information possible from the data. To give an idea of just how wildly successful this
+program has been, one has only to refer to the thoroughly impressive generative methods, such as ChatGPT, that are solely
+based on data. So successful has this been that it is becoming increasingly difficult to distinguish between the
+generative model and a human response. At first sight it would appear as if we have arrived at true machine intelligence.
+But appearances can be misleading, and humans are gullible. One should not mistake a huge, perfect memory with intelligence
+or understanding. The generative model is just as likely to repeat the latest conspiracy theory as providing useful advice.
+Granted, this depends on the prevalence of data in specific fields. In some areas conspiracy theories are more prevalent
+than the genuine article, in which case the generative model is more likely to regurgitate nonsense.
+We don't mean to disparage generative models - their achievements are spectacular. And there is no doubt that it will change
+the general landscape in significant ways. To quote a lost author (sadly lost to me), it is not hard to envisage a future
+where the principle task of the programmer will be to adapt a generative model to specific situations. Something like,
+get rid of your conspiracy theories, in this application they are not useful or wellcome!
+
+What lies beyond data, what are the questions we cannot answer from data?
+
+### Example: A statistical view.
+
+Many years ago a statistician friend of mine made the comment that we know that the sun will rise tomorrow morning
+because we have watched it rise for thousands, if not millions, of years. As a budding applied mathematician who knew
+about gravity, the elliptic orbits of the planets and things like that, the comment was bothersome. Apart from the fact
+that it probably reflected a specific philosophical view of the nature of science, I was hard-pressed to find an adequate
+response. Because, isn't science just about observation, developing models to fit the facts, to be discarded when it comes into
+conflict with the facts and replaced with another ephemeral model?
+
+Today my response will perhaps be along the lines of, there is a reason, beyond the observations, why the sun rises
+every morning. And if we ignore the reasons, we loose understanding, and the benefits that go with it.
+
+With data there *must* be a reason as to *why* we observe what we observe. If there is no reason, no coherent mechanism that
+that produces the data, there is little if anything the data can tell us. Of course, the mechanism is often too
+complex to understand in any useful way in which case we have no choice but to learn as much as we can from the
+data. But that inevitably limits our understanding.
+
+:::{.callout}
+## The exceptions
+
+In exceptional cases, investigations of data suggested certain patterns that led to the discovery of the fundamental
+principles behind the data. It means we should keep on asking *why*?
+:::
+
+It does sounds odd, though, that one should discard hard-earned knowledge and submit to the limitations of data. Our
+understanding of gravity, that earth revolves around the sun and spins on its own axis, did not come without a considerable
+effort, and price. Just ask Copernicus or Galileo. No reason to pretend that we can ignore it in favour of data!
+
+There are situations where we cannot learn anything meaningful from data, where the information required to answer a
+specific, isn't in the data.
+
+The next example should make this clear.
+
+### Example: A shoe sale.
+
+A potential client approached our company asking for a model that will optimize their profit putting their unsold shoes
+on sale at season's end. The problem is clear: If they give the shoes away, they will get rid of them but without any profit.
+If they charge too much, they won't sell any and will be left with a lot of surplus shoes, and still no profit. Our sales people
+said sure, just give us your historical data as far back as you can of prices versus sales. Our clever technical experts will
+develop a model in no time. Wrong! The clever technical experts had no idea how to approach this problem. Fortunately they could
+refer their sales people to The Book of Why, where Judea Pearl and Dana Mackenzie wrote, *Many scientists have been quite
+traumatized to learn that none of the methods they learned in statistics will answer a simple question like "What happens
+if we double the price"?* Or, as in our case, half the price.
+
+Note that nothing in the historical data informs us about the outcome of our actions fixing the sales price. Last time
+when the price was half
+the present price, may have been before inflation (or covid!). Or the competing stores have an even lower or higher
+price. The best-known way,  is through (time-consuming, expensive) carefully controlled
+experiments. However, there is another way due to the more recent studies into cause-effect relationships - *causality* -
+and that is to develop a model of consumer behaviour, including present marketing conditions. The next step is to find
+surrogate data that can serve as a proxy for the real thing (see Pearl and Mackenzie). Combining the two -
+a consumer behaviour model with surrogate data - allows one to develop a useful model.
+
+### Example: Covid
+
+During the Covid pandemic there was an association between the number of Covid tests that were performed and the number
+of positive test cases. The more tests that were performed, the more positive test cases were recorded. Also, an association
+was recorded between Covid-related deaths and the number of positive test cases. That did make
+a politician too happy - it reflected badly on the administration. So, the politician decided to intervene and stop the
+Covid tests. Sure enough the positive test cases dropped to zero. The deaths however, continued.
+
+The politician was therefore right in asserting that there was a causal relationship between the tests and the positive
+test cases. However, since, unsurprisingly,
+the number of Covid-related deaths did not show any response due to the stopping of the tests there is no causal relationship
+- the tests did not cause the Covid-related deaths.
+
+The previous examples are all rooted in *causality* - a concept that was for a long time banned from statistics.
+Although most of us have a pretty good idea what is meant by *causality*, a precise definition alludes us; it might be
+impossible not to end up in a circular definition.
+We'll therefore treat it as a primitive concept that we intuitively understand, much like points or lines in geometry.
+In short, we assume that you know what we are talking about when we talk about *causality*.
+
+Let's now look at the keys ideas of causality as illustrated by the previous examples. A very readable and popular introduction by one
+of the pioneers of the field is, The Book of Why.
+
+### Association
+
+*Association* is just that, from data we learn that if we observe the value of some variable, we can get a quantitative
+estimate of  the value of another, associated, variable. There is no understanding, no explanation of how or why this
+might have come about. In order to understand, to explain, to establish causal relationships, one has to understand
+the *why* of the observed data. That is, we need to understand the mechanism that produced the data.
+Even if it is not in  detail, we need to have some understanding of it.
+
+And to do this, we need to look outside the data.
+
+One cannot explain gravitation by observing at what time the sun rises in the morning. We cannot build
+an optimum sales model, based on the historical data of sales.
+
+### Intervention
+
+In order to make any progress beyond learning from data, we have, not only to observe, but also to act, to intervene.
+We need to move beyond being a computer that consumes the data we are given, to being human, to take charge. By
+*intervention* we mean that we are actively 'turning a knob', and see how that affects the value that we are interested
+in. If the active intervention changes the value of the observation, we conclude a causal effect. Turning the knob
+*causes* the value to change. If you press down on the accelerator of you car, it goes faster. Your action causes the
+increase in speed.
+
+Note that this is quite different from, say, linear regression that might show the relationship between how hard you
+press on the accelerator and how fast you go. Given how hard one presses, it is possible to *infer* the speed for that
+pressure. However, it is not possible to conclude any causal relationship. For that we need to *understand* the
+relationship between force and acceleration.
+
+It is not possible to infer causal relationships from data, mainly due to the presence of *confounders* - the common
+cause of two observed variables. We already alluded to it when we examined the  relationship between I.Q.
+and athletic ability. One cannot conclude that the one is the cause of the other because of confounders. It is quite
+possible that the relationship is caused by the recruitment program - only talented athletes with a high I.Q. are
+recruited with the individuals that score high on both abilities the most sought after. There may also be other
+confounders.
+
+
+### Counterfactuals
+
+Pearl calls  this the highest level of causation. At this level one starts to ask questions about situations that have
+not been observed, perhaps,  even situations that cannot be observed. One such question, and of particular importance for someone
+my age, is, what is my life expectancy? It is really important to know if you will be able to survive after retirement on
+your savings. But you have no observations to guide you, nothing that can inform you. By the way,  this question is very
+different from the one that insurance companies ask their actuaries to calculate: what is the expected or average
+life expectancy of someone  that falls in a specific category, perhaps someone who doesn't smoke or drink excessively,
+has no known health issues and does not engage in any high-risk sport, etc. In that case one can use lots of data and
+come with an estimate of the expected life
+expectancy for different *categories* of the population, all bases on association. For me as individual,
+it is meaningless. It is almost guaranteed that I will not meet the life expectancy of my category and there is no way
+of finding out how much I'll over- or undershoot. Answering this question will likely be forever beyond our reach. But
+there are other examples.
+
+Physicists, among others, ask and answer counterfactual questions all the time. We don't need to observe a particular
+planet orbiting a particular star to be able to predict what its position will be a thousand years from now. In this case,
+as in many others, a few data points together with a good understanding of the forces involved, provide  us an  answer
+of a situation never obseved.
+
+### Summary
+
+"In God we trust. All others [must] have data". This quote by W. E. Deming is the provocative title of one of the chapters in *The Emperor of
+All Maladies: A Biography of Cancer* by Siddhartha Mukherjee. There he addresses the question of why the
+radical surgery on carcinoma of the breast followed the principle that "the disease, even in its early stage, is such
+a formidable enemy that it is my duty to carry out as radical an operation as the ... anatomy permits",  persisted for
+so long. Tragically, proponents of radical surgery refused to run clinical trials, perhaps in fear of what the data
+would tell them. When trials were eventually run, the results were unambiguous, any surgery beyond local surgery holds
+no benefits. And countless number of women were maimed.
+
+This example illustrates both the importance of data, as well as determining causal effects. What, if any, were
+the benefits of  radical surgery?
+
+Extracting associations from data is powerful. However, it is also limited - there are questions that cannot be
+answered just from the data. The information just isn't always available in the data. Instead of despairing, this author
+takes comfort out of it. It means that there are processes that are either hard or impossible to automate. Human ingenuity
+is required. Instead of describing, we also have to understand.
+
+The takeaway message is, perhaps, *think* carefully about your data. Try and *understand* as much as is humanly possible
+about mechanisms that produced the data.
+
+
+<!---
+## Stuff
+
+At the beginning everything was just about the correlation between variables. Perhaps better to explain
+what we mean by this through an example.
+
+Central to commercial banks is the granting of loans to their clients. If they grant a loan that
+a client cannot afford to pay back, the bank will loose money. And that is definitely not part of their
+business plan. On the other hand, the interest that client pay on their loans is a major source of
+income for banks. Banks, therefore, can also not afford to not grant loans. The trick is to assess
+the client's ability to pay back a loan. But how do they go about doing this? Without going into any
+details of the development of credit risk models, we can make general assertions. First of all, for
+every one of their clients, the bank has a client transaction history as well as demographic
+information. This can be supplemented by credit bureau data - the data that credit bureaus gather
+for all individuals about all their credit transactions. The idea is to use this data to assess
+the credit-worthiness of a client. In technical terms, the bank calculates the probability of default
+(PD) for a given client, given all the information available for that client. If the  PD is higher than
+a default value (set by management, depending on the exposure appetite of the institution), the loan
+application will be denied. If it is low enough, the loan will be approved (the amount might be
+determined by a second, affordability, model.
+
+The PD model is developed by investigating all loans granted by the bank in the past. Some of them
+defaulted, the majority did not. The bank therefore has a database available of the Known Good Bad (KGB)
+clients. And for each of these clients the historical and demographic data is
+available. If the new client has be assessed, the model determines the extent to
+which this client's data is correlated with the KGB clients. If the client's data is strongly
+correlated with the known defaulters the loan will be declined.
+
+The model is therefore based on **correlation** - to what extent is the data of the loan applicant
+correlated with the data used to train the credit model. At this level, the specifics of the model
+is irrelevant, all rely on the correlation between the applicant's data and the KGB data.
+
+This idea is immensely powerful. It allows object recognition in images and drives ChatGPT, for example.
+In fact, this idea is so powerful that everything else was banned from statistics for a very long time.
+-->
+<!--- Add references to Pearl -->
+
+<!--- By the way, this points to one of the limitations of a sampling approach.>
+
+
+<!---
 ## Preview
 
 The correlation (speaking in a loose way for now) between two variables
@@ -248,253 +1171,371 @@ difference* refer to *groups of individuals* , and in such a situation it does
 make sense to ask whether or not two groups are observably different from each
 other.
 
-**Example 23-1: Is Athletic Ability Directly Related to Intelligence?**
-(Is There Correlation Between Two Variables or Are They Independent?)
-(Program "Ability1")
+### Example: Is Athletic Ability Directly Related to Intelligence? {#sec-athletic-iq-ranks}
 
-A scientist often wants to know whether or not two characteristics go
-together, that is, whether or not they are correlated (that is, related
-or associated). For example, do youths with high athletic ability tend
-to also have high I.Q.s?
+Question: **Is there correlation between two variables or are they
+independent?**
 
-Hypothetical physical-education scores of a group of ten high-school
-boys are shown in Table 23-1, ordered from high to low, along with the
-I.Q. score for each boy. The ranks for each student's athletic and I.Q.
-scores are then shown in columns 3 and 4.
+A scientist often wants to know whether or not two characteristics go together,
+that is, whether or not they are correlated (that is, related or associated).
+For example, do youths with high athletic ability tend to also have high I.Q.s?
 
-Table 23-1
+Hypothetical physical-education scores of a group of ten high-school boys are
+shown in @tbl-physical-mental, ordered from high to low, along with the I.Q.
+score for each boy. The ranks for each student's athletic and I.Q. scores are
+then shown in the third and fourth columns:
 
-**Hypothetical Athletic and I.Q. Scores for High School Boys**
+|  Athletic Score    | I.Q. Score     | Athletic Rank     | I.Q.Rank     |
+|--------------------|----------------|-------------------|--------------|
+| 97                 | 114            | 1                 | 3            |
+| 94                 | 120            | 2                 | 1            |
+| 93                 | 107            | 3                 | 7            |
+| 90                 | 113            | 4                 | 4            |
+| 87                 | 118            | 5                 | 2            |
+| 86                 | 101            | 6                 | 8            |
+| 86                 | 109            | 7                 | 6            |
+| 85                 | 110            | 8                 | 5            |
+| 81                 | 100            | 9                 | 9            |
+| 76                 | 99             | 10                | 10           |
 
-  -------------------- ---------------- ------------------- --------------
-  **Athletic Score**   **I.Q. Score**   **Athletic Rank**   **I.Q.Rank**
-  **(1)**              **(2)**          **(3)**             **(4)**
-  97                   114              1                   3
-  94                   120              2                   1
-  93                   107              3                   7
-  90                   113              4                   4
-  87                   118              5                   2
-  86                   101              6                   8
-  86                   109              7                   6
-  85                   110              8                   5
-  81                   100              9                   9
-  76                   99               10                  10
-  -------------------- ---------------- ------------------- --------------
+: Hypothetical athletic and i.q. scores for high school boys {#tbl-physical-mental}
 
-We want to know whether a high score on athletic ability tends to be
-found along with a high I.Q. score more often than would be expected by
-chance. Therefore, our strategy is to see how often high scores on
-*both* variables are found by chance. We do this by disassociating the
-two variables and making two separate and independent universes, one
-composed of the athletic scores and another of the I.Q. scores. Then we
-draw pairs of observations from the two universes at random, and compare
-the experimental patterns that occur by chance to what actually is
-observed to occur in the world.
+We want to know whether a high score on athletic ability tends to be found
+along with a high I.Q. score more often than would be expected by chance.
+Therefore, our strategy is to see how often high scores on *both* variables are
+found by chance. We do this by disassociating the two variables and making two
+separate and independent universes, one composed of the athletic scores and
+another of the I.Q. scores. Then we draw pairs of observations from the two
+universes at random, and compare the experimental patterns that occur by chance
+to what actually is observed to occur in the world.
 
-The first testing scheme we shall use is similar to our first approach
-to the pig rations — splitting the results into just "highs" and "lows."
-We take ten cards, one of each denomination from "ace" to "10," shuffle,
-and deal five cards to correspond to the first five athletic ranks. The
-face values then correspond to the
+The first testing scheme we shall use is similar to our first approach to the
+pig rations — splitting the results into just "highs" and "lows." We take ten
+cards, one of each denomination from "ace" to "10," shuffle, and deal five
+cards to correspond to the first five athletic ranks. The face values then
+correspond to the I.Q. ranks. Under the benchmark hypothesis the athletic ranks
+will not be associated with the I.Q. ranks. Add the face values in the first
+five cards in each trial; the first hand includes 2, 4, 5, 6, and 9, so the sum
+is 26. Record, shuffle, and repeat perhaps ten times. Then compare the random
+results to the sum of the observed ranks of the five top athletes, which equals
+17.
 
-I.Q. ranks. Under the benchmark hypothesis the athletic ranks will not
-be associated with the I.Q. ranks. Add the face values in the first five
-cards in each trial; the first hand includes 2, 4, 5, 6, and 9, so the
-sum is 26. Record, shuffle, and repeat perhaps ten times. Then compare
-the random results to the sum of the observed ranks of the five top
-athletes, which equals 17.
+The following steps describe a slightly different procedure than that just
+described, because this one may be easier to understand:
 
-The following steps describe a slightly different procedure than that
-just described, because this one may be easier to understand:
+* **Step 1.** Convert the athletic and I.Q. scores to ranks. Then constitute a
+  universe of spades, "ace" to "10," to correspond to the athletic ranks, and a
+  universe of hearts, "ace" to "10," to correspond to the IQ ranks.
+* **Step 2.** Deal out the well-shuffled cards into pairs, each pair with an
+  athletic score and an I.Q. score.
+* **Step 3.** Locate the cards with the top five athletic ranks, and add the
+  I.Q. rank scores on their paired cards. Compare this sum to the observed sum
+  of 17. If 17 or less, indicate "yes," otherwise "no." (Why do we use "17 or
+  less" rather than "less than 17"? Because we are asking the probability of a
+  score *this low or lower*.)
+* **Step 4.** Repeat steps 2 and 3 ten times.
+* **Step 5.** Calculate the proportion "yes." This estimates the probability
+  sought.
 
-**Step 1.** Convert the athletic and I.Q. scores to ranks. Then
-constitute a universe of spades, "ace" to "10," to correspond to the
-athletic ranks, and a universe of hearts, "ace" to "10," to correspond
-to the IQ ranks.
+:::{.callout-note}
+## Sum of the top ranks and the difference in sums
 
-**Step 2.** Deal out the well-shuffled cards into pairs, each pair with
-an athletic score and an I.Q. score.
+Notice that we could also find the sum of the IQ ranks for the *top* five
+athletes, as above, and then *subtract* the sum of the *bottom* five.  The
+result will be negative if the athletes have lower-numbered (higher) IQ ranks
+on average, and positive otherwise. But gives us no more information than the
+sum of the top five.  The sum of all the ranks ($1 + 2 + ... + 10$) is $55$.
+Say we find the sum of the top five ranks is 18, then the sum of the bottom
+five ranks must be $55 - 18 = 37$, and the subtraction of the two is $18
+- (55 - 18) = 18 * 2 - 55 = -19$.  In general, for any sum of the top five
+ranks $T$, the sum of the bottom five ranks $B$ is $55 - T$, and the difference
+is $T - B = T - (55 - T) = T * 2 - 55$. So, if the top-five sum $T$ is smaller,
+the difference between $T - B$ will also be more negative. Put another way, if
+we know the sum of the top five ranks $T$ is 18, we also know the difference is
+$2 * 18 = 55 = -19$, when $T = 19$, the difference $T - B$ is $2 * 19 - 15 =
+-17$, when $T = 20$,  $T - B = -15$ and so on.
+:::
 
-**Step 3.** Locate the cards with the top five athletic ranks, and add
-the I.Q. rank scores on their paired cards. Compare this sum to the
-observed sum of 17. If 17 or less, indicate "yes," otherwise "no." (Why
-do we use "17 or less" rather than "less than 17"? Because we are asking
-the probability of a score *this low or lower* .)
-
-**Step 4.** Repeat steps 2 and 3 ten times.
-
-**Step 5.** Calculate the proportion "yes." This estimates the
-probability sought.
-
-In Table 23-2 we see that the observed sum (17) is lower than the sum of
-the top 5 ranks in all but one (shown by an asterisk) of the ten random
-trials (trial 5), which suggests that there is a good chance (9 in 10)
-that the five best athletes will not have I.Q. scores that high by
-chance. But it might be well to deal some more to get a more reliable
-average. We add thirty hands, and thirty-nine of the total forty hands
-exceed the observed rank value, so the probability that the observed
-correlation of athletic and I.Q. scores would occur by chance is about
-
-.025. In other words, if there is no real association between the
-variables, the probability that the top 5 ranks would sum to a number
-this low or lower is only 1 in 40, and it therefore seems reasonable to
+In @tbl-ability-trials we see that the observed sum (17) is lower than the sum
+of the top 5 ranks in all but one (shown in bold) of the ten random
+trials (trial 5), which suggests that there is a good chance (9 in 10) that the
+five best athletes will not have I.Q. scores that high by chance. But it might
+be well to deal some more to get a more reliable average. We add thirty hands,
+and thirty-nine of the total forty hands exceed the observed rank value, so the
+probability that the observed correlation of athletic and I.Q. scores would
+occur by chance is about .025. In other words, if there is no real association
+between the variables, the probability that the top 5 ranks would sum to a
+number this low or lower is only 1 in 40, and it therefore seems reasonable to
 believe that high athletic ability tends to accompany a high I.Q.
 
-Table 23-2
+| Trial     |  Sum of IQ Ranks    | <= observed (17) |
+|-----------|---------------------|------------------|
+| 1         | 26                  | No               |
+| 2         | 23                  | No               |
+| 3         | 22                  | No               |
+| 4         | 37                  | No               |
+| **5**     | **16**              | **Yes**          |
+| 6         | 22                  | No               |
+| 7         | 22                  | No               |
+| 8         | 28                  | No               |
+| 9         | 38                  | No               |
+| 10        | 22                  | No               |
+| 11        | 35                  | No               |
+| 12        | 36                  | No               |
+| 13        | 31                  | No               |
+| 14        | 29                  | No               |
+| 15        | 32                  | No               |
+| 16        | 25                  | No               |
+| 17        | 25                  | No               |
+| 18        | 29                  | No               |
+| 19        | 25                  | No               |
+| 20        | 22                  | No               |
+| 21        | 30                  | No               |
+| 22        | 31                  | No               |
+| 23        | 35                  | No               |
+| 24        | 25                  | No               |
+| 25        | 33                  | No               |
+| 26        | 30                  | No               |
+| 27        | 24                  | No               |
+| 28        | 29                  | No               |
+| 29        | 30                  | No               |
+| 30        | 31                  | No               |
+| 31        | 30                  | No               |
+| 32        | 21                  | No               |
+| 33        | 25                  | No               |
+| 34        | 19                  | No               |
+| 35        | 29                  | No               |
+| 36        | 23                  | No               |
+| 37        | 23                  | No               |
+| 38        | 34                  | No               |
+| 39        | 23                  | No               |
+| 40        | 26                  | No               |
 
-**Results of 40 Random Trials of The Problem "Ability"**
+: 40 random trials of the problem athletic / IQ problem {#tbl-ability-trials}
 
-(Note: Observed sum of IQ ranks: 17)
+In fact we can apply an even simpler procedure to get the same result, by reasoning about the individual trial.
 
-  ----------- --------------------- ---------------
-  **Trial**   **Sum of IQ Ranks**   **Yes or No**
-  1           26                    No
-  2           23                    No
-  3           22                    No
-  4           37                    No
-  \* 5        16                    Yes
-  6           22                    No
-  7           22                    No
-  8           28                    No
-  9           38                    No
-  10          22                    No
-  11          35                    No
-  12          36                    No
-  13          31                    No
-  14          29                    No
-  15          32                    No
-  16          25                    No
-  17          25                    No
-  18          29                    No
-  19          25                    No
-  20          22                    No
-  21          30                    No
-  22          31                    No
-  23          35                    No
-  24          25                    No
-  25          33                    No
-  26          30                    No
-  27          24                    No
-  28          29                    No
-  29          30                    No
-  30          31                    No
-  31          30                    No
-  32          21                    No
-  33          25                    No
-  34          19                    No
-  35          29                    No
-  36          23                    No
-  37          23                    No
-  38          34                    No
-  39          23                    No
-  40          26                    No
-  ----------- --------------------- ---------------
+One trial in our procedure is:
 
-The RESAMPLING STATS program "Ability1" creates an array containing the
-I.Q. rankings of the top 5 students in athletics. The SUM of these I.Q.
-rankings constitutes the observed result to be tested against
-randomly-drawn samples. We observe that the actual I.Q. rankings of the
-top five athletes sums to 17. The more frequently that the sum of 5
-randomly-generated rankings (out of 10) is as low as this observed
-number, the higher is the probability that there is no relationship
-between athletic performance and I.Q. based on these data.
+* **Step 2.** Deal out the well-shuffled cards into pairs, each pair with an
+  athletic score and an I.Q. score.
+* **Step 3.** Locate the cards with the top five athletic ranks, and add the
+  I.Q. rank scores on their paired cards. Compare this sum to the observed sum
+  of 17. If 17 or less, indicate "yes," otherwise "no." (Why do we use "17 or
+  less" rather than "less than 17"? Because we are asking the probability of a
+  score *this low or lower*.)
 
-First we record the NUMBERS "1" through "10" into vector
+Now consider the 5 IQ rank cards.  In the procedure above, we found these by
+*first* pairing the athletic ranks and the IQ ranks, *then* selecting the IQ
+ranks corresponding to the top 5 athletic ranks.  A little thought may persuade
+you, that by doing this, we have have a *random selection of 5 IQ ranks*.  We
+got that random selection by pairing, selecting on athletic rank — but the
+initial pairing and selection will do nothing other than giving us one
+particular set of randomly chosen 5 IQ rank cards.  So we can simplify our
+procedure even further by missing out the pairing and selecting by rank steps;
+we can just shuffle the IQ rank cards and deal out 5 to be our randomly
+selected IQ ranks.
 
-A. Then we SHUFFLE the numbers so the rankings are in a random order.
-Then TAKE the first 5 of these numbers and put them in another array, D,
-and SUM them, putting the result in E. We repeat this procedure 1000
-times, recording each result in a scorekeeping vector: Z. Graphing Z, we
-get a HIS- TOGRAM that shows us how often our randomly assigned sums are
-equal to or below 17.
+::: {.notebook name="athlete_iq" title="Athletic ability and IQ"}
 
+::: nb-only
+Question: **Is there correlation between two variables or are they
+independent?**
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+We answer this by permuting the athletic ability and IQ *ranks*, pairing them,
+and seeing if the sum of the IQs ranks (randomly) paired with the top 5 athletic scores, are less than or equal to the observed value of 17.
+:::
 
-```matlab
-' Program file: "correlation_causation_00.rss"
+To simulate this problem in {{< var lang >}}, we first create
+{{< var an_array >}} containing the I.Q. rankings of the top 5 students in
+athletics. The `sum` of these I.Q. rankings constitutes the observed result to
+be tested against randomly-drawn samples. We observe that the actual I.Q.
+rankings of the top five athletes sums to 17. The more frequently that the sum
+of 5 randomly-generated rankings (out of 10) is as low as this observed number,
+the higher is the probability that there is no relationship between athletic
+performance and I.Q. based on these data.
 
-REPEAT 1000
-    ' Repeat the experiment 1000 times.
-    NUMBERS 1,10 a
-    ' Constitute the set of I.Q. ranks.
-    SHUFFLE a b
-    ' Shuffle them.
-    TAKE b 1,5 d
-    ' Take the first 5 ranks.
-    SUM d e
-    ' Sum those ranks.
-    SCORE e z
-    ' Keep track of the result of each trial.
-END
-' End the experiment, go back and repeat.
-HISTOGRAM z
-' Produce a histogram of trial results.
+First we record the 1 through 10 into {{< var array >}} `iq_ranks`. Then we
+shuffle the numbers so the rankings are in a random order. Then select the first
+5 of these numbers and put them in another {{< var array >}}, `top_5`, and `sum`
+them, putting the result in `top_5_sum`. We repeat this procedure `N = 10000`
+times, recording each result in a scorekeeping vector: `z`. Graphing `z`, we get a
+histogram that shows us how often our randomly assigned sums are equal to or
+below 17.
+
+```{python opts.label="py_ed"}
+import numpy as np
+rnd = np.random.default_rng()
+import matplotlib.pyplot as plt
 ```
 
-**ABILITY1: Random Selection of 5 Out of 10 Ranks**
+```{python opts.label="py_ed"}
+# Number of repeats.
+N = 10000
+# The IQ ranks, ready for shuffling.
+iq_ranks = np.arange(1, 11)  # 1 through 10.
+# Scorekeeping array.
+z = np.zeros(N)
 
-![](images/27-Chap-23_000.png)
+for i in range(N):
+    # Shuffle the ranks.
+    shuffled = rnd.permuted(iq_ranks)
+    # Take the first 5 ranks.
+    top_5 = shuffled[:5]
+    # Sum those ranks.
+    top_5_sum = np.sum(top_5)
+    # Keep track of the result of each trial.
+    z[i] = top_5_sum
+    # End the experiment, go back and repeat.
 
-**Sum of top 5 ranks**
+# Produce a histogram of trial results.
+# Make the bins be the integers from 10 through 45.
+plt.hist(z, bins=np.arange(10, 46))
+plt.title('Sums of 5 ranks selected at random');
+```
 
-We see that in only about 2% of the trials did random selection of ranks
-produce a total of 17 or lower. RESAMPLING STATS will calculate this for
+```{r opts.label="py_ed"}
+# Number of repeats.
+N <- 10000
+# The IQ ranks, ready for shuffling.
+iq_ranks <- 1:10  # 1 through 10.
+# Scorekeeping array.
+z <- numeric(N)
+
+for (i in 1:N) {
+    # Shuffle the ranks.
+    shuffled <- sample(iq_ranks)
+    # Take the first 5 ranks.
+    top_5 <- shuffled[1:5]
+    # Sum those ranks.
+    top_5_sum <- sum(top_5)
+    # Keep track of the result of each trial.
+    z[i] <- top_5_sum
+    # End the experiment, go back and repeat.
+}
+
+# Produce a histogram of trial results.
+# Make the bins be the integers from 10 through 45.
+hist(z, breaks=10:45, main='Sums of 5 ranks selected at random')
+```
+
+```{r echo=FALSE, eval=TRUE}
+le_pct <- round(sum(get_var('z') <= 17) / get_var('N') * 100)
+```
+
+We see that in only about `r le_pct`% of the trials did random selection of
+ranks produce a total of 17 or lower. {{< var lang >}} can calculate this for
 us directly:
 
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "ability1.rss"
-
-COUNT z <= 17 k
-' Determine how many trials produced sums of ranks \<= 17 by chance.
-DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Print the results.
-
-' Note: The file "ability1" on the Resampling Stats software disk contains
-' this set of commands.
+```{python}
+# Determine how many trials produced sums of ranks <= 17 by chance.
+k = np.sum(z <= 17)
+# The proportion.
+kk = k / N
+# Show the result
+kk
 ```
 
-Why do we sum the ranks of the first *five* athletes and compare them
-with the second five athletes, rather than comparing the top three, say,
-with the bottom seven? Indeed, we could have looked at the top three,
-two, four, or even six or seven. The first reason for splitting the
-group in half is that an even split uses the available information more
-fully, and therefore we obtain greater efficiency. (I cannot prove this
-formally here, but perhaps it makes intuitive sense to you.) A second
-reason is that getting into the habit of always looking at an even split
-reduces the chances that you will pick and choose in such a manner as to
-fool yourself. For example, if the I.Q. ranks of the top five athletes
-were 3, 2, 1, 10, and 9, we would be deceiving ourselves if, after
-looking the data over, we drew the line between athletes 3 and 4. (More
-generally, choosing an appropriate measure before examining the data
-will help you avoid fooling yourself in such matters.)
+```{r}
+# Determine how many trials produced sums of ranks <= 17 by chance.
+k <- sum(z <= 17)
+# The proportion.
+kk <- k / N
+# Show the result
+kk
+```
 
-A simpler but less efficient approach to this same problem is to
-classify the top-half athletes by whether or not they were also in the
-top half of the I.Q. scores. Of the first five athletes actually
-observed, *four* were in the top five I.Q. scores. We can then shuffle
-five black and five red cards and see how often four or more (that is,
-four or five) blacks come up with the first five cards. The proportion
-of times that four or more blacks occurs in the trial is the probability
-that an association as strong as that observed might occur by chance
-even if there is no association. Table 23-3 shows a proportion of five
+Why do we sum the ranks of the first *five* athletes rather than taking the sum
+of the top three, say? Indeed, we could have looked at the top three, two,
+four, or even six or seven. The first reason for splitting the group in half is
+that an even split uses the available information more fully, and therefore we
+obtain greater efficiency. (I cannot prove this formally here, but perhaps it
+makes intuitive sense to you.) A second reason is that getting into the habit
+of always looking at an even split reduces the chances that you will pick and
+choose in such a manner as to fool yourself. For example, if the I.Q. ranks of
+the top five athletes were 3, 2, 1, 10, and 9, we would be deceiving ourselves
+if, after looking the data over, we drew the line between athletes 3 and 4.
+(More generally, choosing an appropriate measure before examining the data will
+help you avoid fooling yourself in such matters.)
+
+A simpler but less efficient approach to this same problem is to classify the
+top-half athletes by whether or not they were also in the top half of the I.Q.
+scores. Of the first five athletes actually observed, *four* were in the top
+five I.Q. scores. We can then shuffle five black and five red cards and see how
+often four or more (that is, four or five) blacks come up with the first five
+cards. The proportion of times that four or more blacks occurs in the trial is
+the probability that an association as strong as that observed might occur by
+chance even if there is no association. Table 23-3 shows a proportion of five
 trials out of twenty.
 
-In the RESAMPLING STATS program "Ability2" we first note that the top 5
-athletes had 4 of the top 5 I.Q. scores. So we constitute the set of 10
-IQ rankings (vector A). We then SHUFFLE A and TAKE 5 I.Q. rankings (out
-of 10). We COUNT how many are in the top 5, and keep SCORE of the
-result. After REPEATing 1000 times, we find out how often we select 4 of
-the top 5.
+In the {{< var lang >}} program below, we first note that the top 5 athletes
+had 4 of the top 5 I.Q. scores. So we constitute the set of 10 IQ rankings
+{{< var array >}} `a`. We then SHUFFLE A and TAKE 5 I.Q. rankings (out of 10).
+We COUNT how many are in the top 5, and keep SCORE of the result. After REPEATing 1000
+times, we find out how often we select 4 of the top 5.
 
-Table 23-3
+```{python opts.label="py_ed"}
+# Number of repeats.
+N = 10000
+# The IQ ranks, ready for shuffling.
+iq_ranks = np.arange(1, 11)  # 1 through 10.
+# Scorekeeping array.
+z = np.zeros(N)
 
-**Results of 20 Random Trials of the Problem "ABILITY2"**
+for i in range(N):
+    # Shuffle the ranks.
+    shuffled = rnd.permuted(iq_ranks)
+    # Take the first 5 ranks.
+    top_5 = shuffled[:5]
+    # Everything up until this point is the same as the code above.
+    # Here is the difference.
+    # Check whether the selected IQ ranks are in the top 5.
+    are_top = top_5 <= 5
+    # Count how many were in the top 5
+    n_are_top = np.sum(are_top)
+    # Keep track of the result of each trial.
+    z[i] = n_are_top
+    # End the experiment, go back and repeat.
+
+# Determine how many trials produced 4 or more top ranks by chance.
+k = np.sum(z >= 4)
+#  Convert to a proportion.
+kk = k / N
+# Show the result.
+kk
+```
+
+```{r opts.label="py_ed"}
+# Number of repeats.
+N <- 10000
+# The IQ ranks, ready for shuffling.
+iq_ranks <- 1:10  # 1 through 10.
+# Scorekeeping array.
+z <- numeric(N)
+
+for (i in 1:N) {
+    # Shuffle the ranks.
+    shuffled <- sample(iq_ranks)
+    # Take the first 5 ranks.
+    top_5 <- shuffled[1:5]
+    # Everything up until this point is the same as the code above.
+    # Here is the difference.
+    # Check whether the selected IQ ranks are in the top 5.
+    are_top <- top_5 <= 5
+    # Count how many were in the top 5
+    n_are_top <- sum(are_top)
+    # Keep track of the result of each trial.
+    z[i] <- n_are_top
+    # End the experiment, go back and repeat.
+}
+
+# Determine how many trials produced 4 or more top ranks by chance.
+k = sum(z >= 4)
+#  Convert to a proportion.
+kk = k / N
+# Show the result.
+kk
+```
 
 Observed Score: 4
 
@@ -522,58 +1563,26 @@ Observed Score: 4
   20          4           Yes
   ----------- ----------- ---------------
 
+: Results of 20 random trials of the top-5 rank counts {#tbl-top-rank-counts}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
 
-```matlab
-' Program file: "ability2.rss"
+So far we have proceeded on the theory that if there is *any* relationship
+between athletics and I.Q., then the better athletes have higher rather than
+lower I.Q. scores. The justification for this assumption is that past research
+suggests that it is probably true. But if we had *not* had the benefit of that
+past research, we would then have had to proceed somewhat differently; we would
+have had to consider the possibility that the top five athletes could have I.Q.
+scores either higher *or* lower than those of the other students. The results
+of the "two-tail" test would have yielded odds weaker than those we observed.
 
-REPEAT 1000
-    ' Do 1000 experiments.
-    NUMBERS 1,10 a
-    ' Constitute the set of I.Q. ranks.
-    SHUFFLE a b
-    ' Shuffle them.
-    TAKE b 1,5 c
-    ' Take the first 5 ranks.
-    COUNT c between 1 5 d
-    ' Of those 5, count how many are among the top half of the ranks (1-5).
-    SCORE d z
-    ' Keep track of that result in z
-END
-' End one experiment, go back and repeat until all 1000 are complete.
-COUNT z >= 4 k
-' Determine how many trials produced 4 or more top ranks by chance.
-DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Print the result.
+### Example: Athletic ability and I.Q. a third way
 
-' Note: The file "ability2" on the Resampling Stats software disk contains
-' this set of commands.
-```
-
-So far we have proceeded on the theory that if there is *any*
-relationship between athletics and I.Q., then the better athletes have
-higher rather than lower I.Q. scores. The justification for this
-assumption is that past research suggests that it is probably true. But
-if we had *not* had the benefit of that past research, we would then
-have had to proceed somewhat differently; we would have had to consider
-the possibility that the top five athletes could have I.Q. scores either
-higher *or* lower than those of the other students. The results of the
-"two-tail" test would have yielded odds weaker than those we observed.
-
-**Example 23-2: Athletic Ability and I.Q. a Third Way.**
-
-(Program "Ability3").
-
-Example 23-1 investigated the relationship between I.Q. and athletic
-score by ranking the two sets of scores. But ranking of scores loses
-some efficiency because it uses only an "ordinal" (rank-ordered) rather
-than a "cardinal" (measured) scale; the numerical shadings and relative
-relationships are lost when we convert to ranks. Therefore let us
-consider a test of correlation that uses the original cardinal numerical
-scores.
+The example in @sec-althletic-iq-ranks investigated the relationship between
+I.Q. and athletic score by ranking the two sets of scores. But ranking of
+scores loses some efficiency because it uses only an "ordinal" (rank-ordered)
+rather than a "cardinal" (measured) scale; the numerical shadings and relative
+relationships are lost when we convert to ranks. Therefore let us consider a
+test of correlation that uses the original cardinal numerical scores.
 
 First a little background: @fig-hypot_iq_athletic_1 and
 @fig-hypot_iq_athletic_2 show two hypothetical cases of very high association
@@ -588,13 +1597,11 @@ an unfortunate deficiency of such diagrams that *some* variable must
 arbitrarily be placed on the x-axis, whether you intend to suggest causation or
 not.)
 
-
-```{r fig-hypot_iq_athletic_1, opts.label='svg_fig', fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 1"}
+```{r fig-hypot_iq_athletic_1, opts.label="svg_fig", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 1"}
 include_svg('diagrams/hypot_iq_athletic_1.svg')
 ```
 
-
-```{r fig-hypot_iq_athletic_2, opts.label='svg_fig', fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 2"}
+```{r fig-hypot_iq_athletic_2, opts.label="svg_fig", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 2"}
 include_svg('diagrams/hypot_iq_athletic_2.svg')
 ```
 
@@ -604,16 +1611,15 @@ than in @fig-hypot_iq_athletic_1. On the basis of @fig-given_iq_athletic alone,
 one can say only that there *might* be some association between the two
 variables.
 
-```{r fig-given_iq_athletic, opts.label='svg_fig', fig.cap="Given Scores for I.Q. and Athletic Ability"}
+```{r fig-given_iq_athletic, opts.label="svg_fig", fig.cap="Given Scores for I.Q. and Athletic Ability"}
 include_svg('diagrams/given_iq_athletic.svg')
 ```
 
 ## Correlation: sum of products
 
-Now let us take advantage of a handy property of numbers. The more
-closely two sets of numbers match each other in order, the higher the
-sums of their products. Consider the following arrays of the numbers 1,
-2, and 3:
+Now let us take advantage of a handy property of numbers. The more closely two
+sets of numbers match each other in order, the higher the sums of their
+products. Consider the following arrays of the numbers 1, 2, and 3:
 
 1 x 1 = 1
 
@@ -627,10 +1633,10 @@ SUM = 14
 
 SUM = 11
 
-I will not attempt a mathematical proof, but the reader is encouraged to
-try additional combinations to be sure that the highest sum is obtained
-when the order of the two columns is the same. Likewise, the lowest sum
-is obtained when the two columns are in perfectly opposite order:
+I will not attempt a mathematical proof, but the reader is encouraged to try
+additional combinations to be sure that the highest sum is obtained when the
+order of the two columns is the same. Likewise, the lowest sum is obtained when
+the two columns are in perfectly opposite order:
 
 1 x 3 = 3
 
@@ -807,10 +1813,11 @@ selected randomly.
 Finally, we COUNT the trials in which the sum of the products of the
 randomly-paired athletic and I.Q. scores equals or exceeds the sum of
 the products in the observed data.
-
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
 
+<!---
 ```matlab
 ' Program file: "correlation_causation_03.rss"
 
@@ -852,10 +1859,11 @@ ATHLETES & IQ SCORES
 
 We see that obtaining a chance trial result as great as that observed
 was rare. RESAMPLING STATS will calculate this proportion for us:
-
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
 
+<!---
 ```matlab
 ' Program file: "ability3.rss"
 
@@ -983,8 +1991,11 @@ do as follows (program "inp10"):
 
 The following program in RESAMPLING STATS provides the solution:
 
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
+
+<!---
 
 ```matlab
 ' Program file: "correlation_causation_05.rss"
@@ -1042,7 +2053,7 @@ Local Yes   37       20
 Local No    15        6
 -->
 
-
+<!---
 Table 23-9
 
 **Results of Observed Sample For Problem "Beerpoll"**
@@ -1153,8 +2164,11 @@ questions, we check how often the random trials had a difference
 (between consistent and inconsistent responses) as great as 24, the
 value in the observed sample.
 
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
+
+<!---
 
 ```matlab
 ' Program file: "beerpoll.rss"
@@ -1343,8 +2357,11 @@ hence fewer) "streaks" and "slumps" than would result by chance.
 
 In RESAMPLING STATS, we can do this experiment 1000 times.
 
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
+
+<!---
 
 ```matlab
 ' Program file: "sluggo.rss"
@@ -1440,13 +2457,13 @@ The players did all kinds of fancy calculating, using a wild variety of
 assumptions — although there was no possible way that the figuring could
 help them.
 
-When I stopped the game before completing the 10 buy-andsell sessions
-they expected, subjects would ask that the game go on. Then I would tell
-them that there was no basis to believe that there were patterns in the
-data, because the "prices" were just randomly-generated numbers. Winning
-or losing therefore did not depend upon the subjects' skill.
-Nevertheless, they demanded that the game not stop until the 10 "weeks"
-had been played, so they could find out whether they "won" or "lost."
+When I stopped the game before completing the 10 buy-and-sell sessions they
+expected, subjects would ask that the game go on. Then I would tell them that
+there was no basis to believe that there were patterns in the data, because the
+"prices" were just randomly-generated numbers. Winning or losing therefore did
+not depend upon the subjects' skill. Nevertheless, they demanded that the game
+not stop until the 10 "weeks" had been played, so they could find out whether
+they "won" or "lost."
 
 This study of batting illustrates how one can test for independence
 among various trials. The trials are independent if each observation is
@@ -1539,8 +2556,11 @@ a more "sophisticated" measure, the correlation coefficient.)
 The data for 18 randomly-selected players in the 1989 season are as
 follows, as they would appear in the first lines of the program.
 
+-->
 
 <!--- Resampling stats file; Matlab syntax closeish -->
+
+<!---
 
 ```matlab
 ' Program file: "correlation_causation_08.rss"
@@ -1625,7 +2645,7 @@ would be adapted from Noreen (1989), and otherwise, what Noreen (1990) might
 be.
 -->
 
-
+<!---
 Exercise: Should the algorithm of non-computer resampling steps be
 similar to the algorithm for I.Q. and athletic ability shown in the
 text? One can also work with the correlation coefficient rather then the
@@ -1635,3 +2655,4 @@ sum-of-products method, and expect to get the same result.
     problem.
 
 2.  Write a computer program to implement those steps.
+-->
