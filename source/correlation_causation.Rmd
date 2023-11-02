@@ -27,17 +27,17 @@ source("_common.R")
 In this chapter we'll reflect on the basic principles behind resampling in particular, and statistics or probability in
 general. One way of approaching this is to ask, Is there anything that we cannot do with resampling?
 The answer is an emphatic *yes*! In order to be able to sample, the probability distributions to sample
-*from* has to be available. There are many situations where this is simply not true. Any time a manager
-at a financial institution asks you whether a particular client is likely to default if granted a loan,
+*from* has to be available. There are many situations where this is not available. Any time a manager
+at a financial institution asks you whether a particular client is likely to default, if granted a loan,
 it takes you outside the realm of sampling. In this case you'll  need to build a probabilistic *model*
-will that will estimate the *probability of default*.
+that will estimate the *probability of default*.
 
 We'll return to this question and explain how one can develop models that answer questions like these.
 
-Another question one can ask is whether everything one can ever want to know, can in principle be learned from data.
-In this case the answer is not so straightforward. Ultimately, it is a deep philosophical question, one that we'll not pursue.
-However, we can approach this question from the data point of view and examine examples where data cannot provide the
-answers.
+Another, more general, question one can ask is whether everything one can ever want to know, can in principle be learned from data.
+In this case the answer is not so straightforward. Ultimately, it is a deep philosophical question, touching on the very
+foundations of science in general; one that we'll not pursue.
+However, we can approach this question from the data point of view and examine examples where data falls short.
 
 The topic of this chapter is to understand the limitations of resampling or data in general, and give an indication of what approaches
 are available beyond resampling.
@@ -53,15 +53,16 @@ If you are familiar with the normal equations for solving linear least squares e
 section.
 :::
 
-Lets set it as our goal to solve any linear system of equations that can be written in matrix form as
+Let's set it as our goal to solve any linear system of equations that can be written in matrix form as
 
 $$
 A \mathbf{x} = \mathbf{y},
 $$
 where $A$ is an $m\times n$ matrix, $\mathbf{x}$ is an $n\times 1$ (columns) vector, and $\mathbf{y}$ is an $m\times 1$
-(column) vector. Note that we want to find a solution for any such system - there are no other conditions other than the
-constraints on the dimensions that we have listed. Note in particular that $m$ need not equal $n$, and if $m=n$ we don't
-demand that the determinant of $A$ be non-zero. Let's give examples of the typical situations that one encounters in general,
+(column) vector. Note that we want to find a solution for any such system - there are no conditions other than that the
+number of rows of $\mathbf{x}$ must be the same as the number of columns of $A$, and the number of rows of $\mathbf{y}
+must be the same as the number of rows of $A$. Note in particular that $m$ need not equal $n$, and if $m=n$ we don't
+require that the determinant of $A$ be non-zero. Let's give examples of the typical situations that one encounters in general,
 although we'll mainly be interested in the second example.
 
 
@@ -71,17 +72,17 @@ although we'll mainly be interested in the second example.
     This equation is so trivial that we almost don't recognize it as an equation. In this case $A = [1]$, i.e.
     a $1\times 1$ matrix, $\mathbf{x} = 1$ and $\mathbf{y} = 1$.
 2. The second example, and the one we are primarily interested in, represents all overdetermined systems of
-   linear equations, i.e. systems of equations where we have more equations than unknowns.
+   linear equations, i.e. systems of equations where we have more equations than unknowns,
     \begin{eqnarray*}
     x &=& 1\\
     x &=& 1.1\\
     x &=& 1.2.
     \end{eqnarray*}
-    This system clearly has a problem. How can $x$ simultaneously be equal to 1, 1.1, and 1.2? The system is no solution!
-    not in the ordinary sense. It turns out that this system is of the form of our generic equation. We see this by rewriting
-    it in matrix form,
+    This system clearly has a problem - $x$ cannot simultaneously equal 1, 1.1, and 1.2. The system has no solution!,
+    not in the ordinary sense. It turns out that this system is of the form of our generic systems of equations. We see
+    this by rewriting it in matrix form,
 
-    $$
+   $$
     \left[
     \begin{array}{c}
     1\\1\\1
@@ -93,20 +94,19 @@ although we'll mainly be interested in the second example.
     \end{array}
     \right].
     $$
-    This equation represents all equations where there are more equations than unknowns, i.e. the system is *over determined*.
-    It can only be solved in the least squares sense. Instead of looking for an exact solution, which does not exist, we look
-    instead for a solution that best fits the system in the least squares sense. Technically, we are looking for the solution
-    that minimizes the squared error. Please take our word for it that the solution is given by the *normal equations*
-    (of course you should not take our word for it but do a little investigation yourself!),
-
+    This equation represents all equations where there are more equations than unknowns, i.e. all *over determined* systems.
+    Since this system cannot be solved, we look
+    instead for a solution that best fits the system in a sense that we'll explain later. Please take our word for it, for now,
+     that the solution is given by the *normal equations*,
     $$
     A^T A \mathbf{x} = A^T \mathbf{y}.
     $$
-    Here $A^T$ is the transpose of $A$, $A^TA$ is a square, $n\times n$ matrix and $A^T \mathbf{y}$ is an $n\times 1$ (column)
-    vector. Moreover, if $A$ is of full rank, it can be shown that $A^TA$ has an inverse, a situation that we assume to be true.
+    Here $A^T$ is the transpose of $A$, $A^TA$ is an $n\times n$, square, symmetrid matrix and $A^T \mathbf{y}$ is an $n\times 1$ (column)
+    vector. Moreover, if the columns of $A$ are linearly independent, it can be shown that $A^TA$ has an inverse,
+    a situation that is almost always true.
 
     Before we continue with the example let's point out that this situation is common in practice. When Worsely measured the
-    height of the sun above the horizon 10 times, and got 10 different answers, he wat exactly in this this position. Recall
+    height of the sun above the horizon 10 times, and got 10 different answers, he was in exactly this position. Recall
     that he took the expedient to calculate the mean of his observations. Let's calculate the solution of our system
     above using the normal equations,
 
@@ -139,16 +139,16 @@ although we'll mainly be interested in the second example.
     or
     $$ x = \frac{1.0+1.1+1.2}{3}.$$
     This is simply the mean of the 'measurements', exactly what Worsely used!
-3. The example represents all systems of equations where we have an infinite number of solutions.
+3. This example represents all systems of equations where we have an infinite number of solutions.
     $$
     x + y = 1.
     $$
     In contrast with the previous system of equations that did not have any solutions in the strict sense, this one suffers
     from the opposite problem - it has an infinite number of solutions. Yet it is of the form of our generic system with
-    $A = [1 1]$, $\mathbf{x} = \left[ \begin{array}{c}x\\y \end{array} \right]$ and $\mathbf{y} = [0]$. The problem now is
+    $A = [1\; 1]$, $\mathbf{x} = \left[ \begin{array}{c}x\\y \end{array} \right]$ and $\mathbf{y} = [1]$. The problem now is
     to identify a natural solution among the infinity of available solutions. To find this solution one has to calculate
     the generalized inverse that will take us too far from our core focus. But it turns out that it can again be cast as an
-    optimization problem. In this case we are looking for the solution with the smallest norm. In this case it is given by
+    optimization problem. In this case we are looking for the solution with the smallest norm. For this example it is given by
     $$
     \mathbf{x} = \left[\begin{array}{c} \frac12\\ \frac12\end{array} \right].
     $$
@@ -159,22 +159,150 @@ although we'll mainly be interested in the second example.
 
 Armed with the normal equations we can explain the linear correlation between variables.
 
+:::{.callout-note}
+## Deriving the normal equations.
+Let's return to the system of linear equations,
+
+$$
+A\mathbf{x} = \mathbf{y},
+$$
+where $A$ and $\mathbf{y}$ are known and $\mathbf{x}$ is unknown. $A$ is an $m\times n$
+matrix with $m>n$ and $\mathbf{y}$ is an $m$-dimensional vector. We therefore have more equations
+than unknowns. This means that we don't have a solution for the linear system, just as it is not possible
+for $x$ to be simultaneously, $x=1$ and $x=2$. There is no value for $\mathbf{x}$ that will satisfy the system of
+equations (unless we are very lucky such as in $x=1$ and $x=1$). We should therefore rather write,
+$$
+\mathbf{e} = A\mathbf{x} - \mathbf{y}
+$$
+where $\mathbf{e}$ is the difference between the vector $A\mathbf{x}$ and the given vector $\mathbf{y}$ for a specific
+value of $\mathbf{x}$. It means that $\mathbf{e}$ is a functions of $\mathbf{x}$ but we don't indicate it as such
+so as not to clutter the notation. Imagine that as we roam through all possible (vector) values for $\mathbf{x}$ how
+$A\mathbf{x}$ evaluates to corresponding values. These values differ from the given value of $\mathbf{y}$, sometimes by
+a little, sometimes by a lot. Our task is to identify that value of $\mathbf{x}$ that makes the difference between
+$A\mathbf{x}$ and $\mathbf{y}$ as small as possible. But small in what sense?
+
+Let's first take a small diversion and investigate what the components of $\mathbf{e}$ are. First we write $A$ in its
+row form, that is, we explicitly write down the rows,
+$$
+A = \left[  \begin{array}{c}
+       \mathbf{r}_1^T\\
+       \vdots\\
+       \mathbf{r}_m^T
+           \end{array}
+    \right].
+$$
+Note that we write down the *transpose* of the rows, $\mathbf{r}^T$ and not $\mathbf{r}$. The reason is that the latter
+*always*, no exceptions allowes, indicates a *column* vector, and we need to populate the matrix with its rows.
+
+Now we can easily write down
+$$
+A\mathbf{x} = \left[ \begin{matrix}
+       \mathbf{r}_1^T\\
+       \vdots\\
+       \mathbf{r}_m^T\\
+           \end{matrix}
+     \right] \mathbf{x}
+     =
+     \left[ \begin{matrix}
+       \mathbf{r}_1^T \mathbf{x}\\
+       \vdots\\
+       \mathbf{r}_m^T\mathbf{x}\\
+           \end{matrix}
+     \right],
+$$
+and
+$$
+\mathbf{e} = A\mathbf{x}-\mathbf{y} = \left[ \begin{array}{c}
+       \mathbf{r}_1^T \mathbf{x}\\
+       \vdots\\
+       \mathbf{r}_m^T\mathbf{x}\\
+           \end{array}
+     \right]
+     -
+     \left[ \begin{array}{c}
+       y_1\\
+       \vdots\\
+       y_m\\
+           \end{array}
+     \right].
+$$
+Therefore
+$$
+\mathbf{e} = \left[ \begin{array}{c}
+       e_1\\
+       \vdots\\
+       e_m\\
+           \end{array}
+     \right]
+     =
+     \left[ \begin{array}{c}
+       \mathbf{r}_1^T \mathbf{x}\\
+       \vdots\\
+       \mathbf{r}_m^T\mathbf{x}\\
+           \end{array}
+     \right]
+     -
+     \left[ \begin{array}{c}
+       y_1\\
+       \vdots\\
+       y_m\\
+           \end{array}
+     \right]
+     =
+     \left[ \begin{array}{c}
+       \mathbf{r}_1^T \mathbf{x} - y_1\\
+       \vdots\\
+       \mathbf{r}_m^T\mathbf{x} - y_m\\
+           \end{array}
+     \right],
+$$
+or, more explicitly,
+
+\begin{eqnarray*}
+e_1 &=& \mathbf{r}_1^T \mathbf{x} - y1\\
+e_2 &=& \mathbf{r}_1^T \mathbf{x} - y2\\
+ & \vdots &  .
+\end{eqnarray*}
+
+Returning to our question above, we want to identify that value of $\mathbf{x}$ that will minimize the errors,
+$e_1, \ldots, e_m$. We are back at the question, minimize in what sense? A generally used measure for the error is,
+$$
+\mathbf{e}^T\mathbf{e} = e_1^2 + \cdots + e_m^2,
+$$
+whick is just the sum of the squares of the individual errors. Rewriting this, we find,
+$$
+\mathbf{e}^T\mathbf{e} = (A\mathbf{x} - \mathbf{y})^T (A\mathbf{x} - \mathbf{y}).
+$$
+Multiplying this out, gives,
+$$
+\mathbf{e}^T\mathbf{e} = \mathbf{x}^T A^T A \mathbf{x} -  \mathbf{x}^T A^T \mathbf{y} - \mathbf{y}^T A\mathbf{x} +
+\mathbf{y}^T \mathbf{y}.
+$$
+In order to find the values of $\mathbf{x}$ that will minimize the sum of the squares of the errors, we need to set the
+partial derivatives to all the components, $x_1, \ldots, x_n$ in the equation to zero. The detailed calculations are messy
+and we enrourage you to work it out for a small, say $2\times 2$ example. The result is the normal equations,
+$$
+A^T A\mathbf{x} = A^T\mathbf{y}.
+$$
+:::
+
+
 ## Linear correlation
 
-Later in this chapter, we'll discuss the general correlation or association between variables.  Note that it is very important that variables are associated or correlated
-with one another. In general terms it means that one can infer something of one variable by observing
-another, correlated variable. The simples correlation is the linear correlation given by,
+Later in this chapter, we'll discuss the general correlation or association between variables.  Note that we need
+aassociated or correlated variables in order to do inference. In general terms it means that one can learn something
+about one variable by observing the other. The *simplest*  is the linear correlation where the relationship is given by,
 
 $$ y = ax + b,$$
 for two variables $x$ and $y$. Clearly, given $a$ and $b$, we can infer the value of $y$ if we are
 given the value of $x$. If $a\not=0$ then we can also infer the value of $x$, given the value of $y$.
-In this case, one can have an exact correlation - there is no doubt about the value of either of the variables,
+In this case, one has an *exact* correlation - there is no doubt about the value of either of the variables,
 given the value of the other variable.
 
 In practice things are never this easy - if they were we would not have had any need for statistics of
-probability - variables are never exactly correlated. If we know the value of one variable, we can deduce
-an approximate value for the other, correlated, variable. The better the correlation, the more accurate
-the approximation.
+probability - variables are never exactly correlated. The best we can hope for is, if we know/observe the value of one
+ variable, we can calculate an approximate value for the other variable.  The better the correlation between the two variables,
+ the more accurate the estimate.
 
 Let's illustrate the ideas by means of an example. For this, we first need to generate data, i.e.
 values for $x$ and corresponding values for $y$.
@@ -196,7 +324,7 @@ scipy_randomGen = uniform
 scipy_randomGen.random_state=numpy_randomGen
 ```
 Now we choose random values for $x$ in the interval $(0, 1)$ and corresponding values for $y$ in the
-same interval:
+same interval.
 
 ```{python}
 import numpy as np
@@ -233,12 +361,26 @@ around a straight line. In fact, we have the equation for this line, the one we 
 samples. In practice we don't have the line, only the samples, and we would like to find the line that
 best fits the data.
 
-Every measurement $x_i,\;\; i=1,\ldots,n$ we have a corresponding $y_i,\;\; i=1,\ldots,n$. We are looking
+:::{.callout}
+## Making assumptions
+
+Let's say we are given only the values for $x$ and corresponding values for $y$, without any knowledge where it came from.
+How do we know that we should fit a straight line? The answer is, we don't know. In this simple situation one can plot
+the values and from the shape of the plot conclude that there might be a linear relationship. In higher dimensions visualization
+becomes increasingly difficult and in that case we need to make assumptions as to the type of model that best describes the
+data.
+
+Data analysts spend an inordinate amount of time inspecting their data and trying to learn as much as possible about it.
+
+:::
+
+For every measurement $x_i,\;\; i=1,\ldots,n$ we have a corresponding $y_i,\;\; i=1,\ldots,n$. We are looking
 for a linear relationship between the $x_i$ and $y_i$. That is, we are looking for $a$ and $b$ such that
 $$
-y_i = ax_i + b,\;\; i =1,\ldots, n.
+y_i = ax_i + b,\;\; i =1,\ldots, n,
 $$
-This gives us $n$ equations in the two unknowns, $a$ and $b$. We are back at example 2 above! We cannot
+or, if you paid attention, find values of $a$ and $b$ that will best solve the system in the least squares sense.
+This is a linear system of $n$ equations in the two unknowns, $a$ and $b$. We are back at example 2 above! We cannot
 solve these equations exactly but we can solve them in a least squares sense. Writing the system in
 matrix form, gives
 
@@ -274,7 +416,6 @@ x_1 & \cdots & x_n\\
 \left[ \begin{array}{c} y_1\\ \vdots \\ y_n\end{array} \right],
 $$
 or after multipying,
-
 $$
 \left[ \begin{array}{cc}
 \sum_i x_i^2 & \sum_i x_i\\
@@ -287,8 +428,8 @@ a\\b \end{array}
 \sum_i x_i y_i\\
 \sum_i y_i \end{array} \right].
 $$
-Let's solve these equations for the numerical example above and see what we find. The key function is
-the scipy function `stats.linregress(x,y)`. It gives us the slope and intercept of the best linear fit
+Let's solve these equations for the numerical example above with code and see what we find. The key function is
+the `scipy` function `stats.linregress(x,y)`. It gives us the slope and intercept of the best linear fit
 of the data.
 
 ```{python}
@@ -326,18 +467,19 @@ y_fit = slope*x_fit + intercept
 import matplotlib.pyplot as plt
 fig, ax = plt.subplots(1, 1)
 ax.plot(x,y,'.r', x_fit, y_fit, 'b')
+plt.show()
 ```
 The Figure shows that we indeed have a good linear fit of the data. Moreover, the slope and intercept
-calculated from the data is close the values we used to produce the data.
+calculated from the data is close to the values we used to produce the data.
 
-Let's now simplify the normal equations and see what we can learn from that. We can always normalize the data
+Let's now simplify the normal equations and see what we can learn from it. We can always normalize the data
 by subtracting the means of both the $x_i$ and the $y_i$ before we proceed with the calculations.
 This means that
 
 $$
-\sum_i x_i = 0 = \sum_i y_i.
+\sum_i x_i = 0 = \sum_i y_i,
 $$
-The normal equations now simplify as,
+and the normal equations simplify as,
 
 $$
 \left[ \begin{array}{cc}
@@ -355,7 +497,7 @@ This gives us $b=0$. Therefore, if we fit a straight line to the data *after* re
 the intercept is 0.
 
 Let's do another normalization and divide the data with their standard deviations. Since we know that the
-means are 0, the standard deviations are just the length of the data vectors,
+means are 0, the standard deviations $\sigma_x$ and $\sigma_y$ are just the lengths of the data vectors,
 
 $$
 \sigma_x^2 = \sum_i x_i^2
@@ -369,7 +511,6 @@ the variance.
 
 Now if we assume that we have already subtracted the means and also divided by the standard deviations,
 we can set $\sum_i x_i^2 = 1$ in the normal equations. Since we already know that $b=0$, we find that
-
 $$
 a = \sum_i x_i y_i.
 $$
@@ -388,9 +529,9 @@ the inner product equals the cosine of the angle between the two vectors.
 We have therefore arrived at an important conclusion:
 
 *If the data of two data vectors are normalized by first subtracting their means and then divide by their
-lengths (standard deviations), the slope and intercept of the best linear fit have a special meanings.
-intercept $b = 0$, i.e. the best linear fit passes through the origin, and the slope equals the cosine of
-the angle between the two data vectors.
+lengths (standard deviations), the slope and intercept of the best linear fit have a special values.
+The intercept $b = 0$, i.e. the best linear fit passes through the origin, and the slope equals the cosine of
+the angle between the two data vectors.*
 
 Let's reflect on the meaning of the slope. The cosine is a measure of how much the two vectors differ from
 one another. If the angle between the two is zero, the cosine is either 1 or -1. If the two vectors are
@@ -398,13 +539,13 @@ perpendicular, the two vectors form a right angle and the cosine is 0.
 
 If the cosine of the angle is either +1 or -1 we say that the two datasets are perfectly correlated. In general,
 if two dataset are positively correlated ($a>0$(not necessarily perfectly) it means that if the values of one dataset
-has an upward trend, the values of the other dataset will also have an upward trend. On the other hand,
-if the two datasets are negatively correlated $a<0$ it means that if the values of one dataset has an upward
+have an upward trend, the values of the other dataset will also have an upward trend. On the other hand,
+if the two datasets are negatively correlated $a<0$ it means that if the values of one dataset have an upward
 trend, the other dataset will have a downward trend.
 
 The cosine of the angle between the two datasets is called the *correlation coefficient*. It is also
 called *Pearson's* correlation coefficient after Karl Pearson who developed it from ideas proposed by Francis
-Galton and actually first formulated by Auguste Bravais about 40 years earlier. We'll stick to calling
+Galton but,  actually, first formulated by Auguste Bravais about 40 years earlier. We'll stick to calling
 it the *correlation coefficient*!
 
 :::{.callout-note}
@@ -489,7 +630,7 @@ This is close enough to the theoretical values to convince the most sceptical am
 
 ### Example: Is Athletic Ability Directly Related to Intelligence? {#sec-athletic-iq-ranks}
 
-Question: **Is there correlation between the two variables?**
+Question: **Is there a correlation between the two variables?**
 
 A scientist often wants to know whether or not two characteristics go together,
 that is, whether or not they are correlated (that is, related or associated).
@@ -539,19 +680,21 @@ iq_score = np.array([
 corr = pearsonr(athl_score, iq_score)
 print('correlation: ', corr.statistic)
 ```
-The correlation coefficient indicates that there might indeed be a strong (positive) relationship between athletic
+The correlation coefficient indicates that there *might*  be a  (positive) correlation between athletic
 ability and I.Q. The reason for the cautionary note is that this is a tiny sample and there might be many other reasons
 for the relationship, such as recruitment policy, etc.
 
-This brings us naturally to a discussion of causality.
+This brings us naturally to a discussion of causality: Accepting that there is a positive correlation between the two
+variables, does it mean that a higher I.Q. *causes* higher athletic ability, or is it perhaps the other way round?
 
 ## Causality
 
 Before commencing on a discussion of causality proper, let's summarize what we have just learned. Our discussion above
 centered around *linear correlation*. We developed the notion of the *correlation coefficient* which is a measure of
-how well two variables are linearly correlated. The question then arises what about more general associations between
-variables, such a nonlinear relationships between variables? On that, linear correlation has nothing to contribute.
-If there is a nonlinear association between variables it will not possible to determine that using linear correlation.
+how well two variables are *linearly* correlated. The question then arises what about more general associations between
+variables, such nonlinear relationships between variables? In that case, linear correlation has nothing to contribute as
+an example will shortly make clear.
+If there is a nonlinear association between variables it need not show up as a linear correlation.
 
 Then there is the matter of statistical dependence or independence. Intuitively, two variables are statistically
 independent if knowledge about one variable does not tell us anything about the other variable. Here a formula makes it
@@ -563,9 +706,9 @@ This means that the probability distribution of $x$ remains the same, no matter 
 do inference given statistically independent variables.
 
 Are variables that are statistically independent, linearly uncorrelated? The answer is, yes, because there is no
-association between the variables, linear or nonlinear. On the other hand, are variables that are statistically dependent,
-also linearly correlated? In this case the answer is, no. There might be a nonlinear relationship between the variables,
-that is linearly uncorrelated. We an easily construct a simple example.
+association between the variables, linear or nonlinear. On the other hand, variables that are statistically dependent,
+need not be  linearly correlated - there might be a nonlinear relationship between the variables,
+that is linearly uncorrelated. Let's turn to an example.
 
 ```{python}
 import numpy as np
@@ -604,13 +747,13 @@ corr = pearsonr(x, y)
 print('corr coeff: ', corr.statistic)
 
 ```
-Although we can learn much from the value of $y$ by knowing the value of $x$, the correlation coefficient is tiny
+Although we can clearly learn much about the value of $y$, given the  value of $x$, the correlation coefficient is tiny
 and gives no hint of the strong association between the two variables. This example shows us that looking for
 *linear* associations do us no good if we are dealing with nonlinear associations. In practice of course, the most
 interesting associations are nonlinear, requiring techniques that are able to uncover these relationships. That is
-exactly what the huge breakthroughs since about 2012 deep neural networks provided for us. You can think of the
+exactly what the huge breakthroughs since about 2012 deep neural networks achieved. You can think of the
 different (nonlinear) layers of a deep neural network as a nonlinear transformation of the data into a linear
-relationship where we can apply our linear techniques.
+relationship. Once we have that, we can apply our linear techniques.
 
 In statistics, everything used to be about *inference*, based on the association between variables. The goal was to
 extract the maximum amount of information possible from the data. To give an idea of just how wildly successful this
@@ -618,79 +761,85 @@ program has been, one has only to refer to the thoroughly impressive generative 
 based on data. So successful has this been that it is becoming increasingly difficult to distinguish between the
 generative model and a human response. At first sight it would appear as if we have arrived at true machine intelligence.
 But appearances can be misleading, and humans are gullible. One should not mistake a huge, perfect memory with intelligence
-of understanding. The generative model is just as likely to repeat the latest conspiracy theory as providing useful advice.
+or understanding. The generative model is just as likely to repeat the latest conspiracy theory as providing useful advice.
 Granted, this depends on the prevalence of data in specific fields. In some areas conspiracy theories are more prevalent
-than the genuine article, in which case the generative model is more likely to regurgitate the nonsense than the sense.
+than the genuine article, in which case the generative model is more likely to regurgitate nonsense.
 We don't mean to disparage generative models - their achievements are spectacular. And there is no doubt that it will change
 the general landscape in significant ways. To quote a lost author (sadly lost to me), it is not hard to envisage a future
 where the principle task of the programmer will be to adapt a generative model to specific situations. Something like,
-get rid of your conspiracy theories, in this application they are not wellcome!
+get rid of your conspiracy theories, in this application they are not useful or wellcome!
 
 What lies beyond data, what are the questions we cannot answer from data?
 
 ### Example: A statistical view.
 
-Many years ago a statistician friend of mine made the comment that we know that the sun will rise tomorrow morining
+Many years ago a statistician friend of mine made the comment that we know that the sun will rise tomorrow morning
 because we have watched it rise for thousands, if not millions, of years. As a budding applied mathematician who knew
 about gravity, the elliptic orbits of the planets and things like that, the comment was bothersome. Apart from the fact
 that it probably reflected a specific philosophical view of the nature of science, I was hard-pressed to find an adequate
-response. Isn't science just about observation, developing models to fit the facts, to be discarded when it comes into
+response. because, isn't science just about observation, developing models to fit the facts, to be discarded when it comes into
 conflict with the facts and replaced with another ephemeral model?
 
 Today my response will perhaps be along the lines of, there is a reason, beyond the observations, why the sun rises
-every morning. And if we ignore the reasons, we loose all understanding, and all the benefits that go with understanding.
+every morning. And if we ignore the reasons, we loose understanding, and the benefits that go with it.
 
-With data there *must* be a reason to *why* we observe what we observe. If there is no reason, no coherent mechanism that
-that produces the data, there is little if anything the data will tell us. Of course, the mechanism is often too
-complex to understand in any useful way. In that case we have no choice but to try and learn as much as we can from the
+With data there *must* be a reason as to *why* we observe what we observe. If there is no reason, no coherent mechanism that
+that produces the data, there is little if anything the data can tell us. Of course, the mechanism is often too
+complex to understand in any useful way in which case we have no choice but to learn as much as we can from the
 data. But that inevitably limits our understanding.
+
+:::{.callout}
+## The exceptions
+
+In exceptional cases, investigations of data suggested certain patterns that led to the discovery of the fundamental
+principles behind the data. It means we should keep on asking *why*?
+:::
 
 It does sounds odd, though, that one should discard hard-earned knowledge and submit to the limitations of data. Our
 understanding of gravity, that earth revolves around the sun and spins on its own axis, did not come without a considerable
-effort, and price. Just ask Copernicus or Galileo. No reason to pretend that we don't need it!
+effort, and price. Just ask Copernicus or Galileo. No reason to pretend that we can ignore it in favour of data!
 
-It is not unreasonable to ask the question whether there is any reason to believe that the information that is needed
-to answer a specific questions, is actually present in the data. Practical experience has taught us that one should indeed
-ask this question. But it has also taught us that a answer is not always easily forthcoming. Often, the information is
-disguised and only present via proxy.
+There are situations where we cannot learn anything meaningful from data, where the information required to answer a
+specific, isn't in the data.
 
-The next example is one where the information really is not in the data.
+The next example should make this clear.
 
 ### Example: A shoe sale.
 
 A potential client approached our company asking for a model that will optimize their profit putting their unsold shoes
 on sale at season's end. The problem is clear: If they give the shoes away, they will get rid of them but without any profit.
-If they charge too much, they won't sell any and will be left with a lot of surplus shoes, and no profit. Our sales people
-said sure, just give us your historical data as far back as you can of prices versus sales. Our clever experts will
-develop a model in no time. Wrong! The clever experts had no idea how to approach this problem. Fortunately they could
-refer the sales people to The Book of Why, where Judea Pearl and Dana Mackenzie wrote, *Many scientists have been quite
+If they charge too much, they won't sell any and will be left with a lot of surplus shoes, and still no profit. Our sales people
+said sure, just give us your historical data as far back as you can of prices versus sales. Our clever technical experts will
+develop a model in no time. Wrong! The clever technical experts had no idea how to approach this problem. Fortunately they could
+refer their sales people to The Book of Why, where Judea Pearl and Dana Mackenzie wrote, *Many scientists have been quite
 traumatized to learn that none of the methods they learned in statistics will answer a simple question like "What happens
 if we double the price"?* Or, as in our case, half the price.
 
-Note that nothing in the historical data informs us about the outcome of our actions. Last time when the price was half
-the present price, may have been before inflation (or covid!). Or all the other stores has an even lower or higher
-price. The best-known way, and still the prevalent approach, to answer questions like these, is through carefully controlled
-experiments. However, there is another way due the more recent studies into cause-effect relationships - *causality* -
+Note that nothing in the historical data informs us about the outcome of our actions fixing the sales price. Last time
+when the price was half
+the present price, may have been before inflation (or covid!). Or the competing stores have an even lower or higher
+price. The best-known way,  is through (time-consuming, expensive) carefully controlled
+experiments. However, there is another way due to the more recent studies into cause-effect relationships - *causality* -
 and that is to develop a model of consumer behaviour, including present marketing conditions. The next step is to find
-surrogate data that can serve as a proxy for the real thing (see Pearl and Mackenzie).
+surrogate data that can serve as a proxy for the real thing (see Pearl and Mackenzie). Combining the two -
+a consumer behaviour model with surrogate data - allows one to develop a useful model.
 
 ### Example: Covid
 
 During the Covid pandemic there was an association between the number of Covid tests that were performed and the number
 of positive test cases. The more tests that were performed, the more positive test cases were recorded. Also, an association
-was recorded between Civid-related deaths and the number of tests that were performed. That did make
+was recorded between Covid-related deaths and the number of positive test cases. That did make
 a politician too happy - it reflected badly on the administration. So, the politician decided to intervene and stop the
-Covid tests. Sure enough the positive test cases dropped to zero.
+Covid tests. Sure enough the positive test cases dropped to zero. The deaths however, continued.
 
 The politician was therefore right in asserting that there was a causal relationship between the tests and the positive
-test cases. However, the number of deaths due to Covid showed no reaction to the stopping of the rests. More importantly,
-the number of Covid-related deaths did not show any response due to the stopping of the tests. Not surprisingly, this shows
-that, although there was an association between the number of tests and Covid-related deaths, there is no causual relationship -
-the tests did not cause the Covid-related deaths.
+test cases. However, since, unsurprisingly,
+the number of Covid-related deaths did not show any response due to the stopping of the tests there is no causal relationship
+- the tests did not cause the Covid-related deaths.
 
-The previous examples are all rooted in *causality* - the concept that was for a long time banned from statistics.
+The previous examples are all rooted in *causality* - a concept that was for a long time banned from statistics.
 Although most of us have a pretty good idea what is meant by *causality*, a precise definition alludes us; it might be
-impossible not to end up in a circular argument.
+impossible not to end up in a circular definition.
 We'll therefore treat it as a primitive concept that we intuitively understand, much like points or lines in geometry.
 In short, we assume that you know what we are talking about when we talk about *causality*.
 
@@ -700,16 +849,15 @@ of the pioneers of the field is, The Book of Why.
 ### Association
 
 *Association* is just that, from data we learn that if we observe the value of some variable, we can get a quantitative
-idea of what the value of another, associated, variable can be. There is no understanding, no explanation of how or why this
+estimate of  the value of another, associated, variable. There is no understanding, no explanation of how or why this
 might have come about. In order to understand, to explain, to establish causal relationships, one has to understand
 the *why* of the observed data. That is, we need to understand the mechanism that produced the data.
 Even if it is not in  detail, we need to have some understanding of it.
 
 And to do this, we need to look outside the data.
 
-
 One cannot explain gravitation by observing at what time the sun rises in the morning. We cannot build
-an optimum sales model, based on the historical data of sales prices and sales.
+an optimum sales model, based on the historical data of sales.
 
 ### Intervention
 
@@ -725,30 +873,33 @@ press on the accelerator and how fast you go. Given how hard one presses, it is 
 pressure. However, it is not possible to conclude any causal relationship. For that we need to *understand* the
 relationship between force and acceleration.
 
-It is not possible to infer causal relationships from data, mainly due to the possibility of *confounders* - the common
-cause of two observed variables. We already alluded to it when we examined the strong relationship between I.Q.
+It is not possible to infer causal relationships from data, mainly due to the presence of *confounders* - the common
+cause of two observed variables. We already alluded to it when we examined the  relationship between I.Q.
 and athletic ability. One cannot conclude that the one is the cause of the other because of confounders. It is quite
 possible that the relationship is caused by the recruitment program - only talented athletes with a high I.Q. are
-recruited  with the individuals that score high on both abilities the most sought after. There may also be other
+recruited with the individuals that score high on both abilities the most sought after. There may also be other
 confounders.
 
-One way one can assess whether athletic ability causes a high I.Q. is to study an intervention in terms of an injury
-and see whether it has a measurable effect on I.Q.
 
 ### Counterfactuals
 
 Pearl calls  this the highest level of causation. At this level one starts to ask questions about situations that have
-not been observed. Even situations that cannot be observed. One such question, and of particular importance for someone
-my age, is, what is my life expectancy? It is really important to know if you need to survive after retirement on the
-money you saved during your working life. But you have no observations to guide you. Note that this question is very
+not been observed, perhaps,  even situations that cannot be observed. One such question, and of particular importance for someone
+my age, is, what is my life expectancy? It is really important to know if you will be able to survive after retirement on
+your savings. But you have no observations to guide you, nothing that can inform you. By the way,  this question is very
 different from the one that insurance companies ask their actuaries to calculate: what is the expected or average
-life expectancy of someone who doesn't smoke or drink excessively, has no known health issues and does not engage in
-any high-risk sport, etc. In that case one can use lots of data and come with an estimate of the expected life
-expectancy for different *categories* of the population. For me as individual, it is just about meaningless.
+life expectancy of someone  that falls in a specific category, perhaps someone who doesn't smoke or drink excessively,
+has no known health issues and does not engage in any high-risk sport, etc. In that case one can use lots of data and
+come with an estimate of the expected life
+expectancy for different *categories* of the population, all bases on association. For me as individual,
+it is meaningless. It is almost guaranteed that I will not meet the life expectancy of my category and there is no way
+of finding out how much I'll over- or undershoot. Answering this question will likely be forever beyond our reach. But
+there are other examples.
 
 Physicists, among others, ask and answer counterfactual questions all the time. We don't need to observe a particular
 planet orbiting a particular star to be able to predict what its position will be a thousand years from now. In this case,
-as in many others, a few data points together with a deep understanding of the processes involved, give us the answer.
+as in many others, a few data points together with a good understanding of the forces involved, provide  us an  answer
+of a situation never obseved.
 
 ### Summary
 
