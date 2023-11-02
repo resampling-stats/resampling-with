@@ -43,13 +43,12 @@ ported the code.
 :::
 
 
-Here's the bad-news-good-news message again: The bad news is that the
-subject of inferential statistics is extremely difficult — not because
-it is complex but rather because it is subtle. The cause of the
-difficulty is that the world around us is difficult to understand, and
-spoon-fed mathematical simplifications which you manipulate mechanically
-simply mislead you into thinking you understand that about which you
-have not got a clue.
+Here's the bad-news-good-news message again: The bad news is that the subject
+of inferential statistics is extremely difficult — not because it is complex
+but rather because it is subtle. The cause of the difficulty is that the world
+around us is difficult to understand, and spoon-fed mathematical
+simplifications which you manipulate mechanically simply mislead you into
+thinking you understand that about which you have not got a clue.
 
 The good news is that you — and that means *you* , even if you say you
 are "no good at math" — can understand these problems with a layperson's
@@ -65,47 +64,43 @@ observation.
 
 ## Comparisons among more than two samples of counted data
 
-**Example 17-1: Do Any of Four Treatments Affect the Sex Ratio in Fruit
-Flies?** (When the Benchmark Universe Proportion is Known, Is the Propor
-tion of the Binomial Population Affected by Any of the Treatments?)
-(Program "4treat")
+### Example: Do Any of Four Treatments Affect Sex Ratio in Fruit Flies?
+
+This is an example of the general problem — **when the benchmark universe
+proportion is known, is the proportion of the binomial population affected by
+any of the treatments?**
 
 Suppose that, instead of experimenting with just one type of radiation
-treatment on the flies (as in Example 15-1), you try *four* different
-treatments, which we shall label A, B, C, and D. Treatment A produces
-fourteen males and six females, but treatments B, C, and D produce ten,
-eleven, and ten males, respectively. It is immediately obvious that
-there is no reason to think that treatment B, C, or D affects the sex
-ratio. But what about treatment A?
+treatment on the flies (as in @sec-fruitfly), you try *four* different
+treatments, which we shall label A, B, C, and D. Treatment A produces fourteen
+males and six females, but treatments B, C, and D produce ten, eleven, and ten
+males, respectively. It is immediately obvious that there is no reason to think
+that treatment B, C, or D affects the sex ratio. But what about treatment A?
 
-A frequent and dangerous mistake made by young scientists is to scrounge
-around in the data for the most extreme result, and then treat it as if
-it were the only result. In the context of this example, it would be
-fallacious to think that the probability of the fourteen-males-to-six
-females split observed for treatment A is the same as the probability
-that we figured for a *single* experiment in Example 15-1. Instead, we
-must consider that our benchmark universe is composed of *four sets* of
-twenty trials, each trial having a 50-50 probability of being male. We
-can consider that our previous trials 1-4 in Example 15-1 constitute a
-*single* new trial, and each subsequent set of four previous trials
-constitute another new trial. We then ask how likely a new trial of our
-sets of twenty flips is to produce *one* set with fourteen or more of
-one or the other sex.
+A frequent and dangerous mistake made by young scientists is to scrounge around
+in the data for the most extreme result, and then treat it as if it were the
+only result. In the context of this example, it would be fallacious to think
+that the probability of the fourteen-males-to-six females split observed for
+treatment A is the same as the probability that we figured for a *single*
+experiment in Example 15-1. Instead, we must consider that our benchmark
+universe is composed of *four sets* of twenty trials, each trial having a 50-50
+probability of being male. We can consider that our previous trials 1-4 in
+Example 15-1 constitute a *single* new trial, and each subsequent set of four
+previous trials constitute another new trial. We then ask how likely a new
+trial of our sets of twenty flips is to produce *one* set with fourteen or more
+of one or the other sex.
 
 Let us make the procedure explicit, but using random numbers instead of
 coins this time:
 
-**Step 1.** Let "1-5" = males, "6-0" = females
-
-**Step 2.** Choose four groups of twenty numbers. If for *any* group
-there are 14 or more males, record "yes"; if 13 or less, record "no."
-
-**Step 3.** Repeat perhaps 1000 times.
-
-**Step 4.** Calculate the proportion "yes" in the 1000 trials. This
-proportion estimates the probability that a fruit fly population with a
-proportion of 50 percent males will produce as many as 14 males in at
-least one of four samples of 20 flies.
+* **Step 1.** Let "1-5" = males, "6-0" = females
+* **Step 2.** Choose four groups of twenty numbers. If for *any* group there
+  are 14 or more males, record "yes"; if 13 or less, record "no."
+* **Step 3.** Repeat perhaps 1000 times.
+* **Step 4.** Calculate the proportion "yes" in the 1000 trials. This
+  proportion estimates the probability that a fruit fly population with
+  a proportion of 50 percent males will produce as many as 14 males in at least
+  one of four samples of 20 flies.
 
 We begin the trials with data as in Table 17-1. In two of the six
 simulation trials, more than one sample shows 14 or more males. Another
