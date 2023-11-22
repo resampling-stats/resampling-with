@@ -72,7 +72,10 @@ jobs:
           sudo apt install -y libfontconfig1-dev libmagick++-dev
           make build-init
 
-      - name: Deploy index website
+      - name: Build website index
+        run: cd website && make
+
+      - name: Deploy website index
         uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           folder: website
