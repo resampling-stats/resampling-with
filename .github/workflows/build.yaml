@@ -73,7 +73,7 @@ jobs:
           make build-init
 
       - name: Deploy index website
-        uses: JamesIves/github-pages-deploy-action@releases/v4.4.3
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           folder: website
           repository-name: resampling-stats/resampling-stats.github.io
@@ -88,7 +88,7 @@ jobs:
           touch python-book/.nojekyll
 
       - name: Deploy Python book
-        uses: JamesIves/github-pages-deploy-action@releases/v4.4.3
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           folder: python-book
           repository-name: resampling-stats/python-book
@@ -103,7 +103,7 @@ jobs:
           touch python-book/.nojekyll
 
       - name: Deploy R book
-        uses: JamesIves/github-pages-deploy-action@releases/v4.4.3
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           folder: r-book
           repository-name: resampling-stats/r-book
