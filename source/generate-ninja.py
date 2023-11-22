@@ -25,11 +25,13 @@ languages = ('python', 'r')
 def replace_ext(fn, new_ext):
     return os.path.splitext(fn)[0] + new_ext
 
+clean_cmd = 'rm -rf _quarto-*.yml *_cache/ .quarto/ notebooks/*'
+
 w.rule('svg2x', 'inkscape --export-area-drawing -o $out --export-dpi=300 $in')
-w.rule('compile-config', '../scripts/set_version.py --output=_quarto-$lang.yml $lang')
+w.rule('compile-config', f'{clean_cmd}; ../scripts/set_version.py --output=_quarto-$lang.yml $lang')
 w.rule('quarto-render', 'quarto render $in --no-clean --to $format --profile $lang')
 w.rule('quarto-render-project', 'quarto render --to $format --profile $lang')
-w.rule('cleanup', 'rm -rf *_cache/ .quarto/ notebooks/*')
+w.rule('cleanup', clean_cmd)
 w.rule('print-help', 'echo -ne "$$(cat .ninja-usage)"')
 w.rule('check-bibliography', 'biber --tool $in')
 
