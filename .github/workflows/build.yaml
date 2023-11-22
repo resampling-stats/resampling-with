@@ -76,15 +76,16 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           FOLDER: website
-          REPOSITORY_NAME: resampling-stats/resampling-with
+          REPOSITORY_NAME: resampling-stats/resampling-stats.github.io
           BRANCH: gh-pages
           SINGLE_COMMIT: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOOK_UPLOAD_TOKEN }}
 
       - name: Build Python book
         run: |
           make python-book
           cp website/python-README.md python-book/README.md
+          touch python-book/.nojekyll
 
       - name: Deploy Python book
         uses: JamesIves/github-pages-deploy-action@releases/v3
@@ -99,6 +100,7 @@ jobs:
         run: |
           make r-book
           cp website/r-README.md r-book/README.md
+          touch python-book/.nojekyll
 
       - name: Deploy R book
         uses: JamesIves/github-pages-deploy-action@releases/v3
