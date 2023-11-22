@@ -31,29 +31,11 @@ _landing-page:
 
 python-book:  ## Build the Python version of the book
 python-book: ninja-config
-	cd $(SOURCE_DIR) && ninja clean && ninja python-book
+	cd $(SOURCE_DIR) && ninja python-book
 
 r-book:  ## Build the R version of the book
 r-book: ninja-config
-	cd $(SOURCE_DIR) && ninja clean && ninja r-book
-
-website:  ## Build the book (R/Python) as well as the website
-website: python-book r-book _landing-page
-	mkdir -p $(WEB_DIR)
-	cp website/*.html $(WEB_DIR)
-	cp requirements.txt $(WEB_DIR)
-	cp -r $(PYTHON_BOOK_DIR) $(WEB_DIR)
-	cp -r $(R_BOOK_DIR) $(WEB_DIR)
-
-github:   ## Publish the website to GitHub
-github: website
-	ghp-import -n $(WEB_DIR)
-	git push origin gh-pages:gh-pages --force
-	@echo
-	@echo "Published to Github"
-
-webclean:
-	rm -rf $(WEB_DIR)
+	cd $(SOURCE_DIR) && ninja r-book
 
 _source-clean:
 	cd $(SOURCE_DIR) && ninja clean

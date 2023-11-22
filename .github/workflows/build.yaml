@@ -72,14 +72,39 @@ jobs:
           sudo apt install -y libfontconfig1-dev libmagick++-dev
           make build-init
 
-      - name: Build book
-        run: make website
-
-      - name: Deploy docs
+      - name: Deploy index website
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          FOLDER: _www
+          FOLDER: website
           REPOSITORY_NAME: resampling-stats/resampling-with
           BRANCH: gh-pages
           SINGLE_COMMIT: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Python book
+        run: |
+          make python-book
+          cp website/python-README.md python-book/README.md
+
+      - name: Deploy Python book
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          FOLDER: python-book
+          REPOSITORY_NAME: resampling-stats/python-book
+          BRANCH: main
+          SINGLE_COMMIT: true
+          GITHUB_TOKEN: ${{ secrets.BOOK_UPLOAD_TOKEN }}
+
+      - name: Build R book
+        run: |
+          make r-book
+          cp website/r-README.md r-book/README.md
+
+      - name: Deploy R book
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          FOLDER: r-book
+          REPOSITORY_NAME: resampling-stats/r-book
+          BRANCH: main
+          SINGLE_COMMIT: true
+          GITHUB_TOKEN: ${{ secrets.BOOK_UPLOAD_TOKEN }}
