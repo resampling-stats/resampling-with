@@ -1,0 +1,76 @@
+.rmdcomment {
+  padding: 1em 1em 1em 4em;
+  margin-bottom: 10px;
+  background: #f5f5f5;
+  position:relative;
+}
+
+.rmdcomment:before {
+    content: "\f075";
+    font-family: FontAwesome;
+    left:10px;
+    position:absolute;
+    top:0px;
+    font-size: 45px;
+ }
+
+/* Unfortunately we need !important because of the
+ * extreme specificity of the Bookdown CSS rule for a elements
+ * at this level of the class heirarchy */
+.nb-links a {
+  background-color:#477DCA !important;
+  color:#FFF !important;
+  border-radius:3px;
+  display:inline-block;
+  font-size:1.2em;
+  font-weight:700;
+  padding:.4em 1em;
+  margin-bottom: .5em;
+  }
+
+.interact-button:hover {
+  text-decoration:none;
+}
+
+div.interact-context {
+  display: inline;
+  padding-left: 1em;
+  font-weight: 600;
+}
+
+.notebook-link:hover {
+  text-decoration:none;
+}
+
+table {
+  font-size: 80%;
+  border-bottom: 1px solid darkgray;
+  margin-bottom: 4rem !important;
+}
+
+table caption {
+  text-align: left;
+  font-size: 125%;
+  font-weight: bold;
+  overflow-x: visible;
+  white-space: pre;
+  border-bottom: 1px solid darkgray;
+  margin-bottom: 1.5rem;
+}
+
+.lightable-paper {
+  width: auto;
+}
+
+.question::before {
+  content: "Question:";
+  font-weight: bold;
+}
+
+.question {
+  border: 1px solid black;
+  background: #F5E1FD;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+}

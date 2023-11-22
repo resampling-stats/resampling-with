@@ -1,0 +1,60 @@
+# Four girls and one boy
+
+
+What is the probability of selecting four girls and one boy when
+selecting five students from any group of twenty-five girls and
+twenty-five boys?
+
+```{r}
+N <- 10000
+trial_results <- numeric(N)
+
+# Constitute the set of 25 girls and 25 boys.
+whole_class <- rep(c('girl', 'boy'), c(25, 25))
+
+# Repeat the following steps N times.
+for (i in 1:N) {
+
+    # Shuffle the numbers
+    shuffled <- sample(whole_class)
+
+    # Take the first 5 numbers, call them c.
+    c <- shuffled[1:5]
+
+    # Count how many girls there are, put the result in d.
+    d <- sum(c == 'girl')
+
+    # Keep track of each trial result in z.
+    trial_results[i] <- d
+
+    # End the experiment, go back and repeat until all 1000 trials are
+    # complete.
+}
+
+# Count the number of times we got four girls, put the result in k.
+k <- sum(trial_results == 4)
+
+# Convert to a proportion.
+kk <- k / N
+
+# Print the result.
+message(kk)
+```
+
+We can also find the probabilities of other outcomes from a histogram of
+trial results obtained with the following command:
+
+```{r}
+# Do histogram, with one bin for each possible number.
+hist(trial_results, breaks=0:max(trial_results), main='# of girls')
+```
+
+In the resulting histogram we can see that in 15 percent of the trials,
+4 of the 5 selected were girls.
+
+It should be noted that for this problem — as for most other problems —
+there are several other resampling procedures that will also do the job
+correctly.
+
+In analytic probability theory this problem is worked with a formula for
+“combinations.”

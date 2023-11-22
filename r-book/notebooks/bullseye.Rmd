@@ -1,0 +1,55 @@
+# Bullseye
+
+
+This notebook solves the “bullseye” problem: assume from past experience
+that a given archer puts 10 percent of his shots in the black
+(“bullseye”) and 60 percent of his shots in the white ring around the
+bullseye, but misses with 30 percent of his shots. How likely is it that
+in three shots the shooter will get exactly one bullseye, two in the
+white, and no misses?
+
+```{r}
+# Make a vector to store the results of each trial.
+white_counts <- numeric(10000)
+
+# Do 10000 experimental trials
+for (i in 1:10000) {
+
+    # To represent 3 shots, generate 3 numbers at random between "1" and "10"
+    # and put them in a. We will let a "1" denote a bullseye, "2"-"7" a shot in
+    # the white, and "8"-"10" a miss.
+    a <- sample(1:10, size=3, replace=TRUE)
+
+    # Count the number of bullseyes, put that result in b.
+    b <- sum(a == 1)
+
+    # If there is exactly one bullseye, we will continue with counting the
+    # other shots. (If there are no bullseyes, we need not bother — the
+    # outcome we are interested in has not occurred.)
+    if (b == 1) {
+
+        # Count the number of shots in the white, put them in c. (Recall we are
+        # doing this only if we got one bullseye.)
+        c <- sum((a >= 2) & (a <=7))
+
+        # Keep track of the results of this second count.
+        white_counts[i] <- c
+
+        # End the "if" sequence — we will do the following steps without regard
+        # to the "if" condition.
+    }
+
+    # End the above experiment and repeat it until 10000 repetitions are
+    # complete, then continue.
+}
+
+# Count the number of occasions on which there are two in the white and a
+# bullseye.
+n_desired <- sum(white_counts == 2)
+
+# Convert to a proportion.
+prop_desired <- n_desired / 10000
+
+# Print the results.
+message(prop_desired)
+```

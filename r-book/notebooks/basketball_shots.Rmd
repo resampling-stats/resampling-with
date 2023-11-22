@@ -1,0 +1,36 @@
+# Three or more basketball shots
+
+
+We simulate the probability of scoring three or more baskets from five
+shots, if each shot has a 25% probability of success.
+
+```{r}
+n_baskets <- numeric(10000)
+
+# Do 10000 experimental trials.
+for (i in 1:10000) {
+
+    # Generate 5 random numbers, each between 1 and 4, put them in "a".
+    # Let "1" represent a basket, "2" through "4" be a miss.
+    a <- sample(1:4, size=5, replace=TRUE)
+
+    # Count the number of baskets, put that result in b.
+    b <- sum(a == 1)
+
+    # Keep track of each experiment's results in z.
+    n_baskets[i] <- b
+
+    # End the experiment, go back and repeat until all 10000 are completed, then
+    # proceed.
+}
+
+# Determine how many experiments produced more than two baskets, put that
+# result in k.
+n_more_than_2 <- sum(n_baskets > 2)
+
+# Convert to a proportion.
+prop_more_than_2 <- n_more_than_2 / 10000
+
+# Print the result.
+message(prop_more_than_2)
+```

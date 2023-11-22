@@ -1,0 +1,48 @@
+# Framingham heart data
+
+
+We use simulation to investigate the relationship between serum
+cholesterol and heart attacks in the Framingham data.
+
+```{r}
+n <- 10000
+
+men <- rep(c('infarction', 'no infarction'), c(31, 574))
+
+n_high <- 135  # Number of men with high cholesterol
+n_low <- 470  # Number of men with low cholesterol
+
+infarct_differences <- numeric(n)
+
+for (i in 1:n) {
+    highs <- sample(men, size=n_high, replace=TRUE)
+    lows <- sample(men, size=n_low, replace=TRUE)
+    high_infarcts <- sum(highs == 'infarction')
+    low_infarcts <- sum(lows == 'infarction')
+    high_prop <- high_infarcts / n_high
+    low_prop <- low_infarcts / n_low
+    infarct_differences[i] <- high_prop - low_prop
+}
+
+hist(infarct_differences, breaks=seq(-0.1, 0.1, by=0.005),
+     main='Infarct proportion differences in null universe')
+
+# How often was the resampled difference >= the observed difference?
+k <- sum(infarct_differences >= 0.029)
+# Convert this result to a proportion
+kk <- k / n
+
+message('Proportion of trials with difference >= observed: ',
+        round(kk, 2))
+```
+
+The results of the test using this program may be seen in the histogram.
+We find — perhaps surprisingly — that a difference as large as observed
+would occur by chance around 10 percent of the time. (If we were not
+guided by the theoretical expectation that high serum cholesterol
+produces heart disease, we might include the 10 percent difference going
+in the other direction, giving a 20 percent chance). Even a ten percent
+chance is sufficient to call into question the conclusion that high
+serum cholesterol is dangerous. At a minimum, this statistical result
+should call for more research before taking any strong action clinically
+or otherwise.

@@ -1,0 +1,38 @@
+# Two pairs
+
+
+We count the number of times we get two pairs in a random hand of five
+cards.
+
+```{r}
+deck <- rep(1:13, 4)
+```
+
+```{r}
+pairs_per_trial <- numeric(10000)
+
+# Repeat the following steps 10000 times
+for (i in 1:10000) {
+    # Shuffle the deck
+    shuffled <- sample(deck)
+
+    # Take the first five cards.
+    hand <- shuffled[1:5]
+
+    # How many pairs?
+    # Counts for each card rank.
+    repeat_nos <- tabulate(hand)
+    n_pairs <- sum(repeat_nos == 2)
+
+    # Keep score of # of pairs
+    pairs_per_trial[i] <- n_pairs
+
+    # End loop, go back and repeat
+}
+
+# How often were there 2 pairs?
+n_two_pairs <- sum(pairs_per_trial == 2)
+
+# Convert to proportion
+print(n_two_pairs / 10000)
+```

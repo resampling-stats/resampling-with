@@ -1,0 +1,202 @@
+# Another approach to ships with gold and silver
+
+
+This notebook is a variation on the problem with gold and silver chests
+in ships. It shows how we can count and tally the results at the end,
+rather than in the trial itself.
+
+Notice that the first part of the code is identical to the first
+approach to this problem. There are two key differences — see the
+comments for an explanation.
+
+```{r}
+# The 3 buckets, each representing two chests on a ship.
+# As before.
+bucket1 <- c('Gold', 'Gold')  # Chests in first ship.
+bucket2 <- c('Gold',  'Silver')  # Chests in second ship.
+bucket3 <- c('Silver', 'Silver')  # Chests in third ship.
+```
+
+```{r}
+# Here is where the difference starts.  We are now going to fill in
+# the result for the first chest _and_ the result for the second chest.
+#
+# Later we will fill in all these values, so the string we put here
+# does not matter.
+
+# Whether the first chest was Gold or Silver.
+first_chests <- rep('To be announced', 10000)
+second_chests <- rep('To be announced', 10000)
+
+for (i in 1:10000) {
+    # Select a ship at random from the three ships.
+    # As before.
+    ship_no <- sample(1:3, size=1)
+    # Get the chests from this ship.
+    # As before.
+    if (ship_no == 1) {
+        bucket <- bucket1
+    }
+    if (ship_no == 2) {
+        bucket <- bucket2
+    }
+    if (ship_no == 3) {
+        bucket <- bucket3
+    }
+
+    # As before.
+    shuffled <- sample(bucket)
+
+    # Here is the big difference - we store the result for the first and second
+    # chests.
+    first_chests[i] <- shuffled[1]
+    second_chests[i] <- shuffled[2]
+}  # End loop, go back to beginning.
+
+# We will do the calculation we need in the next cell.  For now
+# just display the first 10 values.
+ten_first_chests <- first_chests[1:10]
+message('The first 10 values of "first_chests:')
+```
+
+```{r}
+print(ten_first_chests)
+```
+
+```{r}
+ten_second_chests <- second_chests[1:10]
+message('The first 10 values of "second_chests:')
+```
+
+```{r}
+print(ten_second_chests)
+```
+
+In this variant, we recorded the type of first chest for each trial
+(“Gold” or “Silver”), and the type of second chest of the second chest
+(“Gold” or “Silver”).
+
+**We would like to count the number of times there was “Gold” in the
+first chest *and* “Gold” in the second.**
+
+## 10.5 Combining Boolean arrays
+
+We can do the count we need by *combining* the Boolean vectors with the
+`&` operator. `&` combines Boolean vectors with a *logical and*.
+*Logical and* is a rule for combining two Boolean values, where the rule
+is: the result is `TRUE` if the first value is `TRUE` *and* the second
+value if `TRUE`.
+
+Here we use the `&` *operator* to combine some Boolean values on the
+left and right of the operator:
+
+Above you saw that the `==` operator (as in `== 'Gold'`), when applied
+to vectors, asks the question of every element in the vector.
+
+First make the Boolean vectors.
+
+```{r}
+ten_first_gold <- ten_first_chests == 'Gold'
+message("Ten first == 'Gold'")
+```
+
+```{r}
+print(ten_first_gold)
+```
+
+```{r}
+ten_second_gold <- ten_second_chests == 'Gold'
+message("Ten second == 'Gold'")
+```
+
+```{r}
+print(ten_second_gold)
+```
+
+Now let us use `&` to combine Boolean vectors:
+
+```{r}
+ten_both <- (ten_first_gold & ten_second_gold)
+ten_both
+```
+
+Notice that R does the comparison *elementwise* — element by element.
+
+You saw that when we did `second_chests == 'Gold'` this had the effect
+of asking the `== 'Gold'` question of *each element*, so there will be
+one answer per element in `second_chests`. In that case there was a
+vector to the *left* of `==` and a single value to the *right*. We were
+comparing a vector to a value.
+
+Here we are asking the `&` question of `ten_first_gold` and
+`ten_second_gold`. Here there is a vector to the *left* and a vector to
+the *right*. We are asking the `&` question 10 times, but the first
+question we are asking is:
+
+```{r}
+# First question, giving first element of result.
+(ten_first_gold[1] & ten_second_gold[1])
+```
+
+The second question is:
+
+```{r}
+# Second question, giving second element of result.
+(ten_first_gold[2] & ten_second_gold[2])
+```
+
+and so on. We have ten elements on *each side*, and 10 answers, giving a
+vector (`ten_both`) of 10 elements. Each element in `ten_both` is the
+answer to the `&` question for the elements at the corresponding
+positions in `ten_first_gold` and `ten_second_gold`.
+
+We could also create the Boolean vectors and do the `&` operation all in
+one step, like this:
+
+
+
+Remember, we wanted the answer to the question: how many trials had
+“Gold” in the first chest *and* “Gold” in the second. We can answer that
+question for the first 10 trials with `sum`:
+
+```{r}
+n_ten_both <- sum(ten_both)
+n_ten_both
+```
+
+We can answer the same question for *all* the trials, in the same way:
+
+```{r}
+first_gold <- first_chests == 'Gold'
+second_gold <- second_chests == 'Gold'
+n_both_gold <- sum(first_gold & second_gold)
+n_both_gold
+```
+
+We could also do the same calculation all in one line:
+
+```{r}
+n_both_gold <- sum((first_chests == 'Gold') & (second_chests == 'Gold'))
+n_both_gold
+```
+
+We can then count all the ships where the first chest was gold:
+
+```{r}
+n_first_gold <- sum(first_chests == 'Gold')
+n_first_gold
+```
+
+The final calculation is the proportion of second chests that are gold,
+given the first chest was also gold:
+
+```{r}
+p_g_given_g <- n_both_gold / n_first_gold
+p_g_given_g
+```
+
+Of course we won’t get exactly the same results from the two
+simulations, in the same way that we won’t get exactly the same results
+from any two runs of the same simulation, because of the random values
+we are using. But the logic for the two simulations are the same, and we
+are doing many trials (10,000), so the results will be very similar.

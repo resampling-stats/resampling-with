@@ -1,0 +1,37 @@
+# Twenty executives, two divisions
+
+
+The top manager wants to spread the talent reasonably evenly, but she
+does not want to label particular executives with a quality rating and
+therefore considers distributing them with a random selection. She
+therefore wonders: What are probabilities of the best ten among the
+twenty being split among the divisions in the ratios 5 and 5, 4 and 6, 3
+and 7, etc., if their names are drawn from a hat? One might imagine much
+the same sort of problem in choosing two teams for a football or
+baseball contest.
+
+One may proceed as follows:
+
+1.  Put 10 balls labeled “W” (for “worst”) and 10 balls labeled “B”
+    (best) in a bucket.
+2.  Draw 10 balls without replacement and count the W’s.
+3.  Repeat (say) 400 times.
+4.  Count the number of times each split — 5 W’s and 5 B’s, 4 and 6,
+    etc. — appears in the results.
+
+The problem can be done with R as follows:
+
+```{r}
+N <- 10000
+trial_results <- numeric(N)
+
+managers <- rep(c('Worst', 'Best'), c(10, 10))
+
+for (i in 1:N) {
+    chosen <- sample(managers, 10)  # replace=FALSE is the default.
+    trial_results[i] <- sum(chosen == 'Best')
+}
+
+hist(trial_results, breaks=0:max(trial_results),
+     main= 'Number of best managers chosen')
+```

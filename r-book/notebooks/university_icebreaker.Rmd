@@ -1,0 +1,70 @@
+# An icebreaker for two universities
+
+
+**First put two groups of 10 people into 10 pairs. Then re-randomize the
+pairings. What is the chance that four or more pairs are the same in the
+second random pairing? This is a problem in the probability of matching
+by chance**.
+
+Ten representatives each from two universities, Birmingham and Berkeley,
+attend a meeting. As a social icebreaker, representatives are divided,
+randomly, into pairs consisting of one person from each university.
+
+If they held a second round of the icebreaker, with a new random
+pairing, what is the chance that four or more pairs will be the same?
+
+In approaching this problem, we start at the point where the first
+icebreaker is complete. We now have to determine what happens after the
+second round.
+
+- **Step 1.** Let “ace” through “10” of hearts represent the ten
+  representatives from Birmingham University. Let “ace” through “10” of
+  spades be their allocated partners (in round one) from Berkeley.
+- **Step 2.** Shuffle the hearts and deal them out in a row; shuffle the
+  spades and deal in a row just below the hearts.
+- **Step 3.** Count the pairs — a pair is one card from the heart row
+  and one card from the spade row — that contain the same denomination.
+  If 4 or more pairs match, record “yes,” otherwise “no.”
+- **Step 4.** Repeat steps (2) and (3), say, 10,000 times.
+- **Step 5.** Count the proportion “yes.” This estimates the probability
+  of 4 or more pairs.
+
+Exercise for the student: Write the steps to do this example with random
+numbers. The R solution follows below.
+
+```{r}
+N <- 10000
+trial_results <- numeric(N)
+
+# Assign numbers to each student, according to their pair, after the first
+# icebreaker
+birmingham <- 1:10
+berkeley <- 1:10
+
+for (i in 1:N) {
+    # Randomly shuffle the students from Berkeley
+    shuffled_berkeley <- sample(berkeley)
+
+    # Randomly shuffle the students from Birmingham
+    # (This step is not really necessary — shuffling one array is enough to make the matching random.)
+    shuffled_birmingham <- sample(birmingham)
+
+    # Count in how many cases people landed with the same person as in the
+    # first round, and store in trial_results.
+    matches <- sum(shuffled_berkeley == shuffled_birmingham)
+    trial_results[i] <- matches
+}
+
+# Count the number of times we got 4 or more people assigned to the same person
+k <- sum(trial_results >= 4)
+
+# Convert to a proportion.
+kk <- k / N
+
+# Print the result.
+message(kk)
+```
+
+We see that in about 2 percent of the trials did 4 or more couples end
+up being re-paired with their own partners. This can also be seen from
+the histogram:

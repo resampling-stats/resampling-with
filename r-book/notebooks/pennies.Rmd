@@ -1,0 +1,87 @@
+# Simulating the pennies game
+
+
+This notebook calculates the probability that one player will run out of
+pennies within 200 turns of the Pennies game.
+
+```{r}
+someone_won <- numeric(10000)
+
+# Do 10000 trials
+for (i in 1:10000) {
+
+    # Record the number 10: a's stake
+    a_stake <- 10
+
+    # Same for b
+    b_stake <- 10
+
+    # An indicator flag that will be set to "1" when somebody wins.
+    flag <- 0
+
+    # Repeat the following steps 200 times.
+    # Notice we use "j" as the counter variable, to avoid overwriting
+    # "i", the counter variable for the 10000 trials.
+    for (j in 1:200) {
+        # Generate the equivalent of a coin flip, letting 1 <- heads,
+        # 2 <- tails
+        c <- sample(1:2, size=1)
+
+        # If it's a heads
+        if (c == 1) {
+
+            # Add 1 to b's stake
+            b_stake <- b_stake + 1
+
+            # Subtract 1 from a's stake
+            a_stake <- a_stake - 1
+
+            # End the "if" condition
+        }
+
+        # If it's a tails
+        if (c == 2) {
+
+            # Add one to a's stake
+            a_stake <- a_stake + 1
+
+            # Subtract 1 from b's stake
+            b_stake <- b_stake - 1
+
+            # End the "if" condition
+        }
+
+        # If a has won
+        if (a_stake == 20) {
+
+            # Set the indicator flag to 1
+            flag <- 1
+        }
+
+        # If b has won
+        if (b_stake == 20) {
+
+            # Set the indicator flag to 1
+            flag <- 1
+
+        }
+
+        # End the repeat loop for 200 plays (note that the indicator flag stays
+        # at 0 if neither a nor b has won)
+    }
+
+    # Keep track of whether anybody won.
+    someone_won[i] <- flag
+
+    # End the 10000 trials
+}
+
+# Find out how often somebody won
+n_wins <- sum(someone_won)
+
+# Convert to a proportion
+prop_wins <- n_wins / 10000
+
+# Print the results
+message(prop_wins)
+```

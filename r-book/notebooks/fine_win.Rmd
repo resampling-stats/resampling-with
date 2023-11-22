@@ -1,0 +1,195 @@
+# Fine day and win
+
+
+This notebook calculates the chances that the Commanders win on a fine
+day.
+
+We also go through the logic of the `if` statement, and its associated
+`else` clause.
+
+```{r}
+# blue means "nice day", yellow means "not nice".
+bucket_A <- rep(c('blue', 'yellow'), c(7, 3))
+bucket_A
+```
+
+Now let us draw a ball at random from bucket_A:
+
+```{r}
+a_ball <- sample(bucket_A, size=1)
+a_ball
+```
+
+How we run our first `if` statement. Running this code will display “The
+ball was blue” if the ball was blue, otherwise it will not display
+anything:
+
+```{r}
+if (a_ball == 'blue') {
+    message('The ball was blue')
+}
+```
+
+Notice that the header line has `if`, followed by an open parenthesis
+`(` introducing the *conditional expression* `a_ball == 'blue'`. There
+follows close parenthesis `)` to finish the conditional expression. Next
+there is a open curly brace `{` to signal the start of the body of the
+`if` statement. The *body* of the `if` statement is one or more lines of
+code, followed by the close curly brace `}`. Here there is only one
+line: `message('The ball was blue')`. R only runs the body of the if
+statement if the *condition* is `TRUE`.[^1]
+
+To confirm we see “The ball was blue” if `a_ball` is `'blue'` and
+nothing otherwise, we can set `a_ball` and re-run the code:
+
+```{r}
+# Set value of a_ball so we know what it is.
+a_ball <- 'blue'
+```
+
+```{r}
+if (a_ball == 'blue') {
+    # The conditional statement is True in this case, so the body does run.
+    message('The ball was blue')
+}
+```
+
+```{r}
+a_ball <- 'yellow'
+```
+
+```{r}
+if (a_ball == 'blue') {
+    # The conditional statement is False, so the body does not run.
+    message('The ball was blue')
+}
+```
+
+We can add an `else` clause to the `if` statement. Remember the *body*
+of the `if` statement runs if the *conditional expression* (here
+`a_ball == 'blue')` is `TRUE`. The `else` clause runs if the conditional
+statement is `FALSE`. This may be clearer with an example:
+
+```{r}
+a_ball <- 'blue'
+```
+
+```{r}
+if (a_ball == 'blue') {
+    # The conditional expression is True in this case, so the body runs.
+    message('The ball was blue')
+} else {
+    # The conditional expression was True, so the else clause does not run.
+    message('The ball was not blue')
+}
+```
+
+Notice that the `else` clause of the `if` statement starts with the end
+of the `if` body with the closing curly brace `}`. `else` follows,
+followed in turn by the opening curly brace `{` to start the body of the
+`else` clause. The body of the `else` clause only runs if the initial
+conditional expression is *not* `TRUE`.
+
+```{r}
+a_ball <- 'yellow'
+```
+
+```{r}
+if (a_ball == 'yellow') {
+    # The conditional expression was False, so the body does not run.
+    message('The ball was blue')
+} else {
+    # but the else clause does run.
+    message('The ball was not blue')
+}
+```
+
+With this machinery, we can now implement the full logic of step 4
+above:
+
+    If you have drawn a blue ball from bucket A:
+        Draw a ball from bucket B
+        if the ball is green:
+            record "yes"
+        otherwise:
+            record "no".
+
+Here is bucket B. Remember green means “win” (65% of the time) and red
+means “lose” (35% of the time). We could call this the “Commanders win
+when it is a nice day” bucket:
+
+```{r}
+bucket_B <- rep(c('green', 'red'), c(65, 35))
+```
+
+The full logic for step 4 is:
+
+Now we have everything we need to run many trials with the same logic.
+
+```{r}
+# By default, say we have no result.
+result = 'No result'
+a_ball <- sample(bucket_A, size=1)
+# If you have drawn a blue ball from bucket A:
+if (a_ball == 'blue') {
+    # Draw a ball at random from bucket B
+    b_ball <- sample(bucket_B, size=1)
+    # if the ball is green:
+    if (b_ball == 'green') {
+        # record "yes"
+        result <- 'yes'
+    # otherwise:
+    } else {
+        # record "no".
+        result <- 'no'
+    }
+}
+# Show what we got in this case.
+result
+```
+
+```{r}
+# The result of each trial.
+# To start with, say we have no result for all the trials.
+z <- rep('No result', 10000)
+
+# Repeat trial procedure 10000 times
+for (i in 1:10000) {
+    # draw one "ball" for the weather, store in "a_ball"
+    # blue is "nice day", yellow is "not nice"
+    a_ball <- sample(bucket_A, size=1)
+    if (a_ball == 'blue') {  # nice day
+        # if no rain, check on game outcome
+        # green is "win" (give nice day), red is "lose" (given nice day).
+        b_ball <- sample(bucket_B, size=1)
+        if (b_ball == 'green') {  # Commanders win
+            # Record result.
+            z[i] <- 'yes'
+        } else {
+            z[i] <- 'no'
+        }
+    }
+    # End of trial, go back to the beginning until done.
+}
+
+# Count of the number of times we got "yes".
+k <- sum(z == 'yes')
+# Show the proportion of *both* fine day *and* wins
+kk <- k / 10000
+kk
+```
+
+The above procedure gives us the probability that it will be a nice day
+and the Commanders will win — about 46.1%.
+
+[^1]: In this case, the result of the conditional expression is in fact
+    either `TRUE` or `FALSE`. R is more liberal on what it allows in the
+    conditional expression; it will take whatever the result is, and
+    then force the result into either `TRUE` or `FALSE`, in fact, by
+    wrapping the result with the `logical` function, that takes anything
+    as input, and returns either `TRUE` or `FALSE`. Therefore, we could
+    refer to the result of the conditional expression as something
+    “truthy” — that is - something that comes back as `TRUE` or `FALSE`
+    from the `logical` function. In the case here, that does not arise,
+    because the result is in fact either exactly `TRUE` or exactly
+    `FALSE`.

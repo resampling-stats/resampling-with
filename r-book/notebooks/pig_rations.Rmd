@@ -1,0 +1,84 @@
+# Weight gain on pig rations
+
+
+We do a simulation of weight gain ranks for two different pig rations.
+
+The `ranks <- 1:24` statement creates a vector of numbers 1 through 24,
+which will represent the rankings of weight gains for each of the 24
+pigs. We repeat the following procedure for 10000 trials. First we
+shuffle the elements of vector `ranks` so that the rank numbers for
+weight gains are randomized and placed in vector `shuffled`. We then
+select the first 12 elements of `shuffled` and place them in `first_12`;
+this represents the rankings of a randomly-selected group of 12 pigs. We
+next count (`sum`) in `n_top` the number of pigs whose rankings for
+weight gain were in the top half — that is, a rank of less than 13. We
+record that number in `top_ranks`, and then continue the loop, until we
+finish our `n` trials.
+
+Since we did not know beforehand the direction of the effect of ration A
+on weight gain, we want to count the times that *either more than 8* of
+the random selection of 12 pigs were in the top half of the rankings,
+*or that fewer than 4* of these pigs were in the top half of the weight
+gain rankings — (The latter is the same as counting the number of times
+that more than 8 of the 12 *non-selected* random pigs were in the top
+half in weight gain.)
+
+We do so with the final two `sum` statements. By adding the two results
+`n_gte_9` and `n_lte_3` together, we have the number of times out of
+10,000 that differences in weight gains in two groups as dramatic as
+those obtained in the actual experiment would occur by chance.
+
+```{r}
+# Constitute the set of the weight gain rank orders. ranks is now a vector
+# consisting of the numbers 1 — 24, in that order.
+ranks <- 1:24
+
+n <- 10000
+
+top_ranks <- numeric(n)
+
+for (i in 1:n) {
+    # Shuffle the ranks of the weight gains.
+    shuffled <- sample(ranks)
+    # Take the first 12 ranks.
+    first_12 <- shuffled[1:12]
+    # Determine how many of these randomly selected 12 ranks are less than
+    # 12 (i.e. 1-12), put that result in n_top.
+    n_top <- sum(first_12 <= 12)
+    # Keep track of each trial result in top_ranks
+    top_ranks[i] <- n_top
+}
+
+hist(top_ranks, breaks=1:11,
+     main='Number of top 12 ranks in pig-ration trials')
+```
+
+We see from the histogram that, in about 3 percent of the trials, either
+more than 8 or fewer than 4 top half ranks (1-12) made it into the
+random group of twelve that we selected. R will calculate this for us as
+follows:
+
+```{r}
+# Determine how many of the trials yielded 9 or more top ranks.
+n_gte_9 <- sum(top_ranks >= 9)
+# Determine how many trials yielded 3 or fewer of the top ranks.
+# If there were 3 or fewer, then 9 or more of the top ranks must
+# have been in the other group (not selected).
+n_lte_3 <- sum(top_ranks <= 3)
+# Add the two together.
+n_both <- n_gte_9 + n_lte_3
+# Convert to a proportion.
+prop_both <- n_both / n
+
+message('Trial proportion >=9 top ranks in either group: ',
+        round(prop_both, 2))
+```
+
+The decisions that are warranted on the basis of the results depend upon
+one’s purpose. If writing a scientific paper on the merits of ration A
+is the ultimate purpose, it would be sensible to test another batch of
+pigs to get further evidence. (Or you could proceed to employ another
+sort of test for a slightly more precise evaluation.) But if the goal is
+a decision on which type of ration to buy for a small farm and they are
+the same price, just go ahead and buy ration A because, even if it is no
+better than ration B, you have strong evidence that it is *no worse* .

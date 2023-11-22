@@ -1,0 +1,38 @@
+# Three of a kind
+
+
+We count the number of times we get three of a kind in a random hand of
+five cards.
+
+```{r}
+one_suit <- 1:13
+deck <- rep(one_suit, 4)
+```
+
+```{r}
+triples_per_trial <- numeric(10000)
+
+# Repeat the following steps 10000 times
+for (i in 1:10000) {
+    # Shuffle the deck
+    shuffled <- sample(deck)
+
+    # Take the first five cards.
+    hand <- shuffled[1:5]
+
+    # How many triples?
+    repeat_nos <- tabulate(hand)
+    n_triples <- sum(repeat_nos == 3)
+
+    # Keep score of # of triples
+    triples_per_trial[i] <- n_triples
+
+    # End loop, go back and repeat
+}
+
+# How often was there 1 pair?
+n_triples <- sum(triples_per_trial == 1)
+
+# Convert to proportion
+message(n_triples / 10000)
+```

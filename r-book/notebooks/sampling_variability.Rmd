@@ -1,0 +1,27 @@
+# Experiment in sampling variability
+
+
+Try generating some rookie “seasons” yourself with the following
+commands, ranging the batter’s “true” performance by changing the value
+of `p_hit` (the probability of a hit).
+
+```{r}
+# Simulate a rookie season of 400 at-bats.
+
+# You might try changing the value below and rerunning.
+# This is the true (long-run) probability of a hit for this batter.
+p_hit <- 0.4
+message('True average is: ', p_hit)
+```
+
+```{r}
+# We resample _with_ replacement here; the chances of a hit do not change
+# From at-bat to at-bat.
+at_bats <- sample(c('Hit', 'Out'), prob=c(p_hit, 1 - p_hit), size=400, replace=TRUE)
+simulated_average <- sum(at_bats == 'Hit') / 400
+# Show the result
+message('Simulated average is: ', simulated_average)
+```
+
+Simulate a set of 10 or 20 such rookie seasons, and look at the one who
+did best. How did their rookie season compare to their “true” average?

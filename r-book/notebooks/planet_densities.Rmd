@@ -1,0 +1,43 @@
+# Planet densities and distance
+
+
+We apply the logic of resampling to the problem of close and distant
+planets and their densities.
+
+```{r}
+# Steps 1 and 2.
+actual_mean_diff <- 8 / 2 - 7 / 3
+
+# Step 3
+ranks <- 1:5
+
+n <- 10000
+
+mean_differences <- numeric(n)
+
+for (i in 1:n) {
+    # Step 4
+    shuffled <- sample(ranks)
+    # Step 5
+    closer <- shuffled[1:2]  # First 2
+    further <- shuffled[3:5] # Last 3
+    # Step 6
+    mean_close <- mean(closer)
+    mean_far <- mean(further)
+    # Step 7
+    mean_differences[i] <- mean_close - mean_far
+}
+
+# Step 9
+k <- sum(mean_differences >= actual_mean_diff)
+prob <- k / n
+
+message('Proportion of trials with mean difference >= 1.67: ',
+        round(prob, 2))
+```
+
+Interpretation: 20 percent of the time, random shufflings produced a
+difference in ranks as great as or greater than observed. Hence, on the
+strength of this evidence, we should *not* conclude that there is a
+statistically surprising difference in densities between the further
+planets and the closer planets.

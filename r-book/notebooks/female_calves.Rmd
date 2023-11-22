@@ -1,0 +1,48 @@
+# Female calf numbers simulation
+
+
+This notebook uses simulation to test the null hypothesis that the
+chances of any one calf being female is 100 / 206.
+
+```{r}
+# Set the number of trials.
+n_trials <- 10000
+
+# Set the size of each sample.
+sample_size <- 10
+
+# Probability of any one calf being female.
+p_female <- 100 / 206
+
+# A vector to store the results.
+scores <- numeric(n_trials)
+
+# for 10000 repeats.
+for (i in 1:n_trials) {
+
+    a <- sample(c('female', 'male'),
+                size=sample_size,
+                prob=c(p_female, 1 - p_female),
+                replace=TRUE)
+    b <- sum(a == 'female')
+
+    # Store the result of the current trial.
+    scores[i] <- b
+}
+
+# Plot a histogram of the scores.
+title_of_plot <- paste0("Number of females in", n_trials, " samples of \n", sample_size, " simulated calves")
+hist(scores, xlab = 'Number of Females', main=title_of_plot)
+
+# Count the number of scores that were greater than or equal to 9.
+k <- sum(scores >= 9)
+
+# Express as a proportion.
+kk <- k / n_trials
+
+# Show the proportion.
+message("Probability of 9 or 10 females occurring by chance: ", kk)
+```
+
+We read from the result in variable `kk` that the probability of 9 or 10
+females occurring by chance is a bit more than one percent.

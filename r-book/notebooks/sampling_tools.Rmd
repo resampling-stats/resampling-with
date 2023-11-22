@@ -1,0 +1,459 @@
+# Sampling tools
+
+
+## 6.2 Samples and labels
+
+Thus far we have used numbers such as 1 and 0 and 10 to represent the
+elements we are sampling from. For example, in
+<a href="#sec-resampling-two" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-resampling-two</span></a>, we were
+simulating the chance of a particular juror being black, given that 26%
+of the eligible jurors in the county were black. We used *integers* for
+that task, where we started with all the integers from 0 through 99, and
+asked R to select values at random from those integers. When R selected
+an integer from 0 through 25, we chose to label the resulting simulated
+juror as black — there are 26 integers in the range 0 through 25, so
+there is a 26% chance that any one integer will be in that range. If the
+integer was from 26 through 99, the simulated juror was white (there are
+74 integers in the range 26 through 99).
+
+Here is the process of simulating a single juror, adapted from
+<a href="#sec-random-zero-through-ninety-nine" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-random-zero-through-ninety-nine</span></a>:
+
+```{r}
+# Get 1 random number from 0 through 99
+# replace=TRUE is redundant here (why?), but we leave it for consistency.
+a <- sample(0:99, 1, replace=TRUE)
+
+# Show the result
+a
+```
+
+After that, we have to unpack our labeling of 0 through 25 as being
+“black” and 26 through 99 as being “white”. We might do that like this:
+
+```{r}
+this_juror_is_black <- a < 26
+this_juror_is_black
+```
+
+This all works as we want it to, but it’s just a little bit difficult to
+remember the coding (less than 26 means “black”, greater than 25 means
+“white”). We had to use that coding because we committed ourselves to
+using random numbers to simulate the outcomes.
+
+However, R can also store bits of text, called *strings*. Values that
+are bits of text can be very useful because the text values can be
+memorable labels for the entities we are sampling from, in our
+simulations.
+
+## 6.3 String values
+
+So far, all the values you have seen in R vectors have been numbers. Now
+we get on to values that are bits of text. These are called *strings*.
+
+Here is a single R string value:
+
+```{r}
+s <- "Resampling"
+s
+```
+
+We can see what type of value `v` holds by using the `class` function.
+
+For example, for a number value, you will usually find the `class` is
+`numeric`:
+
+```{r}
+v <- 10
+class(v)
+```
+
+What is the `class` of the new bit-of-text value `s`?
+
+```{r}
+class(s)
+```
+
+The R `character` value is a bit of text, and therefore consists of a
+sequence of characters.
+
+As vectors are containers for other things, such as numbers, strings are
+containers for characters.
+
+To get the length of a string, use the `nchar` function (Number of
+Characters):
+
+```{r}
+# Number of characters in s
+nchar(s)
+```
+
+R has a `substring` function that allows you to select individual
+characters or sequences of characters from a string. The arguments to
+`substring` are: first — the string; second — the index of the first
+character you want to select; and third — the index of the last
+character you want to select. For example to select the second character
+in the string you would specify 2 as the starting index, and 2 as the
+ending index, like this:
+
+```{r}
+# Get the second character of the string
+second_char <- substring(s, 2, 2)
+second_char
+```
+
+## 6.4 Strings in vectors
+
+As we can store numbers as elements in vectors, we can also store
+strings as vector elements.
+
+```{r}
+vector_of_strings = c('Julian', 'Lincoln', 'Simon')
+vector_of_strings
+```
+
+As for any vector, you can select elements with *indexing*. When you
+select an element with a given position (index), you get the *string* at
+at that position:
+
+```{r}
+# Julian Lincoln Simon's second name
+middle_name <- vector_of_strings[2]
+middle_name
+```
+
+As for numbers, we can compare strings with, for example, the `==`
+operator, that asks whether the two strings are equal:
+
+```{r}
+middle_name == 'Lincoln'
+```
+
+## 6.5 Repeating elements
+
+Now let us go back to the problem of selecting black and white jurors.
+
+We started with the strategy of using numbers 0 through 25 to mean
+“black” jurors, and 26 through 99 to mean “white” jurors. We selected
+values at random from 0 through 99, and then worked out whether the
+number meant a “black” juror (was less than 26) or a “white” juror (was
+greater than 25).
+
+It would be good to use strings instead of numbers to identify the
+potential jurors. Then we would not have to remember our coding of 0
+through 25 and 26 through 99.
+
+If only there was a way to make a vector of 100 strings, where 26 of the
+strings were “black” and 74 were “white”. Then we could select randomly
+from that array, and it would be immediately obvious that we had a
+“black” or “white” juror.
+
+Luckily, of course, we can do that, by using the `rep` function to
+construct the vector.
+
+Here is how that works:
+
+```{r}
+# The values that we will repeat to fill up the larger array.
+juror_types <- c('black', 'white')
+# The number of times we want to repeat "black" and "white".
+repeat_nos <- c(26, 74)
+# Repeat "black" 26 times and "white" 74 times.
+jury_pool <- rep(juror_types, repeat_nos)
+# Show the result
+jury_pool
+```
+
+We can use this vector of repeats of strings, to sample from. The result
+is easier to grasp, because we are using the string labels, instead of
+numbers:
+
+```{r}
+# Select one juror at random from the black / white pool.
+# replace=TRUE is redundant here, but we leave it for consistency.
+one_juror <- sample(jury_pool, 1, replace=TRUE)
+one_juror
+```
+
+We can select our full jury of 12 jurors, and see the results in a more
+obvious form:
+
+```{r}
+# Select one juror at random from the black / white pool.
+one_jury <- sample(jury_pool, 12, replace=TRUE)
+one_jury
+```
+
+<div class="callout callout-style-default callout-note callout-titled">
+
+<div class="callout-header d-flex align-content-center">
+
+<div class="callout-icon-container">
+
+<i class='callout-icon'></i>
+
+</div>
+
+<div class="callout-title-container flex-fill">
+
+Using the `size` argument to `sample`
+
+</div>
+
+</div>
+
+<div class="callout-body-container callout-body">
+
+In the code above, we have specified the *size* of the sample we want
+(12) with the second argument to `sample`. As you saw in
+<a href="#sec-named-arguments" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-named-arguments</span></a>, we can
+also give names to the function arguments, in this case, to make it
+clearer what we mean by “12” in the code above. In fact, from now on,
+that is what we will do; we will specify the *size* of our sample by
+using the *name* for the function argument to `sample` — `size` — like
+this:
+
+```{r}
+# Select one juror at random from the black / white pool.
+# Specify the sample size using the "size" named argument.
+one_jury <- sample(jury_pool, size=12, replace=TRUE)
+one_jury
+```
+
+</div>
+
+</div>
+
+We can use `==` on the vector to get `TRUE` values where the juror was
+“black” and `FALSE` values otherwise:
+
+```{r}
+are_black <- one_jury == 'black'
+are_black
+```
+
+Finally, we can `sum` to find the number of black jurors
+(<a href="#sec-count-with-sum" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-count-with-sum</span></a>):
+
+```{r}
+# Number of black jurors in this simulated jury.
+n_black <- sum(are_black)
+n_black
+```
+
+Putting that all together, this is our new procedure to select one jury
+and count the number of black jurors:
+
+```{r}
+one_jury <- sample(jury_pool, size=12, replace=TRUE)
+are_black <- one_jury == 'black'
+n_black <- sum(are_black)
+n_black
+```
+
+Or we can be even more compact by putting several statements together
+into one line:
+
+```{r}
+# The same as above, but on one line.
+n_black = sum(sample(jury_pool, size=12, replace=TRUE) == 'black')
+n_black
+```
+
+## 6.6 Resampling with and without replacement
+
+Now let us return to the details of Robert Swain’s case, that you first
+saw in <a href="#sec-resampling-two" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-resampling-two</span></a>.
+
+We looked at the composition of Robert Swain’s 12-person jury — but in
+fact, by law, that does not have to be representative of the eligible
+jurors. The 12-person jury is drawn from a jury *panel*, of 100 people,
+and this should, in turn, be drawn from the population of all eligible
+jurors in the county, consisting, at the time, of “all male citizens in
+the community over 21 who are reputed to be honest, intelligent men and
+are esteemed for their integrity, good character and sound judgment.”
+So, unless there was some bias against black jurors, we might expect the
+100-person jury panel to be a plausibly random sample of the eligible
+jurors, of whom 26% were black. See [the Supreme Court case
+judgement](https://supreme.justia.com/cases/federal/us/380/202) for
+details.
+
+In fact, in Robert Swain’s trial, there were 8 black members in the
+100-person jury panel. We will leave it to you to adapt the simulation
+from <a href="#sec-resampling-two" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-resampling-two</span></a> to ask the
+question — is 8% surprising as a random sample from a population with
+26% black people?
+
+But we have a different question: given that 8 out of 100 of the jury
+panel were black, is it surprising that none of the 12-person jury were
+black? As usual, we can answer that question with simulation.
+
+Let’s think about what a single simulated jury selection would look
+like.
+
+First we compile a representation of the actual jury panel, using the
+tools we have used above.
+
+```{r}
+juror_types <- c('black', 'white')
+# in fact there were 8 black jurors and 92 white jurors.
+panel_nos <- c(8, 92)
+jury_panel <- rep(juror_types, panel_nos)
+# Show the result
+jury_panel
+```
+
+Now consider taking a 12-person jury at random from this panel. We
+select the first juror at random, so that juror has an 8 out of 100
+chance of being black. But when we select the second jury member, the
+situation has changed slightly. We can’t select the first juror again,
+so our panel is now 99 people. If our first juror was black, then the
+chances of selecting another black juror next are not 8 out of 100, but
+7 out of 99 — a smaller chance. The problem is, as we shall see in more
+detail later, the chances of getting a black juror as the second, and
+third and fourth members of the jury depend on whether we selected a
+black juror as the first and second and third jury members. At its most
+extreme, imagine we had already selected eight jurors, and by some
+strange chance, all eight were black. Now our chances of selecting a
+black juror as the ninth juror are zero — there are no black jurors left
+to select from the panel.
+
+In this case we are selecting jurors from the panel *without
+replacement*, meaning, that once we have selected a particular juror, we
+cannot select them again, and we do not put them back into the panel
+when we select our next juror.
+
+This is the probability equivalent of the situation when you are dealing
+a hand of cards. Let’s say someone is dealing you, and you only, a hand
+of five cards. You get an ace as your first card. Your chances of
+getting an ace as your first card were just the number of aces in the
+deck divided by the number of cards — four in 52 – $\frac{4}{52}$. But
+for your second card, the probability has changed, because there is one
+less ace remaining in the pack, and one less card, so your chances of
+getting an ace as your second card are now $\frac{3}{51}$. This is
+sampling without replacement — in a normal game, you can’t get the same
+card twice. Of course, you could imagine getting a hand where you
+sampled *with replacement*. In that case, you’d get a card, you’d write
+down what it was, and you’d give the card back to the dealer, who would
+*replace* the card in the deck, shuffle again, and give you another
+card.
+
+As you can see, the chances change if you are sampling with or without
+replacement, and the kind of sampling you do, will dictate how you model
+your chances in your simulations.
+
+Because this distinction is so common, and so important, the machinery
+you have already seen in `sample` has simple ways for you to select your
+sampling type. You have already seen sampling *with replacement*, and it
+looks like this:
+
+```{r}
+# Take a sample of 12 jurors from the panel *with replacement*
+strange_jury <- sample(jury_panel, size=12, replace=TRUE)
+strange_jury
+```
+
+This is a strange jury, because it can select any member of the jury
+pool more than once. Perhaps that juror would have to fill two (or
+more!) seats, or run quickly between them. But of course, that is not
+how juries are selected. They are selected *without replacement*:
+
+Thus far, we have always done sampling *with replacement*, and, in order
+to do that with `sample`, we pass the argument `replace=TRUE`. We do
+that because the default for `sample` is `replace=FALSE`, that is, by
+default, `sample` does sampling without replacement. If you want to do
+sampling without replacement, you can just omit the `replace=TRUE`
+argument to `sample`, or you can specify `replace=FALSE` explicitly,
+perhaps to remind yourself that this is sampling without replacement.
+Whether you omit the `replace` argument, or specify `replace=FALSE`, the
+behavior is the same.
+
+```{r}
+# Take a sample of 12 jurors from the panel *with replacement*
+# replace=FALSE is the default for sample.
+ok_jury <- sample(jury_panel, size=12)
+ok_jury
+```
+
+<div class="callout callout-style-default callout-note callout-titled">
+
+<div class="callout-header d-flex align-content-center">
+
+<div class="callout-icon-container">
+
+<i class='callout-icon'></i>
+
+</div>
+
+<div class="callout-title-container flex-fill">
+
+Comments at the end of lines
+
+</div>
+
+</div>
+
+<div class="callout-body-container callout-body">
+
+You have already seen comment lines. These are lines beginning with `#`,
+to signal to R that the rest of the line is text for humans to read, but
+R to ignore.
+
+```{r}
+# This is a comment.  R ignores this line.
+```
+
+You can also put comments at the *end of code lines*, by finishing the
+code part of the line, and then putting a `#`, followed by more text.
+Again, R will ignore everything after the `#` as a text for humans, but
+not for R.
+
+```{r}
+message('Hello')  # This is a comment at the end of the line.
+```
+
+</div>
+
+</div>
+
+To finish the procedure for simulating a single jury selection, we count
+the number of black jurors:
+
+```{r}
+n_black <- sum(ok_jury == 'black')  # How many black jurors?
+n_black
+```
+
+Now we have the procedure for one simulated trial, here is the procedure
+for 10000 simulated trials.
+
+```{r}
+counts <- numeric(10000)
+for (i in 1:10000) {
+    # Single trial procedure
+    jury <- sample(jury_panel, size=12)  # replace=FALSE is the default.
+    n_black <- sum(jury == 'black')  # How many black jurors?
+    # Store the result
+    counts[i] <- n_black
+}
+# Number of juries with 0 black jurors.
+zero_black <- sum(counts == 0)
+# Proportion
+p_zero_black <- zero_black / 10000
+message(p_zero_black)
+```
+
+We have found that, when there are only 8% black jurors in the jury
+panel, having no black jurors in the final jury happens about 34% of the
+time, even in this case, where the jury is selected completely at random
+from the jury panel.
+
+We should look for the main source of bias in the initial selection of
+the jury panel, not in the selection of the jury from the panel.
+

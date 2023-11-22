@@ -1,0 +1,57 @@
+# Five spades and four clubs
+
+
+**This is an example of multiple-outcome sampling without replacement,
+order does not matter**.
+
+The problem is similar to the example in
+<a href="#sec-four-girls-one-boy" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-four-girls-one-boy</span></a>, except
+that now there are four equally-likely outcomes instead of only two. An
+R solution is:
+
+```{r}
+# Constitute the deck of 52 cards.
+# Repeat the suit names 13 times each, to make a 52 card deck.
+deck <- rep(c('spade', 'club', 'diamond', 'heart'), c(13, 13, 13, 13))
+# Show the deck
+deck
+```
+
+```{r}
+N <- 10000
+trial_results <- numeric(N)
+
+# Repeat the trial N times.
+for (i in 1:N) {
+
+    # Shuffle the deck and draw 13 cards.
+    hand <- sample(deck, 13)  # replace=FALSE is the default.
+
+    # Count the number of spades in "hand", put the result in "n_spades".
+    n_spades <- sum(hand == 'spade')
+
+    # If we have five spades, we'll continue on to count the clubs. If we don't
+    # have five spades, the number of clubs is irrelevant — we have not gotten
+    # the hand we are interested in.
+    if (n_spades == 5) {
+        # Count the clubs, put the result in "n_clubs"
+        n_clubs <- sum(hand == 'club')
+        # Keep track of the number of clubs in each trial
+        trial_results[i] <- n_clubs
+    }
+
+    # End one experiment, go back and repeat until all N trials are done.
+}
+
+# Count the number of trials where we got 4 clubs. This is the answer we want -
+# the number of hands out of 1000 with 5 spades and 4 clubs. (Recall that we
+# only counted the clubs if the hand already had 5 spades.)
+n_5_and_4 <- sum(trial_results == 4)
+
+# Convert to a proportion.
+prop_5_and_4 <- n_5_and_4 / N
+
+# Print the result
+message(prop_5_and_4)
+```

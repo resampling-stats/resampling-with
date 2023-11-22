@@ -1,0 +1,107 @@
+# Five spades, four girls
+
+
+This is a compound problem: what are the chances of *both* five or more
+spades in one bridge hand, and four girls and a boy in a five-child
+family?
+
+“Compound” does not necessarily mean “complicated”. It means that the
+problem is a compound of two or more simpler problems.
+
+A natural way to handle such a compound problem is in stages, as we saw
+in the archery problem of
+<a href="#sec-one-black-archery" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-one-black-archery</span></a>. If a
+“success” is achieved in the first stage, go on to the second stage; if
+not, don’t go on. More specifically in this example:
+
+- **Step 1.** Use a bridge card deck, and five coins with heads =
+  “girl”.
+- **Step 2.** Deal a 13-card bridge hand and count the spades. If 5 or
+  more spades, record “no” and end the experimental trial. Otherwise,
+  continue to step 3.
+- **Step 3.** Throw five coins, and count “heads.” If four heads, record
+  “yes,” otherwise record “no.”
+- **Step 4.** Repeat steps 2 and 3 a thousand times.
+- **Step 5.** Compute the proportion of “yes” in step 3. This estimates
+  the probability sought.
+
+The R solution to this compound problem is neither long nor difficult.
+We tackle it almost as if the two parts of the problem were to be dealt
+with separately. We first determine, in a random bridge hand, whether 5
+spades or more are dealt, as was done in the problem
+<a href="#sec-five-spades-four-clubs" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-five-spades-four-clubs</span></a>.
+Then, `if` 5 or more spades are found, we use `sample` to generate a
+random family of 5 children. This means that we need not generate
+families if 5 or more spades were not dealt to the bridge hand, because
+a “success” is only recorded if both conditions are met. After we record
+the number of girls in each sample of 5 children, we need only finish
+the loop (by `}` and then use `sum` to count the number of samples that
+had 4 girls, storing the result in `k`. Since we only drew samples of
+children for those trials in which a bridge hand of 5 spades had already
+been dealt, `k` will have the number of trials out of 10000 in which
+both conditions were met.
+
+```{r}
+N <- 10000
+trial_results <- numeric(N)
+
+# Deck with 13 spades and 39 other cards
+deck <- rep(c('spade', 'others'), c(13, 52 - 13))
+
+for (i in 1:N) {
+    # Shuffle deck and draw 13 cards
+    hand <- sample(deck, 13)  # replace=FALSE is default
+
+    n_spades <- sum(hand == 'spade')
+
+    if (n_spades >= 5) {
+        # Generate a family, zeros for boys, ones for girls
+        children <- sample(c('girl', 'boy'), 5, replace=TRUE)
+        n_girls <- sum(children == 'girl')
+        trial_results[i] <- n_girls
+    }
+}
+
+k <- sum(trial_results == 4)
+
+kk <- k / N
+
+print(kk)
+```
+
+Here is an alternative approach to the same problem, but getting the
+result at the end of the loop, by combining Boolean vectors (see
+<a href="#sec-combine-booleans" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-combine-booleans</span></a>).
+
+```{r}
+N <- 10000
+trial_spades <- numeric(N)
+trial_girls <- numeric(N)
+
+# Deck with 13 spades and 39 other cards
+deck <- rep(c('spade', 'other'), c(13, 39))
+
+for (i in 1:N) {
+    # Shuffle deck and draw 13 cards
+    hand <- sample(deck, 13)  # replace=FALSE is default
+    # Count and store the number of spades.
+    n_spades <- sum(hand == 'spade')
+    trial_spades[i] <- n_spades
+
+    # Generate a family, zeros for boys, ones for girls
+    children <- sample(c('girl', 'boy'), 5, replace=TRUE)
+    # Count and store the number of girls.
+    n_girls <- sum(children == 'girl')
+    trial_girls[i] <- n_girls
+}
+
+k <- sum((trial_spades >= 5) & (trial_girls == 4))
+
+kk <- k / N
+
+# Show the result
+message(kk)
+```

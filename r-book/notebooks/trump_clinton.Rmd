@@ -1,0 +1,54 @@
+# Trump/Clinton poll simulation
+
+
+What is the probability that a sample outcome such as actually observed
+(840 Trump, 660 Clinton) would occur by chance if Clinton is “really”
+ahead — that is, if Clinton has 50 percent (or more) of the support? To
+restate in sharper statistical language: What is the probability that
+the observed sample or one even more favorable to Trump would occur if
+the universe has a mean of 50 percent or below?
+
+Here is a procedure that responds to that question:
+
+1.  Create a benchmark universe with one ball marked “Trump” and another
+    marked “Clinton”
+2.  Draw a ball, record its marking, and replace. (We sample with
+    replacement to simulate the practically-infinite population of U. S.
+    voters.)
+3.  Repeat step 2 1500 times and count the number of “Trump”s. If 840 or
+    greater, record “Y”; otherwise, record “N.”
+4.  Repeat steps 3 and 4 perhaps 1000 or 10,000 times, and count the
+    number of “Y”s. The outcome estimates the probability that 840 or
+    more Trump choices would occur if the universe is “really” half or
+    more in favor of Clinton.
+
+This procedure may be done as follows with R.
+
+```{r}
+# Number of repeats we will run.
+n <- 10000
+
+# Make an array to store the counts.
+trumps <- numeric(n)
+
+for (i in 1:n) {
+    votes <- sample(c('Trump', 'Clinton'), size=1500, replace=TRUE)
+    trumps[i] <- sum(votes == 'Trump')
+}
+
+# Integer bins from 670 through 830 in steps of 5.
+hist(trumps, breaks=seq(670, 830, by=5),
+     main='Number of Trump voters of 1500 in null-world simulation')
+
+# How often >= 840 Trump votes in random draw?
+k <- sum(trumps >= 840)
+# As a proportion of simulated resamples.
+kk <- k / n
+
+message('Proportion voting for Trump: ', kk)
+```
+
+The value for `kk` is our estimate of the probability that Trump’s
+“victory” in the sample would occur by chance if he really were behind.
+In this case, our probability estimate is less than 1 in 10,000 (\<
+0.0001).

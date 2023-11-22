@@ -1,0 +1,306 @@
+# Billie's Bill
+
+
+The text in this notebook section assumes you have opened the page as an
+interactive notebook, on your own computer, or one of the RStudio web
+interfaces.
+
+A notebook can contain blocks of text — like this one — as well as code,
+and the results from running the code.
+
+RMarkdown notebooks contain text — like this, but they can also contain
+snippets of code, in *code chunks*. You will see examples of code chunks
+soon.
+
+Notebook text can have formatting, such as links.
+
+For example, this sentence ends with a link to the earlier [second
+edition of this
+book](https://resample.statistics.com/intro-text-online).
+
+If you are in the notebook interface (rather than reading this in the
+textbook), you will see the RStudio menu near the top of the page, with
+headings “File”, “Edit” and so on.
+
+Underneath that, by default, you may see a row of icons - the “Toolbar”.
+
+In the toolbar, you may see a list box that will allow you to run the
+code in the notebook, among other icons.
+
+When we get to code chunks, you will also see a green play icon at the
+right edge of the interface, in the chunk. This will allow you to run
+the code chunk.
+
+Although you can use this “run” button, we suggest you get used to using
+the keyboard shortcut. The default shortcut on Windows or Linux is to
+hold down the Control key and the Shift key and the Enter (Return) key
+at the same time. We will call this Control-Shift-Enter. On Mac the
+default combination is Command-Shift-Enter, where Command is the key
+with the four-leaf-clover-like icon to the left of the space-bar. To
+save us having to say this each time, we will call this combination
+Ctl/Cmd-Shift-Enter.
+
+In this, our first notebook, we will be using R to solve one of those
+difficult and troubling problems in life — working out the bill in a
+restaurant.
+
+## 4.3 The meal in question
+
+Alex and Billie are at a restaurant, getting ready to order. They do not
+have much money, so they are calculating the expected bill before they
+order.
+
+Alex is thinking of having the fish for £10.50, and Billie is leaning
+towards the chicken, at £9.25. First they calculate their combined bill.
+
+Below this text you see a *code* chunk. It contains the R code to
+calculate the total bill. Press Control-Shift-Enter or Cmd-Shift-Enter
+(on Mac) in the chunk below, to see the total.
+
+```{r}
+10.50 + 9.25
+```
+
+The contents of the chunk above is R code. As you would predict, R
+understands numbers like `10.50`, and it understands `+` between the
+numbers as an instruction to add the numbers.
+
+When you press Ctl/Cmd-Shift-Enter, R finds `10.50`, realizes it is a
+number, and stores that number somewhere in memory. It does the same
+thing for `9.25`, and then it runs the *addition* operation on these two
+numbers in memory, which gives the number 19.75.
+
+Finally, R sends the resulting number (19.75) back to the notebook for
+display. The notebook detects that R sent back a value, and shows it to
+us.
+
+This is exactly what a calculator would do.
+
+## 4.4 Comments
+
+Unlike a calculator, we can also put notes next to our calculations, to
+remind us what they are for. One way of doing this is to use a
+“comment”. You have already seen comments in the previous chapter.
+
+A comment is some text that the computer will ignore. In R, you can make
+a comment by starting a line with the `#` (hash) character. For example,
+the next cell is a code cell, but when you run it, it does not show any
+result. In this case, that is because the computer sees the `#` at the
+beginning of the line, and then ignores the rest.
+
+Many of the code cells you see will have comments in them, to explain
+what the code is doing.
+
+Practice writing comments for your own code. It is a very good habit to
+get into. You will find that experienced programmers write many comments
+on their code. They do not do this to show off, but because they have a
+lot of experience in reading code, and they know that comments make it
+much easier to read and understand code.
+
+## 4.5 More calculations
+
+Let us continue with the struggle that Alex and Billie are having with
+their bill.
+
+They realize that they will also need to pay a tip.
+
+They think it would be reasonable to leave a 15% tip. Now they need to
+multiply their total bill by 0.15, to get the tip. The bill is about
+£20, so they know that the tip will be about £3.
+
+In R `*` means multiplication. This is the equivalent of the “×” key on
+a calculator.
+
+What about this, for the correct calculation?
+
+```{r}
+# The tip - with a nasty mistake.
+10.50 + 9.25 * 0.15
+```
+
+Oh dear, no, that isn’t doing the right calculation.
+
+R follows the normal rules of *precedence* with calculations. These
+rules tell us to do multiplication before addition.
+
+See <https://en.wikipedia.org/wiki/Order_of_operations> for more detail
+on the standard rules.
+
+In the case above the rules tell R to first calculate `9.25 * 0.15` (to
+get `1.3875`) and then to add the result to `10.50`, giving `11.8875`.
+
+We need to tell R we want it to do the *addition* and *then* the
+multiplication. We do this with round brackets (parentheses):
+
+<div class="callout callout-style-default callout-note callout-titled">
+
+<div class="callout-header d-flex align-content-center">
+
+<div class="callout-icon-container">
+
+<i class='callout-icon'></i>
+
+</div>
+
+<div class="callout-title-container flex-fill">
+
+</div>
+
+</div>
+
+<div class="callout-body-container callout-body">
+
+There are three types of brackets in R.
+
+These are:
+
+- *round brackets* or *parentheses*: `()`;
+- *square brackets*: `[]`;
+- *curly brackets*: `{}`.
+
+Each type of bracket has a different meaning in R. In the examples, play
+close to attention to the type of brackets we are using.
+
+</div>
+
+</div>
+
+```{r}
+# The bill plus tip - mistake fixed.
+(10.50 + 9.25) * 0.15
+```
+
+The obvious next step is to calculate the bill *including the tip*.
+
+```{r}
+# The bill, including the tip
+10.50 + 9.25 + (10.50 + 9.25) * 0.15
+```
+
+At this stage we start to feel that we are doing too much typing. Notice
+that we had to type out `10.50 + 9.25` twice there. That is a little
+boring, but it also makes it easier to make mistakes. The more we have
+to type, the greater the chance we have to make a mistake.
+
+To make things simpler, we would like to be able to *store* the result
+of the calculation `10.50 + 9.25`, and then re-use this value, to
+calculate the tip.
+
+This is the role of *variables*. A *variable* is a value with a name.
+
+Here is a variable:
+
+```{r}
+# The cost of Alex's meal.
+a <- 10.50
+```
+
+`a` is a *name* we give to the value 10.50. You can read the line above
+as “The variable `a` *gets the value* 10.50”. We can also talk of
+*setting* the variable. Here we are *setting* `a` to equal 10.50.
+
+Now, when we use `a` in code, it refers to the value we gave it. For
+example, we can put `a` on a line on its own, and R will show us the
+*value* of `a`:
+
+```{r}
+# The value of a
+a
+```
+
+We did not have to use the name `a` — we can choose almost any name we
+like. For example, we could have chosen `alex_meal` instead:
+
+```{r}
+# The cost of Alex's meal.
+# alex_meal gets the value 10.50
+alex_meal <- 10.50
+```
+
+We often set variables like this, and then display the result, all in
+the same chunk. We do this by first setting the variable, as above, and
+then, on the final line of the chunk, we put the variable name on a line
+on its own, to ask R to show us the value of the variable. Here we set
+`billie_meal` to have the value 9.25, and then show the value of
+`billie_meal`, all in the same chunk.
+
+```{r}
+# The cost of Alex's meal.
+# billie_meal gets the value 10.50
+billie_meal <- 10.50
+# Show the value of billie_meal
+billie_meal
+```
+
+Of course, here, we did not learn much, but we often set variable values
+with the results of a calculation. For example:
+
+```{r}
+# The cost of both meals, before tip.
+bill_before_tip <- 10.50 + 9.25
+# Show the value of both meals.
+bill_before_tip
+```
+
+But wait — we can do better than typing in the calculation like this. We
+can use the values of our variables, instead of typing in the values
+again.
+
+```{r}
+# The cost of both meals, before tip, using variables.
+bill_before_tip <- alex_meal + billie_meal
+# Show the value of both meals.
+bill_before_tip
+```
+
+We make the calculation clearer by writing the calculation this way — we
+are calculating the bill before the tip by adding the cost of Alex’s and
+Billie’s meal — and that’s what the code looks like. But this also
+allows us to *change* the variable value, and recalculate. For example,
+say Alex decided to go for the hummus plate, at £7.75. Now we can tell R
+that we want `alex_meal` to have the value 7.75 instead of 10.50:
+
+```{r}
+# The new cost of Alex's meal.
+# alex_meal gets the value 7.75
+alex_meal = 7.75
+# Show the value of alex_meal
+alex_meal
+```
+
+Notice that `alex_meal` now has a new value. It was 10.50, but now it is
+7.75. We have *reset* the value of `alex_meal`. In order to use the new
+value for `alex_meal`, we must *recalculate* the bill before tip with
+*exactly the same code as before*:
+
+```{r}
+# The new cost of both meals, before tip.
+bill_before_tip <- alex_meal + billie_meal
+# Show the value of both meals.
+bill_before_tip
+```
+
+Notice that, now we have rerun this calculation, we have *reset* the
+value for `bill_before_tip` to the correct value corresponding to the
+new value for `alex_meal`.
+
+All that remains is to recalculate the bill plus tip, using the new
+value for the variable:
+
+```{r}
+# The cost of both meals, after tip.
+bill_after_tip = bill_before_tip + bill_before_tip * 0.15
+# Show the value of both meals, after tip.
+bill_after_tip
+```
+
+Now we are using variables with relevant names, the calculation looks
+right to our eye. The code expresses the calculation as we mean it: the
+bill after tip is equal to the bill before the tip, plus the bill before
+the tip times 0.15.
+
+## 4.6 And so, on
+
+Now you have done some practice with the notebook, and with variables,
+you are ready for a new problem in probability and statistics, in the
+next chapter.

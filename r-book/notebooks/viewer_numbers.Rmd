@@ -1,0 +1,46 @@
+# Number of viewers
+
+
+The notebook calculates the expected number of viewers in a sample of
+400, given that there is a 30% chance of any one person being a viewer,
+and then calculates how far that value is from 120.
+
+```{r}
+# set the number of trials
+n_trials <- 10000
+
+# an empty array to store the scores
+scores <- numeric(n_trials)
+
+# What are the options to choose from?
+options <- c('viewer', 'not viewer')
+
+# do n_trials trials
+for (i in 1:n_trials) {
+
+    # Choose 'viewer' 30% of the time.
+    a <- sample(options, size=400, prob=c(0.3, 0.7), replace=TRUE)
+
+    # count the viewers
+    b <- sum(a == 'viewer')
+
+    # how different from expected?
+    c <- 120 - b
+
+    # absolute value of the difference
+    d <- abs(c)
+
+    # express as a proportion of sample
+    e <- d / 400
+
+    # keep score of the result
+    scores[i] <- e
+}
+
+# find the mean divergence
+k <- mean(scores)
+
+# Show the result
+k
+```
+

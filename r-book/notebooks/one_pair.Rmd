@@ -1,0 +1,51 @@
+# One pair
+
+
+This is a simulation to find the probability of exactly one pair in a
+poker hand of five cards.
+
+```{r}
+# Create a bucket (vector) called a with four "1's," four "2's," four "3's,"
+# etc., to represent a deck of cards
+one_suit = 1:13
+one_suit
+```
+
+```{r}
+# Repeat values for one suit four times to make a 52 card deck of values.
+deck <- rep(one_suit, 4)
+deck
+```
+
+```{r}
+# Vector to store result of each trial.
+z <- numeric(10000)
+
+# Repeat the following steps 10000 times
+for (i in 1:10000) {
+    # Shuffle the deck
+    shuffled <- sample(deck)
+
+    # Take the first five cards to make a hand.
+    hand = shuffled[1:5]
+
+    # How many pairs?
+    # Counts for each card rank.
+    repeat_nos <- tabulate(hand)
+    n_pairs <- sum(repeat_nos == 2)
+
+    # Keep score of # of pairs
+    z[i] <- n_pairs
+
+    # End loop, go back and repeat
+}
+
+# How often was there 1 pair?
+k <- sum(z == 1)
+
+# Convert to proportion.
+kk = k / 10000
+
+# Show the result.
+message(kk)
+```

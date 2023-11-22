@@ -1,0 +1,452 @@
+# The Monty Hall problem
+
+
+Here we do a R simulation of the Monty Hall problem.
+
+The Monty Hall problem has a slightly complicated structure, so we will
+start by looking at the procedure for one trial. When we have that
+clear, we will put that procedure into a `for` loop for the simulation.
+
+Let’s start with some variables. Let’s call the door I choose `my_door`.
+
+We choose that door at random from a sequence of all possible doors.
+Call the doors 1, 2 and 3 from left to right.
+
+```{r}
+# Vector of doors to chose from.
+doors = c(1, 2, 3)
+
+# We choose one door at random.
+my_door <- sample(doors, size=1)
+
+# Show the result
+my_door
+```
+
+We choose one of the doors to be the door with the car behind it:
+
+```{r}
+# One door at random has the car behind it.
+car_door <- sample(doors, size=1)
+
+# Show the result
+car_door
+```
+
+Now we need to decide which door Monty will open.
+
+By our set up, Monty cannot open our door (`my_door`). By the set up, he
+has not opened (and cannot open) the door with the car behind it
+(`car_door`).
+
+`my_door` and `car_door` might be the same.
+
+So, to get Monty’s choices, we want to take all doors (`doors`) and
+remove `my_door` and `car_door`. That leaves the door or doors Monty can
+open.
+
+Here are the doors Monty cannot open. Remember, a third of the time
+`my_door` and `car_door` will be the same, so we will include the same
+door twice, as doors Monty can’t open.
+
+```{r}
+cant_open = c(my_door, car_door)
+cant_open
+```
+
+We want to find the remaining doors from `doors` after removing the
+doors named in `cant_open`.
+
+R has a good function for this, called `setdiff`. It calculates the *set
+difference* between two sequences, such as vectors.
+
+The set difference between two sequences is the members that *are* in
+the first sequence, but are *not* in the second sequence. Here are a few
+examples of this set difference function in R.
+
+```{r}
+# Members in c(1, 2, 3) that are *not* in c(1)
+# 1, 2, 3, removing 1, if present.
+setdiff(c(1, 2, 3), c(1))
+```
+
+```{r}
+# Members in c(1, 2, 3) that are *not* in c(2, 3)
+# 1, 2, 3, removing 2 and 3, if present.
+setdiff(c(1, 2, 3), c(2, 3))
+```
+
+```{r}
+# Members in c(1, 2, 3) that are *not* in c(2, 2)
+# 1, 2, 3, removing 2 and 2 again, if present.
+setdiff(c(1, 2, 3), c(2, 2))
+```
+
+This logic allows us to choose the doors Monty can open:
+
+```{r}
+montys_choices <- setdiff(doors, c(my_door, car_door))
+montys_choices
+```
+
+Notice that `montys_choices` will only have one element left when
+`my_door` and `car_door` were different, but it will have two elements
+if `my_door` and `car_door` were the same.
+
+Let’s play out those two cases:
+
+```{r}
+my_door <- 1  # For example.
+car_door <- 2  # For example.
+# Monty can only choose door 3 now.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+montys_choices
+```
+
+```{r}
+my_door <- 1  # For example.
+car_door <- 1  # For example.
+# Monty can choose either door 2 or door 3.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+montys_choices
+```
+
+If Monty can only choose one door, we’ll take that. Otherwise we’ll
+chose a door at random from the two doors available.
+
+```{r}
+if (length(montys_choices) == 1) {  # Only one door available.
+    montys_door <- montys_choices[1]  # Take the first (of 1!).
+} else {  # Two doors to choose from:
+    # Choose at random.
+    montys_door <- sample(montys_choices, size=1)
+}
+montys_door
+```
+
+Now we know Monty’s door, we can identify the other door, by removing
+our door, and Monty’s door, from the available options:
+
+```{r}
+remaining_doors <- setdiff(doors, c(my_door, montys_door))
+# There is only one remaining door, take that.
+other_door <- remaining_doors[1]
+other_door
+```
+
+The logic above gives us the full procedure for one trial.
+
+```{r}
+my_door <- sample(doors, size=1)
+car_door <- sample(doors, size=1)
+# Which door will Monty open?
+montys_choices <- setdiff(doors, c(my_door, car_door))
+# Choose single door left to choose, or door at random if two.
+if (length(montys_choices) == 1) {  # Only one door available.
+    montys_door <- montys_choices[1]  # Take the first (of 1!).
+} else {  # Two doors to choose from:
+    # Choose at random.
+    montys_door <- sample(montys_choices, size=1)
+}
+# Now find the door we'll open if we switch.
+# There is only one door left.
+remaining_doors <- setdiff(doors, c(my_door, montys_door))
+other_door <- remaining_doors[1]
+# Calculate the result of this trial.
+if (my_door == car_door) {
+    stay_wins <- TRUE
+}
+if (other_door == car_door) {
+    switch_wins <- TRUE
+}
+```
+
+All that remains is to put that trial procedure into a loop, and collect
+the results as we repeat the procedure many times.
+
+```{r}
+# Vectors to store the results for each trial.
+stay_wins <- rep(FALSE, 10000)
+switch_wins <- rep(FALSE, 10000)
+
+# Doors to chose from.
+doors <- c(1, 2, 3)
+
+for (i in 1:10000) {
+    # You will recognize the below as the single-trial procedure above.
+    my_door <- sample(doors, size=1)
+    car_door <- sample(doors, size=1)
+    # Which door will Monty open?
+    montys_choices <- setdiff(doors, c(my_door, car_door))
+    # Choose single door left to choose, or door at random if two.
+    if (length(montys_choices) == 1) {  # Only one door available.
+        montys_door <- montys_choices[1]  # Take the first (of 1!).
+    } else {  # Two doors to choose from:
+        # Choose at random.
+        montys_door <- sample(montys_choices, size=1)
+    }
+    # Now find the door we'll open if we switch.
+    # There is only one door left.
+    remaining_doors <- setdiff(doors, c(my_door, montys_door))
+    other_door <- remaining_doors[1]
+    # Calculate the result of this trial.
+    if (my_door == car_door) {
+        stay_wins[i] <- TRUE
+    }
+    if (other_door == car_door) {
+        switch_wins[i] <- TRUE
+    }
+}
+
+p_for_stay <- sum(stay_wins) / 10000
+p_for_switch <- sum(switch_wins) / 10000
+
+message('p for stay: ', p_for_stay)
+```
+
+```{r}
+message('p for switch: ', p_for_switch)
+```
+
+We can also follow the same strategy as we used for the second
+implementation of the two-ships problem
+(<a href="#sec-ships-booleans" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-ships-booleans</span></a>).
+
+Here, as in the second two-ships implementation, we do not calculate the
+trial results (`stay_wins`, `switch_wins`) in each trial. Instead, we
+store the *doors* for each trial, and then use Boolean vectors to
+calculate the results for all trials, at the end.
+
+```{r}
+# Instead of storing the trial results, we store the doors for each trial.
+my_doors <- numeric(10000)
+car_doors <- numeric(10000)
+other_doors <- numeric(10000)
+
+# Doors to chose from.
+doors <- c(1, 2, 3)
+
+for (i in 1:10000) {
+    my_door <- sample(doors, size=1)
+    car_door <- sample(doors, size=1)
+    # Which door will Monty open?
+    montys_choices <- setdiff(doors, c(my_door, car_door))
+    # Choose single door left to choose, or door at random if two.
+    if (length(montys_choices) == 1) {  # Only one door available.
+        montys_door <- montys_choices[1]  # Take the first (of 1!).
+    } else {  # Two doors to choose from:
+        # Choose at random.
+        montys_door <- sample(montys_choices, size=1)
+    }
+    # Now find the door we'll open if we switch.
+    # There is only one door left.
+    remaining_doors <- setdiff(doors, c(my_door, montys_door))
+    other_door <- remaining_doors[1]
+
+    # Store the doors we chose.
+    my_doors[i] <- my_door
+    car_doors[i] <- car_door
+    other_doors[i] <- other_door
+}
+
+# Now - at the end of all the trials, we use Boolean vectors to calculate the
+# results.
+stay_wins <- my_doors == car_doors
+switch_wins <- other_doors == car_doors
+
+p_for_stay <- sum(stay_wins) / 10000
+p_for_switch <- sum(switch_wins) / 10000
+
+message('p for stay: ', p_for_stay)
+```
+
+```{r}
+message('p for switch: ', p_for_switch)
+```
+
+### 10.7.1 Insight from the Monty Hall simulation
+
+The code simulation gives us an estimate of the right answer, but it
+also forces us to set out the exact mechanics of the problem. For
+example, by looking at the code, we see that we can calculate
+“stay_wins” with this code alone:
+
+```{r}
+# Just choose my door and the car door for each trial.
+my_doors <- numeric(10000)
+car_doors <- numeric(10000)
+doors <- c(1, 2, 3)
+
+for (i in 1:10000) {
+    my_doors[i] <- sample(doors, size=1)
+    car_doors[i] <- sample(doors, size=1)
+}
+
+# Calculate whether I won by staying.
+stay_wins <- my_doors == car_doors
+p_for_stay <- sum(stay_wins) / 10000
+
+message('p for stay: ', p_for_stay)
+```
+
+This calculation, on its own, tells us the answer, but it also points to
+another insight — whatever Monty does with the doors, it doesn’t change
+the probability that our *initial guess* is right, and that must be 1 in
+3 (0.333). If the probability of `stay_win` is 1 in 3, and we only have
+one other door to switch to, the probability of winning after switching
+must be 2 in 3 (0.666).
+
+### 10.7.2 Simulation and a variant of Monty Hall
+
+You have seen that you can avoid the silly mistakes that many of us make
+with probability — by asking the computer to tell you the result
+*before* you start to reason from first principles.
+
+As an example, consider the following variant of the Monty Hall problem.
+
+The set up to the problem has us choosing a door (`my_door` above), and
+then Monty opens one of the other two doors.
+
+Sometimes (in fact, 2/3 of the time) there is a car behind one of
+Monty’s doors. We’ve obliged Monty to open the *other* door, and his
+choice is forced.
+
+When his choice was not forced, we had Monty choose the door at random.
+
+For example, let us say we chose door 1.
+
+Let us say that the car is also under door 1.
+
+Monty has the option of choosing door 2 or door 3, and he chooses
+randomly between them.
+
+```{r}
+my_door <- 1  # We chose door 1 at random.
+car_door <- 1  # This trial, by chance, the car door is 1.
+# Monty is left with doors 2 and 3 to choose from.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+# He chooses randomly.
+montys_door <- sample(montys_choices, size=1)
+# Show the result
+montys_door
+```
+
+Now — let us say we happen to know that Monty is rather lazy, and he
+will always choose the left-most (lower-numbered) door of the two
+options.
+
+In the previous example, Monty had the option of choosing door 2 and 3.
+In this new scenario, we know that he will always choose door 2 (the
+left-most door).
+
+```{r}
+my_door <- 1  # We chose door 1 at random.
+car_door <- 1  # This trial, by chance, the car door is 1.
+# Monty is left with doors 2 and 3 to choose from.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+# He chooses the left-most door, always.
+montys_door <- montys_choices[1]
+# Show the result
+montys_door
+```
+
+It feels as if we have more information about where the car is, when we
+know this. Consider the situation where we have chosen door 1, and Monty
+opens door 3. We know that he would have preferred to open door 2, if he
+was allowed. We therefore know he wasn’t allowed to open door 2, and
+that means the car is definitely under door 2.
+
+```{r}
+my_door <- 1  # We chose door 1 at random.
+car_door <- 1  # This trial, by chance, the car door is 1.
+# Monty is left with door 3 only to choose from.
+montys_choices <- setdiff(doors, c(my_door, car_door))
+# He chooses the left-most door, always.  But in this case, the left-most
+# available door is 3 (he can't choose 2, it is the car_door).
+# Notice the doors were in order, so the left-most door is the first door
+# in the vector.
+montys_door <- montys_choices[1]
+# Show the result
+montys_door
+```
+
+To take that into account, we might try a different strategy. We will
+stick to our own choice if Monty has chosen the left-most of the two
+doors he had available to him, because he might have chosen that door
+because there was a car underneath the other door, or because there was
+a car under neither, but he preferred the left door. But, if Monty
+chooses the right-most of the two-doors available to him, we will switch
+from our own choice to the other (unopened) door, because we can be sure
+that the car is under the other (unopened) door.
+
+Call this the “switch if Monty chooses right door” strategy, or “switch
+if right” for short.
+
+Can you see quickly whether this will be better than the “always stay”
+strategy? Will it be better than the “always switch” strategy? Take a
+moment to think it through, and write down your answers.
+
+If you can quickly see the answer to both questions — well done — but,
+are you sure you are right?
+
+We can test by simulation.
+
+For our test of the “switch is right” strategy, we can tell if one door
+is to the right of another door by comparison; higher numbers mean
+further to the right: 2 is right of 1, and 3 is right of 2.
+
+```{r}
+# Door 3 is right of door 1.
+3 > 1
+```
+
+```{r}
+# A test of the switch-if-right strategy.
+# The car doors.
+car_doors <- numeric(10000)
+# The door we chose using the strategy.
+strategy_doors <- numeric(10000)
+
+doors <- c(1, 2, 3)
+
+for (i in 1:10000) {
+    my_door <- sample(doors, size=1)
+    car_door <- sample(doors, size=1)
+    # Which door will Monty open?
+    montys_choices <- setdiff(doors, c(my_door, car_door))
+    # Choose Monty's door from the remaining options.
+    # This time, he always prefers the left door.
+    montys_door <- montys_choices[1]
+    # Now find the door we'll open if we switch.
+    remaining_doors <- setdiff(doors, c(my_door, montys_door))
+    # There is only one door remaining - but is Monty's door
+    # to the right of this one?  Then Monty had to shift.
+    other_door <- remaining_doors[1]
+    if (montys_door > other_door) {
+        # Monty's door was the right-hand door, the car is under the other one.
+        strategy_doors[i] <- other_door
+    } else {  # We stick with the door we first thought of.
+        strategy_doors[i] <- my_door
+    }
+    # Store the car door for this trial.
+    car_doors[i] <- car_door
+}
+
+strategy_wins <- strategy_doors == car_doors
+
+p_for_strategy <- sum(strategy_wins) / 10000
+
+message('p for strategy: ', p_for_strategy)
+```
+
+We find that the “switch-if-right” has around the same chance of success
+as the “always-switch” strategy — of about 66.6%, or 2 in 3. Were your
+initial answers right? Now you’ve seen the result, can you see why it
+should be so? It may not be obvious — the Monty Hall problem is
+deceptively difficult. But our case here is that the simulation first
+gives you an estimate of the correct answer, and then, gives you a good
+basis for thinking more about the problem. That is:
+
+- simulation is useful for estimation and
+- simulation is useful for reflection.

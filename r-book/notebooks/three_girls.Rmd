@@ -1,0 +1,35 @@
+# Three Girls
+
+
+This notebook estimates the probability that a family of four children
+will have exactly three girls.
+
+```{r}
+girl_counts <- numeric(10000)
+
+# Do 10000 trials
+for (i in 1:10000) {
+
+    # Select 'girl' or 'boy' at random, four times.
+    children <- sample(c('girl', 'boy'), size=4, replace=TRUE)
+
+    # Count the number of girls and put the result in b.
+    b <- sum(children == 'girl')
+
+    # Keep track of each trial result in z.
+    girl_counts[i] <- b
+
+    # End this trial, repeat the experiment until 10000 trials are complete,
+    # then proceed.
+}
+
+# Count the number of experiments where we got exactly 3 girls, and put this
+# result in k.
+n_three_girls <- sum(girl_counts == 3)
+
+# Convert to a proportion.
+three_girls_prop <- n_three_girls / 10000
+
+# Print the results.
+message(three_girls_prop)
+```

@@ -1,0 +1,76 @@
+# Cards and pennies
+
+
+An answer for the following puzzle: “… shuffle a packet of four cards —
+two red, two black — and deal them face down in a row. Two cards are
+picked at random, say by placing a penny on each. What is the
+probability that those two cards are the same color?”
+
+```{r}
+# Numbers representing the slips in the hat.
+N <- c(1, 1, 2, 2)
+
+# An array in which we will store the result of each trial.
+z <- rep('No result yet', 10000)
+
+for (i in 1:10000) {
+    # sample, used in this way, has the effect of shuffling the vector
+    # into a random order.  See the section linked above for an explanation.
+    shuffled <- sample(N)
+
+    A <- shuffled[1]  # The first slip from the shuffled array.
+    B <- shuffled[2]  # The second slip from the shuffled array.
+
+    # Set the result of this trial.
+    if (A == B) {
+        z[i] <- 'Yes'
+    } else {
+        z[i] <- 'No'
+    }
+}  # End of the loop.
+
+# How many times did we see "Yes"?
+k <- sum(z == 'Yes')
+
+# The proportion.
+kk <- k / 10000
+
+message(kk)
+```
+
+Now let’s play the game differently, first picking one card and *putting
+it back and shuffling* before picking a second card. What are the
+results now? You can try it with the cards, but here is another program,
+similar to the last, to run that variation.
+
+```{r}
+# An array in which we will store the result of each trial.
+z <- rep('No result yet', 10000)
+
+for (i in 1:10000) {
+    # Shuffle the numbers in N into a random order.
+    first_shuffle <- sample(N)
+    # Draw a slip of paper.
+    A <- first_shuffle[1]  # The first slip.
+
+    # Shuffle again (with all the slips).
+    second_shuffle <- sample(N)
+    # Draw a slip of paper.
+    B <- second_shuffle[1]  # The second slip.
+
+    # Set the result of this trial.
+    if (A == B) {
+        z[i] <- 'Yes'
+    } else {
+        z[i] <- 'No'
+    }
+}  # End of the loop.
+
+# How many times did we see "Yes"?
+k <- sum(z == 'Yes')
+
+# The proportion.
+kk <- k / 10000
+
+message(kk)
+```

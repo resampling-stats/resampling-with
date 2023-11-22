@@ -1,0 +1,51 @@
+# Fifteen points in a bridge hand
+
+
+Let us assume that ace counts as 4, king = 3, queen = 2, and jack = 1.
+
+```{r}
+# Constitute a deck with 4 jacks (point value 1), 4 queens (value 2), 4
+# kings (value 3), 4 aces (value 4), and 36 other cards with no point
+# value
+whole_deck <- rep(c(1, 2, 3, 4, 0), c(4, 4, 4, 4, 36))
+whole_deck
+```
+
+```{r}
+N <- 10000
+trial_results <- numeric(N)
+
+# Do N trials.
+for (i in 1:N) {
+    # Shuffle the deck of cards and draw 13
+    hand <- sample(whole_deck, size=13)  # replace=FALSE is default.
+
+    # Total the points.
+    points <- sum(hand)
+
+    # Keep score of the result.
+    trial_results[i] <- points
+
+    # End one experiment, go back and repeat until all N trials are done.
+}
+```
+
+```{r}
+# Produce a histogram of trial results.
+hist(trial_results, breaks=0:max(trial_results), main='Points in bridge hands')
+```
+
+From this histogram, we see that in about 4 percent of our trials we
+obtained a total of exactly 15 points. We can also compute this
+directly:
+
+```{r}
+# How many times did we have a hand with fifteen points?
+k <- sum(trial_results == 15)
+
+# Convert to a proportion.
+kk <- k / N
+
+# Show the result.
+kk
+```

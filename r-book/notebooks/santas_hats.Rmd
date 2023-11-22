@@ -1,0 +1,48 @@
+# Santas' hats
+
+
+**The welcome staff at a restaurant mix up the hats of a party of six
+Christmas Santas. What is the probability that at least one will get
+their own hat?**.
+
+After a long Christmas day, six Santas meet in the pub to let off steam.
+However, as luck would have it, their hosts have mixed up their hats.
+When the hats are returned, what is the chance that at least one Santa
+will get his own hat back?
+
+First, assign each of the six Santas a number, and place these numbers
+in an array. Next, shuffle the array (this represents the mixed-up hats)
+and compare to the original. The rest of the problem is the same as the
+pairs one from before, except that we are now interested in any trial
+where at least one ($\ge 1$) Santa received the right hat.
+
+```{r}
+N <- 10000
+trial_results <- numeric(N)
+
+# Assign numbers to each owner
+owners <- 1:6
+
+# Each hat gets the number of their owner
+hats <- 1:6
+
+for (i in 1:N) {
+    # Randomly shuffle the hats and compare to their owners
+    shuffled_hats <- sample(hats)
+
+    # In how many cases did at least one person get their hat back?
+    trial_results[i] <- sum(shuffled_hats == owners) >= 1
+}
+
+# How many times, over all trials, did at least one person get their hat back?
+k <- sum(trial_results)
+
+# Convert to a proportion.
+kk <- k / N
+
+# Print the result.
+print(kk)
+```
+
+We see that in roughly 63 percent of the trials at least one Santa
+received their own hat back.

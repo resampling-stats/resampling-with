@@ -1,0 +1,51 @@
+# Ships with gold and silver
+
+
+In which we solve the problem of gold and silver chests in a discovered
+ship.
+
+```{r}
+# The 3 buckets.  Each bucket represents a ship.  Each has two chests.
+bucket1 <- c('Gold', 'Gold')  # Chests in first ship.
+bucket2 <- c('Gold',  'Silver')  # Chests in second ship.
+bucket3 <- c('Silver', 'Silver')  # Chests in third ship.
+```
+
+```{r}
+# Mark trials as not valid to start with.
+# Trials where we don't get a gold chest first will
+# keep this 'No gold in chest 1, chest 2 never opened' marker.
+second_chests <- rep('No gold in chest 1, chest 2 never opened', 10000)
+
+for (i in 1:10000) {
+    # Select a ship at random from the three ships.
+    ship_no <- sample(1:3, size=1)
+    # Get the chests from this ship (represented by a bucket).
+    if (ship_no == 1) {
+        bucket <- bucket1
+    }
+    if (ship_no == 2) {
+        bucket <- bucket2
+    }
+    if (ship_no == 3) {
+        bucket <- bucket3
+    }
+
+    # We shuffle the order of the chests in this ship, to simulate
+    # the fact that we don't know which of the two chests we have
+    # found first.
+    shuffled <- sample(bucket)
+
+    if (shuffled[1] == 'Gold') {  # We found a gold chest first.
+        # Store whether the Second chest was silver or gold.
+        second_chests[i] <- shuffled[2]
+    }
+}  # End loop, go back to beginning.
+
+# Number of times we found gold in the second chest.
+n_golds <- sum(second_chests == 'Gold')
+# Number of times we found silver in the second chest.
+n_silvers <- sum(second_chests == 'Silver')
+# As a ratio of golds to all second chests (where the first was gold).
+message(n_golds / (n_golds + n_silvers))
+```

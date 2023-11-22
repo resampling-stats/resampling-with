@@ -1,0 +1,53 @@
+# Cures for pill vs placebo
+
+
+Now for a R solution. Again, the benchmark hypothesis is that pill P has
+no effect, and we ask how often, on this assumption, the results that
+were obtained from the actual test of the pill would occur by chance.
+
+Given that in the test 7 of 12 patients overall got well, the benchmark
+hypothesis assumes 7/12 to be the chances of any random patient being
+cured. We generate two similar samples of 6 patients, both taken from
+the same universe composed of the combined samples — the bootstrap
+procedure. We count (`sum`) the number who are “get well” in each
+sample. Then we subtract the number who got well in the “pill” sample
+from the number who got well in the “no-pill” sample. We record the
+resulting difference for each trial in the variable `pill_betters`.
+
+In the actual test, 3 more patients got well in the sample given the
+pill than in the sample given the placebo. We therefore count how many
+of the trials yield results where the difference between the sample
+given the pill and the sample not given the pill was greater than 2
+(equal to or greater than 3). This result is the probability that the
+results derived from the actual test would be obtained from random
+samples drawn from a population which has a constant cure rate, pill or
+no pill.
+
+```{r}
+# The bucket with the pieces of paper.
+options <- rep(c('get well', 'not well'), c(7, 5))
+
+n <- 10000
+
+pill_betters <- numeric(n)
+
+for (i in 1:n) {
+    pill <- sample(options, size=6, replace=TRUE)
+    pill_cures <- sum(pill == 'get well')
+    placebo <- sample(options, size=6, replace=TRUE)
+    placebo_cures <- sum(placebo == 'get well')
+    pill_betters[i] <- pill_cures - placebo_cures
+}
+
+hist(pill_betters, breaks=-6:6,
+     main='Number of extra cures pill vs placebo in null universe')
+```
+
+Recall our actual observed results: In the medicine group, three more
+patients were cured than in the placebo group. From the histogram, we
+see that in only about 8 percent of the simulated trials did the
+“medicine” group do as well or better. The results seem to suggest — but
+by no means conclusively — that the medicine’s performance is not due to
+chance. Further study would probably be warranted. The following
+commands added to the above program will calculate this proportion
+directly:

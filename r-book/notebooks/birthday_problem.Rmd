@@ -1,0 +1,43 @@
+# The Birthday Problem
+
+
+Here we answer the question: “What is the probability that two or more
+people among a roomful of (say) twenty-five people will have the same
+birthday?”
+
+```{r}
+n_with_same_birthday <- numeric(10000)
+
+# All the days of the year from "1" through "365"
+all_days <- 1:365
+
+# Do 10000 trials (experiments)
+for (i in 1:10000) {
+    # Generate 25 numbers randomly between "1" and "365," put them in a.
+    a <- sample(all_days, size=25, replace=TRUE)
+
+    # Looking in a, count the number of multiples and put the result in
+    # "counts".
+    counts <- tabulate(a)
+
+    # We request multiples > 1 because we are interested in any multiple,
+    # whether it is a duplicate, triplicate, etc. Had we been interested only
+    # in duplicates, we would have put in sum(counts == 2).
+    n_duplicates <- sum(counts > 1)
+
+    # Score the result of each trial to our store
+    n_with_same_birthday[i] <- n_duplicates
+
+    # End the loop for the trial, go back and repeat the trial until all 10000
+    # are complete, then proceed.
+}
+
+# Determine how many trials had at least one multiple.
+k <- sum(n_with_same_birthday)
+
+# Convert to a proportion.
+kk <- k / 10000
+
+# Print the result.
+message(kk)
+```

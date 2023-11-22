@@ -1,0 +1,56 @@
+# Fruit fly simulation
+
+
+This notebook uses simulation to test the null hypothesis that it is
+equally likely that new fruit files are male or female.
+
+```{r}
+# Set the number of trials
+n_trials <- 10000
+
+# set the sample size for each trial
+sample_size <- 20
+
+# An empty array to store the trials
+scores <- numeric(n_trials)
+
+# Do 1000 trials
+for (i in 1:n_trials) {
+    # Generate 20 simulated fruit flies, where each has an equal chance of being
+    # male or female
+    a <- sample(c('male', 'female'), size = sample_size, prob = c(0.5, 0.5),
+    replace = TRUE)
+
+    # count the number of males in the sample
+    b <- sum(a == 'male')
+
+    # store the result of this trial
+    scores[i] <- b
+}
+
+# Produce a histogram of the trial results
+title_of_plot <- paste0("Number of males in", n_trials, " samples of \n", sample_size, " simulated fruit flies")
+hist(scores, xlab = 'Number of Males', main = title_of_plot)
+```
+
+In the histogram above, we see that in 16 percent of the trials, the
+number of males was 14 or more, or 6 or fewer. Or instead of reading the
+results from the histogram, we can calculate the result by tacking on
+the following commands to the above program:
+
+```{r}
+# Determine the number of trials in which we had 14 or more males.
+j <- sum(scores >= 14)
+
+# Determine the number of trials in which we had 6 or fewer males.
+k <- sum(scores <= 6)
+
+# Add the two results together.
+m <- j + k
+
+# Convert to a proportion.
+mm <- m/n_trials
+
+# Print the results.
+print(mm)
+```

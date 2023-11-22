@@ -1,0 +1,50 @@
+# Public and private liquor prices
+
+
+This notebook asks the question whether the difference in the means of
+private and government-specified prices of a particular whiskey could
+plausibly have come about as a result of random sampling.
+
+```{r}
+fake_diffs <- numeric(10000)
+
+priv <- c(4.82, 5.29, 4.89, 4.95, 4.55, 4.90, 5.25, 5.30, 4.29, 4.85, 4.54,
+          4.75, 4.85, 4.85, 4.50, 4.75, 4.79, 4.85, 4.79, 4.95, 4.95, 4.75,
+          5.20, 5.10, 4.80, 4.29)
+
+govt <- c(4.65, 4.55, 4.11, 4.15, 4.20, 4.55, 3.80, 4.00, 4.19, 4.75, 4.74,
+          4.50, 4.10, 4.00, 5.05, 4.20)
+
+actual_diff <- mean(priv) - mean(govt)
+
+# Join the two vectors of data
+both <- c(priv, govt)
+
+# Repeat 10000 simulation trials
+for (i in 1:10000) {
+
+    # Sample 26 with replacement for private group
+    fake_priv <- sample(both, size=26, replace=TRUE)
+
+    # Sample 16 with replacement for govt. group
+    fake_govt <- sample(both, size=16, replace=TRUE)
+
+    # Find the mean of the "private" group.
+    p <- mean(fake_priv)
+
+    # Mean of the "govt." group
+    g <- mean(fake_govt)
+
+    # Difference in the means
+    diff <- p - g
+
+    # Keep score of the trials
+    fake_diffs[i] <- diff
+}
+
+# Graph of simulation results to compare with the observed result.
+fig_title <- paste('Average price difference (Actual difference = ',
+                   round(actual_diff * 100),
+                   'cents')
+hist(fake_diffs, main=fig_title, xlab='Difference in average prices (cents)')
+```

@@ -1,0 +1,170 @@
+# Four girls then one boy from 25/25
+
+
+**In this problem, order matters; we are sampling without replacement,
+with two outcomes, several of each item.**
+
+What is the probability of getting an ordered series of *four girls and
+then one boy* , from a universe of 25 girls and 25 boys? This
+illustrates Case 3 above. Clearly we can use the same sampling mechanism
+as in the example
+<a href="#sec-four-girls-one-boy" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-four-girls-one-boy</span></a>, but now
+we record “yes” for a smaller number of composite events.
+
+We record “no” even if a single one boy is chosen but he is chosen 1st,
+2nd, 3rd, or 4th, whereas in
+<a href="#sec-four-girls-one-boy" class="quarto-xref"><span
+class="quarto-unresolved-ref">sec-four-girls-one-boy</span></a>, such
+outcomes are recorded as “yes”-es.
+
+- **Step 1.** Generate a class (vector) of length 50, consisting of 25
+  strings valued “boy” and 25 strings valued “girl”.
+- **Step 2.** Shuffle the class array, and select the first five
+  elements.
+- **Step 3.** If the first five elements are exactly
+  `'girl', 'girl', 'girl',   'girl', 'boy'`, write “yes,” otherwise
+  “no.”
+- **Step 4.** Repeat steps 2 and 3, say, 10,000 times, and count the
+  proportion of “yes” results, which estimates the probability sought.
+
+Let us start the single trial procedure like so:
+
+```{r}
+# Constitute the set of 25 girls and 25 boys.
+whole_class <- rep(c('girl', 'boy'), c(25, 25))
+
+# Shuffle the class into a random order.
+shuffled <- sample(whole_class)
+# Take the first 5 class members, call them c.
+c <- shuffled[1:5]
+# Show the result.
+c
+```
+
+Our next step (step 3) is to check whether `c` is exactly equal to the
+result of interest. The result of interest is:
+
+```{r}
+# The result we are looking for - four girls and then a boy.
+result_of_interest <- rep(c('girl', 'boy'), c(4, 1 ))
+result_of_interest
+```
+
+We can then use a vector *comparison* with `==` to do an element by
+element (*elementwise*) check, asking whether the corresponding elements
+are equal:
+
+```{r}
+# A Boolean array, with True where corresponding elements are equal, False
+# otherwise.
+are_equal <- c == result_of_interest
+are_equal
+```
+
+We are nearly finished with step 3 — it only remains to check whether
+*all* of the elements were equal, by checking whether *all* of the
+values in `are_equal` are `TRUE`.
+
+We know that there are 5 elements, so we could check whether there are 5
+`TRUE` values with `sum`:
+
+```{r}
+# Are there exactly 5 TRUE values in `are_equal`?
+sum(are_equal) == 5
+```
+
+Another way to ask the same question is by using the `all` function on
+`are_equal`. This returns `TRUE` if *all* the elements in `are_equal`
+are `TRUE`, and `FALSE` otherwise.
+
+<div class="callout callout-style-default callout-note callout-titled">
+
+<div class="callout-header d-flex align-content-center">
+
+<div class="callout-icon-container">
+
+<i class='callout-icon'></i>
+
+</div>
+
+<div class="callout-title-container flex-fill">
+
+Testing whether all elements of a vector are the same
+
+</div>
+
+</div>
+
+<div class="callout-body-container callout-body">
+
+The `all`, applied to a Boolean vector (as here), checks whether *all*
+of the elements in the Boolean vector are `TRUE`. If so, it returns
+`TRUE`, otherwise, it returns `FALSE`.
+
+For example:
+
+```{r}
+# All elements are TRUE, `all` returns TRUE
+all(c(TRUE, TRUE, TRUE, TRUE))
+```
+
+```{r}
+# At least one element is FALSE, `all` returns FALSE
+all(c(TRUE, TRUE, FALSE, TRUE))
+```
+
+</div>
+
+</div>
+
+Here is the full procedure for steps 2 and 3 (a single trial):
+
+```{r}
+# Shuffle the class into a random order.
+shuffled <- sample(whole_class)
+# Take the first 5 class members, call them c.
+c <- shuffled[1:5]
+# For each element, test whether the result is the result of interest.
+are_equal <- c == result_of_interest
+# Check whether we have the result we are looking for.
+is_four_girls_then_one_boy <- all(are_equal)
+```
+
+All that remains is to put the single trial procedure into a loop.
+
+```{r}
+N <- 10000
+trial_results <- numeric(N)
+
+# Repeat the following steps 1000 times.
+for (i in 1:N) {
+
+    # Shuffle the class into a random order.
+    shuffled <- sample(whole_class)
+    # Take the first 5 class members, call them c.
+    c <- shuffled[1:5]
+    # For each element, test whether the result is the result of interest.
+    are_equal <- c == result_of_interest
+    # Check whether we have the result we are looking for.
+    is_four_girls_then_one_boy <- all(are_equal)
+
+    # Store the result of this trial.
+    trial_results[i] <- is_four_girls_then_one_boy
+
+    # End the experiment, go back and repeat until all N trials are
+    # complete.
+}
+
+# Count the number of times we got four girls then a boy
+k <- sum(trial_results)
+
+# Convert to a proportion.
+kk <- k / N
+
+# Print the result.
+message(kk)
+```
+
+This type of problem is conventionally done with a *permutation*
+formula.
