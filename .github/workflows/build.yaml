@@ -77,7 +77,7 @@ jobs:
         with:
           folder: website
           repository-name: resampling-stats/resampling-stats.github.io
-          branch: gh-pages
+          branch: main
           single-commit: true
           token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
 
