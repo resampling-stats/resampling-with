@@ -73,13 +73,13 @@ jobs:
           make build-init
 
       - name: Deploy index website
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@releases/v4.4.3
         with:
-          FOLDER: website
-          REPOSITORY_NAME: resampling-stats/resampling-stats.github.io
-          BRANCH: gh-pages
-          SINGLE_COMMIT: true
-          GITHUB_TOKEN: ${{ secrets.BOOK_UPLOAD_TOKEN }}
+          folder: website
+          repository-name: resampling-stats/resampling-stats.github.io
+          branch: gh-pages
+          single-commit: true
+          token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
 
       - name: Build Python book
         run: |
@@ -88,13 +88,13 @@ jobs:
           touch python-book/.nojekyll
 
       - name: Deploy Python book
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@releases/v4.4.3
         with:
-          FOLDER: python-book
-          REPOSITORY_NAME: resampling-stats/python-book
-          BRANCH: main
-          SINGLE_COMMIT: true
-          GITHUB_TOKEN: ${{ secrets.BOOK_UPLOAD_TOKEN }}
+          folder: python-book
+          repository-name: resampling-stats/python-book
+          branch: main
+          single-commit: true
+          token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
 
       - name: Build R book
         run: |
@@ -103,10 +103,10 @@ jobs:
           touch python-book/.nojekyll
 
       - name: Deploy R book
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@releases/v4.4.3
         with:
-          FOLDER: r-book
-          REPOSITORY_NAME: resampling-stats/r-book
-          BRANCH: main
-          SINGLE_COMMIT: true
-          GITHUB_TOKEN: ${{ secrets.BOOK_UPLOAD_TOKEN }}
+          folder: r-book
+          repository-name: resampling-stats/r-book
+          branch: main
+          single-commit: true
+          token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
