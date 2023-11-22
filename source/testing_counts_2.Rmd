@@ -93,8 +93,11 @@ of one or the other sex.
 Let us make the procedure explicit, but using random numbers instead of
 coins this time:
 
-* **Step 1.** Let "1-5" = males, "6-0" = females
-* **Step 2.** Choose four groups of twenty numbers. If for *any* group there
+* **Step 1.** Write "male" and "female" on two pieces of paper, put them in
+  a hat.
+* **Step 2.** Pick a piece of paper at random from the hat, write down whether
+  it was "male" or "female"; replace the piece of paper.  Repeat 20 times to get 20 simulated fruit flies.
+* *Step 3**
   are 14 or more males, record "yes"; if 13 or less, record "no."
 * **Step 3.** Repeat perhaps 1000 times.
 * **Step 4.** Calculate the proportion "yes" in the 1000 trials. This
@@ -129,10 +132,9 @@ Table 17-1
   6   11   14   9    7    Yes
   --- ---- ---- ---- ---- -----
 
-A key point of the RESAMPLING STATS program "4TREAT" is that each sample
-consists of *four sets* of 20 randomly generated hypothetical fruit
-flies. And if we consider 1000 trials, we will be examining 4000 sets of
-20 fruit flies.
+A key point of the {{< var lang >}} notebook below is that each sample consists
+of *four sets* of 20 randomly generated hypothetical fruit flies. And if we
+consider 10,000 trials, we will be examining 40,000 sets of 20 fruit flies.
 
 In each trial we GENERATE up to 4 random samples of 20 fruit flies, and
 for each, we count the number of males ("1"s) and then check whether
@@ -146,68 +148,80 @@ After the 1000 runs are made, we count the number of trials where one
 sample had a group of fruit flies with 14 or more of either sex, and
 PRINT the results.
 
+```{python}
+import numpy as np
+rnd = np.random.default_rng()
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+n_iters = 10_000
 
-```matlab
-' Program file: "4treat.rss"
+results = np.zeros(n_iters)
 
-REPEAT 1000
-    ' Do 1000 experiments.
-    COPY (0) j
-    ' j indicates whether we have obtained a trial group with 14 or more of
-    ' either sex. We start at "0" (= no).
-    REPEAT 4
-        ' Repeat the following steps 4 times to constitute 4 trial groups of 20
-        ' flies each.
-        GENERATE 20 1,2 a
-        ' Generate randomly 20 "1"s and "2"s and put them in a; let "1"
+for i in range(n_iters):
+    # more_than_13 indicates whether we have obtained any trial group with more
+    # than 13 of either sex. We start at 0 (= no).
+    more_than_13 = 0
+    # Repeat the following steps 4 times to constitute 4 trial groups
+    # (representing treatments A, B, C, and D) of 20 flies each.
+    for j in range(4):
+        flies = rnd.choice(['male', 'female'], size=20)
+        n_males = np.sum(flies == 'male')
+        n_females = np.sum(flies == 'female')  # Same as: 20 - n_males
+        if n_males > 13 or n_females > 13:
+            more_than_13 = 1
+    # more_than_13 now tells us whether we got a result as extreme as that
+    # observed (more_than_13 == 1 if we did, more_than_13 == 0 if not). We must
+    # keep track of this result in the results variable, for each experiment.
+    results[i] = more_than_13
 
-        ' = male.
-        COUNT a =1 b
-        ' Count the number of males, put the result in b.
-        IF b >= 14
-            ' If the result is 14 or more males, then
-        END
-        COPY (1) j
-        ' Set the indicator to "1."
+# The number of trials for which at least one of the four tests
+# exceeded 13 males or 13 females.
+k = np.sum(results)
+kk = k / n_iters
 
-        ' End the IF condition.
-        IF b <= 6
-            ' If the result is 6 or fewer males (the same as 14 or more females), then
-        END
-        COPY (1) j
-        ' Set the indicator to "1."
-
-        ' End the IF condition.
-    END
-END
-' End the procedure for one group, go back and repeat until all four
-' groups have been done.
-SCORE j z
-' j now tells us whether we got a result as extreme as that observed (j =
-' "1" if we did, j = "0" if not). We must keep track in z of this result
-' for each experiment.
-
-' End one experiment, go back and repeat until all 1000 are complete.
-COUNT z =1 k
-' Count the number of experiments in which we had results as extreme as
-' those observed.
-DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Print the result.
-
-' Note: The file "4treat" on the Resampling Stats software disk contains
-' this set of commands.
+print('Proportion of trials exceeding 13:', kk)
 ```
 
-In one set of 1000 trials, there were more than 13 or less than 7 males
-33 percent of the time — clearly not an unusual occurrence.
+```{r}
+n_iters <- 10_000
 
-**Example 17-2: Do Four Psychological Treatments Differ in
-Effectiveness?** (Do Several Two-Outcome Samples Differ Among Themselves
-in Their Propor tions? (Program "4treat1")
+results <- numeric(n_iters)
+
+for (i in 1:n_iters) {
+    # more_than_13 indicates whether we have obtained any trial group with more
+    # than 13 of either sex. We start at 0 (= no).
+    more_than_13 <- 0
+    # Repeat the following steps 4 times to constitute 4 trial groups
+    # (representing treatments A, B, C, and D) of 20 flies each.
+    for (j in 1:4) {
+        flies <- sample(c('male', 'female'), replace=TRUE, size=20)
+        n_males <- sum(flies == 'male')
+        n_females <- sum(flies == 'female')  # Same as: 20 - n_males
+        if (n_males > 13 | n_females > 13) {
+            more_than_13 <- 1
+        }
+    }
+    # more_than_13 now tells us whether we got a result as extreme as that
+    # observed (more_than_13 == 1 if we did, more_than_13 == 0 if not). We must
+    # keep track of this result in the results variable, for each experiment.
+    results[i] <- more_than_13
+}
+
+# The number of trials for which at least one of the four tests
+# exceeded 13 males or 13 females.
+k <- sum(results)
+kk <- k / n_iters
+
+message('Proportion of trials exceeding 13: ', kk)
+```
+
+In one set of 10,000 trials, there were more than 13 males or more than 13
+females `r round(get_var('kk') * 100)` percent of the time — clearly not an
+unusual occurrence.
+
+### Example: Do Four Psychological Treatments Differ in Effectiveness?
+
+**Do Several Two-Outcome Samples Differ Among Themselves in Their
+Proportions?**
 
 Consider four different psychological treatments designed to
 rehabilitate juvenile delinquents. Instead of a numerical test score,
