@@ -87,9 +87,11 @@ jobs:
       - name: Build Python book
         run: |
           make python-book
-          cd source && ninja python-book-pdf
           cp website/python-README.md python-book/README.md
           touch python-book/.nojekyll
+
+      # - name: Build Python PDF
+      #   run: cd source && ninja python-book-pdf
 
       - name: Deploy Python book
         uses: JamesIves/github-pages-deploy-action@v4.4.3
@@ -103,9 +105,11 @@ jobs:
       - name: Build R book
         run: |
           make r-book
-          cd source && ninja r-book-pdf
           cp website/r-README.md r-book/README.md
           touch r-book/.nojekyll
+
+      # - name: Build R PDF
+      #   run: cd source && ninja python-book-pdf
 
       - name: Deploy R book
         uses: JamesIves/github-pages-deploy-action@v4.4.3
