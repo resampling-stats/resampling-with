@@ -16,7 +16,7 @@ if (getOption('repos')["CRAN"] == "@CRAN@") {
 
 # https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them
 # "remotes" for dev version of reticulate - see below.
-to_install <- c("optparse", "fs", "kableExtra", 'quarto', 'remotes', 'formattable')
+to_install <- c("optparse", "fs", "kableExtra", 'quarto', 'remotes', 'formattable', 'reticulate')
 to_install <- to_install[!(to_install %in% installed.packages()[,"Package"])]
 if (length(to_install)) {
     install.packages(to_install, dependencies=TRUE)
@@ -27,9 +27,3 @@ if (length(to_install)) {
 # clobbering the existing versions of CRAN packages that you need for other
 # tasks."
 fs::dir_create('~/R-dev')  # ?also correct for Windows
-
-# Install more recent version of reticulate for jupyter_compat option.
-# https://github.com/rstudio/reticulate/pull/1423
-remotes::install_github("rstudio/reticulate",
-                        ref='a003118f',  # jupyter-compat fixes.
-                        dependencies=TRUE)
