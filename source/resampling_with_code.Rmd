@@ -772,13 +772,12 @@ my_number
 ## Sampling into {{< var array >}}s {#sec-sampling-arrays}
 
 ::: python
-In the code above, we asked Python to select a single number at
-random — because that is what `rnd.choice` does by default].
+In the code above, we asked Python to select a single number at random
+— because that is what `rnd.choice` does by default.
 
-In fact, the people who wrote `rnd.choice`, wrote it to be flexible in
-the work that it can do.  In particular, we can tell
-`rnd.choice` to select *any number of values* at random, by adding a new
-*argument* to the function.
+In fact, the people who wrote `rnd.choice`, wrote it to be flexible in the
+work that it can do.  In particular, we can tell `rnd.choice` to select *any
+number of values* at random, by adding a new *argument* to the function.
 
 In our case, we would like Numpy to select 17 numbers at random from the
 sequence of `some_integers`.
@@ -831,10 +830,34 @@ As you can see, the function sent back (returned) 17 numbers.  Because it is
 sending back more than one number, the thing it sends back is
 {{< var an_array >}}, where the {{< var array >}} has 17 elements.
 
+### `sum` — adding all the values
+
+Bear with us for a short diversion.  You will see why we made this diversion
+soon.
+
+{{< var np_or_r >}} has a function [`sum`]{.r}[`np.sum`]{.python} that will
+add up all the numbers in {{< var an_array >}}.
+
+You can see the contents of `a` above.
+
+[`sum`]{.r}[`np.sum`]{.python} adds all the numbers in the {{< var array >}}
+together, to give the *sum* of the {{< var array >}}.  The *sum* is just the
+result of adding the second element to the first, then adding third element to
+the result, and the fourth element to the result, and so on.
+
+```{python}
+np.sum(a)
+```
+
+```{r}
+sum(a)
+```
+
 ## Counting results
 
-We now have the code to do the equivalent of throwing 17 10-sided dice. This is
-the basis for one simulated trial in the world of Saint Hypothetical General.
+We now have the code to do the equivalent of throwing 17 ten-sided dice. This
+is the basis for one simulated trial in the world of Saint Hypothetical
+General.
 
 Our next job is to get the code to count the number of numbers that are not
 zero in the {{< var array >}} `a`.  That will give us the number of
@@ -953,7 +976,7 @@ simulated trial who were cured.
 
 We can use the {{< var np_or_r >}} function [`sum`]{.r}[`np.sum`]{.python} to
 count the number of {{< var true >}} elements in {{< var an_array >}}.
-As you can imagine,
+As you can saw above,
 [`sum`]{.r}[`np.sum`]{.python}
 adds up all the elements in {{< var an_array >}}, to give a single number. This
 will work as we want for the `q` {{< var array >}}, because {{< var lang >}}
