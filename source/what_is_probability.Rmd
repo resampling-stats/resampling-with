@@ -810,8 +810,8 @@ shakes them in her hand a moment, then correctly announces the final sum.
 from each of the three dice.  Call these numbers $a$, $b$ and $c$.  Then he
 chooses one die — it doesn't matter which, but let's say he chooses the third
 die, with value $c$.  He adds the bottom of the third die to the total.
-Here's the trick — the total of opposite faces on a standard die always add up
-to 7 — 1 is opposite 6, 2 is opposite 5, and 3 is opposite 4.  So the total is
+Here's the trick: the total of opposite faces on a standard die always add up
+to 7; 1 is opposite 6, 2 is opposite 5, and 3 is opposite 4.  So the total is
 now $a + b + 7$.  Then the spectator rolls the third die again, to get a new
 number $d$.  The total is now $a + b + 7 + d$.  When the magician turns round
 she can see what $a$ and $b$ and $d$ are, so to get the right final total, she
@@ -830,7 +830,7 @@ shape of the overall distribution — many individuals at the tiny end where the
 viruses are found, and very few individuals at the tall end where the giraffes
 are — is determined mostly by the distribution of species that have different
 mean heights. Hence we can explain the shape of that distribution, and we do
-not say that is determined by "chance." But with a homogenous cohort of a
+not say that is determined by "chance." But with a homogeneous cohort of a
 single species — say, all 25-year-old human females in the U.S. — our best
 description of the shape of the distribution is "chance." With situations in
 between, the shape is partly due to identifiable factors — e.g. age — and
@@ -887,11 +887,12 @@ it is random-enough, or random-like, if we can't do anything to predict which
 of 0 or 1 we will get on any one trial.  We can't do better than guessing that
 the next value will be — say — 0 — and whichever number we guess, we will only
 ever have a 50% chance of being correct.  We are not saying the computer is
-giving *truly* random numbers in some deep sense, only numbers we cannot
-*distinguish* from truly random numbers, because we cannot do anything to
-predict them.  The technical term for random numbers from the computer is
-therefore *pseudo-random* — meaning, like random numbers, in the sense they
-are effectively unpredictable. Effectively unpredictable means there is no
+giving *truly* random numbers in the sense that they are fundamentally not
+deterministic, it is only giving us numbers we cannot *distinguish* from truly
+random numbers, because we cannot *in practice* do anything to predict them.
+The technical term for random numbers from the computer is therefore
+*pseudo-random* — meaning, like random numbers, in the sense they are
+effectively unpredictable. Effectively unpredictable means there is no
 *practical* way for you, or even a very powerful computer, to do anything to
 improve your prediction of the next number in the series.
 
