@@ -807,7 +807,7 @@ In fact, you will see this pattern throughout the book, where we use `for`
 statements like `for value in range(10000):` to ask Python to put each number
 in the range 0 up to (not including) 100000 into the variable `value`, and then
 do something in the body of the loop.  Just to be clear, we could always, and
-almost as easily, write `for value in np.range(10000):` to do the same task.
+almost as easily, write `for value in np.arange(10000):` to do the same task.
 But — even though we could use `np.arange` to get an array of numbers, we
 generally prefer `range` in our Python `for` loops, because it is just a little
 less typing (without the `np.a` of `np.arange`, and because it is a more common
