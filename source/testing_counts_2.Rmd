@@ -501,16 +501,16 @@ by using a `for` loop, rather than spelling out the {{< var sample >}} command
 import numpy as np
 import matplotlib.pyplot as plt
 
-# set up the random number generator
+# Set up the random number generator.
 rnd = np.random.default_rng()
 
-# Set the number of trials
+# Set the number of trials.
 n_trials = 10000
 
-# Set the sample size for each trial
+# Set the sample size for each trial.
 sample_size = 20
 
-# An empty array to store the trials
+# An empty array to store the trials.
 scores = np.zeros(n_trials)
 
 # Do 10000 trials
@@ -545,6 +545,53 @@ plt.hist(scores, bins=50)
 plt.title('Distribution of sum of squared deviations, in null universe')
 ```
 
+```{r}
+# Set the number of trials.
+n_trials <- 10000
+
+# Set the sample size for each trial.
+sample_size <- 20
+
+# An empty vector to store the trials.
+scores <- numeric(n_trials)
+
+# Do 10000 trials.
+for (i in 1:n_trials) {
+    # Repeat the following steps 4 times to constitute 4 groups of 20 and
+    # count their success rates.
+    group_scores <- numeric(4)
+    for (group_no in 1:4) {
+        # A treatment group
+        group <- sample(c('success', 'failure'),
+                        size=20,
+                        prob=c(0.55, 0.45),
+                        replace=TRUE)
+        # Count successes.
+        group_count <- sum(group == 'success')
+        # Store result.
+        group_scores[group_no] <- group_count
+        # End the procedure for one group of 20, go back and repeat until all 4
+        # are done.
+    }
+    # Calculate the mean
+    m <- mean(group_scores)
+    # Calculate the deviations of the scores from the mean of the scores.
+    deviations <- group_scores - m
+    # Square them, making them them positive.
+    sq_deviations <- deviations ** 2
+    # Sum up the squared deviations.
+    sum_sq_deviations <- sum(sq_deviations)
+    # Keep track of the result for each trial.
+    scores[i] <- sum_sq_deviations
+
+    # End a trial, go back and repeat until all 10000 are complete.
+}
+
+# Produce a histogram of the trial results.
+hist(scores, breaks=50,
+     main='Distribution of sum of squared deviations, in null universe')
+```
+
 From this histogram, we see that in only about 1 percent of the cases did our
 trial sum of squared differences equal or exceed 54, confirming our conclusion
 that this is an unusual result. We can have {{< var lang >}} calculate this
@@ -560,6 +607,16 @@ kk = k / n_trials
 print(f'Proportion >= {actual_sum_sq_deviations} was:', kk)
 ```
 
+```{r}
+# How many of the trials yielded a maximum difference greater than the
+# observed maximum difference?
+k <- sum(scores >= actual_sum_sq_deviations)
+# Convert to a proportion
+kk <- k / n_trials
+
+message(paste('Proportion >=', actual_sum_sq_deviations, 'was:', kk))
+```
+
 The conventional way to approach this problem would be with what is known as
 a [chi-squared test](https://en.wikipedia.org/wiki/Chi-squared_test).
 
@@ -568,129 +625,183 @@ a [chi-squared test](https://en.wikipedia.org/wiki/Chi-squared_test).
 End of notebook
 -->
 
-## Example: Three-way Comparison
+### Example: Three-way Comparison
 
 In a national election poll of 750 respondents in May, 1992, George Bush
 got 36 percent of the preferences (270 voters), Ross Perot got 30
-percent (225 voters), and Bill Clinton got 28 percent (210 voters) (
-*Wall Street Journal*, October 29, 1992, A16). Assuming that the poll
-was representative of actual voting, how likely is it that Bush was
-actually *behind* and just came out ahead in this poll by chance? Or to
-put it differently, what was the probability that Bush actually had a
-plurality of support, rather than that his apparent advantage was a
-matter of sampling variability? We test this by constructing a universe
-in which Bush is slightly behind (in practice, just equal), and then
-drawing samples to see how likely it is that those samples will show
-Bush ahead.
+percent (225 voters), and Bill Clinton got 28 percent (210 voters) (*Wall
+Street Journal*, October 29, 1992, A16). Assuming that the poll was
+representative of actual voting, how likely is it that Bush was actually
+*behind* and just came out ahead in this poll by chance? Or to put it
+differently, what was the probability that Bush actually had a plurality of
+support, rather than that his apparent advantage was a matter of sampling
+variability?  We test this by constructing a universe in which Bush is slightly
+behind (in practice, just equal), and then drawing samples to see how likely it
+is that those samples will show Bush ahead.
 
-We must first find that universe — among all possible universes that
-yield a conclusion contrary to the conclusion shown by the data, and one
-in which we are interested — that has the highest probability of
-producing the observed sample. With a two-person race the universe is
-obvious: a universe that is evenly split except for a single vote
-against "our" candidate who is now in the lead, i.e. in practice a 50-50
-universe. In that simple case we then ask the probability that *that*
-universe would produce a sample as far out in the direction of the
-conclusion drawn from the observed sample as the observed sample.
+We must first find that universe — among all possible universes that yield
+a conclusion contrary to the conclusion shown by the data, and one in which we
+are interested — that has the highest probability of producing the observed
+sample. With a two-person race the universe is obvious: a universe that is
+evenly split except for a single vote against "our" candidate who is now in the
+lead, i.e. in practice a 50-50 universe. In that simple case we then ask the
+probability that *that* universe would produce a sample as far out in the
+direction of the conclusion drawn from the observed sample as the observed
+sample.
 
-With a three-person race, however, the decision is not obvious (and if
-this problem becomes too murky for you, skip over it; it is included
-here more for fun than anything else). And there is no standard method
-for handling this problem in conventional statistics (a solution in
-terms of a confidence interval was first offered in 1992, and that one
-is very complicated and not very satisfactory to me). But the sort of
-thinking that we must labor to accomplish is also required for any
-conventional solution; the difficulty is inherent in the problem, rather
-than being inherent in resampling, and resampling will be at least as
-simple and understandable as any formulaic approach.
+With a three-person race, however, the decision is not obvious (and if this
+problem becomes too murky for you, skip over it; it is included here more for
+fun than anything else). And there is no standard method for handling this
+problem in conventional statistics (a solution in terms of a confidence
+interval was first offered in 1992, and that one is very complicated and not
+very satisfactory to me (JLS)). But the sort of thinking that we must labor to
+accomplish is also required for any conventional solution; the difficulty is
+inherent in the problem, rather than being inherent in resampling, and
+resampling will be at least as simple and understandable as any formulaic
+approach.
 
-The relevant universe is (or so I think) a universe that is 35 Bush — 35
-Perot — 30 Clinton (for a race where the poll indicates a 36-30-28
-split); the 35-35-30 universe is of interest because it is the universe
-that is closest to the observed sample that does not provide a win for
-Bush (leaving out the "undecideds" for convenience); it is roughly
-analogous to the 50-50 split in the two-person race, though a clear-cut
-argument would require a lot more discussion. A universe that is split
-34-34-32, or any of the other possible universes, is less likely to
-produce a 36-30-28 sample (such as was observed) than is a 35-35-30
-universe, I believe, but that is a checkable matter. (In technical
-terms, it might be a "maximum likelihood universe" that we are looking
-for.)
+The relevant universe is (or so I think) a universe that is 35 Bush — 35 Perot
+— 30 Clinton (for a race where the poll indicates a 36-30-28 split); the
+35-35-30 universe is of interest because it is the universe that is closest to
+the observed sample that does not provide a win for Bush (leaving out the
+"undecideds" for convenience); it is roughly analogous to the 50-50 split in
+the two-person race, though a clear-cut argument would require a lot more
+discussion. A universe that is split 34-34-32, or any of the other possible
+universes, is less likely to produce a 36-30-28 sample (such as was observed)
+than is a 35-35-30 universe, I believe, but that is a checkable matter. (In
+technical terms, it might be a "maximum likelihood universe" that we are
+looking for.)
 
-We might also try a 36-36-28 universe to see if that produces a result
-very different than the 35-35-30 universe.
+We might also try a 36-36-28 universe to see if that produces a result very
+different than the 35-35-30 universe.
 
-Among those universes where Bush is behind (or equal), a universe that
-is split 50-50-0 (with just one extra vote for the closest opponent to
-Bush) would be the most likely to produce a 6 percent difference between
-the top two candidates by chance, but we are not prepared to believe
-that the voters are split in such a fashion. This assumption shows that
-we are bringing some judgments to bear from outside the observed data.
+Among those universes where Bush is behind (or equal), a universe that is split
+50-50-0 (with just one extra vote for the closest opponent to Bush) would be
+the most likely to produce a 6 percent difference between the top two
+candidates by chance, but we are not prepared to believe that the voters are
+split in such a fashion. This assumption shows that we are bringing some
+judgments to bear from outside the observed data.
 
 For now, the point is not *how* to discover the appropriate benchmark
-hypothesis, but rather its *criterion* — which is, I repeat, that
-universe (among all possible universes) that yields a conclusion
-contrary to the conclusion shown by the data (and in which we are
-interested) and that (among such universes that yield such a conclusion)
-has the highest probability of producing the observed sample.
+hypothesis, but rather its *criterion* — which is, I repeat, that universe
+(among all possible universes) that yields a conclusion contrary to the
+conclusion shown by the data (and in which we are interested) and that (among
+such universes that yield such a conclusion) has the highest probability of
+producing the observed sample.
 
-Let's go through the logic again: 1) Bush apparently has a 6 percent
-lead over the second-place candidate. 2) We ask if the second-place
-candidate might be ahead if all voters were polled. We test that by
-setting up a universe in which the second-place candidate is
-infinitesimally ahead (in practice, we make the two top candidates equal
-in our hypothetical universe). And we make the third-place candidate
-somewhere close to the top two candidates. 3) We then draw samples from
-this universe and observe how often the result is a 6 percent lead for
-the top candidate (who starts off just below equal in the universe).
+Let's go through the logic again: 1) Bush apparently has a 6 percent lead over
+the second-place candidate. 2) We ask if the second-place candidate might be
+ahead if all voters were polled. We test that by setting up a universe in which
+the second-place candidate is infinitesimally ahead (in practice, we make the
+two top candidates equal in our hypothetical universe). And we make the
+third-place candidate somewhere close to the top two candidates. 3) We then
+draw samples from this universe and observe how often the result is a 6 percent
+lead for the top candidate (who starts off just below equal in the universe).
 
-From here on, the procedure is straightforward: Determine how likely
-that universe is to produce a sample as far (or further) away in the
-direction of "our" candidate winning. (One could do something like this
-even if the candidate of interest were not now in the lead.)
+From here on, the procedure is straightforward: Determine how likely that
+universe is to produce a sample as far (or further) away in the direction of
+"our" candidate winning. (One could do something like this even if the
+candidate of interest were not now in the lead.)
 
-This problem teaches again that one must think explicitly about the
-choice of a benchmark hypothesis. The grounds for the choice of the
-benchmark hypothesis should precede the program, or should be included
-as an extended comment within the program.
+This problem teaches again that one must think explicitly about the choice of
+a benchmark hypothesis. The grounds for the choice of the benchmark hypothesis
+should precede the program, or should be included as an extended comment within
+the program.
 
-This program embodies the previous line of thought.
+This {{< var lang >}} code embodies the previous line of thought.
 
+::: {.notebook name="bush_clintion" title="Simulation of Bush / Clinton polling"}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: nb-only
+The notebook estimates the chances that Bush is in fact equal or behind in the population of eventual voters, despite the poll giving him a narrow lead.
+:::
 
-```matlab
-' Program file: "testing_counts_2_04.rss"
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-URN 35#1 35#2 30#3 univ 1= Bush, 2= Perot, 3=Clinton
-REPEAT 1000
-    SAMPLE 750 univ samp
-    ' Take a sample of 750 votes
-    COUNT samp =1 bush
-    ' Count the Bush voters, etc.
-    COUNT samp =2 pero
-    ' Perot voters
-    COUNT samp =3 clin
-    ' Clinton voters
-    CONCAT pero clin others
-    ' Join Perot & Clinton votes
-    MAX others second
-    ' Find the larger of the other two
-    SUBTRACT bush second d
-    ' Find Bush's margin over 2nd
-    SCORE d z
-END
-HISTOGRAM z
-COUNT z >=46 m
-' Compare to the observed margin in the sample of 750 corresponding to a 6
-' percent margin by Bush over 2nd place finisher (rounded)
-DIVIDE m 1000 mm
-PRINT mm
+# set up the random number generator
+rnd = np.random.default_rng()
+
+# Set the number of trials
+n_trials = 10000
+
+# An empty array to store the trials
+scores = np.zeros(n_trials)
+
+# Do 10000 trials
+for i in range(n_trials):
+    # Take a sample of 750 votes, with replacement.
+    samp = rnd.choice(['Bush', 'Perot', 'Clinton'],
+                      p=[0.35, 0.35, 0.30],
+                      size=750)
+    # Count the Bush voters, etc.
+    n_bush = np.sum(samp == 'Bush')
+    n_perot = np.sum(samp == 'Perot')
+    n_clinton = np.sum(samp == 'Clinton')
+    # Join Perot & Clinton votes.
+    others = np.array([n_perot, n_clinton])
+    # Find the larger of the other two.
+    n_second = np.max(others)
+    # Find Bush's margin over 2nd.
+    d = n_bush - n_second
+    # Store the result.
+    scores[i] = d
+
+plt.hist(scores, bins=50)
+plt.title('Distribution of Bush margin over second candidate')
+
+# Compare to the observed margin in the sample of 750 corresponding to a 6
+# percent margin by Bush over 2nd place finisher (rounded).
+k = np.sum(scores >= 46)
+kk = k / n_trials
+
+print('Proportion of trials where Bush margin >= 46:', kk)
 ```
 
-![Samples of 750 Voters: ](images/21-Chap-17_001.png){#fig-bush-margin}
+```{r}
+# Set the number of trials
+n_trials <- 10000
 
-The result is — Bush's margin over 2nd (`mm`) = 0.018.
+# An empty array to store the trials
+scores <- numeric(n_trials)
+
+# Do 10000 trials
+for (i in 1:n_trials) {
+    # Take a sample of 750 votes, with replacement.
+    samp <- sample(c('Bush', 'Perot', 'Clinton'),
+                   size=750,
+                   prob=c(0.35, 0.35, 0.30),
+                   replace=TRUE)
+    # Count the Bush voters, etc.
+    n_bush <- sum(samp == 'Bush')
+    n_perot <- sum(samp == 'Perot')
+    n_clinton <- sum(samp == 'Clinton')
+    # Join Perot & Clinton votes.
+    others <- c(n_perot, n_clinton)
+    # Find the larger of the other two.
+    n_second <- max(others)
+    # Find Bush's margin over 2nd.
+    d <- n_bush - n_second
+    # Store the result.
+    scores[i] <- d
+}
+
+hist(scores, breaks=50,
+     main='Distribution of Bush margin over second candidate')
+
+# Compare to the observed margin in the sample of 750 corresponding to a 6
+# percent margin by Bush over 2nd place finisher (rounded).
+k <- sum(scores >= 46)
+kk <- k / n_trials
+
+message('Proportion of trials where Bush margin >= 46: ', kk)
+```
+
+:::
+<!---
+End of notebook
+-->
 
 When we run this program with a 36-36-28 split, we also get a similar
 result — 2.6 percent. That is, the analysis shows a probability of only
@@ -701,8 +812,9 @@ was ahead of the other two candidates.
 
 ## Paired Comparisons With Counted Data
 
-**Example 17-4: The Pig Rations Again, But Comparing Pairs of Pigs**
-(Paired-Comparison Test) (Program "Pigs2")
+### Example: The Pig Rations Again, But Comparing Pairs of Pigs
+
+This is a **Paired-Comparison Test**.
 
 To illustrate how several different procedures can reasonably be used to
 deal with a given problem, here is another way to decide whether pig

@@ -191,3 +191,9 @@ mosquitoes](https://github.com/odsti/datasets/tree/main/mosquito_beer)
 ## Python notation
 
 > Introduce `_` notation for large integers
+
+## resampling stats commands
+
+### SAMPLE
+
+This is resampling _with_ replacement.
