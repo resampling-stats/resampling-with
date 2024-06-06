@@ -17,14 +17,14 @@ n = 100
 counts = np.zeros(n, dtype=int)
 for i in range(n):
     flies = rnd.choice(['heads', 'tails'], size=20)
-    counts[i] = np.sum(flies == 'heads')
+    counts[i] = np.sum(flies == 'tails')
 
 strange = np.array(['No'] * n, dtype=object)
 strange[(counts >= 14) | (counts <= 6)] = 'Yes'
 
 fruitfly_trials = pd.DataFrame(
     {'Trial no': np.arange(1, n + 1),
-     '# of heads': counts,
+     '# of tails': counts,
      '>=14 or <= 6': strange})
 
 fruitfly_trials.to_csv(HERE / 'fruitfly_trials.csv', index=None)
