@@ -137,20 +137,18 @@ ketable(head(flies, n),
         caption = "Results from 25 random trials for Fruitfly problem {#tbl-fruitfly-trials}")
 ```
 
-`r n_25_gte_14` result.
-
-@tbl-fruitfly-trials shows the results obtained in twenty-five trials of twenty
-flips each. In `r int2tw(n_25_gte_14)` of the twenty-five trials
+@tbl-fruitfly-trials shows the results obtained in `r int2tw(n)` trials of
+twenty flips each. In `r int2tw(n_25_gte_14)` of the twenty-five trials
 (`r round(n_25_gte_14 / n * 100)` percent) there were fourteen or more tails,
-which we call "males," and in `r int2tw(n_25_lte_6)` of the twenty-five trials
-(`r round(n_25_lte_6 / n * 100)` percent) there six or fewer tails, meaning
-there were fourteen or more heads ("females"). We can therefore estimate that,
-even if the treatment does *not* affect the sex and the births over a long
-period really are one to one, `r int2tw(n_25_both)` out of twenty-five times
-(`r round(n_25_both / n * 100)` percent) we would get fourteen or more of one
-sex or the other. Therefore, finding fourteen males out of twenty births is not
-overwhelming evidence that the treatment has any effect, even though the result
-is suggestive.
+which we call "males," and in `r int2tw(n_25_lte_6)` of the `r int2tw(n)`
+trials (`r round(n_25_lte_6 / n * 100)` percent) there six or fewer tails,
+meaning there were fourteen or more heads ("females"). We can therefore
+estimate that, even if the treatment does *not* affect the sex and the births
+over a long period really are one to one, `r int2tw(n_25_both)` out of
+twenty-five times (`r round(n_25_both / n * 100)` percent) we would get
+fourteen or more of one sex or the other. Therefore, finding fourteen males
+out of 20 births is not overwhelming evidence that the treatment has any
+effect, even though the result is suggestive.
 
 ```{r, eval=TRUE, echo=FALSE}
 counts <- flies[['# of tails']]
@@ -218,12 +216,15 @@ sample_size = 20
 # An empty array to store the trials
 scores = np.zeros(n_trials)
 
-# Do 1000 trials
+# Do 10000 trials
 for i in range(n_trials):
 
-    # Generate 20 simulated fruit flies, where each has an equal chance of being
-    # male or female
-    a = rnd.choice(['male', 'female'], size = sample_size, p = [0.5, 0.5], replace = True)
+    # Generate 20 simulated fruit flies, where each has an equal chance of
+    # being male or female
+    a = rnd.choice(['male', 'female'],
+                   size=sample_size,
+                   p=[0.5, 0.5],
+                   replace = True)
 
     # count the number of males in the sample
     b = np.sum(a == 'male')
@@ -248,12 +249,14 @@ sample_size <- 20
 # An empty array to store the trials
 scores <- numeric(n_trials)
 
-# Do 1000 trials
+# Do 10000 trials
 for (i in 1:n_trials) {
     # Generate 20 simulated fruit flies, where each has an equal chance of being
     # male or female
-    a <- sample(c('male', 'female'), size = sample_size, prob = c(0.5, 0.5),
-    replace = TRUE)
+    a <- sample(c('male', 'female'),
+                size=sample_size,
+                prob=c(0.5, 0.5),
+                replace=TRUE)
 
     # count the number of males in the sample
     b <- sum(a == 'male')
@@ -264,7 +267,7 @@ for (i in 1:n_trials) {
 
 # Produce a histogram of the trial results
 title_of_plot <- paste0("Number of males in", n_trials, " samples of \n", sample_size, " simulated fruit flies")
-hist(scores, xlab = 'Number of Males', main = title_of_plot)
+hist(scores, xlab='Number of Males', main=title_of_plot)
 ```
 
 In the histogram above, we see that in 16 percent of the trials, the number of

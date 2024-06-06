@@ -64,7 +64,8 @@ observation.
 
 ## Comparisons among more than two samples of counted data
 
-### Example: Do Any of Four Treatments Affect Sex Ratio in Fruit Flies?
+### Example: Do Any of Four Treatments Affect Sex Ratio in Fruit Flies? {#sec-fruitfly-four}
+
 
 This is an example of the general problem — **when the benchmark universe
 proportion is known, is the proportion of the binomial population affected by
@@ -82,71 +83,81 @@ in the data for the most extreme result, and then treat it as if it were the
 only result. In the context of this example, it would be fallacious to think
 that the probability of the fourteen-males-to-six females split observed for
 treatment A is the same as the probability that we figured for a *single*
-experiment in Example 15-1. Instead, we must consider that our benchmark
-universe is composed of *four sets* of twenty trials, each trial having a 50-50
-probability of being male. We can consider that our previous trials 1-4 in
-Example 15-1 constitute a *single* new trial, and each subsequent set of four
-previous trials constitute another new trial. We then ask how likely a new
-trial of our sets of twenty flips is to produce *one* set with fourteen or more
-of one or the other sex.
+experiment in the example @sec-fruitfly. Instead, we must consider that our
+benchmark universe is composed of *four sets* of twenty trials, each trial
+having a 50-50 probability of being male. We can consider that our previous
+trials 1-4 in @sec-fruitfly constitute a *single* new trial, and each
+subsequent set of four previous trials constitute another new trial. We then
+ask how likely a new trial of our sets of twenty flips is to produce *one* set
+with fourteen or more of one or the other sex.
 
-Let us make the procedure explicit, but using random numbers instead of
-coins this time:
+Let us make the procedure explicit, starting at the procedure from
+@sec-fruitfly.  Again, we will check for 14 or more males, *or* 6 or fewer
+males (meaning, 14 or more females).
 
-* **Step 1.** Write "male" and "female" on two pieces of paper, put them in
-  a hat.
-* **Step 2.** Pick a piece of paper at random from the hat, write down whether
-  it was "male" or "female"; replace the piece of paper.  Repeat 20 times to get 20 simulated fruit flies.
-* *Step 3.** 
-  are 14 or more males, record "yes"; if 13 or less, record "no."
-* **Step 3.** Repeat perhaps 1000 times.
-* **Step 4.** Calculate the proportion "yes" in the 1000 trials. This
-  proportion estimates the probability that a fruit fly population with
-  a proportion of 50 percent males will produce as many as 14 males in at least
-  one of four samples of 20 flies.
+* **Step 1.** Let tails = male, heads = female.
+* **Step 2.** Flip twenty coins and count the number of tails (males).  Call
+this the count for group A.  Repeat three more times to get counts for groups
+B, C and D.
+* **Step 5.** If *any* of the group counts for A, or B or C or D is 14 ore
+more then record "Yes", or if *any* of the group counts A, B, C, D are 6 or
+less (meaning >= 14 females), record "yes".   If neither is true, record "No".
+* **Step 4.** Repeat steps 2 and 3 perhaps 100 times.
+* **Step 5.** Calculate the proportion of "yes"  results in the 100 trials.
+This proportion estimates the probability that a fruit fly population with
+a proportion of 50 percent males will produce as many as 14 males, or as many
+as 14 females, in at least one of four groups of 20 flies.
 
-We begin the trials with data as in Table 17-1. In two of the six
-simulation trials, more than one sample shows 14 or more males. Another
-trial shows fourteen or more *females* . Without even concerning
-ourselves about whether we should be looking at males or females, or
-just males, or needing to do more trials, we can see that it would be
-*very common indeed* to have one of four treatments show fourteen or
-more of one sex just by chance. This discovery clearly indicates that a
-result that would be fairly unusual (three in twenty-five) for a single
-sample alone is commonplace in one of four observed samples.
+```{r echo=FALSE, eval=TRUE}
+# Calculate some values for the text below.
+flies4 <- read.csv('data/fruitfly_trials4.csv', check.names=FALSE)
+n_trials <- nrow(flies4)
+yeses <- flies4[['Any >=14 or any <=6']]
+n_any_gte_14 <- sum(yeses == 'Yes')
+# And from the original table.
+flies <- read.csv('data/fruitfly_trials.csv', check.names=FALSE)
+n_flies <- 25
+fly_counts <- head(flies[['# of tails']], n_flies)
+n_both <- sum(fly_counts >= 14 | fly_counts <= 6)
+```
 
-Table 17-1
+We begin the trials with data as in @tbl-fruitfly-4-groups.
+In `r int2tw(n_any_gte_14)` of the `r int2tw(n_trials)` simulation trials, one
+or more one samples (groups) shows 14 or more males. Without even concerning
+ourselves about whether we should be looking at males or females, or just
+males, or needing to do more trials, we can see that it would be *very common
+indeed* to have one of four treatments show fourteen or more of one sex just
+by chance. This discovery clearly indicates that a result that would be fairly
+unusual (`r int2tw(n_both)` in `r int2tw(n_flies)`) for a single sample alone
+is commonplace in one of four observed samples.
 
-**Number of "Males" in Groups of 20 (Based on Random Numbers)**
+```{r echo=FALSE, eval=TRUE}
+# Show the table.
+ketable(head(flies4, n_trials),
+        caption = "Results from 6 random trials for Fruitfly 4-group problem {#tbl-fruitfly-4-groups}")
+```
 
-**Trial Group A Group B Group C Group D Yes / No**
+::: {.notebook name="fruit_fly4" title="Fruit fly simulation of four groups"}
 
-**\>= 14 or \<= 6**
+::: nb-only
+This notebook uses simulation to test whether a result of 14 or more males, or 14 or more females, can frequently arise by chance, if we look at four groups at a time, in one trial.
+:::
 
-  --- ---- ---- ---- ---- -----
-  1   11   12   8    12   No
-  2   12   7    9    8    No
-  3   6    10   10   10   Yes
-  4   9    9    12   7    No
-  5   14   12   13   10   Yes
-  6   11   14   9    7    Yes
-  --- ---- ---- ---- ---- -----
-
-A key point of the {{< var lang >}} notebook below is that each sample consists
-of *four sets* of 20 randomly generated hypothetical fruit flies. And if we
+A key point of the notebook here is that each trial consists
+of *four groups* of 20 randomly generated hypothetical fruit flies. And if we
 consider 10,000 trials, we will be examining 40,000 sets of 20 fruit flies.
 
-In each trial we GENERATE up to 4 random samples of 20 fruit flies, and
-for each, we count the number of males ("1"s) and then check whether
-that group has more than 13 of either sex (actually, more than 13 "1"s
-or less than 7 "1"s). If it does, then we change J to 1, which informs
-us that for this sample, at least 1 group of 20 fruit flies had results
-as unusual as the results from the fruit flies exposed to the four
-treatments.
+In each trial we generate 4 random samples (groups) of 20 fruit flies, and
+for each, we count the number of males ("males"s) and then check whether
+that group has more than 13 of either sex (actually, more than 13 "males"s
+or less than 7 "males"). If it does, then we change a variable called
+`unusual` to 1, which informs us that for this sample, at least 1 group
+of 20 fruit flies had results as unusual as the results from the fruit flies
+exposed to the four treatments.
 
-After the 1000 runs are made, we count the number of trials where one
-sample had a group of fruit flies with 14 or more of either sex, and
-PRINT the results.
+After the 10,000 runs are made, we count the number of trials where one sample
+had a group of fruit flies with 14 or more of either sex, and show the
+results.
 
 ```{python}
 import numpy as np
@@ -157,53 +168,51 @@ n_iters = 10_000
 results = np.zeros(n_iters)
 
 for i in range(n_iters):
-    # more_than_13 indicates whether we have obtained any trial group with more
+    # unusual indicates whether we have obtained any trial group with more
     # than 13 of either sex. We start at 0 (= no).
-    more_than_13 = 0
+    unusual = 0
     # Repeat the following steps 4 times to constitute 4 trial groups
     # (representing treatments A, B, C, and D) of 20 flies each.
     for j in range(4):
         flies = rnd.choice(['male', 'female'], size=20)
         n_males = np.sum(flies == 'male')
-        n_females = np.sum(flies == 'female')  # Same as: 20 - n_males
-        if n_males > 13 or n_females > 13:
-            more_than_13 = 1
-    # more_than_13 now tells us whether we got a result as extreme as that
-    # observed (more_than_13 == 1 if we did, more_than_13 == 0 if not). We must
+        if n_males >= 14 or n_males <= 6:
+            unusual = 1
+    # unusual now tells us whether we got a result as extreme as that
+    # observed (unusual == 1 if we did, unusual == 0 if not). We must
     # keep track of this result in the results variable, for each experiment.
-    results[i] = more_than_13
+    results[i] = unusual
 
 # The number of trials for which at least one of the four tests
 # exceeded 13 males or 13 females.
 k = np.sum(results)
 kk = k / n_iters
 
-print('Proportion of trials exceeding 13:', kk)
+print('Proportion of trials with one or more group >=14 or <=6 :', kk)
 ```
 
 ```{r}
-n_iters <- 10_000
+n_iters <- 10000
 
 results <- numeric(n_iters)
 
 for (i in 1:n_iters) {
-    # more_than_13 indicates whether we have obtained any trial group with more
+    # unusual indicates whether we have obtained any trial group with more
     # than 13 of either sex. We start at 0 (= no).
-    more_than_13 <- 0
+    unusual <- 0
     # Repeat the following steps 4 times to constitute 4 trial groups
     # (representing treatments A, B, C, and D) of 20 flies each.
     for (j in 1:4) {
         flies <- sample(c('male', 'female'), replace=TRUE, size=20)
         n_males <- sum(flies == 'male')
-        n_females <- sum(flies == 'female')  # Same as: 20 - n_males
-        if (n_males > 13 | n_females > 13) {
-            more_than_13 <- 1
+        if (n_males >= 13 | n_males <= 6) {
+            unusual <- 1
         }
     }
-    # more_than_13 now tells us whether we got a result as extreme as that
-    # observed (more_than_13 == 1 if we did, more_than_13 == 0 if not). We must
+    # unusual now tells us whether we got a result as extreme as that
+    # observed (unusual == 1 if we did, unusual == 0 if not). We must
     # keep track of this result in the results variable, for each experiment.
-    results[i] <- more_than_13
+    results[i] <- unusual
 }
 
 # The number of trials for which at least one of the four tests
@@ -211,7 +220,7 @@ for (i in 1:n_iters) {
 k <- sum(results)
 kk <- k / n_iters
 
-message('Proportion of trials exceeding 13: ', kk)
+message('Proportion of trials with one or more group >=14 or <=6 :', kk)
 ```
 
 In one set of 10,000 trials, there were more than 13 males or more than 13
@@ -224,216 +233,342 @@ unusual occurrence.
 Proportions?**
 
 Consider four different psychological treatments designed to
-rehabilitate juvenile delinquents. Instead of a numerical test score,
-there is only a "yes" or a "no" answer as to whether the juvenile has
-been rehabilitated or has gotten into trouble again. Label the
-treatments P, R, S, and T, each of which is administered to a separate
-group of twenty juvenile delinquents. The number of rehabilitations per
-group has been: P, 17; R, 10; S, 10; T, 7. Is it improbable that all
-four groups come from the same universe?
+rehabilitate young offenders. Instead of a numerical test score,
+there is only a "yes" or a "no" answer as to whether the young person has
+kept their record clean or has gotten into trouble again. Call a clean record
+"success".  Label the treatments P, R, S, and T, each of which is administered
+to a separate group of twenty young offenders. The number of "success"
+outcomes per group has been: P, 17; R, 10; S, 10; T, 7. Is it improbable that
+all four groups come from the same universe?
 
 This problem is like the placebo vs. cancer-cure problem, but now there
 are more than two samples. It is also like the four-sample
-irradiated-fruit flies example (Example 17-1), except that now we are
+irradiated-fruit flies example (@sec-fruitfly-four), except that now we are
 *not* asking whether any or some of the samples differ from a *given
 universe* (50-50 sex ratio in that case). Rather, we are now asking
 whether there are differences *among* the samples themselves. Please
-keep in mind that we are still dealing with two-outcome (yes-or-no,
-well-or-sick) problems. Later we shall take up problems that are similar
-except that the outcomes are "quantitative."
+keep in mind that we are still dealing with two-outcome (success-or-failure,
+yes-or-no, well-or-sick) problems. The outcomes fall into categories, to which
+we give labels ("success" or "failure", "well" or "sick").  Later we shall
+take up problems that are similar except that the outcomes are "quantitative"
+— in that the outcomes are numbers rather than labels.
 
 If all four groups were drawn from the same universe, that universe has
-an estimated rehabilitation rate of 17/20 + 10/20 + 10/20 + 7/20 = 44/80
-= 55/100, because the observed data *taken as a whole* constitute our best
-guess as to the nature of the universe from which they come — again, *if* they
-all come from the same universe. (Please think this matter over a bit, because
-it is important and subtle. It may help you to notice the absence of any
-*other* information about the universe from which they have all come, if they
-have come from the same universe.)
+an estimated success rate of 17/20 + 10/20 + 10/20 + 7/20 = 44/80
+= 55/100 = 55%, because the observed data *taken as a whole* constitute our
+best guess as to the nature of the universe from which they come — again, *if*
+they all come from the same universe. (Please think this matter over a bit,
+because it is important and subtle. It may help you to notice the absence of
+any *other* information about the universe from which they have all come, if
+they have come from the same universe.)
 
 Therefore, select twenty two-digit numbers for each group from the
-random-number table, marking "yes" for each number "1-55" and "no" for
-each number "56-100." Conduct a number of such trials. Then count the
-proportion of times that the difference between the highest and lowest
-groups is larger than the widest observed difference, the difference
-between P and T (17-7 = 10). In Table 17-2, none of the first six trials
-shows anywhere near as large a difference as the observed range of 10,
-suggesting that it would be rare for four treatments that are "really"
-similar to show so great a difference. There is thus reason to believe
-that P and T differ in their effects.
+random-number table, marking "success" for each number in the range 1 through
+55 and "failure" for each number 56 through 100. Conduct a number of such
+trials. Then count the proportion of times that the difference between the
+highest and lowest groups is larger than the widest observed difference, the
+difference between P and T (17-7 = 10). In @tbl-offenders, none of the first
+six trials shows anywhere near as large a difference as the observed range of
+10, suggesting that it would be rare for four treatments that are "really"
+similar to show so great a difference. There is thus reason to believe that
+P and T differ in their effects.
 
-Table 7-2
+| Trial     |  P    | R     | S     | T     | Largest Minus Smallest |
+|-----------|-------|-------|-------|-------|------------------------|
+| 1         | 11    | 9     | 8     | 12    | 4                      |
+| 2         | 10    | 10    | 12    | 12    | 2                      |
+| 3         | 9     | 12    | 8     | 12    | 4                      |
+| 4         | 9     | 11    | 12    | 10    | 3                      |
+| 5         | 10    | 10    | 11    | 12    | 1                      |
+| 6         | 11    | 11    | 9     | 11    | 2                      |
 
-**Results of Six Random Trials for Problem "Delinquents"**
+: Results of Six Random Trials for Problem "offenders" {#tbl-offenders}
 
-  ----------- ------- ------- ------- ------- ----------------------------
-  **Trial**   **P**   **R**   **S**   **T**   **Largest Minus Smallest**
-  1           11      9       8       12      4
-  2           10      10      12      12      2
-  3           9       12      8       12      4
-  4           9       11      12      10      3
-  5           10      10      11      12      1
-  6           11      11      9       11      2
-  ----------- ------- ------- ------- ------- ----------------------------
+The strategy of the {{< var lang >}} solution to "offenders" is similar to the
+strategy for previous problems in this chapter. The benchmark (null)
+hypothesis is that the treatments do not differ in their effects observed, and
+we estimate the probability that the observed results would occur by chance
+using the benchmark universe. The only new twist is that we must instruct the
+computer to find the groups with the highest and the lowest numbers of
+success rates.
 
-The strategy of the RESAMPLING STATS solution to "Delinquents" is
-similar to the strategy for previous problems in this chapter. The
-benchmark (null) hypothesis is that the treatments do not differ in
-their effects observed, and we estimate the probability that the
-observed results would occur by chance using the benchmark universe. The
-only new twist is that we must instruct the computer to find the groups
-with the highest and the lowest numbers of rehabilitations.
+Using {{< var lang >}}, we generate four "treatments," each represented
+by 20 labels.  We draw these 20 labels from the choices "success" or "failure", with a 55% chance of getting "success" and a 45% chance of "failure".  Follow along in the program for the rest of the procedure:
 
-Using RESAMPLING STATS we GENERATE four "treatments," each represented
-by 20 numbers, each number randomly selected between 1 and 100. We let
-1-55 = success, 56-100
+::: {.notebook name="offenders" title="Simulation of offender strategies"}
 
-= failure. Follow along in the program for the rest of the procedure:
+::: nb-only
+This notebook uses simulation to test the null hypothesis that the four treatments in question were each equally effective.
+:::
 
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+# set up the random number generator
+rnd = np.random.default_rng()
 
-```matlab
-' Program file: "4treat1.rss"
+# Set the number of trials
+n_trials = 10000
 
-REPEAT 1000
-    ' Do 1000 trials
-    GENERATE 20 1,100 a
-    ' The first treatment group, where "1-55" = success, "56-100" = failure
-    GENERATE 20 1,100 b
-    ' The second group
-    GENERATE 20 1,100 c
-    ' The third group
-    GENERATE 20 1,100 d
-    ' The fourth group
-    COUNT a <=55 aa
-    ' Count the first group's successes
-    COUNT b <=55 bb
-    ' Same for second, third & fourth groups
-    COUNT c <=55 cc
-    COUNT d <=55 dd
-END
-SUBTRACT aa bb ab
-' Now find all the pairwise differences in successes among the groups
-SUBTRACT aa cc ac
-SUBTRACT aa dd ad
-SUBTRACT bb cc bc
-SUBTRACT bb dd bd
-SUBTRACT cc dd cd
-CONCAT ab ac ad bc bd cd e
-' Concatenate, or join, all the differences in a single vector e
-ABS e f
-' Since we are interested only in the magnitude of the difference, not its
-' direction, we take the ABSolute value of all the differences.
-MAX f g
-' Find the largest of all the differences
-SCORE g z
-' Keep score of the largest
+# Set the sample size for each trial
+sample_size = 20
 
-' End a trial, go back and repeat until all 1000 are complete.
-COUNT z >=10 k
-' How many of the trials yielded a maximum difference greater than the
-' observed maximum difference?
-DIVIDE k 1000 kk
-' Convert to a proportion
-PRINT kk
-' Note: The file "4treat1" on the Resampling Stats software disk contains
-' this set of commands.
+# An empty array to store the trials
+scores = np.zeros(n_trials)
+
+# Do 10000 trials
+for i in range(n_trials):
+    # The first treatment group
+    a = rnd.choice(['success', 'failure'], p=[0.55, 0.45], size=20)
+    # Count successes.
+    a_count = np.sum(a == 'success')
+    # Second, third and fourth treatment groups, and successes.
+    b = rnd.choice(['success', 'failure'], p=[0.55, 0.45], size=20)
+    b_count = np.sum(b == 'success')
+    c = rnd.choice(['success', 'failure'], p=[0.55, 0.45], size=20)
+    c_count = np.sum(c == 'success')
+    d = rnd.choice(['success', 'failure'], p=[0.55, 0.45], size=20)
+    d_count = np.sum(d == 'success')
+
+    # Now find all the pairwise differences in successes among the groups.
+    a_minus_b = a_count - b_count
+    a_minus_c = a_count - c_count
+    a_minus_d = a_count - d_count
+    b_minus_c = b_count - c_count
+    b_minus_d = b_count - d_count
+    c_minus_d = c_count - d_count
+
+    # Concatenate, or join, all the differences in a single array "diffs".
+    diffs = np.array([a_minus_b, a_minus_c, a_minus_d,
+                      b_minus_c, b_minus_d, c_minus_d])
+    # Since we are interested only in the magnitude of the difference, not its
+    # direction, we take the absolute value of all the differences (we remove
+    # any minus signs, making all values positive).
+    abs_diffs = np.abs(diffs)
+    # Find the largest of all the differences
+    max_abs_diff = np.max(abs_diffs)
+    # Keep score of the largest
+    scores[i] = max_abs_diff
+
+    # End a trial, go back and repeat until all 10000 are complete.
+
+# How many of the trials yielded a maximum difference greater than the
+# observed maximum difference?
+k = np.sum(scores >= 10)
+# Convert to a proportion
+kk = k / n_trials
+
+print('Proportion >= 10 was', kk)
 ```
 
-One percent of the experiments with randomly generated treatments from a
-common success rate of .55 produced differences in excess of the
-observed maximum difference (10).
+```{r}
+# Set the number of trials
+n_trials <- 10000
 
-An alternative approach to this problem would be to deal with *each*
-result's departure from the mean, rather than the largest difference
-among the pairs. Once again, we want to deal with *absolute* departures,
-since we are interested only in magnitude of difference. We could take
-the absolute value of the differences, as above, but we will try
-something different here. *Squaring* the differences also renders them
-all positive: this is a common approach in statistics.
+# Set the sample size for each trial
+sample_size <- 20
+
+# An empty array to store the trials
+scores <- numeric(n_trials)
+
+# Do 10000 trials
+for (i in 1:n_trials) {
+    # The first treatment group
+    a <- sample(c('success', 'failure'),
+                size=sample_size,
+                prob=c(0.55, 0.45),
+                replace=TRUE)
+    # Count successes.
+    a_count <- sum(a == 'success')
+    # Second, third and fourth treatment groups, and successes.
+    b <- sample(c('success', 'failure'),
+                size=sample_size,
+                prob=c(0.55, 0.45),
+                replace=TRUE)
+    b_count <- sum(b == 'success')
+    c <- sample(c('success', 'failure'),
+                size=sample_size,
+                prob=c(0.55, 0.45),
+                replace=TRUE)
+    c_count <- sum(c == 'success')
+    d <- sample(c('success', 'failure'),
+                size=sample_size,
+                prob=c(0.55, 0.45),
+                replace=TRUE)
+    d_count <- sum(d == 'success')
+
+    # Now find all the pairwise differences in successes among the groups.
+    a_minus_b <- a_count - b_count
+    a_minus_c <- a_count - c_count
+    a_minus_d <- a_count - d_count
+    b_minus_c <- b_count - c_count
+    b_minus_d <- b_count - d_count
+    c_minus_d <- c_count - d_count
+
+    # Concatenate, or join, all the differences in a single array "diffs".
+    diffs <- c(a_minus_b, a_minus_c, a_minus_d,
+               b_minus_c, b_minus_d, c_minus_d)
+    # Since we are interested only in the magnitude of the difference, not its
+    # direction, we take the absolute value of all the differences (we remove
+    # any minus signs, making all values positive).
+    abs_diffs <- abs(diffs)
+    # Find the largest of all the differences
+    max_abs_diff <- max(abs_diffs)
+    # Keep score of the largest
+    scores[i] <- max_abs_diff
+
+    # End a trial, go back and repeat until all 10000 are complete.
+}
+
+# How many of the trials yielded a maximum difference greater than the
+# observed maximum difference?
+k <- sum(scores >= 10)
+# Convert to a proportion
+kk <- k / n_trials
+
+message('Proportion >= 10 was: ', kk)
+```
+
+:::
+<!---
+End of notebook
+-->
+
+Only `r int2tw(round(get_var('kk') * 100))` percent of the experiments with
+randomly generated treatments from a common success rate of .55 produced
+differences in excess of the observed maximum difference (10).
+
+An alternative approach to this problem would be to deal with *each* result's
+departure from the mean, rather than the largest difference among the pairs.
+Once again, we want to deal with *absolute* departures, since we are interested
+only in magnitude of difference. We could take the absolute value of the
+differences, as above, but we will try something different here. *Squaring* the
+differences also renders them all positive: this is a common approach in
+statistics.
+
+::: {.notebook name="offenders_squared" title="Simulation of offender strategies using squared differences"}
+
+::: nb-only
+This notebook uses squared differences in a simulation to test the null
+hypothesis that the four treatments in question were each equally effective.
+:::
 
 The first step is to examine our data and calculate this measure: The
-mean is 11, the differences are 6, 1, 1, and 4, the
+mean is 11, the differences (call *deviations from the mean*) are 6, 1, 1, and
+4, the squared deviations are 36, 1, 1, and 16, and their sum is 54.  In {{<
+var lang >}}:
 
-squared differences are 36, 1, 1, and 16, and their sum is 54. Our
-experiment will be, as before, to constitute four groups of 20 at random
-from a universe with a 55 percent rehabilitation rate. We then calculate
-this same measure for the random groups. If it is frequently larger than
-54, then we conclude that a uniform cure rate of 55 percent could easily
-have produced the observed results. The program that follows also GENERATES
-the four treatments by using a REPEAT loop, rather than spelling out the
-GENERATE command 4 times as above. In RESAMPLING STATS:
-
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "testing_counts_2_02.rss"
-
-REPEAT 1000
-    ' Do 1000 trials
-    REPEAT 4
-        ' Repeat the following steps 4 times to constitute 4 groups of 20 and
-        ' count their rehabilitation rates.
-        GENERATE 20 1,100 a
-        ' Randomly generate 20 numbers between 1 and 100 and put them in a; let
-        ' 1-55 = rehabilitation, 56-100 no rehab.
-        COUNT a between 1 55 b
-        ' Count the number of rehabs, put the result in b.
-        SCORE b w
-        ' Keep track of the 4 rehab rates for the group of 20.
-    END
-    ' End the procedure for one group of 20, go back and repeat until all 4
-    ' are done.
-    MEAN w x
-    ' Calculate the mean
-    SUMSQRDEV w x y
-    ' Find the sum of squared deviations between group rehab rates (w) and the
-    ' overall rate (x).
-    SCORE y z
-    ' Keep track of the result for each trial.
-    CLEAR w
-    ' Erase the contents of w to prepare for the next trial.
-END
-' End one experiment, go back and repeat until all 1000 are complete.
-HISTOGRAM z
-' Produce a histogram of trial results.
+```{python}
+# The actual scores for each treatment.
+treat_scores = np.array([17, 10, 10, 7])
+# The mean.
+m = np.mean(treat_scores)
+# The four deviations from the mean
+deviations = treat_scores - m
+# Squared deviations.
+sq_deviations = deviations ** 2
+# Sum of squared deviations.
+actual_sum_sq_deviations = np.sum(sq_deviations)
+# Show the result.
+actual_sum_sq_deviations
 ```
 
-**4 Treatments**
-
-![](images/21-Chap-17_000.png)
-
-**sum of squared differences**
-
-From this histogram, we see that in only 1 percent of the cases did our
-trial sum of squared differences equal or exceed 54, confirming our
-conclusion that this is an unusual result. We can have RESAMPLING STATS
-calculate this proportion:
-
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "4treat2.rss"
-
-COUNT z >= 54 k
-' Determine how many trials produced differences as great as those
-' observed.
-DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Print the results.
-
-' Note: The file "4treat2" on the Resampling Stats software disk contains
-' this set of commands.
+```{r}
+# The actual scores for each treatment.
+treat_scores <- c(17, 10, 10, 7)
+# The mean.
+m <- mean(treat_scores)
+# The four deviations from the mean
+deviations <- treat_scores - m
+# Squared deviations.
+sq_deviations <- deviations ** 2
+# Sum of squared deviations.
+actual_sum_sq_deviations <- sum(sq_deviations)
+# Show the result.
+actual_sum_sq_deviations
 ```
 
-The conventional way to approach this problem would be with what is
-known as a "chi-square test."
+Our experiment will be, as before, to constitute four groups of 20 at random
+from a universe with a 55 percent rehabilitation rate. We then calculate this
+same measure for the random groups. If it is frequently larger than 54, then we
+conclude that a uniform cure rate of 55 percent could easily have produced the
+observed results. The program that follows also generates the four treatments
+by using a `for` loop, rather than spelling out the {{< var sample >}} command
+4 times as above. In {{< var lang >}}:
 
-**Example 17-3: Three-way Comparison**
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# set up the random number generator
+rnd = np.random.default_rng()
+
+# Set the number of trials
+n_trials = 10000
+
+# Set the sample size for each trial
+sample_size = 20
+
+# An empty array to store the trials
+scores = np.zeros(n_trials)
+
+# Do 10000 trials
+for i in range(n_trials):
+    # Repeat the following steps 4 times to constitute 4 groups of 20 and
+    # count their success rates.
+    group_scores = np.zeros(4)
+    for group_no in range(4):  # for 0, 1, 2, 3.
+        # A treatment group
+        group = rnd.choice(['success', 'failure'], p=[0.55, 0.45], size=20)
+        # Count successes.
+        group_count = np.sum(group == 'success')
+        # Store result
+        group_scores[group_no] = group_count
+        # End the procedure for one group of 20, go back and repeat until all 4
+        # are done.
+    # Calculate the mean
+    m = np.mean(group_scores)
+    # Calculate the deviations of the scores from the mean of the scores.
+    deviations = group_scores - m
+    # Square them, making them them positive.
+    sq_deviations = deviations ** 2
+    # Sum up the squared deviations.
+    sum_sq_deviations = np.sum(sq_deviations)
+    # Keep track of the result for each trial.
+    scores[i] = sum_sq_deviations
+
+    # End a trial, go back and repeat until all 10000 are complete.
+
+# Produce a histogram of the trial results.
+plt.hist(scores, bins=50)
+plt.title('Distribution of sum of squared deviations, in null universe')
+```
+
+From this histogram, we see that in only about 1 percent of the cases did our
+trial sum of squared differences equal or exceed 54, confirming our conclusion
+that this is an unusual result. We can have {{< var lang >}} calculate this
+proportion:
+
+```{python}
+# How many of the trials yielded a maximum difference greater than the
+# observed maximum difference?
+k = np.sum(scores >= actual_sum_sq_deviations)
+# Convert to a proportion
+kk = k / n_trials
+
+print(f'Proportion >= {actual_sum_sq_deviations} was:', kk)
+```
+
+The conventional way to approach this problem would be with what is known as
+a [chi-squared test](https://en.wikipedia.org/wiki/Chi-squared_test).
+
+:::
+<!---
+End of notebook
+-->
+
+## Example: Three-way Comparison
 
 In a national election poll of 750 respondents in May, 1992, George Bush
 got 36 percent of the preferences (270 voters), Ross Perot got 30

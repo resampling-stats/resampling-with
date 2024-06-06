@@ -177,6 +177,8 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * `paste`, `paste0`, `seq` by `testing_counts_1`.
 * `or` / `|` by testing_counts_2.
 * `if` blocks?
+* `abs` covered in `standard_scores`, around line 1060.
+* `**` or `^` for squaring values, `standard_scores` around line 1141.
 
 ## Data
 
