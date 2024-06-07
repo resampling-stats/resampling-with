@@ -22,24 +22,6 @@ source("_common.R")
 
 # The Statistics of Hypothesis-Testing with Counted Data, Part 2
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/21-Chap-17.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
-
 Here's the bad-news-good-news message again: The bad news is that the subject
 of inferential statistics is extremely difficult — not because it is complex
 but rather because it is subtle. The cause of the difficulty is that the world
@@ -313,12 +295,12 @@ import matplotlib.pyplot as plt
 rnd = np.random.default_rng()
 
 # Set the number of trials
-n_trials = 10000
+n_trials = 10_000
 
 # Set the sample size for each trial
 sample_size = 20
 
-# An empty array to store the trials
+# An empty array to store the trial results.
 scores = np.zeros(n_trials)
 
 # Do 10000 trials
@@ -1291,58 +1273,120 @@ Here is a resampling procedure that will answer this question:
     correspond to treatments (call the locations "t1," "t2," and "t3")
 3.  Repeat step two another 32 times (for a total of 33 repetitions, for
     33 matched triplets)
-4.  Find the average rank for each location (treatment.
+4.  Find the average rank for each location (treatment).
 5.  Record the minimum (best) score.
-6.  Repeat steps 2-4, say, 1000 times.
+6.  Repeat steps 2-4, say, 10,000 times.
 7.  Find out how often the minimum average rank for any treatment is as
     low as `r round(actual_mean_rank, 2)`.
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-```matlab
-' Program file: "testing_counts_2_07.rss"
+# set up the random number generator
+rnd = np.random.default_rng()
 
-NUMBERS (1 2 3) a
-' Step 1 above
-REPEAT 1000
-    ' Step 6
-    REPEAT 33
-        ' Step 3
-        SHUFFLE a a
-        ' Step 2
-        SCORE a t1 t2 t3
-        ' Step 2
-    END
-    ' Step 3
-    MEAN t1 tt1
-    ' Step 4
-    MEAN t2 tt2
-    MEAN t3 tt3
-    CLEAR t1
-    ' Clear the vectors where we've stored the ranks for this trial (must do
-    ' this whenever we have a SCORE statement that's part of a "nested" repeat
-    ' loop)
-    CLEAR t2
-    CLEAR t3
-    CONCAT tt1 tt2 tt3 b
-    ' Part of step 5
-    MIN b bb
-    ' Part of step 5
-    SCORE bb z
-    ' Part of step 5
-END
-' Step 6
-HISTOGRAM z
-COUNT z <=1.45 k
-' Step 7
-DIVIDE k 1000 kk
-PRINT kk
+# Set the number of trials
+n_iters = 10_000
+
+# An empty array to store the trial results.
+results = np.zeros(n_iters)
+
+# Step 1 above.
+bucket = np.array([1, 2, 3])
+
+n_rows = 33
+
+# Do 10000 trials (step 6).
+for i in range(n_iters):
+    # Prepare arrays to store shuffled row results.
+    t1 = np.zeros(n_rows)
+    t2 = np.zeros(n_rows)
+    t3 = np.zeros(n_rows)
+    # Step 3 (for all 33 rows).
+    for row_no in range(n_rows):
+        # Step 2.
+        shuffled = rnd.permuted(bucket)
+        # Step 2 continued.
+        t1[row_no] = shuffled[0]
+        t2[row_no] = shuffled[1]
+        t3[row_no] = shuffled[2]
+    # Step 4.
+    m_t1 = np.mean(t1)
+    m_t2 = np.mean(t2)
+    m_t3 = np.mean(t3)
+    # Step 5.
+    means = np.array([m_t1, m_t2, m_t3])
+    min_mean = np.min(means)
+    results[i] = min_mean
+
+plt.hist(results, bins=50)
+plt.title('Distribution of minimum average rank')
+
+# Step 7.
+k = np.sum(results <= 1.48)
+kk = k / n_iters
+
+print('Proportion minimum average rank <= 1.48:', kk)
 ```
 
-Interpretation: 10000 random shufflings of 33 ranks, apportioned to three
-"treatments," never produced for the best treatment in the three an average as
-low as the observed average, therefore we rule out chance as an explanation
-for the success of the combined therapy.
+```{r}
+# Set the number of trials
+n_iters <- 10000
+
+# An empty array to store the trial results.
+results <- numeric(n_iters)
+
+# Step 1 above.
+bucket <- c(1, 2, 3)
+
+n_rows <- 33
+
+# Do 10000 trials.
+for (i in 1:n_iters) {
+    # Prepare vectors to store shuffled row results.
+    t1 <- numeric(n_rows)
+    t2 <- numeric(n_rows)
+    t3 <- numeric(n_rows)
+    # Step 3 (for all 33 rows).
+    for (row_no in 1:n_rows) {
+        # Step 2.
+        shuffled <- sample(bucket)
+        # Step 2 continued.
+        t1[row_no] <- shuffled[1]
+        t2[row_no] <- shuffled[2]
+        t3[row_no] <- shuffled[3]
+    }
+    # Step 4.
+    m_t1 <- mean(t1)
+    m_t2 <- mean(t2)
+    m_t3 <- mean(t3)
+    # Step 5.
+    means <- c(m_t1, m_t2, m_t3)
+    min_mean <- min(means)
+    results[i] <- min_mean
+}
+
+hist(results, breaks=50,
+     main='Distribution of minimum average rank')
+
+# Step 7.
+k <- sum(results <= 1.49)
+kk <- k / n_iters
+
+message('Proportion minimum average rank <= 1.48: ', kk)
+```
+
+:::
+<!---
+End of notebook
+-->
+
+Interpretation: We did 10,000 random shufflings of 33 ranks, apportioned to
+three "treatments".  Of these, about `r round(get_var('kk') * 100, 1)` percent
+produced, for the best treatment in the three, an average as low as the
+observed average, therefore we rule out chance as an explanation for the
+success of the combined therapy.
 
 An interesting feature of the mergers (or depression treatment) problem is that
 it would be hard to find a conventional test that would handle this three-way
@@ -1350,10 +1394,6 @@ comparison in an efficient manner. Certainly it would be impossible to find
 a test that does not require formulae and tables that only a talented
 professional statistician could manage satisfactorily, and even they are not
 likely to fully understand those formulaic procedures.
-
-![](images/21-Chap-17_003.png)
-
-Result: kk = 0
 
 ## Technical note
 
