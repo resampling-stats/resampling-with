@@ -76,7 +76,7 @@ jobs:
         run: cd website && make
 
       - name: Deploy website index
-        uses: JamesIves/github-pages-deploy-action@v4.4.3
+        uses: JamesIves/github-pages-deploy-action@v4.6.1
         with:
           folder: website
           repository-name: resampling-stats/resampling-stats.github.io
@@ -94,7 +94,7 @@ jobs:
       #   run: cd source && ninja python-book-pdf
 
       - name: Deploy Python book
-        uses: JamesIves/github-pages-deploy-action@v4.4.3
+        uses: JamesIves/github-pages-deploy-action@v4.6.1
         with:
           folder: python-book
           repository-name: resampling-stats/python-book
@@ -112,7 +112,7 @@ jobs:
       #   run: cd source && ninja python-book-pdf
 
       - name: Deploy R book
-        uses: JamesIves/github-pages-deploy-action@v4.4.3
+        uses: JamesIves/github-pages-deploy-action@v4.6.1
         with:
           folder: r-book
           repository-name: resampling-stats/r-book
