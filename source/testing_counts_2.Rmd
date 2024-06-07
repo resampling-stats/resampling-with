@@ -670,12 +670,21 @@ the observed sample that does not provide a win for Bush; it is roughly
 analogous to the 50-50 split in the two-person race, though a clear-cut
 argument would require a lot more discussion. A universe that is split
 34-34-32, or any of the other possible universes, is less likely to produce
-a 36-30-28 sample (such as was observed) than is a 35-35-30 universe,
-I believe, but that is a checkable matter. (In technical terms, it might be
-a "maximum likelihood universe" that we are looking for.)
+a 36-30-28 sample (such as was observed) than is a 35-35-30
+universe.[^max-like-votes]. (In technical terms, it might be a "maximum
+likelihood universe" that we are looking for.) For completeness, we might also
+try a 36-36-28 universe to see if that produces a result very different than
+the 35-35-30 universe.
 
-We might also try a 36-36-28 universe to see if that produces a result very
-different than the 35-35-30 universe.
+[^max-like-votes]: We are interested in choosing the benchmark universe that a)
+    has Bush with equal or lower percentage votes than another candidate and b)
+    has the largest probability of giving rise to the observed vote proportions
+    in the sample.  We can show by trying all possible options that the 35, 35,
+    30 universe has the highest probability in giving rise to the (38.3%,
+    31.9%, 29.8%) sample percentages (270, 225, 210 vote counts).  See [this
+    Python
+    notebook](https://github.com/resampling-stats/book-notes/blob/main/maximum_likelihood_for_election.ipynb)
+    for the simulation.
 
 Among those universes where Bush is behind (or equal), a universe that is split
 50-50-0 (with just one extra vote for the closest opponent to Bush) would be
