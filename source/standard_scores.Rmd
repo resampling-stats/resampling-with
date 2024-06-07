@@ -1109,7 +1109,36 @@ The MAD calculation solves this problem by knocking the signs off the negative
 values before we take the mean.
 
 Another very popular way of solving the same problem is to precede the
-calculation by squaring all the deviations, like this:
+calculation by squaring all the deviations.  {{< var lang >}} has an operator for the operation of taking values to the power of another value: it is `**`.  For example, to square a single number, we take the number *to the power of* 2, like this:
+
+```{python}
+# 10 to the power of 2.
+10 ** 2
+```
+
+```{r}
+# 10 to the power of 2.
+10 ** 2
+```
+
+You can also use the power of `**` operator on {{< var an_array >}}, and, as
+usual, that works *elementwise*.  The array you get back is the result of
+applying the to-the-power-of operation to all elements of the {{< var array >}}
+in turn:
+
+```{python}
+an_arr = np.array([2, 10, 12])
+# All the elements in the array, to the power of 2.
+an_arr ** 2
+```
+
+```{r}
+a_vector = c(2, 10, 12)
+# All the elements in the vector, to the power of 2.
+a_vector ** 2
+```
+
+We can therefore square the deviations we calculated above, like this:
 
 ```{python}
 squared_deviations = deviations ** 2
@@ -1168,7 +1197,7 @@ the E-notation tells you at a glance that the value is about $5.9$ billion.
 
 {{< var lang >}} makes its own decision whether to print out numbers using
 E-notation.   This only affects the display of the numbers; the underlying
-values remain the same whether {{< var np_or_r >}} chooses to show them in
+values remain the same whether {{< var lang >}} chooses to show them in
 E-notation or not.
 
 :::
@@ -1286,19 +1315,19 @@ standard deviations of each district from the mean:
 ```{python}
 km_std_devs = deviations[km_index] / standard_deviation
 print('Deviation in standard deviation units for KM:',
-      np.round(km_std_devs), 2)
+      np.round(km_std_devs, 2))
 aoc_std_devs = deviations[aoc_index] / standard_deviation
 print('Deviation in standard deviation units for AOC:',
-      np.round(aoc_std_devs), 2)
+      np.round(aoc_std_devs, 2))
 ```
 
 ```{r}
 km_std_devs <- deviations[km_index] / standard_deviation
 message('Deviation in standard deviation units for KM: ',
-        round(km_std_devs), 2)
+        round(km_std_devs, 2))
 aoc_std_devs <- deviations[aoc_index] / standard_deviation
 message('Deviation in standard deviation units for AOC: ',
-        round(aoc_std_devs), 2)
+        round(aoc_std_devs, 2))
 ```
 
 The values for each district are a re-expression of the income values in terms
@@ -1331,11 +1360,13 @@ Then we calculate standard scores:
 
 ```{python}
 deviations_in_stds = deviations / income_std
+# Show the first five values.
 deviations_in_stds[:5]
 ```
 
 ```{r}
 deviations_in_stds <- deviations / income_std
+# Show the first five values.
 deviations_in_stds[1:5]
 ```
 

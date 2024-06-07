@@ -175,6 +175,10 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * f strings by `testing_counts_1`.
 * underscores in integers by `testing_counts_1`.
 * `paste`, `paste0`, `seq` by `testing_counts_1`.
+* `or` / `|` by testing_counts_2.
+* `if` blocks?
+* `abs` covered in `standard_scores`, around line 1060.
+* `**` or `^` for squaring values, `standard_scores` around line 1141.
 
 ## Data
 
@@ -187,3 +191,9 @@ mosquitoes](https://github.com/odsti/datasets/tree/main/mosquito_beer)
 ## Python notation
 
 > Introduce `_` notation for large integers
+
+## resampling stats commands
+
+### SAMPLE
+
+This is resampling _with_ replacement.

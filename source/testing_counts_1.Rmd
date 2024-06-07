@@ -41,14 +41,14 @@ writers include assessing reliability under the rubric of estimation,
 but I judge it better not to do so).
 
 So: Having reviewed how to convert hypothesis-testing problems into
-statistically testable questions in @sec-framing-questions, we now must ask: How
-does one employ resampling methods to make the statistical test? As is
-always the case when using resampling techniques, there is no unique
-series of steps by which to proceed. The crucial criterion in assessing
-the model is whether it accurately simulates the actual event. With
-hypothesis-testing problems, any number of models may be correct.
-Generally speaking, though, the model that makes fullest use of the
-quantitative information available from the data is the best model.
+statistically testable questions in @sec-framing-questions, we now must ask:
+How does one employ resampling methods to make the statistical test? As is
+always the case when using resampling techniques, there is no unique series of
+steps by which to proceed. The crucial criterion in assessing the model is
+whether it accurately simulates the actual event. With hypothesis-testing
+problems, any number of models may be correct. Generally speaking, though, the
+model that makes fullest use of the quantitative information available from
+the data is the best model.
 
 When attempting to deduce the characteristics of a universe from sample
 data, or when asking whether a sample was drawn from a particular
@@ -109,11 +109,11 @@ investigate *how likely a one-to-one universe is to produce a
 distribution of fourteen or more of just one sex*.
 
 A coin has a one-to-one (one out of two) chance of coming up tails. Therefore,
-we might flip a coin in groups of twenty flips, and count the number of heads
+we might flip a coin in groups of twenty flips, and count the number of tails
 in each twenty flips. Or we can use a random number table. The following steps
 will produce a sound estimate:
 
-* **Step 1.** Let heads = male, tails = female.
+* **Step 1.** Let tails = male, heads = female.
 * **Step 2.** Flip twenty coins and count the number of males. If 14 or more
   males occur, record "yes." Also, if 6 or fewer males occur, record "yes"
   because this means we have gotten 14 or more females. Otherwise, record "no."
@@ -128,33 +128,30 @@ will produce a sound estimate:
 # Calculate some values for the text below.
 flies <- read.csv('data/fruitfly_trials.csv', check.names=FALSE)
 n <- 25
-counts <- head(flies[['# of heads']], n)
+counts <- head(flies[['# of tails']], n)
 n_25_gte_14 <- sum(counts >= 14)
 n_25_lte_6 <- sum(counts <= 6)
 n_25_both <- n_25_gte_14 + n_25_lte_6
-d2w <- c('zero', 'one', 'two', 'three', 'four',
-         'five', 'six', 'seven', 'eight', 'nine',
-         paste(10:100))
 # Show the table.
 ketable(head(flies, n),
         caption = "Results from 25 random trials for Fruitfly problem {#tbl-fruitfly-trials}")
 ```
 
-@tbl-fruitfly-trials shows the results obtained in twenty-five trials of twenty
-flips each. In `r d2w[n_25_gte_14 + 1]` of the twenty-five trials
-(`r round(n_25_gte_14 / n * 100)` percent) there were fourteen or more heads,
-which we call "males," and in `r d2w[n_25_lte_6 + 1]` of the twenty-five trials
-(`r round(n_25_lte_6 / n * 100)` percent) there six or fewer heads, meaning
-there were fourteen or more tails ("females"). We can therefore estimate that,
-even if the treatment does *not* affect the sex and the births over a long
-period really are one to one, `r d2w[n_25_both + 1]` out of twenty-five times
-(`r round(n_25_both / n * 100)` percent) we would get fourteen or more of one
-sex or the other. Therefore, finding fourteen males out of twenty births is not
-overwhelming evidence that the treatment has any effect, even though the result
-is suggestive.
+@tbl-fruitfly-trials shows the results obtained in `r int2tw(n)` trials of
+twenty flips each. In `r int2tw(n_25_gte_14)` of the twenty-five trials
+(`r round(n_25_gte_14 / n * 100)` percent) there were fourteen or more tails,
+which we call "males," and in `r int2tw(n_25_lte_6)` of the `r int2tw(n)`
+trials (`r round(n_25_lte_6 / n * 100)` percent) there six or fewer tails,
+meaning there were fourteen or more heads ("females"). We can therefore
+estimate that, even if the treatment does *not* affect the sex and the births
+over a long period really are one to one, `r int2tw(n_25_both)` out of
+twenty-five times (`r round(n_25_both / n * 100)` percent) we would get
+fourteen or more of one sex or the other. Therefore, finding fourteen males
+out of 20 births is not overwhelming evidence that the treatment has any
+effect, even though the result is suggestive.
 
 ```{r, eval=TRUE, echo=FALSE}
-counts <- flies[['# of heads']]
+counts <- flies[['# of tails']]
 n <- length(counts)
 n_gte_14 <- sum(counts >= 14)
 n_lte_6 <- sum(counts <= 6)
@@ -162,7 +159,7 @@ n_both <- n_gte_14 + n_lte_6
 ```
 
 How accurate is the estimate? Seventy-five more trials were made, and of
-the 100 trials `r d2w[n_gte_14 + 1]` contained fourteen or more "males"
+the 100 trials `r int2tw(n_gte_14)` contained fourteen or more "males"
 (`r round(n_gte_14 / n * 100)` percent), and  `r round(n_lte_6 / n * 100)`
 trials contained fourteen or more "females" (`r round(n_lte_6 / n * 100)`
 percent), a total of `r round(n_both / n * 100)` percent. So the first
@@ -219,12 +216,15 @@ sample_size = 20
 # An empty array to store the trials
 scores = np.zeros(n_trials)
 
-# Do 1000 trials
+# Do 10000 trials
 for i in range(n_trials):
 
-    # Generate 20 simulated fruit flies, where each has an equal chance of being
-    # male or female
-    a = rnd.choice(['male', 'female'], size = sample_size, p = [0.5, 0.5], replace = True)
+    # Generate 20 simulated fruit flies, where each has an equal chance of
+    # being male or female
+    a = rnd.choice(['male', 'female'],
+                   size=sample_size,
+                   p=[0.5, 0.5],
+                   replace = True)
 
     # count the number of males in the sample
     b = np.sum(a == 'male')
@@ -249,12 +249,14 @@ sample_size <- 20
 # An empty array to store the trials
 scores <- numeric(n_trials)
 
-# Do 1000 trials
+# Do 10000 trials
 for (i in 1:n_trials) {
     # Generate 20 simulated fruit flies, where each has an equal chance of being
     # male or female
-    a <- sample(c('male', 'female'), size = sample_size, prob = c(0.5, 0.5),
-    replace = TRUE)
+    a <- sample(c('male', 'female'),
+                size=sample_size,
+                prob=c(0.5, 0.5),
+                replace=TRUE)
 
     # count the number of males in the sample
     b <- sum(a == 'male')
@@ -265,7 +267,7 @@ for (i in 1:n_trials) {
 
 # Produce a histogram of the trial results
 title_of_plot <- paste0("Number of males in", n_trials, " samples of \n", sample_size, " simulated fruit flies")
-hist(scores, xlab = 'Number of Males', main = title_of_plot)
+hist(scores, xlab='Number of Males', main=title_of_plot)
 ```
 
 In the histogram above, we see that in 16 percent of the trials, the number of
@@ -319,7 +321,7 @@ the treatment had *any* effect on the sex of the fruit fly, which is a
 two-tailed question. If there were reason to believe at the start that
 the treatment could increase *only* the number of *males* , then we
 would focus our attention on the result that in only
-`r d2w[n_25_gte_14 + 1]` of the twenty-five trials were fourteen or more males.
+`r int2tw(n_25_gte_14)` of the twenty-five trials were fourteen or more males.
 There would then be only a `r n_25_gte_14`/25 =
 `r round(n_25_gte_14 / 25, 2)`  probability of getting the observed
 results by chance if the treatment really has no effect, rather than the weaker
@@ -461,6 +463,11 @@ any one calf being female is 100 / 206.
 :::
 
 ```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+rnd = np.random.default_rng()
+
 # Set the number of trials.
 n_trials = 10000
 
@@ -645,7 +652,7 @@ probability would be even *less* that the observed results would occur by
 chance. In this sense, the benchmark hypothesis is conservative). On the other
 hand, if we had been counting the number of times there are 30 or more "No"
 votes that, in our setup, have the same odds as to 30 or more "Yes" votes,
-there would have been `r d2w[sum(yeses <= 20) + 1]`. This indicates how samples
+there would have been `r int2tw(sum(yeses <= 20))`. This indicates how samples
 can vary just by chance.
 
 Taken together, the evidence suggests that the official would be wise not to
@@ -664,6 +671,7 @@ actually split evenly down the middle.
 
 ```{python}
 import numpy as np
+import matplotlib.pyplot as plt
 
 rnd = np.random.default_rng()
 
@@ -756,6 +764,7 @@ This procedure may be done as follows with {{< var lang >}}.
 
 ```{python}
 import numpy as np
+import matplotlib.pyplot as plt
 
 rnd = np.random.default_rng()
 
@@ -932,7 +941,7 @@ ketable(py$pill_trials,
         caption = "Results from 25 random trials for pill/placebo {#tbl-pill-trials}")
 ```
 
-In the trials shown in @tbl-pill-trials, in `r d2w[n_gte_3 + 1]` cases
+In the trials shown in @tbl-pill-trials, in `r int2tw(n_gte_3)` cases
 (`r gte_3_pct` percent) the difference between the randomly-drawn groups is
 three cases or greater. Apparently it is *somewhat* unusual — it happens 
 `r gte_3_pct` percent of the time — for this universe to generate "pill"
@@ -968,6 +977,7 @@ cure rate, pill or no pill.
 
 ```{python}
 import numpy as np
+import matplotlib.pyplot as plt
 
 rnd = np.random.default_rng()
 
@@ -1169,6 +1179,7 @@ We use simulation to investigate the relationship between serum cholesterol and 
 
 ```{python}
 import numpy as np
+import matplotlib.pyplot as plt
 
 rnd = np.random.default_rng()
 
@@ -1374,7 +1385,7 @@ ketable(py$pig_trials,
 ```
 
 @tbl-pig-trials shows the results of 25 trials. In
-`r d2w[n_rb_gte_9 + 1]` (marked by + signs) of the 25 (that is,
+`r int2tw(n_rb_gte_9)` (marked by + signs) of the 25 (that is,
 `r rb_gte_9_pct` percent of the trials) there were nine or more either red or
 black cards in the first twelve cards. Again the results suggest that it would
 be *slightly unusual* for the results to favor one ration or the other so
@@ -1414,6 +1425,7 @@ experiment would occur by chance.
 
 ```{python}
 import numpy as np
+import matplotlib.pyplot as plt
 
 rnd = np.random.default_rng()
 

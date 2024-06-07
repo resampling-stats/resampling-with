@@ -164,6 +164,11 @@ Editing:
     ninja ../python-book/reliability_average.html
     ```
     You can now open the generated HTML file in your browser.
+*   If you get an obscure Python or R error from the build, try `ninja clean`
+    before rerunning the build, as in:
+    ```
+    ninja clean && ninja ../python-book/reliability_average.html
+    ```
 *   When in some kind of shape that is ready for other people to look at, make
     your commits with the changes, and do a pull-request to the main
     repository.  See the **initial port checklist** below.

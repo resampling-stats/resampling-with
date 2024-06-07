@@ -80,6 +80,15 @@ get_var = function(name) {
   return (get(name))
 }
 
+._n2t <- c('zero', 'one', 'two', 'three', 'four',
+           'five', 'six', 'seven', 'eight', 'nine')
+
+# Convert number to text word.
+int2tw <- function(i) {
+    if (i >= 0 & i <= 9) { return (._n2t[i + 1]) }
+    return (paste(i))
+}
+
 # See: https://stackoverflow.com/questions/76732162/is-there-a-way-to-detect-the-chunk-language-when-setting-knitr-chunk-options
 set_true_for_matching_lang <- function(options, field) {
     if (is.na(options[[field]])) {
