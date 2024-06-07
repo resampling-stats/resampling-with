@@ -162,6 +162,7 @@ rnd = np.random.default_rng()
 
 n_iters = 10_000
 
+# Make array to store results for each trial.
 results = np.zeros(n_iters)
 
 for i in range(n_iters):
@@ -191,6 +192,7 @@ print('Proportion of trials with one or more group >=14 or <=6 :', kk)
 ```{r}
 n_iters <- 10000
 
+# Make vector to store results for each trial.
 results <- numeric(n_iters)
 
 for (i in 1:n_iters) {
@@ -219,6 +221,11 @@ kk <- k / n_iters
 
 message('Proportion of trials with one or more group >=14 or <=6 :', kk)
 ```
+
+:::
+<!---
+End of notebook
+-->
 
 In one set of 10,000 trials, there were more than 13 males or more than 13
 females `r round(get_var('kk') * 100)` percent of the time — clearly not an
@@ -864,11 +871,10 @@ chance? This is the same as asking how often either heads *or* tails
 will come up nine or more times in twelve tosses. (This is a
 "two-tailed" test because, as far as we know, either ration may be as
 good as or better than the other.) Once we have decided to treat the
-problem in this manner, it is quite similar to Example 15-1 (the first
-fruitfly irradiation problem). We ask how likely it is that the outcome
-will be as far away as the observed outcome (9 "heads" of 12) from 6 of
-12 (which is what we expect to get by chance in this case if the two
-rations are similar).
+problem in this manner, it is quite similar to @sec-fruitfly (the first
+fruitfly irradiation problem). We ask how likely it is that the outcome will be
+as far away as the observed outcome (9 "heads" of 12) from 6 of 12 (which is
+what we expect to get by chance in this case if the two rations are similar).
 
 So we conduct perhaps fifty trials as in @tbl-pigs-pair, where an asterisk
 denotes nine or more heads or tails.
@@ -965,35 +971,73 @@ gains of one group (call it the group fed with ration A) were larger than the
 weight gains of the other (call it the group fed with ration B). The complete
 program follows:
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: {.notebook name="pig_pairs" title="Paired test for pig rations"}
 
-```matlab
-' Program file: "pigs2.rss"
+::: nb-only
+Use simulation to test for a difference in pig rations, by pairing pigs and testing the probability of observed differences within the pairs.
+:::
 
-REPEAT 1000
-    ' Do 1000 trials
-    GENERATE 12 1,2 a
-    ' Generate randomly 12 "1"s and "2"s, put them in a. This represents 12
-    ' "pairings" where "1" = ration a "wins," "2" = ration b = "wins."
-    COUNT a =1 b
-    ' Count the number of "pairings" where ration a won, put the result in b.
-    SCORE b z
-    ' Keep track of the result in z
-END
-' End the trial, go back and repeat until all 100 trials are complete.
-COUNT z >= 9 j
-' Determine how often we got 9 or more "wins" for ration a.
-COUNT z <= 3 k
-' Determine how often we got 3 or fewer "wins" for ration a.
-ADD j k m
-' Add the two together
-DIVIDE m 100 mm
-' Convert to a proportion
-PRINT mm
-' Print the result.
 
-' Note: The file "pigs2" on the Resampling Stats software disk contains
-' this set of commands.
+```{python}
+import numpy as np
+rnd = np.random.default_rng()
+
+n_iters = 10_000
+
+# Make array to store results for each trial.
+results = np.zeros(n_iters)
+
+# Do 10000 trials
+for i in range(n_iters):
+    # Generate randomly 12 "A" or "B"s.  Each of the 12 values represents
+    # one "pairing" where "A" = ration A "wins," "B" = ration B "wins.".
+    wins = rnd.choice(['A', 'B'], size=12)
+    # Count the number of "pairings" where ration A won, put the result in
+    # "n_a_wins".
+    n_a_wins = np.sum(wins == 'A')
+    # Keep track of the result in results.
+    results[i] = n_a_wins
+    # End the trial, go back and repeat until all 10000 trials are complete.
+# Determine how often we got 9 or more "wins" for ration A.
+high = np.sum(results >= 9)
+# Determine how often we got 3 or fewer "wins" for ration A.
+low = np.sum(results <= 3)
+# Add the two together
+k = high + low
+#  Convert to a proportion
+kk = k / n_iters
+# Print the result.
+print('Proportion >=9 or <=3:', kk)
+```
+
+```{r}
+n_iters <- 10000
+
+# Make array to store results for each trial.
+results <- numeric(n_iters)
+
+# Do 10000 trials
+for (i in 1:n_iters) {
+    # Generate randomly 12 "A" or "B"s.  Each of the 12 values represents
+    # one "pairing" where "A" <- ration A "wins," "B" <- ration B "wins.".
+    wins <- sample(c('A', 'B'), replace=TRUE, size=12)
+    # Count the number of "pairings" where ration A won, put the result in
+    # "n_a_wins".
+    n_a_wins <- sum(wins == 'A')
+    # Keep track of the result in results.
+    results[i] <- n_a_wins
+    # End the trial, go back and repeat until all 10000 trials are complete.
+}
+# Determine how often we got 9 or more "wins" for ration A.
+high <- sum(results >= 9)
+# Determine how often we got 3 or fewer "wins" for ration A.
+low <- sum(results <= 3)
+# Add the two together
+k <- high + low
+#  Convert to a proportion
+kk <- k / n_iters
+# Print the result.
+message('Proportion >=9 or <=3: ', kk)
 ```
 
 :::
