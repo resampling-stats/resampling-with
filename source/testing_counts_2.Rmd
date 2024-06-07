@@ -1,22 +1,19 @@
 ---
+resampling_with:
+    ed2_fname: 21-Chap-17
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.14.6
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-resampling_with:
-    ed2_fname: 21-Chap-17
 ---
 
 ```{r setup, include=FALSE}
@@ -627,9 +624,9 @@ End of notebook
 
 ### Example: Three-way Comparison
 
-In a national election poll of 750 respondents in May, 1992, George Bush
-got 36 percent of the preferences (270 voters), Ross Perot got 30
-percent (225 voters), and Bill Clinton got 28 percent (210 voters) (*Wall
+In a national election poll of 750 respondents in May, 1992, George Bush got 36
+percent of the preferences (270 voters), Ross Perot got 30 percent (225
+voters), and Bill Clinton got 28 percent (210 voters), with 45 undecided (*Wall
 Street Journal*, October 29, 1992, A16). Assuming that the poll was
 representative of actual voting, how likely is it that Bush was actually
 *behind* and just came out ahead in this poll by chance? Or to put it
@@ -660,17 +657,22 @@ inherent in the problem, rather than being inherent in resampling, and
 resampling will be at least as simple and understandable as any formulaic
 approach.
 
+Before we start to think about this problem, let us simplify by ignoring the 45
+undecided voters, and adjusting the poll percentages accordingly.  Of the
+remaining voters, Bush got 270 / 705 = 38.3%, Perot had 225 / 705 = 31.9%, and
+Clinton had 210 / 705 = 29.8%.  Bush's lead over Perot, in voters with
+a declared preference, was therefore 38.3 - 31.9 = 6.4%.
+
 The relevant universe is (or so I think) a universe that is 35 Bush — 35 Perot
-— 30 Clinton (for a race where the poll indicates a 36-30-28 split); the
+— 30 Clinton (for a race where the poll indicates a 38.3-31.9-29.8% split); the
 35-35-30 universe is of interest because it is the universe that is closest to
-the observed sample that does not provide a win for Bush (leaving out the
-"undecideds" for convenience); it is roughly analogous to the 50-50 split in
-the two-person race, though a clear-cut argument would require a lot more
-discussion. A universe that is split 34-34-32, or any of the other possible
-universes, is less likely to produce a 36-30-28 sample (such as was observed)
-than is a 35-35-30 universe, I believe, but that is a checkable matter. (In
-technical terms, it might be a "maximum likelihood universe" that we are
-looking for.)
+the observed sample that does not provide a win for Bush; it is roughly
+analogous to the 50-50 split in the two-person race, though a clear-cut
+argument would require a lot more discussion. A universe that is split
+34-34-32, or any of the other possible universes, is less likely to produce
+a 36-30-28 sample (such as was observed) than is a 35-35-30 universe,
+I believe, but that is a checkable matter. (In technical terms, it might be
+a "maximum likelihood universe" that we are looking for.)
 
 We might also try a 36-36-28 universe to see if that produces a result very
 different than the 35-35-30 universe.
@@ -689,14 +691,15 @@ conclusion shown by the data (and in which we are interested) and that (among
 such universes that yield such a conclusion) has the highest probability of
 producing the observed sample.
 
-Let's go through the logic again: 1) Bush apparently has a 6 percent lead over
-the second-place candidate. 2) We ask if the second-place candidate might be
-ahead if all voters were polled. We test that by setting up a universe in which
-the second-place candidate is infinitesimally ahead (in practice, we make the
-two top candidates equal in our hypothetical universe). And we make the
-third-place candidate somewhere close to the top two candidates. 3) We then
-draw samples from this universe and observe how often the result is a 6 percent
-lead for the top candidate (who starts off just below equal in the universe).
+Let's go through the logic again: 1) Bush apparently has a 6.4% percent lead
+over the second-place candidate. 2) We ask if the second-place candidate might
+be ahead if *all voters* were polled, rather than just this sample. We test
+that by setting up a universe in which the second-place candidate is
+infinitesimally ahead (in practice, we make the two top candidates equal in our
+hypothetical universe). And we make the third-place candidate somewhere close
+to the top two candidates. 3) We then draw samples from this universe and
+observe how often the result is a 6.4% percent lead for the top candidate (who
+starts off just below or equal in the universe).
 
 From here on, the procedure is straightforward: Determine how likely that
 universe is to produce a sample as far (or further) away in the direction of
@@ -705,8 +708,7 @@ candidate of interest were not now in the lead.)
 
 This problem teaches again that one must think explicitly about the choice of
 a benchmark hypothesis. The grounds for the choice of the benchmark hypothesis
-should precede the program, or should be included as an extended comment within
-the program.
+should precede the notebook, or should be included as an extended commentary within the notebook.
 
 This {{< var lang >}} code embodies the previous line of thought.
 
@@ -723,79 +725,95 @@ import matplotlib.pyplot as plt
 # set up the random number generator
 rnd = np.random.default_rng()
 
-# Set the number of trials
+# Set the number of trials.
 n_trials = 10000
 
-# An empty array to store the trials
+# Number of voters who expressed a preference.
+n_voters = 705
+
+# Benchmark proportions.
+bench_ps = [0.35, 0.35, 0.30]
+
+# An empty array to store the trials.
 scores = np.zeros(n_trials)
 
 # Do 10000 trials
 for i in range(n_trials):
-    # Take a sample of 750 votes, with replacement.
+    # Take a sample of 705 votes, with replacement.
     samp = rnd.choice(['Bush', 'Perot', 'Clinton'],
-                      p=[0.35, 0.35, 0.30],
-                      size=750)
+                      p=bench_ps,
+                      size=n_voters)
     # Count the Bush voters, etc.
     n_bush = np.sum(samp == 'Bush')
     n_perot = np.sum(samp == 'Perot')
     n_clinton = np.sum(samp == 'Clinton')
-    # Join Perot & Clinton votes.
+    # Join Perot & Clinton votes in an array.
     others = np.array([n_perot, n_clinton])
     # Find the larger of the other two.
     n_second = np.max(others)
     # Find Bush's margin over 2nd.
-    d = n_bush - n_second
+    lead = n_bush - n_second
+    # Convert vote difference to percent lead.
+    pct_lead = lead / n_voters * 100
     # Store the result.
-    scores[i] = d
+    scores[i] = pct_lead
 
 plt.hist(scores, bins=50)
 plt.title('Distribution of Bush margin over second candidate')
 
-# Compare to the observed margin in the sample of 750 corresponding to a 6
-# percent margin by Bush over 2nd place finisher (rounded).
-k = np.sum(scores >= 46)
+# Compare to the observed margin in the sample of 705 corresponding to a 6.4
+# percent margin by Bush over 2nd place finisher.
+k = np.sum(scores >= 6.4)
 kk = k / n_trials
 
-print('Proportion of trials where Bush margin >= 46:', kk)
+print('Proportion of trials where Bush margin >= 6.4%:', kk)
 ```
 
 ```{r}
-# Set the number of trials
+# Number of voters who expressed a preference.
+n_voters <- 705
+
+# Benchmark proportions.
+bench_ps <- c(0.35, 0.35, 0.30)
+
+# Set the number of trials.
 n_trials <- 10000
 
-# An empty array to store the trials
+# An empty array to store the trials.
 scores <- numeric(n_trials)
 
 # Do 10000 trials
 for (i in 1:n_trials) {
-    # Take a sample of 750 votes, with replacement.
+    # Take a sample of 705 votes, with replacement.
     samp <- sample(c('Bush', 'Perot', 'Clinton'),
-                   size=750,
-                   prob=c(0.35, 0.35, 0.30),
+                   size=n_voters,
+                   prob=bench_ps,
                    replace=TRUE)
     # Count the Bush voters, etc.
     n_bush <- sum(samp == 'Bush')
     n_perot <- sum(samp == 'Perot')
     n_clinton <- sum(samp == 'Clinton')
-    # Join Perot & Clinton votes.
+    # Join Perot & Clinton votes into a vector.
     others <- c(n_perot, n_clinton)
     # Find the larger of the other two.
     n_second <- max(others)
     # Find Bush's margin over 2nd.
-    d <- n_bush - n_second
+    lead <- n_bush - n_second
+    # Convert vote difference to percent lead.
+    pct_lead <- lead / n_voters * 100
     # Store the result.
-    scores[i] <- d
+    scores[i] <- pct_lead
 }
 
 hist(scores, breaks=50,
      main='Distribution of Bush margin over second candidate')
 
-# Compare to the observed margin in the sample of 750 corresponding to a 6
+# Compare to the observed margin in the sample of 705 corresponding to a 6.4
 # percent margin by Bush over 2nd place finisher (rounded).
-k <- sum(scores >= 46)
+k <- sum(scores >= 6.4)
 kk <- k / n_trials
 
-message('Proportion of trials where Bush margin >= 46: ', kk)
+message('Proportion of trials where Bush margin >= 6.4%: ', kk)
 ```
 
 :::
@@ -803,12 +821,15 @@ message('Proportion of trials where Bush margin >= 46: ', kk)
 End of notebook
 -->
 
-When we run this program with a 36-36-28 split, we also get a similar
-result — 2.6 percent. That is, the analysis shows a probability of only
-2.6 percent that Bush would score a 6 percentage point "victory" in the
-sample, by chance, if the universe were split as specified. So Bush
-could feels reasonably confident that at the time the poll was taken, he
-was ahead of the other two candidates.
+When we run this program with a 36-36-28 split, we also get a similar result
+— around 2.2 percent (try it — edit `bench_ps` in the notebook and run it
+again).
+
+Our main result is that our 35-35-30 analysis shows a probability of only
+`r round(get_var('kk') * 100, 1)` percent that Bush would score a 6.4
+percentage point "victory" in the sample, by chance, if the universe were split
+as specified. So Bush could feel reasonably confident that at the time the poll
+was taken, he was ahead of the other two candidates.
 
 ## Paired Comparisons With Counted Data
 
