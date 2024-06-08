@@ -59,79 +59,95 @@ greatly from what has been discussed in previous chapters.
 
 ### Example: The Pig Rations Still Once Again, Using Measured Data {#sec-pig-rations-measured}
 
-**Testing for the Difference Between Means of Two Equal-Sized Samples of
-Measured-Data Observations) (Program "Pigs3")**
+**Testing for the difference between means of two equal-sized samples of
+measured-data observations**
 
-Let us now treat the pig-food problem without converting the
-quantitative data into qualitative data, because a conversion always
-loses information.
+Let us now treat the pig-food problem without converting the quantitative data
+into qualitative data, because a conversion always loses information.
 
-The term "lose information" can be understood intuitively. Consider two
-sets of three sacks of corn. Set A includes sacks containing,
-respectively, one pound, two pounds, and three pounds. Set B includes
-sacks of one pound, two pounds, and a hundred pounds. If we *rank* the
-sacks by weight, the two sets can no longer be distinguished. The
-one-pound and two-pound sacks have ranks one and two in both cases, and
-their relative places in their sets are the same. But if we know *not
-only* that the one-pound sack is the smallest of its set and the
-three-pound or hundred-pound sack is the largest, but *also* that the
-largest sack is three pounds (or a hundred pounds), we have more
+The term "lose information" can be understood intuitively. Consider two sets
+of three sacks of corn. Set A includes sacks containing, respectively, one
+pound, two pounds, and three pounds. Set B includes sacks of one pound, two
+pounds, and a hundred pounds. If we *rank* the sacks by weight, the two sets
+can no longer be distinguished. The one-pound and two-pound sacks have ranks
+one and two in both cases, and their relative places in their sets are the
+same. But if we know *not only* that the one-pound sack is the smallest of its
+set and the three-pound or hundred-pound sack is the largest, but *also* that
+the largest sack is three pounds (or a hundred pounds), we have more
 information about a set than if we only know the ranks of its sacks.
 
-Rank data are also known as "ordinal" data, whereas data measured in
-(say) pounds are known as "cardinal" data. Even though converting from
-cardinal (measured) to ordinal (ranked) data loses information, the
-conversion may increase convenience, and may therefore be worth doing in
-some cases.
+Rank data are also known as "ordinal" data, whereas data measured in (say)
+pounds are known as "cardinal" data. Even though converting from cardinal
+(measured) to ordinal (ranked) data loses information, the conversion may
+increase convenience, and may therefore be worth doing in some cases.
 
-![](images/22-Chap-18_000.png)
+With that, let us load and display the measured data for the two pig rations.
 
-We begin a measured-data procedure by noting that if the two pig foods
-are the same, then each of the observed weight gains came from the *same
-benchmark universe* . This is the basic tactic in our statistical
-strategy. That is, if the two foods came from the same universe, *our
-best guess about the composition of that universe is that it includes
-weight gains just like the twenty-four we have observed* , and in the
-same proportions, because that is all the information that we have about
-the universe; this is the bootstrap method. Since ours is (by
-definition) a sample from an infinite (or at least, a very large)
-universe of possible weight gains, we assume that there are *many*
-weight gains in the universe just like the ones we have observed, in the
-same proportion as we have observed them. For example, we assume that
-2/24 of the universe is composed of 34-pound weight gains, as seen in
-Figure 18-1:
+```{python}
+# Use Pandas library to load data.
+import pandas as pd
 
-**Figure 18-1**
+pig_rations = pd.read_csv('data/pig_rations.csv')
+```
+
+```{r}
+pig_rations <- read.csv('data/pig_rations.csv')
+```
+
+```{r echo=FALSE, eval=TRUE}
+._df_rations <- get_var('pig_rations')
+ketable(._df_rations,
+        caption = "Measured data for pig rations
+        {#tbl-pig-rations}")
+```
+
+We begin a measured-data procedure by noting that if the two pig foods are the
+same, then each of the observed weight gains came from the *same benchmark
+universe*.  This is the basic tactic in our statistical strategy. That is, if
+the two foods came from the same universe, *our best guess about the
+composition of that universe is that it includes weight gains just like the
+twenty-four we have observed* , and in the same proportions, because that is
+all the information that we have about the universe; this is the bootstrap
+method. Since ours is (by definition) a sample from an infinite (or at least,
+a very large) universe of possible weight gains, we assume that there are
+*many* weight gains in the universe just like the ones we have observed, in
+the same proportion as we have observed them. For example, we assume that 2/24
+of the universe is composed of 34-pound weight gains, as seen in
+@fig-rations-hist:
+
+```{r label='fig-rations-hist', fig.cap='Histogram of weight gain', echo=FALSE, eval=TRUE}
+._weights <- ._df_rations$weight_gain
+hist(._weights, breaks=20:40,
+     main='Histogram of weight gains for both rations',
+     xlab='Weight gain')
+```
 
 We recognize, of course, that weight gains other than the exact ones we
-observed certainly would occur in repeated experiments. And if we
-thought it reasonable to do so, we could assume that the "distribution"
-of the weight gains would follow a regular "smooth" shape such as Figure
-18-2. But deciding just how to draw Figure 18-2 from the data in Figure
-18-1 requires that we make arbitrary assumptions about unknown
-conditions. And if we were to draw Figure 18-2 in a form that would be
-sufficiently regular for conventional mathematical analysis, we might
-have to make some *very strong* assumptions going far beyond the
-observed data.
+observed certainly would occur in repeated experiments. And if we thought it
+reasonable to do so, we could assume that the "distribution" of the weight
+gains would follow a regular "smooth" shape such as @fig-rations-ideal. But
+deciding just how to draw @fig-rations-ideal from the data in
+@fig-rations-hist requires that we make arbitrary assumptions about unknown
+conditions. And if we were to draw @fig-rations-ideal in a form that would be
+sufficiently regular for conventional mathematical analysis, we might have to
+make some *very strong* assumptions going far beyond the observed data.
 
-Drawing a smooth curve such as Figure 18-2 from the raw data in Figure
-18-1 might be satisfactory — if done with wisdom and good judgment. But
-there is no necessity to draw such a smooth curve, in this case or in
-most cases. We can proceed by assuming simply that the benchmark
-universe — the universe to which we shall compare our samples,
-conventionally
+```{r label='fig-rations-ideal', fig.cap='Idealized distrubution for weight gain', echo=FALSE, eval=TRUE}
+._x <- seq(20, 40, length=100)
+._y <- dnorm(._x, mean=mean(._weights), sd=sd(._weights)) * sum(._weights)
+plot(._x, ._y, type = "l",
+     main='Idealized distribution of weight gains',
+     xlab='Weight gain', ylab='Frequency')
+```
 
-Relative Probability
-
-called the "null" or "hypothetical" universe — is composed only of
-elements similar to the observations we have in hand. We thereby lose no
-efficiency and avoid making unsound assumptions.
-
-![](images/22-Chap-18_001.png)
-
-Size of Weight Gain, 30.2 = Mean
-
-**Figure 18-2**
+Drawing a smooth curve such as @fig-rations-ideal from the raw data in
+@fig-rations-hist might be satisfactory — if done with wisdom and good
+judgment. But there is no necessity to draw such a smooth curve, in this case
+or in most cases. We can proceed by assuming simply that the benchmark
+universe — the universe to which we shall compare our samples, conventionally
+called the "null" or "hypothetical" universe — is composed only of elements
+similar to the observations we have in hand. We thereby lose no efficiency and
+avoid making unsound assumptions.
 
 To carry out our procedure in practice: 1) Write down each of the
 twenty-four weight gains on a blank index card. We then have one card
