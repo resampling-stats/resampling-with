@@ -1456,6 +1456,58 @@ state-ownership universe is less than (or equal to) the mean of the actual
 sixteen state-ownership prices. The following notebook performs the operations
 described above.
 
+### Concatenating {{< var array >}}s {#sec-concatenate}
+
+Before we start the simulation, we need a little extra {{< var np_or_r >}} machinery.
+
+In what follows, we are going to make {{< var an_array >}} for the 26
+*private* prices, and another {{< var array >}} for the 16 *government*
+prices, and then concatenate these two {{< var array >}}s to make a new {{< var array >}} with 26 + 16 = 42 elements, where the first 26 elements are the private prices and the last 16 elements are the government prices.
+
+You will see that in action below, but this is what that *concatenation* looks
+like in {{< var np_or_r >}} for some example {{< var array >}}s.
+
+::: python
+We use Numpy's `concatenate` function to concatenate two arrays:
+:::
+
+```{python}
+arr_a = np.array([1, 2, 3])
+arr_b = np.array([10, 11, 12, 13])
+# Use np.concatenate function to make new array consisting of elements in
+# first array followed by elements in second array.
+both = np.concatenate([arr_a, arr_b])
+# Show the result.
+both
+```
+
+::: r
+We have already seen R's concatenation function in action.  It is the function named `c`.  For example, we use `c(1, 2, 3)` to *concatenate* the single numbers 1, 2, and 3 into a combined (concatenated) *vector* with elements 1, 2, 3:
+
+```{r}
+vec_a <- c(1, 2, 3)
+vec_a
+```
+
+We can also use the `c` function to concatenate *vectors*:
+
+```{r}
+vec_b <- c(10, 11, 12, 13)
+# Use the "c" function to make new vector consisting of elements in
+# first vector followed by elements in second vector.
+both <- c(vec_a, vec_b)
+# Show the result.
+both
+```
+
+:::
+<!---
+End of R block.
+-->
+
+### Price simulation
+
+
 ::: {.notebook name="liquor_prices" title="Public and private liquor prices"}
 
 ::: nb-only
@@ -1463,6 +1515,7 @@ This notebook asks the question whether the difference in the means of private
 and government-specified prices of a particular whiskey could plausibly have
 come about as a result of random sampling.
 :::
+
 
 ```{python}
 import numpy as np
@@ -1487,7 +1540,7 @@ govt = np.array([
 actual_diff = np.mean(priv) - np.mean(govt)
 
 # Join the two vectors of data
-both = np.concatenate((priv, govt))
+both = np.concatenate([priv, govt])
 
 # Repeat 10000 simulation trials
 for i in range(10000):
