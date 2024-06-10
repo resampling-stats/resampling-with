@@ -1370,52 +1370,13 @@ reasons.) These were the representative 1961 prices of a fifth of Seagram 7
 Crown whiskey in the two sets of states (@tbl-whiskey-prices):
 
 ```{python results='asis', eval=TRUE, echo=FALSE, message=FALSE}
-from pathlib import Path
-
-import numpy as np  # For R edition, Numpy will not have been imported.
-import pandas as pd
-
-in_path = Path() / 'data' / 'liquor_prices.csv'
-in_data = pd.read_csv(in_path).groupby('state_type')['price']
-govt, priv = [np.array(values) for label, values in in_data]
-df = pd.DataFrame()
-df['Private'] = priv
-row_labels = df.index[:len(govt)]
-df.loc[row_labels, 'Government'] = govt
-df.index = [''] * len(df)
-blank_row = pd.DataFrame(data=[[np.nan] * 2], columns=list(df),
-                         index=[''])
-counts = df.count().rename('**Count**')
-means = df.mean().rename('**Mean**')
-with_means = pd.concat([df,
-                        blank_row,
-                        counts.to_frame().T,
-                        means.to_frame().T])
-with_means = with_means.round(2).astype(object).fillna('')
-with_means.loc['**Count**'] = with_means.loc['**Count**'].astype(int).astype(object)
-means_tab = with_means.to_markdown(tablefmt="grid")
-print(f'{means_tab}\n\n: '
+import liquor_analysis as la
+print(f'{la.md_table()}\n\n: '
       'Whiskey prices by state category {#tbl-whiskey-prices}')
 ```
 
 ```{python fig-whiskey-hist, opts.label='svg_fig', fig.cap="Whiskey prices by state category"}
-import matplotlib.pyplot as plt
-
-fix, axes = plt.subplots(1, 3)
-bins = np.arange(3.5, 5.5, 0.1)
-axis_lims = [np.min(bins), np.max(bins), 0, 8]
-priv_col, gov_col = 'indianred', 'cornflowerblue'
-
-def histo(ax, data, label, color, alpha=1):
-    ax.hist(data, color=color, alpha=alpha);
-    ax.axis(axis_lims)
-    ax.set_title(label)
-    ax.set_xlabel('Prices')
-
-histo(axes[0], priv, 'Private', priv_col)
-histo(axes[1], govt, 'Government', gov_col)
-histo(axes[2], priv, 'Private', priv_col, alpha=0.5)
-histo(axes[2], govt, 'Private & government', gov_col, alpha=0.5);
+la.price_plots()
 ```
 
 Let us consider that all these states' prices constitute one single universe
@@ -1539,7 +1500,7 @@ govt = np.array([
 
 actual_diff = np.mean(priv) - np.mean(govt)
 
-# Join the two vectors of data
+# Join the two arrays of data into one array.
 both = np.concatenate([priv, govt])
 
 # Repeat 10000 simulation trials
@@ -1582,10 +1543,10 @@ govt <- c(4.65, 4.55, 4.11, 4.15, 4.20, 4.55, 3.80, 4.00, 4.19, 4.75, 4.74,
 
 actual_diff <- mean(priv) - mean(govt)
 
-# Join the two vectors of data
+# Join the two vectors of data into one vector.
 both <- c(priv, govt)
 
-# Repeat 10000 simulation trials
+# Repeat 10000 simulation trials.
 for (i in 1:10000) {
 
     # Sample 26 with replacement for private group
