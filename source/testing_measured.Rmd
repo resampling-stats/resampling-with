@@ -81,24 +81,14 @@ pounds are known as "cardinal" data. Even though converting from cardinal
 (measured) to ordinal (ranked) data loses information, the conversion may
 increase convenience, and may therefore be worth doing in some cases.
 
-With that, let us load and display the measured data for the two pig rations.
-
-```{python}
-# Use Pandas library to load data.
-import pandas as pd
-
-pig_rations = pd.read_csv('data/pig_rations.csv')
-```
-
-```{r}
-pig_rations <- read.csv('data/pig_rations.csv')
-```
+@tbl-pig-ab-rations has the measured data for pig rations A and B.
 
 ```{r echo=FALSE, eval=TRUE}
-._df_rations <- get_var('pig_rations')
-ketable(._df_rations,
-        caption = "Measured data for pig rations
-        {#tbl-pig-rations}")
+._df_pig_abcd <- read.csv('data/pig_rations.csv')
+._df_ab <- subset(._df_pig_abcd, ration %in% c('A', 'B'))
+ketable(._df_ab,
+        caption = "Measured data for pig rations A and B
+        {#tbl-pig-ab-rations}")
 ```
 
 We begin a measured-data procedure by noting that if the two pig foods are the
@@ -116,9 +106,9 @@ of the universe is composed of 34-pound weight gains, as seen in
 @fig-rations-hist:
 
 ```{r label='fig-rations-hist', fig.cap='Histogram of weight gain', echo=FALSE, eval=TRUE}
-._weights <- ._df_rations$weight_gain
+._weights <- ._df_ab$weight_gain
 hist(._weights, breaks=20:40,
-     main='Histogram of weight gains for both rations',
+     main='Histogram of all weight gains for rations A and B',
      xlab='Weight gain')
 ```
 
@@ -132,11 +122,11 @@ conditions. And if we were to draw @fig-rations-ideal in a form that would be
 sufficiently regular for conventional mathematical analysis, we might have to
 make some *very strong* assumptions going far beyond the observed data.
 
-```{r label='fig-rations-ideal', fig.cap='Idealized distrubution for weight gain', echo=FALSE, eval=TRUE}
+```{r label='fig-rations-ideal', fig.cap='Idealized distribution for weight gain', echo=FALSE, eval=TRUE}
 ._x <- seq(20, 40, length=100)
 ._y <- dnorm(._x, mean=mean(._weights), sd=sd(._weights)) * sum(._weights)
 plot(._x, ._y, type = "l",
-     main='Idealized distribution of weight gains',
+     main='Idealized distribution of all weight gains',
      xlab='Weight gain', ylab='Frequency')
 ```
 
@@ -167,8 +157,8 @@ many times.
 
 In operational steps:
 
-* **Step 1.** Write down each observed weight gain on a card, e.g. 31, 34,
-  29\...
+* **Step 1.** Write down each observed weight gain on a card, e.g. 31, 34, 29
+  ...
 * **Step 2.** Shuffle and deal a card.
 * **Step 3.** Record the weight and replace the card.
 * **Step 4.** Repeat steps 2 and 3 eleven more times; call this group A.
@@ -437,14 +427,14 @@ Discussion of bootstrap and median?
 -->
 
 
-The RESAMPLING STATS program compares the difference in the sums of the
+The {{< var lang >}} notebook compares the difference in the sums of the
 weight gains for the actual pigs against the difference resulting from
 two randomly-chosen groups of pigs, using the same numerical weight
 gains of individual pigs as were obtained in the actual experiment. If
 the differences in average weight gains of the randomly ordered groups
-are rarely as large as the difference in weight gains from the actual
-sets of pigs fed food A-alpha and food B-beta, then we can conclude that
-the foods do make a difference in pigs' weight gains.
+are rarely as large as the difference in weight gains from the actual sets of
+pigs fed food A-alpha and food B-beta, then we can conclude that the foods do
+make a difference in pigs' weight gains.
 
 Note first that pigs in group A gained a total of 382 pounds while group
 B gained a total of 344 pounds — 38 fewer. To minimize computations, we
@@ -453,91 +443,224 @@ will deal with totals like these, not averages.
 First we construct vectors A and B of the weight gains of the pigs fed
 with the two foods. Then we combine the two vectors into one long vector
 and select two groups of 12 randomly and with replacement (the two
-SAMPLE commands). We SUM the weight gains for the two resamples, and
-calculate the difference. We keep SCORE of those differences, graph them
-on a HISTOGRAM, and see how many times resample A exceeded resample B by
-at least 38 pounds, or vice versa (we are testing whether the two are
-different, not whether food A produces larger weight gains).
+{{< var sample >}} commands). Notice we sample *with replacement*.  This is
+the *bootstrap* procedure*, where we simulate new samples by resampling with
+replacement from the original sample.  We `sum` the weight gains for the two
+resamples, and calculate the difference. We keep track of those differences by
+storing them in the `results` array, graph them on a histogram, and see how
+many times resample A exceeded resample B by at least 38 pounds, or vice versa
+(we are testing whether the two are different, not whether food A produces
+larger weight gains).
 
+::: {.notebook name="measured_rations" title="Pig rations via bootstrap"}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: nb-only
+Use the bootstrap (resampling with replacement) procedure to test whether the observed differences are surprising in the distribution of difference between new simulated samples.
+:::
 
-```matlab
-' Program file: "testing_measured_00.rss"
+First we need to get the measured data from the data file using
+[the Pandas library]{.python}[R]{.r}:
 
-NUMBERS (31 34 29 26 32 35 38 34 31 29 32 31) a
-' Record group a's weight gains.
-NUMBERS (26 24 28 29 30 29 31 29 32 26 28 32) b
-' Record group b's weight gains.
-CONCAT a b c
-' Combine a and b together in one long vector.
-REPEAT 1000
-    ' Do 1000 experiments.
-    SAMPLE 12 c d
-    ' Take a "resample" of 12 with replacement from c and put it in d.
-    SAMPLE 12 c e
-    ' Take another "resample."
-    SUM d dd
-    ' Sum the first "resample."
-    SUM e ee
-    ' Sum the second "resample."
-    SUBTRACT dd ee f
-    ' Calculate the difference between the two resamples.
-    SCORE f z
-    ' Keep track of each trial result.
-END
-' End one experiment, go back and repeat until all trials are complete,
-' then proceed.
-HISTOGRAM z
-' Produce a histogram of trial results.
+```{python}
+# Load the Numpy library for arrays.
+import numpy as np
+# Load the Pandas library for loading and selecting data.
+import pandas as pd
 ```
 
-**PIGS3: Difference Between Two Resamples**
+We load the file containing the data:
 
-Sum of Weight Gains
-
-![](images/22-Chap-18_002.png)
-
-**1** **st** **resample less 2** **nd**
-
-From this histogram we see that none of the trials produced a difference
-between groups as large as that observed (or larger). RESAMPLING STATS
-will calculate this for us with the following commands:
-
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "pigs3.rss"
-
-COUNT z >= 38 k
-' Determine how many of the trials produced a difference between resamples
-
-' \>= 38.
-COUNT z <= -38 l
-' Likewise for a difference of -38.
-ADD k l m
-' Add the two together.
-DIVIDE m 1000 mm
-' Convert to a proportion.
-PRINT mm
-' Print the result.
-
-' Note: The file "pigs3" on the Resampling Stats software disk contains
-' this set of commands.
+```{python}
+# Read the data file containing pig ration data.
+rations_df = pd.read_csv('data/pig_rations.csv')
+# Show the first 5 rows.
+rations_df.head()
 ```
+
+```{r}
+# Read the data file containing pig ration data.
+rations_df <- read.csv('data/pig_rations.csv')
+# Show the first 6 rows.
+head(rations_df)
+```
+
+Let us first select the rows containing data for ration B (we will get the rows for ration A afterwards):
+
+```{python}
+# Select ration B rows.
+ration_b_df = rations_df[rations_df['ration'] == 'B']
+#  Show the first five rows.
+ration_b_df.head()
+```
+
+```{r}
+# Select ration B rows.
+ration_b_df <- subset(rations_df, rations_df['ration'] == 'B')
+#  Show the first six rows.
+head(ration_b_df)
+```
+
+Finally for ration B, convert the weights to {{< var an_array >}} for use in the simulation.
+
+```{python}
+b_weights = np.array(ration_b_df['weight_gain'])
+# Show the result.
+b_weights
+```
+
+```{r}
+b_weights <- ration_b_df$weight_gain
+# Show the result.
+b_weights
+```
+
+Select ration A rows, and get the weights as {{< var an_array >}}:
+
+```{python}
+ration_a_df = rations_df[rations_df['ration'] == 'A']
+a_weights = np.array(ration_a_df['weight_gain'])
+# Show the result.
+a_weights
+```
+
+```{r}
+ration_a_df <- subset(rations_df, rations_df['ration'] == 'A')
+a_weights <- ration_a_df$weight_gain
+# Show the result.
+a_weights
+```
+
+We will use the `a_weights` and `b_weights` {{< var array >}}s for our
+simulation.   We are going to shuffle these weights, so we first *concatenate*
+the two {{< var array >}}s (see @sec-concatenate) so we can shuffle them:
+
+```{python}
+both = np.concatenate([a_weights, b_weights])
+both
+```
+
+```{r}
+both <- c(a_weights, b_weights)
+both
+```
+
+Now do the simulation:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# set up the random number generator
+rnd = np.random.default_rng()
+
+# Set the number of trials
+n_trials = 10_000
+
+# Set the sample size for each trial
+sample_size = 20
+
+# An empty array to store the trial results.
+results = np.zeros(n_trials)
+
+# Do 10,000 experiments.
+for i in range(n_trials):
+    # Take a "resample" of 12 with replacement from both and put it in fake_a
+    fake_a = rnd.choice(both, size=12)
+    # Likewise to make fake_b
+    fake_b = rnd.choice(both, size=12)
+    # Sum the first "resample."
+    fake_a_sum = np.sum(fake_a)
+    # Sum the second "resample."
+    fake_b_sum = np.sum(fake_b)
+    # Calculate the difference between the two resamples.
+    fake_diff = fake_a_sum - fake_b_sum
+    # Keep track of each trial result.
+    results[i] = fake_diff
+    # End one experiment, go back and repeat until all trials are complete,
+    # then proceed.
+# Produce a histogram of trial results.
+plt.hist(results, bins=25)
+plt.xlabel('Second resample minus first')
+plt.title('Distribution difference in sums of resamples')
+```
+
+```{r}
+# Set the number of trials
+n_trials <- 10000
+
+# Set the sample size for each trial
+sample_size <- 20
+
+# An empty array to store the trial results.
+results <- numeric(n_trials)
+
+# Do 10,000 experiments.
+for (i in 1:n_trials) {
+    # Take a "resample" of 12 with replacement from both and put it in fake_a
+    fake_a <- sample(both, size=12, replace=TRUE)
+    # Likewise to make fake_b
+    fake_b <- sample(both, size=12, replace=TRUE)
+    # Sum the first "resample."
+    fake_a_sum <- sum(fake_a)
+    # Sum the second "resample."
+    fake_b_sum <- sum(fake_b)
+    # Calculate the difference between the two resamples.
+    fake_diff <- fake_a_sum - fake_b_sum
+    # Keep track of each trial result.
+    results[i] <- fake_diff
+    # End one experiment, go back and repeat until all trials are complete,
+    # then proceed.
+}
+# Produce a histogram of trial results.
+hist(results, breaks=25,
+      xlab='Second resample minus first',
+      main='Distribution difference in sums of resamples')
+```
+
+From this histogram we see that a very small proportion of the trials produced
+a difference between groups as large as that observed (or larger). {{< var
+lang >}} will calculate this for us with the following code:
+
+```{python}
+# Determine how many of the trials produced a difference between resamples.
+count_more = np.sum(results >= 38)
+# Likewise for a difference of -38.
+count_less = np.sum(results <= -38)
+# Add the two together.
+k = count_more + count_less
+# Divide by number of trials to convert to proportion.
+kk = k / n_trials
+# Print the result.
+print('Proportion of trials with either >=38 or <=-38:', kk)
+```
+
+```{r}
+# Determine how many of the trials produced a difference between resamples.
+count_more <- sum(results >= 38)
+# Likewise for a difference of -38.
+count_less <- sum(results <= -38)
+# Add the two together.
+k = count_more + count_less
+# Divide by number of trials to convert to proportion.
+kk = k / n_trials
+# Print the result.
+message('Proportion of trials with either >=38 or <=-38: ', kk)
+```
+:::
+<!---
+End of notebook
+-->
 
 ### Example: Is There a Difference in Liquor Prices Between State-Run and Privately-Run Systems? {#sec-liquor-public-measured}
 
 This is an example of **testing for differences between means of unequal-sized samples of measured data**.
 
-In the 1960s I studied the price of liquor in the sixteen "monopoly"
-states (where the state government owns the retail liquor stores)
-compared to the twenty-six states in which retail liquor stores are
-privately owned. (Some states were omitted for technical reasons. And it
-is interesting to note that the situation and the price pattern has
-changed radically since then.) These data were introduced in the context
-of a problem in probability in @sec-infinite-universes.
+In the 1960s I (JLS) studied the price of liquor in the sixteen "monopoly"
+states (where the state government owns the retail liquor stores) compared to
+the twenty-six states in which retail liquor stores are privately owned. (Some
+states were omitted for technical reasons. And it is interesting to note that
+the situation and the price pattern has changed radically since then.) These
+data were introduced in the context of a problem in probability in
+@sec-infinite-universes.
 
 These were the representative 1961 prices of a fifth of Seagram 7 Crown
 whiskey in the two sets of states:[^liquor-data]

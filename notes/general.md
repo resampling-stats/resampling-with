@@ -179,6 +179,9 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * `if` blocks?
 * `abs` covered in `standard_scores`, around line 1060.
 * `**` or `^` for squaring values, `standard_scores` around line 1141.
+* Concatenation covered in
+  `probability_theory_3.Rmd`. (`np.concatenate` and
+  `c` for vectors).
 
 ## Data
 
