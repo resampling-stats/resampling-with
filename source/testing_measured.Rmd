@@ -660,32 +660,21 @@ the twenty-six states in which retail liquor stores are privately owned. (Some
 states were omitted for technical reasons. And it is interesting to note that
 the situation and the price pattern has changed radically since then.) These
 data were introduced in the context of a problem in probability in
-@sec-infinite-universes.
+@sec-public-liquor.
 
-These were the representative 1961 prices of a fifth of Seagram 7 Crown
+@tbl-whiskey-prices2 is the same as the matching table in @sec-public-liquor.
+They show the representative 1961 prices of a fifth of Seagram 7 Crown
 whiskey in the two sets of states:[^liquor-data]
 
 [^liquor-data]: The data are from *The Liquor Handbook* (1962, p. 68). Eight
   states are omitted for various reasons. For more information, see Simon and
   Simon [-@simon1996effects].
 
-16 monopoly states: \$4.65, \$4.55, \$4.11, \$4.15, \$4.20, \$4.55,
-\$3.80,
-
-\$4.00, \$4.19, \$4.75, \$4.74, \$4.50, \$4.10, \$4.00, \$5.05, \$4.20
-
-Mean = \$4.35
-
-26 private-ownership states: \$4.82, \$5.29, \$4.89, \$4.95, \$4.55,
-\$4.90,
-
-\$5.25, \$5.30, \$4.29, \$4.85, \$4.54, \$4.75, \$4.85, \$4.85, \$4.50,
-\$4.75,
-
-\$4.79, \$4.85, \$4.79, \$4.95, \$4.95, \$4.75, \$5.20, \$5.10, \$4.80,
-\$4.29.
-
-Mean = \$4.84
+```{python results='asis', eval=TRUE, echo=FALSE, message=FALSE}
+import liquor_analysis as la
+print(f'{la.md_table()}\n\n: '
+      'Whiskey prices by state category {#tbl-whiskey-prices2}')
+```
 
 The *economic* question that underlay the investigation — having both
 theoretical and policy ramifications — is as follows: Does state
@@ -700,20 +689,19 @@ liquor prices, or whether the observed pattern could well have been
 produced by chance variability.
 
 The first step is to examine the two sets of data graphically to see
-whether there was such a clear-cut difference between them — of the
-order of Snow's data on cholera, or the Japanese Navy data on
-beri-beri — that no test was necessary. The separate displays, and then
-the two combined together, are shown in @fig-liquor_price_plots; the answer is
-not clear-cut and hence a formal test is necessary.
+whether there was such a clear-cut difference between them — of the order of
+Snow's data on cholera, or the Japanese Navy data on beri-beri — that no test
+was necessary. The separate displays, and then the two combined together, are
+shown in @fig-whiskey-hist2; the answer is not clear-cut and hence
+a formal test is necessary.
 
 <!---
 Refer back to @sec-inference-ideas tables 11.3 and 11.4.
 -->
 
-```{r fig-liquor_price_plots, opts.label='svg_fig', fig.cap="Liquor prices by government and private"}
-include_svg('diagrams/liquor_price_plots.svg')
+```{python fig-whiskey-hist2, opts.label='svg_fig', fig.cap="Whiskey prices by state category"}
+la.price_plots()
 ```
-
 
 At first I used a resampling permutation test as follows: Assuming that
 the entire universe of possible prices consists of the set of events
@@ -741,35 +729,226 @@ in 1961, one would not conclude that the observed difference was due to
 the type of retailing system because it could well have been due to
 chance variation.
 
-The results — not even one "success" in 10,000 trials — imply that there
-is a very small probability that two groups with mean prices as
-different as were observed would happen by chance if drawn from the
-universe of 42 observed prices. So we "reject the null hypothesis" and
-instead find persuasive the proposition that the type of liquor
-distribution system influences the prices that consumers pay.[^liquor-tests]
+Here is that procedure as [an R]{.r}[a Python]{.python} notebook.  Compare to the very similar bootstrap procedure in @sec-public-liquor.
+
+::: {.notebook name="liquor_permutation" title="Permutation test of public and private liquor prices"}
+
+::: nb-only
+This notebook asks the question whether the difference in the means of private
+and government-specified prices of a particular whiskey could plausibly have
+come about as a result of random sampling.  It uses a permutation method, where we use a shuffled version of all 42 values to comprise our null-world samples.
+:::
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
+# Import the plotting library
+import matplotlib.pyplot as plt
+```
+
+```{python}
+# Load the data from a data file.
+prices_df = pd.read_csv('data/liquor_prices.csv')
+# Show this first five rows.
+prices_df.head()
+```
+
+```{r}
+# Load the data from a data file.
+prices_df <- read.csv('data/liquor_prices.csv')
+# Show this first six rows.
+head(prices_df)
+```
+
+Take all prices from the loaded data file, and convert into {{< var an_array >}}s for each category.
+
+```{python}
+# Rows for private prices.
+priv_df = prices_df[prices_df['state_type'] == 'private']
+# Convert corresponding prices to array.
+priv = np.array(priv_df['price'])
+# Show the result
+priv
+```
+
+```{python}
+# Rows for government prices.
+govt_df = prices_df[prices_df['state_type'] == 'government']
+# Convert corresponding prices to array.
+govt = np.array(govt_df['price'])
+# Show the result
+govt
+```
+
+```{r}
+# Rows for private prices.
+priv_df <- subset(prices_df, prices_df['state_type'] == 'private')
+# Convert corresponding prices to vector.
+priv <- priv_df$price
+# Show the result.
+priv
+```
+
+```{r}
+# Rows for government prices.
+govt_df <- subset(prices_df, prices_df['state_type'] == 'government')
+# Convert corresponding prices to vector.
+govt = govt_df$price
+# Show the result.
+govt
+```
+
+Calculate actual difference:
+
+```{python}
+actual_diff = np.mean(priv) - np.mean(govt)
+actual_diff
+```
+
+```{r}
+actual_diff <- mean(priv) - mean(govt)
+actual_diff
+```
+
+Concatenate the private and government values into one {{< var array >}}:
+
+```{python}
+# Join the two arrays of data into one array.
+both = np.concatenate([priv, govt])
+both 
+```
+
+```{r}
+# Join the two vectors of data into one vector.
+both <- c(priv, govt)
+both
+```
+
+Do simulation:
+
+```{python}
+n_trials = 10_000
+
+# Fake differences for each trial.
+results = np.zeros(n_trials)
+
+# Repeat 10000 simulation trials
+for i in range(n_trials):
+
+    # Shuffle 42 values to a random order.
+    shuffled = rnd.permuted(both)
+
+    # Take first 26 shuffled values as fake private group
+    fake_priv = shuffled[:26]
+
+    # Remaining values (from position 26 to end, 16 values)
+    # form the fake government group.
+    fake_govt = shuffled[26:]
+
+    # Find the mean of the "private" group.
+    p = np.mean(fake_priv)
+
+    # Mean of the "govt." group
+    g = np.mean(fake_govt)
+
+    # Difference in the means
+    diff = p - g
+
+    # Keep score of the trials
+    results[i] = diff
+
+# Graph of simulation results to compare with the observed result.
+plt.hist(results, bins=25)
+plt.xlabel('Difference in average prices (cents)')
+plt.title('Average price difference (Actual difference = '
+f'{actual_diff * 100:.0f} cents)');
+
+# Number of trials where fake difference >= actual.
+k = np.sum(results >= actual_diff)
+kk = k / n_trials
+
+print('Proportion fake differences <= actual_difference:', kk)
+```
+
+```{r}
+n_trials <- 10000
+
+# Fake differences for each trial.
+results <- numeric(n_trials)
+
+# Repeat 10000 simulation trials
+for (i in 1:10000) {
+
+    # Shuffle 42 values to a random order.
+    shuffled = sample(both)
+
+    # Take first 26 shuffled values as fake private group
+    fake_priv = shuffled[1:26]
+
+    # Remaining values (from position 27 to end, 16 values)
+    # form the fake government group.
+    fake_govt = shuffled[27:42]
+
+    # Find the mean of the "private" group.
+    p <- mean(fake_priv)
+
+    # Mean of the "govt." group
+    g <- mean(fake_govt)
+
+    # Difference in the means
+    diff <- p - g
+
+    # Keep score of the trials
+    results[i] <- diff
+}
+
+# Graph of simulation results to compare with the observed result.
+fig_title <- paste('Average price difference (Actual difference = ',
+                   round(actual_diff * 100),
+                   'cents')
+hist(results, main=fig_title, xlab='Difference in average prices (cents)')
+
+# Number of trials where fake difference >= actual.
+k = sum(results >= actual_diff)
+kk = k / n_trials
+
+message('Proportion fake differences <= actual_difference: ', kk)
+```
+
+:::
+<!---
+End os liquor_permutation notebook.
+-->
+
+The result —  about `r int2tw(round(get_var('kk') * 100))` percent of the
+simulations generated a value as large or larger than the actual difference
+— implies that there is a very small probability that two groups with mean
+prices as different as were observed would happen by chance if drawn from the
+universe of 42 observed prices. So we "reject the null hypothesis" and instead
+find persuasive the proposition that the type of liquor distribution system
+influences the prices that consumers pay.[^liquor-tests]
 
 [^liquor-tests]: Various tests indicate that the difference between the groups
     of states was highly significant. See Simon and Simon [-@simon1996effects].
 
-As I shall discuss later, the logical framework of this resampling
-version of the permutation test differs greatly from the formulaic
-version, which would have required heavy computation. The standard
-conventional alternative would be a Student's t-test, in which the user
-simply plugs into an unintuitive formula and reads the result from a
-table. And because of the unequal numbers of cases and unequal
-dispersions in the two samples, an appropriate t-test is far from
-obvious, whereas resampling is not made more difficult by such realistic
-complications.
+The logical framework of this resampling version of the permutation test
+differs greatly from the formulaic version, which relies on some sophisticated
+mathematics. The formula-method alternative would be a Student's t-test, in
+which the user simply plugs into an unintuitive formula and reads the result
+from a table.
 
 <!---
 Discussion of t-test?  Have we introduced the t-test?
 -->
 
-
-A program to handle the liquor problem with an infinite-universe
-bootstrap distribution simply substitutes the random sampling command
-SAMPLE for the SHUFFLE/TAKE commands. The results of the new test are
-indistinguishable from those in the program given above.
+A {{< var lang >}} program to handle the liquor problem with an
+infinite-universe bootstrap distribution simply substitutes the random
+sampling command {{< var sample >}} for the commands to do shuffling and
+splitting above. The results of the bootstrap test are indistinguishable from
+those in the permutation version of the program above — see:
+@sec-liquor-prices.
 
 Still another difficult question is whether *any* hypothesis test is
 appropriate, because the states were not randomly selected for inclusion
