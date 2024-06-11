@@ -1384,9 +1384,9 @@ u = np.concatenate([treat, control])
 for i in range(n_trials):
     # Step 3b above.
     shuffled = rnd.permuted(u)
-    # Step 3b
+    # Step 3b - take the first 7 values.
     fake_treat = shuffled[:7]
-    # Step 3b
+    # Step 3b - take the remaining values.
     fake_control = shuffled[7:]
     # Step 4
     mt = np.mean(fake_treat)
@@ -1430,9 +1430,9 @@ u <- c(treat, control)
 for (i in 1:n_trials) {
     # Step 3b above.
     shuffled <- sample(u)
-    # Step 3b.
+    # Step 3b - take the first 7 values.
     fake_treat <- shuffled[1:7]
-    # Step 3b.
+    # Step 3b - take the remaining values.
     fake_control <- shuffled[8:16]
     # Step 4.
     mt <- mean(fake_treat)
