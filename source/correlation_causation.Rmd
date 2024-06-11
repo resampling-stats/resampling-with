@@ -247,8 +247,8 @@ other.
 
 ### Example: Is Athletic Ability Directly Related to Intelligence? {#sec-athletic-iq-ranks}
 
-Question: **Is there correlation between two variables or are they
-independent?**
+A more specific version of our question: **is there correlation between the two
+variables or are they independent?**
 
 A scientist often wants to know whether or not two characteristics go together,
 that is, whether or not they are correlated (that is, related or associated).
@@ -259,20 +259,31 @@ shown in @tbl-physical-mental, ordered from high to low, along with the I.Q.
 score for each boy. The ranks for each student's athletic and I.Q. scores are
 then shown in the third and fourth columns:
 
-|  Athletic Score    | I.Q. Score     | Athletic Rank     | I.Q.Rank     |
-|--------------------|----------------|-------------------|--------------|
-| 97                 | 114            | 1                 | 3            |
-| 94                 | 120            | 2                 | 1            |
-| 93                 | 107            | 3                 | 7            |
-| 90                 | 113            | 4                 | 4            |
-| 87                 | 118            | 5                 | 2            |
-| 86                 | 101            | 6                 | 8            |
-| 86                 | 109            | 7                 | 6            |
-| 85                 | 110            | 8                 | 5            |
-| 81                 | 100            | 9                 | 9            |
-| 76                 | 99             | 10                | 10           |
+```{r echo=FALSE, eval=TRUE}
+# Show the table.
+._df_ath_iq <- read.csv('data/athletic_iq.csv')
+._df_aiq_renamed = ._df_ath_iq
+names(._df_aiq_renamed) = c('Athletic Score', 'I.Q. Score',
+                            'Athletic Rank', 'I.Q.Rank')
+ketable(._df_aiq_renamed,
+        caption='Hypothetical athletic and I.Q. scores for high school boys
+        {#tbl-physical-mental}')
+```
 
-: Hypothetical athletic and i.q. scores for high school boys {#tbl-physical-mental}
+@fig-ath-iq-scatter is a *scatterplot* with "Athletic Score" on the x-axis and
+"I.Q. Score" on the y-axis.  Each point on the plot corresponds to one row of
+@tbl-physical-mental (and therefore one boy); in particular each point is at
+the x, y coordinate given by the values in "Athletic Score" and "I.Q. Score".
+For example the point for the first boy is at position x=97, y=114.
+
+```{r label='fig-ath-iq-scatter', fig.cap='Scatter plot of I.Q. Score as a function of Athletic Score', echo=FALSE, eval=TRUE}
+plot(._df_ath_iq$athletic_score, ._df_ath_iq$iq_score,
+     xlab='Athletic Score',
+     ylab='I.Q. Score',
+     main='I.Q. Score (y-axis) as a function of Athletic Score (x-axis)',
+     frame.plot=FALSE)
+axis(side=1)
+```
 
 We want to know whether a high score on athletic ability tends to be found
 along with a high I.Q. score more often than would be expected by chance.
@@ -385,7 +396,7 @@ believe that high athletic ability tends to accompany a high I.Q.
 | 39        | 23                  | No               |
 | 40        | 26                  | No               |
 
-: 40 random trials of the problem athletic / IQ problem {#tbl-ability-trials}
+: 40 random trials of the athletic / IQ problem {#tbl-ability-trials}
 
 In fact we can apply an even simpler procedure to get the same result, by reasoning about the individual trial.
 
@@ -437,21 +448,22 @@ times, recording each result in a scorekeeping vector: `z`. Graphing `z`, we get
 histogram that shows us how often our randomly assigned sums are equal to or
 below 17.
 
-```{python opts.label="py_ed"}
+```{python}
 import numpy as np
-rnd = np.random.default_rng()
 import matplotlib.pyplot as plt
+
+rnd = np.random.default_rng()
 ```
 
-```{python opts.label="py_ed"}
+```{python}
 # Number of repeats.
-N = 10000
+n_trials = 10000
 # The IQ ranks, ready for shuffling.
 iq_ranks = np.arange(1, 11)  # 1 through 10.
 # Scorekeeping array.
-z = np.zeros(N)
+results = np.zeros(n_trials)
 
-for i in range(N):
+for i in range(n_trials):
     # Shuffle the ranks.
     shuffled = rnd.permuted(iq_ranks)
     # Take the first 5 ranks.
@@ -459,24 +471,24 @@ for i in range(N):
     # Sum those ranks.
     top_5_sum = np.sum(top_5)
     # Keep track of the result of each trial.
-    z[i] = top_5_sum
+    results[i] = top_5_sum
     # End the experiment, go back and repeat.
 
 # Produce a histogram of trial results.
 # Make the bins be the integers from 10 through 45.
-plt.hist(z, bins=np.arange(10, 46))
+plt.hist(results, bins=np.arange(10, 46))
 plt.title('Sums of 5 ranks selected at random');
 ```
 
-```{r opts.label="py_ed"}
+```{r}
 # Number of repeats.
-N <- 10000
+n_trials <- 10000
 # The IQ ranks, ready for shuffling.
 iq_ranks <- 1:10  # 1 through 10.
 # Scorekeeping array.
-z <- numeric(N)
+results <- numeric(n_trials)
 
-for (i in 1:N) {
+for (i in 1:n_trials) {
     # Shuffle the ranks.
     shuffled <- sample(iq_ranks)
     # Take the first 5 ranks.
@@ -484,40 +496,45 @@ for (i in 1:N) {
     # Sum those ranks.
     top_5_sum <- sum(top_5)
     # Keep track of the result of each trial.
-    z[i] <- top_5_sum
+    results[i] <- top_5_sum
     # End the experiment, go back and repeat.
 }
 
 # Produce a histogram of trial results.
 # Make the bins be the integers from 10 through 45.
-hist(z, breaks=10:45, main='Sums of 5 ranks selected at random')
+hist(results, breaks=10:45, main='Sums of 5 ranks selected at random')
 ```
 
 ```{r echo=FALSE, eval=TRUE}
-le_pct <- round(sum(get_var('z') <= 17) / get_var('N') * 100)
+le_pct <- round(sum(get_var('results') <= 17) / get_var('n_trials') * 100)
 ```
 
-We see that in only about `r le_pct`% of the trials did random selection of
+We see that in only about `r le_pct` % of the trials did random selection of
 ranks produce a total of 17 or lower. {{< var lang >}} can calculate this for
 us directly:
 
 ```{python}
 # Determine how many trials produced sums of ranks <= 17 by chance.
-k = np.sum(z <= 17)
+k = np.sum(results <= 17)
 # The proportion.
-kk = k / N
-# Show the result
+kk = k / n_trials
+# Show the result.
 kk
 ```
 
 ```{r}
 # Determine how many trials produced sums of ranks <= 17 by chance.
-k <- sum(z <= 17)
+k <- sum(results <= 17)
 # The proportion.
-kk <- k / N
-# Show the result
+kk <- k / n_trials
+# Show the result.
 kk
 ```
+
+:::
+<!---
+End of notebook
+-->
 
 Why do we sum the ranks of the first *five* athletes rather than taking the sum
 of the top three, say? Indeed, we could have looked at the top three, two,
@@ -539,24 +556,64 @@ five I.Q. scores. We can then shuffle five black and five red cards and see how
 often four or more (that is, four or five) blacks come up with the first five
 cards. The proportion of times that four or more blacks occurs in the trial is
 the probability that an association as strong as that observed might occur by
-chance even if there is no association. Table 23-3 shows a proportion of five
-trials out of twenty.
+chance even if there is no association. @tbl-top-rank-counts shows a proportion
+of five trials out of twenty.
 
-In the {{< var lang >}} program below, we first note that the top 5 athletes
-had 4 of the top 5 I.Q. scores. So we constitute the set of 10 IQ rankings
-{{< var array >}} `a`. We then SHUFFLE A and TAKE 5 I.Q. rankings (out of 10).
-We COUNT how many are in the top 5, and keep SCORE of the result. After REPEATing 1000
-times, we find out how often we select 4 of the top 5.
+| Trial     |  Score    | Yes or No |
+|-----------|-----------|-----------|
+| 1         | 4         | Yes       |
+| 2         | 2         | No        |
+| 3         | 2         | No        |
+| 4         | 2         | No        |
+| 5         | 3         | No        |
+| 6         | 2         | No        |
+| 7         | 4         | Yes       |
+| 8         | 3         | No        |
+| 9         | 3         | No        |
+| 10        | 4         | Yes       |
+| 11        | 3         | No        |
+| 12        | 1         | No        |
+| 13        | 3         | No        |
+| 14        | 3         | No        |
+| 15        | 4         | Yes       |
+| 16        | 3         | No        |
+| 17        | 2         | No        |
+| 18        | 2         | No        |
+| 19        | 2         | No        |
+| 20        | 4         | Yes       |
 
-```{python opts.label="py_ed"}
+: Results of 20 random trials of the top-5 rank counts {#tbl-top-rank-counts}
+
+::: {.notebook name="athlete_iq_rank_count" title="Athletic ability and IQ using rank counts"}
+
+::: nb-only
+Continuing with the question: **Is there correlation between two variables or are they
+independent?**
+
+This approach differs from the previous notebook in this series, in looking only at the top 5 permuted I.Q. ranks.  Now read on.
+:::
+
+In the {{< var lang >}} code below, we first note that the top 5 athletes
+had 4 of the top 5 I.Q. scores. So we constitute the set of 10 IQ rankings {{<
+var array >}} `iq_ranks`. We then shuffle `iq_ranks` and select the first
+5 I.Q. rankings (out of 10). We COUNT how many are in the top 5, and keep track
+of the result. After repeating 10,000 times using a `for` loop, we find out how
+often we select 4 of the top 5.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+rnd = np.random.default_rng()
+
 # Number of repeats.
-N = 10000
+n_trials = 10000
 # The IQ ranks, ready for shuffling.
 iq_ranks = np.arange(1, 11)  # 1 through 10.
 # Scorekeeping array.
-z = np.zeros(N)
+results = np.zeros(n_trials)
 
-for i in range(N):
+for i in range(n_trials):
     # Shuffle the ranks.
     shuffled = rnd.permuted(iq_ranks)
     # Take the first 5 ranks.
@@ -568,26 +625,26 @@ for i in range(N):
     # Count how many were in the top 5
     n_are_top = np.sum(are_top)
     # Keep track of the result of each trial.
-    z[i] = n_are_top
+    results[i] = n_are_top
     # End the experiment, go back and repeat.
 
 # Determine how many trials produced 4 or more top ranks by chance.
-k = np.sum(z >= 4)
+k = np.sum(results >= 4)
 #  Convert to a proportion.
-kk = k / N
+kk = k / n_trials
 # Show the result.
 kk
 ```
 
-```{r opts.label="py_ed"}
+```{r}
 # Number of repeats.
-N <- 10000
+n_trials <- 10000
 # The IQ ranks, ready for shuffling.
 iq_ranks <- 1:10  # 1 through 10.
 # Scorekeeping array.
-z <- numeric(N)
+results <- numeric(n_trials)
 
-for (i in 1:N) {
+for (i in 1:n_trials) {
     # Shuffle the ranks.
     shuffled <- sample(iq_ranks)
     # Take the first 5 ranks.
@@ -599,46 +656,22 @@ for (i in 1:N) {
     # Count how many were in the top 5
     n_are_top <- sum(are_top)
     # Keep track of the result of each trial.
-    z[i] <- n_are_top
+    results[i] <- n_are_top
     # End the experiment, go back and repeat.
 }
 
 # Determine how many trials produced 4 or more top ranks by chance.
-k = sum(z >= 4)
+k = sum(results >= 4)
 #  Convert to a proportion.
-kk = k / N
+kk = k / n_trials
 # Show the result.
 kk
 ```
 
-Observed Score: 4
-
-  ----------- ----------- ---------------
-  **Trial**   **Score**   **Yes or No**
-  1           4           Yes
-  2           2           No
-  3           2           No
-  4           2           No
-  5           3           No
-  6           2           No
-  7           4           Yes
-  8           3           No
-  9           3           No
-  10          4           Yes
-  11          3           No
-  12          1           No
-  13          3           No
-  14          3           No
-  15          4           Yes
-  16          3           No
-  17          2           No
-  18          2           No
-  19          2           No
-  20          4           Yes
-  ----------- ----------- ---------------
-
-: Results of 20 random trials of the top-5 rank counts {#tbl-top-rank-counts}
-
+:::
+<!---
+End of notebook
+-->
 
 So far we have proceeded on the theory that if there is *any* relationship
 between athletics and I.Q., then the better athletes have higher rather than
@@ -649,9 +682,9 @@ have had to consider the possibility that the top five athletes could have I.Q.
 scores either higher *or* lower than those of the other students. The results
 of the "two-tail" test would have yielded odds weaker than those we observed.
 
-### Example: Athletic ability and I.Q. a third way
+### Example: Athletic ability and I.Q. — a third way
 
-The example in @sec-althletic-iq-ranks investigated the relationship between
+The example in @sec-athletic-iq-ranks investigated the relationship between
 I.Q. and athletic score by ranking the two sets of scores. But ranking of
 scores loses some efficiency because it uses only an "ordinal" (rank-ordered)
 rather than a "cardinal" (measured) scale; the numerical shadings and relative
@@ -695,28 +728,47 @@ Now let us take advantage of a handy property of numbers. The more closely two
 sets of numbers match each other in order, the higher the sums of their
 products. Consider the following arrays of the numbers 1, 2, and 3:
 
-1 x 1 = 1
+**Columns in matching order**
 
-2 x 2 = 4 (columns in matching order) 3 x 3 = 9
+$$
+\begin{align*}
+1 * 1 = 1 \\
+2 * 2 = 4 \\
+3 * 3 = 9 \\
+\\
+\mathrm{SUM} = 14
+\end{align*}
+$$
 
-SUM = 14
+**Columns not in matching order**
 
-1 x 2 = 2
+$$
+\begin{align*}
+1 * 2 = 2 \\
+2 * 3 = 6 \\
+3 * 1 = 3 \\
+\\
+\mathrm{SUM} = 11
+\end{align*}
+$$
 
-2 x 3 = 6 (columns not in matching order) 3 x 1 = 3
-
-SUM = 11
 
 I will not attempt a mathematical proof, but the reader is encouraged to try
 additional combinations to be sure that the highest sum is obtained when the
 order of the two columns is the same. Likewise, the lowest sum is obtained when
 the two columns are in perfectly opposite order:
 
-1 x 3 = 3
+**Columns in opposite order**
 
-2 x 2 = 4 (columns in opposite order) 3 x 1 = 3
-
-SUM = 10
+$$
+\begin{align*}
+1 * 3 = 3 \\
+2 * 3 = 4 \\
+3 * 1 = 3 \\
+\\
+\mathrm{SUM} = 10
+\end{align*}
+$$
 
 Consider the cases in Table 23-4 which are chosen to illustrate a
 perfect (linear) association between *x* (Column 1) and *y* 1 (Column
@@ -1504,21 +1556,20 @@ similar to the outcomes that a lottery-type random-number machine would
 produce.
 
 Remember, too, the study by Gilovich, Vallone, and Twersky of basketball
-mentioned in @sec-sampling-variability. To repeat, their analyses "provided no evidence
-for a positive correlation between the outcomes of successive shots."
-That is, knowing whether a shooter has or has not scored on the previous
-sheet — or in any previous sequence of shots — is useless for predicting
-whether he will score again.
+mentioned in @sec-sampling-variability. To repeat, their analyses "provided no
+evidence for a positive correlation between the outcomes of successive shots."
+That is, knowing whether a shooter has or has not scored on the previous sheet
+— or in any previous sequence of shots — is useless for predicting whether he
+will score again.
 
-The species homo sapiens apparently has a powerful propensity to believe
-that one can find a pattern even when there is no pattern to be found.
-Two decades ago I cooked up several series of random numbers that looked
-like weekly prices of publicly-traded stocks. Players in the experiment
-were told to buy and sell stocks as they chose. Then I repeatedly gave
-them "another week's prices," and allowed them to buy and sell again.
-The players did all kinds of fancy calculating, using a wild variety of
-assumptions — although there was no possible way that the figuring could
-help them.
+The species *homo sapiens* apparently has a powerful propensity to believe that
+one can find a pattern even when there is no pattern to be found. Two decades
+ago I (JLS) cooked up several series of random numbers that looked like weekly
+prices of publicly-traded stocks. Players in the experiment were told to buy
+and sell stocks as they chose. Then I repeatedly gave them "another week's
+prices," and allowed them to buy and sell again. The players did all kinds of
+fancy calculating, using a wild variety of assumptions — although there was no
+possible way that the figuring could help them.
 
 When I stopped the game before completing the 10 buy-and-sell sessions they
 expected, subjects would ask that the game go on. Then I would tell them that
@@ -1528,41 +1579,39 @@ not depend upon the subjects' skill. Nevertheless, they demanded that the game
 not stop until the 10 "weeks" had been played, so they could find out whether
 they "won" or "lost."
 
-This study of batting illustrates how one can test for independence
-among various trials. The trials are independent if each observation is
-randomly chosen with replacement from the universe, in which case there
-is no reason to believe that one observation will be related to the
-observations directly before and after; as it is said, "the coin has no
-memory."
+This study of batting illustrates how one can test for independence among
+various trials. The trials are independent if each observation is randomly
+chosen with replacement from the universe, in which case there is no reason to
+believe that one observation will be related to the observations directly
+before and after; as it is said, "the coin has no memory."
 
-The year-to-year level of Lake Michigan is an example in which
-observations are *not* independent. If Lake Michigan is very high in one
-year, it is likely to be higher than average the following year because
-some of the high level carries over from one year into the next.[^wallis-example]
-We could test this hypothesis by writing down whether the level in each
-year from, say, 1860 to 1975 was higher or lower than the median level
-for those years. We would then count the number of runs of "higher" and
-"lower" and compare the number of runs of "black" and "red" with a deck
-of that many cards; we would find fewer runs in the lake level than in
-an average hand of 116 (1976-1860) cards, though this test is hardly
-necessary. (But are the *changes* in Lake Michigan's level independent
-from year to year? If the level went up last year, is there a better
-than 50-50 chance that the level will also go up this year? The answer
-to this question is not so obvious. One could compare the numbers of
-runs of ups and downs against an average hand of cards, just as with the
-hits and outs in baseball.)
+The year-to-year level of Lake Michigan is an example in which observations are
+*not* independent. If Lake Michigan is very high in one year, it is likely to
+be higher than average the following year because some of the high level
+carries over from one year into the next.[^wallis-example] We could test this
+hypothesis by writing down whether the level in each year from, say, 1860 to
+1975 was higher or lower than the median level for those years. We would then
+count the number of runs of "higher" and "lower" and compare the number of runs
+of "black" and "red" with a deck of that many cards; we would find fewer runs
+in the lake level than in an average hand of 116 (1976-1860) cards, though this
+test is hardly necessary. (But are the *changes* in Lake Michigan's level
+independent from year to year? If the level went up last year, is there
+a better than 50-50 chance that the level will also go up this year? The answer
+to this question is not so obvious. One could compare the numbers of runs of
+ups and downs against an average hand of cards, just as with the hits and outs
+in baseball.)
 
 [^wallis-example]: Example from [@wallis1956statistics, pages 565 -- 556].
 
-Exercise for students: How could one check whether the successive numbers in a
-random-number table are independent?
+Exercise for students: How could one check whether the successive numbers in
+a random-number table are independent?
+
 
 ## Exercises
 
-Solutions for problems may be found in the section titled, "Exercise
-Solutions" at the back of this book.
+Solutions for problems may be found at @sec-exercise-solutions.
 
-**Exercise 23-1**
+### Exercise 23-1
 
 Table 23-12 shows voter participation rates in the various states in the
 1844 presidential election. Should we conclude that there was a negative
@@ -1608,7 +1657,7 @@ The observed correlation coefficient between voter participation and
 spread is -.37398. Is this more negative that what might occur by
 chance, if no correlation exists?
 
-**Exercise 23-2**
+### Exercise 23-2
 
 We would like to know whether, among major-league baseball players, home
 runs (per 500 at-bats) and strikeouts (per 500 at-bat's) are correlated.
@@ -1619,18 +1668,28 @@ a more "sophisticated" measure, the correlation coefficient.)
 The data for 18 randomly-selected players in the 1989 season are as
 follows, as they would appear in the first lines of the program.
 
+```{python}
+import numpy as np
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+homeruns = np.array([14, 20, 0, 38, 9, 38, 22, 31, 33,
+                     11, 40, 5, 15, 32, 3, 29, 5, 32])
+strikeout = np.array([135, 153, 120, 161, 138, 175, 126, 200, 205,
+                      147, 165, 124, 169, 156, 36, 98, 82, 131])
 
-```matlab
-' Program file: "correlation_causation_08.rss"
-
-NUMBERS (14 20 0 38 9 38 22 31 33 11 40 5 15 32 3 29 5 32) homeruns
-NUMBERS (135 153 120 161 138 175 126 200 205 147 165 124 169 156 36 98 82 131) strikeout
-' Exercise: Complete this program.
+# Exercise - complete this program.
 ```
 
-**Exercise 23-3**
+```{r}
+homeruns <- c(14, 20, 0, 38, 9, 38, 22, 31, 33,
+              11, 40, 5, 15, 32, 3, 29, 5, 32)
+strikeout <- c(135, 153, 120, 161, 138, 175, 126, 200, 205,
+               147, 165, 124, 169, 156, 36, 98, 82, 131)
+
+# Exercise - complete this program.
+```
+
+
+### Exercise 23-3
 
 In the previous example relating strikeouts and home runs, we used the
 procedure of multiplying the elements within each pair. Now we use a
@@ -1641,7 +1700,7 @@ known that we calculate it with a pre-set command.
 Exercise: Write a program that uses the correlation coefficient to test
 the significance of the association between home runs and strikeouts.
 
-**Exercise 23-4**
+### Exercise 23-4
 
 All the other things equal, an increase in a country's money supply is
 inflationary and should have a negative impact on the exchange rate for
@@ -1690,7 +1749,7 @@ Table 23-13
   USA            0.000   0.156    Vanatuva       0.008    0.331
   Yemen          0.253   0.247    Yugoslavia     0.685    0.432
   Zaire          0.343   0.244    Zambia         0.457    0.094
-  Zimbabwe       0.359   0.164                            
+  Zimbabwe       0.359   0.164
   -------------- ------- -------- -------------- -------- -------
 
  Percentage changes in exchange rates and money supply between 1983 and
@@ -1705,13 +1764,13 @@ would be adapted from Noreen (1989), and otherwise, what Noreen (1990) might
 be.
 -->
 
+## Exercise 1 {#sec-country-exchange}
 
-Exercise: Should the algorithm of non-computer resampling steps be
-similar to the algorithm for I.Q. and athletic ability shown in the
-text? One can also work with the correlation coefficient rather then the
-sum-of-products method, and expect to get the same result.
+Should the algorithm of non-computer resampling steps be similar to the
+algorithm for I.Q. and athletic ability shown in the text? One can also work
+with the correlation coefficient rather then the sum-of-products method, and
+expect to get the same result.
 
 1.  Write a series of non-computer resampling steps to solve this
     problem.
-
 2.  Write a computer program to implement those steps.
