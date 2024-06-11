@@ -1067,7 +1067,7 @@ n_trials = 10_000
 # Make array to store results for each trial.
 results = np.zeros(n_trials)
 
-# Do 1000 simulations
+# Do 10000 simulations
 for i in range(n_trials):
     # Take a resample of 15 from all birth weights.
     fake_treat = rnd.choice(both, size=15)
@@ -1122,7 +1122,7 @@ n_trials <- 10000
 # Make vector to store results for each trial.
 results <- numeric(n_trials)
 
-# Do 1000 simulations
+# Do 10000 simulations
 for (i in 1:n_trials) {
     # Take a resample of 15 from all birth weights.
     fake_treat <- sample(both, size=15, replace=TRUE)
@@ -1189,18 +1189,18 @@ our hypothetical (bootstrap) universe is effectively infinite.
 
 The following procedure will serve:
 
-1.  Calculate the difference between the means of the two observed
-    samples -- it's 30.63 days in favor of the treated mice.
-2.  Consider the two samples combined (16 observations) as the relevant
-    universe to resample from.
-3.  Draw 7 hypothetical observations with replacement and designate them
-    "Treatment"; draw 9 hypothetical observations with replacement and
-    designate them "Control."
-4.  Compute and record the difference between the means of the two
-    samples.
-5.  Repeat steps 2 and 3 perhaps 10000 times.
-6.  Determine how often the resampled difference exceeds the observed
-    difference of 30.63.
+* **Step 1.**  Calculate the difference between the means of the two
+  observed samples -- it's 30.63 days in favor of the treated mice.
+* **Step 2.**  Consider the two samples combined (16 observations) as the
+relevant universe to resample from.
+* **Step 3**.  Draw 7 hypothetical observations with replacement and
+designate them "Treatment"; draw 9 hypothetical observations with
+replacement and designate them "Control."
+* **Step 4.**  Compute and record the difference between the means of the
+two samples.
+** Step 5.**  Repeat steps 2 and 3 perhaps 10000 times.
+** Step 6.**  Determine how often the resampled difference exceeds the
+observed difference of 30.63.
 
 The following notebook follows the above procedure:
 
@@ -1332,67 +1332,141 @@ permutation test is appropriate. The algorithm would then be as follows (with
 the steps that are the same as above labeled "a" and those that are different
 labeled "b"):
 
-* **1a.** Calculate the difference between the means of the two observed
+* **Step 1a.** Calculate the difference between the means of the two observed
   samples -- it's 30.63 days in favor of the treated mice.
-* **2a.** Consider the two samples combined (16 observations) as the relevant
-universe to resample from.
-* **3b.** Draw 7 hypothetical observations without replacement and designate
-them "Treatment"; draw 9 hypothetical observations with replacement and
-designate them "Control."
-* **4a.** Compute and record the difference between the means of the two
+* **Step 2a.** Consider the two samples combined (16 observations) as the
+relevant universe to resample from.
+* **Step 3b.** Draw 7 hypothetical observations without replacement and
+designate them "Treatment"; draw the remaining 9 hypothetical observations and
+designate them "Control." (We can do this by shuffling our universe and
+splitting it into groups by taking the first 7 and the last 9.)
+* **Step 4a.** Compute and record the difference between the means of the two
 samples.
-* **5a.** Repeat steps 2 and 3 perhaps 1000 times
-* **6a.** Determine how often the resampled difference exceeds the observed
-difference of 30.63.
+* **Step 5a.** Repeat steps 2 and 3 perhaps 10,000 times
+* **Step 6a.** Determine how often the resampled difference exceeds the
+observed difference of 30.63.
 
 Here is the {{< var lang >}} notebook:
 
+::: {.notebook name="mouse_permutation" title="Permutation test for mouse survival data"}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: nb-only
+Use permutation (shuffle-and-split) samples from mouse survival data to
+compare actual mean difference to those observed in the null- (permutation)
+world.
+:::
 
-```matlab
-' Program file: "testing_measured_04.rss"
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-NUMBERS (94 38 23 197 99 16 141) treatmt
-' treatment group
-NUMBERS (52 10 40 104 51 27 146 30 46) control
-' control group
-CONCAT treatmt control u
-' U is our universe (step 2 above)
-REPEAT 1000
-    ' step 5 above
-    SHUFFLE u ushuf
-    TAKE ushuf 1,7 treatmt$
-    ' step 3 above
-    TAKE ushuf 8,16 control$
-    ' step 3
-    MEAN treatmt$ tmean
-    ' step 4
-    MEAN control$ cmean
-    ' step 4
-    SUBTRACT tmean cmean diff
-    ' step 4
-    SCORE diff scrboard
-    ' step 4
-END
-' step 5
-HISTOGRAM scrboard
-COUNT scrboard >=30.63 k
-' step 6
-DIVIDE k 1000 prob
-PRINT prob
+# Set up the random number generator.
+rnd = np.random.default_rng()
+
+# Treatment group.
+treat = np.array([94, 38, 23, 197, 99, 16, 141])
+# control group
+control = np.array([52, 10, 40, 104, 51, 27, 146, 30, 46])
+
+# Observed difference in real world.
+actual_diff = np.mean(treat) - np.mean(control)
+
+# Set the number of trials.
+n_trials = 10_000
+
+# An empty array to store the trials.
+results = np.zeros(n_trials)
+
+# U is our universe (Step 2 above)
+u = np.concatenate([treat, control])
+
+# step 5 above.
+for i in range(n_trials):
+    # Step 3b above.
+    shuffled = rnd.permuted(u)
+    # Step 3b
+    fake_treat = shuffled[:7]
+    # Step 3b
+    fake_control = shuffled[7:]
+    # Step 4
+    mt = np.mean(fake_treat)
+    # Step 4
+    mc = np.mean(fake_control)
+    # Step 4
+    diff = mt - mc
+    # Step 4
+    results[i] = diff
+
+# Step 6
+plt.hist(results, bins=25)
+plt.title('Permutation distribution of mean differences in survival')
+plt.xlabel('Permutation mean treatment - mean control')
+
+# Step 6
+k = np.sum(results >= actual_diff)
+kk = k / n_trials
+print('Proportion permutation mean difference >= actual difference:', kk)
 ```
 
+```{r}
+# Treatment group.
+treat <- c(94, 38, 23, 197, 99, 16, 141)
+# control group
+control <- c(52, 10, 40, 104, 51, 27, 146, 30, 46)
 
-![](images/22-Chap-18_008.png)
+# Observed difference in real world.
+actual_diff <- mean(treat) - mean(control)
 
-Result: prob = 0.145
+# Set the number of trials.
+n_trials <- 10000
 
-Interpretation: 1000 simulated resamples (of sizes 7 and 9) from a
-combined universe produced a difference as big as 30.63 more than 14
-percent of the time. We therefore should not rule out the possibility
-that chance might be responsible for the observed advantage of the
-treatment group.
+# An empty array to store the trials.
+results <- numeric(n_trials)
+
+# U is our universe (Step 2 above)
+u <- c(treat, control)
+
+# step 5 above.
+for (i in 1:n_trials) {
+    # Step 3b above.
+    shuffled <- sample(u)
+    # Step 3b.
+    fake_treat <- shuffled[1:7]
+    # Step 3b.
+    fake_control <- shuffled[8:16]
+    # Step 4.
+    mt <- mean(fake_treat)
+    # Step 4.
+    mc <- mean(fake_control)
+    # Step 4.
+    diff <- mt - mc
+    # Step 4.
+    results[i] <- diff
+}
+
+# Step 6
+hist(results, breaks=25,
+    main='Permutation distribution of mean differences in survival',
+    xlab='Permutation mean treatment - mean control')
+
+# Step 6
+k <- sum(results >= actual_diff)
+kk <- k / n_trials
+message('Proportion permutation mean difference >= actual difference: ', kk)
+```
+
+:::
+<!---
+End of notebook
+-->
+
+Interpretation: `r sprintf('%d', get_var('n_trials'))` simulated resamples (of
+sizes 7 and 9) from a combined universe produced a difference as big as
+`r round(get_var('actual_diff'), 2)` about
+`r round(get_var('kk') * 100, 1)` percent of the time.  We therefore should
+not rule out the possibility that chance might be responsible for the observed
+advantage of the treatment group.
+
 
 ## Differences among four means
 
@@ -1468,9 +1542,9 @@ between each *pair* of foods, six differences in all, converting all minus (-)
 signs to (+) differences (taking the *absolute* value). Then we can *total*
 the six absolute differences, and compare the total with the sum of the six
 absolute differences in the *observed* sample. The proportion of the
-resampling trials in which the observed sample sum is exceeded by the sum of
-the differences in the trials is the probability that the observed samples
-would differ as much as they do if they come from the same
+resampling trials in which the observed sample sum is equaled or exceeded by
+the sum of the differences in the trials is the probability that the observed
+samples would differ as much as they do if they come from the same
 universe.[^otherwise-sos]
 
 [^otherwise-sos]: Technical Note: Computing the sum of squared differences
@@ -1530,7 +1604,8 @@ ketable(._abcd_sums,
 ```
 
 The next step is to calculate the differences between all the possible
-combinations of groups:
+combinations of groups.
+
 
 ```{python}
 differences = np.array([382 - 344, 382 - 364, 382 - 335,
@@ -1551,135 +1626,266 @@ Here we face a choice. We could work with the absolute differences — that is,
 the results of the subtractions — treating each result as a positive number
 even if it is negative. We have seen this approach before. Therefore let us
 now take the opportunity of showing another approach. Instead of working with
-the absolute differences, we *square* each difference, and then SUM the
-squares. An advantage of working with the squares is that they are positive
+the absolute differences, we *square* each difference, and then sum the
+squares.
+
+```{python}
+squared_differences = differences ** 2
+squared_differences
+```
+
+```{python}
+sum_sq_d = np.sum(squared_differences)
+sum_sq_d
+```
+
+Squaring {{< var array >}}s squares *each element* of the {{< var array >}}
+(see @sec-squared-arrays):
+
+```{r}
+squared_differences <- differences ** 2
+squared_differences
+```
+
+```{r}
+sum_sq_d = sum(squared_differences)
+sum_sq_d
+```
+
+An advantage of working with the squares is that they are positive
 — a negative number squared is positive — which is convenient. Additionally,
 conventional statistics works mainly with squared quantities, and therefore it
 is worth getting familiar with that point of view. The squared differences in
-this case add up to 5096.
+this case add up to `r get_var('sum_sq_d')`.
 
 Using {{< var lang >}}, we shuffle all the weight gains together, select
-four random groups, and determine whether the squared differences in the
-resample exceed 5096. If they do so with regularity, then we conclude that the
-observed differences could easily have occurred by chance.
+four random groups, and determine whether the sum of squared differences in the
+resample equal or exceed `r get_var('sum_sq_d')`. If they do so with
+regularity, then we conclude that the observed differences could easily have
+occurred by chance.
 
-With the [`c`]{.r}[`np.concatenate`]{.python} func, we string the four {{< var array >}}s into a single {{< var array >}}. After shuffling (using
-[`sample`]{.r}[`rnd.permuted`]{.python}
-the 48-pig weight-gain {{< var array >}} `both` into `shuffled`, we split
-`shuffled` into four randomized samples. And we compute the squared
+With the [`c`]{.r}[`np.concatenate`]{.python} func, we string the four {{< var array >}}s into a single {{< var array >}} called `all_weights`.
+After shuffling (using [`sample`]{.r}[`rnd.permuted`]{.python}
+the 48-pig weight-gain {{< var array >}} `all_weights` into `shuffled`, we
+split `shuffled` into four randomized samples. And we compute the squared
 differences between the pairs of groups and `sum` the squared differences just
 as we did above for the observed groups.
 
 Last, we examine how often the simulated-trials data produce differences among
-the groups as large as (or larger than) the actually observed data — 5096.
+the groups as large as (or larger than) the actually observed data — 
+`r get_var('sum_sq_d')`.
 
+::: {.notebook name="squared_rations" title="Sum of squared differences for pig rations"}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: nb-only
+Here we are working on the question — are the observed differences between pig
+ration measured weight gains for different rations greater than we would expect to see as a result of random sampling in the null-world.
+:::
 
-```matlab
-' Program file: "pigs4.rss"
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
-NUMBERS (34 29 26 32 35 38 31 34 30 29 32 31) a
-NUMBERS (26 24 28 29 30 29 32 26 31 29 32 28) b
-NUMBERS (30 30 32 31 29 27 25 30 31 32 34 33) c
-NUMBERS (32 25 31 26 32 27 28 29 29 28 23 25) d
-' (Record the data for the 4 foods)
-CONCAT a b c d g
-' Combine the four vectors into g
-REPEAT 1000
-    ' Do 1000 trials
-    SHUFFLE g h
-    ' Shuffle all the weight gains.
-    SAMPLE 12 h p
-    ' Take 4 random samples, with replacement.
-    SAMPLE 12 h q
-    SAMPLE 12 h r
-    SAMPLE 12 h s
-    SUM p i
-    ' Sum the weight gains for the 4 resamples.
-    SUM q j
-    SUM r k
-    SUM s l
-    SUBTRACT i j ij
-    ' Find the differences between all the possible pairs of resamples.
-    SUBTRACT i k ik
-    SUBTRACT i l il
-    SUBTRACT j k jk
-    SUBTRACT j l jl
-    SUBTRACT k l kl
-    MULTIPLY ij ij ijsq
-    ' Find the squared differences.
-    MULTIPLY ik ik iksq
-    MULTIPLY il il ilsq
-    MULTIPLY jk jk jksq
-    MULTIPLY jl jl jlsq
-    MULTIPLY kl kl klsq
-    ADD ijsq iksq ilsq jksq jlsq klsq total
-    ' Add them together.
-    SCORE total z
-    ' Keep track of the total for each trial.
-END
-' End one trial, go back and repeat until 1000 trials are complete.
-HISTOGRAM z
-' Produce a histogram of the trial results.
-COUNT z >= 5096 k
-' Find out how many trials produced differences among groups as great as
-' or greater than those observed.
-DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Print the result.
+# Set up the random number generator.
+rnd = np.random.default_rng()
 
-' Note: The file "pigs4" on the Resampling Stats software disk contains
-' this set of commands.
+# Load data file.y
+rations_df = pd.read_csv('data/pig_rations.csv')
+# Show the first five rows.
+rations_df.head()
 ```
 
-**PIGS4: Differences Among Four Pig Rations**
+```{r}
+# Load data file.
+rations_df <- read.csv('data/pig_rations.csv')
+# Show the first six rows.
+head(rations_df)
+```
 
-![](images/22-Chap-18_009.png)
+```{python}
+# Get arrays for each ration.
+# A
+a_rows = rations_df[rations_df['ration'] == 'A']
+a_weights = np.array(a_rows['weight_gain'])
+# B
+b_rows = rations_df[rations_df['ration'] == 'B']
+b_weights = np.array(b_rows['weight_gain'])
+# C
+c_rows = rations_df[rations_df['ration'] == 'C']
+c_weights = np.array(c_rows['weight_gain'])
+# D
+d_rows = rations_df[rations_df['ration'] == 'D']
+d_weights = np.array(d_rows['weight_gain'])
+# Concatenate into one long array.
+all_weights = np.concatenate([a_weights, b_weights, c_weights, d_weights])
+# Show the concatenated array.
+all_weights
+```
 
-**sums of squares**
+```{r}
+# Get vectors for each ration.
+# A
+a_rows <- subset(rations_df, rations_df$ration == 'A')
+a_weights <- a_rows$weight_gain
+# B
+b_rows <- subset(rations_df, rations_df$ration == 'B')
+b_weights <- b_rows$weight_gain
+# C
+c_rows <- subset(rations_df, rations_df$ration == 'C')
+c_weights <- c_rows$weight_gain
+# D
+d_rows <- subset(rations_df, rations_df$ration == 'D')
+d_weights <- d_rows$weight_gain
+# Concatenate into one long vector.
+all_weights <- c(a_weights, b_weights, c_weights, d_weights)
+# Show the concatenated vector.
+all_weights
+```
 
-We find that our observed sum of squares — 5096 — was exceeded by
-randomly-drawn sums of squares in only 3 percent of our trials. We
-conclude that the four treatments are likely not all similar.
+```{python}
+n_trials = 10_000
+
+# An array to store the result of each trial.
+results = np.zeros(n_trials)
+
+# Do 10000 trials
+for i in range(n_trials):
+    # Shuffle all the weight gains.
+    shuffled = rnd.permuted(all_weights)
+    # Split into 4 now random samples.
+    fake_a = shuffled[:12]
+    fake_b = shuffled[12:24]
+    fake_c = shuffled[24:36]
+    fake_d = shuffled[36:]
+    # Sum the weight gains for the 4 resamples.
+    sum_a = np.sum(fake_a)
+    sum_b = np.sum(fake_b)
+    sum_c = np.sum(fake_c)
+    sum_d = np.sum(fake_d)
+    # Find the differences between all the possible pairs of resamples.
+    a_b = sum_a - sum_b
+    a_c = sum_a - sum_c
+    a_d = sum_a - sum_d
+    b_c = sum_b - sum_c
+    b_d = sum_b - sum_d
+    c_d = sum_c - sum_d
+    # Put the differences into an array.
+    fake_diffs = np.array([a_b, a_c, a_d, b_c, b_d, c_d])
+    # Square them to give six squared differences.
+    sq_fake_diffs = fake_diffs ** 2
+    # Sum the squares.
+    sum_sq_fake_diffs = np.sum(sq_fake_diffs)
+    # Keep track of the total for each trial.
+    results[i] = sum_sq_fake_diffs
+    # End one trial, go back and repeat until 10000 trials are complete.
+
+# Produce a histogram of the trial results.
+plt.hist(results, bins=25)
+plt.title('Null distribution of sum of squared differences')
+plt.xlabel('Sum of squared differences in null world')
+
+# Find out how many trials produced differences among groups as great as
+# or greater than those observed.
+k = np.sum(results >= 5299)
+# Convert to a proportion.
+kk = k / n_trials
+# Print the result.
+print('Number of sum of squared differences >= 5299:', kk)
+```
+
+```{r}
+n_trials <- 10000
+
+# An vector to store the result of each trial.
+results <- numeric(n_trials)
+
+# Do 10000 trials
+for (i in 1:n_trials) {
+    # Shuffle all the weight gains.
+    shuffled <- sample(all_weights)
+    # Split into 4 now random samples.
+    fake_a <- shuffled[1:12]
+    fake_b <- shuffled[13:24]
+    fake_c <- shuffled[25:36]
+    fake_d <- shuffled[37:48]
+    # Sum the weight gains for the 4 resamples.
+    sum_a <- sum(fake_a)
+    sum_b <- sum(fake_b)
+    sum_c <- sum(fake_c)
+    sum_d <- sum(fake_d)
+    # Find the differences between all the possible pairs of resamples.
+    a_b <- sum_a - sum_b
+    a_c <- sum_a - sum_c
+    a_d <- sum_a - sum_d
+    b_c <- sum_b - sum_c
+    b_d <- sum_b - sum_d
+    c_d <- sum_c - sum_d
+    # Put the differences into an vector.
+    fake_diffs <- c(a_b, a_c, a_d, b_c, b_d, c_d)
+    # Square them to give six squared differences.
+    sq_fake_diffs <- fake_diffs ** 2
+    # Sum the squares.
+    sum_sq_fake_diffs <- sum(sq_fake_diffs)
+    # Keep track of the total for each trial.
+    results[i] <- sum_sq_fake_diffs
+    # End one trial, go back and repeat until 10000 trials are complete.
+}
+
+# Produce a histogram of the trial results.
+hist(results, breaks=25,
+    main='Null distribution of sum of squared differences',
+    xlab='Sum of squared differences in null world')
+
+# Find out how many trials produced differences among groups as great as
+# or greater than those observed.
+k <- sum(results >= 5299)
+# Convert to a proportion.
+kk <- k / n_trials
+# Print the result.
+message('Number of sum of squared differences >= 5299: ', kk)
+```
+
+:::
+<!---
+End of notebook
+-->
+
+We find that our observed sum of squares — `r get_var('sum_sq_d')` — was
+equaled or exceeded by randomly-drawn sums of squares in only
+`r round(get_var('kk') * 100, 1)` percent of our trials. We conclude that the
+four treatments are likely not all similar.
 
 ## Exercises
 
-Solutions for problems may be found in the section titled, "Exercise
-Solutions" at the back of this book.
+Solutions for problems may be found in @sec-exercise-solutions.
 
-**Exercise 18-1**
+### Exercise 1 {#sec-measured-ex-mechanics}
 
-The data shown in Table 18-3 [@hollander1999nonparametric, p. 39, Table 3.1]
-might be data for the outcomes of two different mechanics, showing the length
-of time until the next overhaul is needed for nine pairs of similar vehicles.
-Or they could be two readings made by different instruments on the same sample
-of rock. In fact, they represent data for two successive tests for depression
-on the Hamilton scale, before and after drug therapy.
+The data shown in @tbl-hamilton-scores [@hollander1999nonparametric, p. 39,
+Table 3.1] might be data for the outcomes of two different mechanics, showing
+the length of time until the next overhaul is needed for nine pairs of similar
+vehicles. Or they could be two readings made by different instruments on the
+same sample of rock. In fact, they represent data for two successive tests for
+depression on the Hamilton scale, before and after drug therapy.
 
 <!---
-Note on source in Hollander: Salsburg (1970): Personal communication (with the coooperation of Pfizer and co, Groton, Conn.)
+Note on source in Hollander: Salsburg (1970): Personal communication (with the cooperation of Pfizer and co, Groton, Conn.)
 -->
 
+| Patient #       | Score Before     | Score After |
+|-----------------|------------------|-------------|
+| 1               | 1.83             | .878        |
+| 2               | .50              | .647        |
+| 3               | 1.62             | .598        |
+| 4               | 2.48             | 2.05        |
+| 5               | 1.68             | 1.06        |
+| 6               | 1.88             | 1.29        |
+| 7               | 1.55             | 1.06        |
+| 8               | 3.06             | 3.14        |
+| 9               | 1.3              | 1.29        |
 
-Table 18-3
-
-**Hamilton Depression Scale Values**
-
-  ---------------- ------------------ -----------------
-  **Patient \#**   **Score Before**   **Score After**
-  ---------------- ------------------ -----------------
-  1                1.83               .878
-  2                .50                .647
-  3                1.62               .598
-  4                2.48               2.05
-  5                1.68               1.06
-  6                1.88               1.29
-  7                1.55               1.06
-  8                3.06               3.14
-  9                1.3                1.29
-  ---------------- ------------------ -----------------
+: Hamilton Depression Scale Values {#tbl-hamilton-scores}
 
 The task is to perform a test that will help decide whether there is a
 difference in the depression scores at the two visits (or the
@@ -1687,7 +1893,8 @@ performances of the two mechanics). Perform both a bootstrap test and a
 permutation test, and give some reason for preferring one to the other
 in principle. How much do they differ in practice?
 
-**Exercise 18-2**
+
+### Exercise 2 {#sec-measured-ex-taxis}
 
 Thirty-six of 72 (.5) taxis surveyed in Pittsburgh had visible
 seatbelts. Seventy-seven of 129 taxis in Chicago (.597) had visible
