@@ -276,13 +276,26 @@ ketable(._df_aiq_renamed,
 the x, y coordinate given by the values in "Athletic Score" and "I.Q. Score".
 For example the point for the first boy is at position x=97, y=114.
 
-```{r label='fig-ath-iq-scatter', fig.cap='Scatter plot of I.Q. Score as a function of Athletic Score', echo=FALSE, eval=TRUE}
-plot(._df_ath_iq$athletic_score, ._df_ath_iq$iq_score,
-     xlab='Athletic Score',
-     ylab='I.Q. Score',
-     main='I.Q. Score (y-axis) as a function of Athletic Score (x-axis)',
-     frame.plot=FALSE)
-axis(side=1)
+```{python echo=FALSE, label="fig-ath-iq-scatter", fig.cap="Scatter plot of I.Q. Score as a function of Athletic Score", eval=TRUE}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+_ax_lims = [75, 95, 90, 125]
+_x_ticks = np.arange(75, 96, 5)
+_df = pd.read_csv('data/athletic_iq.csv')
+_ath = np.array(_df['athletic_score'])
+_iq = np.array(_df['iq_score'])
+
+def aiq_plot(x, y):
+    plt.scatter(x, y)
+    plt.xlabel('Athletic Score')
+    plt.ylabel('I.Q. Score')
+    plt.axis(_ax_lims)
+    plt.gca().set_xticks(_x_ticks)
+
+aiq_plot(_ath, _iq)
+plt.title('I.Q. Score (y-axis) as a function of Athletic Score (x-axis)');
 ```
 
 We want to know whether a high score on athletic ability tends to be found
@@ -691,35 +704,42 @@ rather than a "cardinal" (measured) scale; the numerical shadings and relative
 relationships are lost when we convert to ranks. Therefore let us consider a
 test of correlation that uses the original cardinal numerical scores.
 
-First a little background: @fig-hypot_iq_athletic_1 and
-@fig-hypot_iq_athletic_2 show two hypothetical cases of very high association
-among the I.Q. and athletic scores used in previous examples.
-@fig-hypot_iq_athletic_1 indicates that the higher the I.Q. score, the higher
-the athletic score. With a boy's athletic score you can thus predict quite well
-his I.Q. score by means of a hand-drawn line — or vice versa. The same is true
-of @fig-hypot_iq_athletic_2, but in the opposite direction. Notice that even
-though athletic score is on the x-axis (horizontal) and I.Q. score is on the
-y-axis (vertical), the athletic score does not *cause* the I.Q. score. (It is
-an unfortunate deficiency of such diagrams that *some* variable must
-arbitrarily be placed on the x-axis, whether you intend to suggest causation or
-not.)
+First a little background: @fig-hypot-spos and @fig-hypot-sneg show two
+hypothetical cases of very high association among the I.Q. and athletic scores
+used in previous examples. @fig-hypot-spos indicates that the higher the I.Q.
+score, the higher the athletic score. With a boy's athletic score you can thus
+predict quite well his I.Q. score by means of a hand-drawn line — or vice
+versa. The same is true of @fig-hypot-sneg, but in the opposite direction.
+Notice that even though athletic score is on the x-axis (horizontal) and I.Q.
+score is on the y-axis (vertical), the athletic score does not *cause* the I.Q.
+score. (It is an unfortunate deficiency of such diagrams that *some* variable
+must arbitrarily be placed on the x-axis, whether you intend to suggest
+causation or not.)
 
-```{r fig-hypot_iq_athletic_1, opts.label="svg_fig", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 1"}
-include_svg('diagrams/hypot_iq_athletic_1.svg')
+```{python echo=FALSE, label="fig-hypot-spos", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 1", eval=TRUE}
+rnd = np.random.default_rng(1966)
+
+_s = 1.6
+_c = np.mean(_iq) - _s * np.mean(_ath)
+_pos_iq = np.round(_c + _s * _ath + rnd.normal(0, 5, size=len(_iq)))
+aiq_plot(_ath, _pos_iq)
 ```
 
-```{r fig-hypot_iq_athletic_2, opts.label="svg_fig", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 2"}
-include_svg('diagrams/hypot_iq_athletic_2.svg')
+```{python echo=FALSE, label="fig-hypot-sneg", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 2", eval=TRUE}
+_s = -1.6
+_c = np.mean(_iq) - _s * np.mean(_ath)
+_neg_iq = np.rround(_c + _s * _ath + rnd.normal(0, 5, size=len(_iq)))
+aiq_plot(_ath, _neg_iq)
 ```
 
-In @fig-given_iq_athletic, which plots the scores as given in table 23-1 the
-prediction of athletic score given I.Q. score, or vice versa, is less clear-cut
-than in @fig-hypot_iq_athletic_1. On the basis of @fig-given_iq_athletic alone,
-one can say only that there *might* be some association between the two
-variables.
+In @fig-given_iq_athletic, which plots the scores as given in
+@tbl-physical-mental, the prediction of athletic score given I.Q. score, or
+vice versa, is less clear-cut than in @fig-hypot-spos. On the basis of
+@fig-given_iq_athletic alone, one can say only that there *might* be some
+association between the two variables.
 
-```{r fig-given_iq_athletic, opts.label="svg_fig", fig.cap="Given Scores for I.Q. and Athletic Ability"}
-include_svg('diagrams/given_iq_athletic.svg')
+```{python label="fig-given_iq_athletic", fig.cap="Given Scores for I.Q. and Athletic Ability", eval=TRUE, echo=FALSE}
+aiq_plot(_ath, _iq)
 ```
 
 ## Correlation: sum of products
@@ -770,43 +790,48 @@ $$
 \end{align*}
 $$
 
-Consider the cases in Table 23-4 which are chosen to illustrate a
-perfect (linear) association between *x* (Column 1) and *y* 1 (Column
-2), and also between *x* (Column 1) and *y* 2 (Column 4); the numbers
-shown in Columns 3 and 5 are those that would be consistent with perfect
-associations. Notice the sum of the multiples of the *x* and *y* values
-in the two cases. It is either higher ( *xy* 1) or lower ( *xy* 2) than
-for any other possible way of arranging the *y* 's. Any other
-arrangement of the *y's* ( *y* 3, in Column 6, for example, chosen at
-random), when multiplied by the *x* 's in Column 1, ( *xy* 3), produces
-a sum that falls somewhere between the sums of *xy* 1 and *xy* 2, as is
-the case with any other set of *y* 3's which is not perfectly correlated
-with the *x* 's.
+Consider the cases in @tbl-pos-neg-mult which are chosen to illustrate
+a perfect (linear) association between *x* (Column 1) and *y1* (Column 2), and
+also between *x* (Column 1) and *y2* (Column 4); the numbers shown in Columns
+3 and 5 are those that would be consistent with perfect associations. Notice
+the sum of the multiples of the *x* and *y* values in the two cases. It is
+either higher (*x* * *y1*) or lower (*x* * *y2*) than for any other possible
+way of arranging the *y*'s. Any other arrangement of the *y*'s (*y3*, in
+Column 6, for example, chosen at random), when multiplied by the *x*'s in
+Column 1, (*x* * *y3*), produces a sum that falls somewhere between the sums of
+*x* * *y1* and *x* * *y2*, as is the case with any other set of *y3*'s which is
+not perfectly correlated with the *x*'s.
+
++-----------------------+--------------------+-----------------+
+| Strong positive       | Strong negative    | Random          |
+| relationship          | relationship       | Pairings        |
++-----+------+----------+--------+-----------+------+----------+
+| X   | Y1   | X * Y1   |  Y2    | X * Y2    | Y3   | X * Y3   |
++=====+======+==========+========+===========+======+==========+
+| 2   | 2    | 4        | 10     | 20        | 4    | 8        |
++-----+------+----------+--------+-----------+------+----------+
+| 4   | 4    | 8        | 8      | 32        | 8    | 32       |
++-----+------+----------+--------+-----------+------+----------+
+| 6   | 6    | 36       | 6      | 36        | 6    | 36       |
++-----+------+----------+--------+-----------+------+----------+
+| 8   | 8    | 64       | 4      | 32        | 2    | 16       |
++-----+------+----------+--------+-----------+------+----------+
+| 10  | 10   | 100      | 2      | 20        | 10   | 100      |
++============+==========+========+===========+======+==========+
+| **Sums**   | 220      |        | 140       |      | 192      |
++============+==========+========+===========+======+==========+
+
+: Comparison of Sums of Multiplications {#tbl-pos-neg-mult}
 
 Table 23-5, below, shows that the sum of the products of the *observed*
 I.Q. scores multiplied by athletic scores (column 7) is between the sums
 that would occur if the I.Q. scores were ranked from best to worst
 (column 3) and worst to best (column 5). The extent of correlation
 (association) can thus be measured by whether the sum of the multiples
-of the observed *x*
+of the observed *x* and *y* values is relatively much higher or much lower than
+are sums of randomly-chosen pairs of *x* and *y* .
 
-and *y* values is relatively much higher or much lower than are sums of
-randomly-chosen pairs of *x* and *y* .
 
-Table 23-4
-
-**Comparison of Sums of Multiplications**
-
-  ---------------------------------- ---------------------------------- --------------------- -------- ----------- -------- -----------
-  **Strong Positive Relationship**   **Strong Negative Relationship**   **Random Pairings**                                 
-  **X**                              **Y1**                             **X\*Y1**             **Y2**   **X\*Y2**   **Y3**   **X\*Y3**
-  2                                  2                                  4                     10       20          4        8
-  4                                  4                                  16                    8        32          8        32
-  6                                  6                                  36                    6        36          6        36
-  8                                  8                                  64                    4        48          2        16
-  10                                 10                                 100                   2        20          10       100
-  SUMS:                                                                 220                            156                  192
-  ---------------------------------- ---------------------------------- --------------------- -------- ----------- -------- -----------
 
  Table 23-5
 
