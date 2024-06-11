@@ -609,9 +609,9 @@ This approach differs from the previous notebook in this series, in looking only
 In the {{< var lang >}} code below, we first note that the top 5 athletes
 had 4 of the top 5 I.Q. scores. So we constitute the set of 10 IQ rankings {{<
 var array >}} `iq_ranks`. We then shuffle `iq_ranks` and select the first
-5 I.Q. rankings (out of 10). We COUNT how many are in the top 5, and keep track
-of the result. After repeating 10,000 times using a `for` loop, we find out how
-often we select 4 of the top 5.
+5 I.Q. rankings (out of 10). We count (`sum`) how many are in the top 5, and
+keep track of the result. After repeating 10,000 times using a `for` loop, we
+find out how often we select 4 of the top 5.
 
 ```{python}
 import numpy as np
@@ -932,20 +932,16 @@ Scores (20 Trials)**
 
 More specifically, by the steps:
 
-**Step 1.** Write the ten I.Q. scores on one set of cards, and the ten
+* **Step 1.** Write the ten I.Q. scores on one set of cards, and the ten
 athletic scores on another set of cards.
-
-**Step 2.** Pair the I.Q. and athletic-score cards at random. Multiply
-the scores in each pair, and add the results of the ten multiplications.
-
-**Step 3.** Subtract the experimental sum in step 2 from the observed
+* **Step 2.** Pair the I.Q. and athletic-score cards at random. Multiply the
+scores in each pair, and add the results of the ten multiplications.
+* **Step 3.** Subtract the experimental sum in step 2 from the observed
 sum, 95,759.
-
-**Step 4.** Repeat steps 2 and 3 twenty times.
-
-**Step 5.** Compute the proportion of trials where the difference is
-negative, which estimates the probability that an association as strong
-as the observed would occur by chance.
+* **Step 4.** Repeat steps 2 and 3 twenty times.
+* **Step 5.** Compute the proportion of trials where the difference is
+negative, which estimates the probability that an association as strong as the
+observed would occur by chance.
 
 The sums of the multiplications for 20 trials are shown in Table 23-7.
 No random-trial sum was as high as the observed sum, which suggests that
@@ -953,17 +949,17 @@ the probability of an association this strong happening by chance is so
 low as to approach zero. (An empirically-observed probability is never
 actually zero.)
 
-This program can be solved particularly easily with RESAMPLING STATS.
-The arrays A and B in program "Ability3" list the athletic scores and
-the I.Q. scores respectively of 10 "actual" students ordered from
-highest to lowest athletic score. We MULTIPLY the corresponding elements
-of these arrays and proceed to compare the sum of these multiplications
-to the sums of experimental multiplications in which the elements are
-selected randomly.
+This algorithm can be solved particularly easily with {{< var lang >}}.
+The {{< var array >}}s A and B in the notebook below list the athletic scores
+and the I.Q. scores respectively of 10 "actual" students ordered from highest
+to lowest athletic score. We multiply the corresponding elements of these
+{{< var array >}}s and proceed to compare the sum of these multiplications to
+the sums of experimental multiplications in which the elements are selected
+randomly.
 
-Finally, we COUNT the trials in which the sum of the products of the
-randomly-paired athletic and I.Q. scores equals or exceeds the sum of
-the products in the observed data.
+Finally, we count (`sum`) the trials in which the sum of the products of the
+randomly-paired athletic and I.Q. scores equals or exceeds the sum of the
+products in the observed data.
 
 
 <!--- Resampling stats file; Matlab syntax closeish -->
@@ -1008,7 +1004,7 @@ ATHLETES & IQ SCORES
 **observed sum less random sum**
 
 We see that obtaining a chance trial result as great as that observed
-was rare. RESAMPLING STATS will calculate this proportion for us:
+was rare. {{< var lang >}} will calculate this proportion for us:
 
 
 <!--- Resampling stats file; Matlab syntax closeish -->
@@ -1103,7 +1099,6 @@ There are two related issues:
 
 1.  What form of regression should be fitted to these data, which we
     address later, and
-
 2.  Is there reason to believe that the relationship is meaningful? That
     is, we wish to ascertain if there is any meaningful correlation
     between the variables — because if there is no relationship between
@@ -1114,31 +1109,26 @@ There are two related issues:
     practice. The sensible way to proceed is first to graph the data to
     see whether there is visible indication of a relationship.
 
-Efron and Tibshirani do this, and they find sufficient intuitive basis
-in the graph to continue the analysis. The next step is to investigate
-whether a measure of relationship is statistically significant; this we
-do as follows (program "inp10"):
+Efron and Tibshirani do this, and they find sufficient intuitive basis in the
+graph to continue the analysis. The next step is to investigate whether
+a measure of relationship is statistically significant; this we do as follows:
 
 1.  Multiply the observed values for each of the 164 participants on the
     independent x variable (cholostyramine — percent of prescribed
     dosage actually taken) and the dependent y variable (cholesterol),
     and sum the results — it's 439,140.
-
 2.  Randomly shuffle the dependent variable y values among the
     participants. The sampling is being done without replacement, though
     an equally good argument could be made for sampling with
     replacement; the results do not differ meaningfully, however,
     because the sample size is so large.
-
 3.  Then multiply these x and y hypothetical values for each of the 164
     participants, sum the results and record.
-
 4.  Repeat steps 2 and 3 perhaps 1000 times.
-
 5.  Determine how often the shuffled sum-of-products exceeds the
     observed value (439,140).
 
-The following program in RESAMPLING STATS provides the solution:
+The following notebook in {{< var lang >}} provides the solution:
 
 
 <!--- Resampling stats file; Matlab syntax closeish -->
@@ -1294,14 +1284,14 @@ beer, or who are against the sale of beer *and* do not drink beer. We
 want to randomly pair the responses to the two questions to compare
 against that observed result to test the relationship.
 
-To accomplish this aim, we REPEAT the following procedure 1000 times. We
-SHUFFLE drink to drink\$ so that the responses are randomly ordered. Now
-when we SUBTRACT the corresponding elements of the two arrays, a "0"
-will appear in each element of the new array c for which there was
-consistency in the response of the two questions. We therefore COUNT the
-times that c equals "0" and place this result in d, and the number of
-times c does not equal 0, and place this result in e. Find the
-difference (d minus e), and SCORE this to z.
+To accomplish this aim, we repeat the following procedure 10000 times using
+a `for` loop. We shuffle drink to drink\$ so that the responses are randomly
+ordered. Now when we subtract the corresponding elements of the two arrays,
+a "0" will appear in each element of the new array c for which there was
+consistency in the response of the two questions. We therefore counts (`sum`)
+the times that c equals "0" and place this result in d, and the number of times
+c does not equal 0, and place this result in e. Find the difference (d minus
+e), and record the result in the `results` {{< var array >}}.
 
 SCORE Z stores for each trial the number of consistent responses minus
 inconsistent responses. To determine whether the results of the actual
