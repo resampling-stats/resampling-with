@@ -152,8 +152,8 @@ the next weight gain, the selections would no longer be independent. See
 @sec-compound-probability for further discussion of this issue.) 4) Repeat this
 process until you have made two sets of 12 observations. 5) Call the first hand
 "food A" and the second hand "food B." Determine the average weight gain for
-the two hands, and record it as in @tbl-pigs-measured. Repeat this procedure
-many times.
+the two hands, and record it as in @tbl-eg-pigs-measured. Repeat this
+procedure many times.
 
 In operational steps:
 
@@ -984,41 +984,30 @@ Discussion of fogginess that arises from uncertainty about maths.
 -->
 
 
-**Example 18-3: Is There a Difference Between Treatments to Prevent Low
-Birthweights?**
+### Example: Is there a difference between treatments to prevent low birthweights?
 
 Next we consider the use of resampling with *measured* data to test the
 hypothesis that drug A prevents low birthweights [@rosner1995biostatistics, p.
-291]. The data for the treatment and control groups are shown in Table 18-2.
+291]. The data for the treatment and control groups are shown in @tbl-birthweights.
 
-Table 18-2
+```{r echo=FALSE, eval=TRUE}
+._df_birth <- read.csv('data/birthweights.csv')
+ketable(._df_birth,
+        caption = "Birthweights in clinical trial for drug to prevent low birthweights
+        {#tbl-birthweights}")
+```
 
-**Birthweights in a Clinical Trial to Test a Drug for Preventing Low
-Birthweights**
 
-  --------------------- -------------------
-  **Treatment Group**   **Control Group**
-  6.9                   6.4
-  7.6                   6.7
-  7.3                   5.4
-  7.6                   8.2
-  6.8                   5.3
-  7.2                   6.6
-  8.0                   5.8
-  5.5                   5.7
-  5.8                   6.2
-  7.3                   7.1
-  8.2                   7.0
-  6.9                   6.9
-  6.8                   5.6
-  5.7                   4.2
-  8.6                   6.8
-  Average: 7.08         6.26
-  --------------------- -------------------
+The treatment group averaged .82 pounds more than the control group (@tbl-birth-means):
 
- Source: Rosner, Table 8.16, p291
+```{r echo=FALSE, eval=TRUE}
+._birth_means <- as.data.frame(
+    tapply(._df_birth$Birthweight, ._df_birth$Treatment, mean))
+names(._birth_means) <- c('Mean birthweight')
+ketable(._birth_means,
+        caption ="Mean birthweight per group {#tbl-birth-means}")
+```
 
-The treatment group averaged .82 pounds more than the control group.
 Here is a resampling approach to the problem:
 
 1.  If the drug has no effect, our best guess about the "universe" of
@@ -1030,56 +1019,144 @@ Here is a resampling approach to the problem:
     put them into a hat. Drawing them one by one and then replacing them
     is the operational equivalent of a very large (but equal) number of
     each birthweight.
-
 2.  Repeatedly draw two samples of 15 birthweights each, and check how
     frequently the observed difference is as large as, or larger than,
     the actual difference of .82 pounds.
 
-We find in the RESAMPLING STATS program below that only 1 percent of the
-pairs of hypothetical resamples produced means that differed by as much
-as .82. We therefore conclude that the observed difference is unlikely
-to have occurred by chance.
+This is the so-called bootstrap test of the null-hypothesis.
 
+::: {.notebook name="birthweight_bootstap" title="Bootstrap test of birthweight difference"}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: nb-only
+We run bootstrap resampling from pooled drug and control birthweights, to establish the null-world distribution of the mean difference in weights.  Then we compare the observed difference in means to the null-world distribution to ask if the actual value is plausible in the null world.
+:::
 
-```matlab
-' Program file: "testing_measured_02.rss"
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
-NUMBERS (6.9 7.6 7.3 7.6 6.8 7.2 8.0 5.5 5.8 7.3 8.2 6.9 6.8 5.7 8.6) treat
-NUMBERS (6.4 6.7 5.4 8.2 5.3 6.6 5.8 5.7 6.2 7.1 7.0 6.9 5.6 4.2 6.8) control
-CONCAT treat control all
-' Combine all birthweight observations in same vector
-REPEAT 1000
-    ' Do 1000 simulations
-    SAMPLE 15 all treat$
-    ' Take a resample of 15 from all birth weights (the \$ indicates a
-    ' resampling counterpart to a real sample)
-    SAMPLE 15 all control$
-    ' Take a second, similar resample
-    MEAN treat$ mt
-    ' Find the means of the two resamples
-    MEAN control$ mc
-    SUBTRACT mt mc dif
-    ' Find the difference between the means of the two resamples
-    SCORE dif z
-    ' Keep score of the result
-END
-' End the simulation experiment, go back and repeat
-HISTOGRAM z
-' Produce a histogram of the resample differences
-COUNT z >= 0.82 k
-' How often did resample differences exceed the observed difference of
-' .82?
+rnd = np.random.default_rng()
+
+# Get treatment and control values from data file.
+birth_df = pd.read_csv('data/birthweights.csv')
+# Birthweidhts for Drug A participants.
+treat_df = birth_df[birth_df['Treatment'] == 'Drug A']
+# Birthweigts as array.
+treat = np.array(treat_df['Birthweight'])
+# Control birthweights.
+control_df = birth_df[birth_df['Treatment'] == 'Control']
+# Birthweigts as array.
+control = np.array(control_df['Birthweight'])
+
+# Actual difference.
+actual_diff = np.mean(treat) - np.mean(control)
+# Show the actual difference.
+actual_diff
 ```
 
-![](images/22-Chap-18_006.png)
+Proceed with the simulation:
 
-**Resample differences in pounds**
+```{python}
+# Concatenate treatment and control arrays.
+both = np.concatenate([treat, control])
 
-Result: Only 1.3 percent of the pairs of resamples produced means that
-differed by as much as .82. We can conclude that the observed difference
-is unlikely to have occurred by chance.
+# Number of trials.
+n_trials = 10_000
+
+# Make array to store results for each trial.
+results = np.zeros(n_trials)
+
+# Do 1000 simulations
+for i in range(n_trials):
+    # Take a resample of 15 from all birth weights.
+    fake_treat = rnd.choice(both, size=15)
+    # Take a second, similar resample.
+    fake_control = rnd.choice(both, size=15)
+    # Find the means of the two resamples.
+    mt = np.mean(fake_treat)
+    mc = np.mean(fake_control)
+    # Find the difference between the means of the two resamples.
+    diff = mt - mc
+    # Keep score of the result.
+    results[i] = diff
+    # End the simulation experiment, go back and repeat
+# Produce a histogram of the resample differences
+plt.hist(results, bins=25)
+plt.title('Null-world distribution of treatment/control difference')
+plt.xlabel('Null-world mean treatment - mean control')
+# How often did resample differences exceed the observed difference of
+# .82?
+k = sum(results >= actual_diff)
+kk = k / n_trials
+print('Proportion null-world differences >= actual difference:', kk)
+```
+
+```{r}
+# Get treatment and control values from data file.
+birth_df <- read.csv('data/birthweights.csv')
+# Birthweidhts for Drug A participants.
+treat_df <- subset(birth_df, birth_df$Treatment == 'Drug A')
+# Birthweigts as vector.
+treat <- treat_df$Birthweight
+# Control birthweights.
+control_df <- subset(birth_df, birth_df$Treatment == 'Control')
+# Birthweigts as vector.
+control <- control_df$Birthweight
+
+# Actual difference.
+actual_diff <- mean(treat) - mean(control)
+# Show the actual difference.
+actual_diff
+```
+
+Proceed with the simulation:
+
+```{r}
+# Concatenate treatment and control vectors.
+both <- c(treat, control)
+
+# Number of trials.
+n_trials <- 10000
+
+# Make vector to store results for each trial.
+results <- numeric(n_trials)
+
+# Do 1000 simulations
+for (i in 1:n_trials) {
+    # Take a resample of 15 from all birth weights.
+    fake_treat <- sample(both, size=15, replace=TRUE)
+    # Take a second, similar resample.
+    fake_control <- sample(both, size=15, replace=TRUE)
+    # Find the means of the two resamples.
+    mt <- mean(fake_treat)
+    mc <- mean(fake_control)
+    # Find the difference between the means of the two resamples.
+    diff <- mt - mc
+    # Keep score of the result.
+    results[i] <- diff
+    # End the simulation experiment, go back and repeat
+}
+# Produce a histogram of the resample differences
+hist(results, breaks=25,
+    main='Null-world distribution of treatment/control difference',
+    xlab='Null-world mean treatment - mean control')
+# How often did resample differences exceed the observed difference of
+# .82?
+k <- sum(results >= actual_diff)
+kk <- k / n_trials
+message('Proportion null-world differences >= actual difference: ', kk)
+```
+
+:::
+<!---
+End of notebook
+-->
+
+Result: only about `r int2tw(round(get_var('kk') * 100))` percent of the pairs
+of resamples produced means that differed by as much as .82. We can conclude
+that the observed difference is unlikely to have occurred by chance.
+
 
 ### Example: Bootstrap Sampling with Replacement {#sec-eg-bootstrap-sampling}
 
@@ -1088,132 +1165,187 @@ basic problem illustrating the bootstrap method: Seven mice were given a new
 medical treatment intended to improve their survival rates after surgery, and
 nine mice were not treated. The numbers of days the treated mice survived were
 94, 38, 23, 197, 99, 16 and 14, whereas the numbers of days the untreated mice
-(the control group) survived were 52, 10, 40, 104, 51, 27, 146, 30, and 46. The
-question we ask is: Did the treatment prolong survival, or might chance
+(the control group) survived were 52, 10, 40, 104, 51, 27, 146, 30, and 46.
+The question we ask is: Did the treatment prolong survival, or might chance
 variation be responsible for the observed difference in mean survival times?
 
-We start by supposing the treatment did NOT prolong survival and that
-chance was responsible.
-<!---
-Clarify - sampling variation was responsible.
--->
-If that is so, then we consider that the two
-groups came from the same universe. Now we'd like to know how likely it
-is that two groups drawn from this common universe would differ as much
-as the two observed groups differ.
+We start by supposing the treatment did NOT prolong survival and that chance
+variation in the mice was responsible for the observed difference.
 
-If we had unlimited time and money, we would seek additional samples in
-the same way that we obtained these. Lacking time and money, we create a
-hypothetical universe that embodies everything we know about such a
-common universe. We imagine replicating each sample element millions of
-times to create an almost infinite universe that looks just like our
-samples. Then we can take resamples from this hypothetical universe and
-see how they behave.
+If that is so, then we consider that the two groups came from the same
+universe. Now we'd like to know how likely it is that two groups drawn from
+this common universe would differ as much as the two observed groups differ.
+
+If we had unlimited time and money, we would seek additional samples in the
+same way that we obtained these. Lacking time and money, we create
+a hypothetical universe that embodies everything we know about such a common
+universe. We imagine replicating each sample element millions of times to
+create an almost infinite universe that looks just like our samples. Then we
+can take resamples from this hypothetical universe and see how they behave.
 
 Even on a computer, creating such a large universe is tedious so we use
-a shortcut. We replace each element after we pick it for a resample.
-That way, our hypothetical (bootstrap) universe is effectively infinite.
+a shortcut. We replace each element after we pick it for a resample. That way,
+our hypothetical (bootstrap) universe is effectively infinite.
 
 The following procedure will serve:
 
 1.  Calculate the difference between the means of the two observed
     samples -- it's 30.63 days in favor of the treated mice.
-
 2.  Consider the two samples combined (16 observations) as the relevant
     universe to resample from.
-
 3.  Draw 7 hypothetical observations with replacement and designate them
     "Treatment"; draw 9 hypothetical observations with replacement and
     designate them "Control."
-
 4.  Compute and record the difference between the means of the two
     samples.
-
-    Repeat steps 2 and 3 perhaps 1000 times.
-
-5.  Determine how often the resampled difference exceeds the observed
+5.  Repeat steps 2 and 3 perhaps 10000 times.
+6.  Determine how often the resampled difference exceeds the observed
     difference of 30.63.
 
-The following program ("mice2smp") follows the above procedure:
+The following notebook follows the above procedure:
 
+::: {.notebook name="mouse_bootstrap" title="A classic bootstrap example"}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: nb-only
+Draw bootstrap samples from mouse survival data to compare actual mean
+difference to those observed in the null- (bootstrap) world.
+:::
 
-```matlab
-' Program file: "testing_measured_03.rss"
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-NUMBERS (94 38 23 197 99 16 141) treatmt
-' treatment group
-NUMBERS (52 10 40 104 51 27 146 30 46) control
-' control group
-CONCAT treatmt control u
-' U is our universe (step 2 above)
-REPEAT 1000
-    ' step 5 above
-    SAMPLE 7 u treatmt$
-    ' step 3 above
-    SAMPLE 9 u control$
-    ' step 3
-    MEAN treatmt$ tmean
-    ' step 4
-    MEAN control$ cmean
-    ' step 4
-    SUBTRACT tmean cmean diff
-    ' step 4
-    SCORE diff scrboard
-    ' step 4
-END
-' step 5
-HISTOGRAM scrboard
-COUNT scrboard >=30.63 k
-' step 6
-DIVIDE k 1000 prob
-PRINT prob
+# Set up the random number generator.
+rnd = np.random.default_rng()
+
+# Treatment group.
+treat = np.array([94, 38, 23, 197, 99, 16, 141])
+# control group
+control = np.array([52, 10, 40, 104, 51, 27, 146, 30, 46])
+
+# Observed difference in real world.
+actual_diff = np.mean(treat) - np.mean(control)
+
+# Set the number of trials.
+n_trials = 10_000
+
+# An empty array to store the trials.
+results = np.zeros(n_trials)
+
+# U is our universe (Step 2 above)
+u = np.concatenate([treat, control])
+
+# step 5 above.
+for i in range(n_trials):
+    # Step 3 above.
+    fake_treat = rnd.choice(u, size=7)
+    # Step 3
+    fake_control = rnd.choice(u, size=9)
+    # Step 4
+    mt = np.mean(fake_treat)
+    # Step 4
+    mc = np.mean(fake_control)
+    # Step 4
+    diff = mt - mc
+    # Step 4
+    results[i] = diff
+
+# Step 6
+plt.hist(results, bins=25)
+plt.title('Bootstrap distribution of mean differences in survival')
+plt.xlabel('Bootstrap mean treatment - mean control')
+
+# Step 6
+k = np.sum(results >= actual_diff)
+kk = k / n_trials
+print('Proportion bootstrap mean difference >= actual difference:', kk)
 ```
 
+```{r}
+# Treatment group.
+treat <- c(94, 38, 23, 197, 99, 16, 141)
+# control group
+control <- c(52, 10, 40, 104, 51, 27, 146, 30, 46)
 
-![](images/22-Chap-18_007.png)
+# Observed difference in real world.
+actual_diff <- mean(treat) - mean(control)
 
-Result: PROB = 0.112
+# Set the number of trials.
+n_trials <- 10000
 
-Interpretation: 1000 simulated resamples (of sizes 7 and 9) from a
-combined universe produced a difference as big as 30.63 more than 11
-percent of the time. We cannot rule out the possibility that chance
-might be responsible for the observed advantage of the treatment group.
+# An empty array to store the trials.
+results <- numeric(n_trials)
 
-**Example 18-5: Permutation Sampling Without Replacement**
+# U is our universe (Step 2 above)
+u <- c(treat, control)
+
+# step 5 above.
+for (i in 1:n_trials) {
+    # Step 3 above.
+    fake_treat <- sample(u, size=7, replace=TRUE)
+    # Step 3.
+    fake_control <- sample(u, size=9, replace=TRUE)
+    # Step 4.
+    mt <- mean(fake_treat)
+    # Step 4.
+    mc <- mean(fake_control)
+    # Step 4.
+    diff <- mt - mc
+    # Step 4.
+    results[i] <- diff
+}
+
+# Step 6
+hist(results, breaks=25,
+    main='Bootstrap distribution of mean differences in survival',
+    xlab='Bootstrap mean treatment - mean control')
+
+# Step 6
+k <- sum(results >= actual_diff)
+kk <- k / n_trials
+message('Proportion bootstrap mean difference >= actual difference: ', kk)
+```
+
+:::
+<!---
+End of notebook
+-->
+
+Interpretation: `r sprintf('%d', get_var('n_trials'))` simulated resamples (of
+sizes 7 and 9) from a combined universe produced a difference as big as
+`r round(get_var('actual_diff'), 2)` about
+`r round(get_var('kk') * 100, 1)` percent of the time. We cannot rule out the
+possibility that chance might be responsible for the observed advantage of the
+treatment group.
+
+
+### Example: Permutation Sampling Without Replacement
 
 This section discusses at some length the question of when sampling with
-replacement (the bootstrap), and sampling without replacement
-(permutation or "exact" test) are the appropriate resampling methods.
-The case at hand seems like a clearcut case where the bootstrap is
-appropriate. (Note that in this case we draw both samples from a
-combined universe consisting of all observations, whether we do so with
-or without replacement.) Nevertheless, let us see how the technique
-would differ if one were to consider that the permutation test is
-appropriate. The algorithm would then be as follows (with the steps that
-are the same as above labeled "a" and those that are different labeled
-"b"):
+replacement (the bootstrap), and sampling without replacement (permutation or
+"exact" test) are the appropriate resampling methods. The case at hand seems
+like a clearcut case where the bootstrap is appropriate. (Note that in this
+case we draw both samples from a combined universe consisting of all
+observations, whether we do so with or without replacement.) Nevertheless, let
+us see how the technique would differ if one were to consider that the
+permutation test is appropriate. The algorithm would then be as follows (with
+the steps that are the same as above labeled "a" and those that are different
+labeled "b"):
 
-**1a.** Calculate the difference between the means of the two observed
-samples -- it's 30.63 days in favor of the treated mice.
-
-**2a.** Consider the two samples combined (16 observations) as the
-relevant universe to resample from.
-
-**3b.** Draw 7 hypothetical observations without replacement and
-designate them "Treatment"; draw 9 hypothetical observations with
-replacement and designate them "Control."
-
-**4a.** Compute and record the difference between the means of the two
+* **1a.** Calculate the difference between the means of the two observed
+  samples -- it's 30.63 days in favor of the treated mice.
+* **2a.** Consider the two samples combined (16 observations) as the relevant
+universe to resample from.
+* **3b.** Draw 7 hypothetical observations without replacement and designate
+them "Treatment"; draw 9 hypothetical observations with replacement and
+designate them "Control."
+* **4a.** Compute and record the difference between the means of the two
 samples.
+* **5a.** Repeat steps 2 and 3 perhaps 1000 times
+* **6a.** Determine how often the resampled difference exceeds the observed
+difference of 30.63.
 
-**5a.** Repeat steps 2 and 3 perhaps 1000 times
-
-**6a.** Determine how often the resampled difference exceeds the
-observed difference of 30.63.
-
-Here is the RESAMPLING STATS program:
+Here is the {{< var lang >}} notebook:
 
 
 <!--- Resampling stats file; Matlab syntax closeish -->
@@ -1264,83 +1396,82 @@ treatment group.
 
 ## Differences among four means
 
-**Example 18-6: Differences Among Four Pig Rations** (Test for
-Differences Among Means of More Than Two Samples of Measured Data) (File
-"PIGS4")
+### Example: differences among four pig rations
 
-In Examples 15-1 and 15-4 we investigated whether or not the results
-shown by a *single* sample are sufficiently different from a null
-(benchmark) hypothesis so that the sample is unlikely to have come from
-the null-hypothesis benchmark universe. In Examples 15-7, 17-1, and 18-1
-we then investigated whether or not the results shown by *two* samples
-suggest that both had come from the *same* universe, a universe that was
-assumed to be the composite of the two samples. Now as in Example 17-2
-we investigate whether or not *several* samples come from the same
-universe, except that now we work with measured data rather than with
-counted data.
+**Test for Differences Among Means of More Than Two Samples of Measured Data**.
 
-If one experiments with each of 100 different pig foods on twelve pigs,
-some of the foods will show much better results than will others *just
-by chance* , just as one family in sixteen is likely to have the very
-"high" number of 4 daughters in its first four children. Therefore, it
-is wrong reasoning to try out the 100 pig foods, select the food that
-shows the best results, and then compare it statistically with the
-average (sum) of all the other foods (or worse, with the poorest food).
-With such a procedure and enough samples, you will surely find one (or
-more) that seems very atypical statistically. A bridge hand with 12 or
-13 spades seems very atypical, too, but if you deal enough bridge hands
-you will sooner or later get one with 12 or 13 spades — as a purely
-chance phenomenon, dealt randomly from a standard deck. Therefore we
-need a test that prevents our falling into such traps. Such a test
-usually operates by taking into account the differences among *all* the
-foods that were tried.
+In the examples of @sec-fruitfly and @sec-female-calved we investigated
+whether or not the results shown by a *single* sample are sufficiently
+different from a null (benchmark) hypothesis so that the sample is unlikely to
+have come from the null-hypothesis benchmark universe. In the examples of
+@sec-cancer-cures, @sec-pig-pairs, and @sec-pig-rations-measured we then
+investigated whether or not the results shown by *two* samples suggest that
+both had come from the *same* universe, a universe that was assumed to be the
+composite of the two samples. Now, as in @sec-fruitfly-four, we investigate
+whether or not *several* samples come from the same universe, except that now
+we work with measured data rather than with counted data.
 
-The method of Example 18-1 can be extended to handle this problem.
-Assume that *four* foods were each tested on twelve pigs. The weight
-gains in pounds for the pigs fed on foods A and B were as before. For
-foods C and D the weight gains were:
+If one experiments with each of 100 different pig foods on twelve pigs, some
+of the foods will show much better results than will others *just by chance*,
+just as one family in sixteen is likely to have the very "high" number of
+4 daughters in its first four children. Therefore, it is wrong reasoning to
+try out the 100 pig foods, select the food that shows the best results, and
+then compare it statistically with the average (sum) of all the other foods
+(or worse, with the poorest food). With such a procedure and enough samples,
+you will surely find one (or more) that seems very atypical statistically.
+A bridge hand with 12 or 13 spades seems very atypical, too, but if you deal
+enough bridge hands you will sooner or later get one with 12 or 13 spades — as
+a purely chance phenomenon, dealt randomly from a standard deck. Therefore we
+need a test that prevents our falling into such traps. Such a test usually
+operates by taking into account the differences among *all* the foods that
+were tried.
 
-Ration C: 30, 30, 32, 31, 29, 27, 25, 30, 31, 32, 34, 33
+The method of @sec-pig-rations-measured can be extended to handle this
+problem. Assume that *four* foods were each tested on twelve pigs. The weight
+gains in pounds for the pigs fed on foods A and B were as before.
+@tbl-pig-cd-rations has the weight gains for foods C and D.  (Compare these
+with the weight gains for foods A and B in @tbl-pig-ab-rations).
 
-Ration D: 32, 25, 31, 26, 32, 27, 28, 29, 29, 28, 23, 25
+```{r echo=FALSE, eval=TRUE}
+._df_cd <- subset(._df_pig_abcd, ration %in% c('C', 'D'))
+ketable(._df_cd,
+        caption = "Measured data for pig rations C and D
+        {#tbl-pig-cd-rations}")
+```
 
-Now construct a benchmark universe of *forty-eight* index cards, one for
-each weight gain. Then deal out sets of four hands randomly. More
-specifically:
+Now construct a benchmark universe of *forty-eight* index cards, one for each
+weight gain. Then deal out sets of four hands randomly. More specifically:
 
-**Step 1.** Constitute a universe of the forty-eight observed weight
-gains in the four samples, writing the weight gains on cards.
+* **Step 1.** Constitute a universe of the forty-eight observed weight gains
+  in the four samples, writing the weight gains on cards.
+* **Step 2.** Draw four groups of twelve weight gains, with replacement, since
+we are drawing from a hypothesized infinite universe in which consecutive
+draws are independent. Determine whether the difference between the lowest and
+highest group means is as large or larger than the observed difference. If so
+write "yes," otherwise "no."
+* **Step 3.** Repeat step 2 fifty times.
+* **Step 4.** Count the trials in which the differences between the simulated
+groups with the highest and lowest means are as large or larger than the
+differences between the means of the highest and lowest observed samples. The
+proportion of such trials to the total number of trials is the probability
+that all four samples would differ as much as do the observed samples if they
+(in technical terms) come from the same universe.
 
-**Step 2.** Draw four groups of twelve weight gains, with replacement,
-since we are drawing from a hypothesized infinite universe in which
-consecutive draws are independent. Determine whether the difference
-between the lowest and highest group means is as large or larger than
-the observed difference. If so write "yes," otherwise "no."
-
-**Step 3.** Repeat step 2 fifty times.
-
-**Step 4.** Count the trials in which the differences between the
-simulated groups with the highest and lowest means are as large or
-larger than the differences between the means of the highest and lowest
-observed samples. The proportion of such trials to the total number of
-trials is the probability that all four samples would differ as much as
-do the observed samples if they (in technical terms) come from the same
-universe.
-
-The problem "Pigs4," as handled by the steps given above, is quite
-similar to the way we handled Example TKTK, except that the data are measured
+The problem,  as handled by the steps given above, is quite similar to the way
+we handled the example in @sec-four-rehabs, except that the data are measured
 (in pounds of weight gain) rather than simply counted (the number of
 rehabilitations).
 
 Instead of working through a program for the procedure outlined above, let us
 consider a different approach to the problem — computing the difference
 between each *pair* of foods, six differences in all, converting all minus (-)
-signs to (+) differences. Then we can *total* the six differences, and compare
-the total with the sum of the six differences in the *observed* sample. The
-proportion of the resampling trials in which the observed sample sum is
-exceeded by the sum of the differences in the trials is the probability that
-the observed samples would differ as much as they do if they come from the
-same universe.[^otherwise-sos]
+signs to (+) differences (taking the *absolute* value). Then we can *total*
+the six absolute differences, and compare the total with the sum of the six
+absolute differences in the *observed* sample. The proportion of the
+resampling trials in which the observed sample sum is exceeded by the sum of
+the differences in the trials is the probability that the observed samples
+would differ as much as they do if they come from the same
+universe.[^otherwise-sos]
 
 [^otherwise-sos]: Technical Note: Computing the sum of squared differences
     renders this test superficially more similar to the analysis of variance
@@ -1354,75 +1485,93 @@ same universe.[^otherwise-sos]
     we believe that these tests should be "treatments of choice," as the
     doctors say.
 
-One naturally wonders whether this latter test statistic is better than
-the range, as discussed above. It would seem obvious that using the
-information contained in all four samples should increase the precision
-of the estimate. And indeed it is so, as you can confirm for yourself by
-comparing the results of the two approaches. But in the long run, the
-estimate provided by the two approaches would be much the same. That is,
-there is no reason to think that one or another of the estimates is
-*biased* . However, successive samples from the population would steady
-down faster to the true value using the four-groupbased estimate than
-they would using the range. That is, the four-group-based estimate would
-require a smaller sample of pigs.
+One naturally wonders whether this latter test statistic is better than the
+range, as discussed above. It would seem obvious that using the information
+contained in all four samples should increase the precision of the estimate.
+And indeed it is so, as you can confirm for yourself by comparing the results
+of the two approaches. But in the long run, the estimate provided by the two
+approaches would be much the same. That is, there is no reason to think that
+one or another of the estimates is *biased* . However, successive samples from
+the population would steady down faster to the true value using the
+four-group-based estimate than they would using the range. That is, the
+four-group-based estimate would require a smaller sample of pigs.
 
-Is there reason to prefer one or the other approach from the point of
-view of some decision that might be made? One might think that the range
-procedure throws light on which *one* of the foods is best in a way that
-the four-group-based approach does not. But this is not correct. Both
-approaches answer this question, and *only* this question: Are the
-results from the four foods likely to have resulted from the same
-"universe" of weight gains or not? If one wants to know whether the
-*best* food is similar to, say, all the other three, the appropriate
-approach would be a *two* -sample approach similar to various *two*
--sample examples discussed earlier. (It would be still *another*
-question to ask whether the best food is different from the worst. One
-would then use a procedure different from either of those discussed
-above.)
+Is there reason to prefer one or the other approach from the point of view of
+some decision that might be made? One might think that the range procedure
+throws light on which *one* of the foods is best in a way that the
+four-group-based approach does not. But this is not correct. Both approaches
+answer this question, and *only* this question: Are the results from the four
+foods likely to have resulted from the same "universe" of weight gains or not?
+If one wants to know whether the *best* food is similar to, say, all the other
+three, the appropriate approach would be a *two-sample* approach similar to
+various two-sample examples discussed earlier. (It would be still *another*
+question to ask whether the best food is different from the worst. One would
+then use a procedure different from either of those discussed above.)
 
-If the foods cost the same, one would not need even a twosample analysis
-to decide which food to feed. Feed the one whose results are best in the
-experiment, without bothering to ask whether it is "really" the best;
-you can't go wrong as long as it doesn't cost more to use it. (One could
-inquire about the probability that the food yielding the best results in
-the experiment would attain those results by chance even if it was worse
-than the others by some stipulated amount, but pursuing that line of thought
-may be left to the student as an exercise.)
+If the foods cost the same, one would not need even a two-sample analysis to
+decide which food to feed. Feed the one whose results are best in the
+experiment, without bothering to ask whether it is "really" the best; you
+can't go wrong as long as it doesn't cost more to use it. (One could inquire
+about the probability that the food yielding the best results in the
+experiment would attain those results by chance even if it was worse than the
+others by some stipulated amount, but pursuing that line of thought may be
+left to the student as an exercise.)
 
-In the problem "Pigs4," we want a measure of how the groups differ. The
-obvious first step is to add up the total weight gains for each group:
-382, 344, 364, 335. The next step is to calculate the differences
-between all the possible combinations of groups: 382-344=38, 382-364=18,
-382-335=47, 344-364= -20, 344-335=9, 364-335=29.
+In the notebook below, we want a measure of how the groups differ. The obvious
+first step is to add up the total weight gains for each group
+(@tbl-gain-sums):
+
+```{r echo=FALSE, eval=TRUE}
+._abcd_sums <- as.data.frame(
+    tapply(._df_pig_abcd$weight_gain, ._df_pig_abcd$ration, sum))
+names(._abcd_sums) <- c('Sum of weight gains')
+ketable(._abcd_sums,
+        caption ="Weight gain sum per group {#tbl-gain-sums}")
+```
+
+The next step is to calculate the differences between all the possible
+combinations of groups:
+
+```{python}
+differences = np.array([382 - 344, 382 - 364, 382 - 335,
+                        344 - 364, 344 - 335, 364 - 335])
+differences
+```
+
+```{r}
+differences <-  c(382 - 344, 382 - 364, 382 - 335,
+                  344 - 364, 344 - 335, 364 - 335)
+differences
+```
+
 
 ## Using Squared Differences
 
-Here we face a choice. We could work with the absolute
-differences — that is, the results of the subtractions — treating each
-result as a positive number even if it is negative. We have seen this
-approach before. Therefore let us now take the opportunity of showing
-another approach. Instead of working with the absolute differences, we
-*square* each difference, and then SUM the squares. An advantage of
-working with the squares is that they are positive — a negative number
-squared is positive — which is convenient. Additionally, conventional
-statistics works mainly with squared quantities, and therefore it is
-worth getting familiar with that point of view. The squared differences
-in this case add up to 5096.
+Here we face a choice. We could work with the absolute differences — that is,
+the results of the subtractions — treating each result as a positive number
+even if it is negative. We have seen this approach before. Therefore let us
+now take the opportunity of showing another approach. Instead of working with
+the absolute differences, we *square* each difference, and then SUM the
+squares. An advantage of working with the squares is that they are positive
+— a negative number squared is positive — which is convenient. Additionally,
+conventional statistics works mainly with squared quantities, and therefore it
+is worth getting familiar with that point of view. The squared differences in
+this case add up to 5096.
 
-Using RESAMPLING STATS, we shuffle all the weight gains together, select
+Using {{< var lang >}}, we shuffle all the weight gains together, select
 four random groups, and determine whether the squared differences in the
-resample exceed 5096. If they do so with regularity, then we conclude
-that the observed differences could easily have occurred by chance.
+resample exceed 5096. If they do so with regularity, then we conclude that the
+observed differences could easily have occurred by chance.
 
-With the CONCAT command, we string the four vectors into a single
-vector. After SHUFFLEing the 48-pig weight-gain vector G into H, we TAKE
-four randomized samples. And we compute the squared differences between
-the pairs of groups and SUM the squared differences just as we did above
-for the observed groups.
+With the [`c`]{.r}[`np.concatenate`]{.python} func, we string the four {{< var array >}}s into a single {{< var array >}}. After shuffling (using
+[`sample`]{.r}[`rnd.permuted`]{.python}
+the 48-pig weight-gain {{< var array >}} `both` into `shuffled`, we split
+`shuffled` into four randomized samples. And we compute the squared
+differences between the pairs of groups and `sum` the squared differences just
+as we did above for the observed groups.
 
-Last, we examine how often the simulated-trials data produce differences
-among the groups as large as (or larger than) the actually observed
-data — 5096.
+Last, we examine how often the simulated-trials data produce differences among
+the groups as large as (or larger than) the actually observed data — 5096.
 
 
 <!--- Resampling stats file; Matlab syntax closeish -->
