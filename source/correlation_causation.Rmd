@@ -22,24 +22,6 @@ source("_common.R")
 
 # Correlation and Causation {#sec-correlation-causation}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/27-Chap-23.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
-
 ## Preview
 
 The correlation (speaking in a loose way for now) between two variables
@@ -476,6 +458,7 @@ iq_ranks = np.arange(1, 11)  # 1 through 10.
 # Scorekeeping array.
 results = np.zeros(n_trials)
 
+# Repeat the experiment 10,000 times.
 for i in range(n_trials):
     # Shuffle the ranks.
     shuffled = rnd.permuted(iq_ranks)
@@ -1094,6 +1077,11 @@ kk <- k / n_trials
 message('Proportion of random pairings giving sum <= observed: ', kk)
 ```
 
+:::
+<!---
+End of notebook
+-->
+
 ### Example: Correlation Between Adherence to Medication Regime and Change in Cholesterol
 
 Efron and Tibshirani [-@efron1993bootstrap, page 72] show data on the extents
@@ -1159,6 +1147,12 @@ statistically significant; this we do as follows:
 
 The following notebook in {{< var lang >}} provides the solution:
 
+
+::: {.notebook name="compliance_cholesterol" title="Testing association of compliance and cholesterol values"}
+
+::: nb-only
+We have 164 rows, each representing a person taking a medication.  For each row (each person) we have a pair of measurements.  The first is their percent compliance in taking their prescribed medication.  The second is the decrease of their blood cholesterol.  We want to see whether the observed association of these values is plausible on the null hypothesis — that there is no association.
+:::
 
 ```{python}
 # Load the Numpy library for arrays.
@@ -1248,6 +1242,11 @@ kk <- k / n_trials
 
 message('Proportion product sums >= observed: ', kk)
 ```
+
+:::
+<!---
+End of notebook
+-->
 
 Interpretation: 10,000 simulated random shufflings never produced
 a sum-of-products as high as the observed value. Hence we conclude that random
@@ -1339,15 +1338,14 @@ otherwise "no."
 * **Step 5.** Calculate the proportion "yes," which estimates the probability
 that an association this great or greater would be observed by chance.
 
-+-------+-----------+-----------+------------+------------+------------------+
-|       | 1         | 2         | 3          | 4          | 5                |
-+-------+-----------+-----------+------------+------------+------------------+
-| Trial | Approve   | Approve   | Disapprove | Disapprove | (Col 1 + Col 4)  |
-|       | Yes       | No        | Yes        | No         | -                |
-|       |           |           |            |            | (Col 2 + Col 3)  |
-+=======+===========+===========+============+============+==================+
-|1      | 43        | 22        | 9          | 4          | 47 - 31 = 16     |
-+-------+-----------+-----------+------------+------------+------------------+
++-------+-----------+-----------+------------+------------+-------------------+
+|       | 1         | 2         | 3          | 4          | 5                 |
++-------+-----------+-----------+------------+------------+-------------------+
+| Trial | Approve   | Approve   | Disapprove | Disapprove | (Col 1 + Col 4) - |
+|       | Yes       | No        | Yes        | No         | (Col 2 + Col 3)   |
++=======+===========+===========+============+============+===================+
+|1      | 43        | 22        | 9          | 4          | 47 - 31 = 16      |
++-------+-----------+-----------+------------+------------+-------------------+
 
 : Results of one random trial of the beer poll problem {#tbl-beerpol-trial}
 
@@ -1358,88 +1356,166 @@ between beer drinking and opinion.
 
 The {{< var lang >}} notebook below does this repetitively. From the
 "actual" sample results we know that 52 respondents drink beer and 26 do
-not. We create the vector "drink" with 52 "1"s for those who drink beer,
-and 26 "2"s for those who do not. We also create the vector "sale" with
-65 "1"s (approve) and 13 "2"s (disapprove). In the actual sample, 51 of
-the 78 respondents had "consistent" responses to the two
-questions — that is, people who both favor the sale of beer *and* drink
-beer, or who are against the sale of beer *and* do not drink beer. We
-want to randomly pair the responses to the two questions to compare
-against that observed result to test the relationship.
+not. We create the {{< var array >}} "drink" with 52 1's for those who drink
+beer, and 26 0's for those who do not. We also create the {{< var array >}}
+"sale" with 65 1's (approve) and 13 0's (disapprove). In the actual sample, 51
+of the 78 respondents had "consistent" responses to the two questions — that
+is, people who both favor the sale of beer *and* drink beer, or who are against
+the sale of beer *and* do not drink beer. We want to randomly pair the
+responses to the two questions to compare against that observed result to test
+the relationship.
 
 To accomplish this aim, we repeat the following procedure 10,000 times using
-a `for` loop. We shuffle drink to drink\$ so that the responses are randomly
-ordered. Now when we subtract the corresponding elements of the two arrays,
-a "0" will appear in each element of the new array c for which there was
-consistency in the response of the two questions. We therefore counts (`sum`)
-the times that c equals "0" and place this result in d, and the number of times
-c does not equal 0, and place this result in e. Find the difference (d minus
-e), and record the result in the `results` {{< var array >}}.
+a `for` loop. We shuffle `drink` to `random_drink` so that the responses are
+randomly ordered. Now when we subtract the corresponding elements of the two
+{{< var array >}}s, a 0 will appear in each element of the new
+{{< var array >}} `diffs` for which there was consistency in the response of
+the two questions. We therefore count (`sum`) the times that `diffs` equals
+0 and place this result in the {{< var array >}} `consistent` and the number of
+times `diffs` does not equal 0, and place this result in `inconsistent`. Find
+the difference (`consistent` minus `inconsistent`), and record the result in
+the `results` {{< var array >}} for each trial.
 
-SCORE Z stores for each trial the number of consistent responses minus
-inconsistent responses. To determine whether the results of the actual
-sample indicate a relationship between the responses to the two
-questions, we check how often the random trials had a difference
-(between consistent and inconsistent responses) as great as 24, the
-value in the observed sample.
+`results` stores, for each trial, the number of consistent responses minus
+inconsistent responses. To determine whether the results of the actual sample
+indicate a relationship between the responses to the two questions, we check
+how often the random trials had a difference (between consistent and
+inconsistent responses) as great as 24, the value in the observed sample.
 
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+rnd = np.random.default_rng()
 
-```matlab
-' Program file: "beerpoll.rss"
-
-URN 52#1 26#0 drink
-' Constitute the set of 52 beer drinkers, represented by 52 "1"s, and the
-' set of 26 non-drinkers, represented by "2"s.
-URN 57#1 21#0 sale
-' The same set of individuals classified by whether they favor ("1") or
-' don't favor ("0") the sale of beer.
-
-' Note: F is now the vector {1 1 1 1 1 1 \... 0 0 0 0 0 \...} where 1 =
-' people in favor, 0 = people opposed.
-REPEAT 1000
-    ' Repeat the experiment 1000 times.
-    SHUFFLE drink drink$
-    ' Shuffle the beer drinkers/non-drinker, call the shuffled set drink\*.
-
-    ' Note: drink\$ is now a vector like {1 1 1 0 1 0 0 1 0 1 1 0 0 \...}
-    ' where 1 = drinker, 0 = non-drinker.
-END
-SUBTRACT drink$ sale c
-' Subtract the favor/don't favor set from the drink/don't drink set.
-' Consistent responses are someone who drinks favoring the sale of beer (a
-' "1" and a "1") or someone who doesn't drink opposing the sale of beer.
-' When subtracted, consistent responses *(and only consistent responses)*
-' produce a "0."
-COUNT c =0 d
-' Count the number of consistent responses (those equal to "0").
-COUNT c <> 0 e
-' Count the "inconsistent" responses (those not equal to "0").
-SUBTRACT d e f
-' Find the difference
-SCORE f z
-' Keep track of the results of each trial.
-
-' End one trial, go back and repeat until all 1000 trials are complete.
-HISTOGRAM z
-' Produce a histogram of the trial result.
-
-' Note: The file "beerpoll" on the Resampling Stats software disk contains
-' this set of commands.
+# Constitute the set of 52 beer drinkers, and the set of 26 non-drinkers,
+# where 1 represents beer drinker, and 0 represents non-drinker.
+drink = np.repeat([1, 0], [52, 26])
+# Show the result
+drink
 ```
 
-**Are Drinkers More Likely to Favor Local Option & Vice Versa**
+```{python}
+# The same set of individuals classified by whether they favor or
+# don't favor the sale of beer, where 1 represents those who favor
+# local beer sale, and 0 represents those who do not.
+sale = np.repeat([1, 0], [65, 13])
+# Show the result
+sale
+```
 
-![](images/27-Chap-23_005.png)
+```{python}
+# Number of repeats.
+n_trials = 10_000
 
-**\# consistent responses thru chance draw**
+# Array to store the results of each trial.
+results = np.zeros(n_trials)
+
+# Repeat the experiment 10,000 times.
+for i in range(n_trials):
+    # Shuffle the drink labels..
+    random_drink = rnd.permuted(drink)
+    # Note: random_drink is now an array like
+    # [1, 0, 1, 1, 1, 0, 0, 1 ...]
+
+    # Subtract the favor/don't favor set from the drink/don't drink set.
+    # Consistent responses are someone who drinks favoring the sale of beer (a
+    # 1 and a 1) or someone who doesn't drink opposing the sale of beer.
+    # When subtracted, consistent responses *(and only consistent responses)*
+    # produce a 0.
+    diffs = random_drink - sale
+    # Count the number of consistent responses (those equal to 0).
+    consistent = np.sum(diffs == 0)
+    # Count the "inconsistent" responses (those not equal to 0).
+    inconsistent = np.sum(diffs != 0)
+    # Find the difference
+    diff_diff = consistent - inconsistent
+    # Keep track of the results of each trial.
+    results[i] = diff_diff
+    # End one trial, go back and repeat until all 10,000 trials are complete.
+# Produce a histogram of the trial result.
+plt.hist(results, bins=np.arange(0, 40))
+plt.title('Consistent-inconsistent responses in null world')
+plt.xlabel('Consistent-inconsistent responses')
+
+# Count differences >= observed.
+k = np.sum(results >= 24)
+# Proportion.
+kk = k / n_trials
+# Print result.
+print('Proportion null-world differences >= observed:', kk)
+```
+
+```{r}
+# Constitute the set of 52 beer drinkers, and the set of 26 non-drinkers,
+# where 1 represents beer drinker, and 0 represents non-drinker.
+drink <- rep(c(1, 0), c(52, 26))
+# Show the result
+drink
+```
+
+```{r}
+# The same set of individuals classified by whether they favor or
+# don't favor the sale of beer, where 1 represents those who favor
+# local beer sale, and 0 represents those who do not.
+sale <- rep(c(1, 0), c(65, 13))
+# Show the result
+sale
+```
+
+```{r}
+# Number of repeats.
+n_trials <- 10000
+
+# Array to store the results of each trial.
+results <- numeric(n_trials)
+
+# Repeat the experiment 10,000 times.
+for (i in 1:n_trials) {
+    # Shuffle the drink labels..
+    random_drink <- sample(drink)
+    # Note: random_drink is now an array like
+    # [1, 0, 1, 1, 1, 0, 0, 1 ...]
+
+    # Subtract the favor/don't favor set from the drink/don't drink set.
+    # Consistent responses are someone who drinks favoring the sale of beer (a
+    # 1 and a 1) or someone who doesn't drink opposing the sale of beer.
+    # When subtracted, consistent responses *(and only consistent responses)*
+    # produce a 0.
+    diffs <- random_drink - sale
+    # Count the number of consistent responses (those equal to 0).
+    consistent <- sum(diffs == 0)
+    # Count the "inconsistent" responses (those not equal to 0).
+    inconsistent <- sum(diffs != 0)
+    # Find the difference
+    diff_diff <- consistent - inconsistent
+    # Keep track of the results of each trial.
+    results[i] <- diff_diff
+    # End one trial, go back and repeat until all 10,000 trials are complete.
+}
+# Produce a histogram of the trial result.
+hist(results, breaks=0:40,
+    main='Consistent-inconsistent responses in null world',
+    xlab='Consistent-inconsistent responses')
+
+# Count differences >= observed.
+k <- sum(results >= 24)
+# Proportion.
+kk <- k / n_trials
+# Print result.
+message('Proportion null-world differences >= observed: ', kk)
+```
+
+:::
+<!---
+End of notebook
+-->
 
 The actual results showed a difference of 24. In the histogram we see
 that a difference that large or larger happened just by chance
-pairing — without any relationship between the two variables — 23% of
-the time. Hence, we conclude that there is little evidence of a
-relationship between the two variables.
+pairing — without any relationship between the two variables — about
+`r int2tw(round(get_var('kk') * 100))` percent of the time. Hence, we conclude
+that there is little evidence of a relationship between the two variables.
 
 Though the test just described may *generally* be appropriate for data
 of this sort, it may well not be appropriate in some particular case.
@@ -1447,69 +1523,64 @@ Let's consider a set of data where even if the test showed that an
 association existed, we would not believe the test result to be
 meaningful.
 
-Suppose the survey results had been as presented in Table 23-11. We see
+Suppose the survey results had been as presented in @tbl-crazy-beer. We see
 that non-beer drinkers have a higher rate of approval of allowing beer
-drinking, which does not accord with experience or reason. Hence,
-without additional explanation we would not believe that a meaningful
-relationship exists among these variables even if the test showed one to
-exist. (Still another reason to doubt that a relationship exists is that
-the absolute differences are too small — there is only a 6% difference
-in disapproval between drink and don't drink groups — to mean anything
-to anyone. On both grounds, then, it makes sense simply to act as if
-there were no difference between the two groups and to run *no test* .).
+drinking, which does not accord with experience or reason. Hence, without
+additional explanation we would not believe that a meaningful relationship
+exists among these variables even if the test showed one to exist. (Still
+another reason to doubt that a relationship exists is that the absolute
+differences are too small to mean anything to anyone — there is only a 6%
+difference in disapproval between drink and don't drink groups. On both
+grounds, then, it makes sense simply to act as if there were no difference
+between the two groups and to run *no test*.)
 
-Table 23-11
+|                   |  % Approve     |  % Disapprove     |  Total     |
+|-------------------|----------------|-------------------|------------|
+| Beer Drinkers     | 71%            | 29%               | 100%       |
+| Non-Beer Drinkers | 77%            | 23%               | 100%       |
 
-**Beer Poll In Which Results Are Not In Accord With Expectation Or
-Reason**
-
-  ------------------- --------------- ------------------ -----------
-                      **% Approve**   **% Disapprove**   **Total**
-  Beer Drinkers       71%             29%                100%
-  Non-Beer Drinkers   77%             23%                100%
-  ------------------- --------------- ------------------ -----------
+: Beer poll in which results are not in accord with expectation {#tbl-crazy-beer}
 
 The lesson to be learned from this is that one should inspect the data
 carefully before applying a statistical test, and only test for
 "significance" if the apparent relationships accord with theory, general
 understanding, and common sense.
 
-**Example 23-4: Do Athletes Really Have "Slumps"?** (Are Successive
-Events in a Series Independent, or is There a Relationship Between
-Them?)
+### Example: do athletes really have "slumps"?
 
-The important concept of independent events was introduced earlier.
-Various scientific and statistical decisions depend upon whether or not
-a series of events is independent. But how does one know whether or not
-the events are independent? Let us consider a baseball example.
+**Are successive events in a series independent, or is there a relationship between
+them?**
 
-Baseball players and their coaches believe that on some days and during
-some weeks a player will bat better than on other days and during other
-weeks. And team managers and coaches act on the belief that there are
-periods in which players do poorly — slumps — by temporarily replacing
-the player with another after a period of poor performance. The
-underlying belief is that a series of failures indicates a temporary (or
-permanent) change in the player's capacity to play well, and it
-therefore makes sense to replace him until the evil spirit passes on,
-either of its own accord or by some change in the player's style.
+The important concept of independent events was introduced earlier. Various
+scientific and statistical decisions depend upon whether or not a series of
+events is independent. But how does one know whether or not the events are
+independent? Let us consider a baseball example.
 
-But even if his hits come randomly, a player will have runs of good luck
-and runs of bad luck just by chance — just as does a card player. The
-problem, then, is to determine whether (a) the runs of good and bad
-batting are merely runs of chance, and the probability of success for
-each event remains the same throughout the series of events — which
-would imply that the batter's ability is the same at all times, and
-coaches should not take recent performance heavily into account when
-deciding which players should play; or (b) whether a batter really does
-have a tendency to do better at some times than at others, which would
-imply that there is some relationship between the occurrence of success
-in one trial event and the probability of success in the next trial
-event, and therefore that it is reasonable to replace players from time
-to time.
+Baseball players and their coaches believe that on some days and during some
+weeks a player will bat better than on other days and during other weeks. And
+team managers and coaches act on the belief that there are periods in which
+players do poorly — slumps — by temporarily replacing the player with another
+after a period of poor performance. The underlying belief is that a series of
+failures indicates a temporary (or permanent) change in the player's capacity
+to play well, and it therefore makes sense to replace him until the evil spirit
+passes on, either of its own accord or by some change in the player's style.
+
+But even if his hits come randomly, a player will have runs of good luck and
+runs of bad luck just by chance — just as does a card player. The problem,
+then, is to determine whether (a) the runs of good and bad batting are merely
+runs of chance, and the probability of success for each event remains the same
+throughout the series of events — which would imply that the batter's ability
+is the same at all times, and coaches should not take recent performance
+heavily into account when deciding which players should play; or (b) whether
+a batter really does have a tendency to do better at some times than at others,
+which would imply that there is some relationship between the occurrence of
+success in one trial event and the probability of success in the next trial
+event, and therefore that it is reasonable to replace players from time to
+time.
 
 Let's analyze the batting of a player we shall call "Slug." Here are the
-results of Slug's first 100 times at bat during the 1987 season ("H" =
-hit, "X" = out):
+results of Slug's first 100 times at bat during the 1987 season ("H" = hit, "X"
+= out):
 
 X X X X X X H X X H X H H X X X X X X X X H X X X X X H X X X X H H X X
 X X X H X X H X H X X X H H X X X X X H X H X X X X H H X H H X X X X X
@@ -1534,11 +1605,14 @@ H X X H X H X X X X X X X X X H X X X X X X X H H H X X.
 
 Now we can compare whether or not Slug's hits are bunched up more than
 they would be by random chance; we can do so by *counting the clusters*
-(also called "runs") of consecutive hits and outs for Slug and for the
-cards. Slug had forty-three clusters, which is more than the
-thirty-seven clusters in the cards; it therefore does not seem that
-there is a tendency for Slug's hits to cluster together. (A larger
-number of clusters indicates a lower tendency to cluster.)
+(also called "runs") of *one  or more* consecutive hits or outs for Slug and for
+the cards.  Notice a cluster (run) can be length 1.  So "H H X X X H X H"
+contains five clusters — they are "H H", "X X X", "H" "X" "H". Notice too that
+number of clusters will be highest *when there is no clumping* — that is - when
+"H" and "X" always alternate, as in "H X H X H X ...".  Slug had forty-three
+clusters, which is more than the thirty-seven clusters in the cards; it
+therefore does not seem that there is a tendency for Slug's hits to clump
+together. (A larger number of clusters indicates a lower tendency to cluster.)
 
 Of course, the single trial of 100 cards shown above might have an
 unusually high or low number of clusters. To be safer, lay out, (say,)
@@ -1547,59 +1621,200 @@ the various trials. The proportion of trials with more clusters than
 Slug's indicates whether or not Slug's hits have a tendency to bunch up.
 (But caution: This proportion cannot be interpreted directly as a
 probability.)
-
 Now the steps:
 
-**Step 1.** Constitute a bucket with 3 slips of paper that say "out" and
-one that says "hit." Or "01-25" = hits (H), "26-00" = outs (X), Slug's
-long-run average.
+* **Step 1.** Constitute a bucket with 3 slips of paper that say "out" and one
+  that says "hit." Or use a table of random numbers and say "01-25" = hits (H),
+  "26-00" = outs (X), Slug's long-run average.
+* **Step 2.** Sample 100 slips of paper, with replacement, record "hit" or
+"out" each time, or write a series of "H's" or "X's" corresponding to 100
+numbers, each selected randomly between 1 and 100.
+* **Step 3.** Count the number of "clusters," that is, the number of "runs" of
+the same event, "H"s or "X"s.
+* **Step 4.** Compare the outcome in step 3 with Slug's outcome, 43 clusters.
+If 43 or fewer; write "yes," otherwise "no."
+* **Step 5.** Repeat steps 2-4 a hundred times.
+* **Step 6.** Compute the proportion "yes." This estimates the probability that
+Slug's record is not characterized by more "slumps" than would be caused by
+chance. A very low proportion of "yeses" indicates longer (and hence fewer)
+"streaks" and "slumps" than would result by chance.
 
-**Step 2.** Sample 100 slips of paper, with replacement, record "hit" or
-"out" each time, or write a series of "H's" or "X's" corresponding to
-100 numbers, each selected randomly between 1 and 100.
+In {{< var lang >}}, we can do this experiment 10000 times.
 
-**Step 3.** Count the number of "clusters," that is, the number of
-"runs" of the same event, "H"s or "X"s.
+::: {.notebook name="slugs_slumps" title="Do Slugs hits and misses tend to cluster?"}
 
-**Step 4.** Compare the outcome in step 3 with Slug's outcome, 43
-clusters. If 43 or fewer; write "yes," otherwise "no."
+::: nb-only
+We will draw 100 values at random with a 25% probability of a Hit, and 75% probability of a miss.  Treat these as a sequence of Hits and Misses from the null-world.  Do these random draws cluster more or less than Slug's own sequences of hits and misses?
+:::
 
-**Step 5.** Repeat steps 2-4 a hundred times.
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-**Step 6.** Compute the proportion "yes." This estimates the probability
-that Slug's record is not characterized by more "slumps" than would be
-caused by chance. A very low proportion of "yeses" indicates longer (and
-hence fewer) "streaks" and "slumps" than would result by chance.
+# Set up the random number generator.
+rnd = np.random.default_rng()
+```
 
-In RESAMPLING STATS, we can do this experiment 1000 times.
+First let us work out how to calculate the number of clusters as defined above.
 
+This is Slug's record:
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+```{python}
+slug = np.array([
+    'X', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X', 'H', 'X', 'H', 'H', 'X', 'X',
+    'X', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X',
+    'X', 'X', 'H', 'H', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X', 'H', 'X', 'H',
+    'X', 'X', 'X', 'H', 'H', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'H', 'X', 'X',
+    'X', 'X', 'H', 'H', 'X', 'H', 'H', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+    'X', 'X', 'H', 'X', 'X', 'X', 'H', 'X', 'X', 'H', 'X', 'X', 'H', 'X', 'H',
+    'X', 'X', 'H', 'X', 'X', 'X', 'H', 'X', 'X', 'X'
+])
+```
 
-```matlab
-' Program file: "sluggo.rss"
+```{r}
+slug = c(
+    'X', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X', 'H', 'X', 'H', 'H', 'X', 'X',
+    'X', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X',
+    'X', 'X', 'H', 'H', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X', 'H', 'X', 'H',
+    'X', 'X', 'X', 'H', 'H', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'H', 'X', 'X',
+    'X', 'X', 'H', 'H', 'X', 'H', 'H', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+    'X', 'X', 'H', 'X', 'X', 'X', 'H', 'X', 'X', 'H', 'X', 'X', 'H', 'X', 'H',
+    'X', 'X', 'H', 'X', 'X', 'X', 'H', 'X', 'X', 'X'
+)
+```
 
-REPEAT 1000
-    URN 3#0 1#1 a
-    SAMPLE 100 a b
-    ' Sample 100 "at-bats" from a
-    RUNS b >=1 c
-    ' How many runs (of any length \>=1) are there in the 100 at-bats?
-    SCORE c z
-END
-HISTOGRAM z
-' Note: The file "sluggo" on the Resampling Stats software disk contains
-' this set of commands.
+Here's how we can calculate the number of runs:
+
+```{python}
+slug_runs = 0
+current_element = 'start-marker'  # Something that is always != to the elements.
+for element in slug:
+    if element != current_element:  # The previous cluster has finished.
+        slug_runs = slug_runs + 1  # Record we are in a new cluster.
+        current_element = element  # Give the starting element for the new cluster.
+# Show the count.
+slug_runs
+```
+
+```{r}
+slug_runs <- 0
+current_element <- 'start-marker'  # Something that is always != to the elements.
+for (element in slug) {
+    if (element != current_element) {  # The previous cluster has finished.
+        slug_runs <- slug_runs + 1  # Record we are in a new cluster.
+        current_element <- element  # Give the starting element for the new cluster.
+    }
+}
+# Show the count.
+slug_runs
+```
+
+For practice, let us count the number of clusters in the random set of cards above:
+
+```{python}
+random_hand = np.array([
+    'X', 'X', 'H', 'X', 'X', 'X', 'X', 'H', 'H', 'X', 'X', 'X', 'H', 'H', 'H',
+    'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X', 'X', 'H', 'X', 'X', 'H', 'X', 'X',
+    'X', 'X', 'H', 'X', 'H', 'H', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+    'H', 'X', 'X', 'X', 'X', 'X', 'X', 'H', 'H', 'X', 'X', 'X', 'X', 'X', 'H',
+    'H', 'H', 'X', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'H', 'X', 'H', 'X', 'X',
+    'H', 'X', 'H', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X',
+    'X', 'X', 'X', 'X', 'X', 'H', 'H', 'H', 'X', 'X'
+])
+random_runs = 0
+current_element = 'start-marker'  # Something that is always != to the elements.
+for element in random_hand:
+    if element != current_element:  # The previous cluster has finished.
+        random_runs = random_runs + 1  # Record we are in a new cluster.
+        current_element = element  # Give the starting element for the new cluster.
+# Show the result.
+random_runs
+```
+
+```{r}
+random_hand = c(
+    'X', 'X', 'H', 'X', 'X', 'X', 'X', 'H', 'H', 'X', 'X', 'X', 'H', 'H', 'H',
+    'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X', 'X', 'H', 'X', 'X', 'H', 'X', 'X',
+    'X', 'X', 'H', 'X', 'H', 'H', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X',
+    'H', 'X', 'X', 'X', 'X', 'X', 'X', 'H', 'H', 'X', 'X', 'X', 'X', 'X', 'H',
+    'H', 'H', 'X', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'H', 'X', 'H', 'X', 'X',
+    'H', 'X', 'H', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'H', 'X', 'X',
+    'X', 'X', 'X', 'X', 'X', 'H', 'H', 'H', 'X', 'X'
+)
+random_runs <- 0
+current_element <- 'start-marker'  # Something that is always != to the elements.
+for (element in random_hand) {
+    if (element != current_element) {  # The previous cluster has finished.
+        random_runs <- random_runs + 1  # Record we are in a new cluster.
+        current_element <- element  # Give the starting element for the new cluster.
+    }
+}
+# Show the result.
+random_runs
+```
+
+We will use that code in the procedure below.
+
+```{python}
+# Set the number of trials.
+n_trials = 10_000
+
+# An empty array to store the trials.
+results = np.zeros(n_trials)
+
+for i in range(n_trials):
+    # Sample 100 "at-bats" with Slug's own probabilities.
+    hits_misses = rnd.choice(['H', 'X'], p=[0.25, 0.75], size=100)
+    # How many runs (of any length >=1) are there in the 100 at-bats?
+    fake_runs = 0
+    current_element = 'start-marker'  # Something always != to the elements.
+    for element in hits_misses:
+        if element != current_element:  # The previous cluster has finished.
+            fake_runs = fake_runs + 1  # Record we are in a new cluster.
+            current_element = element  # Give the starting element for the new cluster.
+    # Record the result.
+    results[i] = fake_runs
+
+plt.hist(results, bins=25)
+plt.title('Distribution of number of clusters in random hit/miss arrays')
+plt.title('Number of clusters')
+```
+
+```{r}
+# Set the number of trials.
+n_trials <- 10000
+
+# An empty array to store the trials.
+results <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+    # Sample 100 "at-bats" with Slug's own probabilities.
+    hits_misses <- sample(c('H', 'X'), size=100, replace=TRUE, prob=c(0.25, 0.75))
+    # How many runs (of any length >=1) are there in the 100 at-bats?
+    fake_runs <- 0
+    current_element <- 'start-marker'  # Something always != to the elements.
+    for (element in hits_misses) {
+        if (element != current_element) {  # The previous cluster has finished.
+            fake_runs <- fake_runs + 1  # Record we are in a new cluster.
+            current_element <- element  # Give the starting element for the new cluster.
+        }
+    }
+    # Record the result.
+    results[i] <- fake_runs
+}
+
+hist(results, breaks=25,
+    main='Distribution of number of clusters in random hit/miss arrays',
+    xlab='Number of clusters')
 ```
 
 Examining the histogram, we see that 43 runs is not at all an unusual
-occurrence:
+occurrence.
 
-**"Runs" in 100 At-Bats**
-
-![](images/27-Chap-23_006.png)
-
-**\# "runs" of same outcome**
+:::
+<!---
+End of notebook
+-->
 
 The manager wants to look at this matter in a somewhat different
 fashion, however. He insists that the existence of slumps is proven by
@@ -1657,7 +1872,7 @@ Remember, too, the study by Gilovich, Vallone, and Twersky of basketball
 mentioned in @sec-sampling-variability. To repeat, their analyses "provided no
 evidence for a positive correlation between the outcomes of successive shots."
 That is, knowing whether a shooter has or has not scored on the previous sheet
-— or in any previous sequence of shots — is useless for predicting whether he
+— or in any previous sequence of shots — is useless for predicting whether they
 will score again.
 
 The species *homo sapiens* apparently has a powerful propensity to believe that
@@ -1709,53 +1924,50 @@ a random-number table are independent?
 
 Solutions for problems may be found at @sec-exercise-solutions.
 
-### Exercise 23-1
+### Voter participation {#exr-voter-participation}
 
-Table 23-12 shows voter participation rates in the various states in the
-1844 presidential election. Should we conclude that there was a negative
-relationship between the participation rate (a) and the vote spread (b)
-between the parties in the election? (Adapted from [@noreen1989computer, page
-20, Table 2-4]:
+@tbl-voter-participation shows voter participation rates in the various states
+in the 1844 presidential election. Should we conclude that there was a negative
+relationship between the participation rate (a) and the vote spread (b) between
+the parties in the election? (Adapted from [@noreen1989computer, page 20, Table
+2-4]:
 
-Table 23-12
+| State            | Participation (a)     | Spread (b) |
+|------------------|-----------------------|------------|
+| Maine            | 67.5                  | 13         |
+| New Hampshire    | 65.6                  | 19         |
+| Vermont          | 65.7                  | 18         |
+| Massachusetts    | 59.3                  | 12         |
+| Rhode Island     | 39.8                  | 20         |
+| Connecticut      | 76.1                  | 5          |
+| New York         | 73.6                  | 1          |
+| New Jersey       | 81.6                  | 1          |
+| Pennsylvania     | 75.5                  | 2          |
+| Delaware         | 85.0                  | 3          |
+| Maryland         | 80.3                  | 5          |
+| Virginia         | 54.5                  | 6          |
+| North Carolina   | 79.1                  | 5          |
+| Georgia          | 94.0                  | 4          |
+| Kentucky         | 80.3                  | 8          |
+| Tennessee        | 89.6                  | 1          |
+| Louisiana        | 44.7                  | 3          |
+| Alabama          | 82.7                  | 8          |
+| Mississippi      | 89.7                  | 13         |
+| Ohio             | 83.6                  | 2          |
+| Indiana          | 84.9                  | 2          |
+| Illinois         | 76.3                  | 12         |
+| Missouri         | 74.7                  | 17         |
+| Arkansas         | 68.8                  | 26         |
+| Michigan         | 79.3                  | 6          |
+| National Average | 74.9                  | 9          |
 
-**Voter Participation In The 1844 Presidential Election**
-
-  ------------------ ----------------------- ----------------
-  **State**          **Participation (a)**   **Spread (b)**
-  Maine              67.5                    13
-  New Hampshire      65.6                    19
-  Vermont            65.7                    18
-  Massachusetts      59.3                    12
-  Rhode Island       39.8                    20
-  Connecticut        76.1                    5
-  New York           73.6                    1
-  New Jersey         81.6                    1
-  Pennsylvania       75.5                    2
-  Delaware           85.0                    3
-  Maryland           80.3                    5
-  Virginia           54.5                    6
-  North Carolina     79.1                    5
-  Georgia            94.0                    4
-  Kentucky           80.3                    8
-  Tennessee          89.6                    1
-  Louisiana          44.7                    3
-  Alabama            82.7                    8
-  Mississippi        89.7                    13
-  Ohio               83.6                    2
-  Indiana            84.9                    2
-  Illinois           76.3                    12
-  Missouri           74.7                    17
-  Arkansas           68.8                    26
-  Michigan           79.3                    6
-  National Average   74.9                    9
-  ------------------ ----------------------- ----------------
+: Voter Participation In The 1844 Presidential Election {#tbl-voter-participation}
 
 The observed correlation coefficient between voter participation and
 spread is -.37398. Is this more negative that what might occur by
 chance, if no correlation exists?
 
-### Exercise 23-2
+### Association of runs and strikeouts {#exr-runs-strikeouts}
 
 We would like to know whether, among major-league baseball players, home
 runs (per 500 at-bats) and strikeouts (per 500 at-bat's) are correlated.
@@ -1786,8 +1998,7 @@ strikeout <- c(135, 153, 120, 161, 138, 175, 126, 200, 205,
 # Exercise - complete this program.
 ```
 
-
-### Exercise 23-3
+### Runs, strikeouts, correlation {#exr-runs-strikeout-correlation}
 
 In the previous example relating strikeouts and home runs, we used the
 procedure of multiplying the elements within each pair. Now we use a
@@ -1798,60 +2009,51 @@ known that we calculate it with a pre-set command.
 Exercise: Write a program that uses the correlation coefficient to test
 the significance of the association between home runs and strikeouts.
 
-### Exercise 23-4
+### Money and exchange rate {#exr-money-exchange-rate}
 
 All the other things equal, an increase in a country's money supply is
 inflationary and should have a negative impact on the exchange rate for
-the country's currency. The data in the following table were computed
-using data from tables in the 1983/1984 *Statistical Yearbook of the
-United Nations* :
+the country's currency. The data in the following table (@tbl-exchange) were
+computed using data from tables in the 1983/1984 *Statistical Yearbook of the
+United Nations*:
 
-Table 23-13
+| Exchange Rate | Money Supply  | Exchange Rate | Money Supply |
+|--------------|-------|--------|--------------|--------|-------|
+| Australia    | 0.089 | 0.035  | Belgium      | 0.134  | 0.003 |
+| Botswana     | 0.351 | 0.085  | Burma        | 0.064  | 0.155 |
+| Burundi      | 0.064 | 0.064  | Canada       | 0.062  | 0.209 |
+| Chile        | 0.465 | 0.126  | China        | 0.411  | 0.555 |
+| Costa Rica   | 0.100 | 0.100  | Cyprus       | 0.158  | 0.044 |
+| Denmark      | 0.140 | 0.351  | Ecuador      | 0.242  | 0.356 |
+| Fiji         | 0.093 | 0.000  | Finland      | 0.124  | 0.164 |
+| France       | 0.149 | 0.090  | Germany      | 0.156  | 0.061 |
+| Greece       | 0.302 | 0.202  | Hungary      | 0.133  | 0.049 |
+| India        | 0.187 | 0.184  | Indonesia    | 0.080  | 0.132 |
+| Italy        | 0.167 | 0.124  | Jamaica      | 0.504  | 0.237 |
+| Japan        | 0.081 | 0.069  | Jordan       | 0.092  | 0.010 |
+| Kenya        | 0.144 | 0.141  | Korea        | 0.040  | 0.006 |
+| Kuwait       | 0.038 | -0.180 | Lebanon      | 0.619  | 0.065 |
+| Madagascar   | 0.337 | 0.244  | Malawi       | 0.205  | 0.203 |
+| Malaysia     | 0.037 | -0.006 | Malta        | 0.003  | 0.003 |
+| Mauritania   | 0.180 | 0.192  | Mauritius    | 0.226  | 0.136 |
+| Mexico       | 0.338 | 0.599  | Morocco      | 0.076  | 0.076 |
+| Netherlands  | 0.158 | 0.078  | New Zealand  | 0.370  | 0.098 |
+| Nigeria      | 0.079 | 0.082  | Norway       | 0.177  | 0.242 |
+| Papua        | 0.075 | 0.209  | Philippines  | 0.411  | 0.035 |
+| Portugal     | 0.288 | 0.166  | Romania      | -0.029 | 0.039 |
+| Rwanda       | 0.059 | 0.083  | Samoa        | 0.348  | 0.118 |
+| Saudi Arabia | 0.023 | 0.023  | Seychelles   | 0.063  | 0.031 |
+| Singapore    | 0.024 | 0.030  | Solomon Is   | 0.101  | 0.526 |
+| Somalia      | 0.481 | 0.238  | South Africa | 0.624  | 0.412 |
+| Spain        | 0.107 | 0.086  | Sri Lanka    | 0.051  | 0.141 |
+| Switzerland  | 0.186 | 0.186  | Tunisia      | 0.193  | 0.068 |
+| Turkey       | 0.573 | 0.181  | UK           | 0.255  | 0.154 |
+| USA          | 0.000 | 0.156  | Vanatuva     | 0.008  | 0.331 |
+| Yemen        | 0.253 | 0.247  | Yugoslavia   | 0.685  | 0.432 |
+| Zaire        | 0.343 | 0.244  | Zambia       | 0.457  | 0.094 |
+| Zimbabwe     | 0.359 | 0.164  |              |        |       |
 
-**Money Supply and Exchange Rate Changes**
-
-**% Change % Change % Change % Change**
-
-**Exch. Rate Money Supply Exch. Rate Money Supply**
-
-  -------------- ------- -------- -------------- -------- -------
-  Australia      0.089   0.035    Belgium        0.134    0.003
-  Botswana       0.351   0.085    Burma          0.064    0.155
-  Burundi        0.064   0.064    Canada         0.062    0.209
-  Chile          0.465   0.126    China          0.411    0.555
-  Costa Rica     0.100   0.100    Cyprus         0.158    0.044
-  Denmark        0.140   0.351    Ecuador        0.242    0.356
-  Fiji           0.093   0.000    Finland        0.124    0.164
-  France         0.149   0.090    Germany        0.156    0.061
-  Greece         0.302   0.202    Hungary        0.133    0.049
-  India          0.187   0.184    Indonesia      0.080    0.132
-  Italy          0.167   0.124    Jamaica        0.504    0.237
-  Japan          0.081   0.069    Jordan         0.092    0.010
-  Kenya          0.144   0.141    Korea          0.040    0.006
-  Kuwait         0.038   -0.180   Lebanon        0.619    0.065
-  Madagascar     0.337   0.244    Malawi         0.205    0.203
-  Malaysia       0.037   -0.006   Malta          0.003    0.003
-  Mauritania     0.180   0.192    Mauritius      0.226    0.136
-  Mexico         0.338   0.599    Morocco        0.076    0.076
-  Netherlands    0.158   0.078    New Zealand    0.370    0.098
-  Nigeria        0.079   0.082    Norway         0.177    0.242
-  Papua          0.075   0.209    Philippines    0.411    0.035
-  Portugal       0.288   0.166    Romania        -0.029   0.039
-  Rwanda         0.059   0.083    Samoa          0.348    0.118
-  Saudi Arabia   0.023   0.023    Seychelles     0.063    0.031
-  Singapore      0.024   0.030    Solomon Is     0.101    0.526
-  Somalia        0.481   0.238    South Africa   0.624    0.412
-  Spain          0.107   0.086    Sri Lanka      0.051    0.141
-  Switzerland    0.186   0.186    Tunisia        0.193    0.068
-  Turkey         0.573   0.181    UK             0.255    0.154
-  USA            0.000   0.156    Vanatuva       0.008    0.331
-  Yemen          0.253   0.247    Yugoslavia     0.685    0.432
-  Zaire          0.343   0.244    Zambia         0.457    0.094
-  Zimbabwe       0.359   0.164
-  -------------- ------- -------- -------------- -------- -------
-
- Percentage changes in exchange rates and money supply between 1983 and
-1984 for various countries.
+: Percentage change in exchange rates and money supply 1983 - 1984 {#tbl-exchange}
 
 Are changes in the exchange rates and in money supplies related to each
 other? That is, are they correlated?
@@ -1862,8 +2064,6 @@ would be adapted from Noreen (1989), and otherwise, what Noreen (1990) might
 be.
 -->
 
-## Exercise 1 {#sec-country-exchange}
-
 Should the algorithm of non-computer resampling steps be similar to the
 algorithm for I.Q. and athletic ability shown in the text? One can also work
 with the correlation coefficient rather then the sum-of-products method, and
@@ -1871,4 +2071,4 @@ expect to get the same result.
 
 1.  Write a series of non-computer resampling steps to solve this
     problem.
-2.  Write a computer program to implement those steps.
+2.  Write a {{< var lang >}} program to implement those steps.
