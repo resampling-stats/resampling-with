@@ -369,7 +369,8 @@ See [Quarto tables](https://quarto.org/docs/authoring/tables.html)
 These are the most flexible, but are fiddly to edit because they care about
 spacing.  Use these for headers, footer, fusing cells, etc.
 
-See: [Pandoc grid tables](https://pandoc.org/MANUAL.html#other-extensions) and
+See: [Pandoc grid tables](
+https://pandoc.org/chunkedhtml-demo/8.9-tables.html) and
 `inference_ideas.Rmd` for examples.
 
 There is a good summary of

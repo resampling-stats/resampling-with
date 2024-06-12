@@ -281,7 +281,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-_ax_lims = [75, 95, 90, 125]
+_ax_lims = [75, 95, 97, 122]
 _x_ticks = np.arange(75, 96, 5)
 _df = pd.read_csv('data/athletic_iq.csv')
 _ath = np.array(_df['athletic_score'])
@@ -717,18 +717,14 @@ must arbitrarily be placed on the x-axis, whether you intend to suggest
 causation or not.)
 
 ```{python echo=FALSE, label="fig-hypot-spos", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 1", eval=TRUE}
-rnd = np.random.default_rng(1966)
-
-_s = 1.6
-_c = np.mean(_iq) - _s * np.mean(_ath)
-_pos_iq = np.round(_c + _s * _ath + rnd.normal(0, 5, size=len(_iq)))
+_siq = np.sort(_iq)
+_athi = np.argsort(_ath)
+_pos_iq = _siq[_athi]
 aiq_plot(_ath, _pos_iq)
 ```
 
 ```{python echo=FALSE, label="fig-hypot-sneg", fig.cap="Hypothetical Scores for I.Q. and Athletic Ability — 2", eval=TRUE}
-_s = -1.6
-_c = np.mean(_iq) - _s * np.mean(_ath)
-_neg_iq = np.rround(_c + _s * _ath + rnd.normal(0, 5, size=len(_iq)))
+_neg_iq = _siq[_athi[::-1]]
 aiq_plot(_ath, _neg_iq)
 ```
 
@@ -817,7 +813,7 @@ not perfectly correlated with the *x*'s.
 | 8   | 8    | 64       | 4      | 32        | 2    | 16       |
 +-----+------+----------+--------+-----------+------+----------+
 | 10  | 10   | 100      | 2      | 20        | 10   | 100      |
-+============+==========+========+===========+======+==========+
++=====+======+==========+========+===========+======+==========+
 | **Sums**   | 220      |        | 140       |      | 192      |
 +============+==========+========+===========+======+==========+
 
