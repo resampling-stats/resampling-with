@@ -1257,17 +1257,18 @@ chance is a very unlikely explanation for the observed correlation.
 
 **Testing for a relationship between counted-data variables.**
 
-The data for athletic ability and I.Q. were measured. Therefore, we
-could use them in their original "cardinal" form, or we could split them
-up into "high" and "low" groups. Often, however, the individual
-observations are recorded only as "yes" or "no," which makes it more
-difficult to ascertain the existence of a relationship. Consider the
-poll responses in Table 23-8 to two public-opinion survey questions: "Do
-you drink beer?" and "Are you in favor of local option on the sale of
+Earlier in this chapter, we analyzed measured values for athletic ability and
+I.Q. We could and did use them in their original "cardinal" form, or split them
+up into "high" and "low" groups. Often, however, the individual observations
+are recorded only as categories such "yes" or "no," which makes it more
+difficult to ascertain the existence of a relationship. Consider the poll
+responses in @tbl-beerpol-data to two public-opinion survey questions: "Do you
+drink beer?" and "Are you in favor of a local option on the sale of
 beer?".[^beer-data]
 
-[^beer-data]: These data are from an example in [@dixon1983introduction, page
-    278], in which the problem is tackled conventionally with a chi-square test.
+[^beer-data]: These data are based on an example in [@dixon1983introduction,
+    page 278, example 13-5], in which the problem is tackled conventionally
+    with a chi-square test.
 
 <!---
 Page 278 in 4th edition, example 13-5.
@@ -1281,20 +1282,22 @@ Local No    15        6
 -->
 
 
-Table 23-9
++--------------------------------------------------+-----------------------------+
+|  Do you favor local option on the sale of beer?  | Do you drink beer?          |
++--------------------------------------------------+--------+--------+-----------+
+|                                                  | Yes    | No     | **Total** |
++--------------------------------------------------+--------+--------+-----------+
+| Favor                                            | 45     | 20     | **65**    |
++--------------------------------------------------+--------+--------+-----------+
+| Don't favor                                      | 7      | 6      | **13**    |
++--------------------------------------------------+--------+--------+-----------+
+| **Total**                                        | **52** | **26** | **78**    |
++--------------------------------------------------+--------+--------+-----------+
 
-**Results of Observed Sample For Problem "Beerpoll"**
-
-  ---------------------------------------------------- ------------------------ -------- -----------
-  **Do you favor local option on the sale of beer?**   **Do you drink beer?**            
-                                                       **Yes**                  **No**   **Total**
-  Favor                                                45                       20       65
-  Don't Favor                                          7                        6        13
-  Total                                                52                       26       78
-  ---------------------------------------------------- ------------------------ -------- -----------
+: Results of Observed Sample For beer poll {#tbl-beerpol-data}
 
 Here is the statistical question: Is a person's opinion on "local
-option" related to whether or not he drinks beer? Our resampling
+option" related to whether or not they drink beer? Our resampling
 solution begins by noting that there are seventy-eight respondents,
 sixty-five of whom approve local option and thirteen of whom do not.
 Therefore write "approve" on sixty-five index cards and "not approve" on
@@ -1306,65 +1309,54 @@ random *pairs* , one from each pile.
 
 If there is a high association between the variables, then real life
 observations will bunch up in the two diagonal cells in the upper left
-and lower right in Table 23-8. (Ignore the "total" data for now.)
-Therefore, subtract one sum of two diagonal cells from the other sum for
-the observed data: (45 + 6) - (20 + 7) = 24. Then compare this
-difference to the comparable differences found in random trials. The
-proportion of times that the simulated-trial difference exceeds the
-observed difference is the probability that the observed difference of
-+24 might occur by chance, even if there is no relationship between the
-two variables. (Notice that, in this case, we are working on the
-assumption that beer drinking is *positively* associated with approval
-of local option and not the inverse. We are interested only in
+and lower right in @tbl-beerpol-data. (Ignore the "total" data for now.)
+Therefore, subtract one sum of two diagonal cells from the other sum for the
+observed data: (45 + 6) - (20 + 7) = 24. Then compare this difference to the
+comparable differences found in random trials. The proportion of times that the
+simulated-trial difference exceeds the observed difference is the probability
+that the observed difference of +24 might occur by chance, even if there is no
+relationship between the two variables. (Notice that, in this case, we are
+working on the assumption that beer drinking is *positively* associated with
+approval of local option and not the inverse. We are interested only in
 differences that are equal to or exceed +24 when the northeast-southwest
 diagonal is subtracted from the northwest-southeast diagonal.)
 
 We can carry out a resampling test with this procedure:
 
-**Step 1.** Write "approve" on 65 and "disapprove" on 13 red index
-cards, respectively; write "Drink" and "Don't drink" on 52 and 26 white
-cards, respectively.
+* **Step 1.** Write "approve" on 65 and "disapprove" on 13 red index cards,
+  respectively; write "Drink" and "Don't drink" on 52 and 26 white cards,
+  respectively.
+* **Step 2.** Pair the two sets of cards randomly. Count the numbers of the
+four possible pairs: (1) "approve-drink," (2) "disapprove-don't drink," (3)
+"disapprove-drink," and (4) "approve-don't drink." Record the number of these
+combinations, as in Table 23-10, where columns 1-4 correspond to the four cells
+in Table 23-9.
+* **Step 3.** Add (column 1 plus column 4), then add (column 2 plus column 3),
+and subtract the result in the second parenthesis from the result in the first
+parenthesis. If the difference is equal to or greater than 24, record "yes,"
+otherwise "no."
+* **Step 4.** Repeat steps 2 and 3 perhaps a hundred times.
+* **Step 5.** Calculate the proportion "yes," which estimates the probability
+that an association this great or greater would be observed by chance.
 
-**Step 2.** Pair the two sets of cards randomly. Count the numbers of
-the four possible pairs: (1) "approve-drink," (2) "disapprove-don't
-drink," (3) "disapprove-drink," and (4) "approve-don't drink." Record
-the number of these combinations, as in Table 23-10, where columns 1-4
-correspond to the four cells in Table 23-9.
++-------+-----------+-----------+------------+------------+------------------+
+|       | 1         | 2         | 3          | 4          | 5                |
++-------+-----------+-----------+------------+------------+------------------+
+| Trial | Approve   | Approve   | Disapprove | Disapprove | (Col 1 + Col 4)  |
+|       | Yes       | No        | Yes        | No         | -                |
+|       |           |           |            |            | (Col 2 + Col 3)  |
++=======+===========+===========+============+============+==================+
+|1      | 43        | 22        | 9          | 4          | 47 - 31 = 16     |
++-------+-----------+-----------+------------+------------+------------------+
 
-**Step 3.** Add (column 1 plus column 4) and (column 2 plus column 3),
-and subtract the result in the second parenthesis from the result in the
-first parenthesis. If the difference is equal to or greater than 24,
-record "yes," otherwise "no."
+: Results of one random trial of the beer poll problem {#tbl-beerpol-trial}
 
-**Step 4.** Repeat steps 2 and 3 perhaps a hundred times.
+@tbl-beerpol-trial shows the result of one such trial.  When we run a series of
+ten trials such trials, it indicates that the observed difference is very often
+exceeded, which suggests that we have no good evidence here for a relationship
+between beer drinking and opinion.
 
-**Step 5.** Calculate the proportion "yes," which estimates the
-probability that an association this great or greater would be observed
-by chance.
-
-Table 23-10
-
-**Results of One Random Trial of the Problem "Beerpoll"**
-
-+-----------+-----------+-----------+-----------+-----------+-----------+
-|           | **(1)**   | **(2)**   | **(3)**   | **(4)**   | **(5)**   |
-+-----------+-----------+-----------+-----------+-----------+-----------+
-| **Trial** | **Approve | **Approve | **Disappr | **Disappr | **(Col 1  |
-|           | Yes**     | No**      | ove       | ove       | + Col 4)  |
-|           |           |           | Yes**     | No**      | -**       |
-|           |           |           |           |           |           |
-|           |           |           |           |           | **(Col 2  |
-|           |           |           |           |           | + Col     |
-|           |           |           |           |           | 3)**      |
-+-----------+-----------+-----------+-----------+-----------+-----------+
-
-1 43 22 9 4 47-31=16
-
-A series of ten trials in this case (see Table 23-9) indicates that the
-observed difference is very often exceeded, which suggests that there is
-no relationship between beer drinking and opinion.
-
-The RESAMPLING STATS program "Beerpoll" does this repetitively. From the
+The {{< var lang >}} notebook below does this repetitively. From the
 "actual" sample results we know that 52 respondents drink beer and 26 do
 not. We create the vector "drink" with 52 "1"s for those who drink beer,
 and 26 "2"s for those who do not. We also create the vector "sale" with
@@ -1375,7 +1367,7 @@ beer, or who are against the sale of beer *and* do not drink beer. We
 want to randomly pair the responses to the two questions to compare
 against that observed result to test the relationship.
 
-To accomplish this aim, we repeat the following procedure 10000 times using
+To accomplish this aim, we repeat the following procedure 10,000 times using
 a `for` loop. We shuffle drink to drink\$ so that the responses are randomly
 ordered. Now when we subtract the corresponding elements of the two arrays,
 a "0" will appear in each element of the new array c for which there was
