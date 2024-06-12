@@ -20,3 +20,27 @@ book text, recorded in the text as:
 > ... data (provided by the authors)
 
 — where the authors are Simon, Mokhtari, and Simon (1996) (see bibliography).
+
+`cholost.csv` derives from the classic Efron and Tibshirani [-@efron1993bootstrap, page 72] reference on bootstrap methods.   The data copy here comes via the R `bootstrap` library:
+
+From: <https://rdrr.io/cran/bootstrap/man/cholost.html>
+
+> n=164 men took part in an experiment to see if the drug cholostyramine
+lowered blood cholesterol levels. The men were supposed to take six packets of
+cholostyramine per day, but many actually took much less.
+>
+> ...
+> A data frame with 164 observations on the following 2 variables.
+>
+> z: Compliance, a numeric vector
+>
+> y: Improvement, a numeric vector
+
+I wrote the data with:
+
+```r
+install.packages('bootstrap')
+write.csv(bootstrap::cholost, 'cholost.csv', row.names=FALSE)
+```
+
+I have changed the column names to `percent_compliance` and `cholesterol_decrease`.

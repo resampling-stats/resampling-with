@@ -734,7 +734,7 @@ vice versa, is less clear-cut than in @fig-hypot-spos. On the basis of
 @fig-given_iq_athletic alone, one can say only that there *might* be some
 association between the two variables.
 
-```{python label="fig-given_iq_athletic", fig.cap="Given Scores for I.Q. and Athletic Ability", eval=TRUE, echo=FALSE}
+```{python echo=FALSE, label="fig-given_iq_athletic", fig.cap="Given Scores for I.Q. and Athletic Ability", eval=TRUE}
 aiq_plot(_ath, _iq)
 ```
 
@@ -1098,72 +1098,17 @@ message('Proportion of random pairings giving sum <= observed: ', kk)
 
 Efron and Tibshirani [-@efron1993bootstrap, page 72] show data on the extents
 to which 164 men a) took the drug prescribed to them (cholostyramine), and b)
-showed a decrease in total plasma cholesterol. Table 23-8 shows these values
-(note that a positive value in the "decrease in cholesterol" column denotes a
-decrease in cholesterol, while a negative value denotes an increase.)
+showed a decrease in total plasma cholesterol. @tbl-cholost shows the first 15
+of the values (note that a positive value in the "Decrease in cholesterol"
+column denotes a decrease in cholesterol, while a negative value denotes an
+increase.)
 
-Table 23-8
-
-  ----------- ----------- ----------- -------- ------------
-  **Taken**   **Taken**   **Taken**            **Taken**
-  0 -5.25     27          -1.50 71    59.50    95 32.50
-  0 -7.25     28          23.50 71    14.75    95 70.75
-  0 -6.25     29          33.00 72    63.00    95 18.25
-  0 11.50     31          4.25 72     0.00     95 76.00
-  2 21.00     32          18.75 73    42.00    95 75.75
-  2 -23.00    32          8.50 74     41.25    95 78.75
-  2 5.75      33          3.25 75     36.25    95 54.75
-  3 3.25      33          27.75 76    66.50    95 77.00
-  3 8.75      34          30.75 77    61.75    96 68.00
-  4 8.75      34          -1.50 77    14.00    96 73.00
-  4 -10.25    34          1.00 78     36.00    96 28.75
-  7 -10.50    34          7.75 78     39.50    96 26.75
-  8 19.75     35          -15.75 81   1.00     96 56.00
-  8 -0.50     36          33.50 82    53.50    96 47.50
-  8 29.25     36          36.25 84    46.50    96 30.25
-  8 36.25     37          5.50 85     51.00    96 21.00
-  9 10.75     38          25.50 85    39.00    97 79.00
-  9 19.50     41          20.25 87    -0.25    97 69.00
-  9 17.25     43          33.25 87    1.00     97 80.00
-  10 3.50     45          56.75 87    46.75    97 86.00
-  10 11.25    45          4.25 87     11.50    98 54.75
-  11 -13.00   47          32.50 87    2.75     98 26.75
-  12 24.00    50          54.50 88    48.75    98 80.00
-  13 2.50     50          -4.25 89    56.75    98 42.25
-  15 3.00     51          42.75 90    29.25    98 6.00
-  15 5.50     51          62.75 90    72.50    98 104.75
-  16 21.25    52          64.25 91    41.75    98 94.25
-  16 29.75    53          30.25 92    48.50    98 41.25
-  17 7.50     54          14.75 92    61.25    98 40.25
-  18 -16.50   54          47.25 92    29.50    99 51.50
-  20 4.50     56          18.00 92    59.75    99 82.75
-  20 39.00    57          13.75 93    71.00    99 85.00
-  21 -5.75    57          48.75 93    37.75    99 70.00
-  21 -21.00   58          43.00 93    41.00    100 92.00
-  21 0.25     60          27.75 93    9.75     100 73.75
-  22 -10.25   62          44.50 93    53.75    100 54.00
-  24 -0.50    64          22.50 94    62.50    100 69.50
-  25 -19.00   64          -14.50 94   39.00    100 101.50
-  25 15.75    64          -20.75 94   3.25     100 68.00
-  26 6.00     67          46.25 94    60.00    100 44.75
-  27 10.50    68          39.50 95    113.25   100 86.75
-  ----------- ----------- ----------- -------- ------------
-
-**% Prescribed Dosage**
-
-**Decrease in Cholesterol**
-
-**% Prescribed Dosage**
-
-**Decrease in Cholesterol**
-
-**% Prescribed Dosage**
-
-**Decrease in Cholesterol**
-
-**% Prescribed Dosage**
-
-**Decrease in Cholesterol**
+```{r echo=FALSE, eval=TRUE}
+._cholost <- read.csv('data/cholost.csv')
+names(._cholost) <- c('% compliance', 'Decrease in cholesterol')
+ketable(head(._cholost, 15),
+        caption = "First 15 rows of compliance / blood cholesterol {#tbl-cholost}")
+```
 
 The aim is to assess the effect of the compliance on the improvement.
 There are two related issues:
@@ -1181,13 +1126,26 @@ There are two related issues:
     see whether there is visible indication of a relationship.
 
 Efron and Tibshirani do this, and they find sufficient intuitive basis in the
-graph to continue the analysis. The next step is to investigate whether
-a measure of relationship is statistically significant; this we do as follows:
+graph to continue the analysis (see @fig-cholost-scatter).
+
+```{python echo=FALSE, label="fig-cholost-scatter", fig.cap="Cholesterol decrease as function of compliance", eval=TRUE}
+_df = pd.read_csv('data/cholost.csv')
+_compliance = np.array(_df['percent_compliance'])
+_cdecrease = np.array(_df['cholesterol_decrease'])
+
+plt.scatter(_compliance, _cdecrease)
+plt.xlabel('Percent compliance')
+plt.ylabel('Cholesterol decrease')
+plt.title('Cholesterol decrease as a function of compliance');
+```
+
+The next step is to investigate whether a measure of relationship is
+statistically significant; this we do as follows:
 
 1.  Multiply the observed values for each of the 164 participants on the
     independent x variable (cholostyramine — percent of prescribed
     dosage actually taken) and the dependent y variable (cholesterol),
-    and sum the results — it's 439,140.
+    and sum the results — it's 439,141.
 2.  Randomly shuffle the dependent variable y values among the
     participants. The sampling is being done without replacement, though
     an equally good argument could be made for sampling with
@@ -1195,47 +1153,109 @@ a measure of relationship is statistically significant; this we do as follows:
     because the sample size is so large.
 3.  Then multiply these x and y hypothetical values for each of the 164
     participants, sum the results and record.
-4.  Repeat steps 2 and 3 perhaps 1000 times.
+4.  Repeat steps 2 and 3 perhaps 10,000 times.
 5.  Determine how often the shuffled sum-of-products exceeds the
-    observed value (439,140).
+    observed value (439,141).
 
 The following notebook in {{< var lang >}} provides the solution:
 
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+```{python}
+# Load the Numpy library for arrays.
+import numpy as np
+# Load the Pandas library for loading and selecting data.
+import pandas as pd
+# Plotting library.
+import matplotlib.pyplot as plt
 
-```matlab
-' Program file: "correlation_causation_05.rss"
+# Set up the random number generator
+rnd = np.random.default_rng()
 
-READ FILE “inp10” x y
-' Data
-MULTIPLY x y xy
-' Step 1 above
-SUM xy xysum
-' Note: xysum = 439,140 (4.3914e+05)
-REPEAT 1000
-    ' Do 1000 simulations (step 4 above)
-    SHUFFLE x xrandom
-    ' Step 2 above
-    MULTIPLY xrandom y xy
-    ' Step 3 above
-    SUM xy newsum
-    ' Step 3 above
-    SCORE newsum scrboard
-    ' Step 3 above
-END
-' Step 4 above
-COUNT scorboard >=439140 prob
-' Step 5 above
-PRINT xysum prob
-' Result: prob = 0. Interpretation: 1000 simulated random shufflings never
-' produced a sum-of-products as high as the observed value. Hence we rule
-' out random chance as an explanation for the observed correlation.
+# Data as arrays.
+cholost_df = pd.read_csv('data/cholost.csv')
+x = np.array(cholost_df['percent_compliance'])
+y = np.array(cholost_df['cholesterol_decrease'])
+
+# Step 1 above
+actual_prod = x * y
+# Note: actual_sum = 439,141
+actual_sum = np.sum(actual_prod)
+# Show the result.
+actual_sum
 ```
 
-**Example 23-3: Is There A Relationship Between Drinking Beer And Being
-In Favor of Selling Beer?** (Testing for a Relationship Between
-Counted-Data Variables.) (Program "Beerpoll")
+```{python}
+# Set the number of trials
+n_trials = 10_000
+
+# An empty array to store the trial results.
+results = np.zeros(n_trials)
+
+# Do 10,000 experiments (step 4)
+for i in range(n_trials):
+    # Step 2 above.
+    y_random = rnd.permuted(y)
+    # Step 3 above.
+    fake_prod = x * y_random
+    fake_sum = np.sum(fake_prod)
+    # Step 3 above
+    results[i] = fake_sum
+    # Step 4 above
+
+# Step 5 above
+k = np.sum(results >= actual_sum)
+kk = k / n_trials
+
+print('Proportion product sums >= observed:', kk)
+```
+
+```{r}
+# Data as vectors.
+cholost_df <- read.csv('data/cholost.csv')
+x <- cholost_df$percent_compliance
+y <- cholost_df$cholesterol_decrease
+
+# Step 1 above
+actual_prod <- x * y
+# Note: actual_sum <- 439,141
+actual_sum <- sum(actual_prod)
+# Show the result.
+actual_sum
+```
+
+```{r}
+# Set the number of trials
+n_trials <- 10000
+
+# An empty array to store the trial results.
+results <- numeric(n_trials)
+
+# Do 10,000 experiments (step 4)
+for (i in 1:n_trials) {
+    # Step 2 above.
+    y_random <- sample(y)
+    # Step 3 above.
+    fake_prod <- x * y_random
+    fake_sum <- sum(fake_prod)
+    # Step 3 above
+    results[i] <- fake_sum
+    # Step 4 above
+}
+
+# Step 5 above
+k <- sum(results >= actual_sum)
+kk <- k / n_trials
+
+message('Proportion product sums >= observed: ', kk)
+```
+
+Interpretation: 10,000 simulated random shufflings never produced
+a sum-of-products as high as the observed value. Hence we conclude that random
+chance is a very unlikely explanation for the observed correlation.
+
+### Example: Drinking Beer And Being In Favor of Selling Beer
+
+**Testing for a relationship between counted-data variables.**
 
 The data for athletic ability and I.Q. were measured. Therefore, we
 could use them in their original "cardinal" form, or we could split them
