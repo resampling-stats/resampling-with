@@ -827,6 +827,10 @@ that would occur if the I.Q. scores were ranked from best to worst
 of the observed *x* and *y* values is relatively much higher or much lower than
 are sums of randomly-chosen pairs of *x* and *y* .
 
+<!---
+Table genererated from build_corr_table.py then edited for header and footer.
+-->
+
 +------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
 | 1                | 2              | 3               | 4              | 5               | 6           | 7               |
 +------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
@@ -864,73 +868,55 @@ are sums of randomly-chosen pairs of *x* and *y* .
 2.   Perfect negative correlation (hypothetical); column 5
 3.   Observed; column 7
 
-Now we attack the I.Q. and athletic-score problem using the property of
-numbers just discussed. First multiply the x and y values of the actual
-observations, and sum them to be 95,759 (@tbl-ath-iq-products). Then write the
-ten observed I.Q. scores on cards, and assign the cards in random order to the
-ten athletes, as shown in column 1 in Table 23-6.
+Now we attack the I.Q. and athletic-score problem using the property of numbers
+just discussed. First multiply the x and y values of the actual observations,
+and sum them to be 95,759 (@tbl-ath-iq-products). Then write the ten observed
+I.Q. scores on cards, and assign the cards in random order to the ten athletes,
+as shown in the column for trial 1 in @tbl-random-ath-iq.
 
-Multiply by the x's, and sum as in Table 23-7. If the I.Q. scores and
-athletic scores are *positively associated* , that is, if high I.Q.s and
-high athletic scores go together, then the sum of the multiplications
-for the observed sample will be higher than for most of the random
-trials. (If high I.Q.s go with low athletic scores, the sum of the
-multiplications for the observed sample will be *lower* than most of the
-random trials.)
+Multiply the random IQ scores by their paired *x*'s (Athletic scores), and sum
+to give the values at the bottom of @tbl-random-ath-iq. If the I.Q. scores and
+athletic scores are *positively associated*, that is, if high I.Q.s and high
+athletic scores go together, then the sum of the multiplications for the
+observed sample will be higher than for most of the random trials. (If high
+I.Q.s go with low athletic scores, the sum of the multiplications for the
+observed sample will be *lower* than most of the random trials.)
 
-Table 23-6
+<!---
+Table genererated from build_corr_table.py then edited for header and footer.
+-->
 
-**Random Drawing of I.Q. Scores and Pairing (Randomly) Against Athletic
-Scores (20 Trials)**
++------------+-------------------------------------------------------------------------------+
+|            | Trial no                                                                      |
++------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| Athletic   | 1     | 2     | 3     | 4     | 5     | 6     | 7     | 8     | 9     | 10    |
+| score      |       |       |       |       |       |       |       |       |       |       |
++============+=======+=======+=======+=======+=======+=======+=======+=======+=======+=======+
+| 97         | 101   | 107   | 99    | 114   | 120   | 118   | 107   | 100   | 101   | 107   |
++------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| 94         | 100   | 101   | 120   | 101   | 100   | 113   | 114   | 110   | 114   | 113   |
++------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| 93         | 120   | 100   | 113   | 109   | 99    | 99    | 110   | 120   | 120   | 101   |
++------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| 90         | 118   | 114   | 101   | 120   | 109   | 120   | 99    | 118   | 109   | 109   |
++------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| 87         | 99    | 113   | 110   | 110   | 110   | 101   | 109   | 113   | 110   | 100   |
++------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| 86         | 113   | 110   | 114   | 118   | 114   | 114   | 100   | 109   | 113   | 114   |
++------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| 86         | 110   | 118   | 118   | 107   | 118   | 107   | 120   | 99    | 118   | 99    |
++------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| 85         | 107   | 99    | 109   | 113   | 107   | 100   | 113   | 101   | 100   | 118   |
++------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| 81         | 114   | 109   | 107   | 100   | 101   | 109   | 101   | 114   | 99    | 120   |
++------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+| 76         | 109   | 120   | 100   | 99    | 113   | 110   | 118   | 107   | 107   | 110   |
++============+=======+=======+=======+=======+=======+=======+=======+=======+=======+=======+
+| **Product  |       |       |       |       |       |       |       |       |       |       |
+| Sums**     | 95381 | 95236 | 95536 | 95638 | 95443 | 95557 | 95392 | 95490 | 95570 | 95332 |
++============+=======+=======+=======+=======+=======+=======+=======+=======+=======+=======+
 
-**Trial Number**
-
-**Athletic 1 2 3 4 5 6 7 8 9 10**
-
-**Score**
-
-  -------------------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --------
-  97                   114      109      110      118      107      114      107      120      100      114
-  94                   101      113      113      101      118      100      110      109      120      107
-  93                   107      118      100      99       120      101      114      99       110      113
-  90                   113      101      118      114      101      113      100      118      99       99
-  87                   120      100      101      100      110      107      113      114      101      118
-  86                   100      110      120      107      113      110      118      101      118      101
-  86                   110      107      99       109      100      120      120      113      114      120
-  85                   99       99       104      120      99       109      101      107      109      109
-  81                   118      120      114      110      114      99       99       100      107      109
-  76                   109      114      109      113      109      118      109      110      113      110
-  **Trial Number**                                                                                      
-  **Athletic Score**   **11**   **12**   **13**   **14**   **15**   **16**   **17**   **18**   **19**   **20**
-  97                   109      118      101      109      107      100      99       113      99       110
-  94                   101      110      114      118      101      107      114      101      109      113
-  93                   120      120      100      120      114      113      100      100      120      100
-  90                   110      118      109      110      99       109      107      109      110      99
-  87                   100      100      120      99       118      114      110      110      107      101
-  86                   118      99       107      100      109      118      113      118      100      118
-  86                   99       101      99       101      100      99       101      107      114      120
-  85                   107      114      110      114      120      110      120      120      118      100
-  81                   114      107      113      113      110      101      109      114      101      100
-  76                   113      109      118      107      113      120      118      99       118      107
-  -------------------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --------
-
- Table 23-7
-
-**Results of Sum Products for Above 20 Random Trials**
-
-  ----------- ---------------------------- ----------- ----------------------------
-  **Trial**   **Sum of Multiplications**   **Trial**   **Sum of Multiplications**
-  1           95,430                       11          95,406
-  2           95,426                       12          95,622
-  3           95,446                       13          95,250
-  4           95,381                       14          95,599
-  5           95,542                       15          95,323
-  6           95,362                       16          95,308
-  7           95,508                       17          95,220
-  8           95,590                       18          95,443
-  9           95,379                       19          95,421
-  10          95,532                       20          95,528
-  ----------- ---------------------------- ----------- ----------------------------
+: Random Drawing of IQ scores and Pairing Against Athletic Scores {#tbl-random-ath-iq}
 
 More specifically, by the steps:
 
@@ -940,16 +926,15 @@ athletic scores on another set of cards.
 scores in each pair, and add the results of the ten multiplications.
 * **Step 3.** Subtract the experimental sum in step 2 from the observed
 sum, 95,759.
-* **Step 4.** Repeat steps 2 and 3 twenty times.
+* **Step 4.** Repeat steps 2 and 3 ten times.
 * **Step 5.** Compute the proportion of trials where the difference is
 negative, which estimates the probability that an association as strong as the
 observed would occur by chance.
 
-The sums of the multiplications for 20 trials are shown in Table 23-7.
-No random-trial sum was as high as the observed sum, which suggests that
-the probability of an association this strong happening by chance is so
-low as to approach zero. (An empirically-observed probability is never
-actually zero.)
+The sums of the multiplications for 10 trials are shown in @tbl-random-ath-iq.
+No random-trial sum was as high as the observed sum, which suggests that the
+probability of an association this strong happening by chance is so low as to
+approach zero. (An empirically-observed probability is never actually zero.)
 
 This algorithm can be solved particularly easily with {{< var lang >}}.
 The {{< var array >}}s A and B in the notebook below list the athletic scores
@@ -963,69 +948,153 @@ Finally, we count (`sum`) the trials in which the sum of the products of the
 randomly-paired athletic and I.Q. scores equals or exceeds the sum of the
 products in the observed data.
 
+::: {.notebook name="athlete_iq" title="Association of atheletic and IQ scores"}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: nb-only
+We use random pairings of the athletic and IQ scores to find the null-world
+distribution of the sum of the products of these scores.
+:::
 
-```matlab
-' Program file: "correlation_causation_03.rss"
+```{python}
+# Load the Numpy library for arrays.
+import numpy as np
+# Load the Pandas library for loading and selecting data.
+import pandas as pd
+# Plotting library.
+import matplotlib.pyplot as plt
 
-NUMBERS (97 94 93 90 87 86 86 85 81 76) a
-' Record athletic scores, highest to lowest.
-NUMBERS (114 120 107 113 118 101 109 110 100 99) b
-' Record corresponding IQ scores for those students.
-MULTIPLY a b c
-' Multiply the two sets of scores together.
-SUM c d
-' Sum the results — the "observed value."
-REPEAT 1000
-    ' Do 1000 experiments.
-    SHUFFLE a e
-    ' Shuffle the athletic scores so we can pair them against IQ scores.
-    MULTIPLY e b f
-    ' Multiply the shuffled athletic scores by the I.Q. scores. (Note that we
-    ' could shuffle the I.Q. scores too but it would not achieve any greater
-    ' randomization.)
-    SUM f j
-    ' Sum the randomized multiplications.
-    SUBTRACT d j k
-    ' Subtract the sum from the sum of the "observed" multiplication.
-    SCORE k z
-    ' Keep track of the result in z.
-END
-' End one trial, go back and repeat until 1000 trials are complete.
-HISTOGRAM z
-' Obtain a histogram of the trial results.
+# Set up the random number generator
+rnd = np.random.default_rng()
 ```
 
-**Random Sums of Products**
+We load the file containing the data:
 
-ATHLETES & IQ SCORES
+```{python}
+# Read the data file containing athletic and IQ scores.
+ath_iq_df = pd.read_csv('data/athletic_iq.csv')
+# Show the data frame.
+ath_iq_df
+```
 
-![](images/27-Chap-23_004.png)
+```{r}
+# Read the data file containing pig ration data.
+ath_iq_df <- read.csv('data/athletic_iq.csv')
+# Show the data frame.
+ath_iq_df
+```
 
-**observed sum less random sum**
+```{python}
+# Turn athletic and IQ scores into arrays.
+ath = np.array(ath_iq_df['athletic_score'])
+iq = np.array(ath_iq_df['iq_score'])
+```
+
+```{r}
+# Turn athletic and IQ scores into vectors.
+ath = ath_iq_df$athletic_score
+iq = ath_iq_df$iq_score
+```
+
+```{python}
+# Multiply the two sets of scores together.
+actual_prod = ath * iq
+# Sum the results — the "observed value."
+actual_sum = np.sum(actual_prod)
+actual_sum
+```
+
+```{r}
+# Multiply the two sets of scores together.
+actual_prod <- ath * iq
+# Sum the results — the "observed value."
+actual_sum <- sum(actual_prod)
+actual_sum
+```
+
+```{python}
+# Set the number of trials
+n_trials = 10_000
+
+# An empty array to store the trial results.
+results = np.zeros(n_trials)
+
+# Do 10,000 experiments.
+for i in range(n_trials):
+    # Shuffle the IQ scores so we can pair them against athletic scores.
+    shuffled = rnd.permuted(iq)
+    # Multiply the shuffled IQ scores by the athletic scores. (Note that we
+    # could shuffle the athletic scores too but it would not achieve any
+    # greater randomization, because shuffling one of the set of scores
+    # already gives a random pairing between the sets of scores.
+    fake_prod = ath * shuffled
+    # Sum the randomized multiplications.
+    fake_sum = np.sum(fake_prod)
+    # Subtract the sum from the sum of the "observed" multiplication.
+    diff = actual_sum - fake_sum
+    # Keep track of the result in results array.
+    results[i] = diff
+    # End one trial, go back and repeat until 10000 trials are complete.
+# Obtain a histogram of the trial results.
+plt.hist(results, bins=25)
+plt.title('Random sums of products')
+plt.xlabel('Observed sum minus sum of random pairing')
+```
+
+```{r}
+# Set the number of trials
+n_trials <- 10000
+
+# An empty array to store the trial results.
+results <- numeric(n_trials)
+
+# Do 10,000 experiments.
+for (i in 1:n_trials) {
+    # Shuffle the IQ scores so we can pair them against athletic scores.
+    shuffled <- sample(iq)
+    # Multiply the shuffled IQ scores by the athletic scores. (Note that we
+    # could shuffle the athletic scores too but it would not achieve any
+    # greater randomization, because shuffling one of the set of scores
+    # already gives a random pairing between the sets of scores.
+    fake_prod <- ath * shuffled
+    # Sum the randomized multiplications.
+    fake_sum <- sum(fake_prod)
+    # Subtract the sum from the sum of the "observed" multiplication.
+    diff <- actual_sum - fake_sum
+    # Keep track of the result in results array.
+    results[i] <- diff
+    # End one trial, go back and repeat until 10000 trials are complete.
+}
+
+# Obtain a histogram of the trial results.
+hist(results, breaks=25,
+    main='Random sums of products',
+    xlab='Observed sum minus sum of random pairing')
+```
 
 We see that obtaining a chance trial result as great as that observed
 was rare. {{< var lang >}} will calculate this proportion for us:
 
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "ability3.rss"
-
-COUNT z <= 0 k
-' Determine in how many trials the random sum of products was less than
-' the observed sum of products.
-DIVIDE k 1000 kk
-' Convert to a proportion.
-PRINT kk
-' Note: The file "ability3" on the Resampling Stats software disk contains
-' this set of commands.
+```{python}
+# Determine in how many trials the random sum of products was less than
+# the observed sum of products.
+k = np.sum(results <= 0)
+# Convert to a proportion.
+kk = k / n_trials
+# Print the result.
+print('Proportion of random pairings giving sum <= observed:', kk)
 ```
 
-**Example 23-3: Correlation Between Adherence to Medication Regime and
-Change in Cholesterol**
+```{r}
+# Determine in how many trials the random sum of products was less than
+# the observed sum of products.
+k <- sum(results <= 0)
+# Convert to a proportion.
+kk <- k / n_trials
+# Print the result.
+message('Proportion of random pairings giving sum <= observed: ', kk)
+```
+
+### Example: Correlation Between Adherence to Medication Regime and Change in Cholesterol
 
 Efron and Tibshirani [-@efron1993bootstrap, page 72] show data on the extents
 to which 164 men a) took the drug prescribed to them (cholostyramine), and b)
