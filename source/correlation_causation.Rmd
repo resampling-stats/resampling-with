@@ -819,7 +819,7 @@ not perfectly correlated with the *x*'s.
 
 : Comparison of Sums of Multiplications {#tbl-pos-neg-mult}
 
-Table 23-5, below, shows that the sum of the products of the *observed*
+@tbl-ath-iq-products shows that the sum of the products of the *observed*
 I.Q. scores multiplied by athletic scores (column 7) is between the sums
 that would occur if the I.Q. scores were ranked from best to worst
 (column 3) and worst to best (column 5). The extent of correlation
@@ -827,42 +827,48 @@ that would occur if the I.Q. scores were ranked from best to worst
 of the observed *x* and *y* values is relatively much higher or much lower than
 are sums of randomly-chosen pairs of *x* and *y* .
 
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| 1                | 2              | 3               | 4              | 5               | 6           | 7               |
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| Athletic score   | Hypothetical   | Col 1 x Col 2   | Hypothetical   | Col 1 x Col 4   | Actual IQ   | Col 1 x Col 6   |
+|                  | IQ pos         |                 | IQ neg         |                 |             |                 |
++==================+================+=================+================+=================+=============+=================+
+| 97               | 120            | 11640           | 99             | 9603            | 114         | 11058           |
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| 94               | 118            | 11092           | 100            | 9400            | 120         | 11280           |
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| 93               | 114            | 10602           | 101            | 9393            | 107         | 9951            |
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| 90               | 110            | 9900            | 107            | 9630            | 113         | 10170           |
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| 87               | 113            | 9831            | 109            | 9483            | 118         | 10266           |
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| 86               | 109            | 9374            | 113            | 9718            | 101         | 8686            |
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| 86               | 107            | 9202            | 110            | 9460            | 109         | 9374            |
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| 85               | 101            | 8585            | 114            | 9690            | 110         | 9350            |
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| 81               | 100            | 8100            | 118            | 9558            | 100         | 8100            |
++------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
+| 76               | 99             | 7524            | 120            | 9120            | 99          | 7524            |
++==================+================+=================+================+=================+=============+=================+
+| **SUMS**         |                | 95850           |                | 95055           |             | 95759           |
++==================+================+=================+================+=================+=============+=================+
 
+: Sums of Products: IQ and Athletic Scores {#tbl-ath-iq-products}
 
- Table 23-5
+@tbl-ath-iq-products show three cases of products:
 
-**Sums of Products: IQ and Athletic Scores**
-
-  -------------- ------------------ -------------- ------------------ -------------- ------------ --------------
-  **1**          **2**              **3**          **4**              **5**          **6**        **7**
-  **Athletic**   **Hypothetical**   **Col. 1 x**   **Hypothetical**   **Col. 1 x**   **Actual**   **Col. 1 x**
-  **Score**      **I.Q.**           **Col.2**      **I.Q.**           **Col. 4**     **I.Q.**     **Col.6**
-  97             120                11640          99                 9603           114          11058
-  94             118                11092          100                9400           120          11280
-  93             114                10602          101                9393           107          9951
-  90             113                10170          107                9630           113          10170
-  87             110                9570           109                9483           118          10266
-  86             109                9374           110                8460           101          8686
-  86             107                9202           113                9718           109          9374
-  85             101                8585           114                9690           110          9350
-  81             100                8100           118                9558           100          8100
-  76             99                 7524           120                9120           99           7524
-  SUMS:                             95859                             95055                       95759
-  -------------- ------------------ -------------- ------------------ -------------- ------------ --------------
-
-3 Cases:
-
--   Perfect positive correlation (hypothetical); column 3
-
--   Perfect negative correlation (hypothetical); column 5
-
--   Observed; column 7
+1.   Perfect positive correlation (hypothetical); column 3
+2.   Perfect negative correlation (hypothetical); column 5
+3.   Observed; column 7
 
 Now we attack the I.Q. and athletic-score problem using the property of
 numbers just discussed. First multiply the x and y values of the actual
-observations, and sum them to be 95,759 (Table 23-5). Then write the ten
-observed I.Q. scores on cards, and assign the cards in random order to
-the ten athletes, as shown in column 1 in Table 23-6.
+observations, and sum them to be 95,759 (@tbl-ath-iq-products). Then write the
+ten observed I.Q. scores on cards, and assign the cards in random order to the
+ten athletes, as shown in column 1 in Table 23-6.
 
 Multiply by the x's, and sum as in Table 23-7. If the I.Q. scores and
 athletic scores are *positively associated* , that is, if high I.Q.s and
