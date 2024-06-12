@@ -275,8 +275,8 @@ rnd = np.random.default_rng()
 # set the number of trials
 n_trials = 10000
 
-# an empty array to store the scores
-scores = np.zeros(n_trials)
+# an empty array to store the results
+results = np.zeros(n_trials)
 
 # What are the options to choose from?
 options = ['viewer', 'not viewer']
@@ -300,10 +300,10 @@ for i in range(n_trials):
     e = d / 400
 
     # keep score of the result
-    scores[i] = e
+    results[i] = e
 
 # find the mean divergence
-k = np.mean(scores)
+k = np.mean(results)
 
 # Show the result
 k
@@ -313,8 +313,8 @@ k
 # set the number of trials
 n_trials <- 10000
 
-# an empty array to store the scores
-scores <- numeric(n_trials)
+# an empty array to store the results
+results <- numeric(n_trials)
 
 # What are the options to choose from?
 options <- c('viewer', 'not viewer')
@@ -338,11 +338,11 @@ for (i in 1:n_trials) {
     e <- d / 400
 
     # keep score of the result
-    scores[i] <- e
+    results[i] <- e
 }
 
 # find the mean divergence
-k <- mean(scores)
+k <- mean(results)
 
 # Show the result
 k
@@ -354,8 +354,8 @@ End of notebook.
 :::
 
 
-It is a simple matter to go back and try a sample size of (say) 1600
-rather than 400, and examine the effect on the mean difference.
+It is a simple matter to go back and try a sample size of (say) 1600 rather
+than 400, and examine the effect on the mean difference.
 
 ### Example: average weight gain for pig rations
 
@@ -547,7 +547,7 @@ PRINT k
   k = 30.417   33.25                
   ------------ ------- ----- ------ -------
 
-**Example 24-3**
+## Example 24-3
 
 This is the first example of sample-size estimation for *probability*
 (testing) statistics, rather than the summarization statistics dealt
