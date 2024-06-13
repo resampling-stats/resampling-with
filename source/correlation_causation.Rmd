@@ -1293,18 +1293,27 @@ people who do and do not drink beer in the sample. Now lay them down in
 random *pairs* , one from each pile.
 
 If there is a high association between the variables, then real life
-observations will bunch up in the two diagonal cells in the upper left
-and lower right in @tbl-beerpol-data. (Ignore the "total" data for now.)
-Therefore, subtract one sum of two diagonal cells from the other sum for the
-observed data: (45 + 6) - (20 + 7) = 24. Then compare this difference to the
-comparable differences found in random trials. The proportion of times that the
-simulated-trial difference exceeds the observed difference is the probability
-that the observed difference of +24 might occur by chance, even if there is no
-relationship between the two variables. (Notice that, in this case, we are
-working on the assumption that beer drinking is *positively* associated with
-approval of local option and not the inverse. We are interested only in
-differences that are equal to or exceed +24 when the northeast-southwest
-diagonal is subtracted from the northwest-southeast diagonal.)
+observations will bunch up in the two diagonal cells in the upper left and
+lower right in @tbl-beerpol-data. (Ignore the "total" data for now.)  Put
+another way, people filling in the upper left and lower right cells are people
+with views compatible with their drinking habits (drink-yes / favor, or
+drink-no / don't favor).  Conversely, people filling in the lower left and
+upper right cells have views incompatible with their drinking habits
+(drink-yes, don't favor, or drink-no, favor).  Adding up the upper left / lower
+right diagonal gives us the total number of *compatible* responses, and adding
+the lower left / upper right diagonal gives us the *incompatible* total.
+Therefore, et an index of how strongly the table show compatible responses, we
+can subtract the incompatible total (lower left plus upper right) from the
+compatible total (upper left plus lower right) for the observed data: (45 + 6)
+- (20 + 7) = 24. Then compare this difference to the comparable differences
+found in random trials. The proportion of times that the simulated-trial
+difference exceeds the observed difference is the probability that the observed
+difference of +24 might occur by chance, even if there is no relationship
+between the two variables. (Notice that, in this case, we are working on the
+assumption that beer drinking is *positively* associated with approval of local
+option and not the inverse. We are interested only in differences that are
+equal to or exceed +24 when the northeast-southwest diagonal is subtracted from
+the northwest-southeast diagonal.)
 
 We can carry out a resampling test with this procedure:
 
