@@ -810,40 +810,42 @@ that would occur if the I.Q. scores were ranked from best to worst
 of the observed *x* and *y* values is relatively much higher or much lower than
 are sums of randomly-chosen pairs of *x* and *y* .
 
-<!---
-Table genererated from build_corr_table.py then edited for header and footer.
--->
+```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
+import numpy as np
+import pandas as pd
 
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| 1                | 2              | 3               | 4              | 5               | 6           | 7               |
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| Athletic score   | Hypothetical   | Col 1 x Col 2   | Hypothetical   | Col 1 x Col 4   | Actual IQ   | Col 1 x Col 6   |
-|                  | IQ pos         |                 | IQ neg         |                 |             |                 |
-+==================+================+=================+================+=================+=============+=================+
-| 97               | 120            | 11640           | 99             | 9603            | 114         | 11058           |
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| 94               | 118            | 11092           | 100            | 9400            | 120         | 11280           |
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| 93               | 114            | 10602           | 101            | 9393            | 107         | 9951            |
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| 90               | 110            | 9900            | 107            | 9630            | 113         | 10170           |
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| 87               | 113            | 9831            | 109            | 9483            | 118         | 10266           |
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| 86               | 109            | 9374            | 113            | 9718            | 101         | 8686            |
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| 86               | 107            | 9202            | 110            | 9460            | 109         | 9374            |
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| 85               | 101            | 8585            | 114            | 9690            | 110         | 9350            |
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| 81               | 100            | 8100            | 118            | 9558            | 100         | 8100            |
-+------------------+----------------+-----------------+----------------+-----------------+-------------+-----------------+
-| 76               | 99             | 7524            | 120            | 9120            | 99          | 7524            |
-+==================+================+=================+================+=================+=============+=================+
-| **SUMS**         |                | 95850           |                | 95055           |             | 95759           |
-+==================+================+=================+================+=================+=============+=================+
+from gridtabber import to_md
 
-: Sums of Products: IQ and Athletic Scores {#tbl-ath-iq-products}
+df = pd.read_csv('data/athletic_iq.csv')
+ath = np.array(df['athletic_score'])
+iq = np.array(df['iq_score'])
+
+siq = np.sort(iq)
+athi = np.argsort(ath)
+iq_pos = siq[athi]
+iq_neg = siq[athi[::-1]]
+
+out = pd.DataFrame(
+    data={'Athletic score': ath,
+          'Hypothetical\nIQ pos': iq_pos,
+          'Col 1 x Col 2': ath * iq_pos,
+          'Hypothetical\nIQ neg': iq_neg,
+          'Col 1 x Col 4': ath * iq_neg,
+          'Actual IQ': iq,
+          'Col 1 x Col 6': ath * iq}
+)
+
+sums = out.sum(axis='index')
+not_sums = [c for c in out if ' x ' not in c]
+sums[not_sums] = ''
+sums.iloc[0] = '**SUMS**'
+out2 = pd.concat([out, sums.to_frame().T])
+hilo_corr_tab = to_md(out2, np.arange(1, out2.shape[1] + 1))
+
+print(f'{hilo_corr_tab}\n\n: '
+      'Sums of Products: IQ and Athletic Scores '
+      '{#tbl-ath-iq-products}')
+```
 
 @tbl-ath-iq-products show three cases of products:
 
@@ -865,41 +867,25 @@ observed sample will be higher than for most of the random trials. (If high
 I.Q.s go with low athletic scores, the sum of the multiplications for the
 observed sample will be *lower* than most of the random trials.)
 
-<!---
-Table genererated from build_corr_table.py then edited for header and footer.
--->
+```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
+rng = np.random.default_rng(1966)
 
-+------------+-------------------------------------------------------------------------------+
-|            | Trial no                                                                      |
-+------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-| Athletic   | 1     | 2     | 3     | 4     | 5     | 6     | 7     | 8     | 9     | 10    |
-| score      |       |       |       |       |       |       |       |       |       |       |
-+============+=======+=======+=======+=======+=======+=======+=======+=======+=======+=======+
-| 97         | 101   | 107   | 99    | 114   | 120   | 118   | 107   | 100   | 101   | 107   |
-+------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-| 94         | 100   | 101   | 120   | 101   | 100   | 113   | 114   | 110   | 114   | 113   |
-+------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-| 93         | 120   | 100   | 113   | 109   | 99    | 99    | 110   | 120   | 120   | 101   |
-+------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-| 90         | 118   | 114   | 101   | 120   | 109   | 120   | 99    | 118   | 109   | 109   |
-+------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-| 87         | 99    | 113   | 110   | 110   | 110   | 101   | 109   | 113   | 110   | 100   |
-+------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-| 86         | 113   | 110   | 114   | 118   | 114   | 114   | 100   | 109   | 113   | 114   |
-+------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-| 86         | 110   | 118   | 118   | 107   | 118   | 107   | 120   | 99    | 118   | 99    |
-+------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-| 85         | 107   | 99    | 109   | 113   | 107   | 100   | 113   | 101   | 100   | 118   |
-+------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-| 81         | 114   | 109   | 107   | 100   | 101   | 109   | 101   | 114   | 99    | 120   |
-+------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
-| 76         | 109   | 120   | 100   | 99    | 113   | 110   | 118   | 107   | 107   | 110   |
-+============+=======+=======+=======+=======+=======+=======+=======+=======+=======+=======+
-| **Product  |       |       |       |       |       |       |       |       |       |       |
-| Sums**     | 95381 | 95236 | 95536 | 95638 | 95443 | 95557 | 95392 | 95490 | 95570 | 95332 |
-+============+=======+=======+=======+=======+=======+=======+=======+=======+=======+=======+
+samp_out = pd.DataFrame(data={'Athletic\nscore': ath}}
 
-: Random Drawing of IQ scores and Pairing Against Athletic Scores {#tbl-random-ath-iq}
+n_trials = 10
+for t_no in range(1, n_trials + 1):
+    samp_out[t_no] = rnd.permuted(iq)
+
+samp_sums = samp_out.agg(lambda col : np.sum(col * ath), axis='index')
+samp_sums.iloc[0] = '**Product sums**'
+
+samp_out2 = pd.concat([samp_out, samp_sums.to_frame().T])
+
+samp_tab = to_md(samp_out2)
+print(f'{samp_tab}\n\n: '
+      'Random Draws of IQ scores paired against athletic scores '
+      '{#tbl-random-ath-iq}')
+```
 
 More specifically, by the steps:
 
@@ -919,13 +905,13 @@ No random-trial sum was as high as the observed sum, which suggests that the
 probability of an association this strong happening by chance is so low as to
 approach zero. (An empirically-observed probability is never actually zero.)
 
-This algorithm can be solved particularly easily with {{< var lang >}}.
-The {{< var array >}}s A and B in the notebook below list the athletic scores
-and the I.Q. scores respectively of 10 "actual" students ordered from highest
-to lowest athletic score. We multiply the corresponding elements of these
-{{< var array >}}s and proceed to compare the sum of these multiplications to
-the sums of experimental multiplications in which the elements are selected
-randomly.
+This algorithm can be solved particularly easily with {{< var lang >}}. The {{<
+var array >}}s `ath` and `iq` in the notebook below list the athletic scores
+and the I.Q. scores respectively of the 10 "actual" students. We multiply the
+corresponding elements of these {{< var array >}}s and proceed to compare the
+sum of these multiplications to the sums of experimental multiplications in
+which the elements of `iq` have been randomly permuted, to form random
+pairings.
 
 Finally, we count (`sum`) the trials in which the sum of the products of the
 randomly-paired athletic and I.Q. scores equals or exceeds the sum of the
