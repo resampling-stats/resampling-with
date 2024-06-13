@@ -868,9 +868,9 @@ I.Q.s go with low athletic scores, the sum of the multiplications for the
 observed sample will be *lower* than most of the random trials.)
 
 ```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
-rng = np.random.default_rng(1966)
+rnd = np.random.default_rng(1966)
 
-samp_out = pd.DataFrame(data={'Athletic\nscore': ath}}
+samp_out = pd.DataFrame(data={'Athletic\nscore': ath})
 
 n_trials = 10
 for t_no in range(1, n_trials + 1):
