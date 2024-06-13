@@ -1928,44 +1928,52 @@ Solutions for problems may be found at @sec-exercise-solutions.
 
 @tbl-voter-participation shows voter participation rates in the various states
 in the 1844 presidential election. Should we conclude that there was a negative
-relationship between the participation rate (a) and the vote spread (b) between
-the parties in the election? (Adapted from [@noreen1989computer, page 20, Table
+relationship between the participation rate and the vote spread between the
+parties in the election? (Adapted from [@noreen1989computer, page 20, Table
 2-4]:
 
-| State            | Participation (a)     | Spread (b) |
-|------------------|-----------------------|------------|
-| Maine            | 67.5                  | 13         |
-| New Hampshire    | 65.6                  | 19         |
-| Vermont          | 65.7                  | 18         |
-| Massachusetts    | 59.3                  | 12         |
-| Rhode Island     | 39.8                  | 20         |
-| Connecticut      | 76.1                  | 5          |
-| New York         | 73.6                  | 1          |
-| New Jersey       | 81.6                  | 1          |
-| Pennsylvania     | 75.5                  | 2          |
-| Delaware         | 85.0                  | 3          |
-| Maryland         | 80.3                  | 5          |
-| Virginia         | 54.5                  | 6          |
-| North Carolina   | 79.1                  | 5          |
-| Georgia          | 94.0                  | 4          |
-| Kentucky         | 80.3                  | 8          |
-| Tennessee        | 89.6                  | 1          |
-| Louisiana        | 44.7                  | 3          |
-| Alabama          | 82.7                  | 8          |
-| Mississippi      | 89.7                  | 13         |
-| Ohio             | 83.6                  | 2          |
-| Indiana          | 84.9                  | 2          |
-| Illinois         | 76.3                  | 12         |
-| Missouri         | 74.7                  | 17         |
-| Arkansas         | 68.8                  | 26         |
-| Michigan         | 79.3                  | 6          |
-| National Average | 74.9                  | 9          |
-
-: Voter Participation In The 1844 Presidential Election {#tbl-voter-participation}
+```{r echo=FALSE, eval=TRUE}
+# Show the table.
+._df_voter <- read.csv('data/election_1844.csv')
+ketable(._df_voter,
+        caption='Voter Participation In 1844 Presidential Election
+        {#tbl-voter-participation}')
+```
 
 The observed correlation coefficient between voter participation and
-spread is -.37398. Is this more negative that what might occur by
-chance, if no correlation exists?
+spread is `r round(cor(._df_voter$Participation, ._df_voter$Spread), 3)`.
+Is this more negative that what might occur by chance, if no correlation
+exists?
+
+Here's a notebook to get you started.
+
+::: {.notebook name="voter_participation" title="Voter participation in 1844 election"}
+
+::: nb-only
+Notebook for voter participation exercise.
+:::
+
+```{python}
+import numpy as np
+import pandas as pd
+
+rnd = np.random.default_rng()
+
+voter_df = pd.read_csv('data/election_1844.csv')
+participation = np.array(voter_df['Participation'])
+spread = np.array(voter_df['Spread'])
+```
+
+```{r}
+voter_df <- read.csv('data/election_1844.csv')
+participation <- voter_df$Participation
+spread <- voter_df$Spread
+```
+
+:::
+<!---
+End of notebook
+-->
 
 ### Association of runs and strikeouts {#exr-runs-strikeouts}
 
@@ -1978,8 +1986,16 @@ a more "sophisticated" measure, the correlation coefficient.)
 The data for 18 randomly-selected players in the 1989 season are as
 follows, as they would appear in the first lines of the program.
 
+::: {.notebook name="homerun_correlation" title="Homeruns and strikeout correlation"}
+
+::: nb-only
+Exercise on relationship of home runs and strikeouts.
+:::
+
 ```{python}
 import numpy as np
+
+rnd = np.random.default_rng()
 
 homeruns = np.array([14, 20, 0, 38, 9, 38, 22, 31, 33,
                      11, 40, 5, 15, 32, 3, 29, 5, 32])
@@ -1998,6 +2014,11 @@ strikeout <- c(135, 153, 120, 161, 138, 175, 126, 200, 205,
 # Exercise - complete this program.
 ```
 
+:::
+<!---
+End of notebook.
+-->
+
 ### Runs, strikeouts, correlation {#exr-runs-strikeout-correlation}
 
 In the previous example relating strikeouts and home runs, we used the
@@ -2015,45 +2036,17 @@ All the other things equal, an increase in a country's money supply is
 inflationary and should have a negative impact on the exchange rate for
 the country's currency. The data in the following table (@tbl-exchange) were
 computed using data from tables in the 1983/1984 *Statistical Yearbook of the
-United Nations*:
+United Nations*.  The table shows the first 15 rows.
 
-| Exchange Rate | Money Supply  | Exchange Rate | Money Supply |
-|--------------|-------|--------|--------------|--------|-------|
-| Australia    | 0.089 | 0.035  | Belgium      | 0.134  | 0.003 |
-| Botswana     | 0.351 | 0.085  | Burma        | 0.064  | 0.155 |
-| Burundi      | 0.064 | 0.064  | Canada       | 0.062  | 0.209 |
-| Chile        | 0.465 | 0.126  | China        | 0.411  | 0.555 |
-| Costa Rica   | 0.100 | 0.100  | Cyprus       | 0.158  | 0.044 |
-| Denmark      | 0.140 | 0.351  | Ecuador      | 0.242  | 0.356 |
-| Fiji         | 0.093 | 0.000  | Finland      | 0.124  | 0.164 |
-| France       | 0.149 | 0.090  | Germany      | 0.156  | 0.061 |
-| Greece       | 0.302 | 0.202  | Hungary      | 0.133  | 0.049 |
-| India        | 0.187 | 0.184  | Indonesia    | 0.080  | 0.132 |
-| Italy        | 0.167 | 0.124  | Jamaica      | 0.504  | 0.237 |
-| Japan        | 0.081 | 0.069  | Jordan       | 0.092  | 0.010 |
-| Kenya        | 0.144 | 0.141  | Korea        | 0.040  | 0.006 |
-| Kuwait       | 0.038 | -0.180 | Lebanon      | 0.619  | 0.065 |
-| Madagascar   | 0.337 | 0.244  | Malawi       | 0.205  | 0.203 |
-| Malaysia     | 0.037 | -0.006 | Malta        | 0.003  | 0.003 |
-| Mauritania   | 0.180 | 0.192  | Mauritius    | 0.226  | 0.136 |
-| Mexico       | 0.338 | 0.599  | Morocco      | 0.076  | 0.076 |
-| Netherlands  | 0.158 | 0.078  | New Zealand  | 0.370  | 0.098 |
-| Nigeria      | 0.079 | 0.082  | Norway       | 0.177  | 0.242 |
-| Papua        | 0.075 | 0.209  | Philippines  | 0.411  | 0.035 |
-| Portugal     | 0.288 | 0.166  | Romania      | -0.029 | 0.039 |
-| Rwanda       | 0.059 | 0.083  | Samoa        | 0.348  | 0.118 |
-| Saudi Arabia | 0.023 | 0.023  | Seychelles   | 0.063  | 0.031 |
-| Singapore    | 0.024 | 0.030  | Solomon Is   | 0.101  | 0.526 |
-| Somalia      | 0.481 | 0.238  | South Africa | 0.624  | 0.412 |
-| Spain        | 0.107 | 0.086  | Sri Lanka    | 0.051  | 0.141 |
-| Switzerland  | 0.186 | 0.186  | Tunisia      | 0.193  | 0.068 |
-| Turkey       | 0.573 | 0.181  | UK           | 0.255  | 0.154 |
-| USA          | 0.000 | 0.156  | Vanatuva     | 0.008  | 0.331 |
-| Yemen        | 0.253 | 0.247  | Yugoslavia   | 0.685  | 0.432 |
-| Zaire        | 0.343 | 0.244  | Zambia       | 0.457  | 0.094 |
-| Zimbabwe     | 0.359 | 0.164  |              |        |       |
-
-: Percentage change in exchange rates and money supply 1983 - 1984 {#tbl-exchange}
+```{r echo=FALSE, eval=TRUE}
+# Show the table.
+._df_exch <- read.csv('data/exchange_rates.csv')
+._df_exch_renamed = ._df_exch
+names(._df_exch_renamed) = c('Exchange rate', 'Money supply')
+ketable(._df_exch_renamed,
+        caption='% change in exchange rates and money supply 1983-1984
+        {#tbl-exchange}')
+```
 
 Are changes in the exchange rates and in money supplies related to each
 other? That is, are they correlated?
@@ -2072,3 +2065,33 @@ expect to get the same result.
 1.  Write a series of non-computer resampling steps to solve this
     problem.
 2.  Write a {{< var lang >}} program to implement those steps.
+
+Here's a notebook to get you started on part 2:
+
+::: {.notebook name="exchange_rates" title="Exchange rates and money supply"}
+
+::: nb-only
+Notebook for exercise on exchange rates and money supply.
+:::
+
+```{python}
+import numpy as np
+import pandas as pd
+
+rnd = np.random.default_rng()
+
+exchange_df = pd.read_csv('data/exchange_rates.csv')
+exchange_rates = np.array(exchange_df['exchange_rate'])
+money_supply = np.array(exchange_df['money_supply'])
+```
+
+```{r}
+exchange_df <- read.csv('data/exchange_rates.csv')
+exchange_rates <- exchange_df$exchange_rate
+money_supply <- exchange_df$money_supply
+```
+
+:::
+<!---
+End of notebook.
+-->
