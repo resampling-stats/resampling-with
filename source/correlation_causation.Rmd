@@ -1238,7 +1238,7 @@ Interpretation: 10,000 simulated random shufflings never produced
 a sum-of-products as high as the observed value. Hence we conclude that random
 chance is a very unlikely explanation for the observed correlation.
 
-## Some terminology
+## Some terminology, with a recap on sum of products
 
 Thus far we have been using terms such as *association* and *correlation* rather loosely.  It is time to define terms more formally.
 
@@ -1247,9 +1247,46 @@ example, the Athletic scores are one sequence of values, and the IQ scores are
 another.   These two sequences have to be the same length (the same number of
 elements).   We will often use the name $n$ to refer to the number of values in
 the sequences.  For example, for the compliance / cholesterol data, there are
-`r length(get_var('x'))` values so $n =$`r length(get_var('x'))`. The sequences
-have to be the same length because we are looking at the *pairs* formed by
-taking the two sequences, and looking at corresponding 
+`r length(get_var('x'))` values so, in that case, $n =$ `r
+length(get_var('x'))`.  We often name these sequences in text and in the code
+— for example we've used `ath` for the sequence of athletic scores and `iq` as
+a name for the sequence of IQ scores.  We can also refer to these named
+sequences (such as `ath` or `iq`) as *variables*; a variable is a named thing,
+and in the case of `ath` and `iq` , the named thing is a sequence of values.
+
+We are thinking here about the *association* of two sequences; that is,
+broadly, the tendency for the values in one sequence to vary in some
+predictable way in relation to another.   In particular, we are interested in
+*linear association*; that is the tendency for one sequence, such as `iq` to
+vary in a way that is predictable from a straight line based on the other, such
+as `ath`.  When there is linear association between two sequences, such as
+`ath` and `iq`, we can make a better than random estimate of the values we want
+to predict (e.g. the `iq` values), with a straight line based only on we are
+predicting with (e.g. `ath`) values.   Call the values we are trying to predict
+— the target sequence or variable, and the values we are trying to predict with
+— the predictor sequence or variable.  For example, above, `iq` is the target
+variable (or sequence) and `ath` is the predictor variable (or sequence).
+Likewise cholesterol sequence (named `y` in the code above) is our target
+variable, and the compliance scores (`x` in the code) is our predictor
+sequence.
+
+For now, let's stick with the variable names `x` (the predictor) and `y` (the
+target). We have found that we can check the strength of the linear association
+between two variables (sequences), such as `x` and `y`, by using the sum of
+products.  We get the sum of products by first lining up the two length $n$
+sequences `x` and `y` next to each other, and forming pairs of values (first
+`x` value with first `y` value, second `x` value with second `y` value and so
+on), giving us $n$ pairs.  We multiply the elements of each pair together to
+get the product, and take the sum of all $n$ products, across pairs.  We have
+seen that this sum will be greater when the `x` and `y` values have a closer
+linear association, meaning, when the `x` values do a good straight-line
+prediction of the `y` values.  We can use this sum-of-product calculation to
+compare different pairings of the `x` and `y` values — for example, if we
+shuffle, say, the `x` values, and line the shuffled values `x` values up with
+the `y` values, and calculate the sum of products for this new set of pairs, it
+will have a higher sum of products if the new set of pairs does a better job of
+linear prediction of `y` than the original pairing, and lower if it does
+a worse job.
 
 ## The correlation coefficient
 
@@ -1259,15 +1296,19 @@ taking the two sequences, and looking at corresponding
 sop_aiq <- sum(._ath * ._iq)
 ._comp <- get_var('x')
 ._chol <- get_var('y')
-sop_cc <- sum(._comp * ._chol)
-```
+sop_cc <- sum(._comp * ._chol) ```
 
-Thus far we have been using the *product of sums* as a measure of the
-relationship between pairs of values.
-
-We found that the sum of products for the athletic and IQ scores was `r sop_aiq`
-
-
+We have been using the *product of sums* as a measure of linear association
+between two variables.   For example, we found that the sum of products for the
+athletic and IQ variables (`ath` and `iq`) was `r sop_aiq`.   We can use the
+sum of products to compare the linear association between two different
+pairings *of the same variables*.  For example, in @tbl-ath-iq-products, we
+calculated sum of products for different ordering of the `ath` variable, and
+found that the original ordering of `ath` gives a sum of products that is lower
+than the pairing of `ath` sorted to match `iq`, but higher than the pairing of
+`ath` sorted to match the reverse ordering of `iq`.  That is, the actual `ath`,
+`iq` pairing is intermediate in linear association, between the best and worst
+possible linear association, as measured by the sum of products.
 
 The sum of products is useful because it allows us to compare the strength of relationship between different pairings — if the sum of products is higher for another ordering of the data, it means that the other ordering corresponds to a better match in order between the values in the pairs.
 
