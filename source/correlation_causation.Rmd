@@ -721,7 +721,7 @@ association between the two variables.
 aiq_plot(_ath, _iq)
 ```
 
-## Correlation: sum of products {#sec-sum-products}
+## Correlation with sum of products {#sec-sum-products}
 
 Now let us take advantage of a handy property of numbers. The more closely two
 sets of numbers match each other in order, the higher the sums of their
@@ -842,9 +842,9 @@ sums.iloc[0] = '**SUMS**'
 out2 = pd.concat([out, sums.to_frame().T])
 hilo_corr_tab = to_md(out2, np.arange(1, out2.shape[1] + 1))
 
-print(f'{hilo_corr_tab}\n\n: '
-      'Sums of Products: IQ and Athletic Scores '
-      '{#tbl-ath-iq-products}')
+print_tab(hilo_corr_tab,
+          'Sums of Products: IQ and Athletic Scores',
+          'ath-iq-products}')
 ```
 
 @tbl-ath-iq-products show three cases of products:
@@ -882,9 +882,9 @@ samp_sums.iloc[0] = '**Product sums**'
 samp_out2 = pd.concat([samp_out, samp_sums.to_frame().T])
 
 samp_tab = to_md(samp_out2)
-print(f'{samp_tab}\n\n: '
-      'Random Draws of IQ scores paired against athletic scores '
-      '{#tbl-random-ath-iq}')
+print_tab(samp_tab,
+          'Random Draws of IQ scores paired against athletic scores',
+          'random-ath-iq')
 ```
 
 More specifically, by the steps:
@@ -1240,6 +1240,17 @@ chance is a very unlikely explanation for the observed correlation.
 
 ## Some terminology
 
+Thus far we have been using terms such as *association* and *correlation* rather loosely.  It is time to define terms more formally.
+
+We are interested in the situation where we have two *sequences* of values. For
+example, the Athletic scores are one sequence of values, and the IQ scores are
+another.   These two sequences have to be the same length (the same number of
+elements).   We will often use the name $n$ to refer to the number of values in
+the sequences.  For example, for the compliance / cholesterol data, there are
+`r length(get_var('x'))` values so $n =$`r length(get_var('x'))`. The sequences
+have to be the same length because we are looking at the *pairs* formed by
+taking the two sequences, and looking at corresponding 
+
 ## The correlation coefficient
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -1298,9 +1309,9 @@ sums.iloc[0] = '**SUMS**'
 out2 = pd.concat([out, sums.to_frame().T])
 dev_tab = to_md(out2, np.arange(1, out2.shape[1] + 1))
 
-print(f'{dev_tab}\n\n: '
-      'Products for original values and deviations '
-      '{#tbl-ath-deviations}')
+print_tab(dev_tab,
+          'Products for original values and deviations',
+          'ath-deviations')
 ```
 
 Notice that the relative *ordering* of the deviation scores, relative to the IQ
@@ -1417,9 +1428,9 @@ sums.iloc[0] = '**SUMS**'
 out2 = pd.concat([out, sums.to_frame().T])
 dev_both_tab = to_md(out2, np.arange(1, out2.shape[1] + 1))
 
-print(f'{dev_both_tab}\n\n: '
-      'Products for original values and deviations both scores'
-      '{#tbl-ath-iq-deviations}')
+print_tab(dev_both_tab,
+      'Products for original values and deviations for both scores',
+      'ath-iq-deviations')
 ```
 
 

@@ -23,3 +23,9 @@ def get_var(name):
     if name in globals():
         return globals()[name]
     return getattr(r, name)
+
+
+def print_tab(tab_md, caption, label):
+    """ Print Markdown table, caption, label with suitable formatting.
+    """
+    print(f'{tab_md}\n\n: {caption} {{#tbl-{label}}}')
