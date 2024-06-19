@@ -721,7 +721,7 @@ association between the two variables.
 aiq_plot(_ath, _iq)
 ```
 
-## Correlation: sum of products
+## Correlation: sum of products {#sec-sum-products}
 
 Now let us take advantage of a handy property of numbers. The more closely two
 sets of numbers match each other in order, the higher the sums of their
@@ -1415,14 +1415,13 @@ print(f'{dev_both_tab}\n\n: '
       '{#tbl-ath-iq-deviations}')
 ```
 
-## Relationships between counts
+
+## Testing for a relationship between counted-data variables.
 
 ### Example: Drinking Beer And Being In Favor of Selling Beer
 
-**Testing for a relationship between counted-data variables.**
-
 Earlier in this chapter, we analyzed measured values for athletic ability and
-I.Q. We could and did use them in their original "cardinal" form, or split them
+I.Q. We can use them in their original "cardinal" form, or split them
 up into "high" and "low" groups. Often, however, the individual observations
 are recorded only as categories such "yes" or "no," which makes it more
 difficult to ascertain the existence of a relationship. Consider the poll
