@@ -89,6 +89,12 @@ int2tw <- function(i) {
     return (paste(i))
 }
 
+# Ensure not exponential
+# https://stackoverflow.com/a/25946211/1939576
+not_e <- function(i) {
+    return (format(i, scientific=FALSE))
+}
+
 # See: https://stackoverflow.com/questions/76732162/is-there-a-way-to-detect-the-chunk-language-when-setting-knitr-chunk-options
 set_true_for_matching_lang <- function(options, field) {
     if (is.na(options[[field]])) {
