@@ -26,14 +26,14 @@ source("_common.R")
 
 The correlation (speaking in a loose way for now) between two variables
 measures the strength of the relationship between them. A positive "linear"
-correlation between two variables x and y implies that high values of x are
-associated with high values of y, and that low values of x are associated with
-low values of y. A negative correlation implies the opposite; high values of x
-are associated with *low* values of y. By definition a "correlation
-coefficient" close to zero indicates little or no linear relationship between
-two variables; correlation coefficients close to 1 and -1 denote a strong
-positive or negative relationship. We will generally use a simpler measure of
-correlation than the correlation coefficient, however.
+correlation between two variables $x$ and $y$ implies that high values of $x$
+are associated with high values of $y$, and that low values of $x$ are
+associated with low values of $y$. A negative correlation implies the opposite;
+high values of $x$ are associated with *low* values of $y$. By definition
+a "correlation coefficient" close to zero indicates little or no linear
+relationship between two variables; correlation coefficients close to 1 and -1
+denote a strong positive or negative relationship. We will generally use
+a simpler measure of correlation than the correlation coefficient, however.
 
 One way to measure correlation with the resampling method is to rank both
 variables from highest to lowest, and investigate how often in
@@ -255,7 +255,7 @@ ketable(._df_aiq_renamed,
 @fig-ath-iq-scatter is a *scatterplot* with "Athletic Score" on the x-axis and
 "I.Q. Score" on the y-axis.  Each point on the plot corresponds to one row of
 @tbl-physical-mental (and therefore one boy); in particular each point is at
-the x, y coordinate given by the values in "Athletic Score" and "I.Q. Score".
+the $x$, $y$ coordinate given by the values in "Athletic Score" and "I.Q. Score".
 For example the point for the first boy is at position x=97, y=114.
 
 ```{python echo=FALSE, label="fig-ath-iq-scatter", fig.cap="Scatter plot of I.Q. Score as a function of Athletic Score", eval=TRUE}
@@ -854,7 +854,7 @@ print(f'{hilo_corr_tab}\n\n: '
 3.   Observed; column 7
 
 Now we attack the I.Q. and athletic-score problem using the property of numbers
-just discussed. First multiply the x and y values of the actual observations,
+just discussed. First multiply the $x$ and $y$ values of the actual observations,
 and sum them to be 95,759 (@tbl-ath-iq-products). Then write the ten observed
 I.Q. scores on cards, and assign the cards in random order to the ten athletes,
 as shown in the column for trial 1 in @tbl-random-ath-iq.
@@ -1117,15 +1117,15 @@ The next step is to investigate whether a measure of relationship is
 statistically significant; this we do as follows:
 
 1.  Multiply the observed values for each of the 164 participants on the
-    independent x variable (cholostyramine — percent of prescribed
-    dosage actually taken) and the dependent y variable (cholesterol),
+    independent $x$ variable (cholostyramine — percent of prescribed
+    dosage actually taken) and the dependent $y$ variable (cholesterol),
     and sum the results — it's 439,141.
-2.  Randomly shuffle the dependent variable y values among the
+2.  Randomly shuffle the dependent variable $y$ values among the
     participants. The sampling is being done without replacement, though
     an equally good argument could be made for sampling with
     replacement; the results do not differ meaningfully, however,
     because the sample size is so large.
-3.  Then multiply these x and y hypothetical values for each of the 164
+3.  Then multiply these $x$ and $y$ hypothetical values for each of the 164
     participants, sum the results and record.
 4.  Repeat steps 2 and 3 perhaps 10,000 times.
 5.  Determine how often the shuffled sum-of-products exceeds the
@@ -1238,6 +1238,8 @@ Interpretation: 10,000 simulated random shufflings never produced
 a sum-of-products as high as the observed value. Hence we conclude that random
 chance is a very unlikely explanation for the observed correlation.
 
+## Some terminology
+
 ## The correlation coefficient
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -1249,9 +1251,14 @@ sop_aiq <- sum(._ath * ._iq)
 sop_cc <- sum(._comp * ._chol)
 ```
 
-
 Thus far we have been using the *product of sums* as a measure of the
-relationship between pairs of values.  For example we found that the sum of products for the athletic and IQ scores was `r sop_aiq`.  The sum of products is useful because it allows us to compare the strength of relationship between different pairings — if the sum of products is higher for another ordering of the data, it means that the other ordering corresponds to a better match in order between the values in the pairs.
+relationship between pairs of values.
+
+We found that the sum of products for the athletic and IQ scores was `r sop_aiq`
+
+
+
+The sum of products is useful because it allows us to compare the strength of relationship between different pairings — if the sum of products is higher for another ordering of the data, it means that the other ordering corresponds to a better match in order between the values in the pairs.
 
 For example, we found that sum of products for the sorted athletic and sorted
 IQ scores, where the match is as good as it can be, has a higher sum of
