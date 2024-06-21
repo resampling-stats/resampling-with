@@ -802,6 +802,8 @@ not perfectly correlated with the *x*'s.
 
 : Comparison of Sums of Multiplications {#tbl-pos-neg-mult}
 
+### Example: sum of products correlation of athletic and IQ scores
+
 @tbl-ath-iq-products shows that the sum of the products of the *observed*
 I.Q. scores multiplied by athletic scores (column 7) is between the sums
 that would occur if the I.Q. scores were ranked from best to worst
@@ -816,23 +818,23 @@ import pandas as pd
 
 from gridtabber import to_md
 
-df = pd.read_csv('data/athletic_iq.csv')
-ath = np.array(df['athletic_score'])
-iq = np.array(df['iq_score'])
+_df = pd.read_csv('data/athletic_iq.csv')
+_ath = np.array(_df['athletic_score'])
+_iq = np.array(_df['iq_score'])
 
-siq = np.sort(iq)
-athi = np.argsort(ath)
-iq_pos = siq[athi]
-iq_neg = siq[athi[::-1]]
+_siq = np.sort(_iq)
+_athi = np.argsort(_ath)
+_iq_pos = _siq[_athi]
+_iq_neg = _siq[_athi[::-1]]
 
 out = pd.DataFrame(
-    data={'Athletic score': ath,
-          'Hypothetical\nIQ pos': iq_pos,
-          'Col 1 x Col 2': ath * iq_pos,
-          'Hypothetical\nIQ neg': iq_neg,
-          'Col 1 x Col 4': ath * iq_neg,
-          'Actual IQ': iq,
-          'Col 1 x Col 6': ath * iq}
+    data={'Athletic score': _ath,
+          'Hypothetical\nIQ pos': _iq_pos,
+          'Col 1 x Col 2': _ath * _iq_pos,
+          'Hypothetical\nIQ neg': _iq_neg,
+          'Col 1 x Col 4': _ath * _iq_neg,
+          'Actual IQ': _iq,
+          'Col 1 x Col 6': _ath * _iq}
 )
 
 sums = out.sum(axis='index')
@@ -1105,9 +1107,9 @@ graph to continue the analysis (see @fig-cholost-scatter).
 ```{python echo=FALSE, label="fig-cholost-scatter", fig.cap="Cholesterol decrease as function of compliance", eval=TRUE}
 _df = pd.read_csv('data/cholost.csv')
 _compliance = np.array(_df['percent_compliance'])
-_cdecrease = np.array(_df['cholesterol_decrease'])
+_cholesterol = np.array(_df['cholesterol_decrease'])
 
-plt.scatter(_compliance, _cdecrease)
+plt.scatter(_compliance, _cholesterol)
 plt.xlabel('Percent compliance')
 plt.ylabel('Cholesterol decrease')
 plt.title('Cholesterol decrease as a function of compliance');
@@ -1153,8 +1155,12 @@ rnd = np.random.default_rng()
 
 # Data as arrays.
 cholost_df = pd.read_csv('data/cholost.csv')
-x = np.array(cholost_df['percent_compliance'])
-y = np.array(cholost_df['cholesterol_decrease'])
+compliance = np.array(cholost_df['percent_compliance'])
+cholesterol = np.array(cholost_df['cholesterol_decrease'])
+
+# Rename the two sequences to match the description in the text.
+x = compliance
+y = cholesterol
 
 # Step 1 above
 actual_prod = x * y
@@ -1192,8 +1198,12 @@ print('Proportion product sums >= observed:', kk)
 ```{r}
 # Data as vectors.
 cholost_df <- read.csv('data/cholost.csv')
-x <- cholost_df$percent_compliance
-y <- cholost_df$cholesterol_decrease
+compliance <- cholost_df$percent_compliance
+cholesterol <- cholost_df$cholesterol_decrease
+
+# Rename the two sequences to match the description in the text.
+x <- compliance
+y <- cholesterol
 
 # Step 1 above
 actual_prod <- x * y
@@ -1238,56 +1248,6 @@ Interpretation: 10,000 simulated random shufflings never produced
 a sum-of-products as high as the observed value. Hence we conclude that random
 chance is a very unlikely explanation for the observed correlation.
 
-## Some terminology, with a recap on sum of products
-
-Thus far we have been using terms such as *association* and *correlation* rather loosely.  It is time to define terms more formally.
-
-We are interested in the situation where we have two *sequences* of values. For
-example, the Athletic scores are one sequence of values, and the IQ scores are
-another.   These two sequences have to be the same length (the same number of
-elements).   We will often use the name $n$ to refer to the number of values in
-the sequences.  For example, for the compliance / cholesterol data, there are
-`r length(get_var('x'))` values so, in that case, $n =$ `r
-length(get_var('x'))`.  We often name these sequences in text and in the code
-— for example we've used `ath` for the sequence of athletic scores and `iq` as
-a name for the sequence of IQ scores.  We can also refer to these named
-sequences (such as `ath` or `iq`) as *variables*; a variable is a named thing,
-and in the case of `ath` and `iq` , the named thing is a sequence of values.
-
-We are thinking here about the *association* of two sequences; that is,
-broadly, the tendency for the values in one sequence to vary in some
-predictable way in relation to another.   In particular, we are interested in
-*linear association*; that is the tendency for one sequence, such as `iq` to
-vary in a way that is predictable from a straight line based on the other, such
-as `ath`.  When there is linear association between two sequences, such as
-`ath` and `iq`, we can make a better than random estimate of the values we want
-to predict (e.g. the `iq` values), with a straight line based only on we are
-predicting with (e.g. `ath`) values.   Call the values we are trying to predict
-— the target sequence or variable, and the values we are trying to predict with
-— the predictor sequence or variable.  For example, above, `iq` is the target
-variable (or sequence) and `ath` is the predictor variable (or sequence).
-Likewise cholesterol sequence (named `y` in the code above) is our target
-variable, and the compliance scores (`x` in the code) is our predictor
-sequence.
-
-For now, let's stick with the variable names `x` (the predictor) and `y` (the
-target). We have found that we can check the strength of the linear association
-between two variables (sequences), such as `x` and `y`, by using the sum of
-products.  We get the sum of products by first lining up the two length $n$
-sequences `x` and `y` next to each other, and forming pairs of values (first
-`x` value with first `y` value, second `x` value with second `y` value and so
-on), giving us $n$ pairs.  We multiply the elements of each pair together to
-get the product, and take the sum of all $n$ products, across pairs.  We have
-seen that this sum will be greater when the `x` and `y` values have a closer
-linear association, meaning, when the `x` values do a good straight-line
-prediction of the `y` values.  We can use this sum-of-product calculation to
-compare different pairings of the `x` and `y` values — for example, if we
-shuffle, say, the `x` values, and line the shuffled values `x` values up with
-the `y` values, and calculate the sum of products for this new set of pairs, it
-will have a higher sum of products if the new set of pairs does a better job of
-linear prediction of `y` than the original pairing, and lower if it does
-a worse job.
-
 ## The correlation coefficient
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -1296,12 +1256,57 @@ a worse job.
 sop_aiq <- sum(._ath * ._iq)
 ._comp <- get_var('x')
 ._chol <- get_var('y')
-sop_cc <- sum(._comp * ._chol) ```
+sop_cc <- sum(._comp * ._chol)
+```
 
-We have been using the *product of sums* as a measure of linear association
-between two variables.   For example, we found that the sum of products for the
-athletic and IQ variables (`ath` and `iq`) was `r sop_aiq`.   We can use the
-sum of products to compare the linear association between two different
+We have been using the *product of sums* as a measure of straight-line
+(linear) association between two variables.   We found that the sum of products
+for the athletic and IQ variables (`ath` and `iq`) was `r not_e(sop_aiq)`, and
+we showed that the sum of products is higher for pairings of `ath` and `iq`
+with a higher degree of linear association.  Now let us consider compliance and
+cholesterol above; the sum of products for `compliance` and `cholesterol` was
+`r not_e(sop_cc)`.  Notice the `compliance` and `cholesterol` sum of products
+is much higher than for `ath` and `i` — but that does not tell us whether the
+association of the scores is higher.  There are various problems that prevent
+us doing a direct comparison between the two scores.  We would like a version
+of the sum of products procedure that could give us a measure of linear
+association that we could compare between different pairs of sequences.   This
+is the purpose of the *correlation coefficient*.
+
+The first problem that makes it hard to compare the sum of product scores is
+that the sum of products depends on the number of elements in the sequence.
+`ath` (and `iq`) have `r length(ath)` elements, whereas `compliance` (and
+`cholesterol`) have `r length(compliance)` elements.  The sum of products is
+a sum; all other things being equal, the more values you sum, the higher the
+sum; all other things being equal, the sum of `r length(compliance)` elements
+will be greater than the sum of `r length(ath)` elements.  We can solve this
+problem by dividing the sum of products by the number of elements in that sum,
+to get the *mean* of the products.
+
+```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
+deviations = ath - np.mean(ath)
+out = pd.DataFrame(
+    data={'Athletic score': ath,
+          'IQ score': iq,
+          'Col 1 x Col 2': ath * iq,
+          'Compliance': _compliance,
+          'Athletic deviations': deviations,
+          'Col 2 x Col 4': deviations * iq}
+)
+
+sums = out.sum(axis='index')
+not_sums = [c for c in out if ' x ' not in c]
+sums[not_sums] = ''
+sums.iloc[0] = '**SUMS**'
+out2 = pd.concat([out, sums.to_frame().T])
+dev_tab = to_md(out2, np.arange(1, out2.shape[1] + 1))
+
+print_tab(dev_tab,
+          'Products for original values and deviations',
+          'ath-deviations')
+```
+
+sum of products to compare the association between two different
 pairings *of the same variables*.  For example, in @tbl-ath-iq-products, we
 calculated sum of products for different ordering of the `ath` variable, and
 found that the original ordering of `ath` gives a sum of products that is lower
