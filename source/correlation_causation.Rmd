@@ -802,7 +802,7 @@ not perfectly correlated with the *x*'s.
 
 : Comparison of Sums of Multiplications {#tbl-pos-neg-mult}
 
-### Example: sum of products correlation of athletic and IQ scores
+### Example: sum of products correlation of athletic and IQ scores {#sec-ath-iq-sop}
 
 @tbl-ath-iq-products shows that the sum of the products of the *observed*
 I.Q. scores multiplied by athletic scores (column 7) is between the sums
@@ -812,7 +812,7 @@ that would occur if the I.Q. scores were ranked from best to worst
 of the observed *x* and *y* values is relatively much higher or much lower than
 are sums of randomly-chosen pairs of *x* and *y* .
 
-```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
+```{python echo=FALSE, eval=TRUE, results="asis", message=FALSE}
 import numpy as np
 import pandas as pd
 
@@ -869,7 +869,7 @@ observed sample will be higher than for most of the random trials. (If high
 I.Q.s go with low athletic scores, the sum of the multiplications for the
 observed sample will be *lower* than most of the random trials.)
 
-```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
+```{python echo=FALSE, eval=TRUE, results="asis", message=FALSE}
 rnd = np.random.default_rng(1966)
 
 samp_out = pd.DataFrame(data={'Athletic\nscore': _ath})
@@ -919,7 +919,7 @@ Finally, we count (`sum`) the trials in which the sum of the products of the
 randomly-paired athletic and I.Q. scores equals or exceeds the sum of the
 products in the observed data.
 
-::: {.notebook name="athlete_iq" title="Association of atheletic and IQ scores"}
+::: {.notebook name="athlete_iq" title="Association of athletic and IQ scores"}
 
 ::: nb-only
 We use random pairings of the athletic and IQ scores to find the null-world
@@ -948,7 +948,7 @@ ath_iq_df
 ```
 
 ```{r}
-# Read the data file containing pig ration data.
+# Read the data file containing athletic and IQ scores.
 ath_iq_df <- read.csv('data/athletic_iq.csv')
 # Show the data frame.
 ath_iq_df
@@ -1073,17 +1073,17 @@ End of notebook
 ### Example: Correlation Between Adherence to Medication Regime and Change in Cholesterol
 
 Efron and Tibshirani [-@efron1993bootstrap, page 72] show data on the extents
-to which 164 men a) took the drug prescribed to them (cholostyramine), and b)
-showed a decrease in total plasma cholesterol. @tbl-cholost shows the first 15
+to which 164 men a) took the drug prescribed to them (yramine), and b)
+showed a decrease in total plasma cholesterol. @tbl- shows the first 15
 of the values (note that a positive value in the "Decrease in cholesterol"
 column denotes a decrease in cholesterol, while a negative value denotes an
 increase.)
 
 ```{r echo=FALSE, eval=TRUE}
-._cholost <- read.csv('data/cholost.csv')
-names(._cholost) <- c('% compliance', 'Decrease in cholesterol')
-ketable(head(._cholost, 15),
-        caption = "First 15 rows of compliance / blood cholesterol {#tbl-cholost}")
+._ <- read.csv('data/cholost.csv')
+names(._) <- c('% compliance', 'Decrease in cholesterol')
+ketable(head(._, 15),
+        caption = "First 15 rows of compliance / blood cholesterol {#tbl-}")
 ```
 
 The aim is to assess the effect of the compliance on the improvement.
@@ -1102,9 +1102,9 @@ There are two related issues:
     see whether there is visible indication of a relationship.
 
 Efron and Tibshirani do this, and they find sufficient intuitive basis in the
-graph to continue the analysis (see @fig-cholost-scatter).
+graph to continue the analysis (see @fig--scatter).
 
-```{python echo=FALSE, label="fig-cholost-scatter", fig.cap="Cholesterol decrease as function of compliance", eval=TRUE}
+```{python echo=FALSE, label="fig--scatter", fig.cap="Cholesterol decrease as function of compliance", eval=TRUE}
 _df = pd.read_csv('data/cholost.csv')
 _compliance = np.array(_df['percent_compliance'])
 _cholesterol = np.array(_df['cholesterol_decrease'])
@@ -1119,7 +1119,7 @@ The next step is to investigate whether a measure of relationship is
 statistically significant; this we do as follows:
 
 1.  Multiply the observed values for each of the 164 participants on the
-    independent $x$ variable (cholostyramine — percent of prescribed
+    independent $x$ variable (yramine — percent of prescribed
     dosage actually taken) and the dependent $y$ variable (cholesterol),
     and sum the results — it's 439,141.
 2.  Randomly shuffle the dependent variable $y$ values among the
@@ -1154,9 +1154,9 @@ import matplotlib.pyplot as plt
 rnd = np.random.default_rng()
 
 # Data as arrays.
-cholost_df = pd.read_csv('data/cholost.csv')
-compliance = np.array(cholost_df['percent_compliance'])
-cholesterol = np.array(cholost_df['cholesterol_decrease'])
+df = pd.read_csv('data/cholost.csv')
+compliance = np.array(df['percent_compliance'])
+cholesterol = np.array(df['cholesterol_decrease'])
 
 # Rename the two sequences to match the description in the text.
 x = compliance
@@ -1197,9 +1197,9 @@ print('Proportion product sums >= observed:', kk)
 
 ```{r}
 # Data as vectors.
-cholost_df <- read.csv('data/cholost.csv')
-compliance <- cholost_df$percent_compliance
-cholesterol <- cholost_df$cholesterol_decrease
+df <- read.csv('data/cholost.csv')
+compliance <- df$percent_compliance
+cholesterol <- df$cholesterol_decrease
 
 # Rename the two sequences to match the description in the text.
 x <- compliance
@@ -1250,9 +1250,9 @@ chance is a very unlikely explanation for the observed correlation.
 
 ## The correlation coefficient
 
-```{r, eval=TRUE, echo=FALSE}
-._ath <- get_var('_ath')
-._iq <- get_var('_iq')
+```{r echo=FALSE, eval=TRUE}
+._ath <- get_var('ath')
+._iq <- get_var('iq')
 sop_aiq <- sum(._ath * ._iq)
 ._comp <- get_var('x')
 ._chol <- get_var('y')
@@ -1266,8 +1266,8 @@ we showed that the sum of products is higher for pairings of `ath` and `iq`
 with a higher degree of linear association.  Now let us consider compliance and
 cholesterol above; the sum of products for `compliance` and `cholesterol` was
 `r not_e(sop_cc)`.  Notice the `compliance` and `cholesterol` sum of products
-is much higher than for `ath` and `i` — but that does not tell us whether the
-association of the scores is higher.  There are various problems that prevent
+is much higher than for `ath` and `iq` — but that does not tell us whether the
+*association of the scores* is higher.  There are various problems that prevent
 us doing a direct comparison between the two scores.  We would like a version
 of the sum of products procedure that could give us a measure of linear
 association that we could compare between different pairs of sequences.   This
@@ -1281,7 +1281,9 @@ a sum; all other things being equal, the more values you sum, the higher the
 sum; all other things being equal, the sum of `r length(._comp)` elements will
 be greater than the sum of `r length(._ath)` elements.  We can solve this
 problem by dividing the sum of products by the number of elements in that sum,
-to get the *mean* of the products.  The mean of product values for the athletic / IQ scores is `r not_e(sop_aiq)` / `r length(._ath)` =
+to get the *mean* of the products.  The mean of product values for the athletic
+/ IQ scores is
+`r not_e(sop_aiq)` / `r length(._ath)` =
 `r round(sop_aiq / length(._ath), 2)`.  The mean of products for compliance
 / cholesterol is `r not_e(sop_cc)` / `r length(._comp)` = `r round(sop_cc
 / length(._comp), 2)`.
@@ -1290,12 +1292,13 @@ We have solved one problem in comparing the measure by taking the mean of
 products — the value no longer depends on the number of elements.  We have
 other problems.  For example, consider the IQ scores.  We have used the raw IQ
 scores, on their usual scale, where 100 is the average IQ for the general
-population.  These have a mean of `r round(mean(._iq), 2)`.  But we could also
-have scored IQ in another way.  For example, we could have recorded the
-*difference* from 100 instead of the raw value, to get the values in column
-2 of @tbl-iq-minus-hundred:
+population.  Our raw IQ scores have a mean of `r round(mean(._iq), 2)`.  But we
+could also have scored IQ in another way.  For example, we could have recorded
+the *difference* from 100 instead of the raw value, to get the values in column
+2 of @tbl-iq-minus-hundred.  These have a mean of
+`r round(mean(._iq - 100), 2)`
 
-```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
+```{python echo=FALSE, eval=TRUE, results="asis", message=FALSE}
 from gridtabber import footerize_table
 
 _iqd = _iq - 100
@@ -1325,7 +1328,7 @@ print_tab(min_100_tab,
 
 Notice that the mean product of the IQ-100 is much smaller than the mean for
 the product with the original IQ values, because the IQ element in the product
-is smaller.[^mean-product], so the products will be smaller, and the mean
+is smaller, so the products will be smaller, and the mean
 product will be smaller. However, it might be obvious that the *association* of
 the IQ and athletic scores remains the same after we have subtracted 100 from
 the IQ; higher IQ values on either scale are still associated with higher
@@ -1338,11 +1341,12 @@ shows the scatterplot of the original IQ score against the athletic scores on
 the left plot (as for @fig-ath-iq-scatter) and the IQ-100 scores against the
 athletic scores in the right plot. As you can see, subtracting 100 from the IQ
 values just moved the graph down by 100 on the y-axis — but the slope of the
-line must be the same. The slope of the line is a measure of how much the IQ
-score increases as the athletic score increases — a good measure of the linear
-association between athletic score and IQ score. Because the slope has not
-changed between the original IQ score and the IQ-100 score, the association has
-not changed, even though the mean product is much smaller.
+line relating the two must be the same. The slope is a measure of how much the
+IQ score increases as the athletic score increases — it is therefore a good
+measure of the *linear association* between athletic score and IQ score.
+Because the slope has not changed between the original IQ score and the IQ-100
+score, the association has not changed, even though the mean product is much
+smaller.
 
 ```{python echo=FALSE, label="fig-ath-iq-hundred", fig.cap="Scatter plot of IQ Score, IQ-100 as function of Athletic Score", eval=TRUE}
 fig, (ax1, ax2) = plt.subplots(1, 2)
@@ -1386,7 +1390,7 @@ scores.  We get the deviations by subtracting the mean IQ (`r round(mean(._iq),
 2)`), and the standard scores by dividing the deviations by the IQ standard
 deviation (`r round(sqrt(mean((._iq - mean(._iq)) ** 2)), 2)`).
 
-```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
+```{python echo=FALSE, eval=TRUE, results="asis", message=FALSE}
 def _standard_scores(seq):
     return (seq - np.mean(seq)) / np.std(seq)
 
@@ -1394,10 +1398,10 @@ _std_iq = _standard_scores(_iq)
 
 out = pd.DataFrame(
     data={'Original IQ': _iq,
-          'IQ deviations': np.round(_iq - np.mean(_iq), 2),
-          'Standard scores': np.round(_std_iq)
+          'IQ deviations': _iq - np.mean(_iq),
+          'Standard scores': _std_iq,
           }
-)
+).round(2)
 
 iq_std_tab = to_md(out)
 
@@ -1409,46 +1413,349 @@ print_tab(iq_std_tab,
 After we have applied this standardization procedure to both sequences, they
 are both now in the same *standard units*.   The mean product of these standard
 units is therefore a *standard* measure of association, called the *Pearson
-product-moment correlation coefficient*, often referred to simply as the
-*correlation coefficient*.  We usually use the letter $r$ to refer to the
-correlation coefficient.
+product-moment correlation coefficient*, or just the *correlation coefficient*.
+We use the letter $r$ for the value of the correlation coefficient. @tbl-r-iq
+shows the mean of products calculation on standard scores athletic ability and
+IQ, to get the $r$ value.
 
-Because the sequences for the correlation coefficient $r$ are in the same
-units, we can compare correlation coefficients between different sequences, to
-give a standard measure of association (@tbl-r-calculation).
-
-```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
+```{python echo=FALSE, eval=TRUE, results="asis", message=FALSE}
 _std_ath = _standard_scores(_ath)
-_std_comp = _standard_scores(_compliance)
-_std_chol = _standard_scores(_cholesterol)
 out = pd.DataFrame(
-    data={'Athletic score': _ath,
+    data={'Athletic score  ': _ath,
           'Original IQ': _iq,
-          'Standardized\nAthletic score': _std_ath,
+          'Standardized\nathletic score': _std_ath,
           'Standardized\nIQ': _std_iq,
           'Col 3 x Col 4': _std_ath * _std_iq,
-          'Compliance': _compliance,
-          'Cholesterol': _iq,
-          'Standardized\ncompliance': _std_comp,
-          'Standardized\ncholesterol': _std_chol,
-          'Col 8 x Col 9': _std_comp * _std_chol,
-          }
-)
+          })
 
 not_x = [c for c in out if ' x ' not in c]
-means = out.mean(axis='index')
+means = out.mean(axis='index').round(2)
+means[not_x] = ''
+means.iloc[0] = '**Mean product**\n**(r value)**'
 suff = means.to_frame().T
-suff[not_x] = ''
-suff.iloc[:, 0] = ['', '**r value**']
-out2 = pd.concat([out, suff])
-r_tab = footerize_table(
+out2 = pd.concat([out.round(2), suff])
+r_tab_iq = footerize_table(
     to_md(out2, np.arange(1, out2.shape[1] + 1)),
     [-2, -1])
 
-print_tab(r_tab,
-          'r values from means of standardized products',
-          'r-calculation}')
+print_tab(r_tab_iq,
+          r'$r$ for Athletic and IQ scores',
+          'r-iq}')
 ```
+
+Because the sequences for the correlation coefficient $r$ are in the same
+units, we can compare correlation coefficients between different sequences, to
+give a standard measure of association.  For example, we can run the same
+calculation on the compliance and cholesterol values, to get the $r$ value
+(correlation coefficient) for these sequences.  Let's do that in {{< var lang >}}:
+
+::: {.notebook name="r_for_cholesterol" title="Correlation coefficient for compliance and cholesterol"}
+
+::: nb-only
+Calculate correlation coefficient for compliance and cholesterol.
+:::
+
+```{python}
+import numpy as np
+import pandas as pd
+
+df = pd.read_csv('data/cholost.csv')
+compliance = np.array(df['percent_compliance'])
+cholesterol = np.array(df['cholesterol_decrease'])
+
+# Compliance as standard scores.
+dev_compliance = compliance - np.mean(compliance)  # Deviations.
+stdev_compliance = np.sqrt(np.mean(dev_compliance ** 2))  # Standard deviation.
+# We could also have used np.std to do the calculation above.
+std_compliance = dev_compliance / stdev_compliance  # Standard scores.
+
+# Cholesterol as standard scores.
+dev_cholesterol = cholesterol - np.mean(cholesterol)  # Deviations.
+stdev_cholesterol = np.sqrt(np.mean(dev_cholesterol ** 2))  # Standard deviation.
+# We could also have used np.std to do the calculation above.
+std_cholesterol = dev_cholesterol / stdev_cholesterol  # Standard scores.
+
+# r value is mean of products for standardized scores.
+r = np.mean(std_compliance * std_cholesterol)
+
+print('r for compliance / cholesterol is:', np.round(r, 2))
+```
+
+```{r}
+df <- read.csv('data/cholost.csv')
+compliance <- df$percent_compliance
+cholesterol <- df$cholesterol_decrease
+
+# Compliance as standard scores.
+dev_compliance <- compliance - mean(compliance)  # Deviations.
+stdev_compliance <- sqrt(mean(dev_compliance ** 2))  # Standard deviation.
+std_compliance <- dev_compliance / stdev_compliance  # Standard scores.
+
+# Cholesterol as standard scores.
+dev_cholesterol <- cholesterol - mean(cholesterol)  # Deviations.
+stdev_cholesterol <- sqrt(mean(dev_cholesterol ** 2))  # Standard deviation.
+std_cholesterol <- dev_cholesterol / stdev_cholesterol  # Standard scores.
+
+# r value is mean of product for standardized scores.
+r <- mean(std_compliance * std_cholesterol)
+
+message('r for compliance / cholesterol is: ', round(r, 2))
+```
+
+:::
+<!---
+End of notebook.
+-->
+
+Notice that the $r$ value is higher for the athletic and IQ scores
+(`r round(cor(._ath, ._iq), 2)`) than it is for compliance and cholesterol
+(`r round(cor(._comp, ._chol), 2)`).  Because we have measured the association
+in standard units, we can compare these values, and say there is a slightly
+stronger linear association for our athletic and IQ scores, than there is for
+our compliance and cholesterol scores.
+
+### Correlations are symmetrical
+
+You might be able to see from the definition of the calculation above, that the
+correlation between `ath` and `iq` must be the same as the correlation between
+`iq` and `ath` — and in general the correlation between some sequence $x$ and
+another $y$ is equal to the correlation between $y$ and $x$.
+
+Why?  Remember that the correlation is the mean of the product of the standard
+scores.
+
+Let us first calculate the standard scores for `ath` and `iq`:
+
+```{python}
+std_ath = (ath - np.mean(ath)) / np.std(ath)
+std_iq = (iq - np.mean(iq)) / np.std(iq)
+```
+
+```{r}
+# Athletic scores.
+dev_ath <- ath - mean(ath)   # Deviations.
+stdev_ath <- sqrt(mean(dev_ath ** 2))  # Standard deviation.
+std_ath = dev_ath / stdev_ath  # Standard scores.
+# IQ scores.
+dev_iq <- iq - mean(iq)   # Deviations.
+stdev_iq <- sqrt(mean(dev_iq ** 2))  # Standard deviation.
+std_iq = dev_iq / stdev_iq  # Standard scores.
+```
+
+Now calculate the correlation coefficient.
+
+```{python}
+print('Correlation between "ath" and "iq":', np.mean(std_ath * std_iq))
+```
+
+```{r}
+message('Correlation between "ath" and "iq": ', mean(std_ath * std_iq))
+```
+
+But multiplication is commutative — changing the order does not change the
+result — so $a * b = b * a$.  This means that the `std_ath * std_id`  gives the same {{< var array >}} as `std_id * std_ath`, and:
+
+```{python}
+print('Correlation between "iq" and "ath":', np.mean(std_iq * std_ath))
+```
+
+```{r}
+message('Correlation between "iq" and "ath": ', mean(std_iq * std_ath))
+```
+
+### Correlation coefficient in {{< var lang >}}
+
+{{< var np_or_r >}} has a function [`np.corrcoef`]{.python}[`cor`]{.r}
+for calculating the correlation coefficient between two sequences directly.
+
+::: python
+
+Here is `np.corrcoef` in action:
+
+```{python}
+corr_arr = np.corrcoef(ath, iq)
+corr_arr
+```
+
+Notice that `np.corrcoef` returns a *two-dimensional* array of the correlations
+between all possible pairs of the two sequences.  This results in a 2 by
+2 array, where the top-left value is the correlation coefficient $r$ between
+`ath` and `ath` — the correlation between a sequence and itself is always 1.
+The bottom right value is the correlation between `iq` and `iq` — again, this
+must be 1.  The top right value is the correlation between `ath` and `iq`, and
+the bottom left value is the correlation between `iq` and `ath`, and as you saw
+above, these must be equal.  We are usually interested in the correlation
+between the two sequences we send to `np.corrcoef`, so we usually just want the
+top-right (or bottom-left) value.
+
+We can select the first row of the 2D array like this:
+
+```{python}
+# First row of the 2D array.
+corr_arr[0]
+```
+
+We can select the first row and the first column by giving two indices between
+the square brackets, where the first index is for the row (select the first (0)
+row), and the second is for the column (select the second (1) column):
+
+```{python}
+# Select the first row, second column of the 2D array.
+# This is the top-right value.
+corr_arr[0, 1]
+```
+
+Therefore, to get the correlation coefficient between two sequences, we can do:
+
+```{python}
+# Select top-right value from correlation array:
+np.corrcoef(ath, iq)[0, 1]
+```
+
+:::
+<!---
+End of Python section.
+-->
+
+::: r
+
+`cor` works as you would expect:
+
+```{r}
+cor(ath, iq)
+```
+
+:::
+<!---
+End of R section.
+-->
+
+### Test for a linear association with correlation
+
+Above we used the sum-of-products calculation to see if the actual observed sum
+of products was unusual in the null-world, where we simulated sum of product
+values in the null-world by permuting one of the sequences, and recalculating
+the sum of products.
+
+We could use the correlation coefficient instead of the sum of products as our
+measure of association, and simulate correlation coefficients in the
+null-world.  We will come to the same conclusion using sum of products or
+correlation coefficients because they are equivalent when comparing between two
+different orderings of the same sequences of values.  The only advantage of the
+correlation coefficient for this case is that {{< var np_or_r >}} has the
+ready-made function to do the calculation.  Here is the test for linear
+association in the null world using the correlation coefficient instead of the
+sum of products.  Compare the procedure below to @sec-ath-iq-sop.
+
+::: {.notebook name="athlete_iq_cc" title="Association of athletic and IQ scores with $r$"}
+
+::: nb-only
+We use random pairings of the athletic and IQ scores to find the null-world
+distribution of the correlation coefficients of these scores.
+:::
+
+```{python}
+# Load the Numpy library for arrays.
+import numpy as np
+# Load the Pandas library for loading and selecting data.
+import pandas as pd
+# Plotting library.
+import matplotlib.pyplot as plt
+
+# Set up the random number generator
+rnd = np.random.default_rng()
+
+# Read the data file containing athletic and IQ scores.
+ath_iq_df = pd.read_csv('data/athletic_iq.csv')
+
+# Turn athletic and IQ scores into arrays.
+ath = np.array(ath_iq_df['athletic_score'])
+iq = np.array(ath_iq_df['iq_score'])
+
+# Calculate, select correlation coefficient.
+actual_r = np.corrcoef(ath, iq)[0, 1]
+
+# Set the number of trials for the null-world simulation.
+n_trials = 10_000
+
+# An empty array to store the trial results.
+results = np.zeros(n_trials)
+
+# Do 10,000 experiments.
+for i in range(n_trials):
+    # Shuffle the IQ scores so we can pair them against athletic scores.
+    shuffled = rnd.permuted(iq)
+    # Calculate the correlation coefficient.
+    fake_r = np.corrcoef(ath, shuffled)[0, 1]
+    # Keep track of the result in results array.
+    results[i] = fake_r
+    # End one trial, go back and repeat until 10000 trials are complete.
+
+# Obtain a histogram of the trial results.
+plt.hist(results, bins=25)
+plt.title('Random correlation coefficients')
+plt.xlabel('Observed r values from random pairing')
+
+# Determine in how many trials the random r value was greater than
+# the observed r value.
+k = np.sum(results >= actual_r)
+# Convert to a proportion.
+kk = k / n_trials
+# Print the result.
+print('Proportion of random pairings giving r >= observed:', kk)
+```
+
+```{r}
+# Read the data file containing athletic and IQ scores.
+ath_iq_df <- read.csv('data/athletic_iq.csv')
+
+# Turn athletic and IQ scores into vectors.
+ath = ath_iq_df$athletic_score
+iq = ath_iq_df$iq_score
+
+# Calculate correlation coefficient.
+actual_r <- cor(ath, iq)
+
+# Set the number of trials for the null-world simulation.
+n_trials <- 10000
+
+# An empty array to store the trial results.
+results <- numeric(n_trials)
+
+# Do 10,000 experiments.
+for (i in 1:n_trials) {
+    # Shuffle the IQ scores so we can pair them against athletic scores.
+    shuffled <- sample(iq)
+    # Calculate the correlation coefficient.
+    fake_r <- cor(ath, shuffled)
+    # Keep track of the result in results array.
+    results[i] <- fake_r
+    # End one trial, go back and repeat until 10000 trials are complete.
+}
+
+# Obtain a histogram of the trial results.
+hist(results, breaks=25,
+    main='Random correlation coefficients',
+    xlab='Observed r values from random pairing')
+
+# Determine in how many trials the random r value was greater than
+# the observed r value.
+k <- sum(results >= actual_r)
+# Convert to a proportion.
+kk <- k / n_trials
+# Print the result.
+message('Proportion of random pairings giving r >= observed: ', kk)
+```
+
+:::
+<!---
+End of notebook
+-->
+
+Notice we get a very similar proportion (p-value) with the correlation
+coefficient to the one from sum of products in @sec-ath-iq-sop; in fact, the
+p-values only differ because the p-value is itself somewhat random, as it
+derives from (many) random samples.
 
 ## Testing for a relationship between counted-data variables.
 
