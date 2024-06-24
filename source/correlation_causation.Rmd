@@ -872,13 +872,13 @@ observed sample will be *lower* than most of the random trials.)
 ```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
 rnd = np.random.default_rng(1966)
 
-samp_out = pd.DataFrame(data={'Athletic\nscore': ath})
+samp_out = pd.DataFrame(data={'Athletic\nscore': _ath})
 
 n_trials = 10
 for t_no in range(1, n_trials + 1):
-    samp_out[t_no] = rnd.permuted(iq)
+    samp_out[t_no] = rnd.permuted(_iq)
 
-samp_sums = samp_out.agg(lambda col : np.sum(col * ath), axis='index')
+samp_sums = samp_out.agg(lambda col : np.sum(col * _ath), axis='index')
 samp_sums.iloc[0] = '**Product sums**'
 
 samp_out2 = pd.concat([samp_out, samp_sums.to_frame().T])
@@ -1275,23 +1275,69 @@ is the purpose of the *correlation coefficient*.
 
 The first problem that makes it hard to compare the sum of product scores is
 that the sum of products depends on the number of elements in the sequence.
-`ath` (and `iq`) have `r length(ath)` elements, whereas `compliance` (and
-`cholesterol`) have `r length(compliance)` elements.  The sum of products is
+`ath` (and `iq`) have `r length(._ath)` elements, whereas `compliance` (and
+`cholesterol`) have `r length(._comp)` elements.  The sum of products is
 a sum; all other things being equal, the more values you sum, the higher the
-sum; all other things being equal, the sum of `r length(compliance)` elements
-will be greater than the sum of `r length(ath)` elements.  We can solve this
+sum; all other things being equal, the sum of `r length(._comp)` elements will
+be greater than the sum of `r length(._ath)` elements.  We can solve this
 problem by dividing the sum of products by the number of elements in that sum,
-to get the *mean* of the products.
+to get the *mean* of the products.  The mean of product values for the athletic / IQ scores is `r not_e(sop_aiq)` / `r length(._ath)` =
+`r round(sop_aiq / length(._ath), 2)`.  The mean of products for compliance
+/ cholesterol is `r not_e(sop_cc)` / `r length(._comp)` = `r round(sop_cc
+/ length(._comp), 2)`.
+
+We have solved one problem in comparing the measure by taking the mean of
+products — the value no longer depends on the number of elements.  We have
+other problems.  For example, consider the IQ scores.  We have used the raw IQ
+scores, on their usual scale, where 100 is the average IQ for the general
+population.  These have a mean of `r round(mean(._iq), 2)`.  But we could also
+have scored IQ in another way.  For example, we could have recorded the
+*difference* from 100 instead of the raw value, to get the values in column
+2 of @tbl-iq-minus-hundred:
 
 ```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
-deviations = ath - np.mean(ath)
+from gridtabber import footerize_table
+
+_iqd = _iq - 100
 out = pd.DataFrame(
-    data={'Athletic score': ath,
-          'IQ score': iq,
-          'Col 1 x Col 2': ath * iq,
-          'Compliance': _compliance,
-          'Athletic deviations': deviations,
-          'Col 2 x Col 4': deviations * iq}
+    data={'Athletic score': _ath,
+          'Original IQ': _iq,
+          'Col 1 x Col 2': _ath * _iq,
+          'IQ - 100': _iqd,
+          'Col 2 x Col 4': _ath * _iqd}
+)
+
+not_x = [c for c in out if ' x ' not in c]
+sums = out.sum(axis='index')
+means = out.mean(axis='index')
+suff = pd.concat([d.to_frame().T for d in (sums, means)])
+suff[not_x] = ''
+suff.iloc[:, 0] = ['**SUMS**', '**MEANS**']
+out2 = pd.concat([out, suff])
+min_100_tab = footerize_table(
+    to_md(out2, np.arange(1, out2.shape[1] + 1)),
+    [-3, -1])
+
+print_tab(min_100_tab,
+          'Means of Products: IQ, IQ-100 and Athletic Scores',
+          'iq-minus-hundred}')
+```
+
+Notice that the mean product of the IQ-100 is much smaller than the mean for the product 
+
+```{python eval=TRUE, echo=FALSE}
+plt.hist(compliance)
+plt.xlabel('Compliance')
+```
+
+```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
+_deviations = _ath - np.mean(_ath)
+out = pd.DataFrame(
+    data={'Athletic score': _ath,
+          'IQ score': _iq,
+          'Col 1 x Col 2': _ath * _iq,
+          'Athletic deviations': _deviations,
+          'Col 2 x Col 4': _deviations * _iq}
 )
 
 sums = out.sum(axis='index')
@@ -1339,13 +1385,13 @@ scores is `r mean(._ath)`. @tbl-ath-deviations has the deviations and the
 corresponding sum of products.
 
 ```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
-deviations = ath - np.mean(ath)
+_deviations = _ath - np.mean(_ath)
 out = pd.DataFrame(
-    data={'Original athletic score': ath,
-          'Actual IQ': iq,
-          'Col 1 x Col 2': ath * iq,
-          'Athletic deviations': deviations,
-          'Col 2 x Col 4': deviations * iq}
+    data={'Original athletic score': _ath,
+          'Actual IQ': _iq,
+          'Col 1 x Col 2': _ath * _iq,
+          'Athletic deviations': _deviations,
+          'Col 2 x Col 4': _deviations * _iq}
 )
 
 sums = out.sum(axis='index')
@@ -1457,14 +1503,14 @@ for `mean_q_sum`.  So we can always get the sum of products for a set of deviati
 In pursuit of finding a measure that doesn't depend on the average of the individual sequences, let us start by replacing the original athletic and IQ scores with their deviations from their respective means, and recalculate the sum of product score.  The mean of the IQ scores is `r mean(._iq)`.  The result is @tbl-ath-iq-deviations:
 
 ```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
-ath_ds = ath - np.mean(ath)
-iq_ds = iq - np.mean(iq)
+_ath_ds = _ath - np.mean(_ath)
+_iq_ds = _iq - np.mean(_iq)
 out = pd.DataFrame(
-    data={'Original athletic score': ath,
-          'Original IQ': iq,
-          'Athletic deviations': ath_ds,
-          'IQ deviations': np.round(iq_ds, 2),
-          'Col 3 x Col 4': ath_ds * iq_ds}
+    data={'Original athletic score': _ath,
+          'Original IQ': _iq,
+          'Athletic deviations': _ath_ds,
+          'IQ deviations': np.round(_iq_ds, 2),
+          'Col 3 x Col 4': _ath_ds * _iq_ds}
 )
 
 sums = out.sum(axis='index')
