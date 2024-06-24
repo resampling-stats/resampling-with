@@ -269,8 +269,8 @@ _df = pd.read_csv('data/athletic_iq.csv')
 _ath = np.array(_df['athletic_score'])
 _iq = np.array(_df['iq_score'])
 
-def aiq_plot(x, y):
-    plt.scatter(x, y)
+def aiq_plot(x, y, label='IQ', color='blue', marker='o'):
+    plt.scatter(x, y, label=label, color=color, marker=marker)
     plt.xlabel('Athletic Score')
     plt.ylabel('I.Q. Score')
     plt.axis(_ax_lims)
@@ -1323,208 +1323,132 @@ print_tab(min_100_tab,
           'iq-minus-hundred}')
 ```
 
-Notice that the mean product of the IQ-100 is much smaller than the mean for the product 
+Notice that the mean product of the IQ-100 is much smaller than the mean for
+the product with the original IQ values, because the IQ element in the product
+is smaller.[^mean-product], so the products will be smaller, and the mean
+product will be smaller. However, it might be obvious that the *association* of
+the IQ and athletic scores remains the same after we have subtracted 100 from
+the IQ; higher IQ values on either scale are still associated with higher
+athletic scores.  Think of the association as a straight-line relationship in
+a scatter plot, with the athletic scores on the x-axis, and the IQ scores on
+the y-axis. @fig-ath-iq-scatter has the original scatter plot with the athletic
+scores on the x-axis and the original IQ scores on the y-axis.  The points
+appear to scatter around some straight line we could draw.  @fig-ath-iq-hundred
+shows the scatterplot of the original IQ score against the athletic scores on
+the left plot (as for @fig-ath-iq-scatter) and the IQ-100 scores against the
+athletic scores in the right plot. As you can see, subtracting 100 from the IQ
+values just moved the graph down by 100 on the y-axis — but the slope of the
+line must be the same. The slope of the line is a measure of how much the IQ
+score increases as the athletic score increases — a good measure of the linear
+association between athletic score and IQ score. Because the slope has not
+changed between the original IQ score and the IQ-100 score, the association has
+not changed, even though the mean product is much smaller.
 
-```{python eval=TRUE, echo=FALSE}
-plt.hist(compliance)
-plt.xlabel('Compliance')
+```{python echo=FALSE, label="fig-ath-iq-hundred", fig.cap="Scatter plot of IQ Score, IQ-100 as function of Athletic Score", eval=TRUE}
+fig, (ax1, ax2) = plt.subplots(1, 2)
+ax1.scatter(_ath, _iq)
+ax1.set_xlabel('Athletic Score')
+ax1.set_ylabel('Original I.Q. Score')
+ax1.axis(_ax_lims)
+ax1.set_xticks(_x_ticks)
+ax1.set_title('IQ (y) vs Ath. score (x)');
+ax2.scatter(_ath, _iq - 100)
+ax2.set_xlabel('Athletic Score')
+ax2.set_ylabel('IQ - 100')
+_axl2 = np.array(_ax_lims)
+_axl2[2:] = _axl2[2:] - 100
+ax2.axis(_axl2)
+ax2.set_xticks(_x_ticks)
+ax2.set_title('IQ-100 (y) vs Ath. score (x)');
+fig.tight_layout()
 ```
 
+We have discovered that the mean product will change as we add or subtract
+values to one or both of the sequences.  You might also be able to see that the
+mean product will change if we multiply or divide the values in the sequence by
+some number.  In summary, the mean product depends on the *scale* of the values
+in the sequence.
+
+We would like some measure of association that does not depend on the scale of
+the sequences.  A simple approach is to put each sequence on a *standard*
+scale, by converting the original sequence values to *standard scores* (see
+@sec-standard-scores).
+
+We do this by:
+
+1. Subtracting the mean value from each element in the sequence to give the
+   *deviations*.
+2. Dividing the deviations by a measure of spread — the *standard deviation*
+   (see @sec-standard-deviation).
+
+See @tbl-standard-iq for an example of applying this algorithm to the IQ
+scores.  We get the deviations by subtracting the mean IQ (`r round(mean(._iq),
+2)`), and the standard scores by dividing the deviations by the IQ standard
+deviation (`r round(sqrt(mean((._iq - mean(._iq)) ** 2)), 2)`).
+
 ```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
-_deviations = _ath - np.mean(_ath)
+def _standard_scores(seq):
+    return (seq - np.mean(seq)) / np.std(seq)
+
+_std_iq = _standard_scores(_iq)
+
+out = pd.DataFrame(
+    data={'Original IQ': _iq,
+          'IQ deviations': np.round(_iq - np.mean(_iq), 2),
+          'Standard scores': np.round(_std_iq)
+          }
+)
+
+iq_std_tab = to_md(out)
+
+print_tab(iq_std_tab,
+          'IQ, deviations and standard scores',
+          'standard-iq}')
+```
+
+After we have applied this standardization procedure to both sequences, they
+are both now in the same *standard units*.   The mean product of these standard
+units is therefore a *standard* measure of association, called the *Pearson
+product-moment correlation coefficient*, often referred to simply as the
+*correlation coefficient*.  We usually use the letter $r$ to refer to the
+correlation coefficient.
+
+Because the sequences for the correlation coefficient $r$ are in the same
+units, we can compare correlation coefficients between different sequences, to
+give a standard measure of association (@tbl-r-calculation).
+
+```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
+_std_ath = _standard_scores(_ath)
+_std_comp = _standard_scores(_compliance)
+_std_chol = _standard_scores(_cholesterol)
 out = pd.DataFrame(
     data={'Athletic score': _ath,
-          'IQ score': _iq,
-          'Col 1 x Col 2': _ath * _iq,
-          'Athletic deviations': _deviations,
-          'Col 2 x Col 4': _deviations * _iq}
-)
-
-sums = out.sum(axis='index')
-not_sums = [c for c in out if ' x ' not in c]
-sums[not_sums] = ''
-sums.iloc[0] = '**SUMS**'
-out2 = pd.concat([out, sums.to_frame().T])
-dev_tab = to_md(out2, np.arange(1, out2.shape[1] + 1))
-
-print_tab(dev_tab,
-          'Products for original values and deviations',
-          'ath-deviations')
-```
-
-sum of products to compare the association between two different
-pairings *of the same variables*.  For example, in @tbl-ath-iq-products, we
-calculated sum of products for different ordering of the `ath` variable, and
-found that the original ordering of `ath` gives a sum of products that is lower
-than the pairing of `ath` sorted to match `iq`, but higher than the pairing of
-`ath` sorted to match the reverse ordering of `iq`.  That is, the actual `ath`,
-`iq` pairing is intermediate in linear association, between the best and worst
-possible linear association, as measured by the sum of products.
-
-The sum of products is useful because it allows us to compare the strength of relationship between different pairings — if the sum of products is higher for another ordering of the data, it means that the other ordering corresponds to a better match in order between the values in the pairs.
-
-For example, we found that sum of products for the sorted athletic and sorted
-IQ scores, where the match is as good as it can be, has a higher sum of
-products.  In fact the value is `r not_e(sop_aiq)` (see @tbl-ath-iq-products).
-
-So, the sum of products is useful to compare the strength of relationships
-*between orderings* of the same values, but it does not give us a useful idea
-of the strength of the relationship compared to other sequences of values.
-
-For example, the sum of products for the compliance and cholesterol values was
-`r not_e(sop_cc)`.  That is a much higher value, but we cannot conclude that the relationship between the respective sequences was stronger, because there are various features of the values that will affect the sum of products.
-
-We would like a measure of association that we can compare between different sets of values.  That is the role of the *Pearson product-moment correlation coefficient* or $r$.  As you will see, it also involves the product of sums, but after adjusting for various factors that are not relevant to the strength of association.
-
-The first factor we would like to remove is the scale we have used for our
-measures.  For example, our athletic scores vary from `r min(._ath)` to
-`r max(._ath)`, but we could instead have decided to subtract the mean from
-each score to give the *deviations*.  The deviations tell us how far each
-person was above or below the mean of the group.  The mean of the athletic
-scores is `r mean(._ath)`. @tbl-ath-deviations has the deviations and the
-corresponding sum of products.
-
-```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
-_deviations = _ath - np.mean(_ath)
-out = pd.DataFrame(
-    data={'Original athletic score': _ath,
-          'Actual IQ': _iq,
-          'Col 1 x Col 2': _ath * _iq,
-          'Athletic deviations': _deviations,
-          'Col 2 x Col 4': _deviations * _iq}
-)
-
-sums = out.sum(axis='index')
-not_sums = [c for c in out if ' x ' not in c]
-sums[not_sums] = ''
-sums.iloc[0] = '**SUMS**'
-out2 = pd.concat([out, sums.to_frame().T])
-dev_tab = to_md(out2, np.arange(1, out2.shape[1] + 1))
-
-print_tab(dev_tab,
-          'Products for original values and deviations',
-          'ath-deviations')
-```
-
-Notice that the relative *ordering* of the deviation scores, relative to the IQ
-scores, is the same as for the original scores — the lowest of the original
-scores also has the lowest deviation, and so on.  We would like our ideal
-measure of association to reflect that the deviations and original values have
-the same relative ordering, and should therefore have the same measure of
-association, but the simple sum of product measure does not.  The deviation sum
-of products with IQ is much lower than the sum of products of the original
-scores with IQ.
-
-:::{.callout-note}
-## Adding or subtracting values and the sum of products
-
-Here we explain the change in the sum of products after subtracting the mean with a little algebra.  Skip this note if you like; you could come back to it later when you have finished this section or page.
-
-Why is the sum of products for the deviations smaller than the sum of products for the original scores?
-
-This is because we can think of each of the original scores as being made up of
-the deviation plus the mean (`r mean(._ath)`.  For example the first Athletic
-score is `r ._ath[1]`.  Write this first value as $a_1$.  Write the mean of all
-the athletic scores as $m$ ($m$ = `r mean(._ath)`). The first deviation $d_1$
-is given by $d_1 = a_1 - m$ = `r ._ath[1] - mean(._ath)`.  Call the first IQ
-value $q_1$ ($q_1$ = `r ._iq[1]`).  Therefore the first product in the original
-sum of products is $a_1 * q_1$ which we can also write as $(d_1 + m) * q_1
-= d_1 * q_1 + m * q_1$.   Write the second athletic score as $a_2$ and the
-second IQ score as $q_2$, and so on.  We defined the original sum of products
-as $a_1 * q_1 + a_2 * q_2 + a_3 * q_3 ... + a_{10} * q_{10}$, so we can also
-write this as $(d_1 + m) * q_1 + (d_2 + m) * q_2 + (d_3 + m) * q_3 ...
-+ (d_{10} + m) * q_{10}$ = $(d_1 * q_1 + m * q_1 + d_2 * q_2 + m * q_2 + d_3
-* q_3 + m * q_3 ... + d_{10} * q_{10} + m * q_{10}$.   Because we can re-order
-  our multiplications as we please (multiplication is *associative* — $a
-* b = b * a$), we can also get the same result with adding the deviation sum of
-products $(d_1 * q_1 + d_2 * q_2 + d_3 * q_3  ... + d_{10} * q_{10}$) to the
-sum of the IQ values times the mean ($m * q_1 + m * q_2 + m * q_3 + ...
-+ m * q_{10}$).  Let's do that with the actual numbers:
-
-```{python}
-# Rename the sequences to match the text.
-a = ath
-q = iq
-m = np.mean(ath)
-# The deviations.
-d = a - m
-deviation_sum_of_products = np.sum(d * q)
-deviation_sum_of_products
-```
-
-```{python}
-# Sum of the mean times the IQ values.
-mean_q_sum = np.sum(m * q)
-mean_q_sum
-```
-
-```{python}
-original_sum_of_products = np.sum(a * q)
-original_sum_of_products
-```
-
-```{python}
-# We can also write the same calculation as:
-deviation_sum_of_products + mean_q_sum
-```
-
-```{r}
-# Rename the sequences to match the text.
-a <- ath
-q <- iq
-m <- mean(ath)
-# The deviations.
-d <- a - m
-deviation_sum_of_products <- sum(d * q)
-deviation_sum_of_products
-```
-
-```{r}
-# Sum of the mean times the IQ values.
-mean_q_sum <- sum(m * q)
-mean_q_sum
-```
-
-```{r}
-original_sum_of_products <- sum(a * q)
-original_sum_of_products
-```
-
-```{r}
-# We can also write the same calculation as:
-deviation_sum_of_products + mean_q_sum
-```
-
-Notice the `mean_q_sum` doesn't depend on the ordering if IQ — the mean $m$ is
-always the same, so if you reorder IQ (`q`), you'll always get the same result
-for `mean_q_sum`.  So we can always get the sum of products for a set of deviations, by subtracting the `mean_q_sum` value from the corresponding sum of products on the original values.
-:::
-
-In pursuit of finding a measure that doesn't depend on the average of the individual sequences, let us start by replacing the original athletic and IQ scores with their deviations from their respective means, and recalculate the sum of product score.  The mean of the IQ scores is `r mean(._iq)`.  The result is @tbl-ath-iq-deviations:
-
-```{python eval=TRUE, echo=FALSE, results="asis", message=FALSE}
-_ath_ds = _ath - np.mean(_ath)
-_iq_ds = _iq - np.mean(_iq)
-out = pd.DataFrame(
-    data={'Original athletic score': _ath,
           'Original IQ': _iq,
-          'Athletic deviations': _ath_ds,
-          'IQ deviations': np.round(_iq_ds, 2),
-          'Col 3 x Col 4': _ath_ds * _iq_ds}
+          'Standardized\nAthletic score': _std_ath,
+          'Standardized\nIQ': _std_iq,
+          'Col 3 x Col 4': _std_ath * _std_iq,
+          'Compliance': _compliance,
+          'Cholesterol': _iq,
+          'Standardized\ncompliance': _std_comp,
+          'Standardized\ncholesterol': _std_chol,
+          'Col 8 x Col 9': _std_comp * _std_chol,
+          }
 )
 
-sums = out.sum(axis='index')
-not_sums = [c for c in out if ' x ' not in c]
-sums[not_sums] = ''
-sums.iloc[0] = '**SUMS**'
-out2 = pd.concat([out, sums.to_frame().T])
-dev_both_tab = to_md(out2, np.arange(1, out2.shape[1] + 1))
+not_x = [c for c in out if ' x ' not in c]
+means = out.mean(axis='index')
+suff = means.to_frame().T
+suff[not_x] = ''
+suff.iloc[:, 0] = ['', '**r value**']
+out2 = pd.concat([out, suff])
+r_tab = footerize_table(
+    to_md(out2, np.arange(1, out2.shape[1] + 1)),
+    [-2, -1])
 
-print_tab(dev_both_tab,
-      'Products for original values and deviations for both scores',
-      'ath-iq-deviations')
+print_tab(r_tab,
+          'r values from means of standardized products',
+          'r-calculation}')
 ```
-
 
 ## Testing for a relationship between counted-data variables.
 
