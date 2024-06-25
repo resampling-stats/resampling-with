@@ -1628,19 +1628,20 @@ End of R section.
 ### Test linear association with the correlation coefficient
 
 Above we used the sum-of-products calculation to see if the actual observed sum
-of products was unusual in the null-world, where we simulated sum of product
-values in the null-world by permuting one of the sequences, and recalculating
-the sum of products.
+of products was unusual in the null-world. We simulated sum of product values
+in the null-world by permuting one of the sequences, and recalculating the sum
+of products.
 
 We could use the correlation coefficient instead of the sum of products as our
 measure of association, and simulate correlation coefficients in the
-null-world.  We will come to the same conclusion using sum of products or
-correlation coefficients because they are equivalent when comparing between two
-different orderings of the same sequences of values.  The only advantage of the
-correlation coefficient for this case is that {{< var np_or_r >}} has the
-ready-made function to do the calculation.  Here is the test for linear
-association in the null world using the correlation coefficient instead of the
-sum of products.  Compare the procedure below to @sec-ath-iq-sop.
+null-world.  We will come to the same conclusion using sum of products as we
+would for correlation coefficients because they are equivalent when comparing
+between two different orderings of the same sequences of values.  The only
+advantage of the correlation coefficient for this case is that
+{{< var np_or_r >}} has the ready-made function
+[`np.corrcoef`]{.python}[`cor`]{.r} to do the calculation.  Here is the test
+for linear association using the correlation coefficient instead of the sum of
+products.  Compare the procedure below to @sec-ath-iq-sop.
 
 ::: {.notebook name="athlete_iq_cc" title="Association of athletic and IQ scores with $r$"}
 
