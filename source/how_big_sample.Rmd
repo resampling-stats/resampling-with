@@ -86,45 +86,49 @@ supervisor, "Don't give me complicated methods, just give me a rough
 number based on your greatest experience." My inclination is to reply to
 you, "Sometimes life is hard and there is no shortcut." On the other
 hand, perhaps you can get more information than misinformation out of
-knowing sample sizes that have been used in other studies. Table 24-1
-shows the middle (modal), 25th percentile, and 75th percentile scores
-for — please keep this in mind — *National Opinion Surveys* in the top
-panel. The bottom panel shows how subgroup analyses affect sample size.
+knowing sample sizes that have been used in other studies.
+@tbl-sample-sizes-opinion shows the middle (modal), 25th percentile, and 75th
+percentile scores for — please keep this in mind — *National Opinion Surveys*
+@tbl-sample-sizes-subgroup shows how subgroup analyses affect sample size.  The
+source for both tables is *Applied Sampling*, by Seymour Sudman
+[-@sudman1976applied, pages 86-87] copyright Academic Press, reprinted by
+permission.
 
 Pretest sample sizes are smaller, of course, perhaps 25-100 observations.
 Samples in research for Master's and Ph.D. theses are likely to be closer to
 a pretest than to national samples.
 
-Table 24-1
++------------------------+----------------------------+-----------------------+
+| Subject Matter         | National                   | Regional              |
+|                        +--------+--------+----------+--------+--------+-----+
+|                        | Mode   | Q3     | Q1       | Mode   | Q3     | Q1  |
++========================+========+========+==========+========+========+=====+
+| Financial              | 1000+  | —      | —        | 100    | 400    | 50  |
++------------------------+--------+--------+----------+--------+--------+-----+
+| Medical                | 1000+  | 1000+  | 500      | 1000+  | 1000+  | 250 |
++------------------------+--------+--------+----------+--------+--------+-----+
+| Other Behavior         | 1000+  | —      | —        | 700    | 1000   | 300 |
++------------------------+--------+--------+----------+--------+--------+-----+
+| Attitudes              | 1000+  | 1000+  | 500      | 700    | 1000   | 400 |
++------------------------+--------+--------+----------+--------+--------+-----+
+| Laboratory Experiments | —      | —      | —        | 100    | 200    | 50  |
++------------------------+--------+--------+----------+--------+--------+-----+
 
-**Most Common Sample Sizes Used for National and Regional Studies By
-Subject Matter**
+: Common sample sizes for national and regional studies by subject {#tbl-sample-sizes-opinion}
 
-**Subject Matter National Regional**
++-----------------------+----------------------------+----------------------------+
+| Subgroup analysis     | People or households       | Institutions               |
+|                       +--------------+-------------+--------------+-------------+
+|                       | National     | Special     | National     | Special     |
++=======================+==============+=============+==============+=============+
+| None or few           | 1000-1500    | 200-500     | 200-500      | 50-200      |
++-----------------------+--------------+-------------+--------------+-------------+
+| Average               | 1500-2500    | 500-1000    | 500-1000     | 200-500     |
++-----------------------+--------------+-------------+--------------+-------------+
+| Many                  | 2500+        | 1000+       | 1000+        | 500+        |
++-----------------------+--------------+-------------+--------------+-------------+
 
-  ------------------------ -------- -------- ---------- --------   -------- -----
-  Subject Matter           **Mode**  **Q3**   **Q1**     **Mode**  **Q3**    **Q1**
-  Financial                1000+    ---      ---        100      400      50
-  Medical                  1000+    1000+    500        1000+    1000+    250
-  Other Behavior           1000+    ---      ---        700      1000     300
-  Attitudes                1000+    1000+    500        700      1000     400
-  Laboratory Experiments   ---      ---      ---        100      200      50
-  ------------------------ -------- -------- ---------- -------- -------- -----
-
-**Typical Sample Sizes for Studies of Human and Institutional
-Populations**
-
-**People or Households Institutions**
-
-  ----------------------- -------------- ------------- -------------- -------------
-                          People or households         Institutions
-  **Subgroup Analyses**   **National**   **Special**   **National**   **Special**
-  None or few             1000-1500      200-500       200-500        50-200
-  Average                 1500-2500      500-1000      500-1000       200-500
-  Many                    2500+          1000+         1000+          500+
-  ----------------------- -------------- ------------- -------------- -------------
-
- SOURCE: From *Applied Sampling*, by Seymour Sudman [-@sudman1976applied, pages 86 — 87] copyright Academic Press, reprinted by permission.
+: Typical sample sizes for studies of human and institutional populations {#tbl-sample-sizes-subgroup}
 
 Once again, the sample size ought to depend on the proportions of the
 sample that have the characteristics you are interested in, the extent
@@ -143,42 +147,50 @@ sample sizes in relationship research.
 
 ### Example: what proportion of homes are listening to a radio station? {#sec-proportion-radio}
 
-What proportion of the homes in Countryville are tuned into television
-station WCNT's ten o'clock news program? That is the question your
-telephone survey aims to answer, and you want to know how many randomly
-selected homes you must telephone to obtain a sufficiently large sample.
+What proportion of the homes in Countryville watch television station WCNT's
+ten o'clock news program? That is the question your phone survey aims to
+answer, and you want to know how many randomly selected homes you must phone to
+obtain a sufficiently large sample.
 
-Begin by guessing the likeliest answer, say 30 percent in this case. Do
-not worry if you are off by 5 per cent or even 10 per cent; and you will
-probably not be further off than that. Select a first-approximation
-sample size of perhaps 400; this number is selected from my general
-experience, but it is just a starting point. Then proceed through the
-first 400 numbers in the random-number table, marking down a *yes* for
-numbers 1-3 and *no* for numbers 4-10 (because 3/10 was your estimate of
-the proportion listening). Then add the number of *yes* and *no* . Carry
-out perhaps ten sets of such trials, the results of which are in Table
-24-2.
+Begin by guessing the likeliest answer, say 30 percent in this case. Do not
+worry if you are off by 5 per cent or even 10 per cent; and you will probably
+not be further off than that. Select a first-approximation sample size of
+perhaps 400; this number is selected from my general experience, but it is just
+a starting point. Then proceed through the first 400 numbers in a random-number
+table, marking down a *yes* for numbers 1-3 and *no* for numbers 4-10 (because
+3/10 was your estimate of the proportion listening). Then add the number of
+*yes* and *no* . Carry out perhaps ten sets of such trials, the results of
+which are in @tbl-phone-trials.
 
-Table 24-2
++--------------+--------------+-------------+-------------------+
+| Trial number | Number "yes" | Number "no" | % difference from |
+|              |              |             | expected mean of  |
+|              |              |             | 30% (120 "yes")   |
++==============+==============+=============+===================+
+| 1            | 115          | 285         | 1.25              |
++--------------+--------------+-------------+-------------------+
+| 2            | 119          | 281         | 0.25              |
++--------------+--------------+-------------+-------------------+
+| 3            | 116          | 284         | 1.00              |
++--------------+--------------+-------------+-------------------+
+| 4            | 114          | 286         | 1.50              |
++--------------+--------------+-------------+-------------------+
+| 5            | 107          | 293         | 3.25              |
++--------------+--------------+-------------+-------------------+
+| 6            | 116          | 284         | 1.00              |
++--------------+--------------+-------------+-------------------+
+| 7            | 132          | 268         | 3.00              |
++--------------+--------------+-------------+-------------------+
+| 8            | 123          | 277         | 0.75              |
++--------------+--------------+-------------+-------------------+
+| 9            | 121          | 279         | 0.25              |
++--------------+--------------+-------------+-------------------+
+| 10           | 114          | 286         | 1.50              |
++==============+==============+=============+===================+
+| Mean                                      | 1.375             |
++===========================================+===================+
 
-**% DIFFERENCE FROM**
-
-**Trial Number "Yes" Number "No" Expected Mean of 30%**
-
-  ------ ----------------- ----- ------
-         **(120 "Yes")**         
-  1      115               285   1.25
-  2      119               281   0.25
-  3      116               284   1.00
-  4      114               286   1.50
-  5      107               293   3.25
-  6      116               284   1.00
-  7      132               268   3.00
-  8      123               277   0.75
-  9      121               279   0.25
-  10     114               286   1.50
-  Mean                           1.37
-  ------ ----------------- ----- ------
+: Ten example trials from phone survey simulation {#tbl-phone-trials}
 
 Based on these ten trials, you can estimate that if you take a sample of
 400 and if the "real" viewing level is 30 percent, your average
@@ -190,19 +202,17 @@ Now you must decide whether the estimated error is small enough for your
 needs. If you want greater accuracy than a sample of 400 will give you,
 increase the sample size, using this important rule of thumb: To cut the
 error in half, you must *quadruple* the sample size. In other words, if
-you want a sample that will give you an error of only 0.55 percent on
-the average, you must increase the sample size to 1,600 interviews.
-Similarly, if you cut the sample size to 100, the average error will be
-only 2.75 percent (double 1.375 percent) on either side of 30 percent.
-If you distrust this rule of thumb, run ten or so trials on sample sizes
-of 100 or 1,600, and see what error you can expect to obtain on the
-average.
+you want a sample that will give you an error of only 0.6875 percent on the
+average, you must increase the sample size to 1,600 interviews. Similarly, if
+you cut the sample size to 100, the average error will be only 2.75 percent
+(double 1.375 percent) on either side of 30 percent. If you distrust this rule
+of thumb, run ten or so trials on sample sizes of 100 or 1,600, and see what
+error you can expect to obtain on the average.
 
-If the "real" viewership is 20 percent or 40 percent, instead of 30
-percent, the accuracy you will obtain from a sample size of 400 will not
-be very different from an "actual" viewership of 30 percent, so do not
-worry about that too much, as long as you are in the right general
-vicinity.
+If the "real" viewership is 20 percent or 40 percent, instead of 30 percent,
+the accuracy you will obtain from a sample size of 400 will not be very
+different from an "actual" viewership of 30 percent, so do not worry about that
+too much, as long as you are in the right general vicinity.
 
 Accuracy is *slightly* greater in smaller universes but *only* slightly.
 For example, a sample of 400 would give *perfect* accuracy if
@@ -217,46 +227,45 @@ York City (population 8 million). The *ratio* of the sample size to the
 population of Podunk or New York City means nothing at all, even though
 it intuitively seems to be important.
 
-The size of the sample must depend upon which population or
-subpopulations you wish to describe. For example, Alfred Kinsey's sample size
-for the classic "Sexual Behavior in the Human Male" [-@kinsey1948sexual] would
-have seemed large, by customary practice, for generalizations about the United
-States population as a whole. But, as Kinsey explains: "... the chief concern
-of the present study is an understanding of the sexual behavior of *each
-segment of the population*, and that it is only secondarily concerned with
-generalization for the population as a whole." [-@kinsey1948sexual, page 82,
-italics added]. Therefore Kinsey's sample had to include subsamples large
-enough to obtain the desired accuracy in *each* of these sub-universes. The
-U.S. Census offers a similar illustration. When the U.S. Bureau of the Census
-aims to estimate only a total or an average for the United States as a whole —
-as, for example, in the Current Population Survey estimate of unemployment — a
-sample of perhaps 50,000 is big enough. But the decennial census aims to make
-estimates for all the various communities in the country, estimates that
-require adequate subsamples in each of these sub-universes; such is the
-justification for the decennial census' sample size of so many millions.
-Television ratings illustrate both types of purpose. Nielsen ratings, for
-example, are sold primarily to national network advertisers. These advertisers
-on national television networks usually sell their goods all across the
-country and are therefore interested primarily in the total United States
-viewership for a program, rather than in the viewership in various demographic
-subgroups. The appropriate calculations for Nielsen sample size will therefore
-refer to the total United States sample. But other organizations sell rating
-services to *local* television and radio stations for use in soliciting
-advertising over the local stations rather than over the network as a whole.
-Each local sample must then be large enough to provide reasonable accuracy,
-and, considered as a whole, the samples for the local stations therefore add
-up to a much larger sample than the Nielsen and other nationwide samples.
+The size of the sample must depend upon which population or sub-populations you
+wish to describe. For example, Alfred Kinsey's sample size for the classic
+"Sexual Behavior in the Human Male" [-@kinsey1948sexual] would have seemed
+large, by customary practice, for generalizations about the United States
+population as a whole. But, as Kinsey explains: "... the chief concern of the
+present study is an understanding of the sexual behavior of *each segment of
+the population*, and that it is only secondarily concerned with generalization
+for the population as a whole." [-@kinsey1948sexual, page 82, italics added].
+Therefore Kinsey's sample had to include sub-samples large enough to obtain the
+desired accuracy in *each* of these sub-universes. The U.S. Census offers
+a similar illustration. When the U.S. Bureau of the Census aims to estimate
+only a total or an average for the United States as a whole — as, for example,
+in the Current Population Survey estimate of unemployment — a sample of perhaps
+50,000 is big enough. But the decennial census aims to make estimates for all
+the various communities in the country, estimates that require adequate
+sub-samples in each of these sub-universes; such is the justification for the
+decennial census' sample size of so many millions. Television ratings
+illustrate both types of purpose. Nielsen ratings, for example, are sold
+primarily to national network advertisers. These advertisers on national
+television networks usually sell their goods all across the country and are
+therefore interested primarily in the total United States viewership for
+a program, rather than in the viewership in various demographic subgroups. The
+appropriate calculations for Nielsen sample size will therefore refer to the
+total United States sample. But other organizations sell rating services to
+*local* television and radio stations for use in soliciting advertising over
+the local stations rather than over the network as a whole. Each local sample
+must then be large enough to provide reasonable accuracy, and, considered as
+a whole, the samples for the local stations therefore add up to a much larger
+sample than the Nielsen and other nationwide samples.
 
-The problem may be handled with the following {{< var lang >}} program.
-This program represents viewers with the string `'viewers'` and non-viewers as
-`'not viewers'`.  It then asks [`sample`]{.r}[`rnd.choice`]{.python}
-to choose randomly between `'viewer'` and `'not viewer'` with a 30% (p=0.3)
-chance of getting a `'viewer'` and a 70% chance of getting a `'not viewer'`.
-It gets a sample of 400 such numbers, counts (with
-[`sum`]{.r}[`np.sum`]{.python}
-the "viewers" then finds how much this sample diverges from the expected
-number of viewers (30% of 400 = 120). It repeats this procedure 10000 times,
-and then calculates the average divergence.
+The problem may be handled with the following {{< var lang >}} program. This
+program represents viewers with the string `'viewers'` and non-viewers as `'not
+viewers'`.  It then asks [`sample`]{.r}[`rnd.choice`]{.python} to choose
+randomly between `'viewer'` and `'not viewer'` with a 30% (p=0.3) chance of
+getting a `'viewer'` and a 70% chance of getting a `'not viewer'`. It gets
+a sample of 400 such numbers, counts (with [`sum`]{.r}[`np.sum`]{.python} the
+"viewers" then finds how much this sample diverges from the expected number of
+viewers (30% of 400 = 120). It repeats this procedure 10000 times, and then
+calculates the average divergence.
 
 ::: {.notebook name="viewer_numbers" title="Number of viewers"}
 
