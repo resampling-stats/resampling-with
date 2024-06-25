@@ -974,41 +974,37 @@ a 50/50 universe (provided that the real universe is 70% favorable).
 ### Example: how large a sample for pig rations?
 
 How large a sample is needed to determine whether there is any
-difference between the two pig rations in @sec-pig-rations? The first step
-is to guess the results of the tests. You estimate that the average for
-ration A will be a weight gain of thirty-two pounds. You further guess
-that twelve pigs on ration A might gain thirty-six, thirty-five,
-thirty-four, thirty-three, thirty-three, thirty-two, thirty-two,
-thirty-one, thirty-one, thirty, twenty-nine, and twenty-eight pounds.
-This set of guesses has an equal number of pigs above and below the
-average and more pigs close to the average than farther away. That is,
-there are more pigs at 33 and 31 pounds than at 36 and 28 pounds. This
-would seem to be a reasonable distribution of pigs around an average of
-32 pounds. In similar fashion, you guess an average weight gain of 28
-pounds for ration B and a distribution of 32, 31, 30, 29, 29, 28, 28,
-27, 27, 26, 25, and 24 pounds.
+difference between the two pig rations in @sec-pig-rations-measured? The first
+step is to guess the results of the tests. You estimate that the average for
+ration A will be a weight gain of 32 pounds. You further guess that twelve pigs
+on ration A might gain 36, 35, 34, 33, 33, 32, 32, 31, 31, 30, 29 and 28
+pounds. This set of guesses has an equal number of pigs above and below the
+average and more pigs close to the average than farther away. That is, there
+are more pigs at 33 and 31 pounds than at 36 and 28 pounds. This would seem to
+be a reasonable distribution of pigs around an average of 32 pounds. In similar
+fashion, you guess an average weight gain of 28 pounds for ration B and
+a distribution of 32, 31, 30, 29, 29, 28, 28, 27, 27, 26, 25, and 24 pounds.
 
-Let us review the basic strategy. We want to find a sample size large
-enough so that a large proportion of the time it will reveal a
-difference between groups big enough to be accepted as not attributable
-to chance. First, then, we need to find out how big the difference must
-be to be accepted as evidence that the difference is not attributable to
-chance. We do so from trials with samples that size from the benchmark
-universe. We state that a difference larger than the benchmark universe
-will usually produce is not attributable to chance.
+Let us review the basic strategy. We want to find a sample size large enough so
+that a large proportion of the time it will reveal a difference between groups
+big enough to be accepted as not attributable to chance. First, then, we need
+to find out how big the difference must be to be accepted as evidence that the
+difference is not attributable to chance. We do so from trials with samples
+of the given size from the benchmark universe. We state that a difference
+larger than the benchmark universe will usually produce is not attributable to
+chance.
 
-In this case, let us try samples of 12 pigs on each ration. First we
-draw two samples from a combined benchmark universe made up of the
-results that we have guessed will come from ration A and ration B. (The
-procedure is the same as was followed in Example 15-7.) We find that in
-19 out of 20 trials the difference between the two observed groups of 12
-pigs was 3 pounds or less. Now we investigate how often samples of 12
-pigs, drawn from the *separate* universes, will show a mean difference
-as large as 3 pounds. We do so by making up a deck of 25 or 50 cards for
-*each* of the 12 hypothesized A's and each of the 12 B's, with the
-ration name and the weight gain written on it — that is, a deck of, say,
-300 cards for each ration. Then from each deck we draw a set of 12 cards
-at random, record the group averages, and find the difference.
+In this case, let us try samples of 12 pigs on each ration. First we draw two
+samples from a combined benchmark universe made up of the results that we have
+guessed will come from ration A and ration B. (The procedure is the same as was
+followed in @sec-pig-rations-measured).  We find that in 19 out of 20 trials
+the difference between the two observed groups of 12 pigs was 3 pounds or less.
+Now we investigate how often samples of 12 pigs, drawn from the *separate*
+universes, will show a mean difference as large as 3 pounds. We do so by making
+up a deck of 25 or 50 cards for *each* of the 12 hypothesized A's and each of
+the 12 B's, with the ration name and the weight gain written on it — that is,
+a deck of, say, 300 cards for each ration. Then from each deck we draw a set of
+12 cards at random, record the group averages, and find the difference.
 
 Here is the same work done with more runs on the computer:
 
@@ -1031,9 +1027,6 @@ END
 HISTOGRAM z
 ' **Difference in mean weights between resamples**
 ```
-
-![](images/28-Chap-24_004.png)
-
 
 Therefore, two samples of twelve pigs each are clearly large enough, and, in
 fact, even smaller samples might be sufficient if the universes are really like
