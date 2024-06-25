@@ -30,23 +30,24 @@ correlation between two variables $x$ and $y$ implies that high values of $x$
 are associated with high values of $y$, and that low values of $x$ are
 associated with low values of $y$. A negative correlation implies the opposite;
 high values of $x$ are associated with *low* values of $y$. By definition
-a "correlation coefficient" close to zero indicates little or no linear
-relationship between two variables; correlation coefficients close to 1 and -1
-denote a strong positive or negative relationship. We will generally use
-a simpler measure of correlation than the correlation coefficient, however.
+a "correlation coefficient" (@sec-correlation-coefficient) close to zero
+indicates little or no linear relationship between two variables; correlation
+coefficients close to 1 and -1 denote a strong positive or negative
+relationship. We will start by using a simpler measure of correlation than the
+correlation coefficient, however.
 
 One way to measure correlation with the resampling method is to rank both
 variables from highest to lowest, and investigate how often in
 randomly-generated samples the rankings of the two variables are as close to
 each other as the rankings in the observed variables. A better approach,
 because it uses more of the quantitative information contained in the data
-though it requires more computation, is to multiply the values for the
+— though it requires more computation — is to multiply the values for the
 corresponding pairs of values for the two variables, and compare the sum of the
 resulting products to the analogous sum for randomly-generated pairs of the
-observed variable values. The last section of the chapter shows how the
-strength of a relationship can be determined when the data are counted, rather
-than measured. First comes some discussion of the philosophical issues involved
-in correlation and causation.
+observed variable values (@sec-sum-products). The last section of the chapter
+(@sec-counted-association) shows how the strength of a relationship can be
+determined when the data are counted, rather than measured. First comes some
+discussion of the philosophical issues involved in correlation and causation.
 
 ## Introduction to correlation and causation
 
@@ -67,7 +68,7 @@ clear-cut. For example, even if cigarette smoking experimentally produces
 cancer in rats, it might be the paper and not the tobacco that causes the
 cancer. Or consider the fabled gentlemen who got experimentally drunk on
 bourbon and soda on Monday night, scotch and soda on Tuesday night, and brandy
-and soda on Wednesday night — and stayed sober Thursday night by drinking
+and soda on Wednesday night — and stayed sober on Thursday night by drinking
 nothing. With a vast inductive leap of scientific imagination, they treated
 their experience as an empirical demonstration that soda, the common element
 each evening, was the cause of the inebriated state they had experienced.
@@ -90,10 +91,10 @@ in a statement that has these important characteristics:
     believes it to have a predictive (explanatory) power great enough to
     be scientifically useful or interesting. For example, he is not
     likely to say that wearing glasses causes (or is a cause of) auto
-    accidents if the observed correlation is .07, even if the sample is
-    large enough to make the correlation statistically significant. In
-    other words, unimportant relationships are not likely to be labeled
-    causal.
+    accidents if the observed *correlation coefficient* is .07[^small-r], even
+    if the sample is large enough to make the correlation statistically
+    convincing. In other words, unimportant relationships are not likely to be
+    labeled causal.
 
     Various observers may well differ in judging whether or not an
     association is strong enough to be important and therefore "causal."
@@ -166,6 +167,18 @@ in a statement that has these important characteristics:
     variety of tests, been shown to have predictive power, a statement
     connected with it is cloaked in this mantle.
 
+[^small-r]: As we discussed in the introduction, correlation coefficient values
+    can vary between 1 and -1, where values near 1 mean a very strong positive
+    linear relationship (high values in one variable predict high values in the
+    other), values near -1 mean a very strong negative linear relationship
+    (high values in one predict low values in the other), and values near
+    0 mean very little linear relationship between the variables.
+
+variable completely predicts another with a linear association) through 0 (the
+variables have no linear association) to -1 (one variable completely predict
+the other, but positive values in one are associated with negative values in
+the other).
+
 The social sciences other than economics do not have such well-developed bodies
 of deductive theory, and therefore this criterion of causality does not weigh
 as heavily in sociology, for instance, as in economics. Rather, the other
@@ -176,10 +189,10 @@ operates. Consider, for example, the relationship between the phases of the
 moon and the suicide rate. The reason that sociologists do not call it causal
 is that there are no auxiliary propositions that explain the relationship and
 describe an operative mechanism. On the other hand, the relationship between
-broken homes and juvenile delinquency is often referred to as "causal," in
-large part because a large body of psychoanalytic theory serves to explain why
-a child raised without one or the other parent, or in the presence of parental
-strife, should not adjust readily.
+broken homes and youth crime is often referred to as "causal," presumably
+because a large body of psychological theory serves to explain why a child
+raised without one or the other parent, or in the presence of parental strife,
+should not adjust readily.
 
 Furthermore, one can never decide with perfect certainty whether in any *given*
 situation one variable "causes" a particular change in another variable. At
@@ -234,7 +247,8 @@ variables or are they independent?**
 
 A scientist often wants to know whether or not two characteristics go together,
 that is, whether or not they are correlated (that is, related or associated).
-For example, do youths with high athletic ability tend to also have high I.Q.s?
+For example, do young adults with high athletic ability tend to also have high
+I.Q.s?
 
 Hypothetical physical-education scores of a group of ten high-school boys are
 shown in @tbl-physical-mental, ordered from high to low, along with the I.Q.
@@ -857,11 +871,11 @@ print_tab(hilo_corr_tab,
 
 Now we attack the I.Q. and athletic-score problem using the property of numbers
 just discussed. First multiply the $x$ and $y$ values of the actual observations,
-and sum them to be 95,759 (@tbl-ath-iq-products). Then write the ten observed
-I.Q. scores on cards, and assign the cards in random order to the ten athletes,
-as shown in the column for trial 1 in @tbl-random-ath-iq.
+and sum them; we find a total of 95,759 (@tbl-ath-iq-products). Then write the
+ten observed I.Q. scores on cards, and assign the cards in random order to the
+ten athletes, as shown in the column for trial 1 in @tbl-random-ath-iq.
 
-Multiply the random IQ scores by their paired *x*'s (Athletic scores), and sum
+Multiply the random IQ scores by their paired $x$'s (Athletic scores), and sum
 to give the values at the bottom of @tbl-random-ath-iq. If the I.Q. scores and
 athletic scores are *positively associated*, that is, if high I.Q.s and high
 athletic scores go together, then the sum of the multiplications for the
@@ -1073,17 +1087,17 @@ End of notebook
 ### Example: Correlation Between Adherence to Medication Regime and Change in Cholesterol
 
 Efron and Tibshirani [-@efron1993bootstrap, page 72] show data on the extents
-to which 164 men a) took the drug prescribed to them (yramine), and b)
-showed a decrease in total plasma cholesterol. @tbl- shows the first 15
-of the values (note that a positive value in the "Decrease in cholesterol"
-column denotes a decrease in cholesterol, while a negative value denotes an
-increase.)
+to which 164 men a) took the drug prescribed to them (cholestyramine), and b)
+showed a decrease in total plasma cholesterol. @tbl-cholestyramine shows the
+first 15 of the values (note that a positive value in the "Decrease in
+cholesterol" column denotes a decrease in cholesterol, while a negative value
+denotes an increase.)
 
 ```{r echo=FALSE, eval=TRUE}
 ._ <- read.csv('data/cholost.csv')
 names(._) <- c('% compliance', 'Decrease in cholesterol')
 ketable(head(._, 15),
-        caption = "First 15 rows of compliance / blood cholesterol {#tbl-}")
+        caption = "First 15 rows of compliance / blood cholesterol {#tbl-cholestyramine}")
 ```
 
 The aim is to assess the effect of the compliance on the improvement.
@@ -1102,9 +1116,9 @@ There are two related issues:
     see whether there is visible indication of a relationship.
 
 Efron and Tibshirani do this, and they find sufficient intuitive basis in the
-graph to continue the analysis (see @fig--scatter).
+graph to continue the analysis (see @fig-chole-scatter).
 
-```{python echo=FALSE, label="fig--scatter", fig.cap="Cholesterol decrease as function of compliance", eval=TRUE}
+```{python echo=FALSE, label="fig-chole-scatter", fig.cap="Cholesterol decrease as function of compliance", eval=TRUE}
 _df = pd.read_csv('data/cholost.csv')
 _compliance = np.array(_df['percent_compliance'])
 _cholesterol = np.array(_df['cholesterol_decrease'])
@@ -1116,10 +1130,10 @@ plt.title('Cholesterol decrease as a function of compliance');
 ```
 
 The next step is to investigate whether a measure of relationship is
-statistically significant; this we do as follows:
+statistically convincing; this we do as follows:
 
 1.  Multiply the observed values for each of the 164 participants on the
-    independent $x$ variable (yramine — percent of prescribed
+    independent $x$ variable (cholestyramine — percent of prescribed
     dosage actually taken) and the dependent $y$ variable (cholesterol),
     and sum the results — it's 439,141.
 2.  Randomly shuffle the dependent variable $y$ values among the
@@ -1248,7 +1262,7 @@ Interpretation: 10,000 simulated random shufflings never produced
 a sum-of-products as high as the observed value. Hence we conclude that random
 chance is a very unlikely explanation for the observed correlation.
 
-## The correlation coefficient
+## The correlation coefficient {#sec-correlation-coefficient}
 
 ```{r echo=FALSE, eval=TRUE}
 ._ath <- get_var('ath')
@@ -1259,19 +1273,19 @@ sop_aiq <- sum(._ath * ._iq)
 sop_cc <- sum(._comp * ._chol)
 ```
 
-We have been using the *product of sums* as a measure of straight-line
-(linear) association between two variables.   We found that the sum of products
-for the athletic and IQ variables (`ath` and `iq`) was `r not_e(sop_aiq)`, and
-we showed that the sum of products is higher for pairings of `ath` and `iq`
-with a higher degree of linear association.  Now let us consider compliance and
+We have been using the *sum of products* as a measure of straight-line (linear)
+association between two variables.   We found that the sum of products for the
+athletic and IQ variables (`ath` and `iq`) was `r not_e(sop_aiq)`, and we
+showed that the sum of products is higher for pairings of `ath` and `iq` with
+a higher degree of linear association.  Now let us consider compliance and
 cholesterol above; the sum of products for `compliance` and `cholesterol` was
 `r not_e(sop_cc)`.  Notice the `compliance` and `cholesterol` sum of products
-is much higher than for `ath` and `iq` — but that does not tell us whether the
-*association of the scores* is higher.  There are various problems that prevent
-us doing a direct comparison between the two scores.  We would like a version
-of the sum of products procedure that could give us a measure of linear
-association that we could compare between different pairs of sequences.   This
-is the purpose of the *correlation coefficient*.
+is much higher than for `ath` and `iq` — but, for various reasons that we
+explain below, that does not tell us whether the *association of the scores* is
+higher for the compliance / cholesterol values than the athletic / IQ scores.
+We would like a version of the sum of products procedure that could give us
+a measure of linear association that we could compare between different pairs
+of sequences. This is the purpose of the *correlation coefficient*.
 
 The first problem that makes it hard to compare the sum of product scores is
 that the sum of products depends on the number of elements in the sequence.
@@ -1295,8 +1309,8 @@ scores, on their usual scale, where 100 is the average IQ for the general
 population.  Our raw IQ scores have a mean of `r round(mean(._iq), 2)`.  But we
 could also have scored IQ in another way.  For example, we could have recorded
 the *difference* from 100 instead of the raw value, to get the values in column
-2 of @tbl-iq-minus-hundred.  These have a mean of
-`r round(mean(._iq - 100), 2)`
+2 of @tbl-iq-minus-hundred.  Call these the "IQ-100" scores.  IQ-100 scores
+have a mean of `r round(mean(._iq - 100), 2)`.
 
 ```{python echo=FALSE, eval=TRUE, results="asis", message=FALSE}
 from gridtabber import footerize_table
@@ -1306,7 +1320,7 @@ out = pd.DataFrame(
     data={'Athletic score': _ath,
           'Original IQ': _iq,
           'Col 1 x Col 2': _ath * _iq,
-          'IQ - 100': _iqd,
+          'IQ-100': _iqd,
           'Col 2 x Col 4': _ath * _iqd}
 )
 
@@ -1326,27 +1340,27 @@ print_tab(min_100_tab,
           'iq-minus-hundred}')
 ```
 
-Notice that the mean product of the IQ-100 is much smaller than the mean for
-the product with the original IQ values, because the IQ element in the product
-is smaller, so the products will be smaller, and the mean
-product will be smaller. However, it might be obvious that the *association* of
-the IQ and athletic scores remains the same after we have subtracted 100 from
-the IQ; higher IQ values on either scale are still associated with higher
-athletic scores.  Think of the association as a straight-line relationship in
-a scatter plot, with the athletic scores on the x-axis, and the IQ scores on
-the y-axis. @fig-ath-iq-scatter has the original scatter plot with the athletic
-scores on the x-axis and the original IQ scores on the y-axis.  The points
-appear to scatter around some straight line we could draw.  @fig-ath-iq-hundred
-shows the scatterplot of the original IQ score against the athletic scores on
-the left plot (as for @fig-ath-iq-scatter) and the IQ-100 scores against the
-athletic scores in the right plot. As you can see, subtracting 100 from the IQ
-values just moved the graph down by 100 on the y-axis — but the slope of the
-line relating the two must be the same. The slope is a measure of how much the
-IQ score increases as the athletic score increases — it is therefore a good
+Notice that the mean product for the IQ-100 scores is much smaller than the
+mean for the product with the original IQ values, because the IQ element in the
+product is smaller, so the products will be smaller, and the mean product will
+be smaller. However, it might be obvious that the *association* of the IQ and
+athletic scores remains the same after we have subtracted 100 from the IQ;
+higher IQ values on either scale are still associated with higher athletic
+scores.  Think of the association as a straight-line relationship in a scatter
+plot, with the athletic scores on the x-axis, and the IQ scores on the y-axis.
+@fig-ath-iq-scatter has the original scatter plot with the athletic scores on
+the x-axis and the original IQ scores on the y-axis.  The points appear to
+scatter around some straight line we could draw.  @fig-ath-iq-hundred shows the
+scatterplot of the original IQ score against the athletic scores on the left
+plot (as for @fig-ath-iq-scatter) and the IQ-100 scores against the athletic
+scores in the right plot. As you can see, subtracting 100 from the IQ values
+just moved the points on the graph down by 100 on the y-axis — but the slope of
+the line relating the two must be the same. The slope is a measure of how much
+the IQ score increases as the athletic score increases — it is therefore a good
 measure of the *linear association* between athletic score and IQ score.
-Because the slope has not changed between the original IQ score and the IQ-100
-score, the association has not changed, even though the mean product is much
-smaller.
+Because the slope of our potential line should not change between the original
+IQ score and the IQ-100 score, the association has not changed, even though the
+mean product is much smaller.
 
 ```{python echo=FALSE, label="fig-ath-iq-hundred", fig.cap="Scatter plot of IQ Score, IQ-100 as function of Athletic Score", eval=TRUE}
 fig, (ax1, ax2) = plt.subplots(1, 2)
@@ -1370,8 +1384,8 @@ fig.tight_layout()
 We have discovered that the mean product will change as we add or subtract
 values to one or both of the sequences.  You might also be able to see that the
 mean product will change if we multiply or divide the values in the sequence by
-some number.  In summary, the mean product depends on the *scale* of the values
-in the sequence.
+some number.  In summary, the mean product depends on the *scale* or *units* of
+the values in the sequence.
 
 We would like some measure of association that does not depend on the scale of
 the sequences.  A simple approach is to put each sequence on a *standard*
@@ -1410,13 +1424,13 @@ print_tab(iq_std_tab,
           'standard-iq}')
 ```
 
-After we have applied this standardization procedure to both sequences, they
-are both now in the same *standard units*.   The mean product of these standard
-units is therefore a *standard* measure of association, called the *Pearson
-product-moment correlation coefficient*, or just the *correlation coefficient*.
-We use the letter $r$ for the value of the correlation coefficient. @tbl-r-iq
-shows the mean of products calculation on standard scores athletic ability and
-IQ, to get the $r$ value.
+After we apply this procedure to both sequences, they are both in the same
+*standard* units.   The mean product of these standard units is therefore
+a *standard* measure of association, called the *Pearson product-moment
+correlation coefficient*, or just the *correlation coefficient*. We use the
+letter $r$ for the value of the correlation coefficient. @tbl-r-iq shows the
+mean of products calculation on standard scores athletic ability and IQ, to get
+the $r$ value.
 
 ```{python echo=FALSE, eval=TRUE, results="asis", message=FALSE}
 _std_ath = _standard_scores(_ath)
@@ -1517,12 +1531,13 @@ our compliance and cholesterol scores.
 ### Correlations are symmetrical
 
 You might be able to see from the definition of the calculation above, that the
-correlation between `ath` and `iq` must be the same as the correlation between
-`iq` and `ath` — and in general the correlation between some sequence $x$ and
-another $y$ is equal to the correlation between $y$ and $x$.
+correlation coefficient $r$ between `ath` and `iq` must be the same as the
+correlation coefficient ($r$) between `iq` and `ath` — and in general the
+correlation coefficient between some sequence $x$ and another $y$ is equal to
+the correlation coefficient between $y$ and $x$.
 
-Why?  Remember that the correlation is the mean of the product of the standard
-scores.
+Why?  Remember that the correlation coefficient is the mean of the product of
+the standard scores.
 
 Let us first calculate the standard scores for `ath` and `iq`:
 
@@ -1545,25 +1560,25 @@ std_iq = dev_iq / stdev_iq  # Standard scores.
 Now calculate the correlation coefficient.
 
 ```{python}
-print('Correlation between "ath" and "iq":', np.mean(std_ath * std_iq))
+print('r value for "ath" and "iq":', np.mean(std_ath * std_iq))
 ```
 
 ```{r}
-message('Correlation between "ath" and "iq": ', mean(std_ath * std_iq))
+message('r value for "ath" and "iq": ', mean(std_ath * std_iq))
 ```
 
 But multiplication is commutative — changing the order does not change the
 result — so $a * b = b * a$.  This means that the `std_ath * std_id`  gives the same {{< var array >}} as `std_id * std_ath`, and:
 
 ```{python}
-print('Correlation between "iq" and "ath":', np.mean(std_iq * std_ath))
+print('r value for "iq" and "ath":', np.mean(std_iq * std_ath))
 ```
 
 ```{r}
-message('Correlation between "iq" and "ath": ', mean(std_iq * std_ath))
+message('r value for "iq" and "ath": ', mean(std_iq * std_ath))
 ```
 
-### Correlation coefficient in {{< var lang >}}
+### The correlation coefficient in {{< var lang >}}
 
 {{< var np_or_r >}} has a function [`np.corrcoef`]{.python}[`cor`]{.r}
 for calculating the correlation coefficient between two sequences directly.
@@ -1580,13 +1595,12 @@ corr_arr
 Notice that `np.corrcoef` returns a *two-dimensional* array of the correlations
 between all possible pairs of the two sequences.  This results in a 2 by
 2 array, where the top-left value is the correlation coefficient $r$ between
-`ath` and `ath` — the correlation between a sequence and itself is always 1.
-The bottom right value is the correlation between `iq` and `iq` — again, this
-must be 1.  The top right value is the correlation between `ath` and `iq`, and
-the bottom left value is the correlation between `iq` and `ath`, and as you saw
-above, these must be equal.  We are usually interested in the correlation
-between the two sequences we send to `np.corrcoef`, so we usually just want the
-top-right (or bottom-left) value.
+`ath` and `ath` — the $r$ value for a sequence and itself is always 1. The
+bottom right value is the $r$ value for `iq` and `iq` — again, this must be 1.
+The top right value is the $r$ between `ath` and `iq`, and the bottom left
+value is the $r$ between `iq` and `ath`, and as you saw above, these must be
+equal.  We are usually interested in the $r$ between the two sequences we send
+to `np.corrcoef`, so we usually just want the top-right (or bottom-left) value.
 
 We can select the first row of the 2D array like this:
 
@@ -1608,7 +1622,7 @@ corr_arr[0, 1]
 Therefore, to get the correlation coefficient between two sequences, we can do:
 
 ```{python}
-# Select top-right value from correlation array:
+# Select top-right value from correlation coefficient array.
 np.corrcoef(ath, iq)[0, 1]
 ```
 
@@ -1630,7 +1644,7 @@ cor(ath, iq)
 End of R section.
 -->
 
-### Test for a linear association with correlation
+### Test linear association with the correlation coefficient
 
 Above we used the sum-of-products calculation to see if the actual observed sum
 of products was unusual in the null-world, where we simulated sum of product
@@ -1757,7 +1771,7 @@ coefficient to the one from sum of products in @sec-ath-iq-sop; in fact, the
 p-values only differ because the p-value is itself somewhat random, as it
 derives from (many) random samples.
 
-## Testing for a relationship between counted-data variables.
+## Testing for a relationship between counted-data variables {#sec-counted-association}
 
 ### Example: Drinking Beer And Being In Favor of Selling Beer
 
