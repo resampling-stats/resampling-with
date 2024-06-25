@@ -616,7 +616,8 @@ In operational steps, the procedure is as follows:
 import numpy as np
 import pandas as pd
 
-rnd = np.random.default_rng()
+# We need the seed to make the text below be predictable.
+rnd = np.random.default_rng(1966)
 
 n = 20
 yeses = np.zeros(n, dtype=int)
@@ -643,8 +644,8 @@ ketable(py$contract_trials,
 
 In @tbl-contract-trials, we see the results of twenty trials; `r n_gte_30` of
 `r n` times (`r gte_30_pct` percent), 30 or more "yeses" were observed by
-chance. So our "significance level" or "prob value" is `r gte_30_pct` percent,
-which is normally too high to feel confident that our poll results are
+chance. So our "significance level" or "probability value" is `r gte_30_pct`
+percent, which is normally too high to feel confident that our poll results are
 reliable. This is the probability that as many as thirty of fifty people would
 say "yes" by chance if the population were "really" split evenly. (If the
 population were split so that *more* than 50 percent were against the plan, the
