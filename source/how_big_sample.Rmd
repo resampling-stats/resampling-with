@@ -372,41 +372,20 @@ This example, like @sec-proportion-radio, illustrates the choice of sample size
 for estimating a summarization statistic. Later examples deal with sample sizes
 for probability statistics.
 
-Hark back to the pig-ration problems presented earlier, and consider the
-following set of pig weight-gains recorded for ration A: 31, 34, 29, 26, 32,
-35, 38, 34, 31, 29, 32, 30. Assume that our purpose now is to estimate the
-average weight gain for ration A, so that the feed company can advertise to
-farmers how much weight gain to expect from ration A. If the universe is made
-up of pig weight-gains like those we observed, we can simulate the universe
-with, say, 1 million weight gains of thirty-one pounds, 1 million of
-thirty-four pounds, and so on for the twelve observed weight gains. Or, more
-conveniently, as accuracy will not be affected much, we can make up a universe
-of say, thirty cards for each thirty-one-pound gain, thirty cards for each
-thirty-four-pound gains and so forth, yielding a deck of 30 x 12 = 360 cards.
-Then shuffle, and, just for a starting point, try sample sizes of twelve pigs.
-The means of the samples for twenty such trials are as in Table 24-3.
-
-Now ask yourself whether a sample size of twelve pigs gives you enough
-accuracy. There is a .5 chance that the mean for the sample will be more
-than .65 or .92 pound (the two median deviations) or (say) .785 pound
-(the midpoint of the two medians) from the mean of the universe that
-generates such samples, which in this situation is 31.75 pounds. Is this
-close enough? That is up to you to decide in light of the purposes for
-which you are running the experiment. (The logic of the inference you
-make here is inevitably murky, and use of the term "real mean" can make
-it even murkier, as is seen in the discussion in @sec-confidence-accuracy
-— @sec-reliability-average on confidence intervals.)
-
-To see how accuracy is affected by larger samples, try a sample size of
-forty-eight "pigs" dealt from the same deck. (But, if the sample size
-were to be much larger than forty-eight, you might need a "universe"
-greater than 360 cards.) The results of twenty trials are in Table 24-4.
-
-In half the trials with a sample size of forty-eight the difference
-between the sample mean and the "real" mean of 31.75 will be .36 or .37
-pound (the median deviations), smaller than with the values of .65 and
-.92 for samples of 12 pigs. Again, is this too little accuracy for you?
-If so, increase the sample size further.
+Hark back to the pig-ration problems presented earlier (e.g.
+@sec-pig-rations-measured), and consider the following set of pig weight-gains
+recorded for ration A: 31, 34, 29, 26, 32, 35, 38, 34, 31, 29, 32, 30. Assume
+that our purpose now is to estimate the average weight gain for ration A, so
+that the feed company can advertise to farmers how much weight gain to expect
+from ration A. If the universe is made up of pig weight-gains like those we
+observed, we can simulate the universe with, say, 1 million weight gains of
+thirty-one pounds, 1 million of thirty-four pounds, and so on for the twelve
+observed weight gains. Or, more conveniently, as accuracy will not be affected
+much, we can make up a universe of say, thirty cards for each thirty-one-pound
+gain, thirty cards for each thirty-four-pound gains and so forth, yielding
+a deck of 30 x 12 = 360 cards. Then shuffle, and, just for a starting point,
+try sample sizes of twelve pigs. The means of the samples for twenty such
+trials are as in @tbl-weight-bootstrap.
 
 +-----------+-----------+-----------+-----------+-----------+-----------+
 |   Trial   |   Mean    | Absolute  |   Trial   |   Mean    | Absolute  |
@@ -436,22 +415,26 @@ If so, increase the sample size further.
 +-----------+-----------+-----------+-----------+-----------+-----------+
 | 10        | 30.60     | 1.15      | 20        | 30.60     | 1.15      |
 +===========+===========+===========+===========+===========+===========+
-| Mean                                                      | 31.75     |
-+===========================================================+===========+
+| Mean                                          | 31.75                 |
++===============================================+=======================+
 
-: Table 24-3 {#tbl-24-3}
+: Simulated average weight gains from pig ration A {#tbl-weight-bootstrap}
 
-The attentive reader of this example may have been troubled by this
-question: How do you know what kind of a distribution of values is
-contained in the universe before the sample is taken? The answer is that
-you guess, just as in @sec-proportion-radio you guessed at the mean of the
-universe. If you guess wrong, you will get either more accuracy or less
-accuracy than you expected from a given sample size, but the results
-will not be fatal; if you obtain more accuracy than you wanted, you have
-wasted some money, and, if you obtain less accuracy, your sample
-dispersion will tell you so, and you can then augment the sample to
-boost the accuracy. But an error in guessing will not introduce error
-into your final results.
+Now ask yourself whether a sample size of twelve pigs gives you enough
+accuracy. If we sort the absolute deviations, we find the middle two values
+(the 10th and 11th values) of 20 are 0.67 and 0.71, so the median is the average of these values: 0.69.  There is a .5 chance that the mean for any given sample will be more
+than 0.69 points from the mean of the universe that generates such samples,
+which in this situation is 31.75 pounds. Is this close enough? That is up to
+you to decide in light of the purposes for which you are running the
+experiment. (The logic of the inference you make here is inevitably murky, and
+use of the term "real mean" can make it even murkier, as is seen in the
+discussion in @sec-confidence-accuracy — @sec-reliability-average on confidence
+intervals.)
+
+To see how accuracy is affected by larger samples, try a sample size of
+forty-eight "pigs" dealt from the same deck. (But, if the sample size were to
+be much larger than forty-eight, you might need a "universe" greater than 360
+cards.) The results of twenty trials are in @tbl-weight-forty-eight.
 
 +-----------+-----------+-----------+-----------+-----------+-----------+
 |   Trial   |   Mean    | Absolute  |   Trial   |   Mean    | Absolute  |
@@ -481,10 +464,28 @@ into your final results.
 +-----------+-----------+-----------+-----------+-----------+-----------+
 | 10        | 32.01     | .26       | 20        | 31.32     | .43       |
 +===========+===========+===========+===========+===========+===========+
-| Mean                                                      | 31.75     |
-+===========================================================+===========+
+| Mean                                          | 31.75                 |
++===============================================+=======================+
 
-: Table 24-4 {#tbl-24-4}
+: Simulated average weight gain from 48 pigs {#tbl-weight-forty-eight}
+
+The median of mean absolute deviations in @tbl-weight-forty-eight is 0.32. In
+half the trials with a sample size of forty-eight the difference between the
+sample mean and the "real" mean of 31.75 will be .32 pound, smaller than with
+the 0.69 of samples of 12 pigs. Again, is this too little accuracy for you? If
+so, increase the sample size further.
+
+The attentive reader of this example may have been troubled by this
+question: How do you know what kind of a distribution of values is
+contained in the universe before the sample is taken? The answer is that
+you guess, just as in @sec-proportion-radio you guessed at the mean of the
+universe. If you guess wrong, you will get either more accuracy or less
+accuracy than you expected from a given sample size, but the results
+will not be fatal; if you obtain more accuracy than you wanted, you have
+wasted some money, and, if you obtain less accuracy, your sample
+dispersion will tell you so, and you can then augment the sample to
+boost the accuracy. But an error in guessing will not introduce error
+into your final results.
 
 The guess should be based on something, however. One source for guessing
 is your general knowledge of the likely dispersion; for example, if you
@@ -494,82 +495,112 @@ inches, and 8 inches, perhaps, of the real value. Or, much better yet, a
 very small pretest will yield quite satisfactory estimates of the
 dispersion.
 
-Here is a RESAMPLING STATS program that will let you try different
+Here is a {{< var lang >}} program that will let you try different
 sample sizes, and then take bootstrap samples to determine the range of
-sampling error. You set the sample size with the DATA command, and the
-NUMBERS command records the data. Above I noted that we could sample
-without replacement from a "deck" of thirty "31"'s, thirty "34"'s, etc,
-as a substitute for creating a universe of a million "31"'s, a million
-"34"'s, etc. We can achieve the same effect if we replace each card
-after we sample it; this is equivalent to creating a "deck" of an
-infinite number of "31"'s, "34"'s, etc. That is what the SAMPLE command
-does, below. Note that the sample size is determined by the value of the
-"sampsize" variable, which you set at the beginning. From here on the
-program takes the MEAN of each sample, keeps SCORE of that result, and
-produces a HISTOGRAM. The PERCENTILE command will also tell you what
-values enclose 90% of all sample results, excluding those below the 5th
-percentile and above the 95th percentile.
+sampling error. You set the sample size by setting the `sampsize` variable.
+Above I noted that we could sample without replacement from a "deck" of thirty
+"31"'s, thirty "34"'s, etc, as a substitute for creating a universe of
+a million "31"'s, a million "34"'s, etc. We can achieve the same effect if we
+replace each card after we sample it; this is equivalent to creating a "deck"
+of an infinite number of "31"'s, "34"'s, etc. That is what the
+{{< var sample >}} command does, below. Note that the sample size is determined
+by the value of the `sampsize` variable, which you set at the beginning. From
+here on the program takes the `mean` of each sample, keeps score of that result
+in the `results` {{< var array >}} and produces a histogram. The `quantile`
+function will also tell you what values enclose 90% of all sample results,
+excluding those below the 5th percentile and above the 95th percentile.
 
-Here is a program for a sample size of 12.
+Here is a notebook for a sample size of 12.
 
+::: {.notebook name="sampling_error_bootstrap" title="Sampling error for pig ration weight gain via bootstrap"}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: nb-only
+Use the bootstrap (resampling with replacement) procedure to estimate how much error to expect when taking samples of different sizes.
+:::
 
-```matlab
-' Program file: "how_big_sample_01.rss"
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-DATA (12) sampsize
-NUMBERS (31 34 29 26 32 35 38 34 32 31 30 29) a
-REPEAT 1000
-    SAMPLE sampsize a b
-    MEAN b c
-    SCORE c z
-END
-HISTOGRAM z
-PERCENTILE z (5 95) k
-PRINT k
-' **Bin Center Freq Pct Cum Pct**
+rnd = np.random.default_rng()
+
+sampsize = 12
+
+gains = np.array([31, 34, 29, 26, 32, 35, 38, 34, 32, 31, 30, 29])
+
+n_trials = 10_000
+results = np.zeros(n_trials)
+
+for i in range(n_trials):
+    fake_gains = rnd.choice(gains, size=sampsize)
+    results[i] = np.mean(fake_gains)
+
+plt.hist(results, bins=25)
+plt.title('Distribution of mean of ' + str(sampsize) +
+          ' weights from ' + str(n_trials) + ' bootstrap samples')
+plt.xlabel('Mean weight')
+
+# Find values such that to 5%, 95% of values are below given value.
+# (These are the 5% and 95% percentile values).
+hi_lo_range = np.quantile(results, [0.05, 0.95])
+
+print('5% and 95% percentiles of bootstrap means:', np.round(hi_lo_range, 2))
 ```
 
-![](images/28-Chap-24_000.png)
+```{r}
+sampsize <- 12
 
-  ------------ ------- ----- ------ -------
-  29.0                 2     0.2    0.2
-  29.5                 4     0.4    0.6
-  30.0                 30    3.0    3.6
-  30.5                 71    7.1    10.7
-  31.0                 162   16.2   26.9
-  31.5                 209   20.9   47.8
-  32.0                 237   23.7   71.5
-  32.5                 143   14.3   85.8
-  33.0                 90    9.0    94.8
-  33.5                 37    3.7    98.5
-  34.0                 12    1.2    99.7
-  34.5                 3     0.3    100.0
-  k = 30.417   33.25                
-  ------------ ------- ----- ------ -------
+gains <- c(31, 34, 29, 26, 32, 35, 38, 34, 32, 31, 30, 29)
 
-## Example 24-3
+n_trials <- 10000
+results <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+    fake_gains <- sample(gains, size=sampsize, replace=TRUE)
+    results[i] <- mean(fake_gains)
+}
+
+title <- paste('Distribution of mean of', sampsize,
+               'weights from', n_trials, 'bootstrap samples')
+hist(results, breaks=25,
+     main=title,
+     xlab='Mean weight')
+
+# Find values such that to 5%, 95% of values are below given value.
+# (These are the 5% and 95% percentile values).
+hi_lo_range <- quantile(results, c(0.05, 0.95))
+rounded =  round(hi_lo_range, 2)
+
+message('5% and 95% percentiles of bootstrap means: ',
+        rounded[1], ' ', rounded[2])
+```
+
+
+:::
+<!---
+End of notebook.
+-->
+
+## Example: sample size for inference on fruit fly sex difference
 
 This is the first example of sample-size estimation for *probability*
 (testing) statistics, rather than the summarization statistics dealt
 with above.
 
 Recall the problem of the sex of fruit-fly offspring discussed in
-Example 15-1. The question now is, how large a sample is needed to
-determine whether the radiation treatment results in a sex ratio other
-than a 50-50 male-female split?
+@sec-fruitfly. The question now is, how large a sample is needed to determine
+whether the radiation treatment results in a sex ratio other than a 50-50
+male-female split?
 
-The first step is, as usual, difficult but necessary. As the researcher,
-you must *guess* what the sex ratio will be if the treatment *does* have
-an effect. Let's say that you use all your general knowledge of genetics
-and of this treatment and that you guess the sex ratio will be 75
-percent males and 25 percent females *if* the treatment alters the ratio
-from 50-50.
+The first step is, as usual, difficult but necessary. As the researcher, you
+must *guess* what the sex ratio will be if the treatment *does* have an effect.
+Let's say that you use all your general knowledge of genetics and of this
+treatment and that you guess the sex ratio will be 75 percent males and 25
+percent females *if* the treatment alters the ratio from 50-50.
 
-In a random-number table let "01-25" stand for females and "26-00" for
-males. Take twenty successive pairs of numbers for each trial, and run
-perhaps fifty trials, as in Table 24-5.
+In table of random numbers from 00-99 let "01-25" stand for females and "26-00"
+for males. Take twenty successive pairs of numbers for each trial, and run
+perhaps fifty trials, as in @tbl-flies-more-males.
 
 | Trial | Females | Males | Trial | Females | Males | Trial | Females | Males |
 |-------|---------|-------|-------|---------|-------|-------|---------|-------|
@@ -591,18 +622,18 @@ perhaps fifty trials, as in Table 24-5.
 | 16    | 5       | 15    | 33    | 4       | 16    | 49    | 3       | 17    |
 | 17    | 5       | 15    |       |         |       | 50    | 5       | 15    |
 
-: Table 24-5 {#tbl-24-5}
+: Simulated numbers of males and females for 75/25% universe {#tbl-flies-more-males}
 
 In @sec-fruitfly with a sample of twenty flies that contained fourteen or more
 males, we found only an 8% probability that such an extreme sample would result
 from a 50-50 universe. Therefore, if we observe such an extreme sample, we rule
 out a 50-50 universe.
 
-Now Table 24-5 tells us that, if the ratio is *really* 75 to 25, then a
-sample of twenty will show fourteen or more males forty-two of fifty
-times (84 percent of the time). If we take a sample of twenty flies and
-if the ratio is really 75-25, we will make the correct decision by
-deciding that the split is not 50-50 84 percent of the time.
+Now @tbl-flies-more-males tells us that, if the ratio is *really* 75 to 25,
+then a sample of twenty will show fourteen or more males forty-two of fifty
+times (84 percent of the time). If we take a sample of twenty flies and if the
+ratio is really 75-25, we will make the correct decision by deciding that the
+split is not 50-50, 84 percent of the time.
 
 Perhaps you are not satisfied with reaching the right conclusion only 84
 percent of the time. In that case, still assuming that the ratio will
@@ -610,121 +641,156 @@ really be 75-25 if it is not 50-50, you need to take a sample larger
 than twenty flies. How much larger? That depends on how much surer you
 want to be. Follow the same procedure for a sample size of perhaps
 eighty flies. First work out for a sample of eighty, as was done in
-Example 15-1 for a sample of twenty, the number of males out of eighty
+@sec-fruitfly for a sample of twenty, the number of males out of eighty
 that you would need to find for the odds to be, say, 9 to 1 that the
 universe is not 50-50; your estimate turns out to be forty-eight males.
 Then run fifty trials of eighty flies each on the basis of 75-25
 probability, and see how often you would not get as many as forty-eight
-males in the sample. Table 24-6 shows the results we got. No trial was
-anywhere near as low as forty-eight, which suggests that a sample of
-eighty is larger than necessary if the split is really 75-25.
+males in the sample. @tbl-flies-morer-males shows the results we got. No trial
+was anywhere near as low as forty-eight, which suggests that a sample of eighty
+is larger than necessary if the split is really 75-25.
 
-Table 24-6
+| Trial | Females | Males | Trial | Females | Males | Trial | Females | Males |
+|-------|---------|-------|-------|---------|-------|-------|---------|-------|
+| 1     | 21      | 59    | 18    | 13      | 67    | 34    | 21      | 59    |
+| 2     | 22      | 58    | 19    | 19      | 61    | 35    | 17      | 63    |
+| 3     | 13      | 67    | 20    | 17      | 63    | 36    | 22      | 58    |
+| 4     | 15      | 65    | 21    | 17      | 63    | 37    | 19      | 61    |
+| 5     | 22      | 58    | 22    | 18      | 62    | 38    | 21      | 59    |
+| 6     | 21      | 59    | 23    | 26      | 54    | 39    | 21      | 59    |
+| 7     | 13      | 67    | 24    | 20      | 60    | 40    | 21      | 59    |
+| 8     | 24      | 56    | 25    | 16      | 64    | 41    | 21      | 59    |
+| 9     | 16      | 64    | 26    | 22      | 58    | 42    | 18      | 62    |
+| 10    | 21      | 59    | 27    | 16      | 64    | 43    | 19      | 61    |
+| 11    | 20      | 60    | 28    | 21      | 59    | 44    | 17      | 63    |
+| 12    | 19      | 61    | 29    | 22      | 58    | 45    | 13      | 67    |
+| 13    | 21      | 59    | 30    | 21      | 59    | 46    | 16      | 64    |
+| 14    | 17      | 63    | 31    | 22      | 58    | 47    | 21      | 59    |
+| 15    | 22      | 68    | 32    | 19      | 61    | 48    | 16      | 64    |
+| 16    | 22      | 68    | 33    | 10      | 70    | 49    | 17      | 63    |
+| 17    | 17      | 63    |       |         |       | 50    | 21      | 59    |
 
-![](images/28-Chap-24_001.png)
-
-![](images/28-Chap-24_002.png)
-
-**Trial Females Males Trial Females Males Trial Females Males**
-
-  ---- ---- ---- ---- ---- ---- ---- ---- ----
-  1    21   59   18   13   67   34   21   59
-  2    22   58   19   19   61   35   17   63
-  3    13   67   20   17   63   36   22   58
-  4    15   65   21   17   63   37   19   61
-  5    22   58   22   18   62   38   21   59
-  6    21   59   23   26   54   39   21   59
-  7    13   67   24   20   60   40   21   59
-  8    24   56   25   16   64   41   21   59
-  9    16   64   26   22   58   42   18   62
-  10   21   59   27   16   64   43   19   61
-  11   20   60   28   21   59   44   17   63
-  12   19   61   29   22   58   45   13   67
-  13   21   59   30   21   59   46   16   64
-  14   17   63   31   22   58   47   21   59
-  15   22   68   32   19   61   48   16   64
-  16   22   68   33   10   70   49   17   63
-  17   17   63                  50   21   59
-  ---- ---- ---- ---- ---- ---- ---- ---- ----
-
- Table 24-7
-
-**Trial Females Males Trial Females Males Trial Females Males**
-
-  ---- ---- ---- ---- ---- ---- ---- ---- ----
-  1    35   45   18   32   48   34   35   45
-  2    36   44   19   28   52   35   36   44
-  3    35   45   20   32   48   36   29   51
-  4    35   45   21   33   47   37   36   44
-  5    36   44   22   37   43   38   36   44
-  6    36   44   23   36   44   39   31   49
-  7    36   44   24   31   49   40   29   51
-  8    34   46   25   27   53   41   30   50
-  9    34   46   26   30   50   42   35   45
-  10   29   51   27   31   49   43   32   48
-  11   29   51   28   33   47   44   30   50
-  12   32   48   29   37   43   45   37   43
-  13   29   51   30   30   50   46   31   49
-  14   31   49   31   31   49   47   36   44
-  15   28   52   32   32   48   48   34   64
-  16   33   47   33   34   46   49   29   51
-  17   36   44                  50   37   43
-  ---- ---- ---- ---- ---- ---- ---- ---- ----
-
- ![](images/28-Chap-24_003.png)
+: Simulated males / females from 80 flies for 75/25% universe {#tbl-flies-morer-males}
 
 It is obvious that, if the split you guess at is 60 to 40 rather than 75
 to 25, you will need a bigger sample to obtain the "correct" result with
 the same probability. For example, run some eighty-fly random-number
 trials with 1-40 representing males and 51-100 representing females.
-Table 24-7 shows that only twenty-four of fifty (48 percent) of the
-trials reach the necessary cut-off at which one would judge that a
-sample of eighty really does not come from a universe that is split
-50-50; therefore, a sample of eighty is not big enough if the split is
-60-40.
+@tbl-flies-moreish-males shows that only twenty-four of fifty (48 percent) of
+the trials reach the necessary cut-off at which one would judge that a sample
+of eighty really does not come from a universe that is split 50-50; therefore,
+a sample of eighty is not big enough if the split is 60-40.
+
+| Trial | Females | Males | Trial | Females | Males | Trial | Females | Males |
+|-------|---------|-------|-------|---------|-------|-------|---------|-------|
+| 1     | 35      | 45    | 18    | 32      | 48    | 34    | 35      | 45    |
+| 2     | 36      | 44    | 19    | 28      | 52    | 35    | 36      | 44    |
+| 3     | 35      | 45    | 20    | 32      | 48    | 36    | 29      | 51    |
+| 4     | 35      | 45    | 21    | 33      | 47    | 37    | 36      | 44    |
+| 5     | 36      | 44    | 22    | 37      | 43    | 38    | 36      | 44    |
+| 6     | 36      | 44    | 23    | 36      | 44    | 39    | 31      | 49    |
+| 7     | 36      | 44    | 24    | 31      | 49    | 40    | 29      | 51    |
+| 8     | 34      | 46    | 25    | 27      | 53    | 41    | 30      | 50    |
+| 9     | 34      | 46    | 26    | 30      | 50    | 42    | 35      | 45    |
+| 10    | 29      | 51    | 27    | 31      | 49    | 43    | 32      | 48    |
+| 11    | 29      | 51    | 28    | 33      | 47    | 44    | 30      | 50    |
+| 12    | 32      | 48    | 29    | 37      | 43    | 45    | 37      | 43    |
+| 13    | 29      | 51    | 30    | 30      | 50    | 46    | 31      | 49    |
+| 14    | 31      | 49    | 31    | 31      | 49    | 47    | 36      | 44    |
+| 15    | 28      | 52    | 32    | 32      | 48    | 48    | 34      | 64    |
+| 16    | 33      | 47    | 33    | 34      | 46    | 49    | 29      | 51    |
+| 17    | 36      | 44    |       |         |       | 50    | 37      | 43    |
+
+: Simulated males / females from 80 flies for 60/40% universe {#tbl-flies-moreish-males}
 
 To review the main principles of this example: First, the closer
 together the two possible universes from which you think the sample
 might have come (50-50 and 60-40 are closer together than are 50-50 and
 75-25), the larger the sample needed to distinguish between them.
-Second, the surer you want to be that you reach the right decision based
-upon the sample evidence, the larger the sample you need.
+Second, the surer you want to be that you reach the right decision based upon
+the sample evidence, the larger the sample you need.
 
-The problem may be handled with the following RESAMPLING STATS program.
+The problem may be handled with the following {{< var lang >}} notebook.
 We construct a benchmark universe that is 60-40 male-female, and take
 samples of size 80, observing whether the numbers of males and females
 differs enough in these resamples to rule out a 50-50 universe. Recall
-that we need at least 48 males to say that the proportion of males is
+that we need at least 48 of 80 males to say that the proportion of males is
 *not* 50%.
 
+::: {.notebook name="flies_sample_size" title="Sample size for detecting fruitfly sex difference"}
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+::: nb-only
+We are interested in a procedure to change the sex ratio of fruit flies to give
+more males.  We are going to take samples of 80 flies. We know that, in order
+to detect a convincing difference from a 50:50 ratio, we need 48 of 80, or
+more, to be male.   We suspect that the treatment gives a 60:40 ratio.  Drawing
+random samples in this 60:40 universe, how often do we get the convincing >=48
+male count?  In other words, for how many trials in this situation, will we see
+a convincing answer?
+:::
 
-```matlab
-' Program file: "how_big_sample_02.rss"
+```{python}
+import numpy as np
 
-REPEAT 1000
-    ' Do 1000 trials
-    GENERATE 80 1,10 a
-    ' Generate 80 "flies," each represented by a number between 1 and 10 where
-    ' \<= 6 is a male
-    COUNT a <=6 b
-    ' Count the males
-    SCORE b z
-    ' Keep score
-END
-COUNT z >=48 k
-' How many of the trials produced more than 48 males?
-DIVIDE k 1000 kk
-' Convert to a proportion
-PRINT kk
-' If the result "kk" is close to 1, we then know that samples of size 80
-' will almost always produce samples with enough males to avoid misleading
-' us into thinking that they could have come from a universe in which
-' males and females are split 50-50.
+rnd = np.random.default_rng()
+
+n_trials = 10_000
+
+# Results for each trial.
+results = np.zeros(n_trials)
+
+# Do 10,000 trials
+for i in range(n_trials):
+    # Generate 80 "flies" with 0.6 chance of male, 0.4 of female>
+    flies = rnd.choice(['male', 'female'], size=80, p=[0.6, 0.4])
+    # Count the males.
+    n_males = np.sum(flies == 'male')
+    # Keep score.
+    results[i] = n_males
+
+# How many of the trials produced more than 48 males?
+k = np.sum(results >= 48)
+# Convert to a proportion
+kk = k / n_trials
+
+print('Proportion of 60/40 trials giving >= 48 males:', kk)
 ```
 
-### Example: 
+```{r}
+n_trials <- 10000
+
+# Results for each trial.
+results <- numeric(n_trials)
+
+# Do 10,000 trials
+for (i in 1:n_trials) {
+    # Generate 80 "flies" with 0.6 chance of male, 0.4 of female>
+    flies <- sample(c('male', 'female'), size=80, replace=TRUE, prob=c(0.6, 0.4))
+    # Count the males.
+    n_males <- sum(flies == 'male')
+    # Keep score.
+    results[i] <- n_males
+}
+
+# How many of the trials produced more than 48 males?
+k <- sum(results >= 48)
+# Convert to a proportion
+kk <- k / n_trials
+
+message('Proportion of 60/40 trials giving >= 48 males: ', kk)
+```
+
+If the result `kk` is close to 1, we then know that samples of size 80 will
+almost always produce samples with enough males to avoid misleading us into
+thinking that they could have come from a universe in which males and females
+are split 50-50.
+
+:::
+<!---
+End of notebook.
+-->
+
+### Example: sample size for an internet-provider poll
 
 Referring back to @sec-contract-poll, on the internet provider poll, how large
 a sample *should* you have taken? Pretend that the data have not yet been
@@ -732,8 +798,9 @@ collected. You need *some* estimate of how the results will turn out before you
 can select a sample size. But you have not the foggiest idea how the results
 will turn out. Therefore, go out and take a very small sample, maybe ten
 people, to give you some idea of whether people will split quite evenly or
-unevenly. Seven of your ten initial interviews say they are for CATV. How large
-a sample do you now need to provide an answer of which you can be fairly sure?
+unevenly. Seven of your ten initial interviews say they are for the internet
+provider contract. How large a sample do you now need to provide an answer of
+which you can be fairly sure?
 
 Using the techniques of the previous chapter, we estimate roughly that
 from a sample of fifty people at least thirty-two would have to vote the
@@ -741,23 +808,22 @@ same way for you to believe that the odds are at least 19 to 1 that the
 sample does not misrepresent the universe, that is, that the sample does
 not show a majority different from that of the whole universe if you
 polled everyone. This estimate is derived from the resampling experiment
-described in example 15-3. The table shows that if half the people (or
-more) are against cable television, only one in twenty times will
-thirty-two (or more) people of a sample of fifty say that they are for
-cable television; that is, only one of twenty trials with a 50-50
-universe will produce as many as thirty-two *yeses* if a majority of the
-population is against it.
+described in @sec-contract-poll. The table shows that if half the people (or
+more) are against the contract, only one in twenty times will thirty-two
+(or more) people of a sample of fifty say that they are for the contract;
+that is, only one of twenty trials with a 50-50 universe will produce as many
+as thirty-two *yeses* if a majority of the population is against it.
 
 Therefore, designate numbers 1-30 as *no* and 31-00 as *yes* in the
 random-number table (that is, 70 percent, as in your estimate based on
 your presample of ten), work through a trial sample size of fifty, and
 count the number of *yeses* . Run through perhaps ten or fifteen trials,
 and reckon how often the observed number of *yeses* exceeds thirty-two,
-the number you must exceed for a result you can rely on. In Table 24-8
-we see that a sample of fifty respondents, from a universe split 70-30,
-will show that many *yeses* a preponderant proportion of the time — in
-fact, in fifteen of fifteen experiments; therefore, the sample size of
-fifty is large enough if the split is "really" 70-30.
+the number you must exceed for a result you can rely on. In @tbl-cable-yes we
+see that a sample of fifty respondents, from a universe split 70-30, will show
+that many *yeses* a preponderant proportion of the time — in fact, in fifteen
+of fifteen experiments; therefore, the sample size of fifty is large enough if
+the split is "really" 70-30.
 
 |   Trial   |   No   |   Yes   |   Trial   |   No   |   Yes   |
 |-----------|--------|---------|-----------|--------|---------|
@@ -769,10 +835,9 @@ fifty is large enough if the split is "really" 70-30.
 | 6         | 15     | 35      | 14        | 16     | 34      |
 | 7         | 14     | 36      | 15        | 17     | 33      |
 
-: Table 24-8 {#tbl-24-8}
+: Number of "yes" votes out of 50 for 30% in favor universe {#tbl-cable-yes}
 
-
-The following RESAMPLING STATS program takes samples of size 50 from a
+The following {{< var lang >}} program takes samples of size 50 from a
 universe that is 70% "yes." It then observes how often such samples
 produce more than 32 "yeses" — the number we must get if we are to be
 sure that the sample is not from a 50/50 universe.
