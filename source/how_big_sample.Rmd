@@ -802,37 +802,81 @@ unevenly. Seven of your ten initial interviews say they are for the internet
 provider contract. How large a sample do you now need to provide an answer of
 which you can be fairly sure?
 
-Using the techniques of the previous chapter, we estimate roughly that
-from a sample of fifty people at least thirty-two would have to vote the
-same way for you to believe that the odds are at least 19 to 1 that the
-sample does not misrepresent the universe, that is, that the sample does
-not show a majority different from that of the whole universe if you
-polled everyone. This estimate is derived from the resampling experiment
-described in @sec-contract-poll. The simulations in @tbl-contract-trials
-suggested that, if half the people (or more) are against the contract, only one
-in twenty times will thirty-two (or more) people of a sample of fifty say that
-they are for the contract; that is, only one of twenty trials with a 50-50
-universe will produce as many as thirty-two *yeses* if a majority of the
-population is against it.[^but-just-20]
+Using the techniques of the previous chapter, we can estimate that from
+a sample of fifty people at least thirty-two would have to vote the same way
+for you to believe that the odds are at least 19 to 1 that the sample does not
+misrepresent the universe, that is, that the sample does not show a majority
+different from that of the whole universe if you polled everyone.
 
-[^but-just-20]: You might well be thinking — @tbl-contract-trials only ran 20
-    trials; is that estimate (of 1 in 20 trials with one or more count >= 32)
-    reliable?  And you would be right; to establish that estimate of 32 as
-    a cut-off values more firmly, we would have to run the same experiment many
-    times, and establish the number such that, in the 50-50 universe, we would
-    expect to see that number or more voters in favor, by chance, only 5% of
-    the time (1 time in 20).  We leave that exercise to you, dear reader.
+We do this by repeating the experiment in @sec-contract-poll.  In that
+experiment, we were doing simulated trials in the 50:50 world, and looking at
+the proportion of simulated trials where the count of yes votes was >= 30.  We
+found the proportion of trials was about 10%.   We are interested to know the
+count for which we get less than 5%.  We can do this by checking the
+proportions for >=31, >= 32, and so on.  It turns out that counts >= 32 occur
+a bit less than 5% of the time in the 50:50 world.
+
+::: {.notebook name="contract_poll_32" title="Contract poll looking for >=32"}
+
+This {{< var lang >}} notebook generates samples of 50 simulated voters on the
+assumption that only 50 percent are in favor of the contract. Then it counts
+the number of generated samples where 32 or more of the 50 respondents said
+they were in favor of the contract.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+rnd = np.random.default_rng()
+
+n_trials = 10_000
+
+yeses = np.zeros(n_trials)
+
+for i in range(n_trials):
+    answers = rnd.choice(['No', 'Yes'], size=50)
+    yeses[i] = np.sum(answers == 'Yes')
+
+k = np.sum(yeses >= 32)
+kk = k / n_trials
+
+print('Proportion >= 32:', np.round(kk, 2))
+```
+
+```{r}
+n_trials <- 10000
+
+yeses <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+    answers <- sample(c('No', 'Yes'), size=50, replace=TRUE)
+    yeses[i] <- sum(answers == 'Yes')
+}
+
+k <- sum(yeses >= 32)
+kk <- k / n_trials
+
+message('Proportion >= 32: ', round(kk, 2))
+```
+
+:::
+<!---
+End of notebook.
+-->
+
+We know, therefore, that if we see a voter "yes" count >= 32, there is only
+a small (>5%) chance that arose from the 50:50 world.
 
 Therefore, designate numbers 1-30 as *no* and 31-00 as *yes* in the
 random-number table (that is, 70 percent, as in your estimate based on
 your presample of ten), work through a trial sample size of fifty, and
 count the number of *yeses* . Run through perhaps ten or fifteen trials,
-and reckon how often the observed number of *yeses* exceeds thirty-two,
-the number you must exceed for a result you can rely on. In @tbl-cable-yes we
-see that a sample of fifty respondents, from a universe split 70-30, will show
-that many *yeses* a preponderant proportion of the time — in fact, in fifteen
-of fifteen experiments; therefore, the sample size of fifty is large enough if
-the split is "really" 70-30.
+and reckon how often the observed number of *yeses* is >= 32 (the number you
+must exceed for a result you can rely on). In @tbl-cable-yes we see that
+a sample of fifty respondents, from a universe split 70-30, will show that many
+*yeses* a preponderant proportion of the time — in fact, in fifteen of fifteen
+experiments; therefore, the sample size of fifty is large enough if the split
+is "really" 70-30.
 
 |   Trial   |   No   |   Yes   |   Trial   |   No   |   Yes   |
 |-----------|--------|---------|-----------|--------|---------|
@@ -848,8 +892,8 @@ the split is "really" 70-30.
 
 The following {{< var lang >}} program takes samples of size 50 from a
 universe that is 70% "yes." It then observes how often such samples
-produce more than 32 "yeses" — the number we must get if we are to be
-sure that the sample is not from a 50/50 universe.
+produce more than 31 "yeses" — the number we must get if we are to be sure
+enough that the sample is not from a 50/50 universe.
 
 ::: {.notebook name="poll_sample_size" title="Sample size for an internet contract poll"}
 
@@ -859,7 +903,8 @@ that approve a proposal (to give an internet contract) has better than 50:50
 approval.  We are thinking of taking a sample size of 50.  We believe that the
 actual proportion in favor is 70%.   We have estimated that we can be confident
 the sample does not reflect a 50:50 universe if there are 32 or more voters in
-favor of the proposal.   For the 70:30 universe, how many simulated samples give us this value of 32, or greater?
+favor of the proposal.   For the 70:30 universe, how many simulated samples
+give us this value of 32, or greater?
 :::
 
 ```{python}
@@ -883,7 +928,7 @@ for i in range(n_trials):
     results[i] = n_yes
 
 # Count how often the sample result >= our 32 cutoff (recall that samples
-# with 32 or fewer "yeses" cannot be ruled out of a 50/50 universe)
+# with 31 or fewer "yeses" cannot be ruled out of a 50/50 universe).
 k = np.sum(results >= 32)
 # Convert to a proportion
 kk = k / n_trials
@@ -909,7 +954,7 @@ for (i in 1:n_trials) {
 }
 
 # Count how often the sample result >= our 32 cutoff (recall that samples
-# with 32 or fewer "yeses" cannot be ruled out of a 50/50 universe)
+# with 31 or fewer "yeses" cannot be ruled out of a 50/50 universe).
 k <- sum(results >= 32)
 # Convert to a proportion
 kk <- k / n_trials
