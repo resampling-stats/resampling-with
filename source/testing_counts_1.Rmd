@@ -616,8 +616,9 @@ In operational steps, the procedure is as follows:
 import numpy as np
 import pandas as pd
 
-# We need the seed to make the text below be predictable.
-rnd = np.random.default_rng(1966)
+# We need the seed to make the results match the text below, and to match the
+# how_big_sample discussion.
+rnd = np.random.default_rng(1914)
 
 n = 20
 yeses = np.zeros(n, dtype=int)
