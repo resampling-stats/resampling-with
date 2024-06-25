@@ -394,8 +394,8 @@ generates such samples, which in this situation is 31.75 pounds. Is this
 close enough? That is up to you to decide in light of the purposes for
 which you are running the experiment. (The logic of the inference you
 make here is inevitably murky, and use of the term "real mean" can make
-it even murkier, as is seen in the discussion in Chapters 20-22 on
-confidence intervals.)
+it even murkier, as is seen in the discussion in @sec-confidence-accuracy
+— @sec-reliability-average on confidence intervals.)
 
 To see how accuracy is affected by larger samples, try a sample size of
 forty-eight "pigs" dealt from the same deck. (But, if the sample size
@@ -408,20 +408,14 @@ pound (the median deviations), smaller than with the values of .65 and
 .92 for samples of 12 pigs. Again, is this too little accuracy for you?
 If so, increase the sample size further.
 
-Table 24-3
-
 +-----------+-----------+-----------+-----------+-----------+-----------+
-| **Trial** | **Mean**  | **Absolut | **Trial** | **Mean**  | **Absolut |
-|           |           | e         |           |           | e         |
-|           |           | Devisatio |           |           | Deviation |
-|           |           | n         |           |           | of Trial  |
-|           |           | of Trial  |           |           | Mean**    |
-|           |           | Mean**    |           |           |           |
-|           |           |           |           |           | **from    |
-|           |           | **from    |           |           | Actual    |
-|           |           | Actual    |           |           | Mean**    |
-|           |           | Mean**    |           |           |           |
-+-----------+-----------+-----------+-----------+-----------+-----------+
+|   Trial   |   Mean    | Absolute  |   Trial   |   Mean    | Absolute  |
+|           |           | deviation |           |           | deviation |
+|           |           | of trial  |           |           | of trial  |
+|           |           | mean from |           |           | mean from |
+|           |           | actual    |           |           | actual    |
+|           |           | mean      |           |           | mean      |
++===========+===========+===========+===========+===========+===========+
 | 1         | 31.77     | .02       | 11        | 32.10     | .35       |
 +-----------+-----------+-----------+-----------+-----------+-----------+
 | 2         | 32.27     | 1.52      | 12        | 30.67     | 1.08      |
@@ -441,9 +435,11 @@ Table 24-3
 | 9         | 32.42     | .35       | 19        | 33.01     | 1.26      |
 +-----------+-----------+-----------+-----------+-----------+-----------+
 | 10        | 30.60     | 1.15      | 20        | 30.60     | 1.15      |
-+-----------+-----------+-----------+-----------+-----------+-----------+
-| Mean      |           |           |           |           | 31.75     |
-+-----------+-----------+-----------+-----------+-----------+-----------+
++===========+===========+===========+===========+===========+===========+
+| Mean                                                      | 31.75     |
++===========================================================+===========+
+
+: Table 24-3 {#tbl-24-3}
 
 The attentive reader of this example may have been troubled by this
 question: How do you know what kind of a distribution of values is
@@ -457,19 +453,14 @@ dispersion will tell you so, and you can then augment the sample to
 boost the accuracy. But an error in guessing will not introduce error
 into your final results.
 
-Table 24-4
-
 +-----------+-----------+-----------+-----------+-----------+-----------+
-| **Trial** | **Mean**  | **Absolut | **Trial** | **Mean**  | **Absolut |
-|           |           | e         |           |           | e         |
-|           |           | Deviation |           |           | Deviation |
-|           |           | of Trial  |           |           | of Trial  |
-|           |           | Mean**    |           |           | Mean**    |
-|           |           |           |           |           |           |
-|           |           | **from    |           |           | **from    |
-|           |           | Actual    |           |           | Actual    |
-|           |           | Mean**    |           |           | Mean**    |
-+-----------+-----------+-----------+-----------+-----------+-----------+
+|   Trial   |   Mean    | Absolute  |   Trial   |   Mean    | Absolute  |
+|           |           | deviation |           |           | deviation |
+|           |           | of trial  |           |           | of trial  |
+|           |           | mean from |           |           | mean from |
+|           |           | actual    |           |           | actual    |
+|           |           | mean      |           |           | mean      |
++===========+===========+===========+===========+===========+===========+
 | 1         | 31.80     | .05       | 11        | 31.93     | .18       |
 +-----------+-----------+-----------+-----------+-----------+-----------+
 | 2         | 32.27     | .52       | 12        | 32.40     | .65       |
@@ -489,9 +480,11 @@ Table 24-4
 | 9         | 31.20     | .55       | 19        | 31.96     | .21       |
 +-----------+-----------+-----------+-----------+-----------+-----------+
 | 10        | 32.01     | .26       | 20        | 31.32     | .43       |
-+-----------+-----------+-----------+-----------+-----------+-----------+
-| Mean      |           |           |           |           | 31.75     |
-+-----------+-----------+-----------+-----------+-----------+-----------+
++===========+===========+===========+===========+===========+===========+
+| Mean                                                      | 31.75     |
++===========================================================+===========+
+
+: Table 24-4 {#tbl-24-4}
 
 The guess should be based on something, however. One source for guessing
 is your general knowledge of the likely dispersion; for example, if you
@@ -574,35 +567,33 @@ and of this treatment and that you guess the sex ratio will be 75
 percent males and 25 percent females *if* the treatment alters the ratio
 from 50-50.
 
-In the random-number table let "01-25" stand for females and "26-00" for
+In a random-number table let "01-25" stand for females and "26-00" for
 males. Take twenty successive pairs of numbers for each trial, and run
 perhaps fifty trials, as in Table 24-5.
 
-Table 24-5
+| Trial | Females | Males | Trial | Females | Males | Trial | Females | Males |
+|-------|---------|-------|-------|---------|-------|-------|---------|-------|
+| 1     | 4       | 16    | 18    | 7       | 13    | 34    | 4       | 16    |
+| 2     | 6       | 14    | 19    | 3       | 17    | 35    | 6       | 14    |
+| 3     | 6       | 14    | 20    | 7       | 13    | 36    | 3       | 17    |
+| 4     | 5       | 15    | 21    | 4       | 16    | 37    | 8       | 12    |
+| 5     | 5       | 15    | 22    | 4       | 16    | 38    | 4       | 16    |
+| 6     | 3       | 17    | 23    | 5       | 15    | 39    | 3       | 17    |
+| 7     | 7       | 13    | 24    | 8       | 12    | 40    | 6       | 14    |
+| 8     | 6       | 14    | 25    | 4       | 16    | 41    | 5       | 15    |
+| 9     | 3       | 17    | 26    | 1       | 19    | 42    | 2       | 18    |
+| 10    | 2       | 18    | 27    | 5       | 15    | 43    | 8       | 12    |
+| 11    | 6       | 14    | 28    | 3       | 17    | 44    | 4       | 16    |
+| 12    | 1       | 19    | 29    | 8       | 12    | 45    | 6       | 14    |
+| 13    | 6       | 14    | 30    | 8       | 12    | 46    | 5       | 15    |
+| 14    | 3       | 17    | 31    | 5       | 15    | 47    | 3       | 17    |
+| 15    | 1       | 19    | 32    | 3       | 17    | 48    | 5       | 15    |
+| 16    | 5       | 15    | 33    | 4       | 16    | 49    | 3       | 17    |
+| 17    | 5       | 15    |       |         |       | 50    | 5       | 15    |
 
-  --------------------- -------------------- ---------------------- ---- --- ---- ---- --- ----
-  1                     4                    16                     18   7   13   34   4   16
-  2                     6                    14                     19   3   17   35   6   14
-  3                     6                    14                     20   7   13   36   3   17
-  4                     5                    15                     21   4   16   37   8   12
-  5                     5                    15                     22   4   16   38   4   16
-  6                     3                    17                     23   5   15   39   3   17
-  7                     7                    13                     24   8   12   40   6   14
-  8                     6                    14                     25   4   16   41   5   15
-  9                     3                    17                     26   1   19   42   2   18
-  10                    2                    18                     27   5   15   43   8   12
-  11                    6                    14                     28   3   17   44   4   16
-  12                    1                    19                     29   8   12   45   6   14
-  13                    6                    14                     30   8   12   46   5   15
-  14                    3                    17                     31   5   15   47   3   17
-  15                    1                    19                     32   3   17   48   5   15
-  16                    5                    15                     33   4   16   49   3   17
-  17                    5                    15                                   50   5   15
-  --------------------- -------------------- ---------------------- ---- --- ---- ---- --- ----
+: Table 24-5 {#tbl-24-5}
 
-**Trial Females Males Trial Females Males Trial Females Males**
-
-In Example 15-1 with a sample of twenty flies that contained fourteen or more
+In @sec-fruitfly with a sample of twenty flies that contained fourteen or more
 males, we found only an 8% probability that such an extreme sample would result
 from a 50-50 universe. Therefore, if we observe such an extreme sample, we rule
 out a 50-50 universe.
@@ -768,18 +759,18 @@ will show that many *yeses* a preponderant proportion of the time — in
 fact, in fifteen of fifteen experiments; therefore, the sample size of
 fifty is large enough if the split is "really" 70-30.
 
-Table 24-8
+|   Trial   |   No   |   Yes   |   Trial   |   No   |   Yes   |
+|-----------|--------|---------|-----------|--------|---------|
+| 1         | 13     | 37      | 9         | 15     | 35      |
+| 2         | 14     | 36      | 10        | 9      | 41      |
+| 3         | 18     | 32      | 11        | 15     | 35      |
+| 4         | 10     | 40      | 12        | 15     | 35      |
+| 5         | 13     | 37      | 13        | 9      | 41      |
+| 6         | 15     | 35      | 14        | 16     | 34      |
+| 7         | 14     | 36      | 15        | 17     | 33      |
 
-  ----------- -------- --------- ----------- -------- ---------
-  **Trial**   **No**   **Yes**   **Trial**   **No**   **Yes**
-  1           13       37        9           15       35
-  2           14       36        10          9        41
-  3           18       32        11          15       35
-  4           10       40        12          15       35
-  5           13       37        13          9        41
-  6           15       35        14          16       34
-  7           14       36        15          17       33
-  ----------- -------- --------- ----------- -------- ---------
+: Table 24-8 {#tbl-24-8}
+
 
 The following RESAMPLING STATS program takes samples of size 50 from a
 universe that is 70% "yes." It then observes how often such samples
