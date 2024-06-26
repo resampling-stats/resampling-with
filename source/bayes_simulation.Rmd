@@ -25,23 +25,6 @@ source("_common.R")
 
 # Bayesian Analysis by Simulation {#sec-bayes-simulation}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/29-Chap-25.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
 > This branch of mathematics [probability] is the only one, I believe, in
 > which good writers frequently get results entirely erroneous. [@peirce1923chance, Doctrine of Chances, II]
 
@@ -183,6 +166,44 @@ k = approved_and_faulty / approved
 print('Proportion of faulty cars of cars approved:', np.round(k, 2))
 ```
 
+```{r}
+n_trials <- 10000  # number of cars
+
+# Counters for number of approved, number of approved and faulty
+approved <- 0
+approved_and_faulty <- 0
+
+for (i in 1:n_trials) {
+
+    # Decide whether the car is faulty or working, with a probability of
+    # 0.3 and 0.7 respectively
+    car <- sample(c('faulty', 'working'), size=1, prob=c(0.3, 0.7))
+
+    if (car == 'faulty') {
+        # What the mechanic says of a faulty car
+        mechanic_says <- sample(c('approved', 'not approved'),
+                                size=1,
+                                prob=c(0.1, 0.9))
+    } else {
+        # What the mechanic says of a working car
+        mechanic_says <- sample(c('approved', 'not approved'),
+                                size=1,
+                                prob=c(0.7, 0.3))
+    }
+
+    if (mechanic_says == 'approved') {
+        approved <-  approved + 1
+        if (car == 'faulty') {
+            approved_and_faulty <- approved_and_faulty + 1
+        }
+    }
+}
+
+k <- approved_and_faulty / approved
+
+message('Proportion of faulty cars of cars approved: ', round(k, 2))
+```
+
 The answer looks to be somewhere between 5 and 6%.  The code clearly follows
 the description step by step, but it is also quite slow.  If we can improve the
 code, we may be able to do our simulation with more cars, and get a more
@@ -205,8 +226,9 @@ n_working = np.sum(cars == 'working')
 n_faulty = n_trials - n_working
 
 # Create a new array in which to store what a mechanic says
-# about the car: 'approved' or 'not approved'
-mechanic_says = np.repeat(['not yet known'], n_trials)
+# about the car: 'approved' or 'not approved'. Use
+# dtype=object because we need to store strings.
+mechanic_says = np.zeros(n_trials, dtype=object)
 
 # We start with the working cars; what does the mechanic say about them?
 # Generate 'approved' or 'not approved' labels with the given probabilities.
@@ -237,6 +259,66 @@ n_approved = np.sum(approved)
 k = n_faulty_but_approved / n_approved
 
 print('Proportion of faulty cars of cars approved:', np.round(k, 2))
+```
+
+```{r}
+# Number of cars; we made this number larger by a factor of 100
+n_trials <- 1000000
+
+# Generate an array with as many entries as there are cars, each
+# being either 'working' or 'faulty'.
+# We are taking a sample _with_ replacement.
+cars <- sample(c('working', 'faulty'),
+               size=n_trials,
+               replace=TRUE,
+               prob=c(0.7, 0.3))
+
+# Count how many cars are working
+n_working <- sum(cars == 'working')
+
+# All the rest are faulty
+n_faulty <- n_trials - n_working
+
+# Create a new vector in which to store what a mechanic says
+# about the car: 'approved' or 'not approved'. We use
+# "character" to tell R these are strings.
+mechanic_says <- character(n_trials)
+
+# We start with the working cars; what does the mechanic say about them?
+# Generate 'approved' or 'not approved' labels with the given probabilities.
+mechanic_says[cars == 'working'] <- sample(
+    c('approved', 'not approved'),
+    size=n_working,
+    replace=TRUE,
+    prob=c(0.8, 0.2)
+)
+
+# Similarly, for each faulty car, generate 'approved'/'not approved'
+# labels with the given probabilities.
+mechanic_says[cars == 'faulty'] <- sample(
+    c('approved', 'not approved'),
+    size=n_faulty,
+    replace=TRUE,
+    prob=c(0.1, 0.9)
+)
+
+# Identify all cars that were approved
+# This produces a binary mask, an array that looks like:
+# [True, False, False, True, ... ]
+approved <- (mechanic_says == 'approved')
+
+# Identify cars that are faulty AND were approved
+faulty_but_approved <- (cars == 'faulty') & approved
+
+# Count the number of cars that are faulty but approved, as well as
+# the total number of cars that were approved
+n_faulty_but_approved <- sum(faulty_but_approved)
+n_approved <- sum(approved)
+
+# Calculate the ratio, which is the answer we seek
+k <- n_faulty_but_approved / n_approved
+
+message('Proportion of faulty cars of cars approved: ', round(k, 2))
 ```
 
 The code now runs much faster, and with a larger number of cars we see that the
@@ -439,50 +521,107 @@ import numpy as np
 
 rnd = np.random.default_rng()
 
-# The number of people
+# The number of people.
 n_trials = 1_000_000
 
 # For each person, generate a True or False label,
-# indicating that they have / don't have COVID
+# indicating that they have / don't have COVID.
 person_has_covid = rnd.choice(
     [True, False], p=[0.015, 0.985],
     size=n_trials
 )
 
-# Calculate the numbers of people with and without COVID
+# Calculate the numbers of people with and without COVID.
 n_with_covid = np.sum(person_has_covid)
 n_without_covid = n_trials - n_with_covid
 
 # In this array, we will store, for each person, whether they
-# had a positive or a negative test
-test_result = np.zeros_like(person_has_covid, dtype=bool)
+# had a positive or a negative test.
+test_result = np.zeros(n_trials, dtype=bool)
 
-# Draw test results for people with COVID
+# Draw test results for people with COVID.
 test_result[person_has_covid] = rnd.choice(
     [True, False], p=[0.6, 0.4],
     size=n_with_covid
 )
 
-# Draw test results for people without COVID
+# Draw test results for people without COVID.
+# ~person_has_covid` flips all Boolean values from FALSE to TRUE
+# and from TRUE to FALSE.
 test_result[~person_has_covid] = rnd.choice(
     [True, False], p=[0.005, 0.995],
     size=n_without_covid
 )
 
 # Get the COVID statuses of all those with negative tests
-# (`test_result` is a boolean mask, like `[True, False, False, True, ...]`,
-# and `~test_result` flips all boolean values to `[False, True, True, False, ...]`.
+# (`test_result` is a Boolean mask, like `[True, False, False, True, ...]`,
+# and `~test_result` flips all Boolean values to `[False, True, True, False, ...]`.
 covid_status_negative_test = person_has_covid[~test_result]
 
-# Now, count how many with COVID had a negative test results
+# Now, count how many with COVID had a negative test results.
 n_with_covid_and_negative_test = np.sum(covid_status_negative_test)
 
-# And how many people, overall, had negative test results
+# And how many people, overall, had negative test results.
 n_with_negative_test = len(covid_status_negative_test)
 
 k = n_with_covid_and_negative_test / n_with_negative_test
 
 print('Proportion with Covid of those with negative test:', np.round(k, 4))
+```
+
+```{r}
+# The number of people.
+n_trials <- 1000000
+
+# For each person, generate a True or False label,
+# indicating that they have / don't have COVID.
+person_has_covid <- sample(
+    c(TRUE, FALSE),
+    size=n_trials,
+    replace=TRUE,
+    prob=c(0.015, 0.985)
+)
+
+# Calculate the numbers of people with and without COVID.
+n_with_covid <- sum(person_has_covid)
+n_without_covid <- n_trials - n_with_covid
+
+# In this array, we will store, for each person, whether they
+# had a positive or a negative test.
+test_result <- logical(n_trials)
+
+# Draw test results for people with COVID.
+test_result[person_has_covid] <- sample(
+    c(TRUE, FALSE),
+    size=n_with_covid,
+    replace=TRUE,
+    prob=c(0.6, 0.4)
+)
+
+# Draw test results for people without COVID.
+# !person_has_covid` flips all Boolean values from FALSE to TRUE
+# and from TRUE to FALSE.
+test_result[!person_has_covid] <- sample(
+    c(TRUE, FALSE),
+    size=n_without_covid,
+    replace=TRUE,
+    prob=c(0.005, 0.995)
+)
+
+# Get the COVID statuses of all those with negative tests
+# (`test_result` is a Boolean mask, like `[TRUE, FALSE, FALSE, TRUE, ...]`,
+# and `!test_result` flips all Boolean values to `[FALSE, TRUE, TRUE, FALSE, ...]`.
+covid_status_negative_test <- person_has_covid[!test_result]
+
+# Now, count how many with COVID had a negative test results.
+n_with_covid_and_negative_test <- sum(covid_status_negative_test)
+
+# And how many people, overall, had negative test results.
+n_with_negative_test <- length(covid_status_negative_test)
+
+k <- n_with_covid_and_negative_test / n_with_negative_test
+
+message('Proportion with Covid of those with negative test: ', round(k, 4))
 ```
 
 This gives around 0.006 or 0.6%.
@@ -601,12 +740,56 @@ n_good_driver_accidents = np.sum(ppl_with_accidents == 'good driver')
 n_poor_driver_accidents = np.sum(ppl_with_accidents == 'poor driver')
 n_all_with_accidents = n_good_driver_accidents + n_poor_driver_accidents
 
-avg_risk_percent = (n_good_driver_accidents * 0.06 +
-                    n_poor_driver_accidents * 0.6) / n_all_with_accidents * 100
+avg_risk_percent = ((n_good_driver_accidents * 0.06 +
+                     n_poor_driver_accidents * 0.6) /
+                    n_all_with_accidents * 100)
 
 premium = avg_risk_percent * cost_per_percent
 
 print('Premium is:', np.round(premium))
+```
+
+```{r}
+n_trials <- 100000
+cost_per_percent <- 100
+
+people <- sample(
+    c('good driver', 'poor driver'),
+    size=n_trials,
+    replace=TRUE,
+    prob=c(0.8, 0.2)
+)
+
+good_driver <- (people == 'good driver')
+poor_driver <- !good_driver
+
+# Did they have an accident last year?
+had_accident <- logical(n_trials)
+had_accident[good_driver] <- sample(
+    c(TRUE, FALSE),
+    size=sum(good_driver),
+    replace=TRUE,
+    prob=c(0.06, 0.94)
+)
+had_accident[poor_driver] <- sample(
+    c(TRUE, FALSE),
+    size=sum(poor_driver),
+    replace=TRUE,
+    prob=c(0.6, 0.4)
+)
+
+ppl_with_accidents <- people[had_accident]
+n_good_driver_accidents <- sum(ppl_with_accidents == 'good driver')
+n_poor_driver_accidents <- sum(ppl_with_accidents == 'poor driver')
+n_all_with_accidents <- n_good_driver_accidents + n_poor_driver_accidents
+
+avg_risk_percent <- (n_good_driver_accidents * 0.06 +
+                     n_poor_driver_accidents * 0.6) /
+                     n_all_with_accidents * 100
+
+premium <- avg_risk_percent * cost_per_percent
+
+message('Premium is: ', round(premium))
 ```
 
 The answer should be around 4450 USD.
@@ -761,9 +944,10 @@ rnd = np.random.default_rng()
 
 n_trials = 100_000
 
-# Start the results array with marker to say we haven't
-# checked the parents of the mouse, because 
-parents = np.repeat(['Not determined'], n_trials)
+# Make an array to store results for each trial.
+# The results are strings, so use dtype=object.
+# Many of these we will not set, for example, for brown mice (see below).
+parents = np.zeros(n_trials, dtype=object)
 
 for i in range(n_trials):
     test_mouse = rnd.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25])
@@ -771,7 +955,7 @@ for i in range(n_trials):
     # The test mouse is black; since we drew a brown mouse skip this trial
     if test_mouse == 'bb':
         # continue has the effect of aborting this iteration of the loop
-        # and go back to start the next iteration.  If the code gets
+        # and going back to start the next iteration.  If the code gets
         # to "continue", none of the rest of the loop (indented) code
         # will run.
         continue
@@ -786,9 +970,9 @@ for i in range(n_trials):
     # see whether all of them are black ('Bb').
     # The probabilities come from the middle row of the table.
     if test_mouse == 'Bb':
-      children = rnd.choice(['Bb', 'bb'], p=[0.5, 0.5], size=7)
-      if np.all(children == 'Bb'):
-          parents[i] = 'Bb'
+        children = rnd.choice(['Bb', 'bb'], p=[0.5, 0.5], size=7)
+        if np.all(children == 'Bb'):
+            parents[i] = 'Bb'
 
 # Now, count how many parents were 'BB' vs 'Bb'
 n_parents_BB = np.sum(parents == 'BB')
@@ -798,9 +982,65 @@ n_B = n_parents_BB + n_parents_Bb
 p_BB = n_parents_BB / n_B
 p_Bb = n_parents_Bb / n_B
 
-print('p_BB = ', np.round(p_BB, 3))
-print('p_Bb = ', np.round(p_Bb, 3))
-print('Ratio = ', np.round(p_BB / p_Bb, 1))
+print('p_BB =', np.round(p_BB, 3))
+print('p_Bb =', np.round(p_Bb, 3))
+print('Ratio =', np.round(p_BB / p_Bb, 1))
+```
+
+```{r}
+n_trials <- 100000
+
+# Make a vector to store results for each trial.
+# The results are strings, so use "character" type.
+# Many of these we will not set, for example, for brown mice (see below).
+parents <- character(n_trials)
+
+for (i in 1:n_trials) {
+    test_mouse <- sample(c('BB', 'Bb', 'bb'),
+                         size=1,
+                         prob=c(0.25, 0.5, 0.25))
+
+    # The test mouse is black; since we drew a brown mouse skip this trial.
+    if (test_mouse == 'bb') {
+        # "mext" has the effect of aborting this iteration of the loop
+        # and going back to start the next iteration.  If the code gets
+        # to "next", none of the rest of the loop (within the curly brackets
+        # code  will run.
+        next
+    }
+
+    # If the test mouse is 'BB', all 7 children are guaranteed to
+    # be 'Bb' black.
+    # Therefore, add 'BB' to the parent list.
+    if (test_mouse == 'BB') {
+        parents[i] <- 'BB'
+    }
+
+    # If the parent mouse is 'Bb', we draw 7 children to
+    # see whether all of them are black ('Bb').
+    # The probabilities come from the middle row of the table.
+    if (test_mouse == 'Bb') {
+        children <- sample(c('Bb', 'bb'),
+                            size=7,
+                            replace=TRUE,
+                            prob=c(0.5, 0.5))
+        if (all(children == 'Bb')) {
+            parents[i] <- 'Bb'
+        }
+    }
+}
+
+# Now, count how many parents were 'BB' vs 'Bb'
+n_parents_BB <- sum(parents == 'BB')
+n_parents_Bb <- sum(parents == 'Bb')
+n_B <- n_parents_BB + n_parents_Bb
+
+p_BB <- n_parents_BB / n_B
+p_Bb <- n_parents_Bb / n_B
+
+message('p_BB = ', round(p_BB, 3))
+message('p_Bb = ', round(p_Bb, 3))
+message('Ratio = ', round(p_BB / p_Bb, 1))
 ```
 
 We see that all the offspring being black considerably changes the situation!
@@ -814,10 +1054,10 @@ at a time, we will do the whole bunch together.
 ```{python}
 n_trials = 1_000_000
 
-# In n trials, pair two Bb mice and generate a child
+# In n_trials trials, pair two Bb mice and generate a child.
 test_mice = rnd.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25], size=n_trials)
 
-# The resulting test mouse is black, so filter out all brown ones
+# The resulting test mouse is black, so filter out all brown ones.
 test_mice = test_mice[test_mice != 'bb']
 n_test_mice = len(test_mice)
 
@@ -826,24 +1066,27 @@ n_test_mice = len(test_mice)
 all_offspring_black = np.zeros(n_test_mice, dtype=bool)
 
 # If a test mouse is 'BB', we are assured that all its offspring
-# will be black
+# will be black.
 all_offspring_black[test_mice == 'BB'] = True
 
 # If a test mouse is 'Bb', we have to generate its offspring and
-# see whether they are all black or not
+# see whether they are all black or not.
 test_mice_Bb = (test_mice == 'Bb')
 n_test_mice_Bb = np.sum(test_mice_Bb)
 
-# Generate all offspring of all 'Bb' test mice
+# Generate all offspring of all 'Bb' test mice.
+# This gives a 2-dimensional array, with one row per Bb mouse,
+# and 7 columns, one for each child.
 offspring = rnd.choice(
     ['Bb', 'bb'], p=[0.5, 0.5], size=(n_test_mice_Bb, 7)
 )
+# Check whether all children (columns) are Bb, for each row.
 all_offspring_black[test_mice_Bb] = np.all(offspring == 'Bb', axis=1)
 
-# Find the genetic types of the parents of all-black offspring
+# Find the genetic types of the parents of all-black offspring.
 parents = test_mice[all_offspring_black]
 
-# Calculate what fraction of parents were 'BB' vs 'Bb'
+# Calculate what fraction of parents were 'BB' vs 'Bb'.
 parents_BB = (parents == 'BB')
 parents_Bb = (parents == 'Bb')
 n_B = np.sum(all_offspring_black)
@@ -854,6 +1097,60 @@ p_Bb = np.sum(parents_Bb) / n_B
 print('p_BB = ', np.round(p_BB, 3))
 print('p_Bb = ', np.round(p_Bb, 3))
 print('Ratio = ', np.round(p_BB / p_Bb, 1))
+```
+
+```{r}
+n_trials <- 1000000
+
+# In n_trials trials, pair two Bb mice and generate a child.
+test_mice <- sample(c('BB', 'Bb', 'bb'),
+                    size=n_trials,
+                    replace=TRUE,
+                    prob=c(0.25, 0.5, 0.25))
+
+# The resulting test mouse is black, so filter out all brown ones.
+test_mice <- test_mice[test_mice != 'bb']
+n_test_mice <- length(test_mice)
+
+# Each test mouse will now be mated with a brown mouse, producing 7 offspring.
+# We then store whether all the offspring were black or not.
+all_offspring_black <- logical(n_test_mice)
+
+# If a test mouse is 'BB', we are assured that all its offspring
+# will be black.
+all_offspring_black[test_mice == 'BB'] <- TRUE
+
+# If a test mouse is 'Bb', we have to generate its offspring and
+# see whether they are all black or not
+test_mice_Bb <- (test_mice == 'Bb')
+n_test_mice_Bb <- sum(test_mice_Bb)
+
+# Generate all offspring of all 'Bb' test mice
+# This gives 7 children for each Bb mouse.
+offspring <- sample(c('Bb', 'bb'),
+                    size=n_test_mice_Bb * 7,
+                    replace=TRUE,
+                    prob=c(0.5, 0.5))
+# This gives a 2-dimensional matrix, with one row per Bb mouse,
+# and 7 columns, one for each child.
+offspring_mat = matrix(offspring, ncol=7)
+# Check whether all 7 children (columns) are Bb, for each row.
+all_offspring_black[test_mice_Bb] <- rowSums(offspring_mat == 'Bb') == 7
+
+# Find the genetic types of the parents of all-black offspring.
+parents <- test_mice[all_offspring_black]
+
+# Calculate what fraction of parents were 'BB' vs 'Bb'.
+parents_BB <- (parents == 'BB')
+parents_Bb <- (parents == 'Bb')
+n_B <- sum(all_offspring_black)
+
+p_BB <- sum(parents_BB) / n_B
+p_Bb <- sum(parents_Bb) / n_B
+
+message('p_BB = ', round(p_BB, 3))
+message('p_Bb = ', round(p_Bb, 3))
+message('Ratio = ', round(p_BB / p_Bb, 1))
 ```
 
 This yields a similar result, but in much shorter time — which means we can increase the number of trials and get a more accurate result.
