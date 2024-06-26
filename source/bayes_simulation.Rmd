@@ -87,29 +87,90 @@ requirement of a clearly visualized model is a strong point in favor of simulati
 5. Out of all cars "approved", count how many are "faulty".
    The ratio between these numbers is our answer.
 
-Here is the whole thing:
+::: python
+
+:::{.callout-note}
+## In-place operators in Python
+
+In the code that follows, we are going to use a new and neat feature of Python, called *in-place* operations.
+
+We often find ourselves in the situation where we have some variable, say `a`,
+and we want to do some operation on the value of `a` *and then store the result
+in `a` again*.
+
+Of course, we could do something like this:
+
+```{python}
+# The initial value of "a".
+a = 10
+```
+
+```{python}
+# Set a to get the value of a plus 1.
+a = a + 1
+# Show the result.
+a
+```
+
+Because this is such a common kind of thing to do, Python has special operators
+to do this for us, called *in-place* operators.  For the example above, there
+is an *in-place addition* operator `+=` that takes the value of the variable on the left hand side, adds the value on the right hand side, and stores the result in the variable on the left hand side.  For example:
+
+```{python}
+# The initial value of "b".
+b = 10
+```
+
+```{python}
+# Set b to get the value of b plus 1.
+# Notice the in-place operator "+=".
+b += 1
+# Show the result.
+b
+```
+
+There are also in-place operators for subtraction (e.g. `c -= 3`),
+multiplication (e.g. `d *= 2`), and division (`e /= 2`).
+
+You will see us using the in-place `+=` in the code below.
+:::
+
+:::
+
+Here is the whole simulation of the car / mechanic problem:
+
+::: {.notebook name="bayes_cars" title="Bayesian analysis of cars and mechanics"}
+
+::: nb-only
+We wish to know the probability that if the mechanic *says* a car is
+"OK," it *really* is faulty.  Phrased differently, what is the
+probability of a car being faulty if the mechanic said it was OK?
+:::
 
 ```{python}
 import numpy as np
 
-N = 10000  # number of cars
+# Set up the random number generator.
+rnd = np.random.default_rng()
+
+n_trials = 10000  # number of cars
 
 # Counters for number of approved, number of approved and faulty
 approved = 0
 approved_and_faulty = 0
 
-for i in range(N):
+for i in range(n_trials):
 
     # Decide whether the car is faulty or working, with a probability of
     # 0.3 and 0.7 respectively
-    car = np.random.choice(['faulty', 'working'], p=[0.3, 0.7])
+    car = rnd.choice(['faulty', 'working'], p=[0.3, 0.7])
 
     if car == 'faulty':
         # What the mechanic says of a faulty car
-        mechanic_says = np.random.choice(['approved', 'not approved'], p=[0.1, 0.9])
+        mechanic_says = rnd.choice(['approved', 'not approved'], p=[0.1, 0.9])
     else:
         # What the mechanic says of a working car
-        mechanic_says = np.random.choice(['approved', 'not approved'], p=[0.7, 0.3])
+        mechanic_says = rnd.choice(['approved', 'not approved'], p=[0.7, 0.3])
 
     if mechanic_says == 'approved':
         approved += 1
@@ -119,40 +180,44 @@ for i in range(N):
 
 k = approved_and_faulty / approved
 
-print(f'{k * 100:.2}%')
+print('Proportion of faulty cars of cars approved:', np.round(k, 2))
 ```
 
-The answer looks to be somewhere between 5 and 6%.  The code clearly follows the description step by step, but it is also quite slow.  If we can improve the code, we may be able to do our simulation with more cars, and get a more accurate answer.
+The answer looks to be somewhere between 5 and 6%.  The code clearly follows
+the description step by step, but it is also quite slow.  If we can improve the
+code, we may be able to do our simulation with more cars, and get a more
+accurate answer.
 
 Let's use arrays to store the states of all cars in the lot simultaneously:
 
 ```{python}
-N = 1000000  # number of cars; we made this number larger by a factor of 100
+# Number of cars; we made this number larger by a factor of 100
+n_trials = 1_000_000
 
 # Generate an array with as many entries as there are cars, each
 # being either 'working' or 'faulty'
-cars = np.random.choice(['working', 'faulty'], p=[0.7, 0.3], size=N)
+cars = rnd.choice(['working', 'faulty'], p=[0.7, 0.3], size=n_trials)
 
 # Count how many cars are working
-N_working = np.sum(cars == 'working')
+n_working = np.sum(cars == 'working')
 
 # All the rest are faulty
-N_faulty = N - N_working
+n_faulty = n_trials - n_working
 
 # Create a new array in which to store what a mechanic says
 # about the car: 'approved' or 'not approved'
-mechanic_says = np.empty_like(cars, dtype=object)
+mechanic_says = np.repeat(['not yet known'], n_trials)
 
 # We start with the working cars; what does the mechanic say about them?
 # Generate 'approved' or 'not approved' labels with the given probabilities.
-mechanic_says[cars == 'working'] = np.random.choice(
-    ['approved', 'not approved'], p=[0.8, 0.2], size=N_working
+mechanic_says[cars == 'working'] = rnd.choice(
+    ['approved', 'not approved'], p=[0.8, 0.2], size=n_working
 )
 
 # Similarly, for each faulty car, generate 'approved'/'not approved'
 # labels with the given probabilities.
-mechanic_says[cars == 'faulty'] = np.random.choice(
-    ['approved', 'not approved'], p=[0.1, 0.9], size=N_faulty
+mechanic_says[cars == 'faulty'] = rnd.choice(
+    ['approved', 'not approved'], p=[0.1, 0.9], size=n_faulty
 )
 
 # Identify all cars that were approved
@@ -165,18 +230,23 @@ faulty_but_approved = (cars == 'faulty') & approved
 
 # Count the number of cars that are faulty but approved, as well as
 # the total number of cars that were approved
-N_faulty_but_approved = np.sum(faulty_but_approved)
-N_approved = np.sum(approved)
+n_faulty_but_approved = np.sum(faulty_but_approved)
+n_approved = np.sum(approved)
 
 # Calculate the ratio, which is the answer we seek
-k = N_faulty_but_approved / N_approved
+k = n_faulty_but_approved / n_approved
 
-print(f'{k * 100:.2}%')
+print('Proportion of faulty cars of cars approved:', np.round(k, 2))
 ```
 
 The code now runs much faster, and with a larger number of cars we see that the
 answer is closer to a 5% chance of a car being broken after it has been
 approved by a mechanic.
+
+:::
+<!---
+End of notebook
+-->
 
 ### Calculation without simulation
 
@@ -325,8 +395,10 @@ Such a probability is known as a *conditional probability*.  We discuss these in
 In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
 
 $$
-P(\text{car broken | mechanic approved})
-= P(\text{car broken and mechanic approved}) / P(\text{mechanic approved})
+\begin{align*}
+P(\text{car broken | mechanic approved}) = \\
+P(\text{car broken and mechanic approved}) / P(\text{mechanic approved})
+\end{align*}
 $$
 
 We have already used $B$ to mean "broken" (above), so let us use $A$ to mean "mechanic approved".  Then we can write the statement above in a more compact way:
@@ -355,35 +427,46 @@ We have the following information:
 
 Again, we start with our simulation.
 
+::: {.notebook name="bayes_covid" title="Bayesian analysis of Covid test result"}
+
+::: nb-only
+You get a COVID test, and the test is negative.  Now, you would like to know
+what the chance is of you having COVID.
+:::
+
 ```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
 # The number of people
-N = 1000000
+n_trials = 1_000_000
 
 # For each person, generate a True or False label,
 # indicating that they have / don't have COVID
-person_has_covid = np.random.choice(
+person_has_covid = rnd.choice(
     [True, False], p=[0.015, 0.985],
-    size=N
+    size=n_trials
 )
 
 # Calculate the numbers of people with and without COVID
-N_with_covid = np.sum(person_has_covid)
-N_without_covid = N - N_with_covid
+n_with_covid = np.sum(person_has_covid)
+n_without_covid = n_trials - n_with_covid
 
 # In this array, we will store, for each person, whether they
 # had a positive or a negative test
 test_result = np.zeros_like(person_has_covid, dtype=bool)
 
 # Draw test results for people with COVID
-test_result[person_has_covid] = np.random.choice(
+test_result[person_has_covid] = rnd.choice(
     [True, False], p=[0.6, 0.4],
-    size=N_with_covid
+    size=n_with_covid
 )
 
 # Draw test results for people without COVID
-test_result[~person_has_covid] = np.random.choice(
+test_result[~person_has_covid] = rnd.choice(
     [True, False], p=[0.005, 0.995],
-    size=N_without_covid
+    size=n_without_covid
 )
 
 # Get the COVID statuses of all those with negative tests
@@ -392,19 +475,24 @@ test_result[~person_has_covid] = np.random.choice(
 covid_status_negative_test = person_has_covid[~test_result]
 
 # Now, count how many with COVID had a negative test results
-N_with_covid_and_negative_test = np.sum(covid_status_negative_test)
+n_with_covid_and_negative_test = np.sum(covid_status_negative_test)
 
 # And how many people, overall, had negative test results
-N_with_negative_test = len(covid_status_negative_test)
+n_with_negative_test = len(covid_status_negative_test)
 
-k = N_with_covid_and_negative_test / N_with_negative_test
+k = n_with_covid_and_negative_test / n_with_negative_test
 
-print(k)
+print('Proportion with Covid of those with negative test:', np.round(k, 4))
 ```
 
 This gives around 0.006 or 0.6%.
 
-Now that we have a rough indication of what the answer should be, let's try and calculate it directly, based on the tree of informatiom shown earlier.
+:::
+<!---
+End of notebook.
+-->
+
+Now that we have a rough indication of what the answer should be, let's try and calculate it directly, based on the tree of information shown earlier.
 
 We will use these abbreviations:
 
@@ -457,6 +545,8 @@ This matches very closely our simulation result, so we have some confidence that
 
 Another sort of introductory problem, following after [@feller1968introduction, p 122]:
 
+::: {.notebook name="bayes_accidents" title="Bayesian analysis for insurance premium"}
+
 A mutual insurance company charges its members according to the risk
 of having an car accident. It is known that there are two classes of
 people — 80 percent of the population with good driving judgment and
@@ -480,43 +570,51 @@ We will proceed as follows:
    This will indicate the appropriate insurance premium.
 
 ```{python}
-N = 100000
+import numpy as np
+
+rnd = np.random.default_rng()
+
+n_trials = 100_000
 cost_per_percent = 100
 
-people = np.random.choice(
+people = rnd.choice(
     ['good driver', 'poor driver'], p=[0.8, 0.2],
-    size=N
+    size=n_trials
 )
 
 good_driver = (people == 'good driver')
 poor_driver = ~good_driver
 
 # Did they have an accident last year?
-had_accident = np.zeros(N, dtype=bool)
-had_accident[good_driver] = np.random.choice(
+had_accident = np.zeros(n_trials, dtype=bool)
+had_accident[good_driver] = rnd.choice(
     [True, False], p=[0.06, 0.94],
     size=np.sum(good_driver)
 )
-had_accident[poor_driver] = np.random.choice(
+had_accident[poor_driver] = rnd.choice(
     [True, False], p=[0.6, 0.4],
     size=np.sum(poor_driver)
 )
 
 ppl_with_accidents = people[had_accident]
-N_good_driver_accidents = np.sum(ppl_with_accidents == 'good driver')
-N_poor_driver_accidents = np.sum(ppl_with_accidents == 'poor driver')
-N_all_with_accidents = N_good_driver_accidents + N_poor_driver_accidents
+n_good_driver_accidents = np.sum(ppl_with_accidents == 'good driver')
+n_poor_driver_accidents = np.sum(ppl_with_accidents == 'poor driver')
+n_all_with_accidents = n_good_driver_accidents + n_poor_driver_accidents
 
-avg_risk_percent = (N_good_driver_accidents * 0.06 +
-                    N_poor_driver_accidents * 0.6) / N_all_with_accidents * 100
+avg_risk_percent = (n_good_driver_accidents * 0.06 +
+                    n_poor_driver_accidents * 0.6) / n_all_with_accidents * 100
 
 premium = avg_risk_percent * cost_per_percent
 
-print(f'{premium:.0f} USD')
-
+print('Premium is:', np.round(premium))
 ```
 
 The answer should be around 4450 USD.
+
+:::
+<!---
+End of notebook.
+-->
 
 ### Screening for Disease
 
@@ -550,7 +648,7 @@ nothing about the person's symptoms or signs?
 
 If the raw numbers are not available, the problem can be phrased in such
 terms as "about 1 case in 1000" and "about 5 false positives in 100
-cases.")
+cases."
 
 One may obtain an answer as follows:
 
@@ -591,6 +689,8 @@ statistics with the analysis of a famous problem first published by Fisher
 > established genetic theory that the probabilities associated with
 > offspring from various matings are as listed in @tbl-mice-genetics.
 
+(See [@box1992bayesian, pp. 12-14]).
+
                    BB (black)  Bb (black)  bb (brown)
 ------------------ ----------- ----------- ----------
 BB mated with bb   0           1           0
@@ -598,7 +698,7 @@ Bb mated with bb   0           ½           ½
 Bb mated with Bb   ¼           ½           ¼
 ------------------ ----------- ----------- ----------
 
-: Probabilities for Genetic Character of Mice Offspring [@box1992bayesian, pp. 12-14] {#tbl-mice-genetics}
+: Probabilities for Genetic Character of Mice Offspring {#tbl-mice-genetics}
 
 Suppose we have a "test" mouse which has been produced
 by a mating between two (*Bb*) mice and is black.
@@ -643,69 +743,87 @@ the situation instead.
 
 We will do a naïve implementation that closely follows the logic described above, followed by a slightly optimized version.
 
+<!---
+TODO - explain continue in more detail?  Have we covered `np.all`?
+-->
+
+::: {.notebook name="box_tao_mice" title="A problem of black and brown mice"}
+
+::: nb-only
+Solve the Box and Tao problem of parental probabilities for black and brown
+mice.  See the text for full explanation.
+:::
+
 ```{python}
-N = 100000
+import numpy as np
 
-parents = []
+rnd = np.random.default_rng()
 
-for i in range(N):
-    test_mouse = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25])
+n_trials = 100_000
+
+# Start the results array with marker to say we haven't
+# checked the parents of the mouse, because 
+parents = np.repeat(['Not determined'], n_trials)
+
+for i in range(n_trials):
+    test_mouse = rnd.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25])
 
     # The test mouse is black; since we drew a brown mouse skip this trial
     if test_mouse == 'bb':
+        # continue has the effect of aborting this iteration of the loop
+        # and go back to start the next iteration.  If the code gets
+        # to "continue", none of the rest of the loop (indented) code
+        # will run.
         continue
 
     # If the test mouse is 'BB', all 7 children are guaranteed to
     # be 'Bb' black.
     # Therefore, add 'BB' to the parent list.
     if test_mouse == 'BB':
-        parents.append('BB')
+        parents[i] = 'BB'
 
     # If the parent mouse is 'Bb', we draw 7 children to
     # see whether all of them are black ('Bb').
     # The probabilities come from the middle row of the table.
     if test_mouse == 'Bb':
-      children = np.random.choice(['Bb', 'bb'], p=[0.5, 0.5], size=7)
+      children = rnd.choice(['Bb', 'bb'], p=[0.5, 0.5], size=7)
       if np.all(children == 'Bb'):
-          parents.append('Bb')
+          parents[i] = 'Bb'
 
 # Now, count how many parents were 'BB' vs 'Bb'
-parents = np.array(parents)
+n_parents_BB = np.sum(parents == 'BB')
+n_parents_Bb = np.sum(parents == 'Bb')
+n_B = n_parents_BB + n_parents_Bb
 
-parents_BB = (parents == 'BB')
-parents_Bb = (parents == 'Bb')
-N_B = len(parents)
+p_BB = n_parents_BB / n_B
+p_Bb = n_parents_Bb / n_B
 
-p_BB = np.sum(parents_BB) / N_B
-p_Bb = np.sum(parents_Bb) / N_B
-
-print(f'p_BB = {p_BB:.3f}')
-print(f'p_Bb = {p_Bb:.3f}')
-print(f'Ratio: {p_BB/p_Bb:.1f}')
+print('p_BB = ', np.round(p_BB, 3))
+print('p_Bb = ', np.round(p_Bb, 3))
+print('Ratio = ', np.round(p_BB / p_Bb, 1))
 ```
 
-We see that all the offspring being black considerably changes the
-situation!
-We started with the odds being 2:1 in favor of Bb vs BB.
-The "posterior" or "after the evidence" ratio is closer to 64:1 in
-favor of *BB*! (1973, pp. 12-14)
+We see that all the offspring being black considerably changes the situation!
+We started with the odds being 2:1 in favor of Bb vs BB. The "posterior" or
+"after the evidence" ratio is closer to 64:1 in favor of *BB*! (1973, pp.
+12-14)
 
-Let's tune the code a bit to run faster.  Instead of doing the trials
-one mouse at a time, we will do the whole bunch together.
+Let's tune the code a bit to run faster.  Instead of doing the trials one mouse
+at a time, we will do the whole bunch together.
 
 ```{python}
-N = 1000000
+n_trials = 1_000_000
 
-# In N trials, pair two Bb mice and generate a child
-test_mice = np.random.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25], size=N)
+# In n trials, pair two Bb mice and generate a child
+test_mice = rnd.choice(['BB', 'Bb', 'bb'], p=[0.25, 0.5, 0.25], size=n_trials)
 
 # The resulting test mouse is black, so filter out all brown ones
 test_mice = test_mice[test_mice != 'bb']
-M = len(test_mice)
+n_test_mice = len(test_mice)
 
 # Each test mouse will now be mated with a brown mouse, producing 7 offspring.
 # We then store whether all the offspring were black or not.
-all_offspring_black = np.zeros(M, dtype=bool)
+all_offspring_black = np.zeros(n_test_mice, dtype=bool)
 
 # If a test mouse is 'BB', we are assured that all its offspring
 # will be black
@@ -714,11 +832,11 @@ all_offspring_black[test_mice == 'BB'] = True
 # If a test mouse is 'Bb', we have to generate its offspring and
 # see whether they are all black or not
 test_mice_Bb = (test_mice == 'Bb')
-N_test_mice_Bb = np.sum(test_mice_Bb)
+n_test_mice_Bb = np.sum(test_mice_Bb)
 
 # Generate all offspring of all 'Bb' test mice
-offspring = np.random.choice(
-    ['Bb', 'bb'], p=[0.5, 0.5], size=(N_test_mice_Bb, 7)
+offspring = rnd.choice(
+    ['Bb', 'bb'], p=[0.5, 0.5], size=(n_test_mice_Bb, 7)
 )
 all_offspring_black[test_mice_Bb] = np.all(offspring == 'Bb', axis=1)
 
@@ -728,17 +846,22 @@ parents = test_mice[all_offspring_black]
 # Calculate what fraction of parents were 'BB' vs 'Bb'
 parents_BB = (parents == 'BB')
 parents_Bb = (parents == 'Bb')
-N_B = np.sum(all_offspring_black)
+n_B = np.sum(all_offspring_black)
 
-p_BB = np.sum(parents_BB) / N_B
-p_Bb = np.sum(parents_Bb) / N_B
+p_BB = np.sum(parents_BB) / n_B
+p_Bb = np.sum(parents_Bb) / n_B
 
-print(f'p_BB = {p_BB:.3f}')
-print(f'p_Bb = {p_Bb:.3f}')
-print(f'Ratio: {p_BB/p_Bb:.1f}')
+print('p_BB = ', np.round(p_BB, 3))
+print('p_Bb = ', np.round(p_Bb, 3))
+print('Ratio = ', np.round(p_BB / p_Bb, 1))
 ```
 
 This yields a similar result, but in much shorter time — which means we can increase the number of trials and get a more accurate result.
+
+:::
+<!---
+End of notebook.
+-->
 
 <!---
 XXX TODO: How can we show how to derive this quantity using a filter tree type approach? XXX
@@ -749,7 +872,7 @@ reasoning is subtle — a reason it has been the cause of controversy
 for more than two centuries. But it certainly is not easier to create a
 correct procedure using analytic tools (except in the cookbook sense of
 plug-and-pray). And the difficult mathematics that underlie the
-analytic method (see e.g. [@box1992bayesian, Appendix A1.1] make it almost
+analytic method (see e.g. [@box1992bayesian, Appendix A1.1]) make it almost
 impossible for the statistician to fully understand the procedure from
 beginning to end. If one is interested in insight, the simulation procedure
 might well be preferred.[^sequentially]
@@ -816,16 +939,14 @@ likelihood that a given batch with any given yield — say 2.3
 gallons — will produce a set of samples with a mean as great or greater
 than 2.5 gallons.
 
-We are told that the manufacturer has in hand nine samples from a given
-batch; they are 1.84, 1.75, 1.39, 1.65, 3.53, 1.03,
-
-2.73, 2.86, and 1.96, with a mean of 2.08. Because we are also told that
-the manufacturer considers the extent of sample variation to be the same
-at all yield levels, we may — if we are again working with 2.3 as our
-example of a possible universe — therefore add (2.3 minus 2.08 =) 0.22
-to each of these nine observations, so as to constitute a bootstrap-type
-universe; we do this on the grounds that this is our best guess about
-the constitution of that distribution with a mean at (say) 2.3.
+We are told that the manufacturer has in hand nine samples from a given batch;
+they are 1.84, 1.75, 1.39, 1.65, 3.53, 1.03, 2.73, 2.86, and 1.96, with a mean
+of 2.08. Because we are also told that the manufacturer considers the extent of
+sample variation to be the same at all yield levels, we may — if we are again
+working with 2.3 as our example of a possible universe — therefore add (2.3
+minus 2.08 =) 0.22 to each of these nine observations, so as to constitute
+a bootstrap-type universe; we do this on the grounds that this is our best
+guess about the constitution of that distribution with a mean at (say) 2.3.
 
 We then repeatedly draw samples of nine observations from this
 distribution (centered at 2.3) to see how frequently its mean exceeds
@@ -910,12 +1031,11 @@ mean as the sample, this difference would be zero.
 
 ## Conclusion
 
-All but the simplest problems in conditional probability are
-confusing to the intuition even if not difficult mathematically. But
-when one tackles Bayesian and other problems in probability with
-experimental simulation methods rather than with logic, neither
-simple nor complex problems need be difficult for experts or
-beginners.
+All but the simplest problems in conditional probability are confusing to the
+intuition even if not difficult mathematically. But when one tackles Bayesian
+and other problems in probability with experimental simulation methods rather
+than with logic, neither simple nor complex problems need be difficult for
+experts or beginners.
 
 This chapter shows how simulation can be a helpful and illuminating
 way to approach problems in Bayesian analysis.
