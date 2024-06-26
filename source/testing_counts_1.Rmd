@@ -616,7 +616,9 @@ In operational steps, the procedure is as follows:
 import numpy as np
 import pandas as pd
 
-rnd = np.random.default_rng()
+# We need the seed to make the results match the text below, and to match the
+# how_big_sample discussion.
+rnd = np.random.default_rng(1914)
 
 n = 20
 yeses = np.zeros(n, dtype=int)
@@ -643,8 +645,8 @@ ketable(py$contract_trials,
 
 In @tbl-contract-trials, we see the results of twenty trials; `r n_gte_30` of
 `r n` times (`r gte_30_pct` percent), 30 or more "yeses" were observed by
-chance. So our "significance level" or "prob value" is `r gte_30_pct` percent,
-which is normally too high to feel confident that our poll results are
+chance. So our "significance level" or "probability value" is `r gte_30_pct`
+percent, which is normally too high to feel confident that our poll results are
 reliable. This is the probability that as many as thirty of fifty people would
 say "yes" by chance if the population were "really" split evenly. (If the
 population were split so that *more* than 50 percent were against the plan, the
@@ -1322,19 +1324,10 @@ of the rations.
 
 We can make this test by ordering and grouping the twenty four pigs:
 
-**High-weight group:**
-
-38 (ration A), 35 (A), 34 (A), 34 (A), 32 (B), 32 (A), 32 (A), 32
-(B), 31 (A),
-
-31 (B), 31 (A), 31 (A)
-
-**Low-weight group:**
-
-30 (B), 29 (A), 29 (A), 29 (B), 29 (B), 29 (B), 28 (B), 28 (B), 26
-(A), 26 (B),
-
-26 (B), 24 (B).
+* **High-weight group:** 38 (ration A), 35 (A), 34 (A), 34 (A), 32 (B), 32 (A),
+  32 (A), 32 (B), 31 (A), 31 (B), 31 (A), 31 (A)
+* **Low-weight group:** 30 (B), 29 (A), 29 (A), 29 (B), 29 (B), 29 (B), 28 (B),
+  28 (B), 26 (A), 26 (B), 26 (B), 24 (B).
 
 Among the twelve high-weight-gain pigs, nine were fed on ration A.
 We ask: Is this further from an even split than we are likely to get

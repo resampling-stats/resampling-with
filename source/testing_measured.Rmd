@@ -555,9 +555,6 @@ rnd = np.random.default_rng()
 # Set the number of trials
 n_trials = 10_000
 
-# Set the sample size for each trial
-sample_size = 20
-
 # An empty array to store the trial results.
 results = np.zeros(n_trials)
 
@@ -586,9 +583,6 @@ plt.title('Distribution difference in sums of resamples')
 ```{r}
 # Set the number of trials
 n_trials <- 10000
-
-# Set the sample size for each trial
-sample_size <- 20
 
 # An empty array to store the trial results.
 results <- numeric(n_trials)
