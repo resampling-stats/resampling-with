@@ -78,16 +78,12 @@ requirement of a clearly visualized model is a strong point in favor of simulati
 
 1. Note that we are only interested in outcomes where the mechanic
    approved a car.
-
 2. For each car, generate a label of either
    "faulty" or "working" with probabilities of 0.3 and 0.7, respectively.
-
 3. For each *faulty car*, we generate one of two labels, "approved" or
    "not approved" with probabilities 0.1 and 0.9, respectively.
-
 4. For each *working car*, we generate one of two labels, "approved" or
    "not approved" with probabilities 0.7 and 0.3, respectively.
-
 5. Out of all cars "approved", count how many are "faulty".
    The ratio between these numbers is our answer.
 
@@ -178,7 +174,8 @@ k = N_faulty_but_approved / N_approved
 print(f'{k * 100:.2}%')
 ```
 
-The code now runs much faster, and with a larger number of cars we see that the answer is closer to a 5% chance of a car being broken after it has been
+The code now runs much faster, and with a larger number of cars we see that the
+answer is closer to a 5% chance of a car being broken after it has been
 approved by a mechanic.
 
 ### Calculation without simulation
@@ -262,8 +259,10 @@ We discussed this idea previously in "The Law of Large Numbers".
 At our mechanic's yard, we can ask "how many red cars here are faulty"?
 To calculate that, we'd first count the number of red cars, then the number of those red cars that are also broken, then calculate the ratio: `red_cars_faulty / red_cars`.
 
-We could just as well have worked in percentages: `percentage_of_red_cars_broken / percentage_of_cars_that_are_red`, since
-that is `(red_cars_broken / 100) / (red_cars / 100)`—the same ratio calculated before.
+We could just as well have worked in percentages:
+`percentage_of_red_cars_broken / percentage_of_cars_that_are_red`, since that
+is `(red_cars_broken / 100) / (red_cars / 100)`—the same ratio calculated
+before.
 
 Our point is that the denominator doesn't matter when calculating ratios, so we
 could just as well have written:
@@ -321,11 +320,7 @@ P(B | R)
 $$
 
 We read this as "the probability that the car is broken given that the car is red".
-Such a probability is known as a *conditional probability*.  We discuss these in more details in Ch TKTK.
-
-<!---
-**TODO: ADD REFERENCE TO CONDITIONAL PROBABILITY**
--->
+Such a probability is known as a *conditional probability*.  We discuss these in more detail in @sec-cond-uncond.
 
 In our original problem, we ask what the chance is of a car being broken given that a mechanic approved it.  As discussed under "Ratios of proportions", it can be calculated with:
 
