@@ -22,24 +22,6 @@ source("_common.R")
 
 # How Large a Sample?
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/28-Chap-24.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
-
 ## Issues in determining sample size
 
 Sometime in the course of almost every study — preferably early in the
@@ -995,38 +977,211 @@ larger than the benchmark universe will usually produce is not attributable to
 chance.
 
 In this case, let us try samples of 12 pigs on each ration. First we draw two
-samples from a combined benchmark universe made up of the results that we have
+samples from a *combined* benchmark universe made up of the results that we have
 guessed will come from ration A and ration B. (The procedure is the same as was
-followed in @sec-pig-rations-measured).  We find that in 19 out of 20 trials
-the difference between the two observed groups of 12 pigs was 3 pounds or less.
-Now we investigate how often samples of 12 pigs, drawn from the *separate*
-universes, will show a mean difference as large as 3 pounds. We do so by making
-up a deck of 25 or 50 cards for *each* of the 12 hypothesized A's and each of
-the 12 B's, with the ration name and the weight gain written on it — that is,
+followed in @sec-pig-rations-measured).
+
+::: {.notebook name="sample_size_rations" title="Sample size for pig rations with bootstrap"}
+
+::: nb-only
+Use the bootstrap (resampling with replacement) procedure to find the plausible differences between two rations in the benchmark (combined) universe.
+
+In due course, we then use these plausible values to put ourselves in the
+situation where the distributions of rations are distinct and different, and
+see how often we get a simulated difference drawn from these distributions that is implausible on criterion above.
+:::
+
+First we need to get the measured data from the data file using
+[the Pandas library]{.python}[R]{.r}:
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# set up the random number generator
+rnd = np.random.default_rng()
+
+# Estimated weights for ration A.
+a_weights = np.array([36, 35, 34, 33, 33, 32, 32, 31, 31, 30, 29, 28])
+# Estimated weights for ration B.
+b_weights = np.array([32, 31, 30, 29, 29, 28, 28, 27, 27, 26, 25, 24])
+
+# Make a combined (benchmark) universe from the weights.
+both = np.concatenate([a_weights, b_weights])
+
+# Set the number of trials
+n_trials = 10_000
+
+# An empty array to store the trial results.
+results = np.zeros(n_trials)
+
+# Do 10,000 experiments.
+for i in range(n_trials):
+    # Take a "resample" of 12 with replacement from both and put it in fake_a
+    fake_a = rnd.choice(both, size=12)
+    # Likewise to make fake_b
+    fake_b = rnd.choice(both, size=12)
+    # Mean of the first "resample" sample.
+    fake_a_mean = np.mean(fake_a)
+    # Mean of the second "resample" sample.
+    fake_b_mean = np.mean(fake_b)
+    # Calculate the difference between the two resamples.
+    fake_diff = fake_a_mean - fake_b_mean
+    # Keep track of each trial result.
+    results[i] = fake_diff
+    # End one experiment, go back and repeat until all trials are complete,
+    # then proceed.
+# Produce a histogram of trial results.
+plt.hist(results, bins=25)
+plt.xlabel('Second resample mean minus first')
+plt.title('Distribution difference in means of resamples')
+
+# Get the 95% percentile.  Only 5% of results are above this value, by chance.
+q_95 = np.quantile(results, 0.95)
+
+print('95% quantile for resampled mean difference:', q_95)
+
+# Check the quantile.
+k = np.sum(results > q_95)
+kk = k / n_trials
+
+print('Proportion > 95% quantile:', kk)
+```
+
+```{r}
+# Estimated weights for ration A.
+a_weights <- c(36, 35, 34, 33, 33, 32, 32, 31, 31, 30, 29, 28)
+# Estimated weights for ration B.
+b_weights <- c(32, 31, 30, 29, 29, 28, 28, 27, 27, 26, 25, 24)
+
+# Make a combined (benchmark) universe from the weights.
+both = c(a_weights, b_weights)
+
+# Set the number of trials
+n_trials <- 10000
+
+# An empty array to store the trial results.
+results <- numeric(n_trials)
+
+# Do 10,000 experiments.
+for (i in 1:n_trials) {
+    # Take a "resample" of 12 with replacement from both and put it in fake_a
+    fake_a <- sample(both, size=12, replace=TRUE)
+    # Likewise to make fake_b
+    fake_b <- sample(both, size=12, replace=TRUE)
+    # Mean the first "resample."
+    fake_a_mean <- mean(fake_a)
+    # Mean the second "resample."
+    fake_b_mean <- mean(fake_b)
+    # Calculate the difference between the two resamples.
+    fake_diff <- fake_a_mean - fake_b_mean
+    # Keep track of each trial result.
+    results[i] <- fake_diff
+    # End one experiment, go back and repeat until all trials are complete,
+    # then proceed.
+}
+# Produce a histogram of trial results.
+hist(results, breaks=25,
+      xlab='Second resample mean minus first',
+      main='Distribution difference in means of resamples')
+
+# Get the 95% percentile.  Only 5% of results are above this value, by chance.
+q_95 <- quantile(results, 0.95)
+
+message('95% quantile for resampled mean difference: ', q_95)
+
+# Check the quantile.
+k <- sum(results > q_95)
+kk = k / n_trials
+
+message('Proportion > 95% quantile: ', kk)
+```
+
+We find that in only of the trials the difference between the two observed
+groups of 12 pigs was more than `r get_var('q_95')`. Now we investigate
+how often samples of 12 pigs, drawn from the *separate* universes, will show
+a mean difference larger than `r get_var('q_95')` pounds. We do so by making up
+a deck of 25 or 50 cards for *each* of the 12 hypothesized A's and each of the
+12 B's, with the ration name and the weight gain written on it — that is,
 a deck of, say, 300 cards for each ration. Then from each deck we draw a set of
 12 cards at random, record the group averages, and find the difference.
 
-Here is the same work done with more runs on the computer:
+Here is the same work done with more runs on the computer.  In this version we
+are sampling from the separate A and B universes we have estimated.
 
+```{python}
+# A new empty array to store the trial results.
+results = np.zeros(n_trials)
 
-<!--- Resampling stats file; Matlab syntax closeish -->
+# Do 10,000 experiments.
+for i in range(n_trials):
+    # Take a "resample" of 12 with replacement from A and put it in fake_a.
+    # Notice we are sampling from "a_weights" this time.
+    fake_a = rnd.choice(a_weights, size=12)
+    # Likewise to make fake_b
+    # Notice we are sampling from "b_weights" this time.
+    fake_b = rnd.choice(b_weights, size=12)
+    # Mean of the first "resample" sample.
+    fake_a_mean = np.mean(fake_a)
+    # Mean of the second "resample" sample.
+    fake_b_mean = np.mean(fake_b)
+    # Calculate the difference between the two resamples.
+    fake_diff = fake_a_mean - fake_b_mean
+    # Keep track of each trial result.
+    results[i] = fake_diff
+    # End one experiment, go back and repeat until all trials are complete,
+    # then proceed.
 
-```matlab
-' Program file: "how_big_sample_04.rss"
+# Produce a histogram of trial results.
+plt.hist(results, bins=25)
+plt.xlabel('Second resample mean minus first, in separate universes')
+plt.title('Distribution difference in means of resamples')
 
-NUMBERS (31 34 29 26 32 35 38 34 32 31 30 29) a
-NUMBERS (32 32 31 30 29 29 29 28 28 26 26 24) b
-REPEAT 1000
-    SAMPLE 12 a aa
-    MEAN aa aaa
-    SAMPLE 12 b bb
-    MEAN bb bbb
-    SUBTRACT aaa bbb c
-    SCORE c z
-END
-HISTOGRAM z
-' **Difference in mean weights between resamples**
+# What proportion of the differences are implausible in the combined universe?
+k = np.sum(results >= q_95)
+kk = k / n_trials
+
+print('p for separate universe results >= 95% quantile:', kk)
 ```
+
+```{r}
+# A new empty vector to store the trial results.
+results <- numeric(n_trials)
+
+# Do 10,000 experiments.
+for (i in 1:n_trials) {
+    # Take a "resample" of 12 with replacement from A and put it in fake_a.
+    # Notice we are sampling from "a_weights" this time.
+    fake_a <- sample(a_weights, size=12, replace=TRUE)
+    # Likewise to make fake_b
+    # Notice we are sampling from "b_weights" this time.
+    fake_b <- sample(b_weights, size=12, replace=TRUE)
+    # Mean the first "resample."
+    fake_a_mean <- mean(fake_a)
+    # Mean the second "resample."
+    fake_b_mean <- mean(fake_b)
+    # Calculate the difference between the two resamples.
+    fake_diff <- fake_a_mean - fake_b_mean
+    # Keep track of each trial result.
+    results[i] <- fake_diff
+    # End one experiment, go back and repeat until all trials are complete,
+    # then proceed.
+}
+# Produce a histogram of trial results.
+hist(results, breaks=25,
+      main='Second resample mean minus first, in separate universes',
+      xlab='Distribution difference in means of resamples')
+
+# What proportion of the differences are implausible in the combined universe?
+k <- sum(results >= q_95)
+kk <- k / n_trials
+
+message('p for separate universe results >= 95% quantile: ', kk)
+```
+
+If `kk` is close to one, we know that the sample size is large enough that
+samples drawn from the universes we have hypothesized will not mislead us into
+thinking that they could come from the same universe.
 
 Therefore, two samples of twelve pigs each are clearly large enough, and, in
 fact, even smaller samples might be sufficient if the universes are really like
@@ -1038,47 +1193,16 @@ enough. And so on until the sample size is large enough to promise the accuracy
 we want. (In that case, the decks would also have to be much larger, of
 course.)
 
-If we had guessed different universes for the two rations, then the
-sample sizes required would have been larger or smaller. If we had
-guessed the averages for the two samples to be closer together, then we
-would have needed larger samples. Also, if we had guessed the weight
-gains *within* each universe to be less spread out, the samples could
-have been smaller and vice versa.
+If we had guessed different universes for the two rations, then the sample
+sizes required would have been larger or smaller. If we had guessed the
+averages for the two samples to be closer together, then we would have needed
+larger samples. Also, if we had guessed the weight gains *within* each universe
+to be less spread out, the samples could have been smaller and vice versa.
 
-The following RESAMPLING STATS program first records the data from the
-two samples, and then draws from decks of infinite size by sampling with
-replacement from the original samples.
-
-
-<!--- Resampling stats file; Matlab syntax closeish -->
-
-```matlab
-' Program file: "how_big_sample_05.rss"
-
-DATA (36 35 34 33 33 32 32 31 31 30 29 28) a
-DATA (32 31 30 29 29 28 28 27 27 26 25 24) b
-REPEAT 1000
-    SAMPLE 12 a aa
-    ' Draw a sample of 12 from ration a with replacement (this is like drawing
-    ' from a large deck made up of many replicates of the elements in a)
-    SAMPLE 12 b bb
-    ' Same for b
-    MEAN aa aaa
-    ' Find the averages of the resamples
-    MEAN bb bbb
-    SUBTRACT aaa bbb c
-    ' Find the difference
-    SCORE c z
-END
-COUNT z >=3 k
-' How often did the difference exceed the cutoff point for our
-' significance test of 3 pounds?
-DIVIDE k 1000 kk
-PRINT kk
-' If kk is close to zero, we know that the sample size is large enough
-' that samples drawn from the universes we have hypothesized will not
-' mislead us into thinking that they could come from the same universe.
-```
+:::
+<!---
+End of notebook
+-->
 
 ## Step-wise sample-size determination
 
@@ -1090,23 +1214,21 @@ have a reliable answer.
 Related techniques work in a series of jumps from sample size to sample
 size. Step-wise sampling makes it less likely that you will take a
 sample that is much larger than necessary. For example, in the
-cable-television case, if you took a sample of perhaps fifty you could
-see whether the split was as wide as 32-18, which you figure you need
-for 9 to 1 odds that your answer is right. If the split were not that
-wide, you would sample another fifty, another 100, or however large a
-sample you needed until you reached a split wide enough to satisfy you
-that your answer was reliable and that you really knew which way the
-entire universe would vote.
+internet contract survey case, if you took a sample of perhaps fifty you could
+see whether the split was as wide as 32-18, which you figure you need for 9 to
+1 odds that your answer is right. If the split were not that wide, you would
+sample another fifty, another 100, or however large a sample you needed until
+you reached a split wide enough to satisfy you that your answer was reliable
+and that you really knew which way the entire universe would vote.
 
 Step-wise sampling is not always practical, however, and the
-cable-television telephone-survey example is unusually favorable for its
-use. One major pitfall is that the *early* responses to a mail survey,
-for example, do *not* provide a random sample of the whole, and
-therefore it is a mistake simply to look at the early returns when the
-split is not wide enough to justify a verdict. If you have listened to
-early radio or television reports of election returns, you know how
-misleading the reports from the first precincts can be if we regard them
-as a fair sample of the whole.[^sequential-critic]
+internet contract survey example is unusually favorable for its use. One major
+pitfall is that the *early* responses to a mail survey, for example, do *not*
+provide a random sample of the whole, and therefore it is a mistake simply to
+look at the early returns when the split is not wide enough to justify
+a verdict. If you have listened to early news reports of election returns, you
+know how misleading the reports from the first precincts can be if we regard
+them as a fair sample of the whole.[^sequential-critic]
 
 [^sequential-critic]: See J. Lorie and H. Roberts [-@lorie1951basic, pages
     155-157] for more discussion of the limitations of sequential sampling.
