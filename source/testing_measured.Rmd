@@ -1849,19 +1849,13 @@ depression on the Hamilton scale, before and after drug therapy.
 Note on source in Hollander: Salsburg (1970): Personal communication (with the cooperation of Pfizer and co, Groton, Conn.)
 -->
 
-| Patient #       | Score Before     | Score After |
-|-----------------|------------------|-------------|
-| 1               | 1.83             | .878        |
-| 2               | .50              | .647        |
-| 3               | 1.62             | .598        |
-| 4               | 2.48             | 2.05        |
-| 5               | 1.68             | 1.06        |
-| 6               | 1.88             | 1.29        |
-| 7               | 1.55             | 1.06        |
-| 8               | 3.06             | 3.14        |
-| 9               | 1.3              | 1.29        |
-
-: Hamilton Depression Scale Values {#tbl-hamilton-scores}
+```{r echo=FALSE, eval=TRUE}
+._df_ham <- read.csv('data/hamilton.csv')
+names(._df_ham) <- c('Patient #', 'Score before', 'Score after')
+ketable(._df_ham,
+        caption="Hamilton Depression Scale Values
+        {#tbl-hamilton-scores}")
+```
 
 The task is to perform a test that will help decide whether there is a
 difference in the depression scores at the two visits (or the
