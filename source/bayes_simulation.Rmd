@@ -1051,6 +1051,97 @@ We started with the odds being 2:1 in favor of Bb vs BB. The "posterior" or
 Let's tune the code a bit to run faster.  Instead of doing the trials one mouse
 at a time, we will do the whole bunch together.
 
+To do this, we will use [two-dimensional arrays]{.python}[matrices]{.r}.
+
+::: python
+
+So far, nearly all the arrays we have used are one-dimensional.
+A one-dimensional array is a sequence of values.  Let us generate
+a one-dimensional array with `rnd.choice`, as we have many times in this book,
+and in this chapter.
+
+```{python}
+# A one-dimensional array, with five elements.
+one_d = rnd.choice([1, 2], size=5)
+one_d
+```
+
+However, we can also generate arrays with more than one dimension.  In
+particular we can generate arrays with two dimensions.  An array with two
+dimensions has rows and columns, much like a Pandas data frame.  However,
+unlike data frames, two-dimensional arrays have no row or column names.  Here is a two-dimensional array we create with `rnd.choice`, by passing two values to the size argument:
+
+```{python}
+# A two-dimensional array with five rows and three columns.
+two_d = rnd.choice([1, 2], size=(5, 3))
+two_d
+```
+
+As usual, we can apply Boolean comparison operations to this array, to get a two-dimensional Boolean array:
+
+```{python}
+is_2 = two_d == 2
+is_2
+```
+
+Numpy thinks of two-dimensional arrays as having two *axes*, where the first
+axis (axis at position 0) is the row axis, and the second axis (at position 1)
+is the column axis.
+
+Many Numpy functions have an `axis` argument that asks the function to apply its operation along a particular axis.  For example, we might want to ask whether `all` the values in *each column* (across axis position 1) are equal to 2.   We can do this using `np.all`:
+
+```{python}
+all_equal_2 = np.all(is_2, axis=1)
+all_equal_2
+```
+
+Notice that we get one answer for each row (axis=0), where the answer is `np.all` across the columns, for that row.
+
+:::
+
+::: r
+
+So far, we have used one-dimensional *vectors* in R. A vector is a sequence of
+values.  Let us generate a vector with `sample`, as we have many times in this
+book, and in this chapter.
+
+```{r}
+# A vector with five elements.
+a_vector <- sample(c(1, 2), size=5, replace=TRUE)
+a_vector
+```
+
+However, we can also generate *matrices* in R.  Matrices have two dimensions;
+it has rows and columns, much like a data frame.  Here is a matrix we create with `sample`, by first making a vector, and then reshaping the vector into a matrix.
+
+```{r}
+# A vector with 15 values.
+another_vector <- sample(c(1, 2), size=15, replace=TRUE)
+# A matrix with five rows and three columns.
+a_matrix <- matrix(another_vector, ncol=3)
+a_matrix
+```
+
+As usual, we can apply Boolean comparison operations to this matrix, to get
+a  Boolean matrix:
+
+```{r}
+is_2 <- a_matrix == 2
+is_2
+```
+
+R has functions to operate over rows and columns of a matrix.  In particular, is has a function `rowSums` that gives the sum of values in the row (and therefore, the sum over the columns, for each row).  For example, to see how many of the values in each row are equal to 2, we can do:
+
+```{r}
+n_2s_in_rows <- rowSums(is_2)
+n_2s_in_rows
+```
+
+Notice that we get one answer for each row, where the answer is the `sum`
+across the columns, for that row.
+
+:::
+
 ```{python}
 n_trials = 1_000_000
 
