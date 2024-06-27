@@ -31,6 +31,7 @@ w.rule('svg2x', 'inkscape --export-area-drawing -o $out --export-dpi=300 $in')
 w.rule('compile-config', f'{clean_cmd}; ../scripts/set_version.py --output=_quarto-$lang.yml $lang')
 w.rule('quarto-render', 'quarto render $in --no-clean --to $format --profile $lang')
 w.rule('quarto-render-project', 'quarto render --to $format --profile $lang')
+w.rule('copy', 'cp $in $out')
 w.rule('cleanup', clean_cmd)
 w.rule('print-help', 'echo -ne "$$(cat .ninja-usage)"')
 w.rule('check-bibliography', 'biber --tool $in')
@@ -45,6 +46,8 @@ built_diagrams = {
 for fmt in image_formats:
     for (diagram, built_diagram) in zip(diagrams, built_diagrams[fmt]):
         w.build(built_diagram, 'svg2x', diagram)
+
+data_files = glob('data/*')
 
 # --- Configure language ---
 for lang in languages:
@@ -63,6 +66,9 @@ quarto_conf = yaml.load(open('_quarto.yml.template'), Loader=yaml.FullLoader)
 Rmd_chapters = quarto_conf['book']['chapters']
 
 for lang in languages:
+    for data_file in data_files:
+        w.build(f'../{lang}-book/notebooks/{data_file}', 'copy', data_file)
+
     for fmt in ('html', 'pdf'):
         # HTML builds use PNG images; PDF builds use PDF images
         image_fmt = {
