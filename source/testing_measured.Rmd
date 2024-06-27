@@ -1861,7 +1861,9 @@ The task is to perform a test that will help decide whether there is a
 difference in the depression scores at the two visits (or the
 performances of the two mechanics). Perform both a bootstrap test and a
 permutation test, and give some reason for preferring one to the other
-in principle. How much do they differ in practice?
+in principle. How much do they differ in practice?  (For this exercise, assume
+that we can treat the before and after scores as two different and independent
+samples and ignore the pairing between the before and after scores).
 
 Here's a notebook to get you started:
 
@@ -1883,7 +1885,7 @@ after = np.array(df['score_after'])
 ```{r}
 df <- read.csv('data/hamilton.csv')
 before <- df$score_before
-after = df$score_after
+after <- df$score_after
 
 # Your code here.
 ```
@@ -1895,7 +1897,7 @@ End of notebook.
 
 See @sec-soln-paired-differences for a solution.
 
-### Exercise 2 {#sec-measured-ex-taxis}
+### Exercise: seatbelt proportions {#sec-exr-seatbelt-proportions}
 
 Thirty-six of 72 (.5) taxis surveyed in Pittsburgh had visible
 seatbelts. Seventy-seven of 129 taxis in Chicago (.597) had visible
@@ -1904,3 +1906,5 @@ proportions, estimated at -.097. (Source: Peskun, Peter H., "A New
 Confidence Interval Method Based on the Normal Approximation for the
 Difference of Two Binomial Probabilities," *Journal of the American
 Statistical Association* , 6/93 p. 656).
+
+For solution, see @sec-soln-seatbelt-proportions}

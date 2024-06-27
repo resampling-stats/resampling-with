@@ -44,35 +44,179 @@ ported the code.
 
 ## Solution to [paired differences exercise @sec-exr-paired-differences] {#sec-soln-paired-differences}
 
-A solution here.
+We suggested that you ignored the pairing of the before and after samples, and that is what we will do here.  Then we will extend the treatment to take the pairing into account.
 
-## Solution 18-2
+::: {.notebook name="paired_differences_solution" title="Paired differences solution"}
 
-<!--- Resampling stats script; slightly Matlab-like -->
+```{python}
+import numpy as np
+import pandas as pd
 
-```matlab
-URN 36#1 36#0 pit
-URN 77#1 52#0 chi
-REPEAT 1000
-    SAMPLE 72 pit pit$
-    SAMPLE 129 chi chi$
-    MEAN pit$ p
-    MEAN chi$ c
-    SUBTRACT p c d
-    SCORE d scrboard
-END
-HISTOGRAM scrboard
-PERCENTILE scrboard (2.5 97.5) interval
-PRINT interval
+rnd = np.random.default_rng()
+
+df = pd.read_csv('data/hamilton.csv')
+before = np.array(df['score_before'])
+after = np.array(df['score_after'])
+
+observed_diff = np.mean(after) - np.mean(before)
+
+# Let us start with a permutation test.
+both = np.concatenate([before, after])
+n_before = len(before)
+
+# Samples in the null world.
+n_trials = 10_000
+results = np.zeros(n_trials)
+for i in range(n_trials):
+    shuffled = rnd.permuted(both)
+    fake_before = shuffled[:n_before]
+    fake_after = shuffled[n_before:]
+    fake_diff = np.mean(fake_after) - np.mean(fake_before)
+    results[i] = fake_diff
+
+# We are interested in fake differences that are larger
+# in magnitude than the observed difference (hence "abs").
+# Here we have no prior hypothesis about which direction the difference
+# will go.
+k = np.sum(np.abs(results) >= np.abs(observed_diff))
+kk = k / n_trials
+print('Permutation p null-world abs >= abs observed:', kk)
+
+# Next a bootstrap test.
+n_after = len(after)  # Of course, in our case, this will be == n_before
+results = np.zeros(n_trials)
+for i in range(n_trials):
+    fake_before = rnd.choice(both, size=n_before)
+    fake_after = rnd.choice(both, size=n_after)
+    fake_diff = np.mean(fake_after) - np.mean(fake_before)
+    results[i] = fake_diff
+
+k = np.sum(np.abs(results) >= np.abs(observed_diff))
+kk = k / n_trials
+print('Bootstrap p null-world abs >= abs observed:', kk)
 ```
 
-![](images/30-Exercise-sol_000.png)
+```{r}
+df <- read.csv('data/hamilton.csv')
+before <- df$score_before
+after <- df$score_after
 
-Results:
+observed_diff <- mean(after) - mean(before)
 
-INTERVAL = -0.25921 0.039083 (estimated 95 percent confidence interval).
+# Let us start with a permutation test.
+both <- c(before, after)
+n_before <- length(before)
 
-## Solution 21-1
+# Samples in the null world.
+n_trials <- 10000
+results <- numeric(n_trials)
+for (i in 1:n_trials) {
+    shuffled <- sample(both)
+    fake_before <- shuffled[1:n_before]
+    fake_after <- shuffled[(n_before + 1):length(both)]
+    fake_diff <- mean(fake_after) - mean(fake_before)
+    results[i] <- fake_diff
+}
+
+# We are interested in fake differences that are larger
+# in magnitude than the observed difference (hence "abs").
+# Here we have no prior hypothesis about which direction the difference
+# will go.
+k <- sum(abs(results) >= abs(observed_diff))
+kk <- k / n_trials
+message('Permutation p null-world abs >= abs observed: ', kk)
+
+# Next a bootstrap test.
+n_after <- length(after)  # Of course, in our case, this will be == n_before
+results <- numeric(n_trials)
+for (i in 1:n_trials) {
+    fake_before <- sample(both, size=n_before, replace=TRUE)
+    fake_after <- sample(both, size=n_after, replace=TRUE)
+    fake_diff <- mean(fake_after) - mean(fake_before)
+    results[i] <- fake_diff
+}
+
+k <- sum(abs(results) >= abs(observed_diff))
+kk <- k / n_trials
+message('Bootstrap p null-world abs >= abs observed: ', kk)
+```
+
+:::
+<!---
+End of notebook.
+-->
+
+## Solution to [seatbelt proportions exercise @sec-exr-seatbelt-proportions] {#sec-soln-seatbelt-proportions}
+
+::: {.notebook name="seatbelt_proportion_solution" title="Seatbelt proportion solution"}
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+rnd = np.random.default_rng()
+
+pittsburgh = np.repeat(['seatbelt', 'none'], [36, 36])
+n_pitts = len(pittsburgh)
+chicago = np.repeat(['seatbelt', 'none'], [77, 52])
+n_chicago = len(chicago)
+
+n_trials = 10_000
+results = np.zeros(n_trials)
+
+for i in range(n_trials):
+    fake_pitts = rnd.choice(pittsburgh, size=n_pitts)
+    fake_chicago = rnd.choice(chicago, size=n_chicago)
+    fake_p_pitts = np.sum(fake_pitts == 'seatbelt') / n_pitts
+    fake_p_chicago = np.sum(fake_chicago == 'seatbelt') / n_chicago
+    fake_p_diff = fake_p_pitts - fake_p_chicago
+    results[i] = fake_p_diff
+
+plt.hist(results, bins=25)
+plt.title('Bootstrap distribution of p differences')
+plt.xlabel('p differences')
+
+p_limits = np.quantile(results, [0.025, 0.975])
+
+print('95\% percent limits for p differences:', p_limits)
+```
+
+```{r}
+pittsburgh <- rep(c('seatbelt', 'none'), c(36, 36))
+n_pitts <- length(pittsburgh)
+chicago <- rep(c('seatbelt', 'none'), c(77, 52))
+n_chicago <- length(chicago)
+
+n_trials <- 10000
+results <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+    fake_pitts <- sample(pittsburgh, size=n_pitts, replace=TRUE)
+    fake_chicago <- sample(chicago, size=n_chicago, replace=TRUE)
+    fake_p_pitts <- sum(fake_pitts == 'seatbelt') / n_pitts
+    fake_p_chicago <- sum(fake_chicago == 'seatbelt') / n_chicago
+    fake_p_diff <- fake_p_pitts - fake_p_chicago
+    results[i] <- fake_p_diff
+}
+
+hist(results, breaks=25,
+    main='Bootstrap distribution of p differences',
+    xlab='p differences')
+
+p_limits <- quantile(results, c(0.025, 0.975))
+
+message('95% percent limits for p differences: ', p_limits)
+```
+
+:::
+<!---
+End of notebook.
+-->
+
+## Solution: [unemployment percentage {#sec-exr-unemployment-percent}] {#sec-soln-unemployment-percent}
+
+In a sample of 200 people, 7 percent are found to be unemployed. Determine a 95
+percent confidence interval for the true population proportion.
 
 <!--- Resampling stats script; slightly Matlab-like -->
 
