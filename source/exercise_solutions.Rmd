@@ -270,24 +270,6 @@ message('95% percent limits for p differences: ', rounded[1], ' ', rounded[2])
 End of notebook.
 -->
 
-```matlab
-REPEAT 1000
-    GENERATE 200  1,100 a
-    COUNT a <= 7 b
-    DIVIDE b 200 c
-    SCORE c scrboard
-END
-HISTOGRAM scrboard
-PERCENTILE z (2.5 97.5) interval
-PRINT interval
-```
-
-![](images/30-Exercise-sol_001.png)
-
-Result:
-
-INTERVAL = 0.035 0.105 \[estimated 95 percent confidence interval\]
-
 ## Solution 21-2
 
 We use the "bootstrap" technique of drawing many bootstrap re-samples
@@ -348,6 +330,10 @@ Result:
 INTERVAL = 0.0187 0.0219 \[estimated 95 percent confidence interval\]
 
 ## Solution 23-1
+
+<!---
+Correlation causation.
+-->
 
 1.  Create two groups of paper cards: 25 with participation rates, and
     25 with the spread values. Arrange the cards in pairs in accordance
