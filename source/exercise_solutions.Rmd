@@ -178,7 +178,7 @@ plt.xlabel('p differences')
 
 p_limits = np.quantile(results, [0.025, 0.975])
 
-print('95\% percent limits for p differences:', p_limits)
+print('95% percent limits for p differences:', p_limits)
 ```
 
 ```{r}
@@ -204,8 +204,8 @@ hist(results, breaks=25,
     xlab='p differences')
 
 p_limits <- quantile(results, c(0.025, 0.975))
-
-message('95% percent limits for p differences: ', p_limits)
+rounded <- round(p_limits, 3)
+message('95% percent limits for p differences: ', rounded[1], ' ', rounded[2])
 ```
 
 :::
@@ -218,7 +218,57 @@ End of notebook.
 In a sample of 200 people, 7 percent are found to be unemployed. Determine a 95
 percent confidence interval for the true population proportion.
 
-<!--- Resampling stats script; slightly Matlab-like -->
+::: {.notebook name="unemployment_percent_solution" title="Unemployment percent solution"}
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+rnd = np.random.default_rng()
+
+n_trials = 10_000
+results = np.zeros(n_trials)
+
+for i in range(n_trials):
+    fake_people = rnd.choice(['no job', 'job'], size=200, p=[0.07, 0.93])
+    p_unemployed = np.sum(fake_people == 'no job') / 200
+    results[i] = p_unemployed
+
+plt.hist(results, bins=25)
+plt.title('Null-world distribution p unemployed')
+plt.xlabel('p unemployed')
+
+p_limits = np.quantile(results, [0.025, 0.975])
+
+print('95% percent limits for p differences:', p_limits)
+```
+
+```{r}
+n_trials <- 10000
+results <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+    fake_people <- sample(c('no job', 'job'),
+                          size=200,
+                          replace=TRUE,
+                          prob=c(0.07, 0.93))
+    p_unemployed <- sum(fake_people == 'no job') / 200
+    results[i] <- p_unemployed
+}
+
+hist(results, breaks=25,
+     main='Null-world distribution p unemployed',
+     xlab='p unemployed')
+
+p_limits <- quantile(results, c(0.025, 0.975))
+rounded <- round(p_limits, 3)
+message('95% percent limits for p differences: ', rounded[1], ' ', rounded[2])
+```
+
+:::
+<!---
+End of notebook.
+-->
 
 ```matlab
 REPEAT 1000
