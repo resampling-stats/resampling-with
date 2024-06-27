@@ -1863,6 +1863,36 @@ performances of the two mechanics). Perform both a bootstrap test and a
 permutation test, and give some reason for preferring one to the other
 in principle. How much do they differ in practice?
 
+Here's a notebook to get you started:
+
+::: {.notebook name="paired_differences" title="Paired differences exercise"}
+
+```{python}
+import numpy as np
+import pandas as pd
+
+rnd = np.random.default_rng()
+
+df = pd.read_csv('data/hamilton.csv')
+before = np.array(df['score_before'])
+after = np.array(df['score_after'])
+
+# Your code here.
+```
+
+```{r}
+df <- read.csv('data/hamilton.csv')
+before <- df$score_before
+after = df$score_after
+
+# Your code here.
+```
+
+:::
+<!---
+End of notebook.
+-->
+
 See @sec-soln-paired-differences for a solution.
 
 ### Exercise 2 {#sec-measured-ex-taxis}
