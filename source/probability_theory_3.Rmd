@@ -1569,9 +1569,10 @@ for (i in 1:10000) {
 }
 
 # Graph of simulation results to compare with the observed result.
+# The paste function sticks the strings together into a single string.
 fig_title <- paste('Average price difference (Actual difference = ',
                    round(actual_diff * 100),
-                   'cents')
+                   'cents)')
 hist(fake_diffs, main=fig_title, xlab='Difference in average prices (cents)')
 ```
 
