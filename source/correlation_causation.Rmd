@@ -2432,9 +2432,9 @@ a random-number table are independent?
 
 ## Exercises
 
-Solutions for problems may be found at @sec-exercise-solutions.
+You can find solutions for problems at @sec-exercise-solutions.
 
-### Voter participation {#exr-voter-participation}
+### Exercise: voter participation {#sec-exr-voter-participation}
 
 @tbl-voter-participation shows voter participation rates in the various states
 in the 1844 presidential election. Should we conclude that there was a negative
@@ -2457,7 +2457,7 @@ exists?
 
 Here's a notebook to get you started.
 
-::: {.notebook name="voter_participation" title="Voter participation in 1844 election"}
+::: {.notebook name="voter_participation_exercise" title="Voter participation in 1844 election"}
 
 ::: nb-only
 Notebook for voter participation exercise.
@@ -2485,21 +2485,23 @@ spread <- voter_df$Spread
 End of notebook
 -->
 
-### Association of runs and strikeouts {#exr-runs-strikeouts}
+See: @sec-soln-voter-participation.
 
-We would like to know whether, among major-league baseball players, home
-runs (per 500 at-bats) and strikeouts (per 500 at-bat's) are correlated.
-We first use the procedure as used above for I.Q. and athletic
-ability — multiplying the elements within each pair. (We will later use
-a more "sophisticated" measure, the correlation coefficient.)
+### Exercise: association of runs and strikeouts {#sec-exr-runs-strikeouts}
+
+We would like to know whether, among major-league baseball players, home runs
+(per 500 at-bats) and strikeouts (per 500 at-bat's) are correlated. For this exercise, you should
+use the sum-of-products procedure as used above for I.Q. and athletic
+ability — multiplying the elements within each pair. The next exercise uses the more
+"sophisticated" measure, the correlation coefficient.
 
 The data for 18 randomly-selected players in the 1989 season are as
-follows, as they would appear in the first lines of the program.
+follows, as they would appear in the first lines of the notebook.
 
-::: {.notebook name="homerun_correlation" title="Homeruns and strikeout correlation"}
+::: {.notebook name="homerun_sop_exercise" title="Homeruns and strikeout sum of products."}
 
 ::: nb-only
-Exercise on relationship of home runs and strikeouts.
+Exercise on relationship of home runs and strikeouts, using sum of products.
 :::
 
 ```{python}
@@ -2529,7 +2531,9 @@ strikeout <- c(135, 153, 120, 161, 138, 175, 126, 200, 205,
 End of notebook.
 -->
 
-### Runs, strikeouts, correlation {#exr-runs-strikeout-correlation}
+See: @sec-soln-runs-strikeouts.
+
+### Exercise: runs, strikeouts, correlation coefficient {#sec-exr-runs-strikeout-r}
 
 In the previous example relating strikeouts and home runs, we used the
 procedure of multiplying the elements within each pair. Now we use a
@@ -2537,14 +2541,17 @@ more "sophisticated" measure, the correlation coefficient, which is
 simply a standardized form of the multiplicands, but sufficiently well
 known that we calculate it with a pre-set command.
 
-Exercise: Write a program that uses the correlation coefficient to test
-the significance of the association between home runs and strikeouts.
+Exercise: Write a program that uses the correlation coefficient to test the
+significance of the association between home runs and strikeouts.  You can use
+the starting notebook for the previous exercise.
 
-### Money and exchange rate {#exr-money-exchange-rate}
+See: @sec-soln-runs-strikeouts-r.
+
+### Exercise: money and exchange rate {#sec-exr-money-exchange}
 
 All the other things equal, an increase in a country's money supply is
-inflationary and should have a negative impact on the exchange rate for
-the country's currency. The data in the following table (@tbl-exchange) were
+inflationary and should have a negative impact on the exchange rate for the
+country's currency. The data in the following table (@tbl-exchange) were
 computed using data from tables in the 1983/1984 *Statistical Yearbook of the
 United Nations*.  The table shows the first 15 rows.
 
@@ -2578,7 +2585,7 @@ expect to get the same result.
 
 Here's a notebook to get you started on part 2:
 
-::: {.notebook name="exchange_rates" title="Exchange rates and money supply"}
+::: {.notebook name="exchange_rates_exercise" title="Exchange rates and money supply"}
 
 ::: nb-only
 Notebook for exercise on exchange rates and money supply.
@@ -2605,3 +2612,5 @@ money_supply <- exchange_df$money_supply
 <!---
 End of notebook.
 -->
+
+See: @sec-soln-money-exchange.

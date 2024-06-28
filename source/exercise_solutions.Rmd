@@ -141,6 +141,63 @@ kk <- k / n_trials
 message('Bootstrap p null-world abs >= abs observed: ', kk)
 ```
 
+Finally we consider the pairs.  Here we *do* take the pairs into account.  We
+have some reason to think that the patients or cars vary in some substantial way in their level of depression, or their tendency to break down, but we believe that the patients' *response* to treatment or the difference between the mechanics is the value of interest.
+
+In that case, we are interested in the *differences* between the pairs.  In the
+null world, these before / after (mechanic A / mechanic B) differences are
+randomly — if there is no difference, then we can flip the before / after (A / B) pairs and be in the same world.
+
+Notice though the flipping the before / after or A / B in the pair just changes the sign of the difference.
+
+So we will simulate that effect, of flipping the values in the pair, by choosing a random sign for the pair, where -1 means pair is flipped, and 1 means pair is in original order.   We recalculated the mean difference with these random signs (flips) applied, and these will be our values in the null-world.
+
+```{python}
+# A test of paired difference with sign flips for the null world.
+differences = after - before
+observed_mdiff = np.mean(differences)
+n_both = len(differences)
+
+results = np.zeros(n_trials)
+for i in range(n_trials):
+    # Choose random signs to perform random flips of the pairs.
+    signs = rnd.choice([-1, 1], size=n_both)
+    # Do flips.
+    fake_differences = signs * differences
+    # Calculate mean difference and store result.
+    results[i] = np.mean(fake_differences)
+
+k = np.sum(np.abs(results) >= np.abs(observed_mdiff))
+kk = k / n_trials
+print('Sign-flip p null-world abs >= abs observed:', kk)
+```
+
+```{r}
+# A test of paired difference with sign flips for the null world.
+differences <- after - before
+observed_mdiff <- mean(differences)
+n_both <- length(differences)
+
+results <- numeric(n_trials)
+for (i in 1:n_trials) {
+    # Choose random signs to perform random flips of the pairs.
+    signs <- sample(c(-1, 1), size=n_both, replace=TRUE)
+    # Do flips.
+    fake_differences <- signs * differences
+    # Calculate mean difference and store result.
+    results[i] <- mean(fake_differences)
+}
+
+k <- sum(abs(results) >= abs(observed_mdiff))
+kk <- k / n_trials
+message('Sign-flip p null-world abs >= abs observed: ', kk)
+```
+
+Notice that the sign-flip test, in which we preserve the information about the patients / cars, is much more convincing than the permutation or bootstrap tests above, where we choose to ignore that information.
+
+This can occur when the values within the pairs (rows) are similar to each
+other, but less similar across different pairs (rows).
+
 :::
 <!---
 End of notebook.
@@ -174,7 +231,7 @@ for i in range(n_trials):
 
 plt.hist(results, bins=25)
 plt.title('Bootstrap distribution of p differences')
-plt.xlabel('p differences')
+plt.xlabel('Bootstrap p differences')
 
 p_limits = np.quantile(results, [0.025, 0.975])
 
@@ -201,7 +258,7 @@ for (i in 1:n_trials) {
 
 hist(results, breaks=25,
     main='Bootstrap distribution of p differences',
-    xlab='p differences')
+    xlab='Bootstrap p differences')
 
 p_limits <- quantile(results, c(0.025, 0.975))
 rounded <- round(p_limits, 3)
@@ -213,7 +270,7 @@ message('95% percent limits for p differences: ', rounded[1], ' ', rounded[2])
 End of notebook.
 -->
 
-## Solution: [unemployment percentage {#sec-exr-unemployment-percent}] {#sec-soln-unemployment-percent}
+## Solution: [unemployment percentage @sec-exr-unemployment-percent]{#sec-soln-unemployment-percent}
 
 In a sample of 200 people, 7 percent are found to be unemployed. Determine a 95
 percent confidence interval for the true population proportion.
@@ -235,8 +292,8 @@ for i in range(n_trials):
     results[i] = p_unemployed
 
 plt.hist(results, bins=25)
-plt.title('Null-world distribution p unemployed')
-plt.xlabel('p unemployed')
+plt.title('Bootstrap distribution p unemployed')
+plt.xlabel('Bootstrap p unemployed')
 
 p_limits = np.quantile(results, [0.025, 0.975])
 
@@ -257,8 +314,8 @@ for (i in 1:n_trials) {
 }
 
 hist(results, breaks=25,
-     main='Null-world distribution p unemployed',
-     xlab='p unemployed')
+     main='Bootstrap distribution p unemployed',
+     xlab='Bootstrap p unemployed')
 
 p_limits <- quantile(results, c(0.025, 0.975))
 rounded <- round(p_limits, 3)
@@ -270,70 +327,159 @@ message('95% percent limits for p differences: ', rounded[1], ' ', rounded[2])
 End of notebook.
 -->
 
-## Solution 21-2
+## Solution: [battery lifetime @sec-exr-battery-lifetime]{#sec-soln-battery-lifetime}
+
+> A sample of 20 batteries is tested, and the average lifetime is 28.85 months.
+Establish a 95 percent confidence interval for the true average value. The
+sample values (lifetimes in months) are listed below.
 
 We use the "bootstrap" technique of drawing many bootstrap re-samples
 with replacement from the original sample, and observing how the
 re-sample means are distributed.
 
+::: {.notebook name="battery_lifetime_solution" title="Battery lifetime solution"}
 
-<!--- Resampling stats script; slightly Matlab-like -->
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 
-```matlab
-NUMBERS (30 32 31 28 31 29 29 24 30 31 28 28 32 31 24 23 31 27 27 31) a
+rnd = np.random.default_rng()
 
-REPEAT 1000
-    ' Do 1000 trials or simulations
-    SAMPLE 20 a b
-    ' Draw 20 lifetimes from a, randomly and with replacement
-    MEAN b c
-    ' Find the average lifetime of the 20
-    SCORE c scrboard
-    ' Keep score
-END
+lifetimes = np.array([30, 32, 31, 28, 31, 29, 29, 24, 30, 31,
+                      28, 28, 32, 31, 24, 23, 31, 27, 27, 31])
 
-HISTOGRAM scrboard
-' Graph the experiment results
+print('Mean is:', np.mean(lifetimes))
 
-PERCENTILE scrboard (2.5 97.5) interval
-' Identify the 2.5th and 97.5th percentiles. These percentiles will
-' enclose 95 percent of the resample means.
+n_lifetimes = len(lifetimes)
+results = np.zeros(n_trials)
+
+for i in range(n_trials):
+    # Draw 20 lifetimes from "lifetimes, randomly and with replacement.
+    fake_lifetimes = rnd.choice(lifetimes, size=n_lifetimes)
+    # Find the average lifetime of the 20.
+    fake_mean = np.mean(fake_lifetimes)
+    # Keep score.
+    results[i] = fake_mean
+
+plt.hist(results, bins=25)
+plt.title('Bootstrap distribution of mean battery lifetimes')
+plt.xlabel('Bootstrap mean battery lifetime')
+
+mean_limits = np.quantile(results, [0.025, 0.975])
+
+print('95% percent limits for mean lifetimes:', mean_limits)
 ```
 
-![](images/30-Exercise-sol_002.png)
+```{r}
+lifetimes <- c(30, 32, 31, 28, 31, 29, 29, 24, 30, 31,
+               28, 28, 32, 31, 24, 23, 31, 27, 27, 31)
 
-Result:
+message('Mean is: ', mean(lifetimes))
 
-INTERVAL = 27.7 30.05 \[estimated 95 percent confidence interval\]
+n_lifetimes <- length(lifetimes)
+results <- numeric(n_trials)
 
-## Solution 21-3
+for (i in 1:n_trials) {
+    # Draw 20 lifetimes from "lifetimes, randomly and with replacement.
+    fake_lifetimes <- sample(lifetimes, size=n_lifetimes, replace=TRUE)
+    # Find the average lifetime of the 20.
+    fake_mean <- mean(fake_lifetimes)
+    # Keep score.
+    results[i] <- fake_mean
+}
 
+hist(results, breaks=25,
+    main='Bootstrap distribution of mean battery lifetimes',
+    xlab='Bootstrap mean battery lifetime')
 
-<!--- Resampling stats script; slightly Matlab-like -->
-
-```matlab
-NUMBERS (.02 .026 .023 .017 .022 .019 .018 .018 .017 .022) a
-REPEAT 1000
-    SAMPLE 10 a b
-    MEAN b c
-    SCORE c scrboard
-END
-HISTOGRAM scrboard
-PERCENTILE scrboard (2.5 97.5) interval
-PRINT interval
+mean_limits <- quantile(results, c(0.025, 0.975))
+rounded <- round(mean_limits, 2)
+message('95% percent limits for mean lifetimes: ',
+        rounded[1], ' ', rounded[2])
 ```
 
-![](images/30-Exercise-sol_003.png)
-
-Result:
-
-INTERVAL = 0.0187 0.0219 \[estimated 95 percent confidence interval\]
-
-## Solution 23-1
-
+:::
 <!---
-Correlation causation.
+End of notebook.
 -->
+
+## Solution: [optical density @sec-exr-optical-density]{#sec-soln-optical-density}
+
+::: {.notebook name="optical_density_solution" title="Optical density solution"}
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+rnd = np.random.default_rng()
+```
+
+Suppose we have 10 measurements of Optical Density on a batch of HIV
+negative control samples:
+
+```{python}
+density = np.array(
+    [.02, .026, .023, .017, .022, .019, .018, .018, .017, .022])
+```
+
+```{r}
+density <- c(.02, .026, .023, .017, .022, .019, .018, .018, .017, .022)
+```
+
+Derive a 95 percent confidence interval for the sample mean. Are there
+enough measurements to produce a satisfactory answer?
+
+```{python}
+n_density = len(density)
+
+n_trials = 10_000
+results = np.zeros(n_trials)
+
+for i in range(n_trials):
+    fake_density = rnd.choice(density, size=n_density)
+    results[i] = np.mean(fake_density)
+
+plt.hist(results, bins=25)
+plt.title('Bootstrap distribution of density means')
+plt.xlabel('Bootstrap density means')
+
+mean_limits = np.quantile(results, [0.025, 0.975])
+
+print('95% percent limits for density mean:', mean_limits)
+```
+
+```{r}
+n_density <- length(density)
+
+n_trials <- 10000
+results <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+    fake_density <- sample(density, size=n_density, replace=TRUE)
+    results[i] <- mean(fake_density)
+}
+
+hist(results, breaks=25,
+    main='Bootstrap distribution of density means',
+    xlab='Bootstrap density means')
+
+mean_limits <- quantile(results, c(0.025, 0.975))
+rounded <- round(mean_limits, 3)
+message('95% percent limits for density mean: ',
+        rounded[1], ' ', rounded[2])
+```
+
+:::
+<!---
+End of notebook.
+-->
+
+## Solution: [voter participation @sec-exr-voter-participation] {#sec-soln-voter-participation}
+
+The observed correlation coefficient between voter participation and spread is
+moderate and negative. Is this more negative that what might occur by chance,
+if no correlation exists in some underlying population, from which this sample
+was taken?
 
 1.  Create two groups of paper cards: 25 with participation rates, and
     25 with the spread values. Arrange the cards in pairs in accordance
@@ -345,146 +491,359 @@ Correlation causation.
     trials in which correlation was at least as negative as that for the
     original data.
 
+::: {.notebook name="voter_participation_solution" title="Voter participation in 1844 election"}
 
-<!--- Resampling stats script; slightly Matlab-like -->
+::: nb-only
+Solution for voter participation exercise.
+:::
 
-```matlab
-DATA (67.5  65.6  65.7  59.3 39.8  76.1  73.6  81.6  75.5  85.0  80.3
-54.5  79.1  94.0  80.3  89.6  44.7  82.7 89.7  83.6 84.9  76.3  74.7
-68.8  79.3) partic1
+```{python}
+import numpy as np
+import pandas as pd
 
-DATA (13 19 18 12 20 5 1 1 2 3 5 6 5 4 8 1 3 18 13 2 2 12 17 26 6)
-spread1
+rnd = np.random.default_rng()
 
-CORR partic1 spread1 corr
-
-' compute correlation - it’s -.37
-REPEAT 1000
-    SHUFFLE partic1 partic2
-    ' shuffle the participation rates
-    CORR partic2 spread1 corrtria
-    ' compute re-sampled correlation
-    SCORE corrtria z
-    ' keep the value in the scoreboard
-END
-HISTOGRAM z
-COUNT z <= -.37 n
-' count the trials when result  <= -.37
-DIVIDE n 1000 prob
-' compute the proportion of such trials
-PRINT prob
+voter_df = pd.read_csv('data/election_1844.csv')
+participation = np.array(voter_df['Participation'])
+spread = np.array(voter_df['Spread'])
 ```
 
-Conclusion: The results of 5 Monte Carlo experiments each of
-a thousand such simulations are as follows:
-
-prob = 0.028, 0.045, 0.036, 0.04, 0.025.
-
-From this we may conclude that the voter participation rates probably
-are negatively related to the vote spread in the election. The actual
-value of the correlation (-.37398) cannot be explained by chance alone.
-In our Monte Carlo simulation of the null-hypothesis a correlation that
-negative is found only 3 percent — 4 percent of the time.
-
-Distribution of the test statistic's value in 1000 independent trials
-corresponding to the null-hypothesis:
-
-![](images/30-Exercise-sol_004.png)
-
-## Solution 23-2
-
-<!--- Resampling stats script; slightly Matlab-like -->
-
-```matlab
-NUMBERS (14 20 0 38 9 38 22 31 33 11 40 5 15 32 3 29 5 32)
-homeruns
-NUMBERS (135 153 120 161 138 175 126 200 205 147 165 124
-169 156 36 98 82 131) strikeout
-MULTIPLY homerun strikeout r
-SUM r s
-REPEAT 1000
-    SHUFFLE strikeout  strikout2
-    MULTIPLY strikout2 homeruns c
-    SUM c cc
-    SUBTRACT s cc d
-    SCORE d scrboard
-END
-HISTOGRAM scrboard
-COUNT scrboard >=s k
-DIVIDE k 1000 kk
-PRINT kk
+```{r}
+voter_df <- read.csv('data/election_1844.csv')
+participation <- voter_df$Participation
+spread <- voter_df$Spread
 ```
 
-![](images/30-Exercise-sol_005.png)
 
-Result: kk = 0
-
-Interpretation: In 1000 simulations, random shuffling never produced a
-value as high as observed. Therefore, we conclude that random chance
-could not be responsible for the observed degree of correlation.
-
-## Solution 23-3
-
-<!--- Resampling stats script; slightly Matlab-like -->
-
-```matlab
-NUMBERS (14 20 0 38 9 38 22 31 33 11 40 5 15 32 3 29 5 32)
-homeruns
-NUMBERS (135 153 120 161 138 175 126 200 205 147 165 124
-169 156 36 98 82 131) strikeou
-CORR homeruns strikeou r
-    REPEAT 1000
-    SHUFFLE strikeou  strikou2
-    CORR strikou2 homeruns r$
-    SCORE r$ scrboard
-END
-HISTOGRAM scrboard
-COUNT scrboard >=0.62 k
-DIVIDE k 1000 kk
-PRINT kk r
+```{python}
+# Compute correlation.  It's -0.425.
+actual_r = np.corrcoef(participation, spread)[0, 1]
+actual_r
 ```
 
-![](images/30-Exercise-sol_006.png)
-
-Result: kk = .001
-
-Interpretation: A correlation coefficient as high as the observed value
-(.62) occurred only 1 out of 1000 times by chance. Hence, we rule out
-chance as an explanation for such a high value of the correlation
-coefficient.
-
-## Solution 23-4
-
-
-<!--- Resampling stats script; slightly Matlab-like -->
-
-```matlab
-READ FILE “noreen2.dat” exrate msuppl
-' read data from file
-CORR exrate msuppl stat
-' compute correlation stat (it’s .419)
-REPEAT 1000
-    SHUFFLE msuppl msuppl$
-    ' shuffle money supply values
-    CORR exrate msuppl$  stat$
-    ' compute correlation
-    SCORE stat$ scrboard
-    ' keep the value in a scoreboard
-END
-PRINT stat
-HISTOGRAM scrboard
-COUNT scrboard >=0.419 k
-DIVIDE k 1000 prob
-PRINT prob
+```{r}
+# Compute correlation.  It's -0.425.
+actual_r <- cor(participation, spread)
+actual_r
 ```
 
-Distribution of the correlation after permutation of the data:
+```{python}
+n_trials = 10_000
+results = np.zeros(n_trials)
 
-![](images/30-Exercise-sol_007.png)
+for i in range(n_trials):
+    # Shuffle the participation rates.
+    shuffled = rnd.permuted(participation)
+    # Compute re-sampled correlation.
+    fake_r = np.corrcoef(shuffled, spread)[0, 1]
+    # Keep the value in the results.
+    results[i] = fake_r
+
+plt.hist(results, bins=25)
+plt.title('Distribution of shuffled correlations')
+plt.xlabel('Correlation with shuffled participation')
+
+# Count the trials when result <= observed.
+k = np.sum(results <= actual_r)
+# Compute the proportion of such trials.
+kk = k / n_trials
+
+print('Proportion of shuffled r <= observed:', np.round(kk, 2))
+```
+
+```{r}
+n_trials <- 10000
+results <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+    # Shuffle the participation rates.
+    shuffled <- sample(participation)
+    # Compute re-sampled correlation.
+    fake_r <- cor(shuffled, spread)
+    # Keep the value in the results.
+    results[i] <- fake_r
+}
+
+hist(results, breaks=25,
+     main='Distribution of shuffled correlations',
+     xlab='Correlation with shuffled participation')
+
+# Count the trials when result <= observed.
+k <- sum(results <= actual_r)
+# Compute the proportion of such trials.
+kk <- k / n_trials
+
+message('Proportion of shuffled r <= observed: ', round(kk, 2))
+```
+
+:::
+<!---
+End of notebook
+-->
+
+From this we may conclude that the voter participation rates probably are
+negatively related to the vote spread in the election. The actual value of the
+correlation (-.425) cannot be explained by chance alone. In our Monte Carlo
+simulation of the null-hypothesis a correlation that negative is found only
+about 3 percent of the time.
+
+See: @sec-soln-voter-participation.
+
+## Solution: [association of runs and strikeouts @sec-exr-runs-strikeouts]{#sec-soln-runs-strikeouts}
+
+We are looking at the correlation of home runs and strikeouts for major-league baseball players.
+
+The instructions ask us to start here with the sum-of-products measure.
+
+::: {.notebook name="homerun_sop_solution" title="Homeruns and strikeout sum of products."}
+
+::: nb-only
+Solution to exercise on relationship of home runs and strikeouts, using sum of
+products.
+:::
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
+homeruns = np.array([14, 20, 0, 38, 9, 38, 22, 31, 33,
+                     11, 40, 5, 15, 32, 3, 29, 5, 32])
+strikeout = np.array([135, 153, 120, 161, 138, 175, 126, 200, 205,
+                      147, 165, 124, 169, 156, 36, 98, 82, 131])
+```
+
+```{r}
+homeruns <- c(14, 20, 0, 38, 9, 38, 22, 31, 33,
+              11, 40, 5, 15, 32, 3, 29, 5, 32)
+strikeout <- c(135, 153, 120, 161, 138, 175, 126, 200, 205,
+               147, 165, 124, 169, 156, 36, 98, 82, 131)
+
+```
+
+```{python}
+# The sum of products approach.
+actual_sop = np.sum(homeruns * strikeout)
+
+n_trials = 10_000
+results = np.zeros(n_trials)
+
+for i in range(n_trials):
+    shuffled_runs = rnd.permuted(homeruns)
+    fake_sop = np.sum(shuffled_runs * strikeout)
+    results[i] = fake_sop
+
+plt.hist(results, bins=25)
+plt.title('Distribution of shuffled sum of products')
+plt.xlabel('Sum of products for shuffled homeruns')
+
+k = np.sum(results >= actual_sop)
+kk = k / n_trials
+
+print('p shuffled sum of products >= actual:', np.round(kk, 3))
+```
+
+```{r}
+# The sum of products approach.
+actual_sop <- sum(homeruns * strikeout)
+
+n_trials <- 10000
+results <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+    shuffled_runs <- sample(homeruns)
+    fake_sop <- sum(shuffled_runs * strikeout)
+    results[i] <- fake_sop
+}
+
+hist(results, breaks=25,
+     main='Distribution of shuffled sum of products',
+     xlab='Sum of products for shuffled homeruns')
+
+k <- sum(results >= actual_sop)
+kk <- k / n_trials
+
+message('p shuffled sum of products >= actual: ', round(kk, 3))
+```
+
+Interpretation: In 10,000 simulations, random shuffling very rarely produced
+a value as high as observed. Therefore, we conclude that random chance could
+not reasonably be responsible for the observed degree of correlation.
+
+:::
+<!---
+End of notebook.
+-->
+
+## Solution: [runs, strikeouts and correlation coefficient @sec-exr-runs-strikeouts-r]{#sec-soln-runs-strikeouts-r}
+
+Again, we are looking at the correlation of home runs and strikeouts for
+major-league baseball players.  This time we will use the correlation
+coefficient ($r$) measure.
+
+::: {.notebook name="homerun_correlation_solution" title="Homeruns and strikeout correlation"}
+
+::: nb-only
+Solution for exercise on relationship of home runs and strikeouts, using correlation coefficient.
+:::
+
+```{python}
+import numpy as np
+
+rnd = np.random.default_rng()
+
+homeruns = np.array([14, 20, 0, 38, 9, 38, 22, 31, 33,
+                     11, 40, 5, 15, 32, 3, 29, 5, 32])
+strikeout = np.array([135, 153, 120, 161, 138, 175, 126, 200, 205,
+                      147, 165, 124, 169, 156, 36, 98, 82, 131])
+```
+
+```{r}
+homeruns <- c(14, 20, 0, 38, 9, 38, 22, 31, 33,
+              11, 40, 5, 15, 32, 3, 29, 5, 32)
+strikeout <- c(135, 153, 120, 161, 138, 175, 126, 200, 205,
+               147, 165, 124, 169, 156, 36, 98, 82, 131)
+
+```
+
+```{python}
+# The correlation approach.
+actual_r = np.corrcoef(homeruns, strikeout)[0, 1]
+
+n_trials = 10_000
+results = np.zeros(n_trials)
+
+for i in range(n_trials):
+    shuffled_runs = rnd.permuted(homeruns)
+    fake_r = np.corrcoef(shuffled_runs, strikeout)[0, 1]
+    results[i] = fake_r
+
+plt.hist(results, bins=25)
+plt.title('Distribution of shuffled r')
+plt.xlabel('r for shuffled homeruns')
+
+k = np.sum(results >= actual_r)
+kk = k / n_trials
+
+print('p shuffled r >= actual:', np.round(kk, 3))
+```
+
+```{r}
+# The correlation approach.
+actual_r <- cor(homeruns, strikeout)
+
+n_trials <- 10000
+results <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+    shuffled_runs <- sample(homeruns)
+    fake_r <- cor(shuffled_runs, strikeout)
+    results[i] <- fake_r
+}
+
+hist(results, breaks=25,
+    main='Distribution of shuffled r',
+    xlab='r for shuffled homeruns')
+
+k <- sum(results >= actual_r)
+kk <- k / n_trials
+
+message('p shuffled r >= actual: ', round(kk, 3))
+```
+
+Interpretation: a correlation coefficient as high as the observed value
+(.62) occurred only about 0.1% of the time by chance. Hence, provisionally, we
+choose to reject chance as an explanation for such a high value of the
+correlation coefficient.
+
+Notice, we get the same answer for correlation coefficients as we do for sum of
+products. In fact, correlation coefficients must give us the same answer (apart
+from random variation from the permutation), as the tests of association are
+equivalent when we compare between different orderings of the same sequences.
+
+:::
+<!---
+End of notebook.
+-->
+
+### Solution: [money and exchange rate @sec-exr-money-exchange]{#sec-soln-money-exchange}
+
+::: {.notebook name="exchange_rates_solution" title="Exchange rates and money supply"}
+
+::: nb-only
+Solution notebook for exercise on exchange rates and money supply.
+:::
+
+```{python}
+import numpy as np
+import pandas as pd
+
+rnd = np.random.default_rng()
+
+exchange_df = pd.read_csv('data/exchange_rates.csv')
+exchange_rates = np.array(exchange_df['exchange_rate'])
+money_supply = np.array(exchange_df['money_supply'])
+```
+
+```{r}
+exchange_df <- read.csv('data/exchange_rates.csv')
+exchange_rates <- exchange_df$exchange_rate
+money_supply <- exchange_df$money_supply
+```
+
+```{python}
+# Correlation.
+actual_r = np.corrcoef(exchange_rates, money_supply)[0, 1]
+
+n_trials = 10_000
+results = np.zeros(n_trials)
+
+for i in range(n_trials):
+    shuffled_rates = rnd.permuted(exchange_rates)
+    fake_r = np.corrcoef(shuffled_rates, money_supply)[0, 1]
+    results[i] = fake_r
+
+plt.hist(results, bins=25)
+plt.title('Distribution of shuffled exchange rates r values')
+plt.xlabel('r for shuffled exchange rate')
+
+k = np.sum(results >= actual_r)
+kk = k / n_trials
+
+print('p shuffled r >= actual:', np.round(kk, 3))
+```
+
+```{r}
+# Correlation.
+actual_r <- cor(exchange_rates, money_supply)
+
+n_trials <- 10000
+results <- numeric(n_trials)
+
+for (i in 1:n_trials) {
+    shuffled_rates <- sample(exchange_rates)
+    fake_r <- cor(shuffled_rates, money_supply)
+    results[i] <- fake_r
+}
+
+hist(results, breaks=25,
+     main='Distribution of shuffled exchange rates r values',
+     xlab='r for shuffled exchange rate')
+
+k <- sum(results >= actual_r)
+kk <- k / n_trials
+
+message('p shuffled r >= actual: ', round(kk, 3))
+```
+
+:::
+<!---
+End of notebook.
+-->
 
 Result: prob = .001
 
-Interpretation: The observed correlation (.419) between the exchange
-rate and the money supply is seldom exceeded by random experiments with
-these data. Thus, the observed result 0.419 cannot be explained by chance
-alone and we conclude that it is statistically significant.
+Interpretation: The observed correlation (.419) between the exchange rate and
+the money supply is seldom exceeded by random experiments with these data.
+Thus, the observed result 0.419 cannot be reasonably explained by chance alone
+and we conclude that it is statistically surprising.
