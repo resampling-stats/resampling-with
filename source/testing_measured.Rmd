@@ -895,7 +895,7 @@ message('Proportion fake differences <= actual_difference: ', kk)
 
 :::
 <!---
-End os liquor_permutation notebook.
+End of liquor_permutation notebook.
 -->
 
 The result —  about `r int2tw(round(get_var('kk') * 100))` percent of the
@@ -911,9 +911,9 @@ influences the prices that consumers pay.[^liquor-tests]
 
 The logical framework of this resampling version of the permutation test
 differs greatly from the formulaic version, which relies on some sophisticated
-mathematics. The formula-method alternative would be a Student's t-test, in
-which the user simply plugs into an unintuitive formula and reads the result
-from a table.
+mathematics. The formula-method alternative would be the [Student's
+t-test](https://en.wikipedia.org/wiki/Student%27s_t-test), in which the user
+simply plugs into an unintuitive formula and reads the result from a table.
 
 <!---
 Discussion of t-test?  Have we introduced the t-test?
@@ -924,7 +924,7 @@ infinite-universe bootstrap distribution simply substitutes the random
 sampling command {{< var sample >}} for the commands to do shuffling and
 splitting above. The results of the bootstrap test are indistinguishable from
 those in the permutation version of the program above — see:
-@sec-liquor-prices.
+@sec-public-liquor.
 
 Still another difficult question is whether *any* hypothesis test is
 appropriate, because the states were not randomly selected for inclusion
@@ -1450,7 +1450,7 @@ advantage of the treatment group.
 
 **Test for Differences Among Means of More Than Two Samples of Measured Data**.
 
-In the examples of @sec-fruitfly and @sec-female-calved we investigated
+In the examples of @sec-fruitfly and @sec-female-calves we investigated
 whether or not the results shown by a *single* sample are sufficiently
 different from a null (benchmark) hypothesis so that the sample is unlikely to
 have come from the null-hypothesis benchmark universe. In the examples of
@@ -1836,7 +1836,7 @@ four treatments are likely not all similar.
 
 Solutions for problems may be found in @sec-exercise-solutions.
 
-### Exercise 1 {#sec-measured-ex-mechanics}
+### Exercise: paired differences {#sec-exr-paired-differences}
 
 The data shown in @tbl-hamilton-scores [@hollander1999nonparametric, p. 39,
 Table 3.1] might be data for the outcomes of two different mechanics, showing
@@ -1849,28 +1849,55 @@ depression on the Hamilton scale, before and after drug therapy.
 Note on source in Hollander: Salsburg (1970): Personal communication (with the cooperation of Pfizer and co, Groton, Conn.)
 -->
 
-| Patient #       | Score Before     | Score After |
-|-----------------|------------------|-------------|
-| 1               | 1.83             | .878        |
-| 2               | .50              | .647        |
-| 3               | 1.62             | .598        |
-| 4               | 2.48             | 2.05        |
-| 5               | 1.68             | 1.06        |
-| 6               | 1.88             | 1.29        |
-| 7               | 1.55             | 1.06        |
-| 8               | 3.06             | 3.14        |
-| 9               | 1.3              | 1.29        |
-
-: Hamilton Depression Scale Values {#tbl-hamilton-scores}
+```{r echo=FALSE, eval=TRUE}
+._df_ham <- read.csv('data/hamilton.csv')
+names(._df_ham) <- c('Patient #', 'Score before', 'Score after')
+ketable(._df_ham,
+        caption="Hamilton Depression Scale Values
+        {#tbl-hamilton-scores}")
+```
 
 The task is to perform a test that will help decide whether there is a
 difference in the depression scores at the two visits (or the
 performances of the two mechanics). Perform both a bootstrap test and a
 permutation test, and give some reason for preferring one to the other
-in principle. How much do they differ in practice?
+in principle. How much do they differ in practice?  (For this exercise, assume
+that we can treat the before and after scores as two different and independent
+samples and ignore the pairing between the before and after scores).
 
+Here's a notebook to get you started:
 
-### Exercise 2 {#sec-measured-ex-taxis}
+::: {.notebook name="paired_differences" title="Paired differences exercise"}
+
+```{python}
+import numpy as np
+import pandas as pd
+
+rnd = np.random.default_rng()
+
+df = pd.read_csv('data/hamilton.csv')
+before = np.array(df['score_before'])
+after = np.array(df['score_after'])
+
+# Your code here.
+```
+
+```{r}
+df <- read.csv('data/hamilton.csv')
+before <- df$score_before
+after <- df$score_after
+
+# Your code here.
+```
+
+:::
+<!---
+End of notebook.
+-->
+
+See @sec-soln-paired-differences for a solution.
+
+### Exercise: seatbelt proportions {#sec-exr-seatbelt-proportions}
 
 Thirty-six of 72 (.5) taxis surveyed in Pittsburgh had visible
 seatbelts. Seventy-seven of 129 taxis in Chicago (.597) had visible
@@ -1879,3 +1906,5 @@ proportions, estimated at -.097. (Source: Peskun, Peter H., "A New
 Confidence Interval Method Based on the Normal Approximation for the
 Difference of Two Binomial Probabilities," *Journal of the American
 Statistical Association* , 6/93 p. 656).
+
+For solution, see @sec-soln-seatbelt-proportions}

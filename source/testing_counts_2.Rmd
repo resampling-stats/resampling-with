@@ -590,7 +590,7 @@ k = np.sum(scores >= actual_sum_sq_deviations)
 # Convert to a proportion
 kk = k / n_trials
 
-print(f'Proportion >= {actual_sum_sq_deviations} was:', kk)
+print('Proportion >=', actual_sum_sq_deviations, 'was:', kk)
 ```
 
 ```{r}
@@ -600,7 +600,7 @@ k <- sum(scores >= actual_sum_sq_deviations)
 # Convert to a proportion
 kk <- k / n_trials
 
-message(paste('Proportion >=', actual_sum_sq_deviations, 'was:', kk))
+message('Proportion >= ', actual_sum_sq_deviations, ' was: ', kk)
 ```
 
 The conventional way to approach this problem would be with what is known as
