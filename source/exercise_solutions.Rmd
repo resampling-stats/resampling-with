@@ -735,7 +735,7 @@ message('p shuffled r >= actual: ', round(kk, 3))
 ```
 
 Interpretation: a correlation coefficient as high as the observed value
-(.62) occurred only about 0.1% of the time by chance. Hence, provisionally, we
+(.62) occurred only about 0.3% of the time by chance. Hence, provisionally, we
 choose to reject chance as an explanation for such a high value of the
 correlation coefficient.
 
@@ -830,9 +830,7 @@ message('p shuffled r >= actual: ', round(kk, 3))
 End of notebook.
 -->
 
-Result: prob = .001
-
-Interpretation: The observed correlation (.419) between the exchange rate and
+Interpretation: The observed correlation (.42) between the exchange rate and
 the money supply is seldom exceeded by random experiments with these data.
-Thus, the observed result 0.419 cannot be reasonably explained by chance alone
+Thus, the observed result 0.42 cannot be reasonably explained by chance alone
 and we conclude that it is statistically surprising.
