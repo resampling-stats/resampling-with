@@ -25,24 +25,7 @@ source("_common.R")
 
 # Exercise Solutions {#sec-exercise-solutions}
 
-:::{.callout-warning}
-## Draft page partially ported from original PDF
-
-This page is an automated and partial import from the [original second-edition
-PDF](https://resample.com/content/text/30-Exercise-sol.pdf).
-
-We are in the process of updating this page for formatting, and porting any
-code from the original [RESAMPLING-STATS
-language](http://www.statistics101.net) to Python and R.
-
-Feel free to read this version for the sense, but expect there to be multiple
-issues with formatting.
-
-We will remove this warning when the page has adequate formatting, and we have
-ported the code.
-:::
-
-## Solution to [paired differences exercise @sec-exr-paired-differences] {#sec-soln-paired-differences}
+## Solution: [paired differences exercise @sec-exr-paired-differences] {#sec-soln-paired-differences}
 
 We suggested that you ignored the pairing of the before and after samples, and that is what we will do here.  Then we will extend the treatment to take the pairing into account.
 
@@ -794,7 +777,10 @@ money_supply <- exchange_df$money_supply
 ```{python}
 # Correlation.
 actual_r = np.corrcoef(exchange_rates, money_supply)[0, 1]
+actual_r
+```
 
+```{python}
 n_trials = 10_000
 results = np.zeros(n_trials)
 
@@ -816,7 +802,10 @@ print('p shuffled r >= actual:', np.round(kk, 3))
 ```{r}
 # Correlation.
 actual_r <- cor(exchange_rates, money_supply)
+actual_r
+```
 
+```{r}
 n_trials <- 10000
 results <- numeric(n_trials)
 
