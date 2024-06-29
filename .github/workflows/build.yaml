@@ -88,6 +88,7 @@ jobs:
         run: |
           make python-book
           cp website/python-README.md python-book/README.md
+          cp requirements.txt python-book
           touch python-book/.nojekyll
 
       # - name: Build Python PDF
