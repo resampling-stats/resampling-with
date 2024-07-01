@@ -25,7 +25,7 @@ source("_common.R")
 
 # Exercise Solutions {#sec-exercise-solutions}
 
-## Solution: [paired differences exercise @sec-exr-paired-differences] {#sec-soln-paired-differences}
+## Solution for [paired differences exercise @sec-exr-paired-differences] {#sec-soln-paired-differences}
 
 We suggested that you ignored the pairing of the before and after samples, and that is what we will do here.  Then we will extend the treatment to take the pairing into account.
 
@@ -129,11 +129,17 @@ have some reason to think that the patients or cars vary in some substantial way
 
 In that case, we are interested in the *differences* between the pairs.  In the
 null world, these before / after (mechanic A / mechanic B) differences are
-randomly — if there is no difference, then we can flip the before / after (A / B) pairs and be in the same world.
+random.  In the null-world, where there is no difference between before/after
+or mechanics 1 and 2, we can flip the before / after (A / B) pairs and be in
+the same world.
 
-Notice though the flipping the before / after or A / B in the pair just changes the sign of the difference.
+Notice that flipping the before / after or A / B in the pair just changes the
+sign of the difference.
 
-So we will simulate that effect, of flipping the values in the pair, by choosing a random sign for the pair, where -1 means pair is flipped, and 1 means pair is in original order.   We recalculated the mean difference with these random signs (flips) applied, and these will be our values in the null-world.
+So we will simulate the effect of flipping the values in the pair, by choosing
+a random sign for the pair, where -1 means pair is flipped, and 1 means pair is
+in original order.   We recalculated the mean difference with these random
+signs (flips) applied, and these will be our values in the null-world.
 
 ```{python}
 # A test of paired difference with sign flips for the null world.
@@ -253,7 +259,7 @@ message('95% percent limits for p differences: ', rounded[1], ' ', rounded[2])
 End of notebook.
 -->
 
-## Solution: [unemployment percentage @sec-exr-unemployment-percent] {#sec-soln-unemployment-percent}
+## Solution for [unemployment percentage @sec-exr-unemployment-percent] {#sec-soln-unemployment-percent}
 
 In a sample of 200 people, 7 percent are found to be unemployed. Determine a 95
 percent confidence interval for the true population proportion.
@@ -310,7 +316,7 @@ message('95% percent limits for p differences: ', rounded[1], ' ', rounded[2])
 End of notebook.
 -->
 
-## Solution: [battery lifetime @sec-exr-battery-lifetime] {#sec-soln-battery-lifetime}
+## Solution for [battery lifetime @sec-exr-battery-lifetime] {#sec-soln-battery-lifetime}
 
 > A sample of 20 batteries is tested, and the average lifetime is 28.85 months.
 Establish a 95 percent confidence interval for the true average value. The
@@ -386,7 +392,7 @@ message('95% percent limits for mean lifetimes: ',
 End of notebook.
 -->
 
-## Solution: [optical density @sec-exr-optical-density] {#sec-soln-optical-density}
+## Solution for [optical density @sec-exr-optical-density] {#sec-soln-optical-density}
 
 ::: {.notebook name="optical_density_solution" title="Optical density solution"}
 
@@ -457,7 +463,7 @@ message('95% percent limits for density mean: ',
 End of notebook.
 -->
 
-## Solution: [voter participation @sec-exr-voter-participation] {#sec-soln-voter-participation}
+## Solution for [voter participation @sec-exr-voter-participation] {#sec-soln-voter-participation}
 
 The observed correlation coefficient between voter participation and spread is
 moderate and negative. Is this more negative that what might occur by chance,
@@ -572,7 +578,7 @@ about 3 percent of the time.
 
 See: @sec-soln-voter-participation.
 
-## Solution: [association of runs and strikeouts @sec-exr-runs-strikeouts] {#sec-soln-runs-strikeouts}
+## Solution for [association of runs and strikeouts @sec-exr-runs-strikeouts] {#sec-soln-runs-strikeouts}
 
 We are looking at the correlation of home runs and strikeouts for major-league baseball players.
 
@@ -658,7 +664,7 @@ not reasonably be responsible for the observed degree of correlation.
 End of notebook.
 -->
 
-## Solution: [runs, strikeouts and correlation coefficient @sec-exr-runs-strikeouts-r] {#sec-soln-runs-strikeouts-r}
+## Solution for [runs, strikeouts and correlation coefficient @sec-exr-runs-strikeouts-r] {#sec-soln-runs-strikeouts-r}
 
 Again, we are looking at the correlation of home runs and strikeouts for
 major-league baseball players.  This time we will use the correlation
@@ -749,7 +755,7 @@ equivalent when we compare between different orderings of the same sequences.
 End of notebook.
 -->
 
-### Solution: [money and exchange rate @sec-exr-money-exchange] {#sec-soln-money-exchange}
+### Solution for [money and exchange rate @sec-exr-money-exchange] {#sec-soln-money-exchange}
 
 ::: {.notebook name="exchange_rates_solution" title="Exchange rates and money supply"}
 
