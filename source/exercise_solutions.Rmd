@@ -769,7 +769,7 @@ import pandas as pd
 
 rnd = np.random.default_rng()
 
-exchange_df = pd.read_csv('data/exchange_rates.csv')
+exchange_df = pd.read_csv('https://resampling-stats.github.io/data/exchange_rates.csv')
 exchange_rates = np.array(exchange_df['exchange_rate'])
 money_supply = np.array(exchange_df['money_supply'])
 ```
