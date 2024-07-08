@@ -86,7 +86,7 @@ jobs:
 
       - name: Build Python book
         run: |
-          make python-book
+          make python-book-jl
           cp website/python-README.md python-book/README.md
           cp requirements.txt python-book
           touch python-book/.nojekyll
