@@ -41,8 +41,10 @@ python-book-jl: python-book
 r-book:  ## Build the R version of the book
 r-book: ninja-config
 	cd $(SOURCE_DIR) && ninja r-book
+
+r-book-jl: r-book
 	$(PIP_INSTALL_CMD) -r r-jl-requirements.txt
-	$(PYTHON) -m jupyter lite build --contents $(PYTHON_BOOK_DIR)/notebooks --output-dir $(PYTHON_BOOK_DIR)/notebooks
+	$(PYTHON) -m jupyter lite build --contents $(R_BOOK_DIR)/notebooks --output-dir $(R_BOOK_DIR)/notebooks
 
 _source-clean:
 	cd $(SOURCE_DIR) && ninja clean
