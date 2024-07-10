@@ -105,6 +105,7 @@ jobs:
 
       - name: Build R book
         run: |
+          make clean
           make r-book-jl
           cp website/r-README.md r-book/README.md
           touch r-book/.nojekyll
