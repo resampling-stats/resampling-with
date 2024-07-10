@@ -36,7 +36,7 @@ python-book: ninja-config
 python-book-jl: python-book
 	# Jupyter-lite files for book build.
 	$(PIP_INSTALL_CMD) -r py-jl-requirements.txt
-	$(PYTHON) -m jupyter lite build --contents $(PYTHON_BOOK_DIR)/notebooks --output-dir $(PYTHON_BOOK_DIR)/jupyterlite
+	$(PYTHON) -m jupyter lite build --contents $(PYTHON_BOOK_DIR)/notebooks --output-dir $(PYTHON_BOOK_DIR)/notebooks
 
 r-book:  ## Build the R version of the book
 r-book: ninja-config
