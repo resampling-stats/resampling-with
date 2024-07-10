@@ -1,0 +1,1056 @@
+---
+jupyter:
+  jupytext:
+    metadata_filter:
+      notebook:
+        additional: all
+        excluded:
+        - language_info
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.6
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+resampling_with:
+    ed2_fname: null
+---
+
+```{r setup, include=FALSE}
+source("_common.R")
+```
+
+# More resampling with code {#sec-resampling-two}
+
+@sec-resampling-code introduced a problem in probability, that was also a
+problem in statistics.  We asked how surprised we should be at the results of a
+trial of a new cancer treatment regime.
+
+Here we study another urgent problem in the real world - racial bias and the
+death penalty.
+
+## A question of life and death
+
+This example comes from the excellent Berkeley introduction to data science
+[@adhikari2021data8].
+
+Robert Swain was a young black man who was sentenced to death in the early
+60s.  Swain's trial was held in Talladega County, Alabama. At the time, 26% of
+the eligible jurors in that county were black, but every member of Swain's
+jury was white.  Swain and his legal team appealed to the Alabama Supreme
+Court, and then to the [US Supreme
+Court](https://en.wikipedia.org/wiki/Swain_v._Alabama), arguing that there was
+racial bias in the jury selection.  They noted that there had been no black
+jurors in Talladega county since 1950, even though they made up about a
+quarter of the eligible pool of jurors. The US Supreme Court rejected this
+argument, in a 6 to 3 opinion, writing that "The overall percentage disparity
+has been small and reflects no studied attempt to include or exclude a
+specified number of Negros.".
+
+Swain's team presented a variety of evidence on bias in jury selection, but
+here we will look at the obvious and apparently surprising fact that Swain's
+jury was entirely white. The Supreme Court decided that the "disparity"
+between selection of white and black jurors "has been small" — but how would
+they, and how would we, make a rational decision about whether this disparity
+*really* was "small"?
+
+You might reasonably be worried about the result of this decision for Robert
+Swain.  In fact his death sentence was invalidated by a [later, unrelated
+decision](https://en.wikipedia.org/wiki/Furman_v._Georgia) and he served a
+long prison sentence instead. In 1986, the Supreme Court overturned the
+precedent set by Swain's case, in [Batson v. Kentucky, 476 U.S.
+79](https://supreme.justia.com/cases/federal/us/476/79).
+
+## A small disparity and a hypothetical world
+
+To answer the question that the Supreme Court asked, we return to the method we used in the last chapter.
+
+Let us imagine a hypothetical world, in which each individual black or white
+person had an equal chance of being selected for the jury.  Call this world Hypothetical County, Alabama.
+
+Just as in 1960's Talladega County, 26% of eligible jurors in Hypothetical
+County are black.  Hypothetical County jury selection has no bias against
+black people, so we expect around 26% of the jury to be black. 0.26 * 12 =
+3.12, so we expect that, on average, just over 3 out of 12 jurors in
+a Hypothetical County jury will be black.  But, if we select each juror at
+random from the population, that means that, sometimes, by chance, we will have
+fewer than 3 black jurors, and sometimes will have more than 3 black jurors.
+And, by chance, sometimes we will have no black jurors.  But, if the jurors
+really are selected at random, how often would we expect this to happen — that
+there are no black jurors?  We would like to estimate the *probability* that
+we will get no black jurors.  If that probability is small, then we have some
+evidence that the disparity in selection between black and white jurors, was
+not "small".
+
+::: {.question}
+What is the probability of an *all white* jury being randomly selected out of a population having 26% black people?
+:::
+
+## Designing the experiment
+
+Before we start, we need to figure out three things:
+
+1. What do we mean by one trial?
+2. What is the outcome of interest from the trial?
+3. How do we simulate one trial?
+
+We then take **three steps** to calculate the desired probability:
+
+1. *Repeat* the simulated trial procedure N times.
+2. *Count* M, the number of trials with an outcome that matches the outcome we
+   are interested in.
+3. Calculate the *proportion*, M/N.
+   This is an estimate of the probability in question.
+
+For this problem, our task is made a little easier by the fact that our *trial* (in the resampling sense) is a simulated *trial* (in the legal sense). One trial requires 12 simulated jurors, each labeled by race (white or black).
+
+The outcome we are interested in is the number of black jurors.
+
+Now comes the harder part.  How do we simulate one trial?
+
+### One trial
+
+One trial requires 12 jurors, and we are interested only in the race of each juror.
+In Hypothetical County, where selection by race is entirely random, each juror
+has a 26% chance of being black.
+
+We need a way of simulating a 26% chance.
+
+One way of doing this is by getting a random number from 0 through 99
+(inclusive).  There are 100 numbers in the range 0 through 99 (inclusive).
+
+We will arbitrarily say that the juror is white if the random number is in the
+range from 0 through 73.  74 of the 100 numbers are in this range, so
+the juror has a 74/100 = 74% chance of getting the label "white".  We will say
+the juror is black if the random number is in the range 74 though 99.  There
+are 26 such numbers, so the juror has a 26% chance of getting the label
+"black".
+
+Next we need a way of getting a random number in the range 0 through 99. This
+is an easy job for the computer, but if we had to do this with a physical
+device, we could get a single number by throwing *two* 10-sided dice, say a
+blue die and a green die.  The face of the blue die will be the 10s digit, and
+the green face will be the ones digit.  So, if the blue die comes up with 8 and
+the green die has 4, then the random number is 84.
+
+We could then simulate 12 jurors by repeating this process 12 times, each time
+writing down "white" if the number is from 0 through 74, and "black"
+otherwise.  The trial outcome is the number of times we wrote "black" for these
+12 simulated jurors.
+
+### Using code to simulate a trial
+
+We use the same logic to simulate a trial with the computer. A little code
+makes the job easier, because we can ask {{< var lang >}} to give us 12 random
+numbers from 0 through 99, and to count how many of these numbers are in the
+range from 75 through 99.  Numbers in the range from 75 through 99 correspond
+to black jurors.
+
+### Random numbers from 0 through 99 {#sec-random-zero-through-ninety-nine}
+
+We can now use {{< var np_or_r >}} and
+[the random number functions]{.python}[`sample`]{.r}
+from the last chapter to get 12 random numbers from 0 through 99.
+
+```{python}
+# Import the Numpy library, rename as "np"
+import numpy as np
+
+# Ask NumPy for a random number generator.
+rnd = np.random.default_rng()
+
+# All the integers from 0 up to, but not including 100.
+zero_thru_99 = np.arange(100)
+
+# Get 12 random numbers from 0 through 99
+a = rnd.choice(zero_thru_99, size=12)
+
+# Show the result
+a
+```
+
+```{r}
+# Get 12 random numbers from 0 through 99
+a <- sample(0:99, size=12, replace=TRUE)
+
+# Show the result
+a
+```
+
+#### Counting the jurors
+
+We use *comparison* and [`np.sum`]{.python}[`sum`]{.r} to count how
+many numbers are greater than 74, and therefore, in the range from 75 through
+99:
+
+```{python}
+# How many numbers are greater than 74?
+b = np.sum(a > 74)
+# Show the result
+b
+```
+
+```{r}
+# How many numbers are greater than 74?
+b <- sum(a > 74)
+# Show the result
+b
+```
+
+#### A single simulated trial
+
+We assemble the pieces from the last few sections to make a {{< var cell >}}
+that simulates a single trial:
+
+```{python}
+rnd = np.random.default_rng()
+zero_thru_99 = np.arange(100)
+
+# Get 12 random numbers from 0 through 99
+a = rnd.choice(zero_thru_99, size=12)
+
+# How many numbers are greater than 74?
+b = np.sum(a > 74)
+
+# Show the result
+b
+```
+
+```{r}
+# Get 12 random numbers from 0 through 99
+a <- sample(0:99, size=12, replace=TRUE)
+# How many are greater than 74?
+b <- sum(a > 74)
+# Show the result
+b
+```
+
+## Three simulation steps
+
+Now we come back to the details of how we:
+
+1. Repeat the simulated trial many times;
+2. record the results for each trial;
+3. calculate the required proportion as an estimate of the probability we seek.
+
+Repeating the trial many times is the job of the `for` loop, and we will come
+to that soon.
+
+In order to record the results, we will store each trial result in {{< var
+an_array >}}.
+
+::::{.callout-note}
+### More on {{< var array >}}s
+
+Since we will be working with {{< var array >}}s a lot, it is worth knowing
+more about them.
+
+A [NumPy array]{.python}[vector]{.r} is a *container* that stores many
+elements of the same type.  You have already seen, in @sec-resampling-method,
+how we can create {{< var an_array >}} from a sequence of
+numbers using the [`np.array`]{.python}[`c()`]{.r} function.
+
+```{python}
+# Make an array of numbers, store with the name "some_numbers".
+some_numbers = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+# Show the value of "some_numbers"
+some_numbers
+```
+
+```{r}
+# Make a vector of numbers, store with the name "some_numbers".
+some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+# Show the value of "some_numbers"
+some_numbers
+```
+
+Another way that we can create {{< var array >}}s is to use the
+[`np.zeros`]{.python}[`numeric`]{.r} function to make a new array where all the
+elements are 0.
+
+```{python}
+# Make a new array containing 5 zeros.
+# store with the name "z".
+z = np.zeros(5)
+# Show the value of "z"
+z
+```
+
+```{r}
+# Make a new vector containing 5 zeros.
+z <- numeric(5)
+# Show the value of "z"
+z
+```
+
+Notice the argument `5` to the [`np.zeros`]{.python}[`numeric`]{.r} function.
+This tells the function how many zeros we want in the {{< var array >}} that
+the function will return.
+
+## {{< var array >}} length {#sec-array-length}
+
+The are various useful things we can do with this {{< var array >}} container.
+One is to ask how many elements there are in the {{< var array >}} container.
+We can use the [`len`]{.python}[`length`]{.r} function to calculate the number
+of elements in {{< var an_array >}}:
+
+```{python}
+# Show the number of elements in "z"
+len(z)
+```
+
+```{r}
+# Show the number of elements in "z"
+length(z)
+```
+
+## Indexing into {{< var array >}}s {#sec-array-indexing}
+
+Another thing we can do is *set* the value for a particular element in the
+{{< var array >}}.  To do this, we use square brackets following the
+{{< var array >}} value, on the left hand side of the equals sign,
+like this:
+
+```{python}
+# Set the value of the *first* element in the array.
+z[0] = 99
+# Show the new contents of the array.
+z
+```
+
+```{r}
+# Set the value of the first element in the vector.
+z[1] = 99
+# Show the new contents of the vector.
+z
+```
+
+Read the first line of code as "the element at position
+[0]{.python}[1]{.r} gets a value of 99".
+
+:::: python
+Notice that the position number of the first element in the array is 0, and the
+position number of the second element is 1.  Think of the position as an
+*offset* from the beginning of the array.  The first element is at the
+beginning of the array, and so it is at offset (position) 0.  This can be a
+little difficult to get used to at first, but you will find that thinking of
+the positions of offsets in this way soon starts to come naturally, and later
+you will also find that it helps you to avoid some common mistakes when using
+positions for getting and setting values.
+:::
+
+For practice, let us also set the value of the third element in the {{< var
+array >}}:
+
+```{python}
+# Set the value of the *third* element in the array.
+z[2] = 99
+# Show the new contents of the array.
+z
+```
+
+```{r}
+# Set the value of the third element in the vector.
+z[3] = 99
+# Show the new contents of the vector.
+z
+```
+
+Read the first code line above as as "set the value at position
+[2]{.python}[3]{.r}
+in the {{< var array >}} to have the value 99".
+
+We can also *get* the value of the element at a given position, using the same
+square-bracket notation:
+
+```{python}
+# Get the value of the *first* element in the array.
+# Store the value with name "v"
+v = z[0]
+# Show the value we got
+v
+```
+
+```{r}
+# Get the value of the *first* element in the array.
+# Store the value with name "v"
+v = z[1]
+# Show the value we got
+v
+```
+
+Read the first code line here as "v gets the value at position
+[0]{.python}[1]{.r}
+in the {{< var array >}}".
+
+Using square brackets to get and set element values is called *indexing* into
+the {{< var array >}}.
+::::
+
+### Repeating trials
+
+As a preview, let us now imagine that we want to do 50 simulated trials of
+Robert Swain's jury in Hypothetical County.  We will want to store the count
+for each trial, to give 50 counts.
+
+In order to do this, we make {{< var an_array >}} to hold the 50 counts.
+Call this {{< var array >}} `z`.
+
+```{python}
+# An array to hold the 50 count values.
+z = np.zeros(50)
+```
+
+```{r}
+# A vector to hold the 50 count values.
+z <- numeric(50)
+```
+
+We could run a single trial to get a single simulated count.  Here we just
+repeat the code {{< var cell >}} you saw above.  Notice that we can get a
+different result each time we run this code, because the numbers in `a` are
+*random* choices from the range 0 through 99, and different random numbers will
+give different counts.
+
+```{python}
+rnd = np.random.default_rng()
+zero_thru_99 = np.arange(0, 100)
+# Get 12 random numbers from 0 through 99
+a = rnd.choice(zero_thru_99, size=12)
+# How many numbers are greater than 74?
+b = np.sum(a > 74)
+# Show the result
+b
+```
+
+```{r}
+# Get 12 random numbers from 0 through 99
+a <- sample(0:99, size=12, replace=TRUE)
+# How many are greater than 74?
+b <- sum(a == 9)
+# Show the result
+b
+```
+
+Now we have the result of a single trial, we can store it as the first number
+in the `z` {{< var array >}}:
+
+```{python}
+# Store the single trial count as the first value in the "z" array.
+z[0] = b
+# Show all the values in the "z" array.
+z
+```
+
+```{r}
+# Store the single trial count as the first value in the "z" vector.
+z[1] <- b
+# Show all the values in the "z" vector.
+z
+```
+
+Of course we could just keep doing this: run the {{< var cell >}} corresponding
+to a trial, above, to get a new count, and then store it at the next position
+in the `z` {{< var array >}}. For example, we could store the counts for the
+first three trials with:
+
+```{python}
+# First trial
+a = rnd.choice(zero_thru_99, size=12)
+b = np.sum(a > 74)
+# Store the result at the first position in z
+# Remember, the first position is offset 0.
+z[0] = b
+# Second trial
+a = rnd.choice(zero_thru_99, size=12)
+b = np.sum(a > 74)
+# Store the result at the second position in z
+z[1] = b
+# Third trial
+a = rnd.choice(zero_thru_99, size=12)
+b = np.sum(a > 74)
+# Store the result at the third position in z
+z[2] = b
+
+# And so on ...
+```
+
+```{r}
+# First trial
+a <- sample(0:99, size=12, replace=TRUE)
+b <- sum(a == 9)
+# Store the result at the first position in z
+z[1] <- b
+
+# Second trial
+a <- sample(0:99, size=12, replace=TRUE)
+b <- sum(a == 9)
+# Store the result at the second position in z
+z[2] <- b
+
+# Third trial
+a <- sample(0:99, size=12, replace=TRUE)
+b <- sum(a == 9)
+# Store the result at the third position in z
+z[3] <- b
+
+# And so on ...
+```
+
+This would get terribly long and boring to type for 50 trials.  Luckily
+computer code is very good at repeating the same procedure many times. For
+example, {{< var lang >}} can do this using a `for` loop. You have already seen
+a preview of the `for` loop in @sec-resampling-method. Here we dive into `for`
+loops in more depth.
+
+### For-loops in {{< var lang >}} {#sec-for-loops}
+
+A for-loop is a way of asking {{< var lang >}} to:
+
+* Take a sequence of things, one by one, and
+* Do the same task on each one.
+
+We often use this idea when we are trying to explain a repeating procedure.
+For example, imagine we wanted to explain what the supermarket checkout person
+does for the items in your shopping basket.  You might say that they do this:
+
+> For each item of shopping in your basket, they take the item off the conveyor
+> belt, scan it, and put it on the other side of the till.
+
+You could also break this description up into bullet points with indentation,
+to say the same thing:
+
+* For each item from your shopping basket, they:
+  * Take the item off the conveyor belt.
+  * Scan the item.
+  * Put it on the other side of the till.
+
+Notice the logic; the checkout person is repeating the same procedure for each
+of a series of items.
+
+This is the logic of the `for` loop in {{< var lang >}}.  The procedure that
+{{< var lang >}} repeats is called the *body of the for loop*.  In the example
+of the checkout person above, the repeating procedure is:
+
+  * Take the item off the conveyor belt.
+  * Scan the item.
+  * Put it on the other side of the till.
+
+Now imagine we wanted to use {{< var lang >}} to print out the year of birth
+for each of the authors for the third edition of this book:
+
+| Author                | Year of birth |
+| ------                | ---- |
+| Julian Lincoln Simon  | 1932 |
+| Matthew Brett         | 1964 |
+| Stéfan van der Walt   | 1980 |
+| Ian Nimmo-Smith       | 1944 |
+
+We want to see this output:
+
+```
+Author birth year is 1932
+Author birth year is 1964
+Author birth year is 1980
+Author birth year is 1944
+```
+
+Of course, we could just ask {{< var lang >}} to print out these exact lines,
+like this:
+
+```{python}
+print('Author birth year is 1932')
+print('Author birth year is 1964')
+print('Author birth year is 1980')
+print('Author birth year is 1944')
+```
+
+```{r}
+message('Author birth year is 1932')
+message('Author birth year is 1964')
+message('Author birth year is 1980')
+message('Author birth year is 1944')
+```
+
+We might instead notice that we are repeating the same procedure for each of the
+four birth years, and decide to do the same thing using a `for` loop:
+
+```{python}
+author_birth_years = np.array([1932, 1964, 1980, 1944])
+
+# For each birth year
+for birth_year in author_birth_years:
+    # Repeat this procedure ...
+    print('Author birth year is', birth_year)
+```
+
+```{r}
+author_birth_years <- c(1932, 1964, 1980, 1944)
+
+# For each birth year
+for (birth_year in author_birth_years) {
+    # Repeat this procedure ...
+    message('Author birth year is ', birth_year)
+}
+```
+
+The `for` loop starts with a line where we tell it what items we want to repeat
+the procedure for:
+
+::: python
+
+```
+for birth_year in author_birth_years:
+```
+
+This *initial line* of the `for` loop ends with a colon.
+
+The next thing in the `for` loop is the procedure Python should follow for each
+item.  Python knows that the following lines are the procedure it should
+repeat, because the lines are *indented*. The *indented* lines are the *body of
+the for loop*.
+:::
+
+::: r
+
+```
+for (birth_year in author_birth_years) {
+```
+
+This *initial line* of the `for` loop ends with an *opening curly brace* `{`.
+The opening curly brace tells R that what follows, up until the matching
+closing curly brace `}`, is the procedure R should follow for each item.   The
+lines between the opening `{` and closing `}` curly braces* are the *body of
+the for loop*.
+:::
+
+The initial line of the `for` loop above tells {{< var lang >}} that it should
+take *each item* in `author_birth_years`, one by one — first 1932, then 1964,
+then 1980, then 1944.  For each of these numbers it will:
+
+* Put the number into the variable `birth_year`, then
+* Run the [indented]{.python} code [between the curly braces]{.r}.
+
+Just as the person at the supermarket checkout takes each item in turn, for
+each iteration (repeat) of the `for` loop, `birth_year` gets a new value from
+the sequence in `author_birth_years`. `birth_year` is called the *loop
+variable*, because it is the variable that gets a new value each time we begin
+a new iteration of the `for` loop procedure.  As for any variable in {{< var
+lang >}}, we can call our loop variable anything we like. We used `birth_year`
+here, but we could have used `y` or `year` or some other name.
+
+::: r
+
+Notice that R insists we put parentheses (round brackets) around: the loop
+variable; `in`; and the sequence that will fill the loop variable — like this:
+
+```
+for (birth_year in author_birth_years) {
+```
+
+Do not forget these round brackets — R insists on them.
+:::
+
+Now you know what the `for` loop is doing, you can see that the `for` loop
+above is equivalent to the following code:
+
+```{python}
+birth_year = 1932  # Set the loop variable to contain the first value.
+print('Author birth year is', birth_year)  # Use it.
+birth_year = 1964  # Set the loop variable to contain the next value.
+print('Author birth year is', birth_year)  # Use the second value.
+birth_year = 1980
+print('Author birth year is', birth_year)
+birth_year = 1944
+print('Author birth year is', birth_year)
+```
+
+```{r}
+birth_year <- 1932  # Set the loop variable to contain the first value.
+message('Author birth year is ', birth_year)  # Use the first value.
+birth_year <- 1964  # Set the loop variable to contain the next value.
+message('Author birth year is ', birth_year)  # Use the second value.
+birth_year <- 1980
+message('Author birth year is ', birth_year)
+birth_year <- 1944
+message('Author birth year is ', birth_year)
+```
+
+Writing the steps in the `for` loop out like this is called *unrolling* the
+loop.  It can be a useful exercise to do this when you come across a `for`
+loop, in order to work through the logic of the loop. For example, you may want
+to write out the unrolled equivalent of the first couple of iterations, to see
+what the loop variable will be, and what will happen in the body of the loop.
+
+We often use `for` loops with ranges (see @sec-ranges).  Here we use a loop to
+print out the numbers [0 through 3]{.python}[1 through 4]{.r}:
+
+```{python}
+for n in np.arange(0, 4):
+    print('The loop variable n is', n)
+```
+
+```{r}
+for (n in 1:4) {
+    message('The loop variable n is ', n)
+}
+```
+
+Notice that the range ended at [(the number before)]{.python} 4, and that means
+we repeat the loop body 4 times.  We can also use the loop variable value from
+the range as an *index*, to get or set the first, second, etc values from {{<
+var an_array >}}.
+
+For example, maybe we would like to show the author position *and* the author
+year of birth.
+
+Remember our author birth years:
+
+```{python}
+author_birth_years
+```
+
+```{r}
+author_birth_years
+```
+
+We can get (for example) the second author birth year with:
+
+```{python}
+author_birth_years[1]
+```
+
+::: python
+Remember, for Python, the first element is position 0, so the second element is
+position 1.
+:::
+
+```{r}
+author_birth_years[2]
+```
+
+Using the combination of looping over a range, and {{< var array >}} indexing,
+we can print out the author position *and* the author birth year:
+
+```{python}
+for n in np.arange(0, 4):
+    year = author_birth_years[n]
+    print('Birth year of author position', n, 'is', year)
+```
+
+::: python
+Again, remember Python considers 0 as the first position.
+:::
+
+```{r}
+for (n in 1:4) {
+    year <- author_birth_years[n]
+    message('Birth year of author position ', n, ' is ', year)
+}
+```
+
+Just for practice, let us unroll the first two iterations through this `for`
+loop, to remind ourselves what the code is doing:
+
+```{python}
+# Unrolling the for loop.
+n = 0
+year = author_birth_years[n]  # Will be 1932
+print('Birth year of author position', n, 'is', year)
+n = 1
+year = author_birth_years[n]  # Will be 1964
+print('Birth year of author position', n, 'is', year)
+# And so on.
+```
+
+```{r}
+# Unrolling the for loop.
+n <- 1
+year <- author_birth_years[n]  # Will be 1932
+message('Birth year of author position ', n, ' is ', year)
+n <- 2
+year <- author_birth_years[n]  # Will be 1964
+message('Birth year of author position ', n, ' is ', year)
+# And so on.
+```
+
+::: python
+
+### `range` in Python `for` loops {#sec-for-range}
+
+So far we have used `np.arange` to give us the sequence of integers that we
+feed into the `for` loop.  But — as you saw in @sec-python-range — we can also
+get a range of numbers from Python's `range` function.  `range` is a common
+and useful alternative way to provide a range of numbers to a `for` loop.
+
+You have just seen how we would use `np.arange` to send the numbers 0, 1, 2,
+and 3 to a `for` loop, in the example above, repeated here:
+
+```{python}
+for n in np.arange(0, 4):
+    year = author_birth_years[n]
+    print('Birth year of author position', n, 'is', year)
+```
+
+We could also use `range` instead of `np.arange` to do the same task:
+
+```{python}
+for n in range(0, 4):
+    year = author_birth_years[n]
+    print('Birth year of author position', n, 'is', year)
+```
+
+In fact, you will see this pattern throughout the book, where we use `for`
+statements like `for value in range(10000):` to ask Python to put each number
+in the range 0 up to (not including) 100000 into the variable `value`, and then
+do something in the body of the loop.  Just to be clear, we could always, and
+almost as easily, write `for value in np.arange(10000):` to do the same task.
+But — even though we could use `np.arange` to get an array of numbers, we
+generally prefer `range` in our Python `for` loops, because it is just a little
+less typing (without the `np.a` of `np.arange`, and because it is a more common
+pattern in standard Python code.[^range-efficiency]
+
+[^range-efficiency]: Actually, there is a reason why many Python programmers
+   prefer `range` in their `for` loops to `np.arange`. `range` is a very
+   efficient container, in that it doesn't need to take up all the memory
+   required to create the full array, it just needs to keep track of the number
+   to give you next. For example, consider `for i in np.arange(10000000):` — in
+   this case Python has to make an array with 10,000,000 elements, and then,
+   from that array, it passes each value one by one to the `for` loop. On the
+   other hand, `for i in range(10000000):` will do the job just as well,
+   passing the same sequence of 0 through 9,999,999 to `i`, one by one, but
+   `range(10000000)` never has to make the whole 10,000,000 element array — it
+   just needs to keep track of which number to give up next.  Therefore `range`
+   is very quick, and very efficient in memory.  This doesn't have any great
+   practical impact for the arrays we are using here, typically of 10,0000
+   elements or so, but it is worthwhile for larger arrays.
+
+:::
+
+### Putting it all together
+
+Here is the code we worked out above, to implement a single trial:
+
+```{python}
+rnd = np.random.default_rng()
+zero_thru_99 = np.arange(0, 100)
+# Get 12 random numbers from 0 through 99
+a = rnd.choice(zero_thru_99, size=12)
+# How many numbers are greater than 74?
+b = np.sum(a > 74)
+# Show the result
+b
+```
+
+```{r}
+# Get 12 random numbers from 0 through 99
+a <- sample(0:99, size=12, replace=TRUE)
+# How many are greater than 74?
+b <- sum(a == 9)
+# Show the result
+b
+```
+
+We found that we could use {{< var array >}}s to store the results of these
+trials, and that we could use `for` loops to repeat the same procedure many
+times.
+
+Now we can put these parts together to do 50 simulated trials:
+
+```{python}
+# Procedure for 50 simulated trials.
+
+# The Numpy random number generator.
+rnd = np.random.default_rng()
+
+# All the numbers from 0 through 99.
+zero_through_99 = np.arange(0, 100)
+
+# An array to store the counts for each trial.
+z = np.zeros(50)
+
+# Repeat the trial procedure 50 times.
+for i in np.arange(0, 50):
+    # Get 12 random numbers from 0 through 99
+    a = rnd.choice(zero_through_99, size=12)
+    # How many numbers are greater than 74?
+    b = np.sum(a > 74)
+    # Store the result at the next position in the "z" array.
+    z[i] = b
+    # Now go back and do the next trial until finished.
+# Show the result of all 50 trials.
+z
+```
+
+```{r}
+# Procedure for 50 simulated trials.
+
+# A vector to store the counts for each trial.
+z <- numeric(50)
+
+# Repeat the trial procedure 50 times.
+for (i in 1:50) {
+    # Get 12 random numbers from 0 through 99
+    a <- sample(0:99, size=12, replace=TRUE)
+    # How many are greater than 74?
+    b <- sum(a > 74)
+    # Store the result at the next position in the "z" vector.
+    z[i] = b
+    # Now go back and do the next trial until finished.
+}
+# Show the result of all 50 trials.
+z
+```
+
+Finally, we need to count how many of the trials in `z` ended up with all-white
+juries.  These are the trials with a `z` (count) value of 0.
+
+To do this, we can ask {{< var an_array >}} which elements match a certain
+condition.  E.g.:
+
+```{python}
+x = np.array([2, 1, 3, 0])
+y = x < 2
+# Show the result
+y
+```
+
+```{r}
+x <- c(2, 1, 3, 0)
+y = x < 2
+# Show the result
+y
+```
+
+We now use that same technique to ask, of *each of the 50 counts*, whether the
+{{< var array >}} `z` is equal to 0, like this:
+
+```{python}
+# Is the value of z equal to 0?
+all_white = z == 0
+# Show the result of the comparison.
+all_white
+```
+
+```{r}
+# Is the value of z equal to 0?
+all_white <- z == 0
+# Show the result of the comparison.
+all_white
+```
+
+We need to get the number of {{< var true >}} values in `all_white`, to find
+how many simulated trials gave all-white juries.
+
+```{python}
+# Count the number of True values in "all_white"
+# This is the same as the number of values in "z" that are equal to 0.
+n_all_white = np.sum(all_white)
+# Show the result of the comparison.
+n_all_white
+```
+
+```{r}
+# Count the number of True values in "all_white"
+# This is the same as the number of values in "z" that are equal to 0.
+n_all_white = sum(all_white)
+# Show the result of the comparison.
+n_all_white
+```
+
+`n_all_white` is the number of simulated trials for which all the jury members
+were white. It only remains to get the proportion of trials for which this was
+true, and to do this, we divide by the number of trials.
+
+```{python}
+# Proportion of trials where all jury members were white.
+p = n_all_white / 50
+# Show the result
+p
+```
+
+```{r}
+# Proportion of trials where all jury members were white.
+p <- n_all_white / 50
+# Show the result
+p
+```
+
+From this initial simulation, it seems there is around a
+`r round(get_var('p') * 100, 1)`% chance that a jury selected randomly from
+the population, which was 26% black, would have no black jurors.
+
+## Many many trials
+
+Our experiment above is only 50 simulated trials.  The higher the number of
+trials, the more confident we can be of our estimate for `p` — the proportion of trials where we get an all-white jury.
+
+It is no extra trouble for us to tell the computer to do a very large number
+of trials.  For example, we might want to run 10,000 trials instead of 50.
+All we have to do is to run the loop 10,000 times instead of 50 times. The
+computer has to do more work, but it is more than up to the job.
+
+Here is exactly the same code we ran above, but collected into one {{< var
+cell >}}, and using 10,000 trials instead of 50.  We have left out the
+comments, to make the code more compact.
+
+```{python}
+# Full simulation procedure, with 10,000 trials.
+rnd = np.random.default_rng()
+zero_through_99 = np.arange(0, 100)
+# 10,000 trials.
+z = np.zeros(10000)
+for i in np.arange(0, 10000):
+    a = rnd.choice(zero_through_99, size=12)
+    b = np.sum(a > 74)
+    z[i] = b
+all_white = z == 0
+n_all_white = sum(all_white)
+p = n_all_white / 10000
+p
+```
+
+```{r}
+# Full simulation procedure, with 10,000 trials.
+z <- numeric(10000)
+for (i in 1:10000) {
+    a <- sample(0:99, size=12, replace=TRUE)
+    b <- sum(a > 74)
+    z[i] = b
+}
+all_white <- z == 0
+n_all_white <- sum(all_white)
+p <- n_all_white / 10000
+p
+```
+
+We now have a new, more accurate estimate of the proportion of Hypothetical County juries with all-white juries. The proportion is
+`r round(get_var('p'), 3)`, and so
+`r round(get_var('p') * 100, 1)`%.
+
+This proportion means that, for any one jury from Hypothetical County, there
+is a less than one in 20 chance that the jury would be all white.
+
+As we will see in more detail later, we might consider using the results from
+this experiment in Hypothetical County, to reflect on the result we saw in the
+real Talladega County.  We might conclude, for example, that there was likely
+some systematic difference between Hypothetical County and Talledega County.
+Maybe the difference was that there was, in fact, some bias in the jury
+selection in Talledega county, and that the Supreme Court was wrong to reject
+this.  You will hear more of this line of reasoning later in the book.
+
+## Conclusion
+
+In this chapter we studied a real life-and-death question, on racial bias and
+the death penalty.   We continued our exploration of the ways we can use
+probability, and resampling, to draw conclusions about real events.  Along the
+way, we went into more detail on {{< var array >}}s in {{< var lang >}}, and
+`for` loops; two basic tools in resampling.
+
+In the next chapter, we will work through some more problems in probability,
+to show how we can use resampling, to answer questions about chance.   We will
+add some more tools for writing code in {{< var lang >}}, to make your
+programs easier to write, read, and understand.

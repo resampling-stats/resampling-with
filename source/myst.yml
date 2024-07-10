@@ -1,0 +1,18 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  id: da5a80ed-8df5-4893-8121-734298c02763
+  # title:
+  # description:
+  # keywords: []
+  # authors: []
+  github: https://github.com/resampling-stats/resampling-with
+  # To autogenerate a Table of Contents, run "myst init --write-toc"
+  plugins:
+    - plugin.mjs
+  abbreviations:
+    NCI: National Cancer Institute
+  numbering:
+    headings: true
+site:
+  template: book-theme
