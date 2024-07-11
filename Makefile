@@ -32,7 +32,7 @@ _landing-page:
 
 python-book:  ## Build the Python version of the book
 python-book: ninja-config
-	cd $(SOURCE_DIR) && ninja python-book
+	cd $(SOURCE_DIR) && ninja clean && ninja python-book
 
 python-book-jl: python-book
 	# Jupyter-lite files for book build.
@@ -42,11 +42,14 @@ python-book-jl: python-book
 		_py_notebooks \
 		ipynb \
 		python "Python (Pyodide)"
-	$(PYTHON) -m jupyter lite build --contents _py_notebooks --output-dir $(PYTHON_BOOK_DIR)/notebooks
+	$(PYTHON) -m jupyter lite build \
+		--contents _py_notebooks \
+		--output-dir $(PYTHON_BOOK_DIR)/notebooks
+		--lite-dir $(PYTHON_BOOK_DIR)
 
 r-book:  ## Build the R version of the book
 r-book: ninja-config
-	cd $(SOURCE_DIR) && ninja r-book
+	cd $(SOURCE_DIR) && ninja clean && ninja r-book
 
 r-book-jl: r-book
 	$(PIP_INSTALL_CMD) -r r-jl-requirements.txt
@@ -57,7 +60,10 @@ r-book-jl: r-book
 		webR \
 		"R (webR)" \
 		--url-root=$(ROOT_URL)
-	$(PYTHON) -m jupyter lite build --contents _r_notebooks --output-dir $(R_BOOK_DIR)/notebooks
+	$(PYTHON) -m jupyter lite build \
+		--contents ../_r_notebooks \
+		--output-dir $(R_BOOK_DIR)/notebooks \
+		--lite-dir $(R_BOOK_DIR)
 
 _source-clean:
 	cd $(SOURCE_DIR) && ninja clean
