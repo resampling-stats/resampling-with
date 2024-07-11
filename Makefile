@@ -7,6 +7,7 @@ PYTHON_BOOK_DIR=python-book
 R_BOOK_DIR=r-book
 PYTHON ?= python
 PIP_INSTALL_CMD ?= $(PYTHON) -m pip install
+ROOT_URL=https://resampling-stats.github.io/data
 
 _submodule-update:
 	git submodule update --init --recursive
@@ -36,7 +37,12 @@ python-book: ninja-config
 python-book-jl: python-book
 	# Jupyter-lite files for book build.
 	$(PIP_INSTALL_CMD) -r py-jl-requirements.txt
-	$(PYTHON) -m jupyter lite build --contents $(PYTHON_BOOK_DIR)/notebooks --output-dir $(PYTHON_BOOK_DIR)/notebooks
+	$(PYTHON) ./scripts/process_notebooks.py \
+		source/notebooks \
+		_py_notebooks \
+		ipynb \
+		python "Python (Pyodide)"
+	$(PYTHON) -m jupyter lite build --contents _py_notebooks --output-dir $(PYTHON_BOOK_DIR)/notebooks
 
 r-book:  ## Build the R version of the book
 r-book: ninja-config
@@ -44,7 +50,14 @@ r-book: ninja-config
 
 r-book-jl: r-book
 	$(PIP_INSTALL_CMD) -r r-jl-requirements.txt
-	$(PYTHON) -m jupyter lite build --contents $(R_BOOK_DIR)/notebooks --output-dir $(R_BOOK_DIR)/notebooks
+	$(PYTHON) ./scripts/process_notebooks.py \
+		source/notebooks \
+		_r_notebooks \
+		Rmd \
+		webR \
+		"R (webR)" \
+		--url-root=$(ROOT_URL)
+	$(PYTHON) -m jupyter lite build --contents _r_notebooks --output-dir $(R_BOOK_DIR)/notebooks
 
 _source-clean:
 	cd $(SOURCE_DIR) && ninja clean
