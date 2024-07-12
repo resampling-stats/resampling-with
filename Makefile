@@ -61,7 +61,7 @@ r-book-jl: r-book
 		"R (webR)" \
 		--url-root=$(ROOT_URL)
 	$(PYTHON) -m jupyter lite build \
-		--contents ../_r_notebooks \
+		--contents _r_notebooks \
 		--output-dir $(R_BOOK_DIR)/notebooks \
 		--lite-dir $(R_BOOK_DIR)
 
