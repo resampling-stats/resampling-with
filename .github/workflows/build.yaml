@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       R_LIBS_USER: ~/R_libs:~/R:~/R-dev
-      QUARTO_VER: "1.4.51"
-      PANDOC_VER: "3.1.2"
+      QUARTO_VER: "1.6.1"
+      PANDOC_VER: "3.2"
       # https://github.com/r-lib/remotes/issues/641
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
