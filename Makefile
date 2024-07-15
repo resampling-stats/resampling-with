@@ -39,12 +39,13 @@ python-book-jl: python-book
 	$(PIP_INSTALL_CMD) -r py-jl-requirements.txt
 	$(PYTHON) ./scripts/process_notebooks.py \
 		source/notebooks \
+		python \
 		_py_notebooks \
 		ipynb \
 		python "Python (Pyodide)"
 	$(PYTHON) -m jupyter lite build \
 		--contents _py_notebooks \
-		--output-dir $(PYTHON_BOOK_DIR)/notebooks
+		--output-dir $(PYTHON_BOOK_DIR)/notebooks \
 		--lite-dir $(PYTHON_BOOK_DIR)
 
 r-book:  ## Build the R version of the book
@@ -56,6 +57,7 @@ r-book-jl: r-book
 	$(PYTHON) ./scripts/process_notebooks.py \
 		source/notebooks \
 		_r_notebooks \
+		r \
 		Rmd \
 		webR \
 		"R (webR)" \
