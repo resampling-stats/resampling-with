@@ -58,14 +58,12 @@ def fill_template(infile : str, outfile : str, data: dict):
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    lang = args.version
     print(f"Writing configuration to {args.output}...")
     fill_template(
         QUARTO_TEMPLATE,
         args.output,
         {'version': args.version, **QUARTO_VARS[args.version]}
     )
-
     print("Writing _variables.yml...")
     vars = yaml.load(open(LANG_VARS_SOURCE, 'r'), Loader=yaml.FullLoader)
     with open(LANG_VARS_TARGET, 'w') as f:
