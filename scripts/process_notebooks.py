@@ -7,10 +7,11 @@ import re
 import shutil
 
 import jupytext
+import yaml
 
 # Find data read.
 _READ_FMT = r'''^(?P<indent>\s*)
-(?P<equals>\w+\s*{equals}\s*)
+(?P<equals>\w+\s*{equal_re}\s*)
 (?P<read_func>{read_re}\w+\(
 ['"])
 (?P<fname>.*?)
@@ -19,11 +20,11 @@ _READ_FMT = r'''^(?P<indent>\s*)
 '''
 
 PY_READ_RE = re.compile(
-    _READ_FMT.format(equals='=', read_re=r'pd\.read_'),
+    _READ_FMT.format(equal_re='=', read_re=r'pd\.read_'),
     flags=re.MULTILINE | re.VERBOSE)
 
 R_READ_RE = re.compile(
-    _READ_FMT.format(equals='<-', read_re=r'read\.'),
+    _READ_FMT.format(equal_re='<-', read_re=r'read\.'),
     flags=re.MULTILINE | re.VERBOSE)
 
 
@@ -70,33 +71,28 @@ def process_dir(input_dir, output_dir, language, nb_suffix, kernel_name,
 def get_parser():
     parser = ArgumentParser(description=__doc__,  # Usage from docstring
                             formatter_class=RawDescriptionHelpFormatter)
-    parser.add_argument('input_dir',
-                        help='Directory containing notebooks to process')
+    parser.add_argument('quarto_config',
+                        help='Quarto configuration file')
     parser.add_argument('output_dir',
                         help='Directory to which to output notebooks')
-    parser.add_argument('language',
-                        help='"r" or "python"')
-    parser.add_argument('nb_suffix',
-                        help='suffix for input notebooks ("Rmd" or "ipynb")')
-    parser.add_argument('kernel_name',
-                        help='Name for Jupyter kernel')
-    parser.add_argument('kernel_dname',
-                        help='Display name for Jupyter kernel')
-    parser.add_argument('--url-root',
-                        help='URL root to data (for URL data loads)')
     return parser
 
 
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    process_dir(Path(args.input_dir),
+    source_path = Path(args.quarto_config).parent
+    with open(args.quarto_config, 'rt') as fobj:
+        quarto_conf = yaml.load(fobj, Loader=yaml.FullLoader)
+    noteout_config = quarto_conf['noteout']
+    proc_config = quarto_conf['processing']
+    process_dir(source_path / noteout_config['nb-dir'],
                 Path(args.output_dir),
-                args.language.lower(),
-                args.nb_suffix,
-                args.kernel_name,
-                args.kernel_dname,
-                args.url_root)
+                proc_config['language'],
+                noteout_config['url_nb_suffix'],
+                proc_config['kernel-name'],
+                proc_config['kernel-display'],
+                proc_config.get('url-root', None))
 
 
 if __name__ == '__main__':

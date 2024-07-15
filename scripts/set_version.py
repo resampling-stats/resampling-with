@@ -15,12 +15,18 @@ QUARTO_VARS = {
     'r': {
         'filter_divspans': "['python']",
         'nb_flatten_divspans': "['+', 'r']",
-        'nb_format': 'Rmd'
+        'nb_format': 'Rmd',
+        'proc_kernel_name': 'webR',
+        'proc_kernel_display': '"R (webR)"',
+        'proc_url_root': '"https://resampling-stats.github.io/data"',
     },
     'python': {
         'filter_divspans': "['r']",
         'nb_flatten_divspans': "['+', 'python']",
-        'nb_format': 'ipynb'
+        'nb_format': 'ipynb',
+        'proc_kernel_name': 'python',
+        'proc_kernel_display': '"Python (Pyodide)"',
+        'proc_url_root': 'null',
     }
 }
 

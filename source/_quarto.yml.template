@@ -90,3 +90,9 @@ noteout:
   link-nb-dir: ""
   # We may want to switch the URL notebook suffix from the download file to URL.
   url_nb_suffix: .ipynb
+
+processing:
+  language: {version}
+  kernel-name: {proc_kernel_name}
+  kernel-display: {proc_kernel_display}
+  url-root: {proc_url_root}
