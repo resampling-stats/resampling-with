@@ -80,11 +80,14 @@ knitr_settings:
 noteout:
   # Divs, spans to filter before further processing.
   pre-filter: ['todo', 'comment']
+  # So the notebook filter knows which version it is processing.
+  version: {version}
   filter-divspans: {filter_divspans}
   nb-flatten-divspans: {nb_flatten_divspans}
   nb-format: {nb_format}
   strip-header-nos: false
-  binder-url: "https://resampling-stats.github.io/{version}-book/notebooks/lab/index.html?path="
+  interact-url: "https://resampling-stats.github.io/{version}-book/notebooks/lab/index.html?path="
+  data-url: "https://resampling-stats.github.io/data"
   nb-dir: notebooks
   # This allows the interact link directory to differ from that for the download link.
   link-nb-dir: ""
