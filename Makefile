@@ -71,7 +71,7 @@ _source-clean:
 	cd $(SOURCE_DIR) && ninja clean
 
 clean: _source-clean
-	rm -rf $(PYTHON_BOOK_DIR) $(R_BOOK_DIR)
+	rm -rf $(PYTHON_BOOK_DIR) $(R_BOOK_DIR) _r_notebooks _py_notebooks
 
 .DEFAULT_GOAL := help
 help:
