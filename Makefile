@@ -39,8 +39,8 @@ python-book-jl: python-book
 	$(PIP_INSTALL_CMD) -r py-jl-requirements.txt
 	$(PYTHON) ./scripts/process_notebooks.py \
 		source/notebooks \
-		python \
 		_py_notebooks \
+		python \
 		ipynb \
 		python "Python (Pyodide)"
 	$(PYTHON) -m jupyter lite build \
