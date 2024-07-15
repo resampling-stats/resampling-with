@@ -47,8 +47,6 @@ and removing output.
 Conditional chunks depending on output format:
 <https://github.com/rstudio/bookdown/issues/168>.
 
-Chase up Hollander and Wolfe reference from end of chapter 18, p295.
-
 ## Swain jury
 
 https://supreme.justia.com/cases/federal/us/380/202/

@@ -1838,22 +1838,37 @@ Solutions for problems may be found in @sec-exercise-solutions.
 
 ### Exercise: paired differences {#sec-exr-paired-differences}
 
-The data shown in @tbl-hamilton-scores [@hollander1999nonparametric, p. 39,
-Table 3.1] might be data for the outcomes of two different mechanics, showing
-the length of time until the next overhaul is needed for nine pairs of similar
-vehicles. Or they could be two readings made by different instruments on the
-same sample of rock. In fact, they represent data for two successive tests for
-depression on the Hamilton scale, before and after drug therapy.
+The data shown in @tbl-hamilton-scores might be data for the outcomes of two
+different mechanics, showing the length of time until the next overhaul is
+needed for nine pairs of similar vehicles. Or they could be two readings made
+by different instruments on the same sample of rock. In fact, they represent
+data for two successive tests for depression on a version of the Hamilton
+Depression Scale before and after drug therapy.[^hamilton-source]
 
-<!---
-Note on source in Hollander: Salsburg (1970): Personal communication (with the cooperation of Pfizer and co, Groton, Conn.)
--->
+[^hamilton-source]: The data are the contents of @hollander2013nonparametric,
+    Table 3.1. Quoting from the description there:
+
+    > The data in Table 3.1 are a portion of the data obtained by Salsburg
+    (1970). These data, based on nine patients who received tranquilizer, were
+    taken from a double-blind clinical trial involving two tranquilizers. The
+    measure used was the Hamilton [-@hamilton1960rating] depression scale
+    factor IV (the "suicidal" factor). The X (pre) was obtained at the first
+    patient visit after initiating therapy, whereas the (post) value was
+    obtained at the second visit after initiation of therapy.
+
+    The bibliography entry for "Salsburg (1970)" is  "Personal communication
+    (with the cooperation of Pfizer and co, Groton, Conn.)".
+
+    We could not help but notice that Hamilton [-@hamilton1960rating] did not
+    call his fourth factor "suicidal", or anything else.  He writes: "It is
+    difficult to attach any label to the third and fourth factors, as they do
+    not bring any clinical pattern to mind."
 
 ```{r echo=FALSE, eval=TRUE}
 ._df_ham <- read.csv('data/hamilton.csv')
 names(._df_ham) <- c('Patient #', 'Score before', 'Score after')
 ketable(._df_ham,
-        caption="Hamilton Depression Scale Values
+        caption="Hamilton Depression Scale Factor IV Values
         {#tbl-hamilton-scores}")
 ```
 
