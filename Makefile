@@ -32,6 +32,7 @@ _landing-page:
 python-book:  ## Build the Python version of the book
 python-book: ninja-config
 	cd $(SOURCE_DIR) && ninja clean && ninja python-book
+	$(PYTHON) ./scripts/postprocess_site.py $(SOURCE_DIR)/_quarto-python.yml
 
 python-book-jl: python-book
 	# Jupyter-lite files for book build.
@@ -47,6 +48,7 @@ python-book-jl: python-book
 r-book:  ## Build the R version of the book
 r-book: ninja-config
 	cd $(SOURCE_DIR) && ninja clean && ninja r-book
+	$(PYTHON) ./scripts/postprocess_site.py $(SOURCE_DIR)/_quarto-r.yml
 
 r-book-jl: r-book
 	$(PIP_INSTALL_CMD) -r r-jl-requirements.txt
