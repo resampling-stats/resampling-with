@@ -53,9 +53,9 @@ jobs:
       - name: Install quarto and matching pandoc
         run: |
           sudo apt install -y curl
-          curl -L https://github.com/quarto-dev/quarto-cli/releases/download/v$QUARTO_VER/quarto-$QUARTO_VER-linux-amd64.deb -o quarto.deb
+          curl -L https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VER}/quarto-${QUARTO_VER}-linux-amd64.deb -o quarto.deb
           # PANDOC appends -1 to the archive root name for .deb packages.
-          curl -L https://github.com/jgm/pandoc/releases/download/$PANDOC_VER/pandoc-$PANDOC_VER-1-amd64.deb -o pandoc.deb
+          curl -L https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/pandoc-${PANDOC_VER}-1-amd64.deb -o pandoc.deb
           sudo dpkg --install quarto.deb pandoc.deb
 
       - uses: actions/setup-python@v4
