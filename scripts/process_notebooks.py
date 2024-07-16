@@ -2,7 +2,6 @@
 
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from copy import deepcopy
-import json
 from pathlib import Path
 import re
 import shutil
