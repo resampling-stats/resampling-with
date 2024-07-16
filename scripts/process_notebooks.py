@@ -57,16 +57,16 @@ def path_to_url(nb, root_url, regex):
     return out_nb
 
 
-def process_dir(input_dir, output_dir, language, nb_suffix, kernel_name,
-                kernel_dname, url_root=None):
-    if not nb_suffix.startswith('.'):
-        nb_suffix = '.' + nb_suffix
+def process_dir(input_dir, output_dir, language, in_nb_suffix, kernel_name,
+                kernel_dname, url_root=None,
+                out_nb_suffix='.ipynb'
+               ):
     output_dir.mkdir(exist_ok=True, parents=True)
     for path in input_dir.glob('*'):
         if path.is_dir():
             shutil.copytree(path, output_dir / path.name, dirs_exist_ok=True)
             continue
-        if path.suffix != nb_suffix:
+        if path.suffix != in_nb_suffix:
             continue
         nb = jupytext.read(path)
         nb['metadata']['kernelspec'] = {
@@ -75,7 +75,7 @@ def process_dir(input_dir, output_dir, language, nb_suffix, kernel_name,
         regex = PY_READ_RE if language == 'python' else R_READ_RE
         if url_root:
             nb = path_to_url(nb, url_root, regex)
-        jupytext.write(nb, output_dir / (path.stem + '.ipynb'))
+        jupytext.write(nb, output_dir / (path.stem + out_nb_suffix))
 
 
 def get_parser():
@@ -100,7 +100,7 @@ def main():
     process_dir(source_path / noteout_config['nb-dir'],
                 out_path,
                 proc_config['language'],
-                noteout_config['url_nb_suffix'],
+                '.' + noteout_config['nb-format'],
                 proc_config['kernel-name'],
                 proc_config['kernel-display'],
                 proc_config.get('url-root', None))
