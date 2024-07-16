@@ -41,7 +41,7 @@ python-book-jl: python-book
 		_py_notebooks
 	$(PYTHON) -m jupyter lite build \
 		--contents _py_notebooks \
-		--output-dir $(PYTHON_BOOK_DIR)/notebooks \
+		--output-dir $(PYTHON_BOOK_DIR)/interact \
 		--lite-dir $(PYTHON_BOOK_DIR)
 
 r-book:  ## Build the R version of the book
@@ -55,7 +55,7 @@ r-book-jl: r-book
 		_r_notebooks
 	$(PYTHON) -m jupyter lite build \
 		--contents _r_notebooks \
-		--output-dir $(R_BOOK_DIR)/notebooks \
+		--output-dir $(R_BOOK_DIR)/interact \
 		--lite-dir $(R_BOOK_DIR)
 
 _source-clean:

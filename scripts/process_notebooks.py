@@ -2,12 +2,22 @@
 
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from copy import deepcopy
+import json
 from pathlib import Path
 import re
 import shutil
 
 import jupytext
 import yaml
+
+_JL_JSON_FMT = r'''\
+{{
+  "jupyter-lite-schema-version": 0,
+  "jupyter-config-data": {{
+    "contentsStorageName": "rss-{language}"
+  }}
+}}
+'''
 
 # Find data read.
 _READ_FMT = r'''^(?P<indent>\s*)
@@ -86,13 +96,16 @@ def main():
         quarto_conf = yaml.load(fobj, Loader=yaml.FullLoader)
     noteout_config = quarto_conf['noteout']
     proc_config = quarto_conf['processing']
+    out_path = Path(args.output_dir)
     process_dir(source_path / noteout_config['nb-dir'],
-                Path(args.output_dir),
+                out_path,
                 proc_config['language'],
                 noteout_config['url_nb_suffix'],
                 proc_config['kernel-name'],
                 proc_config['kernel-display'],
                 proc_config.get('url-root', None))
+    (out_path / 'jupyter-lite.json').write_text(
+        _JL_JSON_FMT.format(**proc_config))
 
 
 if __name__ == '__main__':
