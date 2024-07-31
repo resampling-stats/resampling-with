@@ -23,15 +23,29 @@ resampling_with:
 source("_common.R")
 ```
 
-# Introducing {{< var lang >}} and the {{< var nb_app >}} notebook {#sec-about-technology}
+# Introducing {{< var lang >}} and the Jupyter notebook {#sec-about-technology}
 
 This chapter introduces you to the technology we will use throughout the book.
 By *technology*, we mean two things:
 
 * The {{< var lang >}} programming language, along with some important add-on
   libraries for data analysis.
-* The {{< var nb_app >}} notebook system for running and editing {{< var lang
-  >}} code in a [graphical]{.r}[web]{.python} interface.
+* The {{< var nb_app >}} notebook system for running and editing
+  {{< var lang >}} code in a web interface.
+
+:::{.callout-note}
+## Using {{< var lang >}} on the web and on your computer
+
+In this chapter, we concentrate on the technology we use for the interactive
+version of the book.  The interactive version allows you to run {{< var lang
+>}} code as interactive *notebooks* in your web browser.
+
+Either now, or later, you should also consider running the code on your own
+computer — see @sec-running-own-computer.
+
+:::
+
+
 
 The chapter introduces [the R language]{.r}[Python and its
 libraries]{.python}, and then gives an example to introduce {{< var lang >}}
@@ -126,34 +140,38 @@ in the cloud, or download it to your computer.
 ::: {.notebook name="billies_bill" title="Billie's Bill"}
 
 The text in this notebook section assumes you have opened the page as an
-interactive notebook, on your own computer, or one of the {{< var nb_app >}}
-web interfaces.
+interactive notebook on the web, or on your own computer (see @sec-running-own-computer).
 
 A notebook can contain blocks of text — like this one — as well as code, and
 the results from running the code.
 
+Jupyter Notebooks are made up of *cells*.
+
 ::: nb-only
-::: python
-Jupyter Notebooks are made up of *cells*.  This is a cell with text — a text
-cell.
+This is a cell with text — a text cell.
 :::
 
 ::: r
-RMarkdown notebooks contain text — like this, but they can also contain
-snippets of code, in *code chunks*.  You will see examples of code chunks
-soon.
+If you are running this notebook on your own computer, using RStudio, you are running an RMarkdown version of the notebook.  These notebooks are very similar to Jupyter notebooks, but with some differences in the way they work, and their terminology.  For example, code cells are called *code chunks*.  We will often use code cell and code chunk interchangeably.
 :::
 
 Notebook text can have formatting, such as links.
 
-For example, this sentence
-ends with a link to the earlier [second edition of this
-book](https://resample.statistics.com/intro-text-online).
+For example, this sentence ends with a link to the earlier [second edition of
+this book](https://resample.statistics.com/intro-text-online).
+
+::: r
+In what follows, we will assume you are running this notebook with the Jupyter interface that we provide with the textbook for the interactive examples.
+
+We will also note where you will see or do something differently, when you are running the notebook on your own computer, using RStudio.
 :::
 
 If you are in the notebook interface (rather than reading this in the
-textbook), you will see the {{< var nb_app >}} menu near the top of the page,
-with headings "File", "Edit" and so on.
+textbook), you will see the Jupyter menu near the top of the page, with
+headings "File", "Edit" and so on.
+
+::: r
+RStudio has its 
 
 ::: python
 Underneath that, by default, you may see a row of icons - the "Toolbar".
@@ -498,13 +516,28 @@ Now you have done some practice with the notebook, and with variables, you are
 ready for a new problem in probability and statistics, in the next chapter.
 :::
 
-## Running the code on your own computer
+## Running the code on your own computer {#sec-running-own-computer}
 
 Many people, including your humble authors, like to be able to run code
 examples on their own computers.  This section explains how you can set up to
 run the notebooks on your own computer.
 
-Once you have done this setup, you can use the "download" link
+Once you have done this setup, you can use the "download" link that you will see for each notebook, to download the notebook to your machine.  From there, you can open the notebook on {{< var nb_app >}}.
+
+:::{.callout-note}
+## Download links and data files
+
+Most of the download links in this book will trigger a download of the notebook
+file.  This is a file with extension [`.Rmd`]{.r}[`.ipynb`]{.python}, that you
+can open with {{< var nb_app >}}.
+
+Later in the book, you will see examples where the notebook loads a data file.
+In that case, the download link for the notebook points to a `.zip` file
+containing the notebook and the data file.  Unzip the `.zip` file to get the
+notebook and data file, and then open the resulting notebook in {{< var nb_app
+>}}.
+:::
+
 
 ::: python
 You will need to install the Python language on your computer, and then install the following packages:
@@ -538,7 +571,14 @@ the code on your own computer, and experiment by making changes.
 :::
 
 ::: r
-To run the R notebook, you will need two software packages on your computer.  These are:
+
+We are using the Jupyter notebook for our interactive (web) examples.  Although
+you can use the Jupyter notebook on your own computer, we recommend you use the
+standard [RStudio](https://posit.co/products/open-source/rstudio) desktop
+application.  It works in similar way to Jupyter, but with some variation.  You will find many good tutorials for RStudio online; at time of writing [this DataCamp tutorial](https://www.datacamp.com/tutorial/r-studio-tutorial) was a good place to start.
+
+As you will see in the tutorial linked above, you will need two software
+packages on your computer to run RStudio.  These are:
 
 * The base R language
 * The RStudio graphical interface to R.
@@ -556,12 +596,15 @@ Install the base R language by going to the main R website at
 system (Windows, Mac, or Linux), and install according to the instructions on
 the website.
 
-Then install the RStudio interface by visiting the RStudio website at
-<https://www.rstudio.com>, and navigating to the download links for the free
-edition of the "RStudio IDE".  IDE stands for Integrated Development
-Environment; it refers to the RStudio application's ability make it easier to
-interact with, and develop, R code.  You only need the free version; it has
-all the features you will need.  The free version is the only version that we,
-your humble authors, have used for this book, and for all our own work and
-teaching.
+Then install the RStudio interface by going to the RStudio download page at
+<https://posit.co/download/rstudio-desktop/>, and navigating to the link to
+download RStudio Desktop.  RStudio is an Integrated Development Environment for
+R.  The RStudio IDE makes it easier to interact with, and develop, R code. You
+only need the free (default) version; it has all the features you will need.
+The free version is the only version that we, your humble authors, have used
+for this book, and for all our own work and teaching.
 :::
+
+You can run any of the code notebooks in this textbook on your own machine by
+downloading the notebook, via the download link at the top of each notebook
+section, and then opening the resulting notebook in {{< var nb_app >}}.
