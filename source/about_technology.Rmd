@@ -167,16 +167,22 @@ We will also note where you will see or do something differently, when you are r
 :::
 
 If you are in the notebook interface (rather than reading this in the
-textbook), you will see the Jupyter menu near the top of the page, with
+textbook), you will see the Jupyter menu bar near the top of the page, with
 headings "File", "Edit" and so on.
 
 ::: r
-RStudio has its 
+RStudio has its own menu, with "File", "Edit", etc.
+:::
 
-::: python
-Underneath that, by default, you may see a row of icons - the "Toolbar".
+In Jupyter, underneath the File ... menu bar, by default, you may see a row of
+icons - the "Toolbar".
 
-In the toolbar, you may see icons to run the current cell, among others.
+In the Jupyter toolbar, you may see icons to run the current cell, among
+others.
+
+::: r
+RStudio has its own tool bar, with a Run icon, to run a code chunk (code cell).
+:::
 
 To move from one cell to the next, you can click the run icon in the toolbar, but it is more efficient to press the Shift key, and press Enter (with Shift still held down).  We will write this as {{< var run_key >}}.
 :::
