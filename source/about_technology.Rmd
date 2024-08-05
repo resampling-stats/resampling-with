@@ -139,20 +139,36 @@ in the cloud, or download it to your computer.
 
 ::: {.notebook name="billies_bill" title="Billie's Bill"}
 
+::: python
 The text in this notebook section assumes you have opened the page as an
 interactive notebook on the web, or on your own computer (see @sec-running-own-computer).
+:::
+
+::: r
+The text in this notebook section assumes you have opened the page as an
+interactive notebook on the web.  In that case, you are running the notebook in
+a version of Jupyter.   We will assume you are using Jupyter in the description
+that follows.  You can also run R in Jupyter on your own computer, although we
+recommend that you use RStudio to work with R notebook files (see
+@sec-running-own-computer).  The procedure for working with notebooks in RStudio is not the same as that for Jupyter.  We will cover RStudio, briefly, in another notebook tutorial after this one.
+:::
 
 A notebook can contain blocks of text — like this one — as well as code, and
 the results from running the code.
 
 Jupyter Notebooks are made up of *cells*.
 
-::: nb-only
-This is a cell with text — a text cell.
+::: r
+We assume you are running this notebook via the interactive web pages, and
+therefore, that you are running the notebook with Jupyter, not RStudio.
+
+RStudio differs a little from Jupyter, because it does not have the idea of a text "cell" — instead it distinguishes between the main body of the notebook, made up of text, and *code chunks* — delimited sections in the notebook that contain code, instead of text.  Jupyter would refer to these code chunks as *code cells*.  We will go into more detail in @sec-running-rstudio.
 :::
 
-::: r
-If you are running this notebook on your own computer, using RStudio, you are running an RMarkdown version of the notebook.  These notebooks are very similar to Jupyter notebooks, but with some differences in the way they work, and their terminology.  For example, code cells are called *code chunks*.  We will often use code cell and code chunk interchangeably.
+Jupyter cells can contain text or code.
+
+::: nb-only
+This is a cell with text — a text cell.
 :::
 
 Notebook text can have formatting, such as links.
@@ -160,19 +176,9 @@ Notebook text can have formatting, such as links.
 For example, this sentence ends with a link to the earlier [second edition of
 this book](https://resample.statistics.com/intro-text-online).
 
-::: r
-In what follows, we will assume you are running this notebook with the Jupyter interface that we provide with the textbook for the interactive examples.
-
-We will also note where you will see or do something differently, when you are running the notebook on your own computer, using RStudio.
-:::
-
-If you are in the notebook interface (rather than reading this in the
-textbook), you will see the Jupyter menu bar near the top of the page, with
+If you are in the interactive notebook interface (rather than reading this in
+the textbook), you will see the Jupyter menu bar near the top of the page, with
 headings "File", "Edit" and so on.
-
-::: r
-RStudio has its own menu, with "File", "Edit", etc.
-:::
 
 In Jupyter, underneath the File ... menu bar, by default, you may see a row of
 icons - the "Toolbar".
@@ -180,27 +186,7 @@ icons - the "Toolbar".
 In the Jupyter toolbar, you may see icons to run the current cell, among
 others.
 
-::: r
-RStudio has its own tool bar, with a Run icon, to run a code chunk (code cell).
-:::
-
 To move from one cell to the next, you can click the run icon in the toolbar, but it is more efficient to press the Shift key, and press Enter (with Shift still held down).  We will write this as {{< var run_key >}}.
-:::
-
-::: r
-Underneath that, by default, you may see a row of icons - the "Toolbar".
-
-In the toolbar, you may see a list box that will allow you to run the code in the notebook, among other icons.
-
-When we get to code chunks, you will also see a green play icon at the right edge of the interface, in the chunk.  This will allow you to run the code chunk.
-
-Although you can use this "run" button, we suggest you get used to using the
-keyboard shortcut.  The default shortcut on Windows or Linux is to hold down
-the Control key and the Shift key and the Enter (Return) key at the same time.
-We will call this Control-Shift-Enter.  On Mac the default combination is
-Command-Shift-Enter, where Command is the key with the four-leaf-clover-like
-icon to the left of the space-bar.  To save us having to say this each time, we will call this combination {{< var run_key >}}.
-:::
 
 In this, our first notebook, we will be using {{< var lang >}} to solve one of
 those difficult and troubling problems in life — working out the bill in a
@@ -219,7 +205,7 @@ the chicken, at £9.25.  First they calculate their combined bill.
 Below this text you see a *code* {{< var cell >}}.  It contains the {{< var
 lang >}} code to calculate the total bill. Press
 [Control-Shift-Enter or Cmd-Shift-Enter (on Mac)]{.r}[Shift-Enter]{.python}
-in the {{< var cell >}} below, to see the total.
+in the {{< var cell >}} below, to see the total.[ (Remember, this is what you should do when running the code in Jupyter, via the interactive web pages.  If you are using RStudio on your own computer, you should use different commands — see @sec-running-rstudio.)]{.r}.
 
 ```{python}
 10.50 + 9.25
@@ -257,7 +243,11 @@ any result.  In this case, that is because the computer sees the `#` at the
 beginning of the line, and then ignores the rest.
 
 ```{python}
-# This bit of text is for me to read, and the computer to ignore.
+# This bit of text is for us to read, and the computer to ignore.
+```
+
+```{r}
+# This bit of text is for us to read, and the computer to ignore.
 ```
 
 Many of the code cells you see will have comments in them, to explain what the
@@ -520,7 +510,11 @@ is equal to the bill before the tip, plus the bill before the tip times 0.15.
 
 Now you have done some practice with the notebook, and with variables, you are
 ready for a new problem in probability and statistics, in the next chapter.
+
 :::
+<!---
+End of notebook.
+-->
 
 ## Running the code on your own computer {#sec-running-own-computer}
 
@@ -543,7 +537,6 @@ containing the notebook and the data file.  Unzip the `.zip` file to get the
 notebook and data file, and then open the resulting notebook in {{< var nb_app
 >}}.
 :::
-
 
 ::: python
 You will need to install the Python language on your computer, and then install the following packages:
@@ -576,31 +569,38 @@ Open the notebook you downloaded for the chapter; you will now be able to run
 the code on your own computer, and experiment by making changes.
 :::
 
+You can run any of the code notebooks in this textbook on your own machine by
+downloading the notebook, via the download link at the top of each notebook
+section, and then opening the resulting notebook in {{< var nb_app >}}.
+
 ::: r
 
-We are using the Jupyter notebook for our interactive (web) examples.  Although
-you can use the Jupyter notebook on your own computer, we recommend you use the
-standard [RStudio](https://posit.co/products/open-source/rstudio) desktop
-application.  It works in similar way to Jupyter, but with some variation.  You will find many good tutorials for RStudio online; at time of writing [this DataCamp tutorial](https://www.datacamp.com/tutorial/r-studio-tutorial) was a good place to start.
+### Running notebooks in RStudio {#sec-running-rstudio}
 
-As you will see in the tutorial linked above, you will need two software
-packages on your computer to run RStudio.  These are:
+We are use a version of the Jupyter notebook for our interactive (web)
+examples.  Although you can use the Jupyter notebook on your own computer, we
+recommend you use the RStudio desktop application.[^rstudio] It works in
+similar way to Jupyter, but with some variation.  You will find many good
+tutorials for RStudio online; at time of writing [this DataCamp
+tutorial](https://www.datacamp.com/tutorial/r-studio-tutorial) was a good place
+to start.
 
-* The base R language
+As you will read on the RStudio download page, linked above, you will need two
+software packages on your computer to run RStudio.  These are:
+
+* The base R language.
 * The RStudio graphical interface to R.
 
 The base R language gives you the software to run R code and show results. You
-can use the base R language on its own, but, in order to interact with the R
-notebook on your computer, you will need the RStudio interface.  RStudio gives
-you a richer interface to interact with the R language, including the ability
-to open, edit and run R notebooks, like the notebook in this chapter.  RStudio
-uses the base R language to run R code from the notebook, and show the
-results.
+can use the base R language on its own, but RStudio gives you a richer
+interface to interact with the R language, including the ability to open, edit
+and run R notebooks, like the notebook in this chapter.  RStudio uses the base
+R language to run R code from the notebook, and show the results.
 
 Install the base R language by going to the main R website at
-<https://www.r-project.org>, following the links to the package for your
-system (Windows, Mac, or Linux), and install according to the instructions on
-the website.
+<https://www.r-project.org>, following the links to the package for your system
+(Windows, Mac, or Linux), and install according to the instructions on the
+website.
 
 Then install the RStudio interface by going to the RStudio download page at
 <https://posit.co/download/rstudio-desktop/>, and navigating to the link to
@@ -609,8 +609,79 @@ R.  The RStudio IDE makes it easier to interact with, and develop, R code. You
 only need the free (default) version; it has all the features you will need.
 The free version is the only version that we, your humble authors, have used
 for this book, and for all our own work and teaching.
-:::
 
-You can run any of the code notebooks in this textbook on your own machine by
-downloading the notebook, via the download link at the top of each notebook
-section, and then opening the resulting notebook in {{< var nb_app >}}.
+See @sec-running-rstudio for a starter tutorial on running notebooks in
+RStudio.
+
+Click the Download link below to download this notebook to your computer.
+
+::: {.notebook name="bill_in_rstudio" title="The Bill but in RStudio"}
+
+Notice that the Download link gave you a file ending in `.Rmd`, where "Rmd" is
+short for *RMarkdown*.  *RMarkdown* is the name of the notebook format — and it is the native notebook format for RStudio.  The `.Rmd` file is an RMarkdown version of the notebook.
+
+Open the `bill_in_rstudio.Rmd` file in RStudio.
+
+RStudio's idea of a notebook is very similar to Jupyter's — and this is not
+a coincidence, the Jupyter notebook was already popular when RStudio came up
+with its own take on this idea.
+
+However, there are some differences between Jupyter and RStudio in the way that
+they think about notebooks, and in the notebook interface.
+
+To start with the interface, notice that RStudio has its own menu, with "File",
+"Edit", etc.   Each notebook has its own tab in the interface.  If you have
+just opened this notebook, and no others, you will only have one tab,
+corresponding to this notebook.  Depending on your configuration, you may also
+have other windows inside the RStudio window, for example, showing the
+variables defined in R, and the files in the same directory as the notebook.
+
+Identify the notebook tab — the tab containing this file.   You will notice that the notebook tab has a *notebook toolbar* at the top.  We will come to that soon.
+
+We have started with the interface, but now we return to RStudio's slightly
+different concept of a notebook, compared to Jupyter.
+
+For example, Jupyter thinks in terms of *cells*.   All content in a Jupyter
+notebook has a containing cell; text cells contain text, and code cells contain
+code.   In a Jupyter notebook, this text would be inside a text cell.
+
+RStudio notebook thinks of the notebook differently.  It conceives of the
+notebook as being text, by default.   Within the text, there may be *code
+chunks*.  These are the equivalent of Jupyter's code cells — they are blocks of
+code you can execute within the notebook.  The notebook interface displays any
+output from the code, including plots.
+
+For example, the following is a *code chunk* (in RMarkdown terms):
+
+```{r}
+# The cost of Alex's meal.
+# alex_meal gets the value 10.50
+alex_meal <- 10.50
+# Display the cost of Alex's meal.
+alex_meal
+```
+
+Now we return to the interface.   Click inside the code chunk above.  Notice that the code chunk is grey, compared to the usual default white for the rest of the notebook.  At the top left of the code chunk, you will see a *play* icon.  Click this to run the code and see the results.
+
+There are various other ways of running code chunks. For example, the *notebook
+toolbar* that you identified about has icons that allow you run the code.  In
+particular, there is a "Run" icon that triggers a drop-down menu, with options
+for running this and other code chunks.  You will soon find yourself wanting
+the keyboard shortcuts to run code-chunks — please do start using these as
+early as you can — you will find they make you much more efficient and fluent
+in using notebooks in RStudio.  To see the shortcuts, find the main RStudio
+menu, and select "Keyboard Shortcuts Help" for more information.
+
+We will leave you with this brief introduction, and point you out into the
+interwebs to search for good tutorials on using RStudio.  Books always get out
+of date quickly, so we won't risk instant obsolescence by recommending
+particular pages or videos here.
+:::
+<!---
+End of notebook.
+-->
+
+:::
+<!---
+End of R segment.
+-->
