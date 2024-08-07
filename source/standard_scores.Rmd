@@ -147,13 +147,13 @@ file. We refer to this file with its *filename*, containing the directory
 (`data/`) followed by the name of the file (`congress_2023.csv`), giving
 a filename of `data/congress_2023.csv`.
 
-The *CSV format* is a very simple text format for storing table data.  Usually,
-the first line of the CSV file contains the column names of the table, and the
-rest of the lines contain the row values.  As the name suggests, commas (`,`)
-separate the column names in the first line, and the row values in the
-following lines. If you opened the `data/congress_2023.csv` file in some editor,
-such as Notepad on Windows or TextEdit on Mac, you would find that the first few
-lines looked like this:
+The *CSV format* is a very simple text format for storing table data.
+Usually, the first line of the CSV file contains the column names of the
+table, and the rest of the lines contain the row values.  As the name
+suggests, commas (`,`) separate the column names in the first line, and the
+row values in the following lines. If you opened the `data/congress_2023.csv`
+file in some editor, such as Notepad on Windows or TextEdit on Mac, you would
+find that the first few lines looked like this:
 
 ```{python echo=FALSE, eval=TRUE, results="asis"}
 from pathlib import Path
@@ -166,6 +166,22 @@ print(f"""{backticks}
 {backticks}
 """)
 ```
+
+In the code that follows, we will *read* the values from the CSV file directly into {{< var lang >}}.
+
+:::{.callout-note}
+## Download links with data files
+
+Up till now, the Download links for notebook files give you a link to a single file — the *notebook*.  The
+[Jupyter notebook file has extension `.ipynb`]{.python}
+[RStudio notebook file has extension `.Rmd`]{.r}
+
+:::
+
+
+
+::: {.notebook name="four_girls_one_boy" title="Four girls and one boy"}
+
 
 ::: python
 

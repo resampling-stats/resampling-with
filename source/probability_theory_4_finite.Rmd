@@ -1161,9 +1161,9 @@ var sample >}} to generate a random family of 5 children. This means that we
 need not generate families if 5 or more spades were not dealt to the bridge
 hand, because a "success" is only recorded if both conditions are met. After we
 record the number of girls in each sample of 5 children, we need only finish
-the loop (by [`}`]{.r}[unindenting the next line]{.python} and then use
-{{< var sum >}} to count the number of samples that had 4 girls, storing the
-result in `k`. Since we only drew samples of children for those trials in which
+the loop (by [`}`]{.r}[unindenting the next line]{.python}) and then use {{<
+var sum >}} to count the number of samples that had 4 girls, storing the result
+in `k`. Since we only drew samples of children for those trials in which
 a bridge hand of 5 spades had already been dealt, `k` will have the number of
 trials out of 10000 in which both conditions were met.
 
