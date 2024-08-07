@@ -170,24 +170,29 @@ print(f"""{backticks}
 In the code that follows, we will *read* the values from the CSV file directly into {{< var lang >}}.
 
 :::{.callout-note}
-## Download links with data files
+## Download links with data files {#sec-download-links}
 
-Up till now, the Download links for notebook files give you a link to a single file — the *notebook*.  The
+Up till now, the Download links for notebook files point to a single file — the *notebook*.  The
 [Jupyter notebook file has extension `.ipynb`]{.python}
-[RStudio notebook file has extension `.Rmd`]{.r}
+[RStudio notebook file has extension `.Rmd`]{.r}.
 
+From now on, some examples involve reading a data file.  In order to run the
+notebook, you need the notebook file
+(with extension[`.ipynb`]{.python}[`.Rmd`]{.r})
+as well as the data file.  For those cases, the download link points to
+a `.zip` file containing the notebook file and the data file.  To run the
+example on your computer, download the `.zip` file, extract the contents, and
+then open the notebook file using {{< var nb_app >}}.
 :::
-
-
-
-::: {.notebook name="four_girls_one_boy" title="Four girls and one boy"}
 
 
 ::: python
 
 ### Introducing the Pandas library {#sec-pandas-intro}
 
-Here we start using the Pandas library to load table data into Python.
+::: {.notebook name="starting_pandas" title="Starting with Pandas"}
+
+Here we use the Pandas library to load table data into Python.
 
 Thus far we have used the Numpy library to work with data in arrays. As always
 with Python, when we want to use a library — like Numpy, or Pandas — we have to
@@ -261,11 +266,6 @@ If the data were not already in income order, we could have sorted them with
 
 :::
 
-
-:::
-
-
-
 We are particularly interested in the column named `Median_Income`.
 
 You may remember the idea of *indexing*, introduced in @sec-array-indexing.
@@ -312,10 +312,20 @@ incomes[:5]
 ```
 
 :::
+<!---
+End of notebook.
+-->
+
+:::
+<!---
+End of python block
+-->
 
 ::: r
 
 ### Introducing R data frames
+
+::: {.notebook name="intro_data_frames" title="Introducing data frames"}
 
 R is a data analysis language, so, as you would expect, it is particularly good
 at loading data files, and presenting them to us as a useful table-like
@@ -367,6 +377,14 @@ incomes[1:5]
 ```
 
 :::
+<!---
+End of notebook.
+-->
+
+:::
+<!---
+End of R block
+-->
 
 ### Incomes and Ranks
 
