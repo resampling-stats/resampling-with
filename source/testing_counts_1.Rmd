@@ -88,7 +88,7 @@ hypotheses about samples and populations.
 
 ## Should a single sample of counted data be considered different from a benchmark universe?
 
-#### Example: Does Irradiation Affect the Sex Ratio in Fruit Flies? {#sec-fruitfly}
+### Example: Does irradiation affect the sex ratio in fruit flies? {#sec-fruitfly}
 
 **Where the Benchmark Universe Mean (in this case, the Proportion) is Known, is
 the Mean (Proportion) of the Population Affected by the Treatment?)**
@@ -239,6 +239,42 @@ plt.xlabel('Number of Males')
 plt.ylabel('Frequency')
 ```
 
+::: r
+#### `paste` to concatenate strings {#sec-paste-strings}
+
+We are going to make a rather verbose label for the plot below.  In order to do
+this, we will need to compile a set of strings and numbers together into
+a string.
+
+One useful R function to do this is `paste`.
+
+We pass `paste` the strings and values we want it to combine, as arguments.  It
+converts each argument to a string, and concatenates the resulting strings,
+separating them with a space (by default).
+
+For example, to make a new string that concatenates the strings `'resampling'`,
+`'is'` and `'better'`, separated by spaces, we could use:
+
+```{r}
+paste('resampling', 'is', 'better')
+```
+
+If we wanted to insert a number as a string into this sequence, we can send the number as an argument.  `paste` converts the number to a string before concatenation.
+
+```{r}
+paste('resampling', 'is', 100, 'times', 'better')
+```
+
+`paste` is useful for compiling messages to print, or labels for plots, as you
+will see below.
+
+#### Simulation for irradiation and sex of fruit-flies
+:::
+
+<!---
+End of R section.
+-->
+
 ```{r}
 # Set the number of trials
 n_trials <- 10000
@@ -266,15 +302,22 @@ for (i in 1:n_trials) {
 }
 
 # Produce a histogram of the trial results
-title_of_plot <- paste0("Number of males in", n_trials, " samples of \n", sample_size, " simulated fruit flies")
+title_of_plot <- paste("Number of males in", n_trials,
+                       "samples of", sample_size,
+                       "simulated fruit flies")
 hist(scores, xlab='Number of Males', main=title_of_plot)
 ```
 
-In the histogram above, we see that in 16 percent of the trials, the number of
-males was 14 or more, or 6 or fewer. Or instead of reading the results from the
-histogram, we can calculate the result by tacking on the following commands to
-the above program:
+```{r eval=TRUE, echo=FALSE}
+._scores <- get_var('scores')
+._prop <- (sum(._scores >= 14) + sum(._scores <= 6)) / get_var('n_trials')
+._pct <- round(._prop * 100)
+```
 
+In the histogram above, we see that in about `r ._pct` percent of the trials,
+the number of males was 14 or more, or 6 or fewer. Or instead of reading the
+results from the histogram, we can calculate the result by tacking on the
+following commands to the above program:
 
 ```{python}
 # Determine the number of trials in which we had 14 or more males.
@@ -534,7 +577,9 @@ for (i in 1:n_trials) {
 }
 
 # Plot a histogram of the scores.
-title_of_plot <- paste0("Number of females in", n_trials, " samples of \n", sample_size, " simulated calves")
+title_of_plot <- paste("Number of females in", n_trials,
+                       "samples of", sample_size,
+                       "simulated calves")
 hist(scores, xlab = 'Number of Females', main=title_of_plot)
 
 # Count the number of scores that were greater than or equal to 9.
@@ -555,7 +600,7 @@ females occurring by chance is a bit more than one percent.
 End of calves notebook.
 -->
 
-### Example: A Public-Opinion Poll {#sec-contract-poll}
+### Example: A public-opinion poll {#sec-contract-poll}
 
 **Is the Proportion of a Population Greater Than a Given Value?**
 
@@ -709,8 +754,8 @@ For the same reason, we could also write 1000 as:
 ```
 
 The underscores make no difference to the resulting number in Python; it is up
-to us whether we want to use them to make it easier for us humans to read the
-value when we see the code.
+to us whether we use them.  They can make it easier for us humans to read the
+value.
 
 :::
 
@@ -774,7 +819,7 @@ data relative to a benchmark universe. This section discusses the issue of
 whether *two* samples with counted data should be considered the same or
 different.
 
-### Example: Did the Trump-Clinton Poll Indicate that Trump Would Win?
+### Example: Did the Trump-Clinton poll indicate that Trump would win?
 
 ::: {.notebook name="trump_clinton" title="Trump/Clinton poll simulation"}
 
@@ -887,7 +932,7 @@ following.
   ------- ----- ------ ------
 -->
 
-### Example: Comparison of Possible Cancer Cure to Placebo {#sec-cancer-cures}
+### Example: Comparison of possible cancer cure to placebo {#sec-cancer-cures}
 
 **Do Two Binomial Populations Differ in Their Proportions**.
 
@@ -1090,7 +1135,7 @@ statistics rather than simply trying to copy the methods described here; the
 examples given here only illustrate the process of inventing statistics rather
 than offering solutions for all classes of problems.
 
-### Example: Did Attitudes About Marijuana Change?
+### Example: Did attitudes about marijuana change?
 
 <!---
 Example 8.18 in W+W 1990.  Looks like fake data.
@@ -1125,7 +1170,7 @@ The only way to find the approach you eventually consider best — and there is
 no guarantee that it is indeed *correct* — is by close reference to the
 particular facts of the case.
 
-### Example: Infarction and Cholesterol: Framingham Study {#sec-framingham-example}
+### Example: Infarction and cholesterol: Framingham study {#sec-framingham-example}
 
 It is so important to understand the logic of hypothesis tests, and
 of the resampling method of doing them, that we will now tackle
@@ -1396,7 +1441,7 @@ that only a rare expert understands down to the foundations constitutes an
 impenetrable wall to understanding. Yet without such understanding, there can
 be only rote practice, which leads to frustration and error.
 
-### Example: Is One Pig Ration More Effective Than the Other? {#sec-pig-rations}
+### Example: Is one pig ration more effective than the other? {#sec-pig-rations}
 
 **Testing For a Difference in Means With a Two-by-Two Classification**.
 
@@ -1627,7 +1672,7 @@ have strong evidence that it is *no worse* .
 End of pig-ration notebook.
 -->
 
-### Example: Do Planet Densities Differ?
+### Example: Do planet densities differ?
 
 **Consider the five planets known to the ancient world.**
 

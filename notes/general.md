@@ -173,10 +173,10 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
   > *Series*.
 
 * Consider f-strings by `testing_counts_1` (not currently used).
-* Underscores in Pandas integers by `testing_counts_1` (done in
+* Underscores in Python integers by `testing_counts_1` (done in
   `testing_counts_1`).
 * `seq` / `np.arange` with floats in `testing_counts_1`.
-* `paste`, `paste0`` by `testing_counts_1`.
+* `paste`, `paste0` done in `testing_counts_1`.
 * `or` / `|` by testing_counts_2.
 * `if` blocks?
 * `abs` covered in `standard_scores`, around line 1060.
