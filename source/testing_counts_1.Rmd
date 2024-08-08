@@ -679,7 +679,43 @@ rnd = np.random.default_rng()
 
 # We will do 10,000 iterations.
 n = 10_000
+```
 
+::: python
+
+Notice the line above: `n = 10_000`.  This is an alternative way of writing the
+familiar `n = 10000`.   Python allows underscores when we type an integer; it
+will treat them as decoration, and ignore them in resolving the number we
+intend.  This means that all these are equivalent to Python:
+
+```{python}
+10000
+```
+
+```{python}
+10_000
+```
+
+or even:
+
+```{python}
+1_00_00
+```
+
+For the same reason, we could also write 1000 as:
+
+```{python}
+1_000
+```
+
+The underscores make no difference to the resulting number in Python; it is up
+to us whether we want to use them to make it easier for us humans to read the
+value when we see the code.
+
+:::
+
+
+```{python}
 # Make an array of integers to store the "Yes" counts.
 yeses = np.zeros(n, dtype=int)
 
