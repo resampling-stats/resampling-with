@@ -9,7 +9,7 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.14.6
+      jupytext_version: 1.16.0
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -1351,7 +1351,7 @@ as is used with a child's board game, and then keep track of each step on a
 piece of graph paper. The reader may construct a {{< var lang >}} program as an
 exercise.
 
-```{r fig-drunk-walk, opts.label='svg_fig', fig.cap="Drunk random walk"}
+```{r fig-drunk-walk, opts.label="svg_fig", fig.cap="Drunk random walk"}
 include_svg('diagrams/drunks_walk.svg')
 ```
 
@@ -1369,13 +1369,13 @@ owns the retail liquor stores. (Some states were omitted for technical
 reasons.) These were the representative 1961 prices of a fifth of Seagram 7
 Crown whiskey in the two sets of states (@tbl-whiskey-prices):
 
-```{python results='asis', eval=TRUE, echo=FALSE, message=FALSE}
+```{python echo=FALSE, results="asis", eval=TRUE, message=FALSE}
 import liquor_analysis as la
 print(f'{la.md_table()}\n\n: '
       'Whiskey prices by state category {#tbl-whiskey-prices}')
 ```
 
-```{python fig-whiskey-hist, opts.label='svg_fig', fig.cap="Whiskey prices by state category"}
+```{python fig-whiskey-hist, opts.label="svg_fig", fig.cap="Whiskey prices by state category"}
 la.price_plots()
 ```
 
@@ -1466,8 +1466,375 @@ both
 End of R block.
 -->
 
+### Plotting histograms {#sec-on-histograms}
+
+The other procedure we will use for the simulation, is graphing the results
+with a *histogram*.
+
+A histogram is a visual way to show the *distribution* of a sequence of values.
+
+::: python
+
+We now enter the world of *plotting* in Python.  As Numpy is a Python library
+for working with arrays, Matplotlib is a library for making and showing plots.
+
+To use the Numpy library, we `import` it.   As you have seen, the usual
+convention is to make the standard `numpy` library name easier to read and
+type, by renaming the library to `np` on `import`, like this:
+
+```{python}
+# Import numpy library and rename to "np"
+import numpy as np
+```
+
+In a similar way, we need to import the Matplotlib library.  In fact we will be
+using a particular part of the Matplotlib library, called `pyplot`.
+
+We use the following standard convention to import that the `pyplot` part of
+the Matplotlib library and give it the shorter name of `plt`:
+
+```{python}
+import matplotlib.pyplot as plt
+```
+
+:::{.callout-note}
+## Modules and submodules {#sec-modules-submodules}
+
+We have been calling Numpy and Matlotlib *libraries*, but technically,
+Python calls these *modules*.  Modules are collections of code and data that
+you can `import` into Python.  For example, Numpy (now renamed as `np`) is
+a module:
+
+```{python}
+# Show type for the import Numpy module (renamed as "np")
+type(np)
+```
+
+We can get elements contained in (attached to) a module using the `.` syntax.
+For example, here we get the value of the `pi` variable, attached to the Numpy
+module.
+
+```{python}
+# Get and show the value of the variable "pi" attached to (contained within)
+# the Numpy module.
+np.pi
+```
+
+One type of thing a module can contain, is other modules.  These
+modules-attached-to-modules are called *submodules*.  You have already see us
+use the `random` submodule attached to the Numpy module:
+
+```{python}
+# "random" is itself a module, attached to (contained within) the Numpy
+# module.  It is therefore a "submodule" of Numpy.
+type(np.random)
+```
+
+We have created random number generators by using the `default_rng()` function
+from the `random` submodule.
+
+```{python}
+rng = np.random.default_rng()
+```
+
+`pyplot` is a submodule of Matplotlib.
+
+```{python}
+# Reimport the module to remind ourselves of the import line.
+import matplotlib.pyplot as plt
+# plt is a new name we have set for the "pyplot" submodule of Matplotlib.
+type(plt)
+```
+
+The `pyplot` module of Matplotlib has many useful functions for making and displaying plots.
+:::
+<!---
+End of submodules callout.
+-->
+
+The easiest way to explain histograms is to show one.
+
+Let's start with a sequence of values we are interested in:
+
+Here are the 24 values for whiskey prices in states that did not have a liquor
+monopoly (`priv`).
+
+```{python}
+priv = np.array([
+    4.82, 5.29, 4.89, 4.95, 4.55, 4.90, 5.25, 5.30, 4.29, 4.85, 4.54, 4.75,
+    4.85, 4.85, 4.50, 4.75, 4.79, 4.85, 4.79, 4.95, 4.95, 4.75, 5.20, 5.10,
+    4.80, 4.29])
+```
+
+```{r}
+priv <- c(4.82, 5.29, 4.89, 4.95, 4.55, 4.90, 5.25, 5.30, 4.29, 4.85, 4.54,
+          4.75, 4.85, 4.85, 4.50, 4.75, 4.79, 4.85, 4.79, 4.95, 4.95, 4.75,
+          5.20, 5.10, 4.80, 4.29)
+```
+
+These are the 16 values for states with a liquor monopoly (`govt`):
+
+```{python}
+govt = np.array([
+    4.65, 4.55, 4.11, 4.15, 4.20, 4.55, 3.80, 4.00, 4.19, 4.75, 4.74, 4.50,
+    4.10, 4.00, 5.05, 4.20])
+```
+
+```{r}
+govt <- c(4.65, 4.55, 4.11, 4.15, 4.20, 4.55, 3.80, 4.00, 4.19, 4.75, 4.74,
+          4.50, 4.10, 4.00, 5.05, 4.20)
+```
+
+We concatenate these values to get a sequence ({{< var an_array >}}) of all 40
+liquor prices:
+
+```{python}
+prices = np.concatenate([priv, govt])
+prices
+```
+
+```{r}
+prices <- c(priv, govt)
+prices
+```
+
+We are interested in the distribution of these 40 values.  To show the distribution, we can make and show a histogram of these prices, using the
+[`hist` function attached to the `plt` submodule]{.python}
+[`hist` function in R]{.r}.
+
+```{python}
+hist_res = plt.hist(prices)
+```
+
+```{r}
+hist_res <- hist(prices)
+```
+
+[`plt.hist`]{.python}[`hist`]{.r} has calculated some suitable intervals
+(*bins*) to divide up the range of values, and then counted how many values in
+`prices` fall into each interval (bin).
+
+You will notice that [`plt.hist`]{.python}[`hist`]{.r} has sent back some
+results from the process of making the histogram.
+
+The first result of interest to us is the definition of the intervals (bins) into which the histogram has divided the range of the `prices` values.
+
+::: python
+
+In fact, `plt.hist` sent back the edges of these bins in the second element of
+`hist_res`:
+
+```{python}
+# Bin edges
+bin_edges = hist_res[1]
+bin_edges
+```
+
+Think of these values as the 10 values that start each of the 10 bins, followed
+by a final value that ends the final bin.
+
+This means that the first bin was from (including) 3.8 up to, but not including
+3.95, the second bin was from (including) 3.95 up to, but not including 4.1 and
+so on.   The last bin is from (including) 5.15 through (including) 5.3.  Notice
+there are 11 edges, forming 10 bins.
+
+Put another way, the edges that `plt.hist` sent back are the 10 left hand
+(inclusive) edges of the 10 bins, and a final right hand (inclusive) edge of
+the final (10^th^) bin.
+
+The first value that comes back in the list of results is the array of counts of values in `prices` that fall within each bin.
+
+```{python}
+# Counts of values falling into each bin.
+counts = hist_res[0]
+counts
+```
+
+This means that 1 value from `prices` fell in the range 3.8 up to (not
+including) 3.95, 2 values fell in the range 3.95 up to (not including) 4.1, and
+so on.
+
+Notice that the counts correspond to the heights of the bars on the histogram,
+so the first bar has height 1, the second bar has height 2, and so on.
+
+By default, `plt.hist` assumes you want 10 bins, and uses its default method of
+calculation to work out the edges for those 10 bins.  You can specify another
+number of bins, by sending a number for the `bins` argument to `plt.hist`.  For
+example, you might want 20 bins:
+
+```{python}
+results_20 = plt.hist(prices, bins=20)
+```
+
+We now have 21 new edge values, the first 20 values giving the (inclusive)
+left-hand edges, and the last giving the (inclusive) right hand edge of the
+last bin.
+
+```{python}
+bin_edges_20 = results_20[1]
+bin_edges_20
+```
+
+We can also specify our own edges, in order to bypass `plt.hist`s default
+algorithm to calculate edges.  For example, we might prefer 16 bins of width
+0.1, starting at 3.8, giving edges like this:
+
+```{python}
+our_edges = 3.8 + np.arange(16) * 0.1
+our_edges
+```
+
+We can send these directly to `plt.hist` to set the edges:
+
+```{python}
+results_16 = plt.hist(prices, bins=our_edges)
+# Show the edges that come back (these are the edges we sent).
+results_16[1]
+```
+
+If we run `plt.hist` without collecting the values that come back, Jupyter (as
+usual) will show the values as the result of the cell.
+
+```{python}
+# If we don't collect the results, Jupyter shows them to us,
+# if this is the last expression in the cell.
+plt.hist(prices)
+```
+
+Here we see that the result that came back is a list with three values.  As you saw before, the first value is the array with the counts for each of the (by default) 10 bins.  The second is the array with the bin edges (10 left edges and last right edge).  The last is a reference to the values that make up the graphical display; this is advanced, and we won't look at these any further in this book.
+
+
+It can be distracting to see the counts, bin edges and graphical display values along with the plot, so from now on we will suppress Jupyter's default behavior of showing the results that came back from the `plt.hist` function call by adding a semi-colon at the end of the function call, like this:
+
+```{python}
+plt.hist(prices);  # Note the semi-colon
+```
+
+The semi-colon is a standard indicator to Jupyter that it should not display the results that came back from the function call.   To repeat, we use it with plotting functions to suppress the various values that come back from these functions, as they are usually not of immediate interest.
+
+:::
+<!---
+End Python
+-->
+
+::: r
+
+ In fact, `hist` sent back the edges (or *breaks*) of these bins as part of the
+`hist_res` results.  `hist_res` is a special R value to contain the results of
+the histogram.  It contains various relevant values.
+
+
+```{r}
+hist_res
+```
+
+Notice that the values attached to the `hist_res` result have *names*, such as
+`breaks`, `counts` and so on.   To get the attached values from the `hist_res` results, we use the `$` character to mean *attached to*.  So read:
+
+```{r}
+hist_res$counts
+```
+
+to mean "get the value called `counts` that is attached to the `hist_res`
+value."
+
+When we called `hist(prices)`, the `hist` function had to decide how many bins
+to use, and the edges of the bins.  By default, it does this with an algorithm
+called [Sturge's rule](https://en.wikipedia.org/wiki/Sturges%27s_rule).  The
+details of the algorithm are not important to us, but the result is that `hist`
+decided it would make 9 bins, with the edges you see in the `breaks` value of
+`hist_res`.
+
+```{r}
+# Bin edges
+bin_edges <- hist_res$breaks
+bin_edges
+```
+
+Think of the `breaks` values as: the value that starts the first bin, followed
+by the 9 values that end each of the 9 bins.[^r-hist-right]
+
+[^r-hist-right]: In fact, you can customize the calculation and meaning of the
+    `breaks` values using various arguments to the `hist` function.  See the
+    documentation of `hist` for more details.
+
+The `breaks` values show that the first bin was from (including) 3.8 up to,
+*and including* 4.0, the second bin was from (not including) 4.0 up to, and
+including 4.2 and so on. The last bin is from (not including) 5.2 through
+(including) 5.4.  Notice there are 10 edges (breaks), forming 9 bins.
+
+Put another way, the edges (boundaries) that `hist` sent back start with the
+left-hand (inclusive) edge of the first bin, followed by the 9 right-hand
+(exclusive) edges of the 9 bins.
+
+The list of results in `hist_res` includes the vector of *counts* of values in
+`prices` that fall within each bin.
+
+```{r}
+# Counts of values falling into each bin.
+counts <- hist_res$counts
+counts
+```
+
+This means that 3 values from `prices` fell in the range 3.8 through 4.0, 6 values fell in the range from (not including) 4.0 through 4.2, and
+so on.
+
+Notice that the counts correspond to the heights of the bars on the histogram,
+so the first bar has height 3, the second bar has height 6, and so on.
+
+By default, `hist` uses Sturge's rule to decide on the number of bins.  You can also *suggest* to R that it uses another number of bins, by sending a number for the `breaks` argument to `hist`.  For example, you might want to suggest 20 bins
+
+```{r}
+results_20 <- hist(prices, breaks=20)
+```
+
+Notice that R treats this number as a suggestion, and will adjust the actual
+number of bins to something close to the suggestion and that gives
+a pleasant-looking histogram.   In fact, R responded to the suggestion of 20 by
+giving 15 bins:
+
+```{r}
+length(results_20$counts)
+```
+
+We now have 16 new edges (boundaries), the first value giving the (inclusive)
+left-hand edge of the first bin, and the subsequent 15 values giving the
+(exclusive) right-hand edges.
+
+```{r}
+bin_edges_20 <- results_20$breaks
+bin_edges_20
+```
+
+We can also specify our own edges, in order to bypass `hist`s default
+algorithm.  For example, we might prefer exactly 16 bins of size 0.1, with
+edges starting at 3.8:
+
+```{r}
+our_edges <- 3.8 + 0:15 * 0.1
+our_edges
+```
+
+We can send these directly to `hist` to specify the edges (and the number of
+bins):
+
+```{r}
+results_16 = hist(prices, breaks=our_edges)
+```
+
+```{r}
+# Show the edges that come back (these are the edges we sent).
+results_16$breaks
+```
+
+:::
+<!---
+End R
+-->
+
 ### Price simulation
 
+Now we have the machinery to concatenate {{< var array >}}s, and make histograms, we are ready to do the price simulation.
 
 ::: {.notebook name="liquor_prices" title="Public and private liquor prices"}
 

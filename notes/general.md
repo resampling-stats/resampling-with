@@ -161,20 +161,20 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * (a == 1) & (b == 3) (in more_sampling_tools)
 * Python `range` cf `np.arange` (resampling_with_code)
 * `np.all` (done in `probabality_theory_4_finite`).
-* Need `plt.hist`, at least by `probabality_theory_4_finite`.  We should
-  probably have a section or even a chapter on histograms.
-* Need slicing with slices, sometime before use in
-  `more_sampling_tools`. Also used in
-  `standard_scores` around line 319.
+* `hist` / `plt.hist`, at least by `probabality_theory_3` (in
+  `probability_theory_3`), covering plotting, bins, bin edges.  We even need
+  a chapter on histograms.
+* Need slicing with slices, sometime before use in `more_sampling_tools`.
+  Also used in `standard_scores` around line 319.
 * Introduce the idea of objects and classes.  First obviously needed in
   `standard_scores.Rmd` page, see line that currently reads:
 
   > data from that column, returning a new type of value called a Pandas
   > *Series*.
 
-* More about histograms, bins, bin-edges.
 * Consider f-strings by `testing_counts_1` (not currently used).
-* underscores in integers by `testing_counts_1`.
+* underscores in Pandas integers by
+  `testing_counts_1`.
 * `paste`, `paste0`, `seq` by `testing_counts_1`.
 * `or` / `|` by testing_counts_2.
 * `if` blocks?
