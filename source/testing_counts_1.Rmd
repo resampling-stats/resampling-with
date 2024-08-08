@@ -1207,7 +1207,7 @@ serum-cholesterol group).
 
 The procedure above can be carried out with balls in a bucket in a few hours.
 Yet it is natural to seek the added convenience of the computer to draw the
-samples. Here is a {{< var lang >}} program:
+samples.  Here is the {{< var lang >}} program:
 
 ::: {.notebook name="framingham_hearts" title="Framingham heart data"}
 
@@ -1215,13 +1215,78 @@ samples. Here is a {{< var lang >}} program:
 We use simulation to investigate the relationship between serum cholesterol and heart attacks in the Framingham data.
 :::
 
+Before come to the simulation, we need some new code to tune our histograms
+(see @sec-on-histograms).  We are going to set the bins for the histogram using
+advanced ranges.
+
+### Advanced ranges {#sec-more-on-ranges}
+
+So far (@sec-ranges) we have used [`np.arange`]{.python}[the colon syntax]{.r}
+to make regular sequences of integers.  For example, to make
+{{< var an_array >}} of the sequential integers from 3 through 12, we could
+use:
+
+```{python}
+np.arange(3, 13)
+```
+
+```{r}
+3:12
+```
+
+::: r
+
+R also has a function `seq` that makes sequences.   In practice we would likely
+use the colon syntax for the problem above, but we could also use `seq`, like
+this:
+
+```{r}
+seq(3, 12)
+```
+
+The first argument is the starting value, and the second is the stopping value.
+The result is all the sequential integers, up to and including the stopping
+value.
+:::
+
+Sometimes we want to be able to specify a step size — the gap between the
+numbers in the sequence.  In the sequence above, the gap (step) between each
+number is 1.  We might want some other step size.  To create a sequence of
+integers from 3 through 33 in steps of 5, we could write:
+
+```{python}
+np.arange(3, 34, step=5)
+```
+
+```{r}
+seq(3, 33, by=5)
+```
+
+Read this as "give me the sequence (range) of numbers, starting at 3, up to
+[but not including 34]{.python}[and including 33]{.r}, in steps[ (`by`)]{.r}
+of 5.
+
+So far we have used integers as the start, stop and step[ (`by`)]{.r} values, but we could also use floating point values.  For example, to get a sequence of values starting at 0.1 up to and including 0.9, in steps of 0.2:
+
+```{python}
+np.arange(0.1, 1, step=0.2)
+```
+
+```{r}
+seq(0.1, 0.9, by=0.2)
+```
+
+### Simulation for infarction and cholesterol
+
+With that background, we can proceed with the simulation.
+
 ```{python}
 import numpy as np
 import matplotlib.pyplot as plt
 
 rnd = np.random.default_rng()
 
-n = 10_0005
+n = 10_000
 men = np.repeat(['infarction', 'no infarction'], [31, 574])
 
 n_high = 135  # Number of men with high cholesterol
@@ -1238,6 +1303,8 @@ for i in range(n):
     low_prop = low_infarcts / n_low
     infarct_differences[i] = high_prop - low_prop
 
+# Set the histogram bin edges to the sequence starting at -0.1, up to (not
+# including) 0.1, in steps of 0.005.
 plt.hist(infarct_differences, bins=np.arange(-0.1, 0.1, 0.005))
 plt.title('Infarct proportion differences in null universe')
 
@@ -1270,6 +1337,8 @@ for (i in 1:n) {
     infarct_differences[i] <- high_prop - low_prop
 }
 
+# Set the histogram bin edges to the sequence starting at -0.1, up to
+# (including) 0.1, in steps of 0.005.
 hist(infarct_differences, breaks=seq(-0.1, 0.1, by=0.005),
      main='Infarct proportion differences in null universe')
 

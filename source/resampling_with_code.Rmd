@@ -516,13 +516,14 @@ or 4 or 5.
 Creating ranges of numbers is so common that {{< var lang >}} has a [special
 syntax]{.r}[standard Numpy function `np.arange`]{.python} to do that.
 
+::: python
+
 ```{python}
 # An array containing all the numbers from 0 through 9.
 some_numbers = np.arange(0, 10)
 some_numbers
 ```
 
-::: python
 Notice that we send `np.arange` the *arguments* 0 and 10.  The first
 argument, here 0, is the *start* value.  The second argument, here 10, is the
 *stop* value.  Numpy (in the `arange` function) understands this to mean:
@@ -564,6 +565,9 @@ some_integers
 ```
 
 :::
+<!---
+End of Python section
+-->
 
 ::: r
 R allows you to write a colon (`:`) between two values, to mean that you want a *vector* (sequence) that is all the integers from the first value (before the colon) *through* the second value (after the colon):
