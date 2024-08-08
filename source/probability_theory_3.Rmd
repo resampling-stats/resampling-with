@@ -1471,6 +1471,8 @@ End of R block.
 The other procedure we will use for the simulation, is graphing the results
 with a *histogram*.
 
+::: {.notebook name="on_histograms" title="Plotting histograms"}
+
 A histogram is a visual way to show the *distribution* of a sequence of values.
 
 ::: python
@@ -1490,8 +1492,8 @@ import numpy as np
 In a similar way, we need to import the Matplotlib library.  In fact we will be
 using a particular part of the Matplotlib library, called `pyplot`.
 
-We use the following standard convention to import that the `pyplot` part of
-the Matplotlib library and give it the shorter name of `plt`:
+We use the following standard convention to import the `pyplot` part of the
+Matplotlib library and give it the shorter name of `plt`:
 
 ```{python}
 import matplotlib.pyplot as plt
@@ -1506,7 +1508,7 @@ you can `import` into Python.  For example, Numpy (now renamed as `np`) is
 a module:
 
 ```{python}
-# Show type for the import Numpy module (renamed as "np")
+# Show type for the import Numpy module (renamed as "np").
 type(np)
 ```
 
@@ -1521,8 +1523,8 @@ np.pi
 ```
 
 One type of thing a module can contain, is other modules.  These
-modules-attached-to-modules are called *submodules*.  You have already see us
-use the `random` submodule attached to the Numpy module:
+modules-attached-to-modules are called *submodules*.  Perhaps without knowing,
+you have already used the `random` submodule attached to the Numpy module:
 
 ```{python}
 # "random" is itself a module, attached to (contained within) the Numpy
@@ -1530,8 +1532,8 @@ use the `random` submodule attached to the Numpy module:
 type(np.random)
 ```
 
-We have created random number generators by using the `default_rng()` function
-from the `random` submodule.
+We used the `default_rng` function from the `random` submodule to create random
+number generators:
 
 ```{python}
 rng = np.random.default_rng()
@@ -1546,10 +1548,15 @@ import matplotlib.pyplot as plt
 type(plt)
 ```
 
-The `pyplot` module of Matplotlib has many useful functions for making and displaying plots.
+The `pyplot` submodule of Matplotlib has many useful functions for making and
+displaying plots.
 :::
 <!---
 End of submodules callout.
+-->
+:::
+<!---
+End of Python section.
 -->
 
 The easiest way to explain histograms is to show one.
@@ -1610,14 +1617,16 @@ hist_res = plt.hist(prices)
 hist_res <- hist(prices)
 ```
 
-[`plt.hist`]{.python}[`hist`]{.r} has calculated some suitable intervals
-(*bins*) to divide up the range of values, and then counted how many values in
-`prices` fall into each interval (bin).
+[`plt.hist`]{.python}[`hist`]{.r} has calculated {{< var an_array >}} of
+suitable intervals (*bins*) to divide up the range of values, and then counted
+how many values in `prices` fall into each interval (bin).
 
 You will notice that [`plt.hist`]{.python}[`hist`]{.r} has sent back some
-results from the process of making the histogram.
+results from the process of making the histogram. [In fact, the results are in
+the form of a list.]{.python}
 
-The first result of interest to us is the definition of the intervals (bins) into which the histogram has divided the range of the `prices` values.
+The first result of interest to us is the definition of the intervals (bins)
+into which the histogram has divided the range of `prices` values.
 
 ::: python
 
@@ -1625,12 +1634,12 @@ In fact, `plt.hist` sent back the edges of these bins in the second element of
 `hist_res`:
 
 ```{python}
-# Bin edges
+# The second element in the results list is the array of bin edges.
 bin_edges = hist_res[1]
 bin_edges
 ```
 
-Think of these values as the 10 values that start each of the 10 bins, followed
+Think of this array as the 10 values that start each of the 10 bins, followed
 by a final value that ends the final bin.
 
 This means that the first bin was from (including) 3.8 up to, but not including
@@ -1642,24 +1651,26 @@ Put another way, the edges that `plt.hist` sent back are the 10 left hand
 (inclusive) edges of the 10 bins, and a final right hand (inclusive) edge of
 the final (10^th^) bin.
 
-The first value that comes back in the list of results is the array of counts of values in `prices` that fall within each bin.
+The first element that comes back in the list of results is the array of counts
+of the values in `prices` that fall within each bin.
 
 ```{python}
-# Counts of values falling into each bin.
+# The first element in the results list is the counts of values falling into
+# each bin.
 counts = hist_res[0]
 counts
 ```
 
-This means that 1 value from `prices` fell in the range 3.8 up to (not
-including) 3.95, 2 values fell in the range 3.95 up to (not including) 4.1, and
-so on.
+The values tell us that 1 value from `prices` fell in the range 3.8 up to (not
+including) 3.95 (were within the first bin), 2 values fell in the range 3.95 up
+to (not including) 4.1, and so on.
 
-Notice that the counts correspond to the heights of the bars on the histogram,
-so the first bar has height 1, the second bar has height 2, and so on.
+That the counts correspond to the heights of the bars on the histogram, so the
+first bar has height 1, the second bar has height 2, and so on.
 
 By default, `plt.hist` assumes you want 10 bins, and uses its default method of
 calculation to work out the edges for those 10 bins.  You can specify another
-number of bins, by sending a number for the `bins` argument to `plt.hist`.  For
+number of bins, by sending a number to the `bins` argument of `plt.hist`.  For
 example, you might want 20 bins:
 
 ```{python}
@@ -1692,34 +1703,58 @@ results_16 = plt.hist(prices, bins=our_edges)
 results_16[1]
 ```
 
-If we run `plt.hist` without collecting the values that come back, Jupyter (as
-usual) will show the values as the result of the cell.
+If you are running the notebook interactively in Jupyter, running `plt.hist` on
+its own, as below, will show the values as the result of the cell, along with
+the plot.  (You won't see these results displayed in the textbook, because we
+use different software to show outputs when we build the textbook).
 
 ```{python}
 # If we don't collect the results, Jupyter shows them to us,
 # if this is the last expression in the cell.
+# (You won't see the results displayed in the textbook).
 plt.hist(prices)
 ```
 
-Here we see that the result that came back is a list with three values.  As you saw before, the first value is the array with the counts for each of the (by default) 10 bins.  The second is the array with the bin edges (10 left edges and last right edge).  The last is a reference to the values that make up the graphical display; this is advanced, and we won't look at these any further in this book.
+Interactive Jupyter will display the returned list of results, because we have
+not collected the results by assigning them to a variable.  More technically,
+on its own, the `plt.hist` line is an *expression* (code that results in
+a value), and Jupyter will, by default, display the results of an expression
+that ends the code in a cell.
 
+::: nb-only
+Here we see that the result of the `plt.hist(prices)` expression is a list with
+three elements.  As you saw before, the first element is the array with the
+counts for each of the (by default) 10 bins.  The second is the array with the
+bin edges (10 left edges and last right edge).  The last is a reference to the
+values that make up the graphical display; you can use this last value to do
+some advanced configuration of the histogram display, but we won't cover that
+further in this book.
+:::
 
-It can be distracting to see the counts, bin edges and graphical display values along with the plot, so from now on we will suppress Jupyter's default behavior of showing the results that came back from the `plt.hist` function call by adding a semi-colon at the end of the function call, like this:
+It can be distracting to see a display of the results list from a plotting
+cell, so from now on we will suppress Jupyter's default behavior of displaying
+the results list from `plt.hist`, by adding a semi-colon at the end of the code
+line, as in the cell below. (Remember, in the textbook, but not in Jupyter,
+this will give the same result as `plt.hist(prices)` above, because of the
+display system we use for the textbook.)
 
 ```{python}
 plt.hist(prices);  # Note the semi-colon
 ```
 
-The semi-colon is a standard indicator to Jupyter that it should not display the results that came back from the function call.   To repeat, we use it with plotting functions to suppress the various values that come back from these functions, as they are usually not of immediate interest.
+The semi-colon is a standard indicator to Jupyter that it should not display
+the results that came back from the function call.   We will use it to suppress
+the display of various values that come back from these functions, as they are
+usually not of immediate interest.
 
 :::
 <!---
-End Python
+End Python section.
 -->
 
 ::: r
 
- In fact, `hist` sent back the edges (or *breaks*) of these bins as part of the
+In fact, `hist` sent back the edges (or *breaks*) of these bins as part of the
 `hist_res` results.  `hist_res` is a special R value to contain the results of
 the histogram.  It contains various relevant values.
 
@@ -1735,63 +1770,64 @@ Notice that the values attached to the `hist_res` result have *names*, such as
 hist_res$counts
 ```
 
-to mean "get the value called `counts` that is attached to the `hist_res`
-value."
+as "get the value called `counts` that is attached to the `hist_res` value."
 
 When we called `hist(prices)`, the `hist` function had to decide how many bins
 to use, and the edges of the bins.  By default, it does this with an algorithm
 called [Sturge's rule](https://en.wikipedia.org/wiki/Sturges%27s_rule).  The
 details of the algorithm are not important to us, but the result is that `hist`
-decided it would make 9 bins, with the edges you see in the `breaks` value of
+decided to make 9 bins, with the edges you see in the `breaks` value of
 `hist_res`.
 
 ```{r}
 # Bin edges
-bin_edges <- hist_res$breaks
-bin_edges
+hist_res$breaks
 ```
 
 Think of the `breaks` values as: the value that starts the first bin, followed
-by the 9 values that end each of the 9 bins.[^r-hist-right]
+by the 9 values that end each of the 9 bins.
 
-[^r-hist-right]: In fact, you can customize the calculation and meaning of the
-    `breaks` values using various arguments to the `hist` function.  See the
-    documentation of `hist` for more details.
-
-The `breaks` values show that the first bin was from (including) 3.8 up to,
+The `breaks` vector shows that the first bin was from (including) 3.8 up to,
 *and including* 4.0, the second bin was from (not including) 4.0 up to, and
 including 4.2 and so on. The last bin is from (not including) 5.2 through
-(including) 5.4.  Notice there are 10 edges (breaks), forming 9 bins.
+(including) 5.4.  There are 10 edges (breaks), forming 9 bins.[^r-hist-right]
+
+[^r-hist-right]: You can customize the calculation and meaning of the `breaks`
+    values using various arguments to the `hist` function.  See the
+    documentation of `hist` for more details.
 
 Put another way, the edges (boundaries) that `hist` sent back start with the
 left-hand (inclusive) edge of the first bin, followed by the 9 right-hand
-(exclusive) edges of the 9 bins.
+(inclusive) edges of the 9 bins.
 
 The list of results in `hist_res` includes the vector of *counts* of values in
 `prices` that fall within each bin.
 
 ```{r}
 # Counts of values falling into each bin.
-counts <- hist_res$counts
-counts
+hist_res$counts
 ```
 
-This means that 3 values from `prices` fell in the range 3.8 through 4.0, 6 values fell in the range from (not including) 4.0 through 4.2, and
-so on.
+The `counts` vector shows that 3 values from `prices` fell in the range 3.8
+through 4.0, 6 values fell in the range from (not including) 4.0 through 4.2,
+and so on.
 
-Notice that the counts correspond to the heights of the bars on the histogram,
-so the first bar has height 3, the second bar has height 6, and so on.
+The counts correspond to the heights of the bars on the histogram, so the first
+bar has height 3, the second bar has height 6, and so on.
 
-By default, `hist` uses Sturge's rule to decide on the number of bins.  You can also *suggest* to R that it uses another number of bins, by sending a number for the `breaks` argument to `hist`.  For example, you might want to suggest 20 bins
+By default, `hist` uses Sturge's rule to decide on the number of bins.  You can
+also *suggest* to R that it uses another number of bins, by sending a number
+for the `breaks` argument to `hist`.  For example, you might want to suggest 20
+bins:
 
 ```{r}
 results_20 <- hist(prices, breaks=20)
 ```
 
 Notice that R treats this number as a suggestion, and will adjust the actual
-number of bins to something close to the suggestion and that gives
-a pleasant-looking histogram.   In fact, R responded to the suggestion of 20 by
-giving 15 bins:
+number of bins to something close to the suggestion and that result in suitably
+rounded bin edges.   In fact, R responded to the suggestion of 20 by giving 15
+bins:
 
 ```{r}
 length(results_20$counts)
@@ -1799,14 +1835,13 @@ length(results_20$counts)
 
 We now have 16 new edges (boundaries), the first value giving the (inclusive)
 left-hand edge of the first bin, and the subsequent 15 values giving the
-(exclusive) right-hand edges.
+(inclusive) right-hand edges.
 
 ```{r}
-bin_edges_20 <- results_20$breaks
-bin_edges_20
+results_20$breaks
 ```
 
-We can also specify our own edges, in order to bypass `hist`s default
+We can also specify our own `breaks`, in order to bypass `hist`s default
 algorithm.  For example, we might prefer exactly 16 bins of size 0.1, with
 edges starting at 3.8:
 
@@ -1829,7 +1864,12 @@ results_16$breaks
 
 :::
 <!---
-End R
+End R section
+-->
+
+:::
+<!---
+End of histograms notebook.
 -->
 
 ### Price simulation
