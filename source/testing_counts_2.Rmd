@@ -41,6 +41,80 @@ considers problems with additional complications, such as when there are
 more than two groups, or paired comparisons for the same units of
 observation.
 
+But first, we need another addition to our {{< var lang >}} vocabulary.
+
+## Technical aside: logical operators {#sec-logical-operators}
+
+This section continues our programme of expanding the range of {{< var lang >}} features that you can use to clear code.  As we introduce each feature, we will use them in the following examples.
+
+We are about to use the
+[`or`]{.python}['|' (*or*)]{.r}
+operator in {{< var lang >}}.  An operator, for our purposes is a symbol or
+word that sits between two values, and that tells {{< var lang >}} how to combine these values.
+
+For example `+` is an operator.  When `+` sits between two numbers in {{< var lang >}} code, {{< var lang >}} interprets this to mean "take the two numbers either side, and make a new number that is the result of doing arithmetic addition of the two numbers:
+
+```{python}
+# + is an operator that, between two numbers, means "add the numbers".
+1 + 3
+```
+
+```{r}
+# + is an operator that, between two numbers, means "add the numbers".
+1 + 3
+```
+
+`+`, `-`, `/` and `*` are all examples of operators that do *arithmetic* on
+the numbers to either side — they are *arithmetic* operators.
+
+```{python}
+# * is an operator that, between two numbers, means "multiply the numbers".
+2 * 4
+```
+
+```{r}
+# * is an operator that, between two numbers, means "multiply the numbers".
+2 * 4
+```
+
+We are about to use the operator
+[`or`]{.python}['|' (*or*)]{.r}.
+[`or`]{.python}['|']{.r} is a *logical* operator.  It is a logical operator because it does not operate on *numbers* (as arithmetic operators do), but on *logical* or *Boolean* values — values that can be either {{< var true >}} or {{< var false >}}.
+
+For example, here we use
+[`or`]{.python}['|' (*or*)]{.r}.
+to combine a {{< var true >}} value (on the left) with a {{< var false >}} value (on the right).  It gives a result — {{< var true >}}.
+
+```{python}
+True or False
+```
+
+```{r}
+# Read "|" here as "or".
+TRUE | FALSE
+```
+
+[`or`]{.python}['|' (*or*)]{.r} applies a very simple rule: if *either* the left-hand (LH) *or* the right-hand (RH) values are {{< var true >}}, then
+[`or`]{.python}['|' (*or*)]{.r} evaluates to {{< var true >}}.  Only if
+neither of the LH or the RH value is {{< var true >}}, does it return {{< var
+false >}}.
+
+```{python}
+# Both LH and RH are True, return True.
+print('True or True result:', True or True)
+# Only LH is True, return True.
+print('True or False result:', True or False)
+# Only RH is True, return True.
+print('False or True result:', False or True)
+# Neither LH nor RH are True, return False.
+print('True or True result:', True or True)
+```
+
+```{r}
+# Read "|" here as "or".
+TRUE | FALSE
+```
+
 ## Comparisons among more than two samples of counted data
 
 ### Example: Do Any of Four Treatments Affect Sex Ratio in Fruit Flies? {#sec-fruitfly-four}
