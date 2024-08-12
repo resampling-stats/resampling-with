@@ -449,7 +449,7 @@ Actually doing the above series of steps by hand is useful to build your
 intuition about probability and simulation methods. But the procedure
 can also be simulated with a computer. We will use {{< var lang >}} to do this in a moment.
 
-## If statements in {{< var lang >}}
+## If statements in {{< var lang >}} {#sec-if-statements}
 
 Before we get to the simulation, we need another feature of {{< var lang >}},
 called a *conditional* or *if* statement.
@@ -468,8 +468,8 @@ If you have drawn a blue ball from bucket A:
 Notice the structure.  The first line is the *header* of the `if` statement.
 It has a *condition* — this is why `if` statements are often called
 *conditional* statements.  The condition here is "you have drawn a blue ball
-from bucket A".  If this condition is met — it is True that you have drawn a
-blue ball from bucket A *then* we go on to do the stuff that is indented.
+from bucket A".  If this condition is met — it is True that you have drawn
+a blue ball from bucket A *then* we go on to do the stuff that is indented.
 Otherwise we do not do any of the stuff that is indented.
 
 The indented stuff above is the *body* of the `if` statement.  It is the stuff
@@ -564,8 +564,8 @@ blue')`.  R only runs the body of the if statement if the *condition* is
     result with the [`logical`]{.r}[`bool`]{.python} function, that takes
     anything as input, and returns either {{< var true >}} or {{< var false
     >}}. Therefore, we could refer to the result of the conditional expression
-    as something "truthy" — that is - something that comes back as {{< var true
-    >}} or {{< var false >}} from the [`logical`]{.r}[`bool`]{.python}
+    as something "truthy" — that is - something that comes back as {{< var
+    true >}} or {{< var false >}} from the [`logical`]{.r}[`bool`]{.python}
     function. In the case here, that does not arise, because the result is in
     fact either exactly {{< var true >}} or exactly {{< var false >}}.
 
@@ -720,15 +720,15 @@ The full logic for step 4 is:
 # By default, say we have no result.
 result = 'No result'
 a_ball = rnd.choice(bucket_A)
-# If you have drawn a blue ball from bucket A:
+# If you have drawn a blue ball from bucket A: (then run indented code)
 if a_ball == 'blue':
     # Draw a ball at random from bucket B
     b_ball = rnd.choice(bucket_B)
-    # if the ball is green:
+    # if the ball is green: (then run the indented code)
     if b_ball == 'green':
         # record "yes"
         result = 'yes'
-    # otherwise:
+    # otherwise (not green):
     else:
         # record "no".
         result = 'no'
@@ -743,11 +743,11 @@ Now we have everything we need to run many trials with the same logic.
 # By default, say we have no result.
 result = 'No result'
 a_ball <- sample(bucket_A, size=1)
-# If you have drawn a blue ball from bucket A:
+# If you have drawn a blue ball from bucket A: (then run code between {})
 if (a_ball == 'blue') {
     # Draw a ball at random from bucket B
     b_ball <- sample(bucket_B, size=1)
-    # if the ball is green:
+    # if the ball is green: (then run code between {})
     if (b_ball == 'green') {
         # record "yes"
         result <- 'yes'

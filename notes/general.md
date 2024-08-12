@@ -172,13 +172,12 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
   > data from that column, returning a new type of value called a Pandas
   > *Series*.
 
-* Consider f-strings by `testing_counts_1` (not currently used).
 * Underscores in Python integers by `testing_counts_1` (done in
   `testing_counts_1`).
-* `seq` / `np.arange` with floats in `testing_counts_1`.
+* `seq` / `np.arange` with floats done in `testing_counts_1`.
 * `paste` and f-strings done in `testing_counts_1` (sec-building-strings).
 * `or` / `|` by testing_counts_2.
-* `if` blocks?
+* `if` statements in `probability_theory_1a` (sec-if-statements).
 * `abs` covered in `standard_scores`, around line 1060.
 * `**` or `^` for squaring values, `standard_scores` around line 1141.
 * Concatenation covered in
