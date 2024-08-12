@@ -83,8 +83,154 @@ universe refers to this hypothesis. (The concept of the benchmark or
 null hypothesis was discussed in @sec-prob-theory-one-b and
 @sec-framing-questions.)
 
-Now let us begin the actual statistical testing of various sorts of
+Soon we will begin the actual statistical testing of various sorts of
 hypotheses about samples and populations.
+
+But, before we get there, we will take a short technical detour.
+
+### Building strings for labels and messages {#sec-building-strings}
+
+::: {.notebook name="building_strings" title="Building strings for labels"}
+
+As the examples in this book proceed, we will use more code techniques to write the examples in a more concise and efficient way.
+
+One task that we often have, is to build up helpful strings to use as labels on
+plots, or to print out as messages.  These strings will often mix numbers and
+text.   For example, we may want to print out a helpful message such as:
+`Simulation using 10000 trials`, where the number 10000 in the message comes
+from some variable, such as `n_trials`.   Let's set that variable now:
+
+```{python}
+n_trials = 10000
+```
+
+```{r}
+n_trials <- 10000
+```
+
+Building the useful string above would involve taking the string `'Simulation using '`, then appending a string to represent the number 10,000 — as
+in:
+
+```{python}
+# Convert the number (integer) to a string representing the number.
+str(n_trials)
+```
+
+```{r}
+# Convert the number (integer) to a string (character vector) representing the
+# number.
+as.character(n_trials)
+```
+
+Finally we need to append another string to the result — `' trials.'`.  So our
+task will be to *concatenate* (stick together) these three strings.
+
+::: r
+
+You can concatenate strings in R with the `paste` function. We pass `paste` the
+strings and values we want it to combine, as arguments.  It converts each
+argument to a string, and concatenates the resulting strings, separating them
+with a space (by default).
+
+For example, to make a new string that concatenates the strings `'resampling'`,
+`'is'` and `'better'`, separated by spaces, we could use:
+
+```{r}
+paste('resampling', 'is', 'better')
+```
+
+If we wanted to insert a number as a string into this sequence, we can send the
+*number* as an argument.  `paste` converts the number to a string before
+concatenation.
+
+```{r}
+paste('resampling', 'is', 100, 'times', 'better')
+```
+
+To create the string we started this section with, we could write:
+
+```{r}
+paste('Simulation using', n_trials, 'trials.')
+```
+
+We will start using `paste` from here, to compile messages to print, or labels
+for plots.
+:::
+<!---
+End of R section.
+-->
+
+::: python
+
+There are several ways to concatenate strings in Python.  For example, Python
+interprets `+`, between strings, to mean *concatenate*.  One way to make
+a new string that concatenates the strings `'resampling '`, `'is '` and
+`'better'` is to use `+`, like this:
+
+```{python}
+# + between strings means "concatenate".
+'resampling ' + 'is ' + 'better'
+```
+
+We could always insert a number as a string, by converting the number to a string, and concatenating, like this:
+
+```{python}
+'resampling ' + 'is ' + str(100) + ' times ' + 'better'
+```
+
+However, as you can see, this starts looking rather ugly and verbose.  It's easy to forget to append spaces to the strings to concatenate, and end up with messages like:
+
+```{python}
+'resampling' + 'is' + str(100) + 'times' + 'better'
+```
+
+One of the most flexible ways to solve problems like this, is to use Python "f"
+(Format) strings.  Format strings start with an `f` and can include values
+inside the string, enclosed in curly brackets.  This is best explained by
+example:
+
+```{python}
+# Our first Python format string.
+# Notice the "f" prefix before the quotes, to tell Python this is a Format
+# string, and may include values to interpolate, inside curly brackets.
+f'resampling is {100} times better'
+```
+
+The Format string expects Python values to appear inside the string, enclosed
+in curly brackets.  When Python see a Format ("f" string) like this, it gets
+the value named or typed inside the curly brackets, converts it to a string,
+and inserts that string into the result at the relevant place.
+
+Format strings take a little getting used to, but once you are used to them,
+they are a flexible and concise way of assembling useful messages.
+
+For example, to create the string we started this section with, we could write:
+
+```{python}
+f'Simulation using {n_trials} trials.'
+```
+
+Don't forget the `f` prefix to the string, if you do want to insert values like this, otherwise you'll get a standard (not-Format) string, and Python won't insert the value.
+
+```{python}
+# Oops!  We forgot the "f" prefix to the string.  Python won't put in
+# (interpolate) the string representation of the value.
+'Simulation using {n_trials} trials.'
+```
+
+:::
+<!---
+End of Python section.
+-->
+
+
+:::
+<!---
+End of building_strings notebook.
+-->
+
+Now we begin with statistical testing for hypotheses on samples and
+populations.
 
 ## Should a single sample of counted data be considered different from a benchmark universe?
 
@@ -238,42 +384,6 @@ plt.hist(scores)
 plt.xlabel('Number of Males')
 plt.ylabel('Frequency')
 ```
-
-::: r
-#### `paste` to concatenate strings {#sec-paste-strings}
-
-We are going to make a rather verbose label for the plot below.  In order to do
-this, we will need to compile a set of strings and numbers together into
-a string.
-
-One useful R function to do this is `paste`.
-
-We pass `paste` the strings and values we want it to combine, as arguments.  It
-converts each argument to a string, and concatenates the resulting strings,
-separating them with a space (by default).
-
-For example, to make a new string that concatenates the strings `'resampling'`,
-`'is'` and `'better'`, separated by spaces, we could use:
-
-```{r}
-paste('resampling', 'is', 'better')
-```
-
-If we wanted to insert a number as a string into this sequence, we can send the number as an argument.  `paste` converts the number to a string before concatenation.
-
-```{r}
-paste('resampling', 'is', 100, 'times', 'better')
-```
-
-`paste` is useful for compiling messages to print, or labels for plots, as you
-will see below.
-
-#### Simulation for irradiation and sex of fruit-flies
-:::
-
-<!---
-End of R section.
--->
 
 ```{r}
 # Set the number of trials

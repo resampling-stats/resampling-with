@@ -176,7 +176,7 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * Underscores in Python integers by `testing_counts_1` (done in
   `testing_counts_1`).
 * `seq` / `np.arange` with floats in `testing_counts_1`.
-* `paste`, `paste0` done in `testing_counts_1`.
+* `paste` and f-strings done in `testing_counts_1` (sec-building-strings).
 * `or` / `|` by testing_counts_2.
 * `if` blocks?
 * `abs` covered in `standard_scores`, around line 1060.
