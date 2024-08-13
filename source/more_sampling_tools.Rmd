@@ -40,6 +40,120 @@ But, before we get to the puzzles, we will need some more elements of {{< var la
 
 ## Selecting elements from {{< var array >}}s with slicing
 
+As you saw in @sec-array-indexing, we do *indexing* when we put square brackets
+following a value that is a container, such as {{< var an_array >}}.  Inside
+the square brackets we put another value to specify which elements we want to
+fetch from the container.
+
+We will use the `some_numbers` {{< var array >}} as our container for indexing:
+
+```{python}
+some_numbers = np.array([3, 1, 4, 1, 5, 9, 2, 6])
+```
+
+```{r}
+some_numbers = c(3, 1, 4, 1, 5, 9, 2, 6)
+```
+
+In the indexing expression below, we have the {{< var array >}} `some_numbers`,
+followed by the value `3` inside the square brackets, telling {{< var lang >}}
+that we want the [fourth]{.python}[third]{.r} value from the `some_numbers`
+container.
+
+
+```{python}
+# Indexing with an integer inside the square brackets.
+some_numbers[3]
+```
+
+```{r}
+# Indexing with an integer inside the square brackets.
+some_numbers[3]
+```
+
+In the example above, we put an integer (a whole number) inside the square
+brackets, to specify the position of the element we want to fetch from the
+container.
+
+We can also put something called a *slice* inside the square brackets.
+
+A slice specifies a *range* of elements to fetch from the container.
+
+We can form a *slice* with an integer, followed by a colon (`:`), followed by
+another integer.   The first integer specifies the *start* position; this is
+the position of the first element we want. There follows a colon.  Read the
+colon as "up to, [but not]{.python}[and]{.r} including".  Finally, we have an
+integer that gives the *stop* position. The slice, thus specified, asks {{< var
+lang >}} to give us all the elements from (including) the *start* position, up
+to, [but not]{.python}[and]{.r} including the *stop* position.
+
+::: python
+For example, here we index with a slice with *start* of 1 (offset 1 from the
+start, the position of the second element).  The *stop* is 5, meaning we should
+go up to, but not include the element at position 5 (the sixth element).  The
+result is another array, that has the elements of `some_numbers` from positions
+1 through 4:
+
+```{python}
+# Indexing with a slice (an expression including a colon).
+some_numbers[1:5]
+```
+
+In fact, we can omit the value before the colon (the *start* value), and Python
+will assume we mean 0.  This indexing expression fetches the elements at
+position 0 through 3:
+
+```{python}
+# Indexing with a slice that omits the first (start) value.  Python assumes 0.
+some_numbers[:4]
+```
+
+The expression above then means "get all the elements up to (not including)
+position 4", or equivalently, "get the first four elements of the array".
+
+::: python
+We can also omit the stop value.  Python assumes we mean one past the last
+position in the array. This is also the `len` of the array.  By taking this
+stop value, the slice selects the elements starting at the *start* element, and
+continuing through the last element of the array:
+
+```{python}
+# Indexing with a slice that omits the last (stop) value.  Python assumes
+# we mean one past the last position in the array.
+some_numbers[3:]
+```
+
+This means "get all the elements from position 3 to the end of the array".
+
+Actually, we can even omit the start *and* the stop values, leaving just the
+colon.  As you might expect, Python assumes 0 as the start, one past the end as
+the stop, so the colon on its own means "return all the elements in the array".
+As usual with slicing, we get a new array with the chosen elements.
+
+```{python}
+# Just the colun, meaning "all the elements in the array".
+some_elements[:]
+```
+:::
+<!---
+End of Python block.
+-->
+
+::: r
+For example, here we index with a slice with *start* position of 2 (the
+position of the second element).  The *stop* is 5, meaning we should go up to,
+and include, the element at position 5.  The result is another vector, that has
+the elements of `some_numbers` from positions 2 through 5:
+
+```{r}
+# Indexing with a slice (an expression including a colon).
+some_numbers[2:5]
+```
+:::
+<!---
+End of R block.
+-->
+
 ## The treasure fleet recovered
 
 As promised, we now get the probability puzzles.
