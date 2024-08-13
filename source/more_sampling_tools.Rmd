@@ -36,7 +36,13 @@ tools in {{< var lang >}} for Monte Carlo resampling, and show the
 power of such simulation to help solve, and then reason about,
 problems in probability.
 
+But, before we get to the puzzles, we will need some more elements of {{< var lang >}}.
+
+## Selecting elements from {{< var array >}}s with slicing
+
 ## The treasure fleet recovered
+
+As promised, we now get the probability puzzles.
 
 This is a classic problem in probability:[^three-coins-version]
 
@@ -286,7 +292,8 @@ back over the all the trial results and counting up the "Gold" and "Silver"
 outcomes.  In code we use the comparisons `== 'Gold'` and `== 'Silver'` to find
 the trials of interest, and then count them up with {{< var sum >}}.
 
-Boolean {{< var array >}}s are a fundamental tool in {{< var lang >}}, and we will use them in nearly all our simulations.
+Boolean {{< var array >}}s are a fundamental tool in {{< var lang >}}, and we
+will use them in nearly all our simulations.
 
 Here is a remind of how those {{< var array >}}s work.
 

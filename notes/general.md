@@ -158,12 +158,12 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * indentation (maybe in resampling_with_code2 and for loops)
 * bincount / tabulate (probability_theory_2_compound).
 * Maybe more on Boolean arrays.
-* (a == 1) & (b == 3) (in more_sampling_tools)
-* Python `range` cf `np.arange` (resampling_with_code)
+* (a == 1) & (b == 3) (in `more_sampling_tools`)
+* Python `range` cf `np.arange` (`resampling_with_code`)
 * `np.all` (done in `probabality_theory_4_finite`).
 * `hist` / `plt.hist`, at least by `probabality_theory_3` (in
-  `probability_theory_3`), covering plotting, bins, bin edges.  We even need
-  a chapter on histograms.
+  `probability_theory_3`), covering plotting, bins, bin edges.  We might
+  consider a chapter on histograms.
 * Need slicing with slices, sometime before use in `more_sampling_tools`.
   Also used in `standard_scores` around line 319.
 * Introduce the idea of objects and classes.  First obviously needed in
@@ -176,7 +176,7 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
   `testing_counts_1`).
 * `seq` / `np.arange` with floats done in `testing_counts_1`.
 * `paste` and f-strings done in `testing_counts_1` (sec-building-strings).
-* `or` / `|` by testing_counts_2.
+* `or` / `|` in `testing_counts_2` (sec-logical-operators).
 * `if` statements in `probability_theory_1a` (sec-if-statements).
 * `abs` covered in `standard_scores`, around line 1060.
 * `**` or `^` for squaring values, `standard_scores` around line 1141.
@@ -191,10 +191,6 @@ mosquitoes](https://github.com/odsti/datasets/tree/main/mosquito_beer)
 
 > If we have data, let’s look at data. If all we have are opinions, let’s go
 > with mine. – Jim Barksdale, former Netscape CEO - for example at [this book](https://www.oreilly.com/library/view/analytics-and-dynamic/9781118919774/9781118919774c05.xhtml)
-
-## Python notation
-
-> Introduce `_` notation for large integers
 
 ## resampling stats commands
 
