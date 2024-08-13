@@ -45,14 +45,92 @@ But first, we need another addition to our {{< var lang >}} vocabulary.
 
 ## Technical aside: logical operators {#sec-logical-operators}
 
-This section continues our programme of expanding the range of {{< var lang >}} features that you can use to clear code.  As we introduce each feature, we will use them in the following examples.
+```{python echo=FALSE}
+# To make coins go as hoped.
+_npr.default_rng = _make_default_seeded_rng(82)
+```
 
-We are about to use the
-[`or`]{.python}['|' (*or*)]{.r}
-operator in {{< var lang >}}.  An operator, for our purposes is a symbol or
-word that sits between two values, and that tells {{< var lang >}} how to combine these values.
+```{r echo=FALSE}
+# To make coins go as hoped.
+set.seed(112)
+```
 
-For example `+` is an operator.  When `+` sits between two numbers in {{< var lang >}} code, {{< var lang >}} interprets this to mean "take the two numbers either side, and make a new number that is the result of doing arithmetic addition of the two numbers:
+::: {.notebook name="logical_operators" title="Logical operators"}
+
+This section continues our programme of expanding the range of {{< var lang >}}
+features that you can use to clear code.  As we introduce each feature, we will
+use them in the following examples.
+
+As motivation, we are about to do some simulations where we are interested in
+the number of some particular type of observations in each trial.  For example,
+let's do 10 coin tosses with {{< var sample >}}:
+
+```{python}
+import numpy as np
+rnd = np.random.default_rng()
+```
+
+```{python}
+# For each element, heads of tails is equally likely.
+coins = rnd.choice(['heads', 'tails'], size=10)
+coins
+```
+
+```{r}
+# For each element, heads of tails is equally likely.
+coins <- sample(c('heads', 'tails'), size=10, replace=TRUE)
+coins
+```
+
+Let us now say that we are interested to record if the trial had *either* 2 or
+fewer "heads" *or* two or fewer "tails".
+
+We could write it like this:
+
+```{python}
+if np.sum(coins == 'heads') <= 2:
+    print('Trial is of interest')
+if np.sum(coins == 'tails') <= 2:
+    print('Trial is of interest')
+```
+
+```{r}
+if (sum(coins == 'heads') <= 2) {
+    message('Trial is of interest')
+}
+if (sum(coins == 'tails') <= 2) {
+    message('Trial is of interest')
+}
+```
+
+It is a little repetitive to have to repeat the code identical code to print
+the same message for either of the two cases, and it would be even more
+repetitive if there were more lines of identical code to run for each of the
+two cases.
+
+{{< var lang >}} solves this problem with the
+[`or`]{.python}[`|` (*or*)]{.r}
+operator, like this:
+
+```{python}
+if np.sum(coins == 'heads') <= 2 or np.sum(coins == 'tails') <= 2:
+    print('Trial is of interest')
+```
+
+```{r}
+if (sum(coins == 'heads') <= 2 | sum(coins == 'tails') <= 2) {
+    message('Trial is of interest')
+}
+```
+
+
+Above, we called [`or`]{.python}[`|`]{.r} an *operator*. An operator, for our
+purposes, is a special character [, or a word, ]{.python} that sits between two
+values, and that tells {{< var lang >}} how to combine these values.
+
+For example `+` is an operator.  When `+` sits between two numbers in code, {{<
+var lang >}} interprets this to mean "take the two numbers on either side, and
+make a new number that is the result of adding the two numbers":
 
 ```{python}
 # + is an operator that, between two numbers, means "add the numbers".
@@ -64,8 +142,8 @@ For example `+` is an operator.  When `+` sits between two numbers in {{< var la
 1 + 3
 ```
 
-`+`, `-`, `/` and `*` are all examples of operators that do *arithmetic* on
-the numbers to either side — they are *arithmetic* operators.
+`+`, `-`, `/` and `*` are all examples of operators that do *arithmetic* on the
+numbers to either side — they are *arithmetic* operators.
 
 ```{python}
 # * is an operator that, between two numbers, means "multiply the numbers".
@@ -78,12 +156,16 @@ the numbers to either side — they are *arithmetic* operators.
 ```
 
 We are about to use the operator
-[`or`]{.python}['|' (*or*)]{.r}.
-[`or`]{.python}['|']{.r} is a *logical* operator.  It is a logical operator because it does not operate on *numbers* (as arithmetic operators do), but on *logical* or *Boolean* values — values that can be either {{< var true >}} or {{< var false >}}.
+[`or`]{.python}[`|` (*or*)]{.r}.
+[`or`]{.python}[`|`]{.r} is a *logical* operator.  It is a logical operator
+because it does not operate on *numbers* (as arithmetic operators do), but on
+*logical* (*Boolean*) values — values that can be either {{< var true >}} or
+{{< var false >}}.
 
 For example, here we use
-[`or`]{.python}['|' (*or*)]{.r}.
-to combine a {{< var true >}} value (on the left) with a {{< var false >}} value (on the right).  It gives a result — {{< var true >}}.
+[`or`]{.python}[`|` (*or*)]{.r}.
+to combine a {{< var true >}} value (on the left) with a {{< var false >}}
+value (on the right).  It gives a result — {{< var true >}}.
 
 ```{python}
 True or False
@@ -94,9 +176,10 @@ True or False
 TRUE | FALSE
 ```
 
-[`or`]{.python}['|' (*or*)]{.r} applies a very simple rule: if *either* the left-hand (LH) *or* the right-hand (RH) values are {{< var true >}}, then
-[`or`]{.python}['|' (*or*)]{.r} evaluates to {{< var true >}}.  Only if
-neither of the LH or the RH value is {{< var true >}}, does it return {{< var
+[`or`]{.python}[`|` (*or*)]{.r} applies a very simple rule: if *either* the
+left-hand (LH) *or* the right-hand (RH) values are {{< var true >}}, then
+[`or`]{.python}[`|` (*or*)]{.r} evaluates to {{< var true >}}.  Only if
+*neither* of the LH and RH values are {{< var true >}}, does it return {{< var
 false >}}.
 
 ```{python}
@@ -107,13 +190,124 @@ print('True or False result:', True or False)
 # Only RH is True, return True.
 print('False or True result:', False or True)
 # Neither LH nor RH are True, return False.
-print('True or True result:', True or True)
+print('False or False result:', False or False)
 ```
 
 ```{r}
-# Read "|" here as "or".
-TRUE | FALSE
+# Both LH and RH are TRUE, return TRUE.
+message('TRUE | (or) TRUE result: ', TRUE | TRUE)
+# Only LH is TRUE, return TRUE.
+message('TRUE | (or) FALSE result: ', TRUE | FALSE)
+# Only RH is TRUE, return TRUE.
+message('FALSE | (or) TRUE result: ', FALSE | TRUE)
+# Neither LH nor RH are TRUE, return FALSE.
+message('FALSE | (or) FALSE result: ', FALSE | FALSE)
 ```
+
+Now let's go back to the `if` statement above.  The conditional part of the
+header line is:
+
+```{python}
+np.sum(coins == 'heads') <= 2 or np.sum(coins == 'tails') <= 2
+```
+
+```{r}
+sum(coins == 'heads') <=2 | sum(coins == 'tails') <= 2
+```
+
+This will be {{< var true >}} *either* when there there are two or fewer
+"heads", *or* when there are two or fewer tails.  Therefore, when we use this
+conditional in an `if` statement, we make the *body* of the `if` statement run
+only if either of the two conditions are {{< var true >}}.
+
+```{python}
+if np.sum(coins == 'heads') <= 2 or np.sum(coins == 'tails') <= 2:
+    print('Trial is of interest')
+```
+
+```{r}
+if (sum(coins == 'heads') <= 2 | sum(coins == 'tails') <= 2) {
+    message('Trial is of interest')
+}
+```
+
+While we are here, {{< var lang >}} has another very useful logical operator:
+[`and`]{.python}['&' (*and*)]{.r}.
+
+[`and`]{.python}['&']{.r} takes the LH and RH values, and returns
+{{< var true >}} only if *both* values are {{< var true >}}.
+
+```{python}
+# Both LH and RH are True, return True.
+print('True and True result:', True and True)
+# Only LH is True, return False.
+print('True and False result:', True and False)
+# Only RH is True, return False.
+print('False and True result:', False and True)
+# Neither LH nor RH are True, return False.
+print('False and False result:', False and False)
+```
+
+```{r}
+# Both LH and RH are TRUE, return TRUE.
+message('TRUE & (and) TRUE result: ', TRUE & TRUE)
+# Only LH is TRUE, return FALSE.
+message('TRUE & (and) FALSE result: ', TRUE & FALSE)
+# Only RH is TRUE, return FALSE.
+message('FALSE & (and) TRUE result: ', FALSE & TRUE)
+# Neither LH nor RH are TRUE, return FALSE.
+message('FALSE & (and) FALSE result: ', FALSE & FALSE)
+```
+
+We could, for example, ask whether the number of heads is >=3 *and* <=7 (is in
+the range 3 through 7).
+
+```{python}
+if np.sum(coins == 'heads') >= 3 and np.sum(coins == 'heads') <= 7:
+    print('Trial is of interest')
+```
+
+```{r}
+if (sum(coins == 'heads') <= 3 | sum(coins == 'heads') <= 7) {
+    message('Trial is of interest')
+}
+```
+
+::: python
+:::{.callout-note}
+## Python interval comparison
+
+In fact, Python has a special shortcut syntax called *interval comparison* for
+that last question — whether a number is within a range.  It looks like this:
+
+```{python}
+# Asks whether thee number of heads is >= 3 *and* <= 7.
+3 <= np.sum(coins == 'heads') <= 7
+```
+
+Notice the value at one end of the range the left (here, the lower value), then
+the comparison operator, then the value to compare, then another comparison
+operator, followed by the value at the other end of the range on the right.
+
+The interval comparison above is a shortcut for the more verbose version we
+would need when using `and`:
+
+```{python}
+# Also asks whether thee number of heads is >= 3 *and* <= 7.
+3 <= np.sum(coins == 'heads') and np.sum(coins == 'heads') <= 7
+```
+:::
+<!---
+End of callout block.
+-->
+:::
+<!---
+End of Python block.
+-->
+:::
+<!---
+End of notebook.
+-->
 
 ## Comparisons among more than two samples of counted data
 
