@@ -164,7 +164,7 @@ See <https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html>
 * `hist` / `plt.hist`, at least by `probabality_theory_3` (in
   `probability_theory_3`), covering plotting, bins, bin edges.  We might
   consider a chapter on histograms.
-* Need slicing with slices, sometime before use in `more_sampling_tools`.
+* Need slicing with slices — done in `more_sampling_tools`.
   Also used in `standard_scores` around line 319.
 * Introduce the idea of objects and classes.  First obviously needed in
   `standard_scores.Rmd` page, see line that currently reads:
