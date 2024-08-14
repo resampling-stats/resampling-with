@@ -30,8 +30,7 @@ programs.
 
 ::: {.notebook name="sampling_tools" title="Sampling tools"}
 
-## Samples and labels
-
+## Samples and labels and strings
 
 Thus far we have used numbers such as 1 and 0 and 10 to represent the elements
 we are sampling from.  For example, in @sec-resampling-two, we were simulating
@@ -95,12 +94,13 @@ However, {{< var lang >}} can also store bits of text, called
 text values can be memorable labels for the entities we are sampling
 from, in our simulations.
 
-::: python
-
-Before we get to strings, let us consider the different types of value we have
+Before we get to strings, let us consider the
+[different types of value]{.python}[type of the values]{.r} we have
 seen so far.
 
-## Types of values in Python
+## Types of values in {{< var lang >}} {#sec-types-values}
+
+::: python
 
 You have already come across the idea that Python values can be integers (positive or negative whole numbers), like this:
 
@@ -116,14 +116,16 @@ by using the `type` function:
 type(v)
 ```
 
-As you may have noticed, Python can also have *floating point* values.  These are values with a decimal point — so numbers that do not have to be integers, but can be any value between the integers.  These floating points values are of type `float`:
+Python can also have *floating point* values.  These are values with a decimal
+point — numbers that do not have to be integers, but also can be any value
+between the integers.  These floating point values are of type `float`:
 
 ```{python}
 f = 10.1
 type(f)
 ```
 
-### Numpy arrays
+### Numpy arrays {#sec-arrays}
 
 You have also seen that Numpy contains another type, the *array*.  An
 array is a value that contains a sequence of values.  For example, here
@@ -220,10 +222,41 @@ lists to construct sequences into lists to turn them into arrays.  For our
 purposes, and particularly for our calculations, arrays are much more useful
 and efficient than lists.
 
+:::
 <!---
 End of Python section
 -->
+::: r
+
+So far, all the values we have seen in R are *numeric* — integers or floating point values.  This is an integer value:
+
+```{r}
+v <- 10
+v
+```
+
+Here the variable `v` holds the value.  We can see what type of value `v` holds
+by using the `class` function:
+
+```{r}
+class(v)
+```
+
+The value contained by the variable `v` is of `'numeric'` type (class).  This
+is the type of value that can store both integer values (positive or negative
+whole numbers), or floating point values (values that can have digits after a decimal point.  Here's a floating point value.
+
+```{r}
+f <- 10.1
+class(f)
+```
+
+Notice that R also see this as a `"numeric"` type of value.  However, we are about to see that R values can be of other types, that are not numeric.
+
 :::
+<!---
+End of R section.
+-->
 
 ## String values {#sec-intro-to-strings}
 
@@ -242,18 +275,6 @@ s
 s <- "Resampling"
 s
 ```
-
-::: r
-We can see what type of value `v` holds by using the `class` function.
-
-For example, for a number value, you will usually find the `class` is
-`numeric`:
-
-```{r}
-v <- 10
-class(v)
-```
-:::
 
 What is the
 [`class`]{.r}[`type`]{.python}
@@ -739,7 +760,7 @@ ok_jury <- sample(jury_panel, size=12)
 ok_jury
 ```
 
-::: {.callout-note}
+::: {#nte-eol-comments .callout-note}
 ## Comments at the end of lines
 
 You have already seen comment lines.  These are lines beginning with `#`, to signal to {{< var lang >}} that the rest of the line is text for humans to read, but {{< var lang >}} to ignore.

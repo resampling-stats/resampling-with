@@ -169,8 +169,8 @@ print(f"""{backticks}
 
 In the code that follows, we will *read* the values from the CSV file directly into {{< var lang >}}.
 
-:::{.callout-note}
-## Download links with data files {#sec-download-links}
+:::{#nte-download-links .callout-note}
+## Download links with data files
 
 Up till now, the Download links for notebook files point to a single file — the *notebook*.  The
 [Jupyter notebook file has extension `.ipynb`]{.python}
@@ -1085,8 +1085,21 @@ To stop the negatives canceling the positives, we can simply knock the minus
 signs off all the negative deviations.
 
 This is the job of the {{< var np_or_r >}} `abs` function — where `abs` is
-short for *absolute*.  The `abs` function will knock minus signs off
-negative values, like this:
+short for *absolute*.
+
+:::{#nte-abs-function .callout-note}
+## The [`np.abs`]{.python}[`abs`]{.r} function
+
+The [`np.abs`]{.python}[`abs`]{.r} function will knock minus signs off negative
+values, like this:
+
+```{python}
+np.abs(-3.1)
+```
+
+```{r}
+abs(-3.1)
+```
 
 ```{python}
 np.abs([-1, 0, 1, -2])
@@ -1095,6 +1108,8 @@ np.abs([-1, 0, 1, -2])
 ```{r}
 abs(c(-1, 0, 1, -2))
 ```
+
+:::
 
 To get an average of the deviations, *regardless of whether they are positive
 or negative*, we can take the mean of the absolute deviations, like this:
@@ -1142,7 +1157,7 @@ exactly.
 The MAD calculation solves this problem by knocking the signs off the negative
 values before we take the mean.
 
-### Squares of {{< var array >}}s {#sec-squared-arrays}
+### Squares of values and {{< var array >}}s {#sec-squared-arrays}
 
 Another very popular way of solving the same problem is to precede the
 calculation by squaring all the deviations.  {{< var lang >}} has an operator for the operation of taking values to the power of another value: it is `**`.  For example, to square a single number, we take the number *to the power of* 2, like this:
