@@ -61,7 +61,8 @@ for lang in languages:
 
 # --- Build HTML
 quarto_conf = yaml.load(open('_quarto.yml.template'), Loader=yaml.FullLoader)
-Rmd_chapters = quarto_conf['book']['chapters']
+Rmd_chapters = (quarto_conf['book']['chapters'] +
+                quarto_conf['book']['appendices'])
 nb_dir = quarto_conf['noteout']['nb-dir']
 
 # Data files needed to run output notebooks.
