@@ -123,6 +123,8 @@ if (sum(coins == 'heads') <= 2 | sum(coins == 'tails') <= 2) {
 }
 ```
 
+:::{.callout-note}
+## What is an operator? {#sec-what-is-an-operator}
 
 Above, we called [`or`]{.python}[`|`]{.r} an *operator*. An operator, for our
 purposes, is a special character [, or a word, ]{.python} that sits between two
@@ -154,6 +156,11 @@ numbers to either side — they are *arithmetic* operators.
 # * is an operator that, between two numbers, means "multiply the numbers".
 2 * 4
 ```
+
+:::
+<!---
+End of callout note.
+-->
 
 We are about to use the operator
 [`or`]{.python}[`|` (*or*)]{.r}.
