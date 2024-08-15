@@ -846,8 +846,9 @@ You can see the contents of `a` above.
 
 [`sum`]{.r}[`np.sum`]{.python} adds all the numbers in the {{< var array >}}
 together, to give the *sum* of the {{< var array >}}.  The *sum* is just the
-result of adding the second element to the first, then adding third element to
-the result, and the fourth element to the result, and so on.
+result of adding all the values in the {{< var array >}}.  Put another way, it
+is the result of adding the second element to the first, then adding third
+element to the result, and the fourth element to the result, and so on.
 
 ```{python}
 np.sum(a)
