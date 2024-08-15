@@ -137,9 +137,11 @@ jobs:
       - name: Deploy book edition
         if: startsWith(github.ref, 'refs/heads/v')
         uses: JamesIves/github-pages-deploy-action@v4.6.1
+        env:
+          TOKEN_NAME: BOOK_UPLOAD_TOKEN_${{ github.ref_name }}
         with:
           folder: website
           repository-name: "resampling-stats/${{ github.ref_name }}"
           branch: main
           single-commit: true
-          token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
+          token: ${{ secrets[env.TOKEN_NAME] }}
