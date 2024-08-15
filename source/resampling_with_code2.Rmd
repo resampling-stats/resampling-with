@@ -289,7 +289,7 @@ Notice the argument `5` to the [`np.zeros`]{.python}[`numeric`]{.r} function.
 This tells the function how many zeros we want in the {{< var array >}} that
 the function will return.
 
-## {{< var array >}} length {#sec-array-length}
+## [Array]{.python}[Vector]{.r} length {#sec-array-length}
 
 The are various useful things we can do with this {{< var array >}} container.
 One is to ask how many elements there are in the {{< var array >}} container.
@@ -414,7 +414,7 @@ give different counts.
 
 ```{python}
 rnd = np.random.default_rng()
-zero_thru_99 = np.arange(0, 100)
+zero_thru_99 = np.arange(100)
 # Get 12 random numbers from 0 through 99
 a = rnd.choice(zero_thru_99, size=12)
 # How many numbers are greater than 74?
@@ -678,7 +678,7 @@ We often use `for` loops with ranges (see @sec-ranges).  Here we use a loop to
 print out the numbers [0 through 3]{.python}[1 through 4]{.r}:
 
 ```{python}
-for n in np.arange(0, 4):
+for n in np.arange(4):
     print('The loop variable n is', n)
 ```
 
@@ -725,7 +725,7 @@ Using the combination of looping over a range, and {{< var array >}} indexing,
 we can print out the author position *and* the author birth year:
 
 ```{python}
-for n in np.arange(0, 4):
+for n in np.arange(3):
     year = author_birth_years[n]
     print('Birth year of author position', n, 'is', year)
 ```
@@ -783,7 +783,7 @@ You have just seen how we would use `np.arange` to send the numbers 0, 1, 2,
 and 3 to a `for` loop, in the example above, repeated here:
 
 ```{python}
-for n in np.arange(0, 4):
+for n in np.arange(3):
     year = author_birth_years[n]
     print('Birth year of author position', n, 'is', year)
 ```
@@ -791,35 +791,35 @@ for n in np.arange(0, 4):
 We could also use `range` instead of `np.arange` to do the same task:
 
 ```{python}
-for n in range(0, 4):
+for n in range(3):
     year = author_birth_years[n]
     print('Birth year of author position', n, 'is', year)
 ```
 
 In fact, you will see this pattern throughout the book, where we use `for`
 statements like `for value in range(10000):` to ask Python to put each number
-in the range 0 up to (not including) 100000 into the variable `value`, and then
+in the range 0 up to (not including) 10000 into the variable `value`, and then
 do something in the body of the loop.  Just to be clear, we could always, and
 almost as easily, write `for value in np.arange(10000):` to do the same task.
-But — even though we could use `np.arange` to get an array of numbers, we
-generally prefer `range` in our Python `for` loops, because it is just a little
-less typing (without the `np.a` of `np.arange`, and because it is a more common
-pattern in standard Python code.[^range-efficiency]
+However, we generally prefer `range` in our Python `for` loops, because it is
+just a little less typing (without the `np.a` of `np.arange`), and because it
+is a more common pattern in standard Python code.[^range-efficiency]
 
 [^range-efficiency]: Actually, there is a reason why many Python programmers
-   prefer `range` in their `for` loops to `np.arange`. `range` is a very
-   efficient container, in that it doesn't need to take up all the memory
-   required to create the full array, it just needs to keep track of the number
-   to give you next. For example, consider `for i in np.arange(10000000):` — in
-   this case Python has to make an array with 10,000,000 elements, and then,
-   from that array, it passes each value one by one to the `for` loop. On the
-   other hand, `for i in range(10000000):` will do the job just as well,
-   passing the same sequence of 0 through 9,999,999 to `i`, one by one, but
-   `range(10000000)` never has to make the whole 10,000,000 element array — it
-   just needs to keep track of which number to give up next.  Therefore `range`
-   is very quick, and very efficient in memory.  This doesn't have any great
-   practical impact for the arrays we are using here, typically of 10,0000
-   elements or so, but it is worthwhile for larger arrays.
+   prefer `range` to `np.arange` in the headers for their `for` loops. `range`
+   is a very efficient container, in that it doesn't need to take up all the
+   memory required to create the full array, it just needs to keep track of the
+   number to give you next. For example, consider `for i in
+   np.arange(10000000):` — in this case Python has to make an array with
+   10,000,000 elements, and then, from that array, it passes each value one by
+   one to the `for` loop. On the other hand, `for i in range(10000000):` will
+   do the job just as well, passing the same sequence of 0 through 9,999,999 to
+   `i`, one by one, but `range(10000000)` never has to make the whole
+   10,000,000 element array — it just needs to keep track of which number to
+   give up next.  Therefore `range` is very quick, and very efficient in
+   memory.  This doesn't have any great practical impact for the arrays we are
+   using here, typically of 10,0000 elements or so, but it can be important for
+   larger arrays.
 
 :::
 
@@ -829,7 +829,7 @@ Here is the code we worked out above, to implement a single trial:
 
 ```{python}
 rnd = np.random.default_rng()
-zero_thru_99 = np.arange(0, 100)
+zero_thru_99 = np.arange(100)
 # Get 12 random numbers from 0 through 99
 a = rnd.choice(zero_thru_99, size=12)
 # How many numbers are greater than 74?
@@ -860,13 +860,13 @@ Now we can put these parts together to do 50 simulated trials:
 rnd = np.random.default_rng()
 
 # All the numbers from 0 through 99.
-zero_through_99 = np.arange(0, 100)
+zero_through_99 = np.arange(100)
 
 # An array to store the counts for each trial.
 z = np.zeros(50)
 
 # Repeat the trial procedure 50 times.
-for i in np.arange(0, 50):
+for i in np.arange(50):
     # Get 12 random numbers from 0 through 99
     a = rnd.choice(zero_through_99, size=12)
     # How many numbers are greater than 74?
@@ -979,7 +979,8 @@ the population, which was 26% black, would have no black jurors.
 ## Many many trials
 
 Our experiment above is only 50 simulated trials.  The higher the number of
-trials, the more confident we can be of our estimate for `p` — the proportion of trials where we get an all-white jury.
+trials, the more confident we can be of our estimate for `p` — the proportion
+of trials where we get an all-white jury.
 
 It is no extra trouble for us to tell the computer to do a very large number
 of trials.  For example, we might want to run 10,000 trials instead of 50.
@@ -993,10 +994,10 @@ comments, to make the code more compact.
 ```{python}
 # Full simulation procedure, with 10,000 trials.
 rnd = np.random.default_rng()
-zero_through_99 = np.arange(0, 100)
+zero_through_99 = np.arange(100)
 # 10,000 trials.
 z = np.zeros(10000)
-for i in np.arange(0, 10000):
+for i in np.arange(10000):
     a = rnd.choice(zero_through_99, size=12)
     b = np.sum(a > 74)
     z[i] = b
@@ -1020,7 +1021,8 @@ p <- n_all_white / 10000
 p
 ```
 
-We now have a new, more accurate estimate of the proportion of Hypothetical County juries with all-white juries. The proportion is
+We now have a new, more accurate estimate of the proportion of Hypothetical
+County juries that are all white. The proportion is
 `r round(get_var('p'), 3)`, and so
 `r round(get_var('p') * 100, 1)`%.
 
