@@ -633,7 +633,7 @@ Another way to ask the same question is by using the
 true >}} if *all* the elements in `are_equal` are {{< var true >}}, and {{< var
 false >}} otherwise.
 
-:::{.callout-note}
+:::{#nte-test-all .callout-note}
 ## Testing whether all elements of {{< var an_array >}} are the same
 
 The [`all`]{.r}[`np.all`]{.python}, applied to a Boolean {{< var array >}} (as

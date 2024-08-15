@@ -1,0 +1,122 @@
+---
+resampling_with:
+    ed2_fname: null
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.6
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# Code topics
+
+This appendix gathers together links to parts of the book that cover various
+code topics in {{< var lang >}}:
+
+<!---
+Be careful wrapping these lines below.  Some wraps cause the link to be lost,
+and a sub-list to be formed.  Example:
+
+* Selecting multiple elements from {{< var array >}}s with slicing: @sec-slice-indexing.
+
+If wrapped, this will not render correctly.
+
+Also - remember to keep the Python and R versions in sync.  They need to be
+repeated as here, because it proved difficult to use .python / .r divs and
+spans to add conditional list elements.  It appears this must be done with the
+list as a whole, as here.
+-->
+
+::: python
+
+* Comments lines in code: @nte-comments; comments after lines of code:
+  @nte-eol-comments.
+* Variables: @sec-variables.
+* Types of values in {{< var lang >}}: @sec-types-values.
+  * Lists in Python: @sec-lists.
+  * Arrays: @sec-arrays.
+* Strings — values containing text: @sec-intro-to-strings.
+* Randomness from your computer: @sec-randomness-computer.
+* Numpy's random number generator: @nte-numpy-rng.
+* Types of brackets in {{< var lang >}}: @nte-bracket-types.
+* {{< var array >}} length: @sec-array-length.
+* Squaring values and {{< var array >}}s: @sec-squared-arrays.
+* Indexing into {{< var array >}}s with integers: @sec-array-indexing.
+* Selecting multiple elements from {{< var array >}}s with slicing: @sec-slice-indexing.
+* Introducing functions: @sec-introducing-functions.
+* Named arguments to functions: @sec-named-arguments.
+* Functions and methods: @nte-functions-methods.
+* Ranges (continuous sequences) of integers: @sec-ranges.
+* `range` in Python (compared to `np.arange`): @sec-python-range.
+* Advanced ranges (for example, using floating point values), using
+  [`seq`]{.r}[`np.arange`]{.python}: @nte-advanced-ranges.
+* The *absolute* function ([`np.abs`]{.python}[`abs`]{.r}) to convert all values to positive: @nte-abs-function.
+* Repeating elements of {{< var an_array >}} with [`np.repeat`]{.python}[`rep`]{.r}: @sec-repeating}
+* `for` loops: @sec-for-loops.
+* `if` statements:  @sec-if-statements.
+* Python modules and submodules: @nte-modules-submodules.
+* Finding number of repeats using {{< var bincount >}}: @sec-bincount-tabulate
+* Combining Boolean {{< var array >}}s with `&`: @sec-combine-booleans
+* `range` in Python `for` loops: @sec-for-range
+* Testing whether all elements of {{< var an_array >}} are the same using
+  [`np.all`]{.python}[`all`]{.r}: @nte-test-all
+* Plotting and histograms (and histogram bins and bin edges): @sec-on-histograms.
+* Shuffling {{< var array >}}s with [`sample`]{.r}[`rnd.permuted`]{.python}: @sec-shuffling.
+* Choosing values at random with [`np.choice`]{.python}[`sample`]{.r}: @sec-random-choice.
+* Counting {{< var true >}} values with `sum`: @sec-count-with-sum.
+* Making {{< var array >}}s by random resampling with [`np.choice`]{.python}[`sample`]{.r}: @sec-sampling-arrays.
+* Underscores in Python integers: @nte-integer-underscores.
+* Building strings with [`paste`]{.r}[format-strings]{.python}: @sec-building-strings.
+* What is an operator?: @nte-what-is-an-operator.
+* Logical operators — *or*[ (`|`)]{.r}, *and*[ (`&`)]{.r}: @sec-logical-operators.
+* Concatenating {{< var array >}}s: @sec-concatenate.
+* The Comma-Separated-Values (CSV) file format for data tables: @sec-csv-format.
+* Introducing the Pandas Python data science library: @sec-pandas-intro.
+:::
+
+::: r
+
+* Comments lines in code: @nte-comments; comments after lines of code:
+  @nte-eol-comments.
+* Variables: @sec-variables.
+* Types of values in {{< var lang >}}: @sec-types-values.
+* Strings — values containing text: @sec-intro-to-strings.
+* Randomness from your computer: @sec-randomness-computer.
+* Types of brackets in {{< var lang >}}: @nte-bracket-types.
+* {{< var array >}} length: @sec-array-length.
+* Squaring values and {{< var array >}}s: @sec-squared-arrays.
+* Indexing into {{< var array >}}s with integers: @sec-array-indexing.
+* Selecting multiple elements from {{< var array >}}s with slicing: @sec-slice-indexing.
+* Introducing functions: @sec-introducing-functions.
+* Named arguments to functions: @sec-named-arguments.
+* Functions and methods: @nte-functions-methods.
+* Ranges (continuous sequences) of integers: @sec-ranges.
+* Advanced ranges (for example, using floating point values), using
+  [`seq`]{.r}[`np.arange`]{.python}: @nte-advanced-ranges.
+* The *absolute* function ([`np.abs`]{.python}[`abs`]{.r}) to convert all values to positive: @nte-abs-function.
+* Repeating elements of {{< var an_array >}} with [`np.repeat`]{.python}[`rep`]{.r}: @sec-repeating}
+* `for` loops: @sec-for-loops.
+* `if` statements:  @sec-if-statements.
+* Finding number of repeats using {{< var bincount >}}: @sec-bincount-tabulate
+* Combining Boolean {{< var array >}}s with `&`: @sec-combine-booleans
+* Testing whether all elements of {{< var an_array >}} are the same using
+  [`np.all`]{.python}[`all`]{.r}: @nte-test-all
+* Plotting and histograms (and histogram bins and bin edges): @sec-on-histograms.
+* Shuffling {{< var array >}}s with [`sample`]{.r}[`rnd.permuted`]{.python}: @sec-shuffling.
+* Choosing values at random with [`np.choice`]{.python}[`sample`]{.r}: @sec-random-choice.
+* Counting {{< var true >}} values with `sum`: @sec-count-with-sum.
+* Making {{< var array >}}s by random resampling with [`np.choice`]{.python}[`sample`]{.r}: @sec-sampling-arrays.
+* Building strings with [`paste`]{.r}[format-strings]{.python}: @sec-building-strings.
+* What is an operator?: @nte-what-is-an-operator.
+* Logical operators — *or*[ (`|`)]{.r}, *and*[ (`&`)]{.r}: @sec-logical-operators.
+* Concatenating {{< var array >}}s: @sec-concatenate.
+* The Comma-Separated-Values (CSV) file format for data tables: @sec-csv-format.
+:::

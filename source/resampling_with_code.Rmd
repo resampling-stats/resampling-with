@@ -715,7 +715,7 @@ Like [`np.round`]{.python}[`round`]{.r} (above),
 [`rnd.choice`]{.python}[`sample`]{.r} is a *function*.
 
 :::python
-:::{.callout-note}
+:::{#nte-functions-methods .callout-note}
 ## Functions and methods
 
 Actually, to be precise, we should call `rnd.choice` a *method*.  A method is a
@@ -773,7 +773,7 @@ my_number <- sample(some_integers, 1)
 my_number
 ```
 
-## Sampling into {{< var array >}}s {#sec-sampling-arrays}
+## Creating {{< var array >}}s with sampling {#sec-sampling-arrays}
 
 ::: python
 In the code above, we asked Python to select a single number at random

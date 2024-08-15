@@ -210,12 +210,11 @@ is the count of 9s in that row and, therefore, the result from our
 simulation of one day.
 
 We can estimate how often three or more ambulances would break down by looking
-for values of three or greater in the last column.  We find there are 
-`r sum(py$df_counts['#9'] >= 3)`
-rows with three or more in the last column. Finally we divide this number of
-rows by the number of trials (`r py$n_trials`) to get an estimate of the
-*proportion* of days with three or more breakdowns. The result is
-`r sum(py$df_counts['#9'] >= 3) / py$n_trials`.
+for values of three or greater in the last column.  We find there are `r
+sum(py$df_counts['#9'] >= 3)` rows with three or more in the last column.
+Finally we divide this number of rows by the number of trials (`r py$n_trials`)
+to get an estimate of the *proportion* of days with three or more breakdowns.
+The result is `r sum(py$df_counts['#9'] >= 3) / py$n_trials`.
 
 ## Solving the problem using {{< var lang >}}
 
@@ -241,6 +240,9 @@ explains how to execute notebooks online or on your own computer.
 
 :::::: {.notebook name="ambulances" title="Ambulances"}
 
+:::{#nte-comments .callout-note}
+## Comments in code
+
 The first thing to say about the code you will see below is there are some
 lines that do not do anything; these are the lines beginning with a `#`
 character (read `#` as "hash").  Lines beginning with `#` are called
@@ -259,6 +261,7 @@ comment:
 Because {{< var lang >}} ignores lines beginning with `#`, the text after the `#`
 is just for us, the humans reading the code.  The person writing the code will
 often use comments to explain what the code is doing.
+:::
 
 Our next task is to use {{< var lang >}} to simulate a single day of
 ambulances.  We will again represent each ambulance by a random number
@@ -286,7 +289,7 @@ an object is known as a "random number generator".
 rnd = np.random.default_rng()
 ```
 
-:::{.callout-note}
+:::{#nte-numpy-rng .callout-note}
 ## NumPy's Random Number Generator
 
 Here are some examples of the random operations we can perform with
