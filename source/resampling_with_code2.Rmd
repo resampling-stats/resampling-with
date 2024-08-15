@@ -544,7 +544,6 @@ Author                Year of birth
 Julian Lincoln Simon  1932
 Matthew Brett         1964
 Stéfan van der Walt   1980
-Ian Nimmo-Smith       1944
 
 We want to see this output:
 
@@ -552,7 +551,6 @@ We want to see this output:
 Author birth year is 1932
 Author birth year is 1964
 Author birth year is 1980
-Author birth year is 1944
 ```
 
 Of course, we could just ask {{< var lang >}} to print out these exact lines,
@@ -562,21 +560,19 @@ like this:
 print('Author birth year is 1932')
 print('Author birth year is 1964')
 print('Author birth year is 1980')
-print('Author birth year is 1944')
 ```
 
 ```{r}
 message('Author birth year is 1932')
 message('Author birth year is 1964')
 message('Author birth year is 1980')
-message('Author birth year is 1944')
 ```
 
-We might instead notice that we are repeating the same procedure for each of the
-four birth years, and decide to do the same thing using a `for` loop:
+We might instead notice that we are repeating the same procedure for each of
+the three birth years, and decide to do the same thing using a `for` loop:
 
 ```{python}
-author_birth_years = np.array([1932, 1964, 1980, 1944])
+author_birth_years = np.array([1932, 1964, 1980])
 
 # For each birth year
 for birth_year in author_birth_years:
@@ -585,7 +581,7 @@ for birth_year in author_birth_years:
 ```
 
 ```{r}
-author_birth_years <- c(1932, 1964, 1980, 1944)
+author_birth_years <- c(1932, 1964, 1980)
 
 # For each birth year
 for (birth_year in author_birth_years) {
@@ -626,7 +622,7 @@ the for loop*.
 
 The initial line of the `for` loop above tells {{< var lang >}} that it should
 take *each item* in `author_birth_years`, one by one — first 1932, then 1964,
-then 1980, then 1944.  For each of these numbers it will:
+then 1980.  For each of these numbers it will:
 
 * Put the number into the variable `birth_year`, then
 * Run the [indented]{.python} code [between the curly braces]{.r}.
@@ -661,8 +657,6 @@ birth_year = 1964  # Set the loop variable to contain the next value.
 print('Author birth year is', birth_year)  # Use the second value.
 birth_year = 1980
 print('Author birth year is', birth_year)
-birth_year = 1944
-print('Author birth year is', birth_year)
 ```
 
 ```{r}
@@ -671,8 +665,6 @@ message('Author birth year is ', birth_year)  # Use the first value.
 birth_year <- 1964  # Set the loop variable to contain the next value.
 message('Author birth year is ', birth_year)  # Use the second value.
 birth_year <- 1980
-message('Author birth year is ', birth_year)
-birth_year <- 1944
 message('Author birth year is ', birth_year)
 ```
 
@@ -743,13 +735,13 @@ Again, remember Python considers 0 as the first position.
 :::
 
 ```{r}
-for (n in 1:4) {
+for (n in 1:3) {
     year <- author_birth_years[n]
     message('Birth year of author position ', n, ' is ', year)
 }
 ```
 
-Just for practice, let us unroll the first two iterations through this `for`
+Just for practice, let us unroll the three iterations through this `for`
 loop, to remind ourselves what the code is doing:
 
 ```{python}
@@ -760,7 +752,9 @@ print('Birth year of author position', n, 'is', year)
 n = 1
 year = author_birth_years[n]  # Will be 1964
 print('Birth year of author position', n, 'is', year)
-# And so on.
+n = 2
+year = author_birth_years[n]  # Will be 1980
+print('Birth year of author position', n, 'is', year)
 ```
 
 ```{r}
@@ -771,7 +765,9 @@ message('Birth year of author position ', n, ' is ', year)
 n <- 2
 year <- author_birth_years[n]  # Will be 1964
 message('Birth year of author position ', n, ' is ', year)
-# And so on.
+n <- 3
+year <- author_birth_years[n]  # Will be 1980
+message('Birth year of author position ', n, ' is ', year)
 ```
 
 ::: python
