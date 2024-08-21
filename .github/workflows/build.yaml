@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+env:
+
 jobs:
   build-book:
     runs-on: ubuntu-latest
@@ -91,8 +93,8 @@ jobs:
           cp requirements.txt python-book
           touch python-book/.nojekyll
 
-      # - name: Build Python PDF
-      #   run: cd source && ninja python-book-pdf
+      - name: Build Python PDF
+        run: cd source && ninja python-book-pdf
 
       - name: Deploy Python book
         uses: JamesIves/github-pages-deploy-action@v4.6.1
@@ -109,8 +111,8 @@ jobs:
           cp website/r-README.md r-book/README.md
           touch r-book/.nojekyll
 
-      # - name: Build R PDF
-      #   run: cd source && ninja python-book-pdf
+      - name: Build R PDF
+        run: cd source && ninja python-book-pdf
 
       - name: Deploy R book
         uses: JamesIves/github-pages-deploy-action@v4.6.1
