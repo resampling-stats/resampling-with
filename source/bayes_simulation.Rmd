@@ -495,13 +495,13 @@ Where (again) $\text{ and }$ means that *both* events occur.
 
 ### Example: conditional probability
 
-Let's discuss a very relevant example.  You get a COVID test, and the test is negative.  Now, you would like to know what the chance is of you having COVID.
+Let's discuss a very relevant example.  You get a Covid test, and the test is negative.  Now, you would like to know what the chance is of you having Covid.
 
 We have the following information:
 
-- 1.5% of people in your area have COVID
-- The false positive rate of the tests (i.e., that they detect COVID when it is absent) is very low at 0.5%
-- The false negative rate (i.e., that they fail to detect COVID when it is present) is quite high at 40%
+- 1.5% of people in your area have Covid
+- The false positive rate of the tests (i.e., that they detect Covid when it is absent) is very low at 0.5%
+- The false negative rate (i.e., that they fail to detect Covid when it is present) is quite high at 40%
 
 ![](diagrams/covid-tree.png)
 
@@ -510,8 +510,8 @@ Again, we start with our simulation.
 ::: {.notebook name="bayes_covid" title="Bayesian analysis of Covid test result"}
 
 ::: nb-only
-You get a COVID test, and the test is negative.  Now, you would like to know
-what the chance is of you having COVID.
+You get a Covid test, and the test is negative.  Now, you would like to know
+what the chance is of you having Covid.
 :::
 
 ```{python}
@@ -523,13 +523,13 @@ rnd = np.random.default_rng()
 n_trials = 1_000_000
 
 # For each person, generate a True or False label,
-# indicating that they have / don't have COVID.
+# indicating that they have / don't have Covid.
 person_has_covid = rnd.choice(
     [True, False], p=[0.015, 0.985],
     size=n_trials
 )
 
-# Calculate the numbers of people with and without COVID.
+# Calculate the numbers of people with and without Covid.
 n_with_covid = np.sum(person_has_covid)
 n_without_covid = n_trials - n_with_covid
 
@@ -537,13 +537,13 @@ n_without_covid = n_trials - n_with_covid
 # had a positive or a negative test.
 test_result = np.zeros(n_trials, dtype=bool)
 
-# Draw test results for people with COVID.
+# Draw test results for people with Covid.
 test_result[person_has_covid] = rnd.choice(
     [True, False], p=[0.6, 0.4],
     size=n_with_covid
 )
 
-# Draw test results for people without COVID.
+# Draw test results for people without Covid.
 # ~person_has_covid` flips all Boolean values from FALSE to TRUE
 # and from TRUE to FALSE.
 test_result[~person_has_covid] = rnd.choice(
@@ -551,12 +551,12 @@ test_result[~person_has_covid] = rnd.choice(
     size=n_without_covid
 )
 
-# Get the COVID statuses of all those with negative tests
+# Get the Covid statuses of all those with negative tests
 # (`test_result` is a Boolean mask, like `[True, False, False, True, ...]`,
 # and `~test_result` flips all Boolean values to `[False, True, True, False, ...]`.
 covid_status_negative_test = person_has_covid[~test_result]
 
-# Now, count how many with COVID had a negative test results.
+# Now, count how many with Covid had a negative test results.
 n_with_covid_and_negative_test = np.sum(covid_status_negative_test)
 
 # And how many people, overall, had negative test results.
@@ -572,7 +572,7 @@ print('Proportion with Covid of those with negative test:', np.round(k, 4))
 n_trials <- 1000000
 
 # For each person, generate a True or False label,
-# indicating that they have / don't have COVID.
+# indicating that they have / don't have Covid.
 person_has_covid <- sample(
     c(TRUE, FALSE),
     size=n_trials,
@@ -580,7 +580,7 @@ person_has_covid <- sample(
     prob=c(0.015, 0.985)
 )
 
-# Calculate the numbers of people with and without COVID.
+# Calculate the numbers of people with and without Covid.
 n_with_covid <- sum(person_has_covid)
 n_without_covid <- n_trials - n_with_covid
 
@@ -588,7 +588,7 @@ n_without_covid <- n_trials - n_with_covid
 # had a positive or a negative test.
 test_result <- logical(n_trials)
 
-# Draw test results for people with COVID.
+# Draw test results for people with Covid.
 test_result[person_has_covid] <- sample(
     c(TRUE, FALSE),
     size=n_with_covid,
@@ -596,7 +596,7 @@ test_result[person_has_covid] <- sample(
     prob=c(0.6, 0.4)
 )
 
-# Draw test results for people without COVID.
+# Draw test results for people without Covid.
 # !person_has_covid` flips all Boolean values from FALSE to TRUE
 # and from TRUE to FALSE.
 test_result[!person_has_covid] <- sample(
@@ -606,12 +606,12 @@ test_result[!person_has_covid] <- sample(
     prob=c(0.005, 0.995)
 )
 
-# Get the COVID statuses of all those with negative tests
+# Get the Covid statuses of all those with negative tests
 # (`test_result` is a Boolean mask, like `[TRUE, FALSE, FALSE, TRUE, ...]`,
 # and `!test_result` flips all Boolean values to `[FALSE, TRUE, TRUE, FALSE, ...]`.
 covid_status_negative_test <- person_has_covid[!test_result]
 
-# Now, count how many with COVID had a negative test results.
+# Now, count how many with Covid had a negative test results.
 n_with_covid_and_negative_test <- sum(covid_status_negative_test)
 
 # And how many people, overall, had negative test results.
@@ -640,7 +640,7 @@ We will use these abbreviations:
 
 For example $P(C^+ | T^-)$ is the probability ($P$) that you do actually have Covid ($C^+$) *given that* ($|$) the test was negative ($T^-$).
 
-We would like to know the probability of having COVID *given that* your test
+We would like to know the probability of having Covid *given that* your test
 was negative ($P(C^+ | T^-)$).  Using the conditional probability relationship
 from above, we can write:
 
@@ -654,7 +654,7 @@ We see from the tree diagram that $P(C^+ \text{ and } T^-) = P(T^- | C^+) * P(C^
 **TODO: ADD REFERENCE TO SUMMATION OF MUTUALLY EXCLUSIVE PROBABILITIES**
 -->
 
-We observe that $P(T^-) = P(T^- \text{ and } C^-) + P(T^- \text{ and } C^+)$, i.e. that we can obtain a negative test result through two paths, having COVID or not having COVID.  We expand these further as conditional probabilities:
+We observe that $P(T^-) = P(T^- \text{ and } C^-) + P(T^- \text{ and } C^+)$, i.e. that we can obtain a negative test result through two paths, having Covid or not having Covid.  We expand these further as conditional probabilities:
 
 $P(T^- \text{ and } C^-) = P(T^- | C^-) * P(C^-)$
 
