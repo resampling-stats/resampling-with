@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - edition-*
 
 jobs:
   build-book:
