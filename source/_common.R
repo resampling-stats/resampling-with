@@ -44,7 +44,7 @@ reticulate::source_python('_common.py')
 
 # Nice-looking table.
 ketable <- function(df, caption) {
-  rt <- kableExtra::kable(df, caption = caption, booktabs = T)
+  rt <- kableExtra::kable(df, caption = caption, booktabs = TRUE)
   if (knitr::is_latex_output()) { return(rt) }
   # See https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
   # Update table-style.html to match
@@ -52,7 +52,7 @@ ketable <- function(df, caption) {
     rt,
     lightable_options = c("striped", "hover"),
     latex_options = c("striped", "scale_down"),
-    full_width = F,
+    full_width = FALSE,
     position = "center"
   )
 }
