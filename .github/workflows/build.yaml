@@ -94,11 +94,21 @@ jobs:
       - name: Build Python PDF
         run: cd source && ninja python-book-pdf
 
+      - name: branch-to-book-suffix
+        run: |
+          branch="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
+          if [ "$branch" == 'main' ]; then
+            echo "BOOK_SUFFIX=latest" >> $GITHUB_ENV
+          elif [[ "$branch" =~ ^edition* ]]; then
+            echo "BOOK_SUFFIX=$branch" >> $GITHUB_ENV
+          fi
+
       - name: Deploy Python book
         uses: JamesIves/github-pages-deploy-action@v4.6.1
+        if: env.BOOK_SUFFIX != ''
         with:
           folder: python-book
-          repository-name: resampling-stats/python-book
+          repository-name: resampling-stats/python-${env.BOOK_SUFFIX}
           branch: main
           single-commit: true
           token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
@@ -114,9 +124,10 @@ jobs:
 
       - name: Deploy R book
         uses: JamesIves/github-pages-deploy-action@v4.6.1
+        if: env.BOOK_SUFFIX != ''
         with:
           folder: r-book
-          repository-name: resampling-stats/r-book
+          repository-name: resampling-stats/python-${{ env.BOOK_SUFFIX }}
           branch: main
           single-commit: true
           token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
