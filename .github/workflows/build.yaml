@@ -108,7 +108,7 @@ jobs:
         if: env.BOOK_SUFFIX != ''
         with:
           folder: python-book
-          repository-name: resampling-stats/python-${env.BOOK_SUFFIX}
+          repository-name: resampling-stats/python-${{ env.BOOK_SUFFIX }}
           branch: main
           single-commit: true
           token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
