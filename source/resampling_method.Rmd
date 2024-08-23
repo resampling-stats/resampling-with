@@ -48,10 +48,10 @@ techniques.
 ## The resampling approach in action
 
 Recall the problem from section @sec-what-problems in which the contractor owns
-20 ambulances:
+16 ambulances:
 
 > *You are the manager and part owner* of one of several contractors
->  providing ambulances to a hospital. You own 20 ambulances. Based on
+>  providing ambulances to a hospital. You own 16 ambulances. Based on
 >  past experience, the chance that any one ambulance will be unfit
 >  for service on any given day is about one in ten. You want to know
 >  the chance on a particular day — tomorrow — that three or more
@@ -61,23 +61,21 @@ The resampling approach produces the estimate as follows.
 
 ### Randomness from physical methods
 
-We collect 10 coins, and mark one of them with a pen or pencil or tape
-as being the coin that represents "out-of-order;" the other nine coins
-stand for "in operation". For any one ambulance, this set of 10 coins
-provides a "model" for the one-in-ten chance — a probability of .10
-(10 percent) — of it being out of order on a given day.  We put the
-coins into a little jar or bucket.
+We collect 10 coins, and mark one of them with a pen or pencil or tape as being
+the coin that represents "out-of-order;" the other nine coins stand for "in
+operation". For any one ambulance, this set of 10 coins provides a "model" for
+the one-in-ten chance — a probability of .10 (10 percent) — of it being out of
+order on a given day.  We put the coins into a little jar or bucket.
 
-For ambulance #1, we draw a single coin from the bucket.  This coin
-represents whether that ambulance is going to be broken tomorrow.
-After replacing the coin and shaking the bucket, we repeat the same
-procedure for ambulance #2, ambulance #3 and so forth. Having repeated
-the procedure *20* times, we now have a representation of all
-ambulances for a single day.
+For ambulance #1, we draw a single coin from the bucket.  This coin represents
+whether that ambulance is going to be broken tomorrow. After replacing the coin
+and shaking the bucket, we repeat the same procedure for ambulance #2,
+ambulance #3 and so forth. Having repeated the procedure *16* times, we now
+have a representation of all ambulances for a single day.
 
-We can now repeat this whole process as many times as we like: each
-time, we come up with a representation for a different day, telling us
-how many ambulances will be out-of-service on that day.
+We can now repeat this whole process as many times as we like: each time, we
+come up with a representation for a different day, telling us how many
+ambulances will be out-of-service on that day.
 
 After collecting evidence for, say, 50 experimental days we determine
 the proportion of the experimental days on which three or more
@@ -87,41 +85,39 @@ given day — the answer we seek. This procedure is an example of Monte
 Carlo simulation, which is the heart of the resampling method of
 statistical estimation.
 
-A more direct way to answer this question would be to examine the
-firm's actual records for the past 100 days or, better, 500 days (if
-that's available) to determine how many days had three or more
-ambulances out of order. But the resampling procedure described above
-gives us an estimate even if we do not have such long-term
-information. This is realistic; it is frequently the case in the real
-world that we must make estimates on the basis of insufficient history
-about an event.
+A more direct way to answer this question would be to examine the firm's actual
+records for the past 100 days or, better, 500 days (if that's available) to
+determine how many days had three or more ambulances out of order. But the
+resampling procedure described above gives us an estimate even if we do not
+have such long-term information. This is realistic; it is frequently the case
+in the real world that we must make estimates on the basis of insufficient
+history about an event.
 
-A quicker resampling method than the coins could be obtained with 20
-ten-sided dice or spinners (like those found in the popular Dungeons &
-Dragons games). For each die, we identify one of its ten sides as
-"out-of-order".
+A quicker resampling method than the coins could be obtained with 16 ten-sided
+dice or spinners (like those found in Dungeons & Dragons games). For each die,
+we identify one of its ten sides as "out-of-order".
 
-Funnily enough, standard 10-sided dice have the numbers 0 through 9 on their
-faces, rather than 1 through 10.  @fig-one-d10s shows a standard 10-sided die:
+Standard 10-sided dice have the numbers 0 through 9 on their faces, rather than
+1 through 10.  @fig-one-d10s shows a standard 10-sided die:
 
 ![10-sided die](images/one_d10s.jpg){#fig-one-d10s}
 
 We decide, arbitrarily, that the 9 side means "out-of-order". We could even put
 a little bit of paint on the 9 side to remind us. The die represents an
 ambulance.  If we roll the die, and get this face, this indicates that the
-ambulance was out of order.  If we get any of the other faces — 0 through 8 —
-this ambulance was in working order. A single throw of all 20 dice will be our
-experimental trial that represents a single day; we just have to count whether
-three or more ambulances turn up "out of order".  @fig-20-d10s show the result
-of one trial — throwing 20 dice:
+ambulance was out of order.  If we get any of the other faces — 0 through
+8 — this ambulance was in working order. A single throw of all 16 dice will be
+our experimental trial that represents a single day; we just have to count
+whether three or more ambulances turn up "out of order".  @fig-16-d10s show the
+result of one trial — throwing 16 dice:
 
-![20 10-sided dice](images/20_d10s.jpg){#fig-20-d10s}
+![16 10-sided dice](images/16_d10s.jpg){#fig-16-d10s}
 
-As you can see, the trial in @fig-20-d10s gave us a single 9, so there was only
+As you can see, the trial in @fig-16-d10s gave us a single 9, so there was only
 one ambulance out of order.
 
-In a hundred quick throws of the 20 dice — which probably takes less than 5
-minutes — we can get a fast and reasonably accurate answer to our question.
+In a hundred throws of the 16 dice — which probably takes less than 5 minutes
+— we can get a fast and reasonably accurate answer to our question.
 
 ## Randomness from your computer {#sec-randomness-computer}
 
@@ -146,27 +142,27 @@ The Michael Larsen Incident
 https://web.archive.org/web/20170712041017/http://www.rotten.com/library/conspiracy/press-your-luck/
 -->
 
-We can use random numbers from computers to simulate our problem.  For
-example, we can ask the computer to choose a random number between 0
-and 9 to represent one ambulance. Let's say the number 9 represents
-"out-of-order" and 0 through 8 "in operation", then any one random number
-gives us a trial observation for a single ambulance.  To get an experimental
-trial for a single day we look at 20 numbers and count how many of them are 9.
-We then look at, say, one hundred sets of 20 numbers and count the proportion
-of sets whose 20 numbers show three or more ambulances being "out-of-order".
-Once again, that proportion estimates the probability that three or more
-ambulances will be out-of-order on any given day.
+We can use random numbers from computers to simulate our problem.  For example,
+we can ask the computer to choose a random number between 0 and 9 to represent
+one ambulance. Let's say the number 9 represents "out-of-order" and 0 through
+8 "in operation", then any one random number gives us a trial observation for
+a single ambulance.  To get an experimental trial for a single day we look at
+16 numbers and count how many of them are 9. We then look at, say, one hundred
+sets of 16 numbers and count the proportion of sets whose 16 numbers show three
+or more ambulances being "out-of-order". Once again, that proportion estimates
+the probability that three or more ambulances will be out-of-order on any given
+day.
 
-Soon we will do all these steps with some {{< var lang >}} code, but for
-now, consider Table @tbl-veh-numbers.  In each row, we placed 20
-numbers, each one representing an ambulance.  We added 25 such rows,
-each representing a simulation of one day.
+Soon we will do all these steps with some {{< var lang >}} code, but for now,
+consider Table @tbl-veh-numbers.  In each row, we placed 16 numbers, each one
+representing an ambulance.  We added 25 such rows, each representing
+a simulation of one day.
 
 ```{python, eval=TRUE, echo=FALSE}
 import numpy as np
 import pandas as pd
 
-n_vehicles = 20
+n_vehicles = 16
 n_trials = 25
 
 rng = np.random.default_rng()
@@ -180,15 +176,12 @@ df = pd.DataFrame(
 ```
 
 ```{r, label="tbl-veh-numbers", eval=TRUE, echo=FALSE}
-kableExtra::kable_styling(
-    ketable(py$df,
-            caption='25 simulations of 20 ambulances'),
-    latex_options="scale_down")
+ketable(py$df, caption='25 simulations of 16 ambulances')
 ```
 
-To know how many ambulances were "out of order" on any given day, we
-count number of ones in that row.  We place the counts in the final column
-called "#9" (for "number of nines"):
+To know how many ambulances were "out of order" on any given day, we count
+number of ones in that row.  We place the counts in the final column called
+"#9" (for "number of nines"):
 
 ```{python, eval=TRUE, echo=FALSE}
 # Count the number of nines in each row, put in new column
@@ -197,36 +190,33 @@ df_counts['#9'] = (df == 9).sum(axis=1)
 ```
 
 ```{r, label="tbl-veh-numbers-counts", eval=TRUE, echo=FALSE}
-kableExtra::kable_styling(ketable(
-  py$df_counts,
-  caption='25 simulations of 20 ambulances, with counts'),
-  latex_options="scale_down")
+ketable(py$df_counts,
+        caption='25 simulations of 16 ambulances, with counts')
 ```
 
-Each value in the last column of Table @tbl-veh-numbers-counts
-is the count of 9s in that row and, therefore, the result from our
-simulation of one day.
+Each value in the last column of Table @tbl-veh-numbers-counts is the count of
+9s in that row and, therefore, the result from our simulation of one day.
 
 We can estimate how often three or more ambulances would break down by looking
-for values of three or greater in the last column.  We find there are `r
-sum(py$df_counts['#9'] >= 3)` rows with three or more in the last column.
-Finally we divide this number of rows by the number of trials (`r py$n_trials`)
-to get an estimate of the *proportion* of days with three or more breakdowns.
-The result is `r sum(py$df_counts['#9'] >= 3) / py$n_trials`.
+for values of three or greater in the last column.  We find there are
+`r sum(py$df_counts['#9'] >= 3)`
+rows with three or more in the last column. Finally we divide this number of rows
+by the number of trials (`r py$n_trials`) to get an estimate of the
+*proportion* of days with three or more breakdowns. The result is
+`r sum(py$df_counts['#9'] >= 3) / py$n_trials`.
 
 ## Solving the problem using {{< var lang >}}
 
 Here we rush ahead to show you how to do this simulation in {{< var lang >}}.
 
-We go through the {{< var lang >}} code for the simulation, but we don't
-expect you to understand all of it right now.  The rest of this book
-goes into more detail on reading and writing {{< var lang >}} code, and how you
-can use {{< var lang >}} to build your own simulations.  Here we just want to show
-you what this code looks like, to give you an idea of where we are headed.
+We go through the {{< var lang >}} code for the simulation, but we don't expect
+you to understand all of it right now.  The rest of this book goes into more
+detail on reading and writing {{< var lang >}} code, and how you can use {{<
+var lang >}} to build your own simulations.  Here we just want to show you what
+this code looks like, to give you an idea of where we are headed.
 
-While you can *run* the code below on your own computer, for now we
-only need you to read it and follow along; the text explains what each
-line of code does.
+While you can *run* the code below on your own computer, for now we only need
+you to read it and follow along; the text explains what each line of code does.
 
 :::{.callout-note}
 ## Coming back to the example
@@ -235,6 +225,9 @@ If you are interested, you can come back to this example later, and run it for
 yourself.  To do this, we recommend you read @sec-about-technology that
 explains how to execute notebooks online or on your own computer.
 :::
+<!---
+End of callout note.
+-->
 
 :::::: {.notebook name="ambulances" title="Ambulances"}
 
@@ -263,9 +256,9 @@ often use comments to explain what the code is doing.
 
 Our next task is to use {{< var lang >}} to simulate a single day of
 ambulances.  We will again represent each ambulance by a random number
-from 0 through 9.  20 of these numbers represents a simulation of all
-20 ambulances available to the contractor.  We call a simulation
-of all ambulances for a specific day one *trial*.
+from 0 through 9.  16 of these numbers represents a simulation of all
+16 ambulances available to the contractor.  We call a simulation of all
+ambulances for a specific day one *trial*.
 
 ::: python
 Before we begin our first trial, we need to load some helpful routines
@@ -320,39 +313,39 @@ NumPy:
 
 :::
 
-Recall that we want twenty 10-sided dice — one per ambulance.  Our dice should
+Recall that we want 16 10-sided dice — one per ambulance.  Our dice should
 be 10-sided, because each ambulance has a 1-in-10 chance of being out of order.
 
 The program to simulate one trial of the ambulances problem therefore
 begins with these commands:
 
 ```{python}
-# Ask NumPy to generate 20 numbers from 0 through 9.
+# Ask NumPy to generate 16 numbers from 0 through 9.
 
 # These are the numbers we will ask NumPy to select from.
 # We store the numbers together in an *array*.
 numbers = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
-# Get 20 (size=20) values from the *numbers* list.
-# Store the 20 numbers with the name "a"
-a = rnd.choice(numbers, size=20)
+# Get 16 (size=16) values from the *numbers* list.
+# Store the 16 numbers with the name "a"
+a = rnd.choice(numbers, size=16)
 
-# The result is a sequence (array) of 20 numbers.
+# The result is a sequence (array) of 16 numbers.
 a
 ```
 
 ```{r}
-# Ask R to generate 20 numbers from 0 through 9.
+# Ask R to generate 16 numbers from 0 through 9.
 
 # These are the numbers we will ask R to select from.
 numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 
-# Get 20 values from the *numbers* sequence.
-# Store the 20 numbers with the name "a"
+# Get 16 values from the *numbers* sequence.
+# Store the 16 numbers with the name "a"
 # We will explain the replace=TRUE later.
-a <- sample(numbers, 20, replace=TRUE)
+a <- sample(numbers, 16, replace=TRUE)
 
-# The result is a sequence of 20 numbers.
+# The result is a sequence of 16 numbers.
 a
 ```
 
@@ -412,7 +405,7 @@ The `sum` command is a *counting* operation. It asks the computer to *count*
 the number of `9`s among the twenty numbers that are in location `a` following
 the random draw carried out by the [`rnd.choice`]{.python}[`sample`]{.r}
 operation. The result of the `sum` operation will be somewhere between 0 and
-20, the number of simulated ambulances that were out-of-order on a given
+16, the number of simulated ambulances that were out-of-order on a given
 simulated day. The result is then placed in another location in the computer's
 memory that we label `b`.
 
@@ -425,8 +418,8 @@ We could run the code above for one trial over and over, and write down the
 result on a piece of paper.  If we did this 100 times we would have 100 counts
 of the number of simulated ambulances that had broken down for each simulated
 day.  To answer our question, we will then count the number of times the count
-was more than three, and divide by 100, to get an estimate of the proportion of
-days with more than three out-of-order ambulances.
+was three or more, and divide by 100, to get an estimate of the proportion of
+days with three or more out-of-order ambulances.
 
 One of the great things about the computer is that it is very good at repeating
 tasks many times, so we do not have to.  Our next task is to ask the computer
@@ -520,9 +513,9 @@ numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 for i in np.arange(0, 1000):
     # The indented stuff is the code we repeat 1000 times.
 
-    # Get 20 (size=20) values from the *numbers* list.
-    # Store the 20 numbers with the name "a"
-    a = rnd.choice(numbers, size=20)
+    # Get 16 (size=16) values from the *numbers* list.
+    # Store the 16 numbers with the name "a"
+    a = rnd.choice(numbers, size=16)
 
     # Count the number of nines in the random numbers.
     # The "a == 9" part identifies all the numbers equal to 9.
@@ -549,9 +542,9 @@ for (i in 1:1000) {
     # The stuff between the curly brackets is the code we
     # repeat 1000 times.
 
-    # Get 20 values from the *numbers* sequence.
-    # Store the 20 numbers with the name "a"
-    a <- sample(numbers, 20, replace=TRUE)
+    # Get 16 values from the *numbers* sequence.
+    # Store the 16 numbers with the name "a"
+    a <- sample(numbers, 16, replace=TRUE)
 
     # Count the number of nines in the random numbers.
     # The "a == 9" part identifies all the numbers equal to 9.
@@ -565,7 +558,8 @@ for (i in 1:1000) {
 }
 ```
 
-The [`z[i] = b`]{.python}[`z[i] <- b`]{.r}
+The
+[`z[i] = b`]{.python}[`z[i] <- b`]{.r}
 statement that follows the `sum` *counting* operation simply keeps track of
 the results of each trial, placing the number of defective ambulances for each
 trial inside the sequence called `z`. The sequence has 1000 positions: one for
@@ -576,20 +570,22 @@ sequence `z`.  These are 1000 counts of out-of-order ambulances, one for each
 of our simulated days.  Our last task is to calculate the proportion of these
 days for which we had more than three broken-down ambulances.
 
-Since our aim is to count the number of days in which more than 3 (4 or more)
-defective ambulances occur, we use another *counting* `sum` command
-at the end of the 1000 trials.  This command *counts* how many times more than
-3 defects occurred in the 1000 days recorded in our `z` sequence, and we place
-the result in another location, `k`. This gives us the total number of days
-where 4 or more defective ambulances are seen to occur. Then we divide the
-number in `k` by 1000, the number of trials. Thus we obtain an estimate of the
-chance, expressed as a probability between 0 and 1, that 4 or more ambulances
-will be defective on a given day. And we store that result in a location that
-we call `kk`, which {{< var lang >}} subsequently prints to the screen.
+Since our aim is to count the number of days in which three or more defective
+ambulances occur, we use another *counting* `sum` command at the end of the
+1000 trials.  This command *counts* how many times three or more defects occurred
+in the 1000 days recorded in our `z` sequence, and we place the result in
+another location, `k`. The value of `k` gives us the total number of days where
+3 or more defective ambulances are seen to occur. Then we divide the number in
+`k` by 1000, the number of trials. Thus we obtain an estimate of the chance,
+expressed as a probability between 0 and 1, that 3 or more ambulances will be
+defective on a given day. And we store that result in a location that we call
+`kk`, which {{< var lang >}} subsequently prints to the screen.
 
 ```{python}
-# How many trials resulted in more than 3 ambulances out of order?
-k = np.sum(z > 3)
+# How many trials resulted in 3 or more ambulances being out of order?
+# (The test counts the number of days where the out-of-order count was greater
+# than or equal to 3, written as ">= 3").
+k = np.sum(z >= 3)
 
 # Convert to a proportion.
 kk = k / 1000
@@ -599,8 +595,10 @@ print(kk)
 ```
 
 ```{r}
-# How many trials resulted in more than 3 ambulances out of order?
-k <- sum(z > 3)
+# How many trials resulted in 3 or more ambulances being out of order?
+# (The test counts the number of days where the out-of-order count was greater
+# than or equal to 3, written as ">= 3").
+k <- sum(z >= 3)
 
 # Convert to a proportion.
 kk <- k / 1000
@@ -609,7 +607,7 @@ kk <- k / 1000
 message(kk)
 ```
 
-This is the estimate we wanted; the proportion of days where more than three
+This is the estimate we wanted; the proportion of days where three or more
 ambulances were out of action.
 
 We have crept up on the solution, so it might not be clear to you how few steps
@@ -624,11 +622,11 @@ z = np.zeros(1000)
 numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 for i in np.arange(0, 1000):
-    a = rnd.choice(numbers, size=20)
+    a = rnd.choice(numbers, size=16)
     b = np.sum(a == 9)
     z[i] = b
 
-k = np.sum(z > 3)
+k = np.sum(z >= 3)
 kk = k / 1000
 print(kk)
 ```
@@ -638,17 +636,20 @@ z <- numeric(1000)
 numbers <- 0:9
 
 for (i in 1:1000) {
-    a <- sample(numbers, 20, replace=TRUE)
+    a <- sample(numbers, 16, replace=TRUE)
     b <- sum(a == 9)
     z[i] <- b
 }
 
-k <- sum(z > 3)
+k <- sum(z >= 3)
 kk <- k / 1000
 message(kk)
 ```
 
 ::::::
+<!---
+End of ambulances notebook.
+-->
 
 Notice that the code above is *exactly* the same as the code we built up in
 steps.  But notice too, that the answer we got from this code was slightly
