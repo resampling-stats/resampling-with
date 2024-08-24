@@ -109,7 +109,7 @@ jobs:
         if: env.BOOK_SUFFIX != ''
         with:
           folder: python-book
-          repository-name: resampling-stats/python-${{ env.BOOK_SUFFIX }}
+          repository-name: resampling-stats/${{ env.BOOK_SUFFIX }}-python
           branch: main
           single-commit: true
           token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
@@ -128,7 +128,7 @@ jobs:
         if: env.BOOK_SUFFIX != ''
         with:
           folder: r-book
-          repository-name: resampling-stats/python-${{ env.BOOK_SUFFIX }}
+          repository-name: resampling-stats/${{ env.BOOK_SUFFIX }}-r
           branch: main
           single-commit: true
           token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
