@@ -1929,7 +1929,7 @@ results = np.zeros(n_trials)
 for i in range(n_trials):
     # Shuffle the drink labels..
     random_drink = rnd.permuted(drink)
-    # Note: random_drink is now an array like
+    # Note — random_drink is now an array like this:
     # [1, 0, 1, 1, 1, 0, 0, 1 ...]
 
     # Subtract the favor/don't favor set from the drink/don't drink set.
@@ -1942,7 +1942,7 @@ for i in range(n_trials):
     consistent = np.sum(diffs == 0)
     # Count the "inconsistent" responses (those not equal to 0).
     inconsistent = np.sum(diffs != 0)
-    # Find the difference
+    # Find the difference.
     diff_diff = consistent - inconsistent
     # Keep track of the results of each trial.
     results[i] = diff_diff
@@ -1988,7 +1988,7 @@ results <- numeric(n_trials)
 for (i in 1:n_trials) {
     # Shuffle the drink labels..
     random_drink <- sample(drink)
-    # Note: random_drink is now an array like
+    # Note — random_drink is now a vector like this:
     # [1, 0, 1, 1, 1, 0, 0, 1 ...]
 
     # Subtract the favor/don't favor set from the drink/don't drink set.
@@ -2001,7 +2001,7 @@ for (i in 1:n_trials) {
     consistent <- sum(diffs == 0)
     # Count the "inconsistent" responses (those not equal to 0).
     inconsistent <- sum(diffs != 0)
-    # Find the difference
+    # Find the difference.
     diff_diff <- consistent - inconsistent
     # Keep track of the results of each trial.
     results[i] <- diff_diff
