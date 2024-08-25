@@ -793,13 +793,13 @@ not perfectly correlated with the *x*'s.
 
 ### Example: sum of products correlation of athletic and IQ scores {#sec-ath-iq-sop}
 
-@tbl-ath-iq-products shows that the sum of the products of the *observed*
-I.Q. scores multiplied by athletic scores (column 7) is between the sums
-that would occur if the I.Q. scores were ranked from best to worst
-(column 3) and worst to best (column 5). The extent of correlation
-(association) can thus be measured by whether the sum of the multiples
-of the observed *x* and *y* values is relatively much higher or much lower than
-are sums of randomly-chosen pairs of *x* and *y* .
+@tbl-ath-iq-products shows that the sum of the products of the *observed* I.Q.
+scores multiplied by athletic scores (column 7) is between the sums that would
+occur if the I.Q. scores were ranked from best to worst (column 3) and worst to
+best (column 5). The extent of correlation (association) can thus be measured
+by whether the sum of the multiples of the observed *x* and *y* values is
+relatively much higher or much lower than are sums of randomly-chosen pairs of
+*x* and *y* .
 
 ```{python echo=FALSE, eval=TRUE, results="asis", message=FALSE}
 import numpy as np
@@ -826,8 +826,8 @@ out = pd.DataFrame(
           'Col 1 x Col 6': _ath * _iq}
 )
 
-sums = out.sum(axis='index')
 not_sums = [c for c in out if ' x ' not in c]
+sums = out.sum(axis='index').astype(str)
 sums[not_sums] = ''
 sums.iloc[0] = '**SUMS**'
 out2 = pd.concat([out, sums.to_frame().T])
@@ -867,7 +867,9 @@ n_trials = 10
 for t_no in range(1, n_trials + 1):
     samp_out[t_no] = rnd.permuted(_iq)
 
-samp_sums = samp_out.agg(lambda col : np.sum(col * _ath), axis='index')
+samp_sums = (samp_out.agg(
+    lambda col : np.sum(col * _ath), axis='index')
+    .astype(str))
 samp_sums.iloc[0] = '**Product sums**'
 
 samp_out2 = pd.concat([samp_out, samp_sums.to_frame().T])
