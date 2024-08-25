@@ -1,6 +1,12 @@
 """ Routines for working with grid tables
 """
 
+# We need to catch warnings, as these break up the generated Markdown.
+import warnings
+
+warnings.filterwarnings("error")
+
+
 def replace_val(part, val):
     vs = f' {val}'
     if len(vs) > len(part) - 1:

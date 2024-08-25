@@ -1343,8 +1343,9 @@ the line relating the two must be the same. The slope is a measure of how much
 the IQ score increases as the athletic score increases — it is therefore a good
 measure of the *linear association* between athletic score and IQ score.
 Because the slope of our potential line should not change between the original
-IQ score and the IQ-100 score, the association has not changed, even though the
-mean product is much smaller.
+IQ score and the IQ-100 score, a good measure of association should not change,
+when we do this subtraction.  That is not true of the mean product that is much
+smaller after the subtraction.
 
 ```{python echo=FALSE, label="fig-ath-iq-hundred", fig.cap="Scatter plot of IQ Score, IQ-100 as function of Athletic Score", eval=TRUE}
 fig, (ax1, ax2) = plt.subplots(1, 2)
@@ -1365,16 +1366,16 @@ ax2.set_title('IQ-100 (y) vs Ath. score (x)');
 fig.tight_layout()
 ```
 
-We have discovered that the mean product will change as we add or subtract
-values to one or both of the sequences.  You might also be able to see that the
-mean product will change if we multiply or divide the values in the sequence by
-some number.  In summary, the mean product depends on the *scale* or *units* of
-the values in the sequence.
+So, the mean product will change as we add or subtract values to one or both of
+the sequences.  You might also be able to see that the mean product will change
+if we multiply or divide the values in the sequence by some number.  In
+summary, the mean product depends on *position* or *location* of the values in
+the sequence (on the x and y axes), and the *scale* or *units* of the values.
 
-We would like some measure of association that does not depend on the scale of
-the sequences.  A simple approach is to put each sequence on a *standard*
-scale, by converting the original sequence values to *standard scores* (see
-@sec-standard-scores).
+We would like some measure of association that does not depend on the location
+and scale of the sequences.  A simple approach is to put each sequence on
+a *standard* scale, by converting the original sequence values to *standard
+scores* (see @sec-standard-scores).
 
 We do this by:
 
@@ -1427,7 +1428,7 @@ out = pd.DataFrame(
           })
 
 not_x = [c for c in out if ' x ' not in c]
-means = out.mean(axis='index').round(2)
+means = out.mean(axis='index').round(2).astype(str)
 means[not_x] = ''
 means.iloc[0] = '**Mean product**\n**(r value)**'
 suff = means.to_frame().T
@@ -1820,8 +1821,8 @@ upper right cells have views incompatible with their drinking habits
 (drink-yes, don't favor, or drink-no, favor).  Adding up the upper left / lower
 right diagonal gives us the total number of *compatible* responses, and adding
 the lower left / upper right diagonal gives us the *incompatible* total.
-Therefore, et an index of how strongly the table show compatible responses, we
-can subtract the incompatible total (lower left plus upper right) from the
+To get an index of how strongly the table data represents compatible responses,
+we can subtract the incompatible total (lower left plus upper right) from the
 compatible total (upper left plus lower right) for the observed data: (45 + 6)
 - (20 + 7) = 24. Then compare this difference to the comparable differences
 found in random trials. The proportion of times that the simulated-trial
