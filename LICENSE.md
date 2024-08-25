@@ -11,8 +11,9 @@ Please read the license, but the summary is that you may republish the
 You cannot redistribute modified versions of the book, except with express
 permission from the authors.
 
-The text and figures here started life as the second (1997)
-edition of "Resampling: The New Statistics" by Julian L. Simon, available at <https://www.resample.com/intro-text-online>.
+The text and figures here started life as the second (1997) edition of
+"Resampling: The New Statistics" by Julian L. Simon, available at
+<https://www.resample.com/intro-text-online>.
 
 ## Fontawesome CSS
 
