@@ -1,13 +1,13 @@
 # Resampling statistics, third edition
 
-Material for updated (third) edition of [Resampling: The New Statistics,
-second edition](http://www.resample.com/intro-text-online) by Julian L. Simon.
+Material for updated (third) edition of [Resampling: The New Statistics, second
+edition](http://www.resample.com/intro-text-online) by Julian L. Simon.
 
-The new edition is by Julian L. Simon with Matthew Brett, Stéfan van der Walt
-and Ian Nimmo-Smith.
+The new edition is by Julian L. Simon with Matthew Brett and Stéfan van der
+Walt.
 
 The latest version will always be at the [book
-website](https://resampling-stats.github.io/resampling-with).
+website](https://resampling-stats.github.io).
 
 We release the material in this repository under
 a [CC-BY-ND](https://creativecommons.org/licenses/by-nd/4.0) license, unless
@@ -23,8 +23,9 @@ into the `source` directory, and edit them there.
 
 ### Create and switch to virtual environment
 
-Typically, you will want to install Python build dependencies in a [virtual environment](https://peps.python.org/pep-0405/).
-You can place such an environment anywhere you like. This is how to create it in `~/envs`:
+Typically, you will want to install Python build dependencies in a [virtual
+environment](https://peps.python.org/pep-0405/). You can place such an
+environment anywhere you like. This is how to create it in `~/envs`:
 
 ```
 mkdir ~/envs
