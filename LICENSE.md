@@ -1,7 +1,7 @@
 # License
 
-All material copyright Julian Lincoln Simon, Matthew Brett, Stéfan van der Walt
-and Ian Nimmo-Smith.  All rights reserved.
+All material copyright Julian Lincoln Simon, Matthew Brett and Stéfan van der
+Walt; all rights reserved.
 
 We release the text and figures for this book under a [CC-BY-ND
 license](https://creativecommons.org/licenses/by-nd/4.0).
