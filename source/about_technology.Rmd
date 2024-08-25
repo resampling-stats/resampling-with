@@ -556,15 +556,14 @@ You will need to install the Python language on your computer, and then install 
 * Statsmodels - for traditional statistical analysis.
 * Jupyter - to run the Jupyter Notebook on your own computer.
 
-One easy way to all install all these packages on Windows, Mac or Linux, is to
-use the *Anaconda Python distribution* [^anaconda_distro].  Anaconda provides
-a single installer that will install Python and all the packages above, by
-default.
+One way to install Python and the packages you need, is to install Python from
+the Python website [^python-lang]. Then use the *Pip* [^pip] installer to
+install the packages you need.
 
-Another method is to install Python from the Python website [^python-lang].
-Then use the *Pip* [^pip] installer to install the packages you need.
-
-To use Pip, start a terminal (Start key, "cmd" in Windows, Command key and space then "Terminal" on Mac), and then, at the prompt, type:
+To install the Python packages, first start a terminal application on your
+computer. To do this, you can use the Start key, "cmd" in Windows, or the
+Command key and space then "Terminal" on Mac.  At the terminal prompt, type the
+following command:
 
 ```{bash, eval=FALSE}
 pip install numpy matplotlib scipy pandas statsmodels jupyter
