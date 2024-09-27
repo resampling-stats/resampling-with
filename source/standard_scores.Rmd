@@ -37,10 +37,12 @@ small (low rank)?
 
 We can convert ranks to quantile positions.  Quantile positions are values from
 0 through 1 that are closer to 1 for high rank values, and closer to 0 for low
-rank values.  Each value in the data has a rank, and a corresponding quantile
+rank values.  The smallest value (and the value with the lowest rank) will have
+quantile position 0, the largest value (highest rank) will have quantile
+position 1. Each value in the data has a rank, and a corresponding quantile
 position.  We can also look at the *value* corresponding to each quantile
-position, and these are the *quantiles*. You will see what we mean later in the
-chapter.
+position, and these are the *quantile values*, usually called simply
+— *quantiles*. You will see what we mean later in the chapter.
 
 Ranks and quantile positions give an idea whether the measure is high or low
 compared to the other values, but they do not immediately tell us whether the
@@ -136,16 +138,16 @@ priv <- c(4.82, 5.29, 4.89, 4.95, 4.55, 4.90, 5.25, 5.30, 4.29, 4.85, 4.54,
           5.20, 5.10, 4.80, 4.29)
 ```
 
-Now we have 441 values to enter, and it is time to introduce {{< var lang >}}s
+Now we have 441 values to enter, and it is time to introduce {{< var lang >}}'s
 standard tools for loading data.
 
 ### Comma-separated-values (CSV) format {#sec-csv-format}
 
 The data we will load is in a file on disk called `data/congress_2023.csv`.
 These are data from Kaptur's table in a comma-separated-values (CSV) format
-file. We refer to this file with its *filename*, containing the directory
-(`data/`) followed by the name of the file (`congress_2023.csv`), giving
-a filename of `data/congress_2023.csv`.
+file. We refer to this file with its *filename*, that starts with the directory
+(folder) containing the file — `data/` — followed by the name of the file
+(`congress_2023.csv`), giving a filename of `data/congress_2023.csv`.
 
 The *CSV format* is a very simple text format for storing table data.
 Usually, the first line of the CSV file contains the column names of the
@@ -247,7 +249,7 @@ A data frame is Pandas' own way of representing a table, with columns and rows.
 You can think of it as Python's version of a spreadsheet.  As strings or Numpy
 arrays have *methods* (functions attached to the array), so Pandas data
 frames have methods.  These methods do things with the data frame to which they
-are attached.  For example, the `head` method of the data frame shows (by
+are attached.  For example, the `head` method of the data frame gives us (by
 default) the first five rows in the table:
 
 ```{python}
@@ -257,14 +259,6 @@ district_income.head()
 
 The data are in income order, from lowest to highest, so the first five
 districts are those with the lowest household income.
-
-:::{.callout-note}
-## Sorting
-
-If the data were not already in income order, we could have sorted them with
-{{< var np_or_r >}}'s `sort` function.
-
-:::
 
 We are particularly interested in the column named `Median_Income`.
 
@@ -401,7 +395,7 @@ len(incomes)
 length(incomes)
 ```
 
-While we are at it, let us also get the values from the "Ascending_Rank"
+While we are at it, let us also get the values from the `Ascending_Rank`
 column, with the same procedure.  These are ranks from low to high, meaning
 1 is the lowest median income, and 441 is the highest median income.
 
@@ -457,7 +451,7 @@ One of the many functions in `scipy.stats` is the `rankdata` function.
 
 ### Calculating ranks
 
-As you might expect [`rank`]{.r}[`sps.rankdata`]{.python} accepts {{< var
+As you might expect, [`rank`]{.r}[`sps.rankdata`]{.python} accepts {{< var
 an_array >}} as an input argument.  Let's say that there are
 [`n <- length(data)`]{.r}[`n = len(data)`]{.python}
 values in the {{< var array >}} that we pass to
@@ -605,10 +599,10 @@ greater or smaller than most of the other values?
 
 One way of answering that question is simply looking at the rank of the values.
 If the rank is lower than $\frac{441}{2} = 220.5$ then this is a district with
-lower median income than most districts.  If it is greater than $220.5$ then
-it has higher median income than most districts.  We see that KM's district,
-with rank `r get_var('km_rank')` is wealthier than most, whereas AOC's
-district (rank `r get_var('aoc_rank')`) is poorer than most.
+lower income than most districts.  If it is greater than $220.5$ then it has
+higher income than most districts.  We see that KM's district, with rank `r
+get_var('km_rank')`, is wealthier than most, whereas AOC's district (rank `r
+get_var('aoc_rank')`) is poorer than most.
 
 But we can't interpret the ranks without remembering that there are 441 values,
 so — for example - a rank of 81 represents a relatively low value, whereas one
@@ -927,8 +921,8 @@ of getting the value using the numerical equivalent of the graphical method is
 Linear interpolation calculates the quantile value as a *weighted average* of
 the quantile values for the QPs of the whole number ranks just less than, and
 just greater than the QP we are interested in. For example, let us return to
-the QP of $0.01$.  Let us remind ourselves of the QPs, whole-number ranks and
-corresponding values either side of the QP $0.01$:
+the QP of $0.01$.  Here are the QPs, whole-number ranks and corresponding
+values either side of the QP $0.01$:
 
 | Rank | Quantile position | Quantile value |
 |------|-------------------|----------------|
@@ -1272,8 +1266,8 @@ mean_squared_deviation
 ```
 
 Rather confusingly, the field of statistics uses the term *variance* to refer
-to mean squared deviation value.  Just to emphasize that naming, let's
-do the same calculation but using "variance" as the variable name.
+to the mean squared deviation value.  Just to emphasize that naming, let's do
+the same calculation but using "variance" as the variable name.
 
 ```{python}
 # Statistics calls the mean squared deviation - the "variance"
@@ -1306,8 +1300,8 @@ dollars rather than squared dollars.
 
 So we take the square root of the mean squared deviation (the square root of
 the variance), to get the *standard deviation*.  It is the *standard* deviation
-in the sense that it a measure of *typical* deviation, in the specific sense of
-the square root of the mean squared deviations.
+in that it is a measure of *typical* deviation, in the specific sense of the
+square root of the mean squared deviations.
 
 ```{python}
 # The standard deviation is the square root of the mean squared deviation.
@@ -1347,7 +1341,7 @@ spread.
 mean, the mean plus or minus one standard deviation, and the mean plus or minus
 two standard deviations.  You can see that the mean plus or minus one standard
 deviation includes a fairly large proportion of the data.  The mean plus or
-minus two standard deviation includes much larger proportion.
+minus two standard deviation includes a much larger proportion.
 
 ```{python, eval=TRUE, echo=FALSE, label=fig-mean-stds, fig.cap='Income histogram plus or minus 1 and 2 standard deviations'}
 m = mean_income
@@ -1716,15 +1710,15 @@ standard score units in points.
 When we look at a set of values, we often ask questions about whether
 individual values are unusual or surprising.  One way of doing that is to look
 at where the values are in the sorted order — for example, using the raw rank
-of values, or the proportion of values below this value — the quantiles or
-percentiles of a value.  Another measure of interest is where a value is in
-comparison to the spread of all values either side of the mean.  We use the
-term "deviations" to refer to the original values after we have subtracted the
-mean of the values.  We can measure spread either side of the mean with metrics
-such as the mean of the absolute deviations (MAD) and the square root of the
-mean squared deviations (the standard deviation).  One common use of the
-deviations and the standard deviation is to transform values into *standard
-scores*.  These are the deviations divided by the standard deviation, and they
-transform values to have a standard mean (zero) and spread (standard deviation
-of 1).  This can make it easier to compare sets of values with very different
-ranges and means.
+of values, or the proportion of values below this value — the quantile position
+or percentile position of a value.  Another measure of interest is where
+a value is in comparison to the spread of all values either side of the mean.
+We use the term "deviations" to refer to the original values after we have
+subtracted the mean of the values.  We can measure spread either side of the
+mean with metrics such as the mean of the absolute deviations (MAD) and the
+square root of the mean squared deviations (the standard deviation).  One
+common use of the deviations and the standard deviation is to transform values
+into *standard scores*.  These are the deviations divided by the standard
+deviation, and they transform values to have a standard mean (zero) and spread
+(standard deviation of 1).  Standard scores make it easier to compare sets of
+values with very different ranges and means.
