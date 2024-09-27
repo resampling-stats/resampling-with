@@ -350,8 +350,8 @@ a
 ```
 
 The commands above ask the computer to store the results of the random drawing
-in a location in the computer's memory to which we give a name such as "a" or
-"ambulances" or "aardvark" — the name is up to us.
+in a location in the computer's memory to which we give a name such as `a` or
+`ambulances` or `aardvark` — the name is up to us.
 
 Next, we need to count the number of defective ambulances:
 
@@ -655,7 +655,8 @@ Notice that the code above is *exactly* the same as the code we built up in
 steps.  But notice too, that the answer we got from this code was slightly
 different from the answer we got first.
 
-Why did we get a different answer from the same code?
+Why did we get a different answer from the same code?  See if you can come up
+with a good answer before reading the explanation below.
 
 :::{.callout-note}
 ## Randomness in estimates
@@ -674,9 +675,9 @@ Don't worry about the detail of how each of these commands works — we will
 cover those details gradually, over the next few chapters.  But, we hope that
 you can see, in principle, how each of the operations that the computer carries
 out are analogous to the operations that you yourself executed when you solved
-this problem using the equivalent of a ten-sided die. This is exactly the
-procedure that we will use to solve every problem in probability and statistics
-that we must deal with.
+this problem using the ten-sided dice. This is exactly the procedure that we
+will use to solve every problem in probability and statistics that we must deal
+with.
 
 While writing programs like these take a bit of getting used to, it is
 vastly simpler than the older, more conventional approaches to such
