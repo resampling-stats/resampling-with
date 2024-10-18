@@ -189,7 +189,7 @@ a *good enough* approximation for your purposes.)
 
 The probability that a fair coin will turn up heads is .50 or 50-50, close to
 the probability of having a daughter. Therefore, flip a coin in groups of four
-flips, and count how often three of the flips produce *heads* . (You must
+flips, and count how often three of the flips produce *heads*.  (You must
 decide in *advance* whether three heads means three girls or three boys.) It is
 as simple as that.
 
@@ -317,7 +317,7 @@ the computer solution we would have used the statement
 It is important that, in this case, in contrast to what we did in
 the example from @sec-one-pair (the introductory poker example), the card is
 *replaced* each time so that each card is dealt from a full deck. This method
-is known as *sampling with replacement* . One samples with replacement whenever
+is known as *sampling with replacement*.  One samples with replacement whenever
 the successive events are *independent* ; in this case we assume that the
 chance of having a daughter remains the same (1 girl in 2 births) no matter
 what sex the previous births were [^what-sex]. But, if the first card dealt is
@@ -340,8 +340,7 @@ replacement, it is *impossible* to obtain 4 "daughters" with the 6-card
 deck because there are only 3 "daughters" in the deck. To repeat, then,
 whenever you want to estimate the probability of some series of events
 where each event is independent of the other, you must sample *with
-replacement* .
-
+replacement*.
 ## Variations of the daughters problem
 
 In later chapters we will frequently refer to a problem which is

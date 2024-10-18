@@ -868,8 +868,7 @@ message(n_triples / 10000)
 To estimate the probability of getting a two-pair hand, we revert to the
 original program (counting pairs), except that we examine all the
 results in the score-keeping vector `z` for hands in which we had *two* pairs,
-instead of *one* .
-
+instead of *one*.
 ::: {.notebook name="two_pairs" title="Two pairs"}
 
 ::: nb-only
