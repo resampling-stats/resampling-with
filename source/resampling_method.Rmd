@@ -154,7 +154,7 @@ the probability that three or more ambulances will be out-of-order on any given
 day.
 
 Soon we will do all these steps with some {{< var lang >}} code, but for now,
-consider Table @tbl-veh-numbers.  In each row, we placed 16 numbers, each one
+consider @tbl-veh-numbers.  In each row, we placed 16 numbers, each one
 representing an ambulance.  We added 25 such rows, each representing
 a simulation of one day.
 
@@ -194,7 +194,7 @@ ketable(py$df_counts,
         caption='25 simulations of 16 ambulances, with counts')
 ```
 
-Each value in the last column of Table @tbl-veh-numbers-counts is the count of
+Each value in the last column of @tbl-veh-numbers-counts is the count of
 9s in that row and, therefore, the result from our simulation of one day.
 
 We can estimate how often three or more ambulances would break down by looking
