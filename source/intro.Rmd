@@ -50,7 +50,7 @@ whether to buy insurance.
 These are some examples of the kinds of problems that we can handle with the
 methods described in this book:
 
-1. *You are a doctor* trying to develop a treatment for COVID19. Currently you
+1. *You are a doctor* trying to develop a treatment for Covid. Currently you
    are working on a medicine labeled AntiAnyVir. You have data from patients to
    whom medicine AntiAnyVir was given. You want to judge on the basis of those
    results whether AntiAnyVir really improves survival or whether it is no
@@ -70,9 +70,8 @@ methods described in this book:
 2. *You are an environmental scientist* monitoring levels of phosphorus
    pollution in a lake.  The phosphorus levels have been fluctuated around a
    relatively low level until recently, but they have been higher in the last
-   few years. Does these recent higher levels indicate some important change or
-   can we put them down to some chance and ordinary variation from year to
-   year?
+   few years. Do these recent higher levels indicate some important change or
+   can we put them down to ordinary variation from year to year?
 
 The core of all these problems, and of the others that we will deal with in
 this book, is that you want to know the "chance" or "probability" — different
@@ -90,14 +89,14 @@ decisions, related to the questions about probability stated above, that
 ultimately we would like to make:
 
 1. *Should you (the researcher) advise doctors to prescribe medicine
-   AntiAnyVir* for COVID19 patients, or, should you (the researcher) continue
+   AntiAnyVir* for Covid patients, or, should you (the researcher) continue
    to study AntiAnyVir before releasing it for use? A related matter: should
    you and other research workers feel sufficiently encouraged by the results
    of medicine AntiAnyVir so that you should continue research in this general
    direction rather than turning to some other promising line of research?
    These are just two of the possible decisions that might be influenced by
    the answer to the question about the probability that medicine AntiAnyVir
-   is effective in treating COVID19.
+   is effective in treating Covid.
 
 2. *Should you advise the Republicrat presidential candidate to go to New
    Hampshire* to campaign? If the poll tells you conclusively that she or he
@@ -158,7 +157,8 @@ add up all the SRP values to give the *total*.  We could also divide the total
 by the number of measurements, to give the *average*.  Or we could measure the
 spread of the values by finding the *minimum* and the *maximum* — see table
 @tbl-srp-stats). All these numbers are *descriptive statistics*, because
-they are summaries that *describe* the collection of SRP measurements.
+they are numbers that summarize and therefore *describe* the collection of SRP
+measurements.
 
 
 ```{python, eval=TRUE, echo=FALSE}
@@ -240,7 +240,7 @@ time and that of other people to research in other directions, with some chance
 that the other research will produce a less-general but nevertheless useful
 treatment for some relatively infrequent viral infections. Those three
 possibilities have different social benefits. The probability that medicine
-AntiAnyVir really has some benefit in treating COVID19, as judged by your prior
+AntiAnyVir really has some benefit in treating Covid, as judged by your prior
 research, obviously will influence your decision on whether or not to do more
 research on medicine AntiAnyVir. But that judgment about the probability is
 only one part of the overall web of consequences and evaluations that must be
@@ -292,9 +292,9 @@ research thinking. Alfred Kinsey long ago put it this way:
 > ... no statistical treatment can put validity into generalizations which are
 > based on data that were not reasonably accurate and complete to begin with.
 > It is unfortunate that academic departments so often offer courses on the
-> statistical manipulation of human material to students who have little
-> understanding of the problems involved in securing the original data. ...
-> When training in these things replaces or at least precedes some of the
+> statistical manipulation of [data from human behavior] to students who have
+> little understanding of the problems involved in securing the original data.
+> ... When training in these things replaces or at least precedes some of the
 > college courses on the mathematical treatment of data, we shall come nearer
 > to having a science of human behavior. [@kinsey1948sexual, p 35].
 
@@ -345,10 +345,10 @@ Scan this book and you will find almost no formal mathematics. Yet
 nearly every student finds the subject very difficult —  as difficult as
 anything taught at universities. The root of the difficulty is that the
 *subject matter* is extremely difficult. Let's find out *why*.
-It is easy to find out with high precision which movie is playing
-tonight at the local cinema; you can look it up on the web or call the cinema
-and ask. But consider by contrast how difficult it is to determine with
-accuracy:
+
+It is easy to find out with high precision which movie is playing tonight at
+the local cinema; you can look it up on the web or call the cinema and ask. But
+consider by contrast how difficult it is to determine with accuracy:
 
 1. Whether we will save lives by recommending vitamin D supplements for the
    whole population as protection against viral infections.  Some evidence

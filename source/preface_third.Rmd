@@ -29,12 +29,12 @@ The book in your hands, or on your screen, is the third edition of a book
 originally called "Resampling: the new statistics", by Julian Lincoln Simon
 [-@simon1992resampling].
 
-One of the pleasures of writing an edition of someone else's book is that
-we have some freedom to praise a previous version of our own book.   We will
-do that, in the next section.  Next we talk about the resampling methods in
-this book, and their place at the heart of "data science",  Finally, we
-discuss what we have changed, and why, and make some suggestions about where
-this book could fit into your learning and teaching.
+One of the pleasures of writing a new edition of a work by another author, is
+that we can praise the previous version of our own book.   We will do that, in
+the next section.  Next we talk about the resampling methods in this book, and
+their place at the heart of "data science".  We then discuss what we have
+changed, what we haven't, and why. Finally, we make some suggestions about
+where this book could fit into your learning and teaching.
 
 ## What Simon saw
 
@@ -53,10 +53,10 @@ mathematics. Most students cannot follow along and quickly get lost, reducing
 the subject to — as Simon puts it — "mumbo-jumbo".
 
 On its own, this was not a new realization.  Simon quotes a classic textbook by
-Wallis and Roberts [-@wallis1956statistics], in which they compare teaching
-statistics through mathematics to teaching in a foreign language.  More
-recently, other teachers of statistics have come to the same conclusion. Cobb
-[-@cobb2007introductory] argues that it is practically impossible to teach
+Wallis and Roberts [-@wallis1956statistics], to the effect that teaching
+statistics through mathematics is like teaching philosophy in ancient Greek.
+More recently, other teachers of statistics have come to the same conclusion.
+Cobb [-@cobb2007introductory] argues that it is not practical to teach
 students the level of mathematics they would need to understand standard
 introductory courses.  As you will see below, Cobb also agrees with Simon
 about the solution.
@@ -67,37 +67,37 @@ appears in the original preface: "Beneath the logic of a statistical inference
 there necessarily lies a physical process". Drawing conclusions from noisy
 data means building a *model* of the noisy world, and seeing how that model
 behaves. That model can be physical, where we generate the noisiness of the
-world using physical devices like dice and spinners and coin-tosses. In fact,
-Simon used exactly these kinds of devices in his first experiments
-in teaching [@simon1969basic]. He then saw that it was much more efficient to
-build these models with simple computer code, and the result was the first and
-second editions of this book, with their associated software, the *Resampling
-Stats* language.
+world using physical devices like dice and spinners and coin-tosses.
+Simon used exactly these kinds of devices in his first experiments in teaching
+[@simon1969basic]. He then saw that it was much more efficient to build these
+models with simple computer code, and the result was the first and second
+editions of this book, with their associated software, the *Resampling Stats*
+language.
 
-Simon's second conclusion follows from the first. Now that Simon had stripped
-away the unnecessary barrier of mathematics, he had got to the heart of what is
-interesting and difficult in statistics.  Drawing conclusions from noisy data
-involves a lot of hard, clear thinking.  We need to be honest with our students
-about that; statistics is hard, not because it is obscure (it need not be), but
-because it deals with difficult problems. It is exactly that hard logical
-thinking that can make statistics so interesting to our best students;
+Simon's second conclusion follows from the first. Now he had found a path
+round the unnecessary barrier of mathematics, he had got to the heart of what
+is interesting and difficult in statistics.  Drawing conclusions from noisy
+data involves a lot of hard, clear thinking.  We should be honest with our
+students about that; statistics is hard, not because it is obscure (it need
+not be), but because it deals with difficult problems. It is exactly that hard
+logical thinking that can make statistics so interesting to our best students;
 "statistics" is just reasoning about the world when the world is noisy.  Simon
 writes eloquently about this in a section in the introduction — "Why is
 statistics such a difficult subject" (@sec-stats-difficult).
 
-We needed both of Simon's conclusions to get anywhere.   We cannot hope to
+We need both of Simon's conclusions to make progress.   We cannot hope to
 teach two hard subjects at the same time; mathematics, and statistical
-reasoning. That is what Simon has done: he replaced the mathematics with
-something that is much easier to reason about. Then he can concentrate on the
-real, interesting problem — the hard thinking about data, and the world it
-comes from. To quote from a later section in this book
-(@sec-resamp-differs): "Once we get rid of the formulas and tables, we can
-see that statistics is a matter of *clear thinking, not fancy mathematics*."
-Instead of asking "where would I look up the right recipe for this", you
-find yourself asking "what kind of world do these data come from?" and "how
-can I reason about that world?".  Like Simon, we have found that this way of
-thinking and teaching is almost magically liberating and satisfying.  We hope
-and believe that you will find the same.
+reasoning.  He replaced the mathematics with something that is much easier for
+most of us to reason about.  By doing that, he can concentrate on the real,
+interesting problem — the hard thinking about data, and the world it comes
+from. To quote from a later section in this book (@sec-resamp-differs): "Once
+we get rid of the formulas and tables, we can see that statistics is a matter
+of *clear thinking, not fancy mathematics*." Instead of asking "where would
+I look up the right recipe for this?", you find yourself asking "what kind of
+world do these data come from?" and "How can I reason about that world?".
+Like Simon, we have found that this way of thinking and teaching brings rich
+rewards — for insight and practice.  We hope and believe that you will find
+the same.
 
 ## Resampling and data science {#sec-resampling-data-science}
 
@@ -135,11 +135,11 @@ what it should do with data; it is the native language of data analysis.
 
 This insight transforms the way with think of code.  In the past, we have
 thought of code as a separate, specialized skill, that some of us learn.  We
-take coding courses — we "learn to code".   If code is the fundamental
-language for analyzing data, then we need code to express what data analysis
-does, and explain how it works.  Here we "code to learn".  Code is not an aim
-in itself, but a language we can use to express the simple ideas behind data
-analysis and statistics.
+take coding courses — we "learn to code".   But if we us code as the
+fundamental language for analyzing data, then we need code to express what
+data analysis does, and explain how it works.  Here we "code to learn".  Code
+is not an aim in itself, but a language we can use to express the simple ideas
+behind data analysis and statistics.
 
 Thus the data science movement started from code as the foundation for data
 analysis, to using code to explain statistics.  It ends at the same place as
@@ -153,37 +153,41 @@ goes on to explain why there is so much mathematics, and why we should remove
 it. In the age before ubiquitous computing, we needed mathematics to simplify
 calculations that we could not practically do by hand. Now we have great
 computing power in our phones and laptops, we do not have this constraint, and
-we can use simpler resampling methods to solve the same problems. As Simon
-shows, these are much easier to describe and understand. Data science, and
-teaching with resampling, are the obvious consequences of ubiquitous
-computing.
+we can use simpler ideas from resampling methods to solve the same problems.
+As Simon shows, these are much easier to describe and understand. Data
+science, and teaching with resampling, are the obvious consequences of
+ubiquitous computing.
 
 ## What we changed
 
 This diversion, through data science, leads us to the changes that we have made
 for the new edition.  The previous edition of this book is still excellent, and
-you can read it free, online, at <http://www.resample.com/intro-text-online>.
+you can read it freely at <http://www.resample.com/intro-text-online>.
 It continues to be ahead of its time, and ahead of our time.  Its one major
 drawback is that Simon bases much of the book around code written in a special
-language that he developed with Dan Weidenfeld, called *Resampling Stats*. The
-Resampling Stats language is well designed for expressing the steps in
-simulating worlds that include elements of randomness, and it was a useful
-contribution at the time that it was written. Since then, and particularly in
-the last decade, there have been many improvements in more powerful and general
-languages, such as {{< var lang >}} and {{< var other_lang >}}.  These
-languages are particularly suitable for beginners in data analysis, and they
-come with a huge range of tools and libraries for a many tasks in data
-analysis, including the kinds of models and simulations you will see in this
-book.  We have updated the book to use {{< var lang >}}, instead of *Resampling
-Stats*.  If you already know {{< var lang >}} or a similar language, such as
-{{< var other_lang >}}, you will have a big head start in reading this book,
-but even if you do not, we have written the book so it will be possible to pick
-up the {{< var lang >}} code that you need to understand and build the kind of
-models that Simon uses. The advantage to us, your authors, is that we can use
-the very powerful tools associated with {{< var lang >}} to make it easier to
-run and explain the code. The advantage to you, our readers, is that you can
-also learn these tools, and the {{< var lang >}} language.  They will serve you
-well for the rest of your career in data analysis.
+language that he developed with Dan Weidenfeld, called *Resampling
+Stats*^[stats101]. The Resampling Stats language is well designed for
+expressing the steps in simulating worlds that include elements of randomness,
+and it was a useful contribution at the time that it was written. Since then,
+and particularly in the last decade, there have been many improvements in more
+powerful and general languages, such as {{< var lang >}} and {{< var
+other_lang >}}.  These languages are particularly suitable for beginners in
+data analysis, and they come with a huge range of tools and libraries for
+a many tasks in data analysis, including the kinds of models and simulations
+you will see in this book.  We have updated the book to use {{< var lang >}},
+instead of *Resampling Stats*.  If you already know {{< var lang >}} or
+a similar language, such as {{< var other_lang >}}, you will have a big head
+start in reading this book, but even if you do not, we have written the book
+so it will be possible to pick up the {{< var lang >}} code that you need to
+understand and build the kind of models that Simon uses. The advantage to us,
+your authors, is that we can use the very powerful tools associated with {{<
+var lang >}} to make it easier to run and explain the code. The advantage to
+you, our readers, is that you can also learn these tools, and the
+{{< var lang >}} language.  They will serve you well for the rest of your
+career in data analysis.
+
+[^stats101]: If you are interested, <https://statistics101.sourceforge.io> has
+   a free modern version of the original Resampling Stats language.
 
 <!---
 * The true novelty of resampling as teaching method
@@ -198,12 +202,12 @@ Simon specifically left out.   Simon knew that his approach was radical for
 its time, and designed his book as a commentary, correction, and addition to
 traditional courses in statistics.  He assumes some familiarity with the older
 world of normal distributions, standard deviations, and correlation.  We want
-this book to useful to the true beginner, so we have added some explanation
-standard deviations, standard scores and the correlation coefficient.
+this book to useful to the true beginner, so we have added some explanation of
+standard deviation, standard scores and the correlation coefficient. We have also updated some of the examples.
 
-We have also updated some the examples, but we have deliberately been light in
-our edits, to give you the fresh and creative flavor of Simon's book, as he
-worked through the landscape of traditional statistics with his radical eye.
+In this third edition, we have deliberately been light in our edits, to
+preserve the fresh and creative flavor of Simon's book, as he worked through
+the landscape of traditional statistics with his radical eye.
 
 ## The third edition is the director's cut, where Simon is the director
 
@@ -211,10 +215,10 @@ As you see from the section above, the largest change for this edition is to
 update the code sections to use {{< var lang >}}.  We intend this edition to be
 as close as possible to the book that Simon intended, but updated to use modern
 tools and a standard, widely-used programming language.  Read this edition as
-our service to Simon for his visionary work — this is Simon's book, and we
-(Matthew and Stéfan) intend to serve mainly as his editors and interpreters. We
-release this edition so you can see Simon's ideas updated to current
-technology.
+our service to Simon for his visionary work — this is Simon's book, and, for
+this edition, we (Matthew and Stéfan) intend to serve as his editors and
+interpreters. We release this edition so you can see Simon's ideas updated to
+current technology.
 
 ## Who should read this book, and when
 
@@ -249,20 +253,20 @@ discover a radical new method of explanation in statistics and probability.
 The book will still work well for that purpose.  If you have done a statistics
 course, but you kept feeling that you did not really understand it, or there
 was something fundamental missing that you could not put your finger on —
-good for you! — then, please, read this book. There is a good chance that it
-will give you deeper understanding, and reveal the logic behind the often
-arcane formulations of traditional statistics.
+well done for sensing the problem! — then, please, read this book. There is
+a good chance that it will give you deeper understanding, and reveal the logic
+behind the often arcane formulations of traditional statistics.
 
 Our book is only part of a data science course.  There are several important
 aspects to data science. A data science course needs all the elements we list
 above, but it should also cover the process of reading, cleaning, and
 reorganizing data using {{< var lang >}}, or another language, such as {{< var
-other_lang >}} It may also go into more detail about the experimental design,
-and cover prediction techniques, such as classification with machine learning,
-as well as data exploration with plots, tables, and summary measures.  We do
-not cover those here.  If you are teaching a full data science course, we
-suggest that you use this book as your first text, as an introduction to code,
-and statistical inference, and then add some of the many excellent resources on
+other_lang >}}.  It may also discuss the problems of experimental design, and
+cover prediction techniques, such as classification with machine learning, as
+well as data exploration with plots, tables, and summary measures.  We do not
+cover those here.  If you are teaching a full data science course, we suggest
+that you use this book as your first text, as an introduction to code, and
+statistical inference, and then add some of the many excellent resources on
 these other aspects of data science that assume some knowledge of statistics
 and programming.
 
