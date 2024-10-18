@@ -61,17 +61,19 @@ The resampling approach produces the estimate as follows.
 
 ### Randomness from physical methods
 
-We collect 10 coins, and mark one of them with a pen or pencil or tape as being
-the coin that represents "out-of-order;" the other nine coins stand for "in
+We collect 10 coins, and mark one of them with a pen or pencil as being the
+coin that represents "out-of-order;" the other nine coins stand for "in
 operation". For any one ambulance, this set of 10 coins provides a "model" for
 the one-in-ten chance — a probability of .10 (10 percent) — of it being out of
 order on a given day.  We put the coins into a little jar or bucket.
 
 For ambulance #1, we draw a single coin from the bucket.  This coin represents
-whether that ambulance is going to be broken tomorrow. After replacing the coin
-and shaking the bucket, we repeat the same procedure for ambulance #2,
-ambulance #3 and so forth. Having repeated the procedure *16* times, we now
-have a representation of all ambulances for a single day.
+whether that ambulance is going to be broken tomorrow.  If we draw the marked
+coin, we label this ambulance as out-of-order, otherwise we label the ambulance
+as in-operation.  After replacing the coin and shaking the bucket, we repeat
+the same procedure for ambulance #2, ambulance #3 and so forth. Having repeated
+the procedure *16* times, we now have a representation of all ambulances for
+a single day.
 
 We can now repeat this whole process as many times as we like: each time, we
 come up with a representation for a different day, telling us how many
@@ -170,9 +172,9 @@ trials = rng.integers(0, 10, size=(n_trials, n_vehicles))
 
 df = pd.DataFrame(
     trials,
-    index=[f'Day {i + 1}' for i in range(n_trials)],
     columns=[f'A{i + 1}' for i in range(n_vehicles)]
 )
+df.insert(0, 'Day', range(1, n_trials + 1))
 ```
 
 ```{r, label="tbl-veh-numbers", eval=TRUE, echo=FALSE}
@@ -180,7 +182,7 @@ ketable(py$df, caption='25 simulations of 16 ambulances')
 ```
 
 To know how many ambulances were "out of order" on any given day, we count
-number of ones in that row.  We place the counts in the final column called
+number of nines in that row.  We place the counts in the final column called
 "#9" (for "number of nines"):
 
 ```{python, eval=TRUE, echo=FALSE}
@@ -198,12 +200,11 @@ Each value in the last column of @tbl-veh-numbers-counts is the count of
 9s in that row and, therefore, the result from our simulation of one day.
 
 We can estimate how often three or more ambulances would break down by looking
-for values of three or greater in the last column.  We find there are
-`r sum(py$df_counts['#9'] >= 3)`
-rows with three or more in the last column. Finally we divide this number of rows
-by the number of trials (`r py$n_trials`) to get an estimate of the
-*proportion* of days with three or more breakdowns. The result is
-`r sum(py$df_counts['#9'] >= 3) / py$n_trials`.
+for values of three or greater in the last column (labeled "#9").  We find
+there are `r sum(py$df_counts['#9'] >= 3)` rows with three or more in the last
+column. Finally we divide this number of rows by the number of trials
+(`r py$n_trials`) to get an estimate of the *proportion* of days with three or
+more breakdowns. The result is `r sum(py$df_counts['#9'] >= 3) / py$n_trials`.
 
 ## Solving the problem using {{< var lang >}}
 
@@ -258,59 +259,22 @@ Our next task is to use {{< var lang >}} to simulate a single day of
 ambulances.  We will again represent each ambulance by a random number
 from 0 through 9.  16 of these numbers represents a simulation of all
 16 ambulances available to the contractor.  We call a simulation of all
-ambulances for a specific day one *trial*.
+ambulances for a specific day — one *trial*.
 
 ::: python
 Before we begin our first trial, we need to load some helpful routines
-from the NumPy software library.  NumPy is a Python library that has
+from the Numpy software library.  Numpy is a Python library that has
 many important functions for creating and working with numerical data.
-We will use routines from NumPy in almost all our examples.
+We will use routines from Numpy in almost all our examples.
 
 ```{python}
 # Get the Numpy library, and call it "np" for short.
 import numpy as np
 ```
 
-We also need to ask NumPy for an object that can generate random numbers. Such
-an object is known as a "random number generator".
-
-```{python}
-# Ask NumPy for a random number generator.
-# Name it `rnd` — short for "random"
-rnd = np.random.default_rng()
-```
-
-:::{#nte-numpy-rng .callout-note}
-## NumPy's Random Number Generator
-
-Here are some examples of the random operations we can perform with
-NumPy:
-
-1. Make a random choice between three words:
-
-   ```{python}
-   rnd.choice(['apple', 'orange', 'banana'])
-   ```
-
-2. Make five random choices of three words, using the "size=" argument:
-
-   ```{python}
-   rnd.choice(['apple', 'orange', 'banana'], size=5)
-   ```
-
-3. Shuffle a list of numbers:
-
-   ```{python}
-   rnd.permutation([1, 2, 3, 4, 5])
-   ```
-
-4. Generate five random numbers between 1 and 10:
-
-   ```{python}
-   rnd.integers(1, 11, size=5)
-   ```
-:::
-
+We also need to ask Numpy for something (that we will call an "object") that
+can generate random numbers. Such an object is known as a "random number
+generator".
 :::
 
 Recall that we want 16 10-sided dice — one per ambulance.  Our dice should
@@ -320,13 +284,13 @@ The program to simulate one trial of the ambulances problem therefore
 begins with these commands:
 
 ```{python}
-# Ask NumPy to generate 16 numbers from 0 through 9.
+# Ask Numpy to generate 16 numbers from 0 through 9.
 
-# These are the numbers we will ask NumPy to select from.
+# These are the numbers we will ask Numpy to select from.
 # We store the numbers together in an *array*.
 numbers = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
-# Get 16 (size=16) values from the *numbers* list.
+# Get 16 (size=16) values from the *numbers* array.
 # Store the 16 numbers with the name "a"
 a = rnd.choice(numbers, size=16)
 
@@ -373,10 +337,7 @@ b <- sum(a == 9)
 b
 ```
 
-:::{.callout-note}
-## Counting sequence elements
-
-We see that the code uses:
+You see that we have code like this:
 
 ```{python}
 np.sum(a == 9)
@@ -386,23 +347,12 @@ np.sum(a == 9)
 sum(a == 9)
 ```
 
-What exactly happens here under the hood?  First `a == 9` creates an sequence
-of values that only contains
-{{< var true >}} or {{< var false >}}
-values, depending on whether each element is equal to 9 or not.
-
-Then, we ask {{< var lang >}} to add up (`sum`). {{< var lang >}} counts {{<
-var true >}} as 1, and {{< var false >}} as 0; thus we can use `sum` to count
-the number of {{< var true >}} values.
-
-This comes down to asking "how many elements in `a` are equal to 9".
-
-Don't worry, we will go over this again in the next chapter.
-:::
-
+to count the number of values equal to 9 in the sequence `a`.  For now just
+read [np.sum(a == 9)]{.python}[sum(a == 9]{.r} as "count the number of 9s in
+`a`".  We will explain how this code works fairly soon (@sec-counting-results).
 
 The `sum` command is a *counting* operation. It asks the computer to *count*
-the number of `9`s among the twenty numbers that are in location `a` following
+the number of `9`s among the 16 numbers that are in location `a` following
 the random draw carried out by the [`rnd.choice`]{.python}[`sample`]{.r}
 operation. The result of the `sum` operation will be somewhere between 0 and
 16, the number of simulated ambulances that were out-of-order on a given
@@ -421,10 +371,9 @@ day.  To answer our question, we will then count the number of times the count
 was three or more, and divide by 100, to get an estimate of the proportion of
 days with three or more out-of-order ambulances.
 
-One of the great things about the computer is that it is very good at repeating
-tasks many times, so we do not have to.  Our next task is to ask the computer
-to repeat the single trial many times — say 1000 times — and count up the
-results for us.
+One of the most useful things about the computer is that it is very good at
+repeating tasks many times.  Our next job is to ask the computer to repeat the
+single trial many times — say 1000 times — and count up the results for us.
 
 Of course {{< var lang >}} is very good at repeating things, but the instructions to tell
 {{< var lang >}} to repeat things will take a little while to get used to. Soon, we will
@@ -463,7 +412,7 @@ To do this, we start with a sequence of 1000 zeros, that we will fill in later,
 like this:
 
 ```{python}
-# Ask NumPy to make a sequence of 1000 zeros that we will use
+# Ask Numpy to make a sequence of 1000 zeros that we will use
 # to store the results of our 1000 trials.
 # Call this sequence "z"
 z = np.zeros(1000)
@@ -486,10 +435,10 @@ With these parts, we are now ready to solve the ambulance problem, using
 
 ### The solution
 
-This is our big moment!  Here we will combine the elements shown above to
-perform our ambulance simulation over, say, 1000 days.  Just a quick reminder:
-we do not expect you to understand all the detail of the code below; we will
-cover that later. For now, see if you can follow along with the gist of it.
+This is our big moment!  We will combine the elements shown above to perform
+our ambulance simulation over, say, 1000 days.  Just a quick reminder: we do
+not expect you to understand all the detail of the code below; we will cover
+that later. For now, see if you can follow along with the gist of it.
 
 To solve resampling problems, we typically proceed as we have done above.  We
 figure out the structure of a single trial and then place that trial in a `for`
@@ -501,12 +450,12 @@ together.  The only new part here, is the step at the end, where we store the
 result of the trial.  Bear with us for that; we will come to it soon.
 
 ```{python}
-# Ask NumPy to make a sequence of 1000 zeros that we will use
+# Ask Numpy to make a sequence of 1000 zeros that we will use
 # to store the results of our 1000 trials.
 # Call this sequence "z"
 z = np.zeros(1000)
 
-# These are the numbers we will ask NumPy to select from.
+# These are the numbers we will ask Numpy to select from.
 numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 # Read the next line as "repeat the following steps 1000 times".
@@ -662,12 +611,13 @@ Why did we get a different answer from the same code?
 
 This is an essential point — our code uses *random numbers* to get an
 *estimate* of the quantity we want — in this case, the probability of three or
-more ambulances being out of order.  Every run of our code will use a different
-set of random numbers.  Therefore, every run of our code will give us a very
-slightly different number.  As you will soon see, we can make our estimate more
-and more accurate, and less and less different between each run, by doing many
-trials in each run.  Here we did 1000 trials, but we will usually do 10000
-trials, to give us a good estimate, that does not vary much from run to run.
+more ambulances being out of order.  Every run of our code block above will use
+a different set of random numbers.  Therefore, every run of the code will give
+us a very slightly different number.  As you will soon see, we can make our
+estimate more and more accurate, and less and less different between each run,
+by doing many trials in each run.  Here we did 1000 trials, but we will usually
+do 10000 trials, to give us a good estimate, that does not vary much from run
+to run.
 :::
 
 Don't worry about the detail of how each of these commands works — we will
@@ -685,14 +635,13 @@ problems routinely taught to students.
 
 ## How resampling differs from the conventional approach {#sec-resamp-differs}
 
-In the standard approach the student learns to choose and solve a
-formula. Doing the algebra and arithmetic is quick and easy. The
-difficulty is in choosing the correct formula. Unless you are a
-professional mathematician, it may take you quite a while to arrive at
-the correct formula — considerable hard thinking, and perhaps some
-digging in textbooks. More important than the labor, however, is that
-you may come up with the wrong formula, and hence obtain the wrong
-answer. And how would you know if you were wrong?
+In the standard approach the student learns to choose and solve a formula.
+Doing the algebra and arithmetic is quick and easy. The difficulty is in
+choosing the correct formula. Unless you are a professional statistician, it
+may take you quite a while to arrive at the correct formula — considerable hard
+thinking, and perhaps some digging in textbooks. More important than the labor,
+however, is that you may come up with the wrong formula, and hence obtain the
+wrong answer. And how would you know if you were wrong?
 
 Most students who have had a standard course in probability and
 statistics are quick to tell you that it is not easy to find the correct
@@ -714,9 +663,13 @@ developed to handle them. Here are examples of such situations:
 Better examples.  These are out of date.
 -->
 
-1.  For a flight to Mars, calculating the correct route involves a great many
-    variables, too many to solve with formulas. Hence, the Monte Carlo
-    simulation method is used.
+1.  Imagine a large train station such as Grand Central Terminal in New York or
+    King's Cross in London.  We are responsible for planning the new station
+    layout so that passengers can move as quickly as possible to and from their
+    trains in rush-hour.  It will likely be far too complicated to make
+    formulas to represent the passenger flows, but we could use the computer to
+    simulate passengers, and their movements, and try different potential
+    layouts within the simulation.
 
 2.  The Navy might want to know how long the average ship will have to
     wait for dock facilities. The time of completion varies from ship to
