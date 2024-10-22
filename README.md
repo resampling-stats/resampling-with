@@ -441,9 +441,9 @@ lake = pd.read_csv(op.join('data', 'lough_erne.csv'))
 yearly_srp = lake.loc[:, ['Year', 'SRP']].copy()
 ```
 
-```{r, eval=TRUE, echo=FALSE}
+```{r, label="tbl-yearly-srp", eval=TRUE, echo=FALSE}
 ketable(py$yearly_srp,
-        caption = "Soluble Reactive Phosphorus in Lough Erne {#tbl-yearly-srp}")
+        caption = "Soluble Reactive Phosphorus in Lough Erne")
 ```
 ~~~
 
@@ -454,6 +454,10 @@ the output results from the second chunk.
 See [the Knitr chunk options
 documentation](https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html)
 for more detail.
+
+You can use the [`kableExtra::column_spec`
+options](https://www.rdocumentation.org/packages/kableExtra/versions/1.4.0/topics/column_spec)
+to tune table formatting — see `resampling_method.Rmd` for an example.
 
 ## More setup for Jupyter
 

@@ -904,7 +904,7 @@ But instead of doing that, let's take the easy route out and simulate
 the situation instead.
 
 1.  We begin, as do Box and Tiao, by restricting our attention to the third
-    line in Table @tbl-mice-genetics. We draw a mouse with label 'BB', 'Bb', or
+    line in @tbl-mice-genetics. We draw a mouse with label 'BB', 'Bb', or
     'bb', using those probabilities. We were told that the "test mouse" is
     black, so if we draw 'bb', we try again. (Alternatively, we could draw 'BB'
     and 'Bb' with probabilities of 1/3 and 2/3 respectively.)
@@ -917,7 +917,7 @@ the situation instead.
     If our test mouse is "BB", we already know that all their offspring will
     be black ("Bb").  Thus, store "BB" in the parent list.
 3.  If our test mouse is "Bb", we have a bit more work to do.  Draw
-    seven offspring from the middle row of Table tbl-mice-genetics.
+    seven offspring from the middle row of @tbl-mice-genetics.
     If all the offspring are black, store "Bb" in the parent list.
 4.  Repeat steps 1-3 perhaps 10000 times.
 5.  Now, out of all parents count the numbers of "BB" vs "Bb".

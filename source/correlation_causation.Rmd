@@ -78,7 +78,7 @@ is, even in a controlled experiment there is often no way except subject-matter
 knowledge to avoid erroneous conclusions about causality. Nothing except
 substantive knowledge or scientific intuition would have led them to the
 recognition that it is the alcohol rather than the soda that made them drunk,
-*as long as they always took soda with their drinks* . And no statistical
+*as long as they always took soda with their drinks*.  And no statistical
 procedure can suggest to them that they ought to experiment with the presence
 and absence of soda. If this is true for an experiment, it must also be true
 for an uncontrolled study.
@@ -106,7 +106,7 @@ in a statement that has these important characteristics:
     observable so that the relationship will apply under a wide enough
     range of conditions to be considered useful or interesting. In other
     words, *the relationship must not require too many "if"s, "and"s,
-    and "but"s in order to hold* . For example, one might say that an
+    and "but"s in order to hold*.  For example, one might say that an
     increase in income caused an increase in the birth rate if this
     relationship were observed everywhere. But, if the relationship were
     found to hold only in developed countries, among the educated
@@ -130,7 +130,7 @@ in a statement that has these important characteristics:
     previous criterion for side conditions is that a plenitude of very
     restrictive side conditions may take the relationship out of the
     class of causal relationships, *even though the effects of the side
-    conditions are known* . This criterion of nonspuriousness concerns
+    conditions are known*.  This criterion of nonspuriousness concerns
     variables that are as yet *unknown and unevaluated* but that have a
     *possible* ability to *upset* the observed association.
 
@@ -224,14 +224,14 @@ or whether they are not independent but rather are related.
 
 ## A Note on Association Compared to Testing a Hypothesis
 
-Problems in which we investigate a) whether there is an *association* , versus
+Problems in which we investigate a) whether there is an *association*, versus
 b) whether there is a *difference* between just two groups, often look very
 similar, especially when the data constitute a 2-by-2 table. There is this
 important difference between the two types of analysis, however: Questions
 about *association* refer to *variables* — say weight and age — and it never
 makes sense to ask whether there is a difference between variables (except when
 asking whether they measure the same quantity). Questions about *similarity or
-difference* refer to *groups of individuals* , and in such a situation it does
+difference* refer to *groups of individuals*, and in such a situation it does
 make sense to ask whether or not two groups are observably different from each
 other.
 
@@ -794,8 +794,7 @@ occur if the I.Q. scores were ranked from best to worst (column 3) and worst to
 best (column 5). The extent of correlation (association) can thus be measured
 by whether the sum of the multiples of the observed *x* and *y* values is
 relatively much higher or much lower than are sums of randomly-chosen pairs of
-*x* and *y* .
-
+*x* and *y*.
 ```{python echo=FALSE, eval=TRUE, results="asis", message=FALSE}
 import numpy as np
 import pandas as pd
@@ -1804,7 +1803,7 @@ thirteen index cards. Now take *another* set of seventy-eight index
 cards, preferably of a different color, and write "yes" on fifty-two of
 them and "no" on twenty-six of them, corresponding to the numbers of
 people who do and do not drink beer in the sample. Now lay them down in
-random *pairs* , one from each pile.
+random *pairs*, one from each pile.
 
 If there is a high association between the variables, then real life
 observations will bunch up in the two diagonal cells in the upper left and
@@ -1837,8 +1836,8 @@ We can carry out a resampling test with this procedure:
 * **Step 2.** Pair the two sets of cards randomly. Count the numbers of the
 four possible pairs: (1) "approve-drink," (2) "disapprove-don't drink," (3)
 "disapprove-drink," and (4) "approve-don't drink." Record the number of these
-combinations, as in Table 23-10, where columns 1-4 correspond to the four cells
-in Table 23-9.
+combinations, as in @tbl-beerpol-trial, where columns 1-4 correspond to the
+four data cells in @tbl-beerpol-data.
 * **Step 3.** Add (column 1 plus column 4), then add (column 2 plus column 3),
 and subtract the result in the second parenthesis from the result in the first
 parenthesis. If the difference is equal to or greater than 24, record "yes,"
@@ -2331,7 +2330,7 @@ the fact that the player sometimes does not get a hit for an abnormally
 long period of time. One way of testing whether or not the coach is
 right is by comparing an average player's longest slump in a 100-at-bat
 season with the longest run of outs in the first card trial. Assume that
-Slug is a player picked *at random* . Then compare Slug's longest
+Slug is a player picked *at random*.  Then compare Slug's longest
 slump — say, 10 outs in a row — with the longest cluster of a single
 simulated 100-at-bat trial with the cards, 9 outs. This result suggests
 that Slug's apparent slump might well have resulted by chance.

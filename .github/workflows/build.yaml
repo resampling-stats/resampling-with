@@ -121,7 +121,7 @@ jobs:
           touch r-book/.nojekyll
 
       - name: Build R PDF
-        run: cd source && ninja python-book-pdf
+        run: cd source && ninja r-book-pdf
 
       - name: Deploy R book
         uses: JamesIves/github-pages-deploy-action@v4.6.1

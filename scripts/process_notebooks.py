@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+""" Process notebooks
+
+* Copy all files in given directory.
+* Write notebooks with given extension.
+* Replace local kernel with Pyodide kernel in metadata.
+* If url_root specified, replace local file with URL, add message.
+"""
 
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from copy import deepcopy

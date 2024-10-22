@@ -113,7 +113,7 @@ of cure.  Given that 90% cure rate, what is the chance that 17 out of 17 of the
 Hypothetical group will be cured?
 
 You may notice that this question about the Hypothetical group is similar to
-the problem of the 16 ambulances in Chapter @sec-resampling-method. In that
+the problem of the 16 ambulances in @sec-resampling-method. In that
 problem, we were interested to know how likely it was that 3 or more of 16
 ambulances would be out of action on any one day, given that each ambulance had
 a 10% chance of being out of action.  Here we would like to know the chances
@@ -320,8 +320,8 @@ rounded to the nearest integer.
 The components we send to a function are called *arguments*.  The finished
 result the function sends back is the *return value*.
 
-* **Arguments** : the value or values we send to a function.
-* **Return value** : the values the function sends back.
+* **Arguments**: the value or values we send to a function.
+* **Return value**: the values the function sends back.
 
 See @fig-round_function_pl for an illustration of
 [`round`]{.r}[`np.round`]{.python} as a production line.
@@ -858,7 +858,7 @@ np.sum(a)
 sum(a)
 ```
 
-## Counting results
+## Counting results {#sec-counting-results}
 
 We now have the code to do the equivalent of throwing 17 ten-sided dice. This
 is the basis for one simulated trial in the world of Saint Hypothetical
