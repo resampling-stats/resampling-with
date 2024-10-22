@@ -178,7 +178,9 @@ df.insert(0, 'Day', range(1, n_trials + 1))
 ```
 
 ```{r, label="tbl-veh-numbers", eval=TRUE, echo=FALSE}
-ketable(py$df, caption='25 simulations of 16 ambulances')
+kableExtra::column_spec(
+    ketable(py$df, caption='25 simulations of 16 ambulances'),
+    1, bold=TRUE, include_thead=TRUE)
 ```
 
 To know how many ambulances were "out of order" on any given day, we count
@@ -192,8 +194,10 @@ df_counts['#9'] = (df == 9).sum(axis=1)
 ```
 
 ```{r, label="tbl-veh-numbers-counts", eval=TRUE, echo=FALSE}
-ketable(py$df_counts,
-        caption='25 simulations of 16 ambulances, with counts')
+kableExtra::column_spec(
+    ketable(py$df_counts,
+        caption='25 simulations of 16 ambulances, with counts'),
+    c(1, 18), bold=TRUE, include_thead=TRUE)
 ```
 
 Each value in the last column of @tbl-veh-numbers-counts is the count of

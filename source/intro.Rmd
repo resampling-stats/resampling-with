@@ -147,9 +147,9 @@ lake = pd.read_csv(Path('data') / 'lough_erne.csv')
 yearly_srp = lake.loc[:, ['Year', 'SRP']].copy()
 ```
 
-```{r, eval=TRUE, echo=FALSE}
+```{r, label="tbl-yearly-srp", eval=TRUE, echo=FALSE}
 ketable(py$yearly_srp,
-        caption = "Soluble Reactive Phosphorus in Lough Erne {#tbl-yearly-srp}")
+        caption = "Soluble Reactive Phosphorus in Lough Erne")
 ```
 
 We may want to *summarize* this set of SRP measurements. For example, we could
@@ -170,9 +170,9 @@ srp_stats = pd.DataFrame({'Descriptive statistics for SRP': pd.Series({
     'Maximum': np.max(srp)})})
 ```
 
-```{r, eval=TRUE, echo=FALSE}
+```{r, label="tbl-srp-stats", eval=TRUE, echo=FALSE}
 ketable(head(py$srp_stats),
-        caption = "Statistics for SRP levels {#tbl-srp-stats}")
+        caption = "Statistics for SRP levels")
 ```
 
 Descriptive statistics are nothing new to you; you have been using many of them
@@ -246,6 +246,12 @@ research on medicine AntiAnyVir. But that judgment about the probability is
 only one part of the overall web of consequences and evaluations that must be
 taken into account when making your decision whether or not to do further
 research on medicine AntiAnyVir.
+
+<!---
+Orthography: Covid vs COVID vs covid
+
+https://english.stackexchange.com/questions/528487/is-it-covid-or-covid-covid-how-should-the-word-be-spelled
+-->
 
 Why does this book limit itself to the specific probability questions when
 ultimately we are interested in decisions? A first reason is division of
