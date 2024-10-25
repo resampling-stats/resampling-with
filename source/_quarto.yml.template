@@ -1,5 +1,7 @@
 # vi: set ft=yaml:
 # Filled in from set_version.py script.
+# set_version.py uses the _quarto.yml.template file as basis, filling in
+# configuration variables by substitution.
 project:
   type: book
   output-dir: ../{version}-book
@@ -51,6 +53,7 @@ book:
     - technical_note.Rmd
     - acknowlegements.Rmd
     - code_topics.Rmd
+    - contributors_guide.md
 
 crossref:
   sec-prefix: Section     # (default is "sec.")
