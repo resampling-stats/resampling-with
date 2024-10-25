@@ -46,9 +46,8 @@ computer — see @sec-running-own-computer.
 :::
 
 
-
 The chapter introduces [the R language]{.r}[Python and its
-libraries]{.python}, and then gives an example to introduce {{< var lang >}}
+packages]{.python}, and then gives an example to introduce {{< var lang >}}
 and the {{< var nb_app >}} Notebook.  If you have not used {{< var lang >}}
 before, the example notebook will get you started.  The example also shows how
 we will be using notebooks through the rest of the book.
@@ -56,37 +55,38 @@ we will be using notebooks through the rest of the book.
 ::: python
 ## Python and its packages
 
-This version of the book uses the *Python* [^python-lang] programming language
+This version of the book uses the *Python*[^python-lang] programming language
 to implement resampling algorithms.
 
 Python is a programming language that can be used for many tasks.  It is a
-popular language for teaching, but is also used widely in industry and
+popular language for teaching, but has also become standard in industry and
 academia.  It is one of the most widely used programming languages in the
 world, and the most popular language for data science.
 
-For many of the initial examples, we will also be using the *NumPy* [^numpy]
-package for Python. A *package* is a library of Python code and data.  NumPy
-is a package that makes it easier to work with sequences of data values, such
-as sequences of numbers.  These are typical in probability and statistics.
+For many of the initial examples, we will also be using the *NumPy*[^numpy]
+package for Python. A Python *package* is a library of Python code and data.
+NumPy is a package that makes it easier to work with sequences of data values,
+such as sequences of numbers.  These are typical in probability and
+statistics.
 
-Later, we be using the *Matplotlib* [^matplotlib] package. This is the main
+Later, we be using the *Matplotlib*[^matplotlib] package. This is the main
 Python package with code for producing plots, such as bar charts, histograms,
 and scatter plots.  See the rest of the book for more details on these plots.
 
 Still further on in the book, we will use more specialized libraries for data
-manipulation and analysis.  *Pandas* [^pandas] is the standard Python package
-for loading data files and working with data tables.  *SciPy* [^scipy] is a
+manipulation and analysis.  *Pandas*[^pandas] is the standard Python package
+for loading data files and working with data tables.  *SciPy*[^scipy] is a
 package that houses a wide range of numerical routines, including some simple
-statistical methods. The *Statsmodels* [^statsmodels] package has code for
-many more statistical procedures. We will often find ourselves comparing the
-results of our own resampling algorithms to those in SciPy and Statsmodels.
+statistical methods. The *Statsmodels*[^statsmodels] package has code for
+many more statistical procedures. We will find ourselves comparing the results
+of our own resampling algorithms to those in SciPy and Statsmodels.
 :::
 
 ::: r
 This version of the book uses the *R* programming language to implement
 resampling algorithms.
 
-The current title of the main website for R [^r-lang] is "The R Project for
+The current title of the main website for R[^r-lang] is "The R Project for
 Statistical Computing", and this is a good summary of how R started, and what R
 is particularly good at.  The people who designed R designed it for themselves,
 and you and I — those of us who are working to find and understand the patterns
@@ -108,8 +108,8 @@ benefit from our work, understand it, and improve it.  This book is one
 example; we have written the {{< var lang >}} code in this book as clearly as
 we can to make it easy to follow, and to explain the underlying ideas.  We hope
 you will help us by testing what we have done and sending us suggestions for
-ways we could improve. Please see the preface for more information about how to
-do that.
+ways we could improve. Please see @sec-book-as-public for more information
+about how to do that.
 
 ## The environment
 
@@ -557,7 +557,7 @@ You will need to install the Python language on your computer, and then install 
 * Jupyter - to run the Jupyter Notebook on your own computer.
 
 One way to install Python and the packages you need, is to install Python from
-the Python website [^python-lang]. Then use the *Pip* [^pip] installer to
+the Python website[^python-lang]. Then use the *Pip*[^pip] installer to
 install the packages you need.
 
 To install the Python packages, first start a terminal application on your
