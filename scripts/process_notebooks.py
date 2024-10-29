@@ -4,7 +4,7 @@
 * Copy all files in given directory.
 * Write notebooks with given extension.
 * Replace local kernel with Pyodide kernel in metadata.
-* If url_root specified, replace local file with URL, add message.
+* If url_data_root specified, replace local file with URL, add message.
 """
 
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -64,7 +64,7 @@ def path_to_url(nb, root_url, regex):
 
 
 def process_dir(input_dir, output_dir, language, in_nb_suffix, kernel_name,
-                kernel_dname, url_root=None,
+                kernel_dname, url_data_root=None,
                 out_nb_suffix='.ipynb'
                ):
     output_dir.mkdir(exist_ok=True, parents=True)
@@ -79,8 +79,8 @@ def process_dir(input_dir, output_dir, language, in_nb_suffix, kernel_name,
             'name': kernel_name,
             'display_name': kernel_dname}
         regex = PY_READ_RE if language == 'python' else R_READ_RE
-        if url_root:
-            nb = path_to_url(nb, url_root, regex)
+        if url_data_root:
+            nb = path_to_url(nb, url_data_root, regex)
         jupytext.write(nb, output_dir / (path.stem + out_nb_suffix))
 
 
@@ -109,7 +109,7 @@ def main():
                 '.' + noteout_config['nb-format'],
                 proc_config['kernel-name'],
                 proc_config['kernel-display'],
-                proc_config.get('url-root', None))
+                proc_config.get('url-data-root', None))
     (out_path / 'jupyter-lite.json').write_text(
         _JL_JSON_FMT.format(**proc_config))
 

@@ -53,7 +53,7 @@ book:
     - technical_note.Rmd
     - acknowlegements.Rmd
     - code_topics.Rmd
-    - contributors_guide.md
+    - errors_suggestions.md
 
 crossref:
   sec-prefix: Section     # (default is "sec.")
@@ -86,7 +86,7 @@ noteout:
   nb-flatten-divspans: {nb_flatten_divspans}
   nb-format: {nb_format}
   strip-header-nos: false
-  interact-url: "/interact/lab/index.html?path="
+  interact-url: "/{interact-sdir}/lab/index.html?path="
   nb-dir: notebooks
   # This allows the interact link directory to differ from that for the download link.
   link-nb-dir: ""
@@ -95,6 +95,6 @@ noteout:
 
 processing:
   language: {version}
-  kernel-name: {proc_kernel_name}
-  kernel-display: {proc_kernel_display}
-  url-root: {proc_url_root}
+  kernel-name: {kernel_name}
+  kernel-display: {kernel_display}
+  url-data-root: {url_data_root}
