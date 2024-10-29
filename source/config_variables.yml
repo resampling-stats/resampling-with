@@ -1,11 +1,12 @@
-# Variables to fill _quarto.yml files.
-# Filled recursively, so variables defined here
+# Variables to fill _quarto.yml and _variables.yml files.
+# Filled recursively, so variables fully defined here
 # can also be format-filled into this same file.
 url-root: https://resampling-stats.github.io
 edition: latest
 interact-sdir: interact
-# Version filled from dictionary initializing read.
+# version, other-vesrion filled from dictionary initializing read.
 version: {version}
+other-version: {other-version}
 r:
   filter_divspans: "['python']"
   nb_flatten_divspans: "['+', 'r']"

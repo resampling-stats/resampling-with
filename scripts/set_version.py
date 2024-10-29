@@ -15,6 +15,8 @@ LANG_VARS_SOURCE = 'text_variables.yml'
 # Output file for variables.
 LANG_VARS_TARGET = '_variables.yml'
 
+OTHER_VERSIONS = {'r': 'python', 'python': 'r'}
+
 
 def get_parser():
     parser = ArgumentParser(description=__doc__,  # Usage from docstring
@@ -35,20 +37,27 @@ def recursive_fill_vars(fname, start_dict):
     return yaml.safe_load(txt2)
 
 
+def version_to_top(var_dict, version, other_version):
+    version_dict = var_dict.pop(version)
+    var_dict.pop(other_version)
+    return {**var_dict, **version_dict}
+
+
 def main():
     parser = get_parser()
     args = parser.parse_args()
     version = args.version.lower()
-    start_dict = {'version': version}
+    other_version = OTHER_VERSIONS[version]
+    start_dict = {'version': version, 'other-version': other_version}
     config_vars = recursive_fill_vars(CONFIG_VARS, start_dict)
-    # Put matching version keys at top level.
-    config_vars.update(config_vars[version])
+    config_vars = version_to_top(config_vars, version, other_version)
     print(f"Writing configuration to {args.output}...")
     out_config = Path(QUARTO_TEMPLATE).read_text().format(**config_vars)
     Path(args.output).write_text(out_config)
     print("Writing _variables.yml...")
-    vars = yaml.safe_load(Path(LANG_VARS_SOURCE).read_text())
-    Path(LANG_VARS_TARGET).write_text(yaml.safe_dump(vars[version]))
+    variables = recursive_fill_vars(LANG_VARS_SOURCE, config_vars)
+    variables = version_to_top(variables, version, other_version)
+    Path(LANG_VARS_TARGET).write_text(yaml.safe_dump(variables))
 
 
 if __name__ == '__main__':
