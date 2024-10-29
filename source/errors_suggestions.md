@@ -1,4 +1,4 @@
-# Contributors guide {#sec-contributors-guide}
+# Errors and suggestions {#sec-errors-suggestions}
 
 We are hoping that you have arrived at this chapter because you have found an
 error in the book, or you have thought of an improvement that you would like to
@@ -32,9 +32,11 @@ below).
 If you have some more time, and experience, you might consider sending us your
 suggested changes as a *pull-request*.
 
-As background, we have written this edition of the book in a set of simple
-computer text files.  In these simple text file, we use conventions from
-a protocol called [Markdown](https://en.wikipedia.org/wiki/Markdown) to indicate things like **bold** and *italic* formatting, links (like the one above), and other things.
+As background, we have written this edition of the book in a set of computer
+text files.  In these text files, we use conventions from a definition called
+[Markdown](https://en.wikipedia.org/wiki/Markdown) to indicate things like
+**bold** and *italic* formatting, as well as links (like the one above), and
+other things.
 
 We then use some software called [Quarto](https://quarto.org) to take the
 collection of text files, and build them into the book — both in HTML (web
