@@ -42,7 +42,7 @@ _landing-page:
 	$(PYTHON) -m jupyter lite build \
 		--contents _$*_notebooks \
 		--output-dir $*-book/$(JL_SDIR) \
-		--lite-dir $*-book
+		--lite-dir _$*-notebooks
 
 _source-clean:
 	cd $(SOURCE_DIR) && ninja clean
