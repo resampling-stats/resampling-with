@@ -1,5 +1,100 @@
-# Do not delete this file; quarto needs it!
-# Make modifications to `_quarto.yml.template` only
-
+# vi: set ft=yaml:
+# Filled in from set_version.py script.
+# set_version.py uses the _quarto.yml.template file as basis, filling in
+# configuration variables by substitution.
 project:
   type: book
+  output-dir: ../r-book
+
+book:
+  title: "Resampling statistics"
+  output-file: resampling-with-r
+  author: ["Julian Lincoln Simon",
+    "Matthew Brett",
+    "Stéfan van der Walt"]
+  chapters:
+    - index.Rmd
+    - preface_third.Rmd
+    - preface_second.Rmd
+    - intro.Rmd
+    - resampling_method.Rmd
+    - what_is_probability.Rmd
+    - about_technology.Rmd
+    - resampling_with_code.Rmd
+    - resampling_with_code2.Rmd
+    - sampling_tools.Rmd
+    - probability_theory_1a.Rmd
+    - probability_theory_1b.Rmd
+    - more_sampling_tools.Rmd
+    - probability_theory_2_compound.Rmd
+    - probability_theory_3.Rmd
+    - probability_theory_4_finite.Rmd
+    - sampling_variability.Rmd
+    - monte_carlo.Rmd
+    - standard_scores.Rmd
+    - inference_ideas.Rmd
+    - inference_intro.Rmd
+    - point_estimation.Rmd
+    - framing_questions.Rmd
+    - testing_counts_1.Rmd
+    - significance.Rmd
+    - testing_counts_2.Rmd
+    - testing_measured.Rmd
+    - testing_procedures.Rmd
+    - confidence_1.Rmd
+    - confidence_2.Rmd
+    - reliability_average.Rmd
+    - correlation_causation.Rmd
+    - how_big_sample.Rmd
+    - bayes_simulation.Rmd
+    - references.Rmd
+  appendices:
+    - exercise_solutions.Rmd
+    - technical_note.Rmd
+    - acknowlegements.Rmd
+    - code_topics.Rmd
+    - errors_suggestions.md
+
+crossref:
+  sec-prefix: Section     # (default is "sec.")
+  fig-prefix: Figure      # (default is "fig.")
+  tbl-prefix: Table       # (default is "tbl.")
+
+bibliography: simon_refs.bib
+
+format:
+  html:
+    theme: cosmo
+    css: [style.css, font-awesome.min.css]
+    include-in-header: table-style.html
+
+filters:
+  - filters/filter_pre.py
+  - filters/filter_divspans.py
+  - quarto
+  - filters/write_notebooks.py
+  - filters/filter_nb_only.py
+
+knitr_settings:
+  # Comment preceding code output.
+  out_comment: ""
+
+noteout:
+  # Divs, spans to filter before further processing.
+  pre-filter: ['todo', 'comment']
+  filter-divspans: ['python']
+  nb-flatten-divspans: ['+', 'r']
+  nb-format: Rmd
+  strip-header-nos: false
+  interact-url: "/interact/lab/index.html?path="
+  nb-dir: notebooks
+  # This allows the interact link directory to differ from that for the download link.
+  link-nb-dir: ""
+  # We may want to switch the URL notebook suffix from the download file to URL.
+  url_nb_suffix: .ipynb
+
+processing:
+  language: r
+  kernel-name: webR
+  kernel-display: "R (webR)"
+  url-data-root: https://resampling-stats.github.io/latest-r/interact/files/data
