@@ -7,6 +7,7 @@ PYTHON_BOOK_DIR=python-book
 R_BOOK_DIR=r-book
 PYTHON ?= python
 PIP_INSTALL_CMD ?= $(PYTHON) -m pip install
+JL_SDIR = interact
 
 _submodule-update:
 	git submodule update --init --recursive
@@ -42,7 +43,7 @@ python-book-jl: python-book
 		_py_notebooks
 	$(PYTHON) -m jupyter lite build \
 		--contents _py_notebooks \
-		--output-dir $(PYTHON_BOOK_DIR)/interact \
+		--output-dir $(PYTHON_BOOK_DIR)/$(JL_SDIR) \
 		--lite-dir $(PYTHON_BOOK_DIR)
 
 r-book:  ## Build the R version of the book
@@ -57,7 +58,7 @@ r-book-jl: r-book
 		_r_notebooks
 	$(PYTHON) -m jupyter lite build \
 		--contents _r_notebooks \
-		--output-dir $(R_BOOK_DIR)/interact \
+		--output-dir $(R_BOOK_DIR)/$(JL_SDIR) \
 		--lite-dir $(R_BOOK_DIR)
 
 _source-clean:
