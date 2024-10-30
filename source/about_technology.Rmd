@@ -132,7 +132,7 @@ the notebook in your web browser, using a system called JupyterLite.  You can
 run the code, and experiment by making changes.
 
 :::{.callout-note}
-## JupyterLite
+## About JupyterLite
 
 JupyterLite[^jupyterlite] is a version of the Jupyter notebook and
 {{< var lang >}} that will automatically download and run inside your web
@@ -143,18 +143,8 @@ has the effect of making your browser download the JupyterLite system, along
 with [compatible versions of Python and its standard packages]{.python} [a
 compatible version of the R language]{.r}.  The web page that opens allows you run to the {{< var lang >}} code in the notebook inside your browser.
 
-Please bear in mind that your browser keeps all these notebooks in its browser
-*cache* — a private and temporary store that the browser maintains somewhere on
-your system.  If you want to keep any changes you make to notebooks you have
-run with the "Interact" JupyterLite system, you might want to save a copy of
-the notebook outside the browser cache, by using the "File" menu in the
-JupyterLite interface; choose "Save and Export Notebook as ..." and choose
-".ipynb" as the format.  Save the file somewhere memorable on your computer.  You can go back to the notebook by following the instructions at @sec-running-own-computer.
-
 [^jupyterlite]: <https://jupyterlite.readthedocs.io>
 :::
-
-
 
 In the print version of the book, we point you to the web version, to get the
 links.
@@ -552,10 +542,32 @@ is equal to the bill before the tip, plus the bill before the tip times 0.15.
 Now you have done some practice with the notebook, and with variables, you are
 ready for a new problem in probability and statistics, in the next chapter.
 
+## Saving your work
+
+If you are running this notebook via the "Interact" button, you are running it
+using the JupyterLite system.  Please bear in mind that your browser keeps all
+the notebooks you run in JupyterLite, in its browser *cache* — a private and
+temporary store that the browser maintains somewhere on your system.  If you
+want to keep any changes you make to notebooks you have run with the "Interact"
+JupyterLite system, you might want to save a copy of the notebook outside the
+browser cache.  To do this, look the pane to the left of the notebook for the
+name of the notebook.  This name of this particular notebook is "billies_bill",
+and you will see the notebook file in the left pane listed as
+`billies_bill.ipynb`.  If you want to save a copy to your computer, first use
+the "File" menu, and the "Save" option, to save your notebook.  This saves the
+notebook to your browser's private store (the *cache*).  Next *right-click* on
+`billies_bill.ipynb` in the left pane (see @fig-jupyterlite-download), and
+choose "Download". Save the file somewhere memorable on your computer.  You can
+go back to the notebook by following the instructions at
+@sec-running-own-computer.
+
 :::
 <!---
 End of notebook.
 -->
+
+![Downloading files in
+JupyterLite](images/jupyterlite_download.png){#fig-jupyterlite-download}
 
 ## Running the code on your own computer {#sec-running-own-computer}
 
