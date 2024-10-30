@@ -87,7 +87,7 @@ jobs:
 
       - name: Build Python book
         run: |
-          make python-book-jl
+          make py-version
           cp website/python-README.md python-book/README.md
           cp requirements.txt python-book
           touch python-book/.nojekyll
@@ -116,7 +116,7 @@ jobs:
 
       - name: Build R book
         run: |
-          make r-book-jl
+          make r-version
           cp website/r-README.md r-book/README.md
           touch r-book/.nojekyll
 
