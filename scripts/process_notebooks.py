@@ -105,11 +105,12 @@ def main():
     out_path = Path(args.output_dir)
     process_dir(source_path / noteout_config['nb-dir'],
                 out_path,
-                proc_config['language'],
-                '.' + noteout_config['nb-format'],
-                proc_config['kernel-name'],
-                proc_config['kernel-display'],
-                proc_config.get('url-data-root', None))
+                language=proc_config['language'],
+                in_nb_suffix='.' + noteout_config['nb-format'],
+                kernel_name=proc_config['kernel-name'],
+                kernel_dname=proc_config['kernel-display'],
+                url_data_root=proc_config.get('url-data-root', None),
+                out_nb_suffix=noteout_config['url_nb_suffix'])
     (out_path / 'jupyter-lite.json').write_text(
         _JL_JSON_FMT.format(**proc_config))
 
