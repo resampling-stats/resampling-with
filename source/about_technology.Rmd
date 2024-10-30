@@ -128,22 +128,45 @@ var lang >}} code. We mark the start of each notebook in the text with a note
 and link heading like the one you see below. In the web edition of this book,
 you can click on the *Download* link in this header to download the section as
 a notebook. You can also click on the *Interact* link in this header to open
-the notebook on a cloud computer.  This allows you to interact with the
-notebook on the cloud computer.  You can run the code, and experiment by making
-changes.
+the notebook in your web browser, using a system called JupyterLite.  You can
+run the code, and experiment by making changes.
+
+:::{.callout-note}
+## JupyterLite
+
+JupyterLite[^jupyterlite] is a version of the Jupyter notebook and
+{{< var lang >}} that will automatically download and run inside your web
+browser.
+
+When you click on the "Interact" link, it will take you to a web address that
+has the effect of making your browser download the JupyterLite system, along
+with [compatible versions of Python and its standard packages]{.python} [a
+compatible version of the R language]{.r}.  The web page that opens allows you run to the {{< var lang >}} code in the notebook inside your browser.
+
+Please bear in mind that your browser keeps all these notebooks in its browser
+*cache* — a private and temporary store that the browser maintains somewhere on
+your system.  If you want to keep any changes you make to notebooks you have
+run with the "Interact" JupyterLite system, you might want to save a copy of
+the notebook outside the browser cache, by using the "File" menu in the
+JupyterLite interface; choose "Save and Export Notebook as ..." and choose
+".ipynb" as the format.  Save the file somewhere memorable on your computer.  You can go back to the notebook by following the instructions at @sec-running-own-computer.
+
+[^jupyterlite]: <https://jupyterlite.readthedocs.io>
+:::
+
+
 
 In the print version of the book, we point you to the web version, to get the
 links.
 
 At the end of this chapter, we explain how to run these notebooks on your own
-computer.  In the next section you will see an example notebook; you might want
-to run this in the cloud to get started.
+computer.  In the next section you will see an example notebook; to start with, you might want to run this in your browser using the "Interact" link.
 
 ## Getting started with the notebook
 
 The next section contains a notebook called "Billie's Bill".  If you are
 looking at the web edition, you will see links to interact with this notebook
-in the cloud, or download it to your computer.
+in your browser, or download it to your computer.
 
 ::: {.notebook name="billies_bill" title="Billie's Bill"}
 
