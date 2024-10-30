@@ -4,6 +4,7 @@
 
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from pathlib import Path
+from subprocess import check_output
 import yaml
 
 # Template that fill be format-filled to write output file.
@@ -43,12 +44,20 @@ def version_to_top(var_dict, version, other_version):
     return {**var_dict, **version_dict}
 
 
+def get_edition():
+    branch_name = check_output(['git', 'rev-parse',  '--abbrev-ref', 'HEAD'],
+                               text=True).strip()
+    return 'latest' if branch_name == 'main' else branch_name
+
+
 def main():
     parser = get_parser()
     args = parser.parse_args()
     version = args.version.lower()
     other_version = OTHER_VERSIONS[version]
-    start_dict = {'version': version, 'other-version': other_version}
+    start_dict = {'version': version,
+                  'other-version': other_version,
+                  'edition': get_edition()}
     config_vars = recursive_fill_vars(CONFIG_VARS, start_dict)
     config_vars = version_to_top(config_vars, version, other_version)
     print(f"Writing configuration to {args.output}...")
