@@ -159,7 +159,7 @@ from the last chapter to get 12 random numbers from 0 through 99.
 # Import the Numpy library, rename as "np"
 import numpy as np
 
-# Ask NumPy for a random number generator.
+# Ask Numpy for a random number generator.
 rnd = np.random.default_rng()
 
 # All the integers from 0 up to, but not including 100.
@@ -247,7 +247,7 @@ an_array >}}.
 Since we will be working with {{< var array >}}s a lot, it is worth knowing
 more about them.
 
-A [NumPy array]{.python}[vector]{.r} is a *container* that stores many
+A [Numpy array]{.python}[vector]{.r} is a *container* that stores many
 elements of the same type.  You have already seen, in @sec-resampling-method,
 how we can create {{< var an_array >}} from a sequence of
 numbers using the [`np.array`]{.python}[`c()`]{.r} function.

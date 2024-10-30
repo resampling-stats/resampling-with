@@ -4,18 +4,18 @@
 
 Now that we've seen how resampling works, roughly, let us translate
 some of these ideas into code.  We will be using the Python
-programming language, along with NumPy: a library for manipulating
+programming language, along with Numpy: a library for manipulating
 collections of numbers or "arrays".
 
 Please, go ahead and type along, and see if you get similar results to what is shown!  To do so, fire up Jupyter Notebook or IPython.
 
-In Python, libraries like NumPy need to be imported before they can be used:
+In Python, libraries like Numpy need to be imported before they can be used:
 
 ```
 import numpy as np
 ```
 
-NumPy is now available under the name `np`.
+Numpy is now available under the name `np`.
 
 In Python, we can assign values to names.  E.g., we can store the number 3 under the name "x":
 
@@ -86,9 +86,9 @@ print(mask)
 print(rolls[mask])
 ```
 
-The mask is a list of True or False values, depending on whether or not the dice roll is greater than 3.  We then ask NumPy to only return rolls corresponding to True values in the mask.  Indeed, all the returned values are greater than three.
+The mask is a list of True or False values, depending on whether or not the dice roll is greater than 3.  We then ask Numpy to only return rolls corresponding to True values in the mask.  Indeed, all the returned values are greater than three.
 
-We can also sort or shuffle numbers.  Let's start with the NumPy array containing the values 1 through 5:
+We can also sort or shuffle numbers.  Let's start with the Numpy array containing the values 1 through 5:
 
 ```
 x = np.array([1, 2, 3, 4, 5])
@@ -118,7 +118,7 @@ print('Hello')
 print('Hello')
 ```
 
-But, there is an easier way.  We can provide NumPy with a list of numbers, and ask it to visit each number in the list in turn:
+But, there is an easier way.  We can provide Numpy with a list of numbers, and ask it to visit each number in the list in turn:
 
 ```
 for number in [0, 1, 2]:

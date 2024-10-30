@@ -209,12 +209,12 @@ We have already discussed what we mean by *random* in
 
 ::: python
 We will be asking the computer to generate many random numbers.  So, before we
-start, we again import NumPy and get its *random number generator*:
+start, we again import Numpy and get its *random number generator*:
 
 ```{python}
 import numpy as np
 
-# Ask for NumPy's default random number generator and name
+# Ask for Numpy's default random number generator and name
 # it `rnd`.  `rnd` is short for "random".
 rnd = np.random.default_rng()
 ```

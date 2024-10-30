@@ -63,11 +63,14 @@ popular language for teaching, but has also become standard in industry and
 academia.  It is one of the most widely used programming languages in the
 world, and the most popular language for data science.
 
-For many of the initial examples, we will also be using the *NumPy*[^numpy]
+For many of the initial examples, we will also be using the *Numpy*[^numpy]
 package for Python. A Python *package* is a library of Python code and data.
-NumPy is a package that makes it easier to work with sequences of data values,
+Numpy is a package that makes it easier to work with sequences of data values,
 such as sequences of numbers.  These are typical in probability and
 statistics.
+
+[^python-lang]: <https://www.python.org>
+[^numpy]: <https://numpy.org>
 
 Later, we be using the *Matplotlib*[^matplotlib] package. This is the main
 Python package with code for producing plots, such as bar charts, histograms,
@@ -75,11 +78,16 @@ and scatter plots.  See the rest of the book for more details on these plots.
 
 Still further on in the book, we will use more specialized libraries for data
 manipulation and analysis.  *Pandas*[^pandas] is the standard Python package
-for loading data files and working with data tables.  *SciPy*[^scipy] is a
+for loading data files and working with data tables.  *Scipy*[^scipy] is a
 package that houses a wide range of numerical routines, including some simple
 statistical methods. The *Statsmodels*[^statsmodels] package has code for
 many more statistical procedures. We will find ourselves comparing the results
-of our own resampling algorithms to those in SciPy and Statsmodels.
+of our own resampling algorithms to those in Scipy and Statsmodels.
+
+[^matplotlib]: <https://matplotlib.org>
+[^pandas]: <https://pandas.pydata.org>
+[^scipy]: <https://scipy.org>
+[^statsmodels]: <https://www.statsmodels.org>
 :::
 
 ::: r
@@ -114,7 +122,7 @@ about how to do that.
 ## The environment
 
 Many of the chapters have sections with code for you to run, and experiment
-with. These sections contain *Jupyter notebooks* ^[jupyter-nb]].  Jupyter
+with. These sections contain *Jupyter notebooks*[^jupyter-nb].  Jupyter
 notebooks are interactive web pages that allow you to read, write and run {{<
 var lang >}} code. We mark the start of each notebook in the text with a note
 and link heading like the one you see below. In the web edition of this book,
@@ -151,6 +159,8 @@ a version of Jupyter.   We will assume you are using Jupyter in the description
 that follows.  You can also run R in Jupyter on your own computer, although we
 recommend that you use RStudio to work with R notebook files (see
 @sec-running-own-computer).  The procedure for working with notebooks in RStudio is not the same as that for Jupyter.  We will cover RStudio, briefly, in another notebook tutorial after this one.
+
+[^rstudio]: <https://posit.co/products/open-source/rstudio>
 :::
 
 A notebook can contain blocks of text — like this one — as well as code, and
@@ -549,16 +559,18 @@ notebook and data file, and then open the resulting notebook in {{< var nb_app
 ::: python
 You will need to install the Python language on your computer, and then install the following packages:
 
-* NumPy
-* Matplotlib - for plots
-* SciPy - a collection of modules for scientific computing;
+* Numpy — to work with arrays;
+* Matplotlib - for plots;
+* Scipy - a collection of modules for scientific computing;
 * Pandas - for loading, saving and manipulating data tables;
-* Statsmodels - for traditional statistical analysis.
+* Statsmodels - for traditional statistical analysis;
 * Jupyter - to run the Jupyter Notebook on your own computer.
 
 One way to install Python and the packages you need, is to install Python from
 the Python website[^python-lang]. Then use the *Pip*[^pip] installer to
 install the packages you need.
+
+[^pip]: <https://pip.pypa.io>
 
 To install the Python packages, first start a terminal application on your
 computer. To do this, you can use the Start key, "cmd" in Windows, or the
