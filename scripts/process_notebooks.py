@@ -5,6 +5,7 @@
 * Write notebooks with given extension.
 * Replace local kernel with Pyodide kernel in metadata.
 * If url_data_root specified, replace local file with URL, add message.
+* Backport crossreferences from HTML output.
 """
 
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -16,72 +17,103 @@ import shutil
 import jupytext
 import yaml
 
-_JL_JSON_FMT = r'''\
-{{
-  "jupyter-lite-schema-version": 0,
-  "jupyter-config-data": {{
-    "contentsStorageName": "rss-{language}"
-  }}
-}}
-'''
 
-# Find data read.
-_READ_FMT = r'''^(?P<indent>\s*)
-(?P<equals>\w+\s*{equal_re}\s*)
-(?P<read_func>{read_re}\w+\(
-['"])
-(?P<fname>.*?)
-(?P<closequote>['"]
-\))
-'''
+class NBProcessor:
 
-PY_READ_RE = re.compile(
-    _READ_FMT.format(equal_re='=', read_re=r'pd\.read_'),
-    flags=re.MULTILINE | re.VERBOSE)
+    _JL_JSON_FMT = r'''\
+    {{
+    "jupyter-lite-schema-version": 0,
+    "jupyter-config-data": {{
+        "contentsStorageName": "rss-{language}"
+    }}
+    }}
+    '''
 
-R_READ_RE = re.compile(
-    _READ_FMT.format(equal_re='<-', read_re=r'read\.'),
-    flags=re.MULTILINE | re.VERBOSE)
+    # Find data read.
+    _READ_FMT = r'''^(?P<indent>\s*)
+    (?P<equals>\w+\s*{equal_re}\s*)
+    (?P<read_func>{read_re}\w+\(
+    ['"])
+    (?P<fname>.*?)
+    (?P<closequote>['"]
+    \))
+    '''
 
+    PY_READ_RE = re.compile(
+        _READ_FMT.format(equal_re='=', read_re=r'pd\.read_'),
+        flags=re.MULTILINE | re.VERBOSE)
 
-def path_to_url(nb, root_url, regex):
-    out_nb = deepcopy(nb)
+    R_READ_RE = re.compile(
+        _READ_FMT.format(equal_re='<-', read_re=r'read\.'),
+        flags=re.MULTILINE | re.VERBOSE)
 
-    def _read_re_replace(m):
-        d = m.groupdict()
-        d['fname'] = Path(d['fname']).name
-        return ('''\
+    def __init__(self, quarto_config, output_dir):
+        self.quarto_config = Path(quarto_config)
+        self.source_path = self.quarto_config.parent
+        self.quarto_vars = yaml.safe_load(self.quarto_config.read_text())
+        self._noteout_config = self.quarto_vars['noteout']
+        self.nb_in_path = self.source_path / self._noteout_config['nb-dir']
+        self._proc_config = self.quarto_vars['processing']
+        self.language = self._proc_config['language']
+        self.nb_regex = (self.PY_READ_RE if self.language == 'python' else
+                         self.R_READ_RE)
+        self.out_path = Path(output_dir)
+        self.out_suffix = self._noteout_config['url_nb_suffix']
+
+    def copy_dirs(self):
+        self.out_path.mkdir(exist_ok=True, parents=True)
+        for path in self.nb_in_path.glob('*'):
+            if path.is_dir():
+                shutil.copytree(path,
+                                self.out_path / path.name,
+                                dirs_exist_ok=True)
+
+    def process_nbs(self):
+        in_nb_suffix='.' + self._noteout_config['nb-format']
+        for path in self.nb_in_path.glob('*' + in_nb_suffix):
+            nb = jupytext.read(path)
+            out_root = self.out_path / path.stem
+            nb = self.process_nb(out_root, nb)
+            jupytext.write(nb, out_root.with_suffix(self.out_suffix))
+
+    def process_nb(self, out_root, nb):
+        pconfig = self._proc_config
+        nb['metadata']['kernelspec'] = {
+            'name': pconfig['kernel-name'],
+            'display_name': pconfig['kernel-display']
+        }
+        url_data_root=pconfig.get('url-data-root', None)
+        if url_data_root:
+            nb = self._path_to_url(nb, url_data_root)
+        return nb
+
+    def _path_to_url(self, nb, root_url):
+        out_nb = deepcopy(nb)
+
+        def _read_re_replace(m):
+            d = m.groupdict()
+            d['fname'] = Path(d['fname']).name
+            return ('''\
 {indent}# Read data from web URL instead of local data directory
 {indent}# (so that notebook works in online version).
 {indent}{equals}{read_func}{root_url}/{fname}{closequote}'''
                 .format(**d, root_url=root_url))
 
-    for cell in out_nb['cells']:
-        if cell['cell_type'] != 'code':
-            continue
-        cell['source'] = regex.sub(_read_re_replace, cell['source'])
-    return out_nb
+        for cell in out_nb['cells']:
+            if cell['cell_type'] != 'code':
+                continue
+            cell['source'] = self.nb_regex.sub(
+                _read_re_replace, cell['source'])
+        return out_nb
 
+    def write_jl_config(self):
+        (self.out_path / 'jupyter-lite.json').write_text(
+            self._JL_JSON_FMT.format(**self._proc_config))
 
-def process_dir(input_dir, output_dir, language, in_nb_suffix, kernel_name,
-                kernel_dname, url_data_root=None,
-                out_nb_suffix='.ipynb'
-               ):
-    output_dir.mkdir(exist_ok=True, parents=True)
-    for path in input_dir.glob('*'):
-        if path.is_dir():
-            shutil.copytree(path, output_dir / path.name, dirs_exist_ok=True)
-            continue
-        if path.suffix != in_nb_suffix:
-            continue
-        nb = jupytext.read(path)
-        nb['metadata']['kernelspec'] = {
-            'name': kernel_name,
-            'display_name': kernel_dname}
-        regex = PY_READ_RE if language == 'python' else R_READ_RE
-        if url_data_root:
-            nb = path_to_url(nb, url_data_root, regex)
-        jupytext.write(nb, output_dir / (path.stem + out_nb_suffix))
+    def process(self):
+        self.copy_dirs()
+        self.process_nbs()
+        self.write_jl_config()
 
 
 def get_parser():
@@ -97,22 +129,7 @@ def get_parser():
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    source_path = Path(args.quarto_config).parent
-    with open(args.quarto_config, 'rt') as fobj:
-        quarto_conf = yaml.load(fobj, Loader=yaml.FullLoader)
-    noteout_config = quarto_conf['noteout']
-    proc_config = quarto_conf['processing']
-    out_path = Path(args.output_dir)
-    process_dir(source_path / noteout_config['nb-dir'],
-                out_path,
-                language=proc_config['language'],
-                in_nb_suffix='.' + noteout_config['nb-format'],
-                kernel_name=proc_config['kernel-name'],
-                kernel_dname=proc_config['kernel-display'],
-                url_data_root=proc_config.get('url-data-root', None),
-                out_nb_suffix=noteout_config['url_nb_suffix'])
-    (out_path / 'jupyter-lite.json').write_text(
-        _JL_JSON_FMT.format(**proc_config))
+    NBProcessor(args.quarto_config, args.output_dir).process()
 
 
 if __name__ == '__main__':
