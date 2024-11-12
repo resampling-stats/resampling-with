@@ -281,6 +281,7 @@ if (sum(coins == 'heads') <= 3 | sum(coins == 'heads') <= 7) {
 ```
 
 ::: python
+
 :::{.callout-note}
 ## Python interval comparison
 
@@ -303,14 +304,17 @@ would need when using `and`:
 # Also asks whether thee number of heads is >= 3 *and* <= 7.
 3 <= np.sum(coins == 'heads') and np.sum(coins == 'heads') <= 7
 ```
+
 :::
 <!---
 End of callout block.
 -->
+
 :::
 <!---
 End of Python block.
 -->
+
 :::
 <!---
 End of notebook.
@@ -1542,6 +1546,12 @@ well just by chance?" We must now ask "What is the probability that
 probability that our *chosen therapy* will do so well by chance.)
 
 Here is a resampling procedure that will answer this question:
+
+::: {.notebook name="minimum_average_rank" title="Minimum average rank"}
+
+::: nb-only
+The notebook implements the following procedure:
+:::
 
 1.  Put the numbers "1", "2" and "3" (corresponding to ranks) in a bucket
 2.  Shuffle the numbers and deal them out to three locations that

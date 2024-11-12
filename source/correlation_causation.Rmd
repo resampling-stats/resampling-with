@@ -1873,6 +1873,14 @@ the sale of beer *and* do not drink beer. We want to randomly pair the
 responses to the two questions to compare against that observed result to test
 the relationship.
 
+::: {.notebook name="consistent_drink" title="Does opinion match behavior in
+a poll?"}
+
+::: nb-only
+Our aim is to work out the number of matching `drink` and `sale` 1, 0 scores in
+the null-world, where the association between the two is random.
+:::
+
 To accomplish this aim, we repeat the following procedure 10,000 times using
 a `for` loop. We shuffle `drink` to `random_drink` so that the responses are
 randomly ordered. Now when we subtract the corresponding elements of the two

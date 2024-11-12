@@ -303,7 +303,11 @@ We use $\text{and}$ between two events to mean _both_ events occur.
 For example, say we call the event "Commanders win the game" as $W$.  One
 example of a *compound event* (see above) would be the event $W \text{and} R$,
 meaning, the event where the Commanders won the game _and_ it rained.
+
 :::
+<!---
+End of callout note.
+-->
 
 ## Mutually exclusive events — the addition rule {#sec-addition-rule}
 
@@ -537,7 +541,11 @@ Notice that the header line has `if`, followed by the conditional expression
 *body* of the `if` statement is one or more *indented* lines.  Here there is
 only one line: `print('The ball was blue')`.  Python only runs the body of the
 if statement if the *condition* is `True`.[^conditional-true]
+
 :::
+<!---
+End of Python block.
+-->
 
 ```{r}
 if (a_ball == 'blue') {
@@ -554,6 +562,9 @@ blue')`.  R only runs the body of the if statement if the *condition* is
 `TRUE`.[^conditional-true]
 
 :::
+<!---
+End of R block
+-->
 
 [^conditional-true]: In this case, the result of the conditional expression is
     in fact either {{< var true >}} or {{< var false >}}.
@@ -822,7 +833,10 @@ kk
 The above procedure gives us the probability that it will be a nice day and
 the Commanders will win — about `r round(get_var('kk'), 3) * 100`%.
 
-::::::
+:::
+<!---
+End of notebook.
+-->
 
 Let's say that we think that the Commanders have a 0.55 (55%) chance of winning
 on a not-nice day. With the aid of a bucket with a different composition — one
@@ -1055,6 +1069,10 @@ shuffled = rnd.permuted(N)
 # The "slips" are now in random order.
 shuffled
 ```
+:::
+<!---
+End of Python block.
+-->
 
 See @sec-shuffling-deck for some more discussion of shuffling and sampling
 without replacement.
@@ -1206,6 +1224,9 @@ message(kk)
 ```
 
 :::
+<!---
+End of notebook.
+-->
 
 Why do you get different results in the two cases? Let's ask the question
 differently: What is the probability of first picking a black card? Clearly, it
