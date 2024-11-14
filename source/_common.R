@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 options(dplyr.print_min = 6, dplyr.print_max = 6)
 
 # Book edition from notebook format in build spec
-is_py_ed <- ._spec$noteout$`nb-format` == 'ipynb'
+is_py_ed <- ._spec$processing$language == 'python'
 is_r_ed <- !is_py_ed
 
 knitr::opts_template$set(svg_fig = list(eval=TRUE, echo=FALSE,
