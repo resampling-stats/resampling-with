@@ -104,6 +104,8 @@ noteout:
   nb-dir: notebooks
   # We may want to switch the URL notebook suffix from the download file to URL.
   interact-nb-suffix: .ipynb
+  # Only build notebooks for html output
+  nb-build-formats: ['html']
 
 processing:
   language: {version}
