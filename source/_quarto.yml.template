@@ -69,11 +69,23 @@ format:
     include-in-header: table-style.html
 
 filters:
-  - filters/filter_pre.py
-  - filters/filter_divspans.py
-  - quarto
-  - filters/write_notebooks.py
-  - filters/filter_nb_only.py
+  - at: pre-ast
+    type: json
+    path: filters/filter_pre.py
+  - at: pre-ast
+    type: json
+    path: filters/filter_divspans.py
+  - at: pre-ast
+    path: filters/add-meta.lua
+  - at: pre-ast
+    type: json
+    path: filters/mark_notebooks.py
+  - at: post-quarto
+    type: json
+    path: filters/export_notebooks.py
+  - at: post-quarto
+    type: json
+    path: filters/filter_nb_only.py
 
 knitr_settings:
   # Comment preceding code output.
@@ -84,14 +96,14 @@ noteout:
   pre-filter: ['todo', 'comment']
   filter-divspans: {filter_divspans}
   nb-flatten-divspans: {nb_flatten_divspans}
-  nb-format: {nb_format}
-  strip-header-nos: false
+  nb-format: Rmd
+  nb-strip-header-nos: false
   interact-url: "/{interact-sdir}/lab/index.html?path="
+  url-root: {url-root}
+  book-url-root: {book-url-root}
   nb-dir: notebooks
-  # This allows the interact link directory to differ from that for the download link.
-  link-nb-dir: ""
   # We may want to switch the URL notebook suffix from the download file to URL.
-  url_nb_suffix: .ipynb
+  interact-nb-suffix: .ipynb
 
 processing:
   language: {version}
