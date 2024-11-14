@@ -196,9 +196,11 @@ class NBProcessor:
             from_root = page_path.relative_to(self.book_path)
             soup = self._get_soup(page_path.read_text())
             xrefs = self._get_xrefs(soup)
-            xrefs = self._relativize_xrefs(xrefs, from_root)
-            all_xrefs.update({'#' + xr['href'].split('#')[1]: xr
-                              for xr in xrefs})
+            for xr in self._relativize_xrefs(xrefs, from_root):
+                #** Consider case of xrefs without anchor.
+                if '#' in xr['href']:
+                    key = '#' + xr['href'].split('#')[1]
+                    all_xrefs[key] = xr
         return all_xrefs
 
     def _relativize_xrefs(self, xrefs, from_root):
