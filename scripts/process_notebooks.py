@@ -33,6 +33,114 @@ For the JupyterLite (JL) notebooks:
   ``noteout.interact-nb-suffix``.
 """
 
+"""
+Notes on implementation
+-----------------------
+
+Crossreferences
++++++++++++++++
+
+Our problem is that we generate the notebooks before Quarto has resolve its
+cross-references.   For example, in the generated `sampling_tools.Rmd`
+notebook, we have the following ``quarto-unresolved-xref`` instances.  Here is
+the first::
+
+    <a href="#sec-resampling-two" class="quarto-xref"><span
+    class="quarto-unresolved-ref">sec-resampling-two</span></a>, we were
+
+This refers to the ``resampling_with_code2.html`` page, identifiable by the
+matching link in the generated `sampling_tools.html` page containing the
+notebook, that has::
+
+    <a href="resampling_with_code2.html" class="quarto-xref"><span>Chapter
+    6</span></a>
+
+We can also find it via ``grep``, in the ``resampling_with_code2.html`` page::
+
+    <h1 class="title"><span id="sec-resampling-two"
+    class="quarto-section-identifier"><span
+    class="chapter-number">6</span>&nbsp; <span class="chapter-title">More
+    resampling with code</span></span></h1>
+
+Here is the second unresolved reference::
+
+    <a href="#sec-random-zero-through-ninety-nine" class="quarto-xref"><span
+    class="quarto-unresolved-ref">sec-random-zero-through-ninety-nine</span></a>:
+
+This is more easily resolved, because we see this in the
+``sampling_tools.html`` page::
+
+    <a href="resampling_with_code2.html#sec-random-zero-through-ninety-nine"
+    class="quarto-xref"><span>Section 6.3.3</span></a>
+
+as well as some matching lines in ``resampling_with_code2.html``::
+
+    <li><a href="#sec-random-zero-through-ninety-nine"
+    id="toc-sec-random-zero-through-ninety-nine" class="nav-link"
+    data-scroll-target="#sec-random-zero-through-ninety-nine"><span
+    class="header-section-number">6.3.3</span> Random numbers from 0 through
+    99</a></li>
+
+    <section id="sec-random-zero-through-ninety-nine" class="level3"
+    data-number="6.3.3">
+    <h3 data-number="6.3.3" class="anchored"
+    data-anchor-id="sec-random-zero-through-ninety-nine"><span
+    class="header-section-number">6.3.3</span> Random numbers from 0 through
+    99</h3>
+
+
+Now consider another notebook ``billies_bill.Rmd`` derived from the
+``about_technology.Rmd`` page, with generated HTML ``about_technology.html``.
+One reference in the notebook is::
+
+    <a href="#sec-running-own-computer" class="quarto-xref"><span
+    class="quarto-unresolved-ref">sec-running-own-computer</span></a>
+
+This is an internal reference (to the same page as the source of the notebook).
+The generated HTML has::
+
+    <a href="#sec-running-own-computer" class="quarto-xref"><span>Section
+    4.10</span></a>.
+
+To find potential cross reference, resolutions, were therefore process the
+whole HTML tree.  We go through each page and look for Quarto references hrefs
+(labeled as such with "quarto-xref" class), as well as the span-ids from the
+titles of the pages.
+
+We reprocess the crossreference hrefs to add the page reference for each
+anchor reference.  That is::
+
+    <a href="#fig-mercury_reserves" class="quarto-xref">
+
+becomes::
+
+    <a href="sampling-variability.html#fig-mercury_reserves" class="quarto-xref">
+
+We compile a dictionary where the anchor text is the key (e.g.
+``#fig_mercury_reserves``) and the processed href tag is the value (e.g. ``<a
+href="sampling_variability.html#fig-mercury_reserves" class="quarto-xref">``.
+
+This is the generated `xrefs` property of the ``NBProcessor`` class.
+
+We still haven't covered the case of the cross-references to pages, as these
+no longer have their anchors (Quarto section titles) to use as keys.  For
+these we go to the matching page of the cross-ref, and fetch the id.  So for
+the cross-ref above::
+
+    <a href="resampling_with_code2.html" class="quarto-xref"><span>Chapter
+    6</span></a>
+
+We go look for the matching id in the title for that page, and generate a key,
+value pair in the xref dictionary accordingly; the key is
+``#sec-resampling-two`` from the title span above, and the value is the href
+tag above.
+
+Next we look through the Markdown of the generated notebooks.  Each undefined
+(``quarto-unresolved-ref``) reference has an anchor.  We just replace the
+whole unresolved ref tag with the matching tag in xrefs (parsed from the
+HTML).
+"""
+
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from copy import deepcopy
 from functools import partial
