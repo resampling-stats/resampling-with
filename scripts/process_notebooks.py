@@ -36,7 +36,7 @@ For the JupyterLite (JL) notebooks:
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from copy import deepcopy
 from functools import partial
-from pathlib import Path, PurePosixPath
+from pathlib import Path
 import re
 import shutil
 from urllib.parse import urlparse
@@ -152,7 +152,7 @@ class NBProcessor:
         return nb
 
     def fix_data_source(self, nb):
-        url_data_root = self._proc_config.get('url-data-root', None)
+        url_data_root = self._proc_config.get('interact-data-root', None)
         if url_data_root:
             nb = self._path_to_url(nb, url_data_root)
         return nb
@@ -248,11 +248,9 @@ class NBProcessor:
                 _read_re_replace, cell['source'])
         return out_nb
 
-    def _interact_to_root(self):
-        path = PurePosixPath(self._noteout_config['interact-url'].strip('/'))
-        if path.suffix:
-            path = path.parent
-        return '/'.join(['..'] * len(path.parts))
+    def _book_base(self):
+        book_path = urlparse(self._noteout_config['book-url-root']).path
+        return '/' + book_path.lstrip('/')
 
     def process(self):
         fixed_nbs = self._process_nbs(self.read_nbs(), (self.fix_xrefs,))
@@ -269,7 +267,7 @@ class NBProcessor:
 
     def _write_jls(self, fixed_nbs):
         self._copy_in_dirs(self.jl_out_path)
-        jl_prefix = self._interact_to_root() + '/'
+        jl_prefix = self._book_base() + '/'
         jl_nbs = self._process_nbs(fixed_nbs, (
             self.fix_kernels,
             self.fix_data_source,
