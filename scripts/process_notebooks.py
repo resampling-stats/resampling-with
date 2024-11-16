@@ -300,16 +300,31 @@ class NBProcessor:
             are always relative to the containing page.
         """
         all_xrefs = {}
+        page_xrefs = []
+        page_ids = {}
         for page_path in self.book_path.glob(self.html_globber):
             from_root = page_path.relative_to(self.book_path)
             soup = self._get_soup(page_path.read_text())
             xrefs = self._get_xrefs(soup)
+            if (page_id := self._get_page_id(soup)):
+                page_ids[str(from_root)] = page_id
             for xr in self._relativize_xrefs(xrefs, from_root):
-                #** Consider case of xrefs without anchor.
                 if '#' in xr['href']:
                     key = '#' + xr['href'].split('#')[1]
                     all_xrefs[key] = xr
+                else:  # Must be reference to page.
+                    page_xrefs.append(xr)
+        # Go back to find keys for page references.
+        for xr in page_xrefs:
+            page_id = page_ids[xr['href']]
+            all_xrefs['#' + page_id] = xr
         return all_xrefs
+
+    def _get_page_id(self, soup):
+        sec_tag = soup.find(
+            'span',
+            {'class': 'quarto-section-identifier'})
+        return None if sec_tag is None else sec_tag['id']
 
     def _relativize_xrefs(self, xrefs, from_root):
         """ Convert `xrefs` to page-relative.
