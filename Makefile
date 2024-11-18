@@ -43,7 +43,7 @@ r-version: r-book-jl
 # Add JupyterLite on top of given book build.
 %-book-jl: %-book
 	$(PIP_INSTALL_CMD) -r $*-jl-requirements.txt
-	$(PYTHON) -m noteout.process_notebooks.py \
+	$(PYTHON) -m noteout.process_notebooks \
 		$(SOURCE_DIR)/_quarto-$*.yml \
 		_$*_notebooks
 	$(PYTHON) -m jupyter lite build \
