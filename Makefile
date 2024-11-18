@@ -38,7 +38,7 @@ r-version: r-book-jl
 # Build the given version of the book.
 %-book: ninja-config
 	cd $(SOURCE_DIR) && ninja clean && ninja $*-book
-	noteout-proc-nbs $(SOURCE_DIR)/_quarto-$*.yml
+	$(PYTHON) ./scripts/postprocess_site.py $(SOURCE_DIR)/_quarto-$*.yml
 
 # Add JupyterLite on top of given book build.
 %-book-jl: %-book
