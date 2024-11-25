@@ -107,29 +107,29 @@ Although many people use R as a simple way of exploring data and doing standard
 statistical tests, it is a full-fledged programming language.
 :::
 
-It is very important that {{< var lang >}} is a *programming language* and not
-a set of canned routines for "doing statistics".  It means that we can
+It is crucial to our purpose that {{< var lang >}} is a *programming language*
+and not a set of canned routines for "doing statistics".  It means that we can
 explore the *ideas* of probability and statistics using the *language* of {{<
 var lang >}} to express those ideas.  It also means that you, and we, and
 anyone else in the world, can write new code to share with others, so they can
-benefit from our work, understand it, and improve it.  This book is one
-example; we have written the {{< var lang >}} code in this book as clearly as
-we can to make it easy to follow, and to explain the underlying ideas.  We hope
-you will help us by testing what we have done and sending us suggestions for
-ways we could improve. Please see @sec-book-as-public for more information
-about how to do that.
+use our work, understand it, and improve it.  This book is one example; we have
+written the {{< var lang >}} code in this book as clearly as we can to make it
+easy to follow, and to explain the underlying ideas.  We hope you will help us
+by testing what we have done and sending us suggestions for ways we could
+improve. Please see @sec-book-as-public for more information about how to do
+that.
 
 ## The environment
 
 Many of the chapters have sections with code for you to run, and experiment
 with. These sections contain *Jupyter notebooks*[^jupyter-nb].  Jupyter
 notebooks are interactive web pages that allow you to read, write and run {{<
-var lang >}} code. We mark the start of each notebook in the text with a note
-and link heading like the one you see below. In the web edition of this book,
-you can click on the *Download* link in this header to download the section as
-a notebook. You can also click on the *Interact* link in this header to open
-the notebook in your web browser, using a system called JupyterLite.  You can
-run the code, and experiment by making changes.
+var lang >}} code. We mark the start of each notebook in the text with
+a note-and-link heading like the one you see below. In the web edition of this
+book, you can click on the *Download* link in this heading to download the
+section as a notebook. You can also click on the *Interact* link to open the
+notebook in your web browser, using a system called JupyterLite.  JupyterLite
+allows you to run the code in your browser, and experiment by making changes.
 
 :::{.callout-note}
 ## About JupyterLite
@@ -146,8 +146,8 @@ compatible version of the R language]{.r}.  The web page that opens allows you r
 [^jupyterlite]: <https://jupyterlite.readthedocs.io>
 :::
 
-In the print version of the book, we point you to the web version, to get the
-links.
+In the print version of the book, we point you to the web version to get the
+"Download" and "Interact" links.
 
 At the end of this chapter, we explain how to run these notebooks on your own
 computer.  In the next section you will see an example notebook; to start with, you might want to run this in your browser using the "Interact" link.
@@ -166,12 +166,16 @@ interactive notebook on the web, or on your own computer (see @sec-running-own-c
 :::
 
 ::: r
+
 The text in this notebook section assumes you have opened the page as an
 interactive notebook on the web.  In that case, you are running the notebook in
-a version of Jupyter.   We will assume you are using Jupyter in the description
-that follows.  You can also run R in Jupyter on your own computer, although we
-recommend that you use RStudio to work with R notebook files (see
-@sec-running-own-computer).  The procedure for working with notebooks in RStudio is not the same as that for Jupyter.  We will cover RStudio, briefly, in another notebook tutorial after this one.
+a version of Jupyter.   We assume you are using Jupyter in the description
+that follows.  You can also run R in Jupyter on your own computer, but we
+suggest that you do not do that.  Instead, we recommend you use RStudio to work
+with R notebook files on your computer (see @sec-running-own-computer).  The
+procedure for working with notebooks in RStudio is not the same as that for
+Jupyter.  We give a short tutorial on using  RStudio in another notebook after
+this one (see @sec-running-rstudio).
 
 [^rstudio]: <https://posit.co/products/open-source/rstudio>
 :::
@@ -182,8 +186,9 @@ the results from running the code.
 Jupyter Notebooks are made up of *cells*.
 
 ::: r
-We assume you are running this notebook via the interactive web pages, and
-therefore, that you are running the notebook with Jupyter, not RStudio.
+As we said above, we assume you are running this notebook via the interactive
+web pages, and therefore, that you are running the notebook with Jupyter, not
+RStudio.
 
 RStudio differs a little from Jupyter, because it does not have the idea of a text "cell" — instead it distinguishes between the main body of the notebook, made up of text, and *code chunks* — delimited sections in the notebook that contain code, instead of text.  Jupyter would refer to these code chunks as *code cells*.  We will go into more detail in @sec-running-rstudio.
 :::
@@ -542,24 +547,29 @@ is equal to the bill before the tip, plus the bill before the tip times 0.15.
 Now you have done some practice with the notebook, and with variables, you are
 ready for a new problem in probability and statistics, in the next chapter.
 
-## Saving your work
+## Saving your work {#sec-saving-ipynb}
 
 If you are running this notebook via the "Interact" button, you are running it
-using the JupyterLite system.  Please bear in mind that your browser keeps all
-the notebooks you run in JupyterLite, in its browser *cache* — a private and
-temporary store that the browser maintains somewhere on your system.  If you
-want to keep any changes you make to notebooks you have run with the "Interact"
-JupyterLite system, you might want to save a copy of the notebook outside the
-browser cache.  To do this, look the pane to the left of the notebook for the
-name of the notebook.  This name of this particular notebook is "billies_bill",
-and you will see the notebook file in the left pane listed as
-`billies_bill.ipynb`.  If you want to save a copy to your computer, first use
-the "File" menu, and the "Save" option, to save your notebook.  This saves the
-notebook to your browser's private store (the *cache*).  Next *right-click* on
-`billies_bill.ipynb` in the left pane (see @fig-jupyterlite-download), and
-choose "Download". Save the file somewhere memorable on your computer.  You can
-go back to the notebook by following the instructions at
-@sec-running-own-computer.
+using the JupyterLite system.  JupyterLite keeps all its notebooks in your
+browser *cache*.  This is a private and temporary store that the browser keeps
+somewhere on your system.  This can be a problem if you find yourself clearing your browser cache for some reason, or if you start using another browser, that has a different cache. If you want make sure you have a copy of any changes
+you make to notebooks you ran with the "Interact" JupyterLite system, you
+might want to save a copy of the notebook outside the browser cache.  To do
+this, look the pane to the left of the notebook for the name of the notebook.
+This name of this particular notebook is "billies_bill", and you will see the
+notebook file in the left pane listed as `billies_bill.ipynb`.  If you want to
+save a copy to your computer, first use the "File" menu, and the "Save" option,
+to save your notebook.  This saves the notebook to your browser's private store
+(the *cache*).  Next *right-click* on `billies_bill.ipynb` in the left pane
+(see @fig-jupyterlite-download), and choose "Download". Save the file somewhere
+memorable on your computer.  You can go back to the notebook by following the
+instructions at @sec-running-own-computer.
+
+You can use this copy by re-uploading it to the "Interact" JupyterLite system.
+Go to the upload button near the top-left of the JupyterLite interface (see
+@fig-jupyterlite-upload). Select the `.ipynb` (Jupyter notebook) file you want
+to upload; once done, you can open the notebook using the file listing panel to
+the left of the interface.
 
 :::
 <!---
@@ -568,6 +578,10 @@ End of notebook.
 
 ![Downloading files in
 JupyterLite](images/jupyterlite_download.png){#fig-jupyterlite-download}
+
+![Uploading files in
+JupyterLite](images/jupyterlite_upload.png){#fig-jupyterlite-upload}
+
 
 ## Running the code on your own computer {#sec-running-own-computer}
 
@@ -627,7 +641,29 @@ You can run any of the code notebooks in this textbook on your own machine by
 downloading the notebook, via the download link at the top of each notebook
 section, and then opening the resulting notebook in {{< var nb_app >}}.
 
+Notice that the notebooks for download are in the same `.ipynb` (Jupyter)
+format as the notebooks in the "Interact" system (see @sec-saving-ipynb).  That
+means you can upload the `.ipynb` files from the download links into the
+Interact system and work with them there, and conversely, you can download the
+`.ipynb` files from the Interact system and work with them in Jupyter.
+
 ::: r
+
+### Notebooks for download are in RStudio (`.Rmd`) format
+
+You will notice that the notebooks for download are in the `.Rmd` (RMarkdown)
+format, rather than the `.ipynb` (Jupyter) format.  RMarkdown is the standard
+format for notebooks in RStudio.  The `.ipynb` format is the standard format
+for Jupyter.  As you remember, the "Interact" system uses Jupyter, and you may
+have noticed that the notebooks there are in `.ipynb`.  However, we designed
+the notebooks for download to work easily with RStudio — the system we
+recommend for running on your own computer, outside the browser.
+
+At the moment, by default, RStudio will not open Jupyter `.ipynb` files as notebooks, and the "Interact" system will not open RMarkdown `.Rmd` files as notebooks, so treat these two systems as separate.  If you download an `.Rmd`, do not upload it to the "Interact" system.  If you download an `.ipynb` file, do not try and open it in RStudio.
+
+In fact, it is relatively easy to convert between these two common notebook
+formats, with various methods, but we will leave you to explore that task if
+you are interested.
 
 ### Running notebooks in RStudio {#sec-running-rstudio}
 
