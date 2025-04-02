@@ -139,4 +139,4 @@ jobs:
           repository-name: resampling-stats/${{ env.BOOK_SUFFIX }}-r
           branch: main
           single-commit: true
-          token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
+          token: ${{ secrets.DEPLOY_BOOK }}
