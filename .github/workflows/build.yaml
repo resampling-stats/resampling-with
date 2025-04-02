@@ -83,7 +83,7 @@ jobs:
           repository-name: resampling-stats/resampling-stats.github.io
           branch: main
           single-commit: true
-          token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
+          token: ${{ secrets.DEPLOY_BOOK }}
 
       - name: Set Reticulate Python
         run: |
@@ -120,7 +120,7 @@ jobs:
           repository-name: resampling-stats/${{ env.BOOK_SUFFIX }}-python
           branch: main
           single-commit: true
-          token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
+          token: ${{ secrets.DEPLOY_BOOK }}
 
       - name: Build R book
         run: |
