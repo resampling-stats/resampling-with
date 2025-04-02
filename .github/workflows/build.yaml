@@ -85,6 +85,11 @@ jobs:
           single-commit: true
           token: ${{ secrets.BOOK_UPLOAD_TOKEN }}
 
+      - name: Build parameters
+        run: |
+          R -e "reticulate::py_config()"
+          python -c "import pandas"
+
       - name: Build Python book
         run: |
           make py-version
