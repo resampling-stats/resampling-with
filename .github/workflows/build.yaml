@@ -77,7 +77,7 @@ jobs:
         run: cd website && make
 
       - name: Deploy website index
-        uses: JamesIves/github-pages-deploy-action@v4.6.1
+        uses: JamesIves/github-pages-deploy-action@v4.7.3
         with:
           folder: website
           repository-name: resampling-stats/resampling-stats.github.io
@@ -113,7 +113,7 @@ jobs:
           fi
 
       - name: Deploy Python book
-        uses: JamesIves/github-pages-deploy-action@v4.6.1
+        uses: JamesIves/github-pages-deploy-action@v4.7.3
         if: env.BOOK_SUFFIX != ''
         with:
           folder: python-book
