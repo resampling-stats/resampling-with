@@ -552,18 +552,21 @@ ready for a new problem in probability and statistics, in the next chapter.
 If you are running this notebook via the "Interact" button, you are running it
 using the JupyterLite system.  JupyterLite keeps all its notebooks in your
 browser *cache*.  This is a private and temporary store that the browser keeps
-somewhere on your system.  This can be a problem if you find yourself clearing your browser cache for some reason, or if you start using another browser, that has a different cache. If you want make sure you have a copy of any changes
-you make to notebooks you ran with the "Interact" JupyterLite system, you
-might want to save a copy of the notebook outside the browser cache.  To do
-this, look the pane to the left of the notebook for the name of the notebook.
-This name of this particular notebook is "billies_bill", and you will see the
-notebook file in the left pane listed as `billies_bill.ipynb`.  If you want to
-save a copy to your computer, first use the "File" menu, and the "Save" option,
-to save your notebook.  This saves the notebook to your browser's private store
-(the *cache*).  Next *right-click* on `billies_bill.ipynb` in the left pane
-(see @fig-jupyterlite-download), and choose "Download". Save the file somewhere
-memorable on your computer.  You can go back to the notebook by following the
-instructions at @sec-running-own-computer.
+somewhere on your system.  This can be a problem if you find yourself clearing
+your browser cache for some reason, or if you start using another browser,
+that has a different cache. If you want make sure you have a copy of any
+changes you make to notebooks you ran with the "Interact" JupyterLite system,
+you might want to save a copy of the notebook outside the browser cache.  To
+do this, look the pane to the left of the notebook for the name of the
+notebook. This name of this particular notebook is "billies_bill", and you
+will see the notebook file in the left pane listed as `billies_bill.ipynb`.
+If you want to save a copy to your computer, first use the "File" menu, and
+the "Save" option, to save your notebook.  This saves the notebook to your
+browser's private store (the *cache*).  Next *right-click* on
+`billies_bill.ipynb` in the left pane (see @fig-jupyterlite-download), and
+choose "Download". Save the file somewhere memorable on your computer.  You
+can go back to the notebook by following the instructions at
+@sec-running-own-computer.
 
 You can use this copy by re-uploading it to the "Interact" JupyterLite system.
 Go to the upload button near the top-left of the JupyterLite interface (see
@@ -659,7 +662,11 @@ have noticed that the notebooks there are in `.ipynb`.  However, we designed
 the notebooks for download to work easily with RStudio — the system we
 recommend for running on your own computer, outside the browser.
 
-At the moment, by default, RStudio will not open Jupyter `.ipynb` files as notebooks, and the "Interact" system will not open RMarkdown `.Rmd` files as notebooks, so treat these two systems as separate.  If you download an `.Rmd`, do not upload it to the "Interact" system.  If you download an `.ipynb` file, do not try and open it in RStudio.
+At the moment, by default, RStudio will not open Jupyter `.ipynb` files as
+notebooks, and the "Interact" system will not open RMarkdown `.Rmd` files as
+notebooks, so treat these two systems as separate.  If you download an `.Rmd`,
+do not upload it to the "Interact" system.  If you download an `.ipynb` file,
+do not try and open it in RStudio.
 
 In fact, it is relatively easy to convert between these two common notebook
 formats, with various methods, but we will leave you to explore that task if

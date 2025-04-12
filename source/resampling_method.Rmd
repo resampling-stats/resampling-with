@@ -69,11 +69,11 @@ order on a given day.  We put the coins into a little jar or bucket.
 
 For ambulance #1, we draw a single coin from the bucket.  This coin represents
 whether that ambulance is going to be broken tomorrow.  If we draw the marked
-coin, we label this ambulance as out-of-order, otherwise we label the ambulance
-as in-operation.  After replacing the coin and shaking the bucket, we repeat
-the same procedure for ambulance #2, ambulance #3 and so forth. Having repeated
-the procedure *16* times, we now have a representation of all ambulances for
-a single day.
+coin, we label this ambulance as out-of-order, otherwise we label the
+ambulance as in-operation.  After replacing the coin and shaking the bucket,
+we repeat the same procedure for ambulance #2, ambulance #3 and so forth.
+Having repeated the procedure *16* times, we now have a representation of all
+ambulances for a single day.
 
 We can now repeat this whole process as many times as we like: each time, we
 come up with a representation for a different day, telling us how many
@@ -184,8 +184,8 @@ kableExtra::column_spec(
 ```
 
 To know how many ambulances were "out of order" on any given day, we count
-number of nines in that row.  We place the counts in the final column called
-"#9" (for "number of nines"):
+the number of nines in that row.  We place the counts in the final column
+called "#9" (for "number of nines"):
 
 ```{python, eval=TRUE, echo=FALSE}
 # Count the number of nines in each row, put in new column
@@ -242,9 +242,9 @@ End of callout note.
 The first thing to say about the code you will see below is there are some
 lines that do not do anything; these are the lines beginning with a `#`
 character (read `#` as "hash").  Lines beginning with `#` are called
-*comments*.  When {{< var lang >}} sees a `#` at the start of a line, it ignores
-everything else on that line, and skips to the next. Here's an example of a
-comment:
+*comments*.  When {{< var lang >}} sees a `#` at the start of a line, it
+ignores everything else on that line, and skips to the next. Here's an example
+of a comment:
 
 ```{python}
 # Python will completely ignore this text.
@@ -254,16 +254,15 @@ comment:
 # R will completely ignore this text.
 ```
 
-Because {{< var lang >}} ignores lines beginning with `#`, the text after the `#`
-is just for us, the humans reading the code.  The person writing the code will
-often use comments to explain what the code is doing.
-:::
+Because {{< var lang >}} ignores lines beginning with `#`, the text after the
+`#` is just for us, the humans reading the code.  The person writing the code
+will often use comments to explain what the code is doing. :::
 
 Our next task is to use {{< var lang >}} to simulate a single day of
-ambulances.  We will again represent each ambulance by a random number
-from 0 through 9.  16 of these numbers represents a simulation of all
-16 ambulances available to the contractor.  We call a simulation of all
-ambulances for a specific day — one *trial*.
+ambulances.  We will again represent each ambulance by a random number from
+0 through 9.  16 of these numbers represents a simulation of all 16 ambulances
+available to the contractor.  We call a simulation of all ambulances for
+a specific day — one *trial*.
 
 ::: python
 Before we begin our first trial, we need to load some helpful routines
@@ -654,15 +653,15 @@ thinking, and perhaps some digging in textbooks. More important than the labor,
 however, is that you may come up with the wrong formula, and hence obtain the
 wrong answer. And how would you know if you were wrong?
 
-Most students who have had a standard course in probability and
-statistics are quick to tell you that it is not easy to find the correct
-formula, even immediately after finishing a course (or several courses)
-on the subject. After leaving school or university, it is harder still
-to choose the right formula. Even many people who have taught statistics at the
-university level (including this writer) must look at a book to get the
-correct formula for a problem as simple as the ambulances, and then we are
-often still not sure we have the right answer. This is the grave disadvantage of
-the standard approach.
+Most students who have had a standard course in probability and statistics are
+quick to tell you that it is not easy to find the correct formula, even
+immediately after finishing a course (or several courses) on the subject.
+After leaving school or university, it is harder still to choose the right
+formula. Even many people who have taught statistics at the university level
+(including this writer) must look at a book to get the correct formula for
+a problem as simple as the ambulances, and then we are often still not sure we
+have the right answer. This is the grave disadvantage of the standard
+approach.
 
 In the past few decades, resampling and other Monte Carlo simulation
 methods have come to be used extensively in scientific research. But in
@@ -742,10 +741,10 @@ input. Resampling simulation enables us to get past issues of
 mathematical technique and focus on the crucial statistical elements of
 statistical problems.
 
-We hope you will find, as you read through the chapters, that the
-resampling way of thinking is a good way to think about the more
-traditional statistical methods that some of you may already know.  Our
-approach will be to use resampling to understand the ideas, and then apply this
-understanding to reason about traditional methods.  You may also find
-that the resampling methods are not only easier to understand — they are often
-more useful, because they are so general in their application.
+We hope you will find, as you read through the chapters, that the resampling
+way of thinking is a good way to think about the more traditional statistical
+methods that some of you may already know.  Our approach will be to use
+resampling to understand the ideas, and then apply this understanding to
+reason about traditional methods.  You may also find that the resampling
+methods are not only easier to understand — they are often more useful,
+because they are so general in their application.
