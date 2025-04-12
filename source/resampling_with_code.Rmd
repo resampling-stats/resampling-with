@@ -628,15 +628,16 @@ np.arange(7)
 ## `range` in Python {#sec-python-range}
 
 So far you have seen ranges of integers using `np.arange`.  The `np.` prefix
-refers to the fact that `np.arange` is a function from the Numpy module
-(library).  The `a` in `arange` signals that the result `np.arange` returns is
-an *array*:
+refers to the fact that `np.arange` is a function from the Numpy package.  The
+`a` in `arange` signals that the result `np.arange` returns is an *array*:
 
 ```{python}
 arr = np.arange(7)
 # Show the result
 arr
 ```
+
+`arr` is an array.  We can ask Python what kind of value we have by using the Python `type` function.  It accepts a value, and sends back something to show us the type of the value.  In the case of `arr`:
 
 ```{python}
 # Show what type of thing this is.
@@ -648,29 +649,32 @@ format, but Python has another way of getting a range of integers — the `range
 function.
 
 The `range` function is very similar to `np.arange`, but it is *not* part of
-Numpy — it is basic function in Python — and it does *not* return an *array* of
-numbers, it returns something else.  Here we ask for a `range` from 0 through 6
-(0 up to, but not including 7):
+Numpy — it is a basic function in Python — and it does *not* return an *array*
+of numbers, it returns something else.  Here we ask for a `range` from
+0 through 6 (0 up to, but not including 7):
 
 ```{python}
-# Notice no `np.` before `range`.
+# Notice no `np.` before `range`.  This is the Python `range` function.
 r = range(7)
 r
 ```
 
 Notice that the thing that came back is something that *represents* or *stands
 in for* the number 0 through 6.  It is not an array, but a specific type of
-thing called — a `range`:
+thing called — a `range`.
 
 ```{python}
 type(r)
 ```
 
-The `range` above is a container for the numbers 0 through 6.  We can get the
-numbers out of the container in many different ways, but one of them is to
-convert this container to an array, using the `np.array` function.  The
-`np.array` function takes the thing we pass it, and makes it into an array.
-When we apply `np.array` to `r` above, we get the numbers that `r` contains:
+The `range` above is a container for the numbers 0 through 6, in the same way
+that the array from `np.arange` was a container for these numbers.
+A container is a Python value that contains other values.  We can get the
+numbers out of the Python `range` container in many different ways, but one of
+them is to convert this container to an array container, using the `np.array`
+function. The `np.array` function takes the thing we pass it, and makes it
+into an array. When we apply `np.array` to `r` above, we get the numbers that
+`r` contains:
 
 ```{python}
 # Get the numbers from the range `r`, convert to an array.
@@ -849,9 +853,22 @@ a <- sample(some_integers, 17, replace=TRUE)
 a
 ```
 
-As you can see, the function sent back (returned) 17 numbers.  Because it is
-sending back more than one number, the thing it sends back is
-{{< var an_array >}}, where the {{< var array >}} has 17 elements.
+As you can see, the function sent back (returned) 17 numbers.
+
+::: python
+
+Because it is sending back more than one number, the thing it sends back has
+to be a *container*, and in fact, the container that `rnd.choice` uses is
+a Numpy array, where the array has (contains) 17 elements.
+
+:::
+
+::: r
+
+Because `sample` is sending back more than one number, the result is a vector
+with 17 elements
+
+:::
 
 ### `sum` — adding all the values
 
@@ -1031,8 +1048,8 @@ TRUE == 1
 ```
 
 Therefore, the function `sum`, when applied to {{< var an_array >}} of {{< var
-true >}} and {{< var false >}} values, will count the number of {{< var true
->}} values in the {{< var array >}}.
+true >}} and {{< var false >}} values, will count the number of
+{{< var true >}} values in the {{< var array >}}.
 
 To see this in action we can make a new {{< var array >}} of {{< var true >}}
 and {{< var false >}} values, and try using
@@ -1117,9 +1134,12 @@ Please forgive us as we race ahead again, as we did in the last chapter.  As in
 the last chapter, we will use a *results* {{< var array >}} called `z` to
 store the count for each trial.  As in the last chapter, we will use a `for`
 loop to repeat the trial procedure many times.  As in the last chapter, we will
-not explain the counts {{< var array >}} of the `for` loop in any detail, because we are going to cover those in the next chapter.
+not explain the counts {{< var array >}} or the `for` loop in any detail,
+because we are going to cover those in the next chapter.
 
-Let us now imagine that we want to do 100 simulated trials at Saint Hypothetical General.  This will give us 100 counts.  We will want to store the count for each trial.
+Let us now imagine that we want to do 100 simulated trials at Saint
+Hypothetical General.  This will give us 100 counts.  We will want to store
+the count for each trial.
 
 To do this, we make {{< var an_array >}} called `z` to hold the
 100 counts.  We have called the {{< var array >}} `z`, but we could have
@@ -1141,7 +1161,8 @@ Next we use a `for` loop to *repeat the single trial procedure*.
 
 Notice that the single trial procedure, inside this `for` loop, is the same as the single trial procedure above — the only two differences are:
 
-* The trial procedure is inside the loop, and
+* The trial procedure is inside the loop (as indicated by the
+  [curly brackets `{}`]{.r}[indentation]{.python}).
 * We are storing the count for each trial as we go.
 
 We will go into more detail on how this works in the next chapter.
@@ -1217,10 +1238,11 @@ s == 17
 Notice that the *double equals* `==` means something entirely different to
 Python than the single equals `=`.  In the code above, Python reads `s = 17` to
 mean "Set the variable `s` to have the value 17".  In technical terms the
-single equals is called an *assignment* operator, because it means *assign* the
-value 17 to the variable `s`.
+single equals is called an *assignment* operator, because it means *assign*
+the value 17 to the variable `s`.
 
-The code `s == 17` has a completely different meaning.
+The code `s == 17` has a completely different meaning — and it is another
+example of a *comparison* — comparing the value in `s` to 17.
 :::
 
 ::: r
@@ -1228,14 +1250,17 @@ The code `s == 17` has a completely different meaning.
 
 The *double equals* `==` above is a *comparison* in R.
 :::
-It means "give {{< var true >}} if the value in `s` is equal to 17, and {{<
-var false >}} otherwise".  The `==` is a *comparison* operator — it is for
-comparing two values — here the value in `s`
-and the value 17.  This comparison, like all comparisons, returns an answer
-that is either {{< var true >}} or {{< var false >}}.  In our case `s`
-has the value 17, so the comparison becomes `17 == 17`, meaning "is 17 equal to
-17?", to which the answer is "Yes", and {{< var lang >}} sends back {{< var
-true >}}.
+
+`==` means: compare the thing on the left of the `==` to the thing on the
+right of the `==`, and give {{< var true >}} if the values are equal, and
+{{< var false >}} otherwise.  In this case, `s == 17` means
+"give {{< var true >}} if the value in `s` is equal to 17, and
+{{< var false >}} otherwise".  The `==` is a *comparison* operator — it is for
+comparing two values — here the value in `s` and the value 17.  This
+comparison, like all comparisons, returns an answer that is either {{< var
+true >}} or {{< var false >}}.  In our case `s` has the value 17, so the
+comparison becomes `17 == 17`, meaning "is 17 equal to 17?", to which the
+answer is "Yes", and {{< var lang >}} sends back {{< var true >}}.
 ::::::
 
 We can ask this question of *all 100 counts* by asking the question: is the {{<
@@ -1293,8 +1318,8 @@ p <- n_all_cured / 100
 p
 ```
 
-From this experiment, we see that there is roughly a one-in-six chance that
-all 17 patients are cured when using a 90% effective treatment.
+From this experiment, we see that there is roughly a 15% chance that all 17
+patients are cured when using a 90% effective treatment.
 
 <!---
 End of notebook.
@@ -1316,9 +1341,9 @@ can use simulation to estimate the chances that 17 out of 17 patients would be
 cured in such a hypothetical trial, on the assumption that each patient has a
 90% chance of being cured with the standard treatment.
 
-The answer for Saint Hypothetical General was — we would be somewhat surprised,
-but not astonished.  We only get 17 out of 17 patients cured about one time in
-six.
+The answer for Saint Hypothetical General was — we would be somewhat
+surprised, but not astonished.  We only get 17 out of 17 patients cured about
+one time in six (around 15% of the time).
 
 Now let us return to the NCI trial.  Should the trial authors be surprised by
 their results?  If they assumed that their new treatment was *exactly as
