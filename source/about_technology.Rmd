@@ -214,7 +214,10 @@ icons - the "Toolbar".
 In the Jupyter toolbar, you may see icons to run the current cell, among
 others.
 
-To move from one cell to the next, you can click the run icon in the toolbar, but it is more efficient to press the Shift key, and press Enter (with Shift still held down).  We will write this as {{< var run_key >}}.
+To move from one cell to the next, you can click the run icon in the toolbar,
+but it is more efficient to press the Shift key, and press Enter (with Shift
+still held down).  Your keyboard may label the Enter key as "Return". We will
+write this as {{< var run_key >}}.
 
 In this, our first notebook, we will be using {{< var lang >}} to solve one of
 those difficult and troubling problems in life — working out the bill in a
@@ -267,8 +270,8 @@ already seen comments in the previous chapter.
 A comment is some text that the computer will ignore.  In {{< var lang >}},
 you can make a comment by starting a line with the `#` (hash) character.  For
 example, the next cell is a code cell, but when you run it, it does not show
-any result.  In this case, that is because the computer sees the `#` at the
-beginning of the line, and then ignores the rest.
+any result.  That is because the computer sees the `#` at the beginning of the
+line, and then ignores the rest.
 
 ```{python}
 # This bit of text is for us to read, and the computer to ignore.
@@ -284,8 +287,8 @@ code is doing.
 Practice writing comments for your own code.  It is a very good habit to get
 into.  You will find that experienced programmers write many comments on their
 code.  They do not do this to show off, but because they have a lot of
-experience in reading code, and they know that comments make it much easier to
-read and understand code.
+experience in reading code, and they know that comments make code easier to
+read and understand.
 
 
 ## More calculations
@@ -321,8 +324,8 @@ These rules tell us to do multiplication before addition.
 
 See <https://en.wikipedia.org/wiki/Order_of_operations> for more detail on the standard rules.
 
-In the case above the rules tell {{< var lang >}} to first calculate `9.25 *
-0.15` (to get `1.3875`) and then to add the result to `10.50`, giving
+In the case above, the rules tell {{< var lang >}} to first calculate `9.25
+* 0.15` (to get `1.3875`) and then to add the result to `10.50`, giving
 `11.8875`.
 
 We need to tell {{< var lang >}} we want it to do the *addition* and *then*

@@ -51,8 +51,8 @@ In this chapter, we will model another problem using
   problem.  First we work out how to simulate a single *trial*.  Then we work
   out how to run many simulated trials.
 * We sprinted through the code in @sec-resampling-method, with the promise we
-  would come back to the details.  Here we go into more detail about some ideas
-  from the code in the last chapter.  These are:
+  would come back to the details.  Here we give more explanation for some
+  ideas in the code in the last chapter.  These are:
 
   * Storing several values together in one place, with
     [arrays]{.python}[vectors]{.r}.
@@ -183,7 +183,7 @@ Here we stop to emphasize the steps in the process of a random simulation.
    17 cured, so we count the number of trials with a score of 17.  Say 15 out
    of the run of 100 trials had an outcome of 17 cured. That is our *count*.
 6. Finally we divide the count by the number of trials to get the *proportion*.
-   From the example above, we divide 15 by 100 to 0.15 (15%).  This is our
+   From the example above, we divide 15 by 100 to get 0.15 (15%).  This is our
    estimate of the chance of seeing 17 out of 17 patients cured in any one
    trial.  We can also call this an estimate of the *probability* that 17 out
    of 17 patients will be cured on any on trial.
@@ -276,7 +276,7 @@ Put another way, `some_numbers` is now the name we can use for this collection
 of 10 values.
 
 [Arrays]{.python}[Vectors]{.r} are very useful for simulations and data
-analysis, and we will be using these for nearly every example in this book.
+analysis, and we will be using them for nearly every example in this book.
 
 ## Functions {#sec-introducing-functions}
 
@@ -323,8 +323,10 @@ rounded to the nearest integer.
 The components we send to a function are called *arguments*.  The finished
 result the function sends back is the *return value*.
 
-* **Arguments**: the value or values we send to a function.
-* **Return value**: the values the function sends back.
+* **Arguments**: the value or values we send to a function.  These are the
+  components in the production line analogy.
+* **Return value**: the values the function sends back. This is the finished
+  result in the production line analogy.
 
 See @fig-round_function_pl for an illustration of
 [`round`]{.r}[`np.round`]{.python} as a production line.
@@ -414,9 +416,9 @@ round(3.1415, 2)
 ```
 
 In this call, we relied on the fact that we, the people writing the code, and
-you, the person reading the code, remember that the second argument (2) means
-the number of decimal places it should round to.   But, we can also specify
-the argument using its name, like this (see
+you, the person reading the code, remembered that the second argument (2)
+means the number of decimal places it should round to.   But we can also
+specify the argument using its name, like this (see
 [@fig-round_function_named]{.r}[@fig-np_round_function_named]{.python}):
 
 ```{python}
@@ -526,6 +528,20 @@ syntax]{.r}[standard Numpy function `np.arange`]{.python} to do that.
 some_numbers = np.arange(0, 10)
 some_numbers
 ```
+
+:::{.callout-note}
+## Pronouncing `np.arange`
+
+Yes, we know, it looks as if `arange` in `np.arange` should be pronounced like
+"arrange", but in fact, the `a` in `arange` stands for "array". `arange`
+— unlike the similar Python function `range` — sends back its values in the
+form of an array.  So, bear with your aging authors, and remember to pronounce
+`arange` as "A-range".  As well as being easier on our ears, it will help you
+remember what the function is for.
+
+:::
+
+
 
 Notice that we send `np.arange` the *arguments* 0 and 10.  The first
 argument, here 0, is the *start* value.  The second argument, here 10, is the
