@@ -844,6 +844,12 @@ a = rnd.choice(some_integers, 17)
 a
 ```
 
+```{r, eval=TRUE, echo=FALSE}
+# To make sure we get some zeros in the `a` vector below,
+# in the output for the book.
+set.seed(43)
+```
+
 ```{r}
 # Get 17 values from the *some_integers* vector.
 # Sample *with replacement*, so sample can select numbers more than once.
@@ -990,30 +996,147 @@ answers.  The first answer is the answer to the question "is the value of the
 *first* element of `a` greater than 0", and the second is the answer to "is the
 value of the *second* element of `a` greater than 0".
 
-Let us store the result of this comparison to work on:
+## More comparisons
+
+While we are here, let us carry on the theme of comparisons.  A comparison,
+such as `>` (greater than) above, asks a question of the values to its left
+and right.  You have already seen:
 
 ```{python}
-# Is the value of "a" greater than 0
-# Store as another array "q".
+p = 0
+# Is the value of p greater than 0?
+# Show the result of the comparison.
+p > 0
+```
+
+```{r}
+p <- 0
+# Is the value of p greater than 0?
+# Show the result of the comparison.
+p > 0
+```
+
+It won't surprise you to know that `<` (less than) is another comparison
+operator. It asks "is the value to the right less than the value to left?".
+
+```{python}
+p = 0
+# Is the value of p less than 1?
+# Show the result of the comparison.
+p < 1
+```
+
+```{r}
+p <- 0
+# Is the value of p less than 0?
+# Show the result of the comparison.
+p < 0
+```
+
+As for `>` above, `<` applied to {{< var an_array >}}, gives a new {{< var array >}}, with one answer for each element in the {{< var array >}}:
+
+```{python}
+# Is the value of "a" less than 6?
+# Show the result.
+a < 6
+```
+
+```{r}
+# Is the value of "a" less than 6?
+# Show the result.
+a < 6
+```
+
+`>` asks "is right greater than left?".  `<` asks "is right less than
+left?".  We will also have use for a comparison that asks "is right equal to
+left?".  {{< var lang >}} uses `==` (double equals) to do this comparison.
+
+```{python}
+p = 17
+# Is the value of p equal to 17?
+# Show the result of the comparison.
+p == 17
+```
+
+```{r}
+p <- 17
+# Is the value of p equal to 17?
+# Show the result of the comparison.
+p == 17
+```
+
+::: {.callout-note}
+## [Single and d]{.python}[D]{.r}ouble equals
+
+::: python
+
+Notice that the *double equals* `==` means something entirely different to
+Python than the single equals `=`.  In the code above, Python reads `p = 17` to
+mean "Set the variable `p` to have the value 17".  In technical terms the
+single equals is called an *assignment* operator, because it means — perform
+the operation of *assigning* the value 17 to the variable `p`.
+
+The code `p == 17` has a completely different meaning — and it is another
+example of a *comparison* — comparing the value in `p` to 17.
+
+:::
+
+::: r
+
+The *double equals* `==` above is a *comparison* in R.
+
+:::
+
+Like `<` and `>`, `==` is a *comparison operator*.  It specifies that {{< var
+lang >}} should *operate* on the values to its left and to its right.
+Comparison operators like `<` and `==` are for comparing two values — here the
+value in `p` and the value 17.  This comparison, like all comparisons, returns
+an answer that is either {{< var true >}} or {{< var false >}}.  In our case
+`p` has the value 17, so the comparison becomes `17 == 17`, meaning "is 17
+equal to 17?", to which the answer is "Yes", and {{< var lang >}} sends back
+{{< var true >}}.
+::::::
+
+As you can imagine, and as for `<` and `>`, `==` applied to
+{{< var an_array >}} does the comparison for each element of the
+{{< var array >}}:
+
+```{python}
+# Is the value of "a" equal to 6?
+# Show the result.
+a == 6
+```
+
+```{r}
+# Is the value of "a" less than 6?
+# Show the result.
+a == 6
+```
+
+## Counting {{< var true >}} values with `sum` {#sec-count-with-sum}
+
+Let us return to the `>` comparison:
+
+```{python}
+# Is the value of "a" greater than 0?
+# Store the result in q.
 q = a > 0
-# Show the value of r
+# Show the result.
 q
 ```
 
 ```{r}
 # Is the value of "a" greater than 0?
-# Store as another vector "q".
+# Store the result in q.
 q <- a > 0
-# Show the value of q
+# Show the result.
 q
 ```
 
-## Counting {{< var true >}} values with `sum` {#sec-count-with-sum}
-
-Notice above that there is one {{< var true >}} element in `q` for every
-element in `a` that was greater than 0.  It only remains to *count* the number
-of {{< var true >}} values in `q`, to get the count of patients in our
-simulated trial who were cured.
+Notice that there is one {{< var true >}} element in `q` for every element in
+`a` that was greater than 0.  The next task is to *count* the number of {{<
+var true >}} values in `q`, to get the count of patients in our simulated
+trial who were cured.
 
 We can use the {{< var np_or_r >}} function [`sum`]{.r}[`np.sum`]{.python} to
 count the number of {{< var true >}} elements in {{< var an_array >}}.
@@ -1128,7 +1251,7 @@ b
 
 ## Repeating the trial
 
-Now we know how to do one simulated trial, we could just keep running the {{< var cell >}} above, and writing down the result each time.  Once we had run the {{< var cell >}} 100 times, we would have 100 counts.  Then we could look at the 100 counts to see how many were equal to 17 (all 17 simulated patients cured on that trial).  At least that would be much faster than rolling 17 dice 100 times, but we would also like the computer to automate the process of repeating the trial, and keeping track of the counts.
+Now we know how to do one simulated trial, we could just keep running the {{< var cell >}} above, and writing down the result each time.  Once we had run the {{< var cell >}} 100 times, we would have 100 counts.  Then we could look at the 100 counts to see how many were equal to 17 (all 17 simulated patients cured on that trial).  At least that would be much faster than rolling 17 dice 100 times, but we would also like the computer to automate the process of repeating the trial, while keeping track of the counts.
 
 Please forgive us as we race ahead again, as we did in the last chapter.  As in
 the last chapter, we will use a *results* {{< var array >}} called `z` to
@@ -1215,56 +1338,8 @@ z
 Finally, we need to count how many of the trials results we stored in `z` gave
 a "cured" count of 17.
 
-We can ask the question whether a single number is equal to 17 using the *double equals* comparison: `==`.
-
-```{python}
-s = 17
-# Is the value of s equal to 17?
-# Show the result of the comparison.
-s == 17
-```
-
-```{r}
-s <- 17
-# Is the value of s equal to 17?
-# Show the result of the comparison.
-s == 17
-```
-
-::: {.callout-note}
-::: Python
-## Single and double equals
-
-Notice that the *double equals* `==` means something entirely different to
-Python than the single equals `=`.  In the code above, Python reads `s = 17` to
-mean "Set the variable `s` to have the value 17".  In technical terms the
-single equals is called an *assignment* operator, because it means *assign*
-the value 17 to the variable `s`.
-
-The code `s == 17` has a completely different meaning — and it is another
-example of a *comparison* — comparing the value in `s` to 17.
-:::
-
-::: r
-## Double equals
-
-The *double equals* `==` above is a *comparison* in R.
-:::
-
-`==` means: compare the thing on the left of the `==` to the thing on the
-right of the `==`, and give {{< var true >}} if the values are equal, and
-{{< var false >}} otherwise.  In this case, `s == 17` means
-"give {{< var true >}} if the value in `s` is equal to 17, and
-{{< var false >}} otherwise".  The `==` is a *comparison* operator — it is for
-comparing two values — here the value in `s` and the value 17.  This
-comparison, like all comparisons, returns an answer that is either {{< var
-true >}} or {{< var false >}}.  In our case `s` has the value 17, so the
-comparison becomes `17 == 17`, meaning "is 17 equal to 17?", to which the
-answer is "Yes", and {{< var lang >}} sends back {{< var true >}}.
-::::::
-
-We can ask this question of *all 100 counts* by asking the question: is the {{<
-var array >}} `z` equal to 17, like this:
+We can ask this question of *all 100 counts* by asking the question: "is the
+{{< var array >}} `z` equal to 17?", using `==`:
 
 ```{python}
 # Is the value of z equal to 17?
