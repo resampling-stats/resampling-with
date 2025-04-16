@@ -53,14 +53,16 @@ specified number of Negros.".
 Swain's team presented a variety of evidence on bias in jury selection, but
 here we will look at the obvious and apparently surprising fact that Swain's
 jury was entirely white. The Supreme Court decided that the "disparity"
-between selection of white and black jurors "has been small" — but how would
-they, and how would we, make a rational decision about whether this disparity
-*really* was "small"?
+between selection of white and black jurors "has been small".  In this
+particular case the disparity is between 0% of selected black jurors and 26%
+of eligible black jurors.  How would the Supreme Court judges, and how would
+we, make a rational decision about whether this particular disparity really
+was "small"?
 
-You might reasonably be worried about the result of this decision for Robert
-Swain.  In fact his death sentence was invalidated by a [later, unrelated
-decision](https://en.wikipedia.org/wiki/Furman_v._Georgia) and he served a
-long prison sentence instead. In 1986, the Supreme Court overturned the
+You might be wondering about the result of this decision for Robert Swain.  In
+fact his death sentence was invalidated by a [later, unrelated
+decision](https://en.wikipedia.org/wiki/Furman_v._Georgia) and he served
+a long prison sentence instead. In 1986, the Supreme Court overturned the
 precedent set by Swain's case, in [Batson v. Kentucky, 476 U.S.
 79](https://supreme.justia.com/cases/federal/us/476/79).
 
@@ -73,17 +75,17 @@ person had an equal chance of being selected for the jury.  Call this world Hypo
 
 Just as in 1960's Talladega County, 26% of eligible jurors in Hypothetical
 County are black.  Hypothetical County jury selection has no bias against
-black people, so we expect around 26% of the jury to be black. 0.26 * 12 =
-3.12, so we expect that, on average, just over 3 out of 12 jurors in
-a Hypothetical County jury will be black.  But, if we select each juror at
-random from the population, that means that, sometimes, by chance, we will have
-fewer than 3 black jurors, and sometimes will have more than 3 black jurors.
-And, by chance, sometimes we will have no black jurors.  But, if the jurors
-really are selected at random, how often would we expect this to happen — that
-there are no black jurors?  We would like to estimate the *probability* that
-we will get no black jurors.  If that probability is small, then we have some
-evidence that the disparity in selection between black and white jurors, was
-not "small".
+black people, so we expect around 26% of the jury to be black.  26% of 12 is
+3.12 (0.26 * 12 = 3.12), so we expect that, on average, just over 3 out of 12
+jurors in a jury from Hypothetical County will be black.  But, if we select
+each juror at random from the population, that means that, sometimes, by
+chance, we will have fewer than 3 black jurors, and sometimes will have more
+than 3 black jurors. And, by chance, sometimes we will have no black jurors.
+But, if the jurors really are selected at random, how often would we expect
+this to happen — that there are no black jurors?  We would like to estimate
+the *probability* that we will get no black jurors.  If that probability is
+small, then we have some evidence that the disparity in selection between
+black and white jurors, was not "small".
 
 ::: {.question}
 What is the probability of an *all white* jury being randomly selected out of a population having 26% black people?
@@ -502,8 +504,8 @@ z[3] <- b
 This would get terribly long and boring to type for 50 trials.  Luckily
 computer code is very good at repeating the same procedure many times. For
 example, {{< var lang >}} can do this using a `for` loop. You have already seen
-a preview of the `for` loop in @sec-resampling-method. Here we dive into `for`
-loops in more depth.
+a preview of the `for` loop in @sec-resampling-method and
+@sec-resampling-code. Here we dive into `for` loops in more depth.
 
 ### For-loops in {{< var lang >}} {#sec-for-loops}
 
@@ -627,7 +629,7 @@ take *each item* in `author_birth_years`, one by one — first 1932, then 1964,
 then 1980.  For each of these numbers it will:
 
 * Put the number into the variable `birth_year`, then
-* Run the [indented]{.python} code [between the curly braces]{.r}.
+* Run the [indented]{.python} code[ between the curly braces]{.r}.
 
 Just as the person at the supermarket checkout takes each item in turn, for
 each iteration (repeat) of the `for` loop, `birth_year` gets a new value from
@@ -811,17 +813,17 @@ is a more common pattern in standard Python code.[^range-efficiency]
    prefer `range` to `np.arange` in the headers for their `for` loops. `range`
    is a very efficient container, in that it doesn't need to take up all the
    memory required to create the full array, it just needs to keep track of the
-   number to give you next. For example, consider `for i in
-   np.arange(10000000):` — in this case Python has to make an array with
-   10,000,000 elements, and then, from that array, it passes each value one by
-   one to the `for` loop. On the other hand, `for i in range(10000000):` will
-   do the job just as well, passing the same sequence of 0 through 9,999,999 to
-   `i`, one by one, but `range(10000000)` never has to make the whole
-   10,000,000 element array — it just needs to keep track of which number to
-   give up next.  Therefore `range` is very quick, and very efficient in
-   memory.  This doesn't have any great practical impact for the arrays we are
-   using here, typically of 10,0000 elements or so, but it can be important for
-   larger arrays.
+   number to give you next. For example, consider
+   `for i in np.arange(10000000):` — in this case Python has to make an array
+   with 10,000,000 elements, and then, from that array, it passes each value
+   one by one to the `for` loop. On the other hand,
+   `for i in range(10000000):` will do the job just as well, passing the same
+   sequence of 0 through 9,999,999 to `i`, one by one, but `range(10000000)`
+   never has to make the whole 10,000,000 element array — it just needs to
+   keep track of which number to give up next.  Therefore `range` is very
+   quick, and very efficient in memory.  This doesn't have any great practical
+   impact for the arrays we are using here, typically of 10,0000 elements or
+   so, but it can be important for larger arrays.
 
 :::
 

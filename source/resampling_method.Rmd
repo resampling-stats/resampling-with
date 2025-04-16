@@ -257,6 +257,7 @@ of a comment:
 Because {{< var lang >}} ignores lines beginning with `#`, the text after the
 `#` is just for us, the humans reading the code.  The person writing the code
 will often use comments to explain what the code is doing. :::
+:::
 
 Our next task is to use {{< var lang >}} to simulate a single day of
 ambulances.  We will again represent each ambulance by a random number from
@@ -326,7 +327,7 @@ The commands above ask the computer to store the results of the random drawing
 in a location in the computer's memory to which we give a name such as `a` or
 `ambulances` or `aardvark` — the name is up to us.
 
-Next, we need to count the number of defective ambulances:
+Next we need to count the number of defective ambulances:
 
 ```{python}
 # Count the number of nines in the random numbers.
@@ -345,6 +346,38 @@ b <- sum(a == 9)
 # Show the result
 b
 ```
+
+::: python
+:::{.callout-note}
+## Numpy display of single values
+
+As you see above, Python showed us the value of the sum like this:
+
+```{python}
+# Show the result
+b
+```
+
+It is not important for our purposes, but in fact this value (the result of
+the sum) came back from the Numpy library, because `np.sum` comes from Numpy.
+Numpy has a particular way of displaying single values that show us the value
+(in this case `1`) and the *type* of the value (in this case `np.int64`.  The
+type of the value isn't important to us at the moment, but `np.int64` means
+that this is a value of type *integer* (an integer is a positive or negative
+whole number), and taking up 64 *bits* of the computer's memory.
+
+You will see many other Numpy values displayed in this form.  For example,
+this is how Numpy displays a *floating point* value (a value that need not be
+a whole number):
+
+```{python}
+# Divide b by 2 and show the result.
+b / 2
+```
+:::
+:::
+
+
 
 You see that we have code like this:
 
