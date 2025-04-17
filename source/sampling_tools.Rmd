@@ -79,6 +79,19 @@ this_juror_is_black = a < 26
 this_juror_is_black
 ```
 
+::: python
+::: {.callout-note}
+## Numpy display of single Boolean values
+
+You saw in @nte-numpy-int-display and @nte-numpy-float-display that Numpy has
+a particular way of displaying single values.  @nte-numpy-int-display was
+about display of *integer* (`int`) values, and @nte-numpy-float-display was
+about display of *floating point* (`float`) values.  The display above is
+Numpy's version of the Boolean value `False`.  As you'd expect, Numpy shows
+the single value `True` as `np.True_`.
+:::
+:::
+
 ```{r}
 this_juror_is_black <- a < 26
 this_juror_is_black
@@ -444,6 +457,18 @@ at that position:
 middle_name = arr_of_strings[1]
 middle_name
 ```
+
+::: python
+:::{.callout-note}
+## Numpy display of single string-type values
+
+`np.str_` in the output shows us that the result was a Numpy single value of
+*string* (`str_`) type.
+
+:::
+:::
+
+Notice the output from this {{< var cell >}}:
 
 ```{r}
 # Julian Lincoln Simon's second name

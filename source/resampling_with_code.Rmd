@@ -328,23 +328,16 @@ result the function sends back is the *return value*.
 * **Return value**: the values the function sends back. This is the finished
   result in the production line analogy.
 
-See @fig-round_function_pl for an illustration of
-[`round`]{.r}[`np.round`]{.python} as a production line.
+See [@fig-round_function_pl]{.r}[@fig-round_function_pl_np]{.python} for an
+illustration of [`round`]{.r}[`np.round`]{.python} as a production line.
 
-::: r
-
-```{r fig-round_function_pl, opts.label='svg_fig', fig.cap="The `np.round` function as a production line"}
+```{r fig-round_function_pl_np, opts.label='svg_fig', fig.cap="The `np.round` function as a production line", eval=is_py_ed}
 include_svg('diagrams/round_function_pl_np.svg')
 ```
-:::
 
-::: r
-
-```{r fig-round_function_pl, opts.label='svg_fig', fig.cap="The `round` function as a production line"}
+```{r fig-round_function_pl, opts.label='svg_fig', fig.cap="The `round` function as a production line", eval=is_r_ed}
 include_svg('diagrams/round_function_pl.svg')
 ```
-
-:::
 
 In the next few code {{< var cell >}}s, you see examples where
 [`round`]{.r}[`np.round`]{.python} takes in a not-integer number, as an
@@ -356,10 +349,10 @@ np.round(3.2)
 ```
 
 ::: python
-::: {.callout-note}
+::: {#nte-numpy-float-display .callout-note}
 ## Numpy display of floating point values
 
-Way back in @nte-numpy-scalar-display, you saw that Numpy has a particular way
+Way back in @nte-numpy-int-display, you saw that Numpy has a particular way
 of displaying single values that shows both the *value* (here 3.0) and the
 type of value (here `np.float64`).  You previously saw examples of Numpy
 integer values of type `np.int64`.  The value that comes back from
@@ -373,31 +366,6 @@ integers, with no decimal point, as in 6 (and 3).  It just so happens that
 :::
 :::
 
-
-```{python}
-# Display result of Numpy sum of 1 and 2.
-np.sum([1, 2])
-```
-
-As Notice the output gives the value (
-
-
-You will see many other Numpy values displayed in this form.  For example,
-this is how Numpy displays a *floating point* value (a value that need not be
-a whole number):
-
-```{python}
-# Divide b by 4 and show the result.
-b / 4
-```
-:::
-:::
-
-```{python}
-# Show the result
-b
-```
-:::
 ```{python}
 # Put in -2.7, round sends back -3.
 np.round(-2.7)
@@ -416,7 +384,7 @@ round(-2.7)
 Like many functions, [`round`]{.r}[`np.round`]{.python} can take more than one
 argument (component).  You can send `round` the number of digits you want to
 round to, after the number of you want it to work on, like this (see
-@fig-round_ndigits_pl):
+[@fig-round_ndigits_pl]{.r}[@fig-round_ndigits_pl_np]{.python}):
 
 ```{python}
 # Put in 3.1415, and the number of digits to round to (2).
@@ -430,20 +398,13 @@ np.round(3.1415, 2)
 round(3.1415, 2)
 ```
 
-::: python
-
-```{r fig-round_ndigits_pl, opts.label='svg_fig', fig.cap="`round` with optional arguments specifying number of digits"}
+```{r fig-round_ndigits_pl_np, opts.label='svg_fig', fig.cap="`round` with optional arguments specifying number of digits", eval=is_py_ed}
 include_svg('diagrams/round_function_ndigits_pl_np.svg')
 ```
-:::
 
-::: r
-
-```{r fig-round_ndigits_pl, opts.label='svg_fig', fig.cap="`round` with optional arguments specifying number of digits"}
+```{r fig-round_ndigits_pl, opts.label='svg_fig', fig.cap="`round` with optional arguments specifying number of digits", eval=is_r_ed}
 include_svg('diagrams/round_function_ndigits_pl.svg')
 ```
-
-:::
 
 Notice that the second argument — here 2 — is *optional*.  We only have to send
 `round` one argument: the number we want it to round.  But we can *optionally*
@@ -498,12 +459,12 @@ np.round(3.1415, decimals=2)
 round(3.1415, digits=2)
 ```
 
-```{r fig-round_function_named, opts.label='svg_fig', fig.cap="The `round` function with argument names", eval=is_r_ed}
-include_svg('diagrams/round_function_named.svg')
+```{r fig-np_round_function_named, opts.label='svg_fig', fig.cap="The `np.round` function with argument names", eval=is_py_ed}
+include_svg('diagrams/round_function_named_np.svg')
 ```
 
-```{r fig-np_round_function_named, opts.label='svg_fig', fig.cap="The `np.round` function with argument names", eval=is_py_ed}
-include_svg('diagrams/np_round_function_named.svg')
+```{r fig-round_function_named, opts.label='svg_fig', fig.cap="The `round` function with argument names", eval=is_r_ed}
+include_svg('diagrams/round_function_named.svg')
 ```
 
 Here {{< var lang >}} sees the *first* argument, as before, and assumes that it
