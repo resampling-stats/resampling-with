@@ -349,33 +349,24 @@ b
 
 ::: python
 :::{#nte-numpy-scalar-display .callout-note}
-## Numpy display of single values
+## Numpy shows the value and type of single numbers
 
-As you see above, Python showed us the value of the sum like this:
+Notice the output from this {{< var cell >}}:
 
 ```{python}
 # Show the result
 b
 ```
 
-It is not important for our purposes, but in fact this value (the result of
-the sum) came back from the Numpy library, because `np.sum` is a routine from
-Numpy.  Numpy has a particular way of displaying single values that show us the
-value (in this case `1`) and the *type* of the value (in this case `np.int64`).
-The type of the value does not matter to us at the moment, but `np.int64` means
-that this is a value of type *integer* (`int`) that uses `64` units
+It is not important for our purposes, but this value (the result of the sum)
+arose from a calculation from a Numpy library routine: `np.sum`. Numpy has
+a particular way of displaying single values that show us the value (in this
+case `1`) and the *type* of the value (in this case `np.int64`). The type of
+the value does not matter to us at the moment, but `np.int64` means that this
+is a value of type *integer* (`int`) that uses `64` units
 ([bits](https://en.wikipedia.org/wiki/Bit)) of computer memory.  An *integer*
 is a positive or negative whole number - see @nte-what-is-integer.
 
-You will see many other Numpy values displayed in this form.  For example,
-this is how Numpy displays a *floating point* value (a value that need not be
-a whole number):
-
-```{python}
-# Divide b by 4 and show the result.
-b / 4
-```
-:::
 :::
 
 

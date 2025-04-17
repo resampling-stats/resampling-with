@@ -331,9 +331,20 @@ result the function sends back is the *return value*.
 See @fig-round_function_pl for an illustration of
 [`round`]{.r}[`np.round`]{.python} as a production line.
 
+::: r
+
+```{r fig-round_function_pl, opts.label='svg_fig', fig.cap="The `np.round` function as a production line"}
+include_svg('diagrams/round_function_pl_np.svg')
+```
+:::
+
+::: r
+
 ```{r fig-round_function_pl, opts.label='svg_fig', fig.cap="The `round` function as a production line"}
 include_svg('diagrams/round_function_pl.svg')
 ```
+
+:::
 
 In the next few code {{< var cell >}}s, you see examples where
 [`round`]{.r}[`np.round`]{.python} takes in a not-integer number, as an
@@ -344,6 +355,49 @@ In the next few code {{< var cell >}}s, you see examples where
 np.round(3.2)
 ```
 
+::: python
+::: {.callout-note}
+## Numpy display of floating point values
+
+Way back in @nte-numpy-scalar-display, you saw that Numpy has a particular way
+of displaying single values that shows both the *value* (here 3.0) and the
+type of value (here `np.float64`).  You previously saw examples of Numpy
+integer values of type `np.int64`.  The value that comes back from
+`np.round(3.2)` is a *floating point* (`float`) type, taking up `64` units
+([bits](https://en.wikipedia.org/wiki/Bit)) of computer memory. A floating
+point value is a type of value that may have digits following the decimal
+point, such as 0.001, 5.93, or 6.0.  Notice that 6.0 (and 3.0) can be written
+as floating point values, with 0 after the decimal point, as here, or as
+integers, with no decimal point, as in 6 (and 3).  It just so happens that
+`np.round` returns the value as the floating point version of the number.
+:::
+:::
+
+
+```{python}
+# Display result of Numpy sum of 1 and 2.
+np.sum([1, 2])
+```
+
+As Notice the output gives the value (
+
+
+You will see many other Numpy values displayed in this form.  For example,
+this is how Numpy displays a *floating point* value (a value that need not be
+a whole number):
+
+```{python}
+# Divide b by 4 and show the result.
+b / 4
+```
+:::
+:::
+
+```{python}
+# Show the result
+b
+```
+:::
 ```{python}
 # Put in -2.7, round sends back -3.
 np.round(-2.7)
@@ -376,9 +430,20 @@ np.round(3.1415, 2)
 round(3.1415, 2)
 ```
 
+::: python
+
+```{r fig-round_ndigits_pl, opts.label='svg_fig', fig.cap="`round` with optional arguments specifying number of digits"}
+include_svg('diagrams/round_function_ndigits_pl_np.svg')
+```
+:::
+
+::: r
+
 ```{r fig-round_ndigits_pl, opts.label='svg_fig', fig.cap="`round` with optional arguments specifying number of digits"}
 include_svg('diagrams/round_function_ndigits_pl.svg')
 ```
+
+:::
 
 Notice that the second argument — here 2 — is *optional*.  We only have to send
 `round` one argument: the number we want it to round.  But we can *optionally*
