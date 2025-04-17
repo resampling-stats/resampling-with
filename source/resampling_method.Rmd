@@ -234,7 +234,7 @@ explains how to execute notebooks online or on your own computer.
 End of callout note.
 -->
 
-:::::: {.notebook name="ambulances" title="Ambulances"}
+::::: {.notebook name="ambulances" title="Ambulances"}
 
 :::{#nte-comments .callout-note}
 ## Comments in code
@@ -256,7 +256,7 @@ of a comment:
 
 Because {{< var lang >}} ignores lines beginning with `#`, the text after the
 `#` is just for us, the humans reading the code.  The person writing the code
-will often use comments to explain what the code is doing. :::
+will often use comments to explain what the code is doing.
 :::
 
 Our next task is to use {{< var lang >}} to simulate a single day of
@@ -348,7 +348,7 @@ b
 ```
 
 ::: python
-:::{.callout-note}
+:::{#nte-numpy-scalar-display .callout-note}
 ## Numpy display of single values
 
 As you see above, Python showed us the value of the sum like this:
@@ -359,20 +359,21 @@ b
 ```
 
 It is not important for our purposes, but in fact this value (the result of
-the sum) came back from the Numpy library, because `np.sum` comes from Numpy.
-Numpy has a particular way of displaying single values that show us the value
-(in this case `1`) and the *type* of the value (in this case `np.int64`.  The
-type of the value isn't important to us at the moment, but `np.int64` means
-that this is a value of type *integer* (an integer is a positive or negative
-whole number), and taking up 64 *bits* of the computer's memory.
+the sum) came back from the Numpy library, because `np.sum` is a routine from
+Numpy.  Numpy has a particular way of displaying single values that show us the
+value (in this case `1`) and the *type* of the value (in this case `np.int64`).
+The type of the value does not matter to us at the moment, but `np.int64` means
+that this is a value of type *integer* (`int`) that uses `64` units
+([bits](https://en.wikipedia.org/wiki/Bit)) of computer memory.  An *integer*
+is a positive or negative whole number - see @nte-what-is-integer.
 
 You will see many other Numpy values displayed in this form.  For example,
 this is how Numpy displays a *floating point* value (a value that need not be
 a whole number):
 
 ```{python}
-# Divide b by 2 and show the result.
-b / 2
+# Divide b by 4 and show the result.
+b / 4
 ```
 :::
 :::
