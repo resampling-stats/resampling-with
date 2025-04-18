@@ -1418,7 +1418,13 @@ described above.
 
 ### Concatenating {{< var array >}}s {#sec-concatenate}
 
-Before we start the simulation, we need a little extra {{< var np_or_r >}} machinery.
+::: python
+Before we start the simulation, we need a little extra Numpy machinery.
+:::
+
+::: r
+Before we start, we need to return to the `c()` function in R: @sec-r-c.
+:::
 
 In what follows, we are going to make {{< var an_array >}} for the 26
 *private* prices, and another {{< var array >}} for the 16 *government*
@@ -1442,7 +1448,9 @@ both
 ```
 
 ::: r
-We have already seen R's concatenation function in action.  It is the function named `c`.  For example, we use `c(1, 2, 3)` to *concatenate* the single numbers 1, 2, and 3 into a combined (concatenated) *vector* with elements 1, 2, 3:
+We have already seen R's `c()` (concatenation) function in action (@sec-r-c).
+For example, we use `c(1, 2, 3)` to *concatenate* the single numbers 1, 2, and
+3 into a combined (concatenated) *vector* with elements 1, 2, 3:
 
 ```{r}
 vec_a <- c(1, 2, 3)

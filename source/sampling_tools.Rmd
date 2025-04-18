@@ -499,10 +499,95 @@ through 99.
 
 If only there was a way to make {{< var an_array >}} of 100 strings, where 26 of the strings were "black" and 74 were "white".  Then we could select randomly from that array, and it would be immediately obvious that we had a "black" or "white" juror.
 
-Luckily, of course, we can do that, by using the
+Luckily we can do that, by using the
 [`rep`]{.r}[`np.repeat`]{.python} function to construct the {{< var array >}}.
 
-Here is how that works:
+::: python
+
+::: {.callout-note}
+## `np.repeat`
+
+`np.repeat` is a useful Numpy function that makes a new output array by repeating elements from the input arrays.
+
+More specifically, `np.repeat` accepts two arguments (inputs), and sends back
+an array as output.  The first input is an array or list or some other
+sequence for which you want to repeat elements.  The second input tells
+`np.repeat` how many repeats to do, for each element.
+
+This is most easy to see by examples.
+
+Here we repeat all three elements in the first sequence (in this case a list) by a count (number) given in the second argument.
+
+```{python}
+# Repeat each element in the first list (or array) 4 times.
+to_repeat = [1, 2, 3]  # First input argument.
+n_repeats = 4  # Second input argument.
+np.repeat(to_repeat, n_repeats)
+```
+
+Of course we could also write this without the variables:
+
+```{python}
+# Repeat each element in the first list (or array) 4 times.
+np.repeat([1, 2, 3], 4)
+```
+
+The second argument (number of repeats) can also be a sequence, such as an array or list, with one element for each element of the first array.  In that case, it gives the number of repeats for each element.  We will use string elements for this example.
+
+```{python}
+# Repeat the first element 3 times, the second 2 times, and the third 4 times.
+# Second input is number of repeats for each element of the first argument.
+np.repeat(['one', 'two', 'three'], [3, 2, 4])
+```
+
+:::
+
+::: r
+
+::: {.callout-note}
+## `rep`
+
+`rep` is a useful function in R that makes a new output vector by repeating elements from the input vectors.
+
+More specifically, `rep` accepts two arguments (inputs), and sends back
+a vector as output.  The first input is a vector for which you want to repeat
+elements.  The second input tells `rep` how many repeats to do, for each
+element.
+
+This is most easy to see by examples.
+
+Here we repeat all three elements in the first vector by a count (number)
+given in the second argument.
+
+```{r}
+# Repeat each element in the first list (or array) 4 times.
+to_repeat <- c(1, 2, 3)  # First input argument.
+n_repeats <- 4  # Second input argument.
+rep(to_repeat, n_repeats)
+```
+
+Of course we could also write this without the variables:
+
+```{r}
+# Repeat each element in the first list (or array) 4 times.
+rep(c(1, 2, 3), 4)
+```
+
+The second argument (number of repeats) can also be a vector with one element for each element of the first vector.  In that case, it gives the number of repeats for each element.  We will use string elements for this example.
+
+```{r}
+# Repeat the first element 3 times, the second 2 times, and the third 4 times.
+# Second input is number of repeats for each element of the first argument.
+rep(c('one', 'two', 'three'), c(3, 2, 4))
+```
+
+:::
+
+:::
+
+
+Here we use [`rep`]{.r}[`np.repeat`]{.python} to make up our simulated jury
+pool.
 
 ```{python}
 # The values that we will repeat to fill up the larger array.

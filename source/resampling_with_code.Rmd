@@ -264,10 +264,16 @@ some_numbers
 
 ```{r}
 # Make a vector of numbers, store with the name "some_numbers".
+# In a very short while, we will explain the c() part of this line.
 some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 # Show the value of "some_numbers"
 some_numbers
 ```
+
+::: r
+The name *vector* sounds rather technical and mathematical, but the only
+important idea for us is that a *vector* stores a *sequence* of numbers.
+:::
 
 Notice that the value for `some_numbers` is {{< var an_array >}},
 and that this value *contains* 10 numbers.
@@ -505,6 +511,46 @@ Shift-Enter]{.python}.  This will show the help for the function in the
 notebook interface.
 :::
 
+::: r
+
+## The `c` function {#sec-r-c}
+
+Further up this page, we promised to explain R code lines using `c`.
+
+We mean lines like this one:
+
+```{r}
+some_numbers <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+```
+
+Now we have some background on functions, we can reveal that `c` is an
+R *function*.  The `c` stands for *Concatenate*.  The `c` function accepts as
+many values as you care to send it as arguments, and returns a vector that is
+the result of concatenating the elements.
+
+Thus:
+
+```{r}
+c(1, 5, 10)
+```
+
+You can also ask the `c` function to concatenate vectors with more than one
+value, like this:
+
+```{r}
+a <- c(1, 5, 2)
+b <- c(10, 20)
+c(a, b)
+```
+
+`c()` allows you to mix individual values with vectors containing more than
+one element:
+
+```{r}
+c(a, 99, b, 1000)
+```
+
+:::
 
 
 ## Ranges {#sec-ranges}
