@@ -26,12 +26,14 @@ source("_common.R")
 # Introducing {{< var lang >}} and the Jupyter notebook {#sec-about-technology}
 
 This chapter introduces you to the technology we will use throughout the book.
-By *technology*, we mean two things:
+By *technology*, we mean three things:
 
-* The {{< var lang >}} programming language, along with some important add-on
-  libraries for data analysis.
-* The {{< var nb_app >}} notebook system for running and editing
-  {{< var lang >}} code in a web interface.
+* The {{< var lang >}} programming language[, along with some important add-on
+  libraries for data analysis]{.python}.
+* The Jupyter notebook system for running and editing {{< var lang >}} code in
+  a web interface.
+* Software that allows you to run {{< var lang >}} code on your own computer,
+  using {{< var nb_app >}}.
 
 :::{.callout-note}
 ## Using {{< var lang >}} on the web and on your computer
@@ -122,9 +124,9 @@ that.
 ## The environment
 
 Many of the chapters have sections with code for you to run, and experiment
-with. These sections contain *Jupyter notebooks*[^jupyter-nb].  Jupyter
-notebooks are interactive web pages that allow you to read, write and run {{<
-var lang >}} code. We mark the start of each notebook in the text with
+with. These sections contain [Jupyter notebooks](https://docs.jupyter.org).
+Jupyter notebooks are interactive web pages that allow you to read, write and
+run {{< var lang >}} code. We mark the start of each notebook in the text with
 a note-and-link heading like the one you see below. In the web edition of this
 book, you can click on the *Download* link in this heading to download the
 section as a notebook. You can also click on the *Interact* link to open the
