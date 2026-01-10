@@ -65,7 +65,7 @@ jobs:
 
       - name: Install R
         run: |
-          sudo apt install -y r-base libcurl4-openssl-dev libssl-dev libxml2-dev
+          sudo apt install -y r-base libcurl4-openssl-dev libssl-dev libxml2-dev libharfbuzz-dev libfribidi-dev
           R --version | grep 'version '
 
       - name: Install R and Python libraries
