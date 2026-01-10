@@ -119,9 +119,14 @@ the two games). If so, two drawings from the bucket should represent two
 games. And we can then estimate the compound probability we seek with a
 series of two-ball trial experiments.
 
-More specifically, our procedure in this case — the prototype of all
-procedures in the resampling simulation approach to probability and
-statistics — is as follows:
+Notice that we have made the assumption here, that the probability of winning
+the second game is the same as the probability of winning the first game. That
+is, we are assuming the result of the first game does not influence the result
+of the second in any way.  More technically, we are saying that result of the
+second game is *independent of* (not influenced by) the result of the first.
+
+Our procedure in this case — the prototype of all procedures in the resampling
+simulation approach to probability and statistics — is as follows:
 
 1.  Put six green ("Win") and four red ("Lose") balls in a bucket.
 2.  Draw a ball, record its color, and replace it (so that the
@@ -141,12 +146,7 @@ sorts of probabilities.
 - *Experiment or Experimental Trial, or Trial, or Resampling Experiment*: A
   simulation experiment or trial is a randomly-generated composite event which
   has the same characteristics as the actual composite event in which we are
-  interested (except that in inferential statistics the resampling experiment
-  is generated with the "benchmark" or "null" universe rather than with the
-  "alternative" universe).
-  <!---
-  Explain the above better.
-  -->
+  interested.
 - *Parameter*: A numerical property of a universe. For example, the "true"
   mean (don't worry about the meaning of "true"), and the range between
   largest and smallest members, are two of its parameters.
@@ -174,27 +174,26 @@ concept of "frequency series" discussed earlier.
 - *Theoretical Methods*.  The most fundamental theoretical approach is to
   resort to first principles, working with the elements in their full
   deductive simplicity, and examining all possibilities. This is what we do
-  when we use a tree diagram to calculate the probability of three girls in
+  when we use a tree diagram of the different outcomes and their
+  probabilities.  We will come to tree diagrams in @sec-joint-probabilities.
+  Tree diagrams allow us to calculate compound probabilities — for example
+  — we could use a tree diagram to calculate the probability of three girls in
   families of four children.
-
-<!---
-Check we have in fact introduced tree diagram.
--->
-
 
 The formulaic approach is a theoretical method that aims to avoid the
 inconvenience of resorting to first principles, and instead uses calculation
 shortcuts that have been worked out in the past.
 
-*What the Book Teaches*.  This book teaches you the empirical method
-using hypothetical cases. Formulas can be misleading for most people in
-most situations, and should be used as a shortcut only when a person
-understands exactly which first principles are embodied in the formulas.
-But most of the time, students and practitioners resort to the formulaic
-approach without understanding the first principles that lie behind
-them — indeed, their own teachers often do not understand these first
-principles — and therefore they have almost no way to verify that the
-formula is right. Instead they use canned checklists of qualifying
+## What the Book Teaches
+
+This book teaches you the empirical method using hypothetical cases. Formulas
+can be misleading for most people in most situations, and should be used as
+a shortcut only when a person understands exactly which first principles are
+embodied in the formulas. But most of the time, students and practitioners
+resort to the formulaic approach without understanding the first principles
+that lie behind them — indeed, their own teachers often do not understand
+these first principles — and therefore they have almost no way to verify that
+the formula is right. Instead they use canned checklists of qualifying
 conditions.
 
 ## Samples and universes
@@ -211,7 +210,7 @@ were used earlier without definition. But now these terms must be defined.
 For our purposes, a "sample" is a collection of observations for which you
 obtain the data to be used in the problem. Almost any set of observations for
 which you have data constitutes a sample. (You might, or might not, choose to
-call a complete census a sample.)
+call a complete collection of all possible observations — a sample.)
 
 <!---
 The idea of a census and a population and a sample above?
@@ -259,7 +258,7 @@ More here on hypothetical world / universe.  Refer back to previous chapters?
 Let's review the basic conventions and rules used in the study of
 probability:
 
-1.  Probabilities are expressed as decimals between 0 and 1, like
+1.  Probabilities are expressed as decimals from 0 through 1, like
     percentages. The weather forecaster might say that the probability
     of rain tomorrow is 0.2, or 0.97.
 2.  The probabilities of all the possible alternative outcomes in a
@@ -296,15 +295,17 @@ as $P(\text{no rain})$. Another way of referring to an event _not_ occurring is
 to suffix the event name with a *caret* (^) character like this: $\ \hat{} R$.
 So read $P(\ \hat{} R)$ as "the probability that it will not rain", and it is
 just another way of writing $P(\text{no rain})$.  We sometimes call $\ \hat{}
-R$ the *complement* of $R$.
+R$ the *complement* of $R$, meaning, everything *other than* $R$.
 
-We use $\text{and}$ between two events to mean _both_ events occur.
+We use "$\text{and}$" between two events to mean _both_ events occur.
 
-For example, say we call the event "Commanders win the game" as $W$.  One
+For example, say we call the event "Commanders win the game": $W$.  One
 example of a *compound event* (see above) would be the event $W \text{and} R$,
-meaning, the event where the Commanders won the game _and_ it rained.
+meaning, the event where the Commanders won the game _and_ it rained.  We
+write the probability of this compound event as $P(W \text{and} R)$.
 
 :::
+
 <!---
 End of callout note.
 -->
@@ -360,7 +361,8 @@ check that you think that the probability of no rain is 0.8; if not, reconsider
 both the estimates. The same for the probabilities of your team winning and
 losing its next game.
 
-## Joint probabilities
+## Joint probabilities {#sec-joint-probabilities}
+
 
 Let's return now to the Commanders. We said earlier that our best guess of the
 probability that the Commanders will win the first game is 0.6. Let's
