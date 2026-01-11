@@ -17,6 +17,9 @@ knitr::opts_chunk$set(
   fig.width = 6,
   fig.asp = 0.618,  # 1 / phi
   fig.show = "hold",
+  # See:
+  # https://stackoverflow.com/questions/76732162/is-there-a-way-to-detect-the-chunk-language-when-setting-knitr-chunk-options
+  # and hooks below.
   eval = NA,
   echo = NA,
   # See: https://github.com/rstudio/reticulate/issues/1387
