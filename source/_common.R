@@ -112,4 +112,11 @@ knitr::opts_hooks$set(
   },
   eval = function(options) {
       return (set_true_for_matching_lang(options, 'eval'))
+  },
+  test = function(options) {
+      if(!is.logical(options['test'])) {
+          options['echo'] <- FALSE
+          options['output'] <- FALSE
+      }
+      return (options)
   })

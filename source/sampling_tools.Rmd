@@ -539,6 +539,7 @@ The second argument (number of repeats) can also be a sequence, such as an array
 # Second input is number of repeats for each element of the first argument.
 np.repeat(['one', 'two', 'three'], [3, 2, 4])
 ```
+:::
 
 :::
 
@@ -947,6 +948,10 @@ from the jury panel.
 
 We should look for the main source of bias in the initial selection of the jury
 panel, not in the selection of the jury from the panel.
+
+```{python test=TRUE}
+assert True
+```
 
 <!---
 End of notebook
