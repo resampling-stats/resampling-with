@@ -51,24 +51,27 @@ jobs:
         run: |
           sudo apt install texlive-xetex texlive-fonts-extra
 
-      - name: Install quarto and matching pandoc
-        run: |
-          sudo apt install -y curl
-          curl -L https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VER}/quarto-${QUARTO_VER}-linux-amd64.deb -o quarto.deb
-          # PANDOC appends -1 to the archive root name for .deb packages.
-          curl -L https://github.com/jgm/pandoc/releases/download/${PANDOC_VER}/pandoc-${PANDOC_VER}-1-amd64.deb -o pandoc.deb
-          sudo dpkg --install quarto.deb pandoc.deb
-
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.13'
 
-      - name: Install R
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+
+      - name: Show R version
         run: |
-          sudo apt install -y r-base libcurl4-openssl-dev libssl-dev libxml2-dev libharfbuzz-dev libfribidi-dev
           R --version | grep 'version '
 
-      - name: Install R and Python libraries
+      - uses: r-lib/actions/setup-pandoc@v2
+        with:
+          pandoc-version: ${{ env.PANDOC_VER }}
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: ${{ env.QUARTO_VER }}
+
+      - name: R and Python library deps
         run: |
           sudo apt install -y libfontconfig1-dev libmagick++-dev
           make build-init
