@@ -75,6 +75,10 @@ jobs:
       - name: R and Python library deps
         run: |
           sudo apt install -y libfontconfig1-dev libmagick++-dev
+          sudo apt install -y libharfbuzz-dev libfribidi-dev  # R textshaping deps
+
+      - name: R and Python libraries
+        run: |
           make build-init
 
       - name: Build website index
