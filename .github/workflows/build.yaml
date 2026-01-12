@@ -11,7 +11,6 @@ jobs:
   build-book:
     runs-on: ubuntu-latest
     env:
-      R_LIBS_USER: ~/R_libs:~/R:~/R-dev
       QUARTO_VER: "1.6.1"
       PANDOC_VER: "3.2"
       # https://github.com/r-lib/remotes/issues/641
@@ -29,20 +28,11 @@ jobs:
           path: ~/.cache/pip
           key: ${{ hashFiles('build-requirements.txt') }}
 
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/R
-            ~/R_libs
-            ~/R-dev
-          key: ${{ hashFiles('scripts/install_r_requirements.R') }}
-
       - name: Apt update
         run: sudo apt update
 
       - name: Install inkscape
         run: |
-          sudo apt update
           sudo apt install inkscape
 
       - name: Install rsvg tools
@@ -52,34 +42,29 @@ jobs:
         run: |
           sudo apt install texlive-xetex texlive-fonts-extra
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: 'release'
-
-      - name: Show R version
-        run: |
-          R --version | grep 'version '
-
-      - uses: r-lib/actions/setup-pandoc@v2
-        with:
-          pandoc-version: ${{ env.PANDOC_VER }}
-
-      - uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: ${{ env.QUARTO_VER }}
-
       - name: R and Python library deps
         run: |
           sudo apt install -y libfontconfig1-dev libmagick++-dev
           sudo apt install -y libharfbuzz-dev libfribidi-dev  # R textshaping deps
 
-      - name: R and Python libraries
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - uses: r-lib/actions/setup-r@v2
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          pandoc-version: ${{ env.PANDOC_VER }}
+          quarto-version: ${{ env.QUARTO_VER }}
+
+      - name: Show R version
         run: |
-          make build-init
+          R --version | grep 'version '
+
+      - name: Pip dependencies
+        run: |
+          pip install -r build-requirements.txt
 
       - name: Build website index
         run: cd website && make
