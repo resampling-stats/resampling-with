@@ -924,6 +924,10 @@ p_zero_black = zero_black / 10000
 print(p_zero_black)
 ```
 
+```{python test=TRUE}
+assert np.round(p_zero_black, 2) == 0.34
+```
+
 ```{r}
 counts <- numeric(10000)
 for (i in 1:10000) {
@@ -940,8 +944,12 @@ p_zero_black <- zero_black / 10000
 message(p_zero_black)
 ```
 
+```{r test=TRUE}
+stopifnot(round(p_zero_black, 2) == 0.34)
+```
+
 We have found that,  when there are only 8% black jurors in the jury panel,
-having no black jurors in the final jury happens about 
+having no black jurors in the final jury happens about
 `r round(get_var('p_zero_black') * 100)`%
 of the time, even in this case, where the jury is selected completely at random
 from the jury panel.
@@ -949,9 +957,6 @@ from the jury panel.
 We should look for the main source of bias in the initial selection of the jury
 panel, not in the selection of the jury from the panel.
 
-```{python test=TRUE}
-assert True
-```
 
 <!---
 End of notebook
