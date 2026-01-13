@@ -459,6 +459,33 @@ You can use the [`kableExtra::column_spec`
 options](https://www.rdocumentation.org/packages/kableExtra/versions/1.4.0/topics/column_spec)
 to tune table formatting — see `resampling_method.Rmd` for an example.
 
+## Tests
+
+Tests are code blocks that:
+
+1. Execute on book build.
+1. Do not appear in the final output, either in book or notebook form.
+1. Raise errors when a condition is not met.
+
+Label test blocks with `test=TRUE`, for example:
+
+~~~
+```{python test=TRUE}
+assert np.round(p_zero_black, 2) == 0.34
+```
+
+```{r test=TRUE}
+stopifnot(round(p_zero_black, 2) == 0.34)
+```
+~~~
+
+Code in `_common.R` adds `echo=FALSE, output=FALSE` to all blocks labeled
+`test=TRUE`.
+
+This will have the effect of removing these cells from book output, and
+appears to have to effect of removing them from notebook output as well — for
+reasons I need to work out.
+
 ## More setup for Jupyter
 
 For the Jupyter notebook, you might want to enable the R magics, to allow you
