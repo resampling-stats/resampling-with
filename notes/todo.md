@@ -9,6 +9,10 @@ topic, and we should put more exposition time into it.
 
 ## Gently work up to using `choice` with `p`
 
+At the moment, this is a throwaway in `probability_theory_3`.
+
+Maybe make this more explicit.  Maybe even in `sampling_tools`
+
 We want to get to using `choice(['foo', 'bar'], p=[0.7, 0.3])`
 
 Start with say using random integers, or choice with the correct proportion of
@@ -25,8 +29,10 @@ as 10%. P. 380 U. S. 208.
 
 Redo simulation with proportion 0.26 * 0.9 = 0.234
 
+## Technical matters
+
+* Consider [quarto-live](https://r-wasm.github.io/quarto-live) for exercises.
+
 ## Glossary
 
-`probability_theory_1a.Rmd` referred to a "Glossary", but in fact, the original
-book does not have one, either in PDF or in the printed text.  We should do
-one.
+We might consider adding one.
