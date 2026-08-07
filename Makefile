@@ -47,9 +47,9 @@ r-version: r-book-jl
 		$(SOURCE_DIR)/_quarto-$*.yml \
 		_$*_notebooks
 	$(PYTHON) -m jupyter lite build \
-		--contents _$*_notebooks \
+		--contents . \
 		--output-dir $*-book/$(JL_SDIR) \
-		--lite-dir _$*-notebooks
+		--lite-dir _$*_notebooks
 
 _source-clean:
 	cd $(SOURCE_DIR) && ninja clean
